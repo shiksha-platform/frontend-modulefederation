@@ -1,11 +1,4 @@
-# Shiksha Platform Frontend (Uses Module Federation)
-
-## Modules
-| Module      | Description |
-| ----------- | ----------- |
-| core      | Core features like School, Classes, Students       |
-| teacher-app   | Host Application for teachers        |
-## Create New Module
+# Create New Module
 * copy module-template to packages/[module-name]
 * update ```packages/[module-name]/package.json```
 ```
@@ -28,4 +21,3 @@ module.exports = {
 lerna run start --scope=[module-name]
 
 ```
-
