@@ -14,6 +14,14 @@
 ...
 }
 ```
+* Update packages/[module-name]/craco.config.js and assign a port for dev environment.
+```
+module.exports = {
+  devServer: {
+    port: 3001,
+  },
+  ...
+```  
 * update ```packages/[module-name]/moduleFederation.config.js ```
 ```
 ...
@@ -28,4 +36,35 @@ module.exports = {
 lerna run start --scope=[module-name]
 
 ```
+
+# Use Module in Host Application
+* Add remote module url url to remotes in ```packages/[host-app]/moduleFederation.config.js ```
+```
+
+# e.g. core module is runninig on localhost:3001 then
+
+  remotes: {
+    core: 'core@http://localhost:3001/moduleEntry.js', 
+  },
+```
+
+* To use exposed component from remote module in react.
+The lazy load componennt must be enclosed within ```<React.Suspense>```
+```
+# e.g. usiing AppShell component from core module
+
+const AppShell = React.lazy(() => import("core/AppShell"));
+...
+<React.Suspense fallback="Loading ">
+ <AppShell/>
+</React.Suspense>
+```
+
+# TODO:
+1. Extracting remote url and configuring webpack to use from config file at runtime
+2. Lazy load error handling
+3. Production depoyment steps and deployer experience
+4. Plugin components
+5. Improve dev experience to bootstrap module, add and expose components.
+
 
