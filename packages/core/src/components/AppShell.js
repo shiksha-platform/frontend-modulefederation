@@ -1,7 +1,7 @@
 function AppShell (){
     return (
         <>
-        Render shell here...
+        Render shell here ...
         </>
     )
 }

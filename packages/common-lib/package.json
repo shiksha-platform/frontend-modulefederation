@@ -1,0 +1,43 @@
+{
+  "name": "@shiksha/common-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^17.0.39",
+    "react": "^17.0.2",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.4",
+    "@mui/material": "^5.4.0",
+    "@react-navigation/drawer": "^6.1.8",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.24.0",
+    "expo-font": "^10.0.3",
+    "i18next": "^21.6.7",
+    "moment": "^2.29.1",
+    "native-base": "^3.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.15.3",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-web": "^0.17.6",
+    "react-router-dom": "^6.1.1",
+    "react-native-svg": "^12.1.1",
+    "styled-components": "^5.3.3",
+    "styled-system": "^5.1.5",
+    "typescript": "^4.5.5",
+    "web-vitals": "^1.1.2"
+  }
+}

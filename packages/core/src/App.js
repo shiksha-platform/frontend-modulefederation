@@ -1,15 +1,20 @@
 import React from "react";
 import "./App.css";
-import AppShell from "components/AppShell";
+import Login from "pages/Login";
+import { NativeBaseProvider } from "native-base";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <div>School Toolkit</div>
-      <AppShell/>
-      </header>
-    </div>
+    <NativeBaseProvider>
+      <>
+        <Router>
+          <Routes>
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </Router>
+      </>
+    </NativeBaseProvider>
   );
 }
 
