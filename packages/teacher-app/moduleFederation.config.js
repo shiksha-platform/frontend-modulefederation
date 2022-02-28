@@ -6,7 +6,7 @@ module.exports = {
     "./App": "./src/App",
   },
   remotes: {
-    core: 'core@http://localhost:3001/moduleEntry.js', 
+    core: `core@[window.appModules.core.url]/moduleEntry.js`, 
   },
   filename: "moduleEntry.js",
   shared: {

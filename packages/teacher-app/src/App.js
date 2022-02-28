@@ -8,12 +8,14 @@ function App() {
   return (
 
     <React.Suspense fallback="Loading ">
+      
     <div className="App">
       <header className="App-header">
         <div>Teacher's Diary</div>
         <AppShell/>
       </header>
     </div>
+    
     </React.Suspense>
   );
 }
