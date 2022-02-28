@@ -21,7 +21,25 @@
     "workbox-range-requests": "^5.1.4",
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
+    "workbox-streams": "^5.1.4",
+
+
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.4",
+    "@mui/material": "^5.4.0",
+    "@react-navigation/drawer": "^6.1.8",
+    "@shiksha/common-lib": "^1.0.0",
+    "axios": "^0.24.0",
+    "expo-font": "^10.0.3",
+    "i18next": "^21.6.7",
+    "moment": "^2.29.1",
+    "native-base": "^3.2.2",
+    "react-i18next": "^11.15.3",
+    "react-native-safe-area-context": "^3.3.2",
+    "react-native-web": "^0.17.5",
+    "react-router-dom": "^6.1.1"
+    
   },
   "scripts": {
     "start": "craco start",
