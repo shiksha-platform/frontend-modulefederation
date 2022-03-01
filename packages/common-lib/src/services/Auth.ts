@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function fetchToken(authUrl: string, username: string, password: string) {
+export function fetchToken(authUrl: string, username: string, password: string):Promise<any> {
     const params = new URLSearchParams();
     params.append("client_id", "registry-frontend");
     params.append("username", username);
@@ -14,8 +14,7 @@ export async function fetchToken(authUrl: string, username: string, password: st
         },
     };
 
-    const result = await axios
+    return axios
         .post(authUrl, params, config)
         .catch((e) => e);
-    return result;
 }
