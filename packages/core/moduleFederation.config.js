@@ -5,7 +5,8 @@ module.exports = {
   exposes: {
     "./App": "./src/App",
     "./AppShell": "./src/components/AppShell",
-    "./Login" : "./src/pages/Login"
+    "./Login" : "./src/pages/Login",
+    "./MyClasses" : "./src/pages/myclasses/MyClasses.js"
   },
   filename: "moduleEntry.js",
   shared: {
