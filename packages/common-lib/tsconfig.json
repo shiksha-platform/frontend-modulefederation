@@ -5,6 +5,7 @@
         "target": "esnext",
         "declaration": true,
         "skipLibCheck": true,
+        "allowJs": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "jsx": "react"

@@ -49,7 +49,7 @@ export default function Layout({
           {subHeader}
         </Box>
       ) : (
-        <></>
+        <>AAA</>
       )}
       {children}
       <Footer {..._footer} />
