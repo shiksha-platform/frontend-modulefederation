@@ -34,7 +34,9 @@ export const getAll = async (
 
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await RestClient
-    .get(manifest.api_url + "Teacher/edccc63f-fcc7-4529-80b7-feea3fee0f3c", {
+  
+  //edccc63f-fcc7-4529-80b7-feea3fee0f3c
+    .get(manifest.api_url + "Teacher/018a8e96-6ba8-496e-93c7-c362696c5da7", {
       headers: headers,
     })
     .catch((error) => error);

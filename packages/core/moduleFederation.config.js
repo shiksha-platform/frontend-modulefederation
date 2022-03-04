@@ -6,7 +6,8 @@ module.exports = {
     "./App": "./src/App",
     "./AppShell": "./src/components/AppShell",
     "./Login" : "./src/pages/Login",
-    "./MyClasses" : "./src/pages/myclasses/MyClasses.js"
+    "./MyClasses" : "./src/pages/myclasses/MyClasses.js",
+    "./ClassDetails" : "./src/pages/myclasses/ClassDetails.js"
   },
   filename: "moduleEntry.js",
   shared: {
