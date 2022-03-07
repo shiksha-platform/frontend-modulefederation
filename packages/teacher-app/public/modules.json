@@ -1,5 +1,8 @@
 {
     "core":{
         "url": "http://localhost:3001"
+    },
+    "attendance":{
+        "url": "http://localhost:3002"
     }
 }

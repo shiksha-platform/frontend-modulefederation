@@ -9,7 +9,7 @@ import Home from "./pages/Home";
 import init from "lang/init";
 
 import manifest from "./manifest.json";
-import { eventBus } from "@shiksha/common-lib";
+import { DEFAULT_THEME, eventBus } from "@shiksha/common-lib";
 
 //TODO: separate out the theme related code from App
 i18n.use(initReactI18next).init(init);
@@ -200,6 +200,9 @@ function App() {
     );
   } else {
     const MyClasses = React.lazy(() => import("core/MyClasses"));
+    const ClassDetails = React.lazy(() => import("core/ClassDetails"));
+    const Attendance = React.lazy(() => import("attendance/Attendance"));
+
 
     return (
       <NativeBaseProvider theme={theme}>
@@ -211,6 +214,18 @@ function App() {
             path="classes"
             element={
                  <MyClasses />
+            }
+          />
+          <Route
+          path="/classes/:classId"
+          element={
+                 <ClassDetails />
+            }
+          />
+          <Route
+          path="/attendance/:classId"
+          element={
+                 <Attendance />
             }
           />
           <Route
