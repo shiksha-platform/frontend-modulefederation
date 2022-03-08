@@ -3,7 +3,7 @@ import { Box, HStack, Text, useToast, VStack } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { calendar } from "services/utils";
-import IconByName from "@shiksha/common-lib";
+import { IconByName } from "@shiksha/common-lib";
 
 const FormatDate = ({ date, type }) => {
   if (type === "Week") {
