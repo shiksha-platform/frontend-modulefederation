@@ -80,7 +80,7 @@ export default function Menu({
                       {..._icon}
                     />
                   ) : (
-                    <></>
+                    <React.Fragment/>
                   )}
                   <Text
                     color="white"
@@ -139,7 +139,7 @@ export default function Menu({
                     ) : item.icon ? (
                       <IconByName name={item.icon} p="0" {..._icon} />
                     ) : (
-                      <></>
+                      <React.Fragment/>
                     )}
                     <Text color="gray.700" fontWeight="500">
                       {t(item.title)}

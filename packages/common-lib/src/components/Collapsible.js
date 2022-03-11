@@ -4,7 +4,6 @@ import {
   HStack,
   Text,
   Box,
-  PresenceTransition,
   Pressable,
   Stack
 } from "native-base";
@@ -44,7 +43,7 @@ const Collapsible = ({ header="", children, defaultCollapse=true, isHeaderBold=t
         duration: 250
       }
     }}>
-        {isOpen?children:<></>}
+        {isOpen?children: <React.Fragment/>}
       </PresenceTransition>
       
     </Stack>

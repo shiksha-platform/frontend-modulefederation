@@ -41,7 +41,7 @@ function IconButton({ icon, isDisabled, prefix, _fontawesome, ...props }) {
 }
 
 export default function IconByName(props) {
-  let icon = <></>;
+  let icon =   <React.Fragment/>;
   switch (props.name) {
     case "ParentLineIcon":
       icon = <IconButton {...props} icon={<ParentLineIcon />} />;

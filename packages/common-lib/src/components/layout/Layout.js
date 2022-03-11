@@ -15,7 +15,7 @@ export default function Layout({
   _footer,
 }) {
   return (
-    <>
+    <React.Fragment>
       <Stack
         width={"100%"}
         style={{
@@ -31,9 +31,9 @@ export default function Layout({
         {!isDisabledAppBar ? (
           <AppBar color={imageUrl ? "white" : ""} {..._appBar} />
         ) : (
-          <></>
+          <React.Fragment/>
         )}
-        {_header ? <Header {..._header} /> : <></>}
+        {_header ? <Header {..._header} /> : <React.Fragment/>}
       </Stack>
       {subHeader ? (
         <Box
@@ -49,10 +49,10 @@ export default function Layout({
           {subHeader}
         </Box>
       ) : (
-        <>AAA</>
+        <React.Fragment/>
       )}
       {children}
       <Footer {..._footer} />
-    </>
+      </React.Fragment>
   );
 }

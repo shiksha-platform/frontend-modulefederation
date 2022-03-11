@@ -70,7 +70,7 @@ export default function AppBar({
               onChange={(e) => setSearch(e.target.value)}
             />
           ) : (
-            <></>
+            <React.Fragment/>
             // <Text fontSize="20" fontWeight="bold">
             //   {props.title ?? manifest.name}
             // </Text>
@@ -85,7 +85,7 @@ export default function AppBar({
               onPress={(e) => setSearchInput(true)}
             />
           ) : (
-            <></>
+            <React.Fragment/>
           )}
           <Center flex={1} px="3">
             <Menu

@@ -70,7 +70,7 @@ function Widget({ data, title }) {
                     </VStack>
                   </Text>
                   {item.icon ? (
-                    <>
+                     <React.Fragment>
                       <Box
                         {...{
                           ...rotate,
@@ -88,9 +88,9 @@ function Widget({ data, title }) {
                           ...item?._icon,
                         }}
                       />
-                    </>
+                     </React.Fragment>
                   ) : (
-                    <></>
+                    <React.Fragment/>
                   )}
                 </PressableNew>
               </Box>

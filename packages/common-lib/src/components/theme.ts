@@ -1,4 +1,3 @@
-import { extendTheme } from "native-base";
 
 const maxWidth = "1080";
 const fontFamily =
@@ -49,7 +48,7 @@ let green = {
   950: "#010f03",
 };
 
-const DEFAULT_THEME = extendTheme({
+const DEFAULT_THEME = {
   fonts: {
     heading: fontFamily,
     body: fontFamily,
@@ -158,6 +157,6 @@ const DEFAULT_THEME = extendTheme({
       500: "#FFF7F5",
     },
   },
-});
+};
 
 export default DEFAULT_THEME;

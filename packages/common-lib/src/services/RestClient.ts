@@ -1,28 +1,25 @@
 import axios from "axios";
 
-const Logout = (e) => {
-  sessionStorage.setItem("token", null);
-};
 
-export async function get(url, headers:any = {}) {
+export async function get(url:string, headers:any = {}) {
   return await axios.get(url, {
     ...headers,
     headers: { ...headers?.headers, "Access-Control-Allow-Origin": "*" },
   });
 }
 
-export async function post(url, body, headers:any = {}) {
+export async function post(url:string, body:any, headers:any = {}) {
   return await axios.post(url, body, {
     ...headers,
     headers: { ...headers?.headers, "Access-Control-Allow-Origin": "*" },
   });
 }
 
-export async function update(url, body, headers:any = {}) {
+export async function update(url:string, body:any, headers:any = {}) {
   return await axios.put(url, body, {
     ...headers,
     headers: { ...headers?.headers, "Access-Control-Allow-Origin": "*" },
   });
 }
 
-export async function distory(url, body) {}
+//export async function distory(url:string, body:any) {}

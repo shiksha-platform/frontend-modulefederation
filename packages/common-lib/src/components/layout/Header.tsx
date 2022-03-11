@@ -14,7 +14,7 @@ export default function Header({
   title,
   isDisabledHeader,
   fullRightComponent,
-}) {
+}:any) {
   let newAvatar = sessionStorage.getItem("firstName");
   return !isDisabledHeader ? (
     !fullRightComponent ? (
@@ -44,7 +44,7 @@ export default function Header({
               <Avatar.Badge bg="green.500" top="0" />
             </Avatar>
           ) : (
-            <></>
+            <React.Fragment/>
           )}
         </HStack>
       </Box>
@@ -52,6 +52,6 @@ export default function Header({
       fullRightComponent
     )
   ) : (
-    <></>
+    <React.Fragment/>
   );
 }
