@@ -30,6 +30,21 @@ module.exports = {
 ...
 
 ```
+# Run All Modules and Host Application
+* Install dependency
+```
+yarn install
+```
+* Run all modules
+```
+yarn start
+```
+
+# Build Application for Production
+```
+yarn build
+
+```
 
 # Run Module as Standalone Application
 ```
@@ -38,14 +53,25 @@ lerna run start --scope=[module-name]
 ```
 
 # Use Module in Host Application
-* Add remote module url url to remotes in ```packages/[host-app]/moduleFederation.config.js ```
+* Add remote module url to remotes in ```packages/[host-app]/moduleFederation.config.js ```
 ```
 
 # e.g. core module is runninig on localhost:3001 then
 
   remotes: {
-    core: 'core@http://localhost:3001/moduleEntry.js', 
+    core: 'core@[window.appModules.core.url]/remoteEntry.js',
   },
+```
+* Add entry to ```moodules.json```
+```
+# e.g. core module is runninig on localhost:3001 then
+
+{
+    "core":{
+        "url": "http://localhost:3001"
+    },
+    ...
+}
 ```
 
 * To use exposed component from remote module in react.
