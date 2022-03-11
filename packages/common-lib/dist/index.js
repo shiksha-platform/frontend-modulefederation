@@ -34,7 +34,7 @@ var reactRouterDom = require('react-router-dom');
 var axios = _interopDefault(require('axios'));
 var postal = _interopDefault(require('postal'));
 
-var styles = {"test":"_styles-module__test__3ybTi"};
+var styles = {"test":"_3ybTi"};
 
 function Header(_ref) {
   var iconComponent = _ref.iconComponent,
