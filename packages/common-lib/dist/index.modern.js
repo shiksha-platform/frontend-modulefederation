@@ -31,22 +31,23 @@ import { Link, generatePath, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import postal from 'postal';
 
-var styles = {"test":"_3ybTi"};
+var styles = {"test":"_styles-module__test__3ybTi"};
 
-function Header(_ref) {
-  var iconComponent = _ref.iconComponent,
-      headingComponent = _ref.headingComponent,
-      subHeadingComponent = _ref.subHeadingComponent,
-      avatar = _ref.avatar,
-      heading = _ref.heading,
-      subHeading = _ref.subHeading,
-      _box = _ref._box,
-      _heading = _ref._heading,
-      _subHeading = _ref._subHeading,
-      title = _ref.title,
-      isDisabledHeader = _ref.isDisabledHeader,
-      fullRightComponent = _ref.fullRightComponent;
-  var newAvatar = sessionStorage.getItem("firstName");
+function Header({
+  iconComponent,
+  headingComponent,
+  subHeadingComponent,
+  avatar,
+  heading,
+  subHeading,
+  _box,
+  _heading,
+  _subHeading,
+  title,
+  isDisabledHeader,
+  fullRightComponent
+}) {
+  let newAvatar = sessionStorage.getItem("firstName");
   return !isDisabledHeader ? !fullRightComponent ? React__default.createElement(Box, Object.assign({}, _box, {
     py: 7,
     px: 5
@@ -66,48 +67,15 @@ function Header(_ref) {
   })) : React__default.createElement(React__default.Fragment, null))) : fullRightComponent : React__default.createElement(React__default.Fragment, null);
 }
 
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-var _excluded = ["icon", "isDisabled", "prefix", "_fontawesome"];
-
-function IconButton(_ref) {
-  var icon = _ref.icon,
-      isDisabled = _ref.isDisabled,
-      props = _objectWithoutPropertiesLoose(_ref, _excluded);
-
+function IconButton({
+  icon,
+  isDisabled,
+  prefix,
+  _fontawesome,
+  ...props
+}) {
   if (!isDisabled) {
-    return /*#__PURE__*/React__default.createElement(IconButton$1, _extends({}, props, {
+    return /*#__PURE__*/React__default.createElement(IconButton$1, Object.assign({}, props, {
       icon: React__default.cloneElement(icon, props._icon)
     }));
   } else {
@@ -116,155 +84,155 @@ function IconButton(_ref) {
 }
 
 function IconByName(props) {
-  var icon = /*#__PURE__*/React__default.createElement(React__default.Fragment, null);
+  let icon = /*#__PURE__*/React__default.createElement(React__default.Fragment, null);
 
   switch (props.name) {
     case "ParentLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ParentLineIcon, null)
       }));
       break;
 
     case "LightbulbFlashLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(LightbulbFlashLineIcon, null)
       }));
       break;
 
     case "FootballLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(FootballLineIcon, null)
       }));
       break;
 
     case "UserFollowLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(UserFollowLineIcon, null)
       }));
       break;
 
     case "Medal2LineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(Medal2LineIcon, null)
       }));
       break;
 
     case "ArrowLeftLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ArrowLeftLineIcon, null)
       }));
       break;
 
     case "More2LineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(More2LineIcon, null)
       }));
       break;
 
     case "TeamLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(TeamLineIcon, null)
       }));
       break;
 
     case "GovernmentLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(GovernmentLineIcon, null)
       }));
       break;
 
     case "BookOpenLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(BookOpenLineIcon, null)
       }));
       break;
 
     case "UserLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(UserLineIcon, null)
       }));
       break;
 
     case "ArrowLeftSLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ArrowLeftSLineIcon, null)
       }));
       break;
 
     case "ArrowRightSLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ArrowRightSLineIcon, null)
       }));
       break;
 
     case "ArrowDownSLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ArrowDownSLineIcon, null)
       }));
       break;
 
     case "ArrowUpSLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ArrowUpSLineIcon, null)
       }));
       break;
 
     case "CalendarCheckLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(CalendarCheckLineIcon, null)
       }));
       break;
 
     case "PencilLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(PencilLineIcon, null)
       }));
       break;
 
     case "CheckboxCircleLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(CheckboxCircleLineIcon, null)
       }));
       break;
 
     case "CloseCircleLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(CloseCircleLineIcon, null)
       }));
       break;
 
     case "CheckboxBlankCircleLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(CheckboxBlankCircleLineIcon, null)
       }));
       break;
 
     case "CheckLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(CheckLineIcon, null)
       }));
       break;
 
     case "Loader4LineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(Loader4LineIcon, null)
       }));
       break;
 
     case "UserSmileLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(UserSmileLineIcon, null)
       }));
       break;
 
     case "ListUnorderedIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(ListUnorderedIcon, null)
       }));
       break;
 
     case "EmotionUnhappyLineIcon":
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(EmotionUnhappyLineIcon, null)
       }));
       break;
@@ -274,7 +242,7 @@ function IconByName(props) {
         console.warn(props.name);
       }
 
-      icon = /*#__PURE__*/React__default.createElement(IconButton, _extends({}, props, {
+      icon = /*#__PURE__*/React__default.createElement(IconButton, Object.assign({}, props, {
         icon: /*#__PURE__*/React__default.createElement(Home4LineIcon, null)
       }));
       break;
@@ -283,50 +251,34 @@ function IconByName(props) {
   return icon;
 }
 
-var _excluded$1 = ["menues", "routeDynamics"],
-    _excluded2 = ["item", "children"];
-
 function useWindowSize() {
-  var _useState = useState([0, 0]),
-      size = _useState[0],
-      setSize = _useState[1];
-
-  var maxWidth = 1080;
-  useLayoutEffect(function () {
+  const [size, setSize] = useState([0, 0]);
+  const maxWidth = 1080;
+  useLayoutEffect(() => {
     function updateSize() {
       setSize([window.outerWidth > maxWidth ? maxWidth : window.outerWidth, window.innerHeight]);
     }
 
     window.addEventListener("resize", updateSize);
     updateSize();
-    return function () {
-      return window.removeEventListener("resize", updateSize);
-    };
+    return () => window.removeEventListener("resize", updateSize);
   }, []);
   return size;
 }
 
-function Footer(_ref) {
-  var menues = _ref.menues,
-      routeDynamics = _ref.routeDynamics,
-      props = _objectWithoutPropertiesLoose(_ref, _excluded$1);
-
-  var _React$useState = React__default.useState(0),
-      selected = _React$useState[0],
-      setSelected = _React$useState[1];
-
-  var _useTranslation = useTranslation(),
-      t = _useTranslation.t;
-
-  var _React$useState2 = React__default.useState({}),
-      refFoot = _React$useState2[0],
-      serRefFoot = _React$useState2[1];
-
-  var _useWindowSize = useWindowSize(),
-      width = _useWindowSize[0];
-
-  var footerMenus = menues;
-  useEffect(function () {
+function Footer({
+  menues,
+  routeDynamics,
+  ...props
+}) {
+  const [selected, setSelected] = React__default.useState(0);
+  const {
+    t
+  } = useTranslation();
+  const [refFoot, serRefFoot] = React__default.useState({});
+  const [width] = useWindowSize();
+  const footerMenus = menues;
+  useEffect(() => {
     var _window, _window$location;
 
     if (["/"].includes((_window = window) === null || _window === void 0 ? void 0 : (_window$location = _window.location) === null || _window$location === void 0 ? void 0 : _window$location.pathname)) {
@@ -336,18 +288,19 @@ function Footer(_ref) {
     }
   }, []);
 
-  var PressableNew = function PressableNew(_ref2) {
-    var item = _ref2.item,
-        children = _ref2.children,
-        prop = _objectWithoutPropertiesLoose(_ref2, _excluded2);
-
+  const PressableNew = ({
+    item,
+    children,
+    ...prop
+  }) => {
     return item !== null && item !== void 0 && item.route ? /*#__PURE__*/React__default.createElement(Box, prop, /*#__PURE__*/React__default.createElement(Link, {
       style: {
         textDecoration: "none"
       },
-      to: routeDynamics ? generatePath(item.route, _extends({}, {
-        id: item.id
-      })) : item.route
+      to: routeDynamics ? generatePath(item.route, { ...{
+          id: item.id
+        }
+      }) : item.route
     }, children)) : /*#__PURE__*/React__default.createElement(Box, prop, children);
   };
 
@@ -359,9 +312,7 @@ function Footer(_ref) {
     position: "fixed",
     w: width,
     bottom: "0",
-    ref: function ref(e) {
-      return serRefFoot(e);
-    }
+    ref: e => serRefFoot(e)
   }, /*#__PURE__*/React__default.createElement(Center, {
     flex: 1
   }), /*#__PURE__*/React__default.createElement(HStack, {
@@ -369,43 +320,36 @@ function Footer(_ref) {
     alignItems: "center",
     safeAreaBottom: true,
     shadow: 6
-  }, footerMenus.map(function (item, index) {
-    return /*#__PURE__*/React__default.createElement(PressableNew, {
-      item: item,
-      key: index,
-      cursor: "pointer",
-      opacity: selected === index ? 1 : 0.5,
-      py: "3",
-      flex: 1,
-      onPress: function onPress() {
-        return setSelected(0);
-      }
-    }, /*#__PURE__*/React__default.createElement(Text, {
-      color: selected === index ? "button.500" : "coolGray.400"
-    }, /*#__PURE__*/React__default.createElement(Center, null, /*#__PURE__*/React__default.createElement(IconByName, {
-      name: item.icon
-    }), /*#__PURE__*/React__default.createElement(Text, {
-      fontSize: "12"
-    }, t(item.title)))));
-  }))));
+  }, footerMenus.map((item, index) => /*#__PURE__*/React__default.createElement(PressableNew, {
+    item: item,
+    key: index,
+    cursor: "pointer",
+    opacity: selected === index ? 1 : 0.5,
+    py: "3",
+    flex: 1,
+    onPress: () => setSelected(0)
+  }, /*#__PURE__*/React__default.createElement(Text, {
+    color: selected === index ? "button.500" : "coolGray.400"
+  }, /*#__PURE__*/React__default.createElement(Center, null, /*#__PURE__*/React__default.createElement(IconByName, {
+    name: item.icon
+  }), /*#__PURE__*/React__default.createElement(Text, {
+    fontSize: "12"
+  }, t(item.title)))))))));
 }
 
-var _excluded$2 = ["isEnableHamburgerMenuButton", "isEnableLanguageMenu", "isEnableSearchBtn", "setSearch", "color", "languages"];
-function AppBar(_ref) {
-  var isEnableHamburgerMenuButton = _ref.isEnableHamburgerMenuButton,
-      isEnableSearchBtn = _ref.isEnableSearchBtn,
-      setSearch = _ref.setSearch,
-      color = _ref.color,
-      languages = _ref.languages,
-      props = _objectWithoutPropertiesLoose(_ref, _excluded$2);
+function AppBar({
+  isEnableHamburgerMenuButton,
+  isEnableLanguageMenu,
+  isEnableSearchBtn,
+  setSearch,
+  color,
+  languages,
+  ...props
+}) {
+  const [searchInput, setSearchInput] = useState(false);
+  const navigate = useNavigate();
 
-  var _useState = useState(false),
-      searchInput = _useState[0],
-      setSearchInput = _useState[1];
-
-  var navigate = useNavigate();
-
-  var setLang = function setLang(e) {
+  const setLang = e => {
     if (e === "logout") {
       sessionStorage.setItem("token", "");
     } else {
@@ -439,9 +383,7 @@ function AppBar(_ref) {
     size: "sm",
     name: "ArrowLeftLineIcon",
     color: color ? color : "",
-    onPress: function onPress() {
-      return navigate(-1);
-    }
+    onPress: () => navigate(-1)
   }), searchInput ? /*#__PURE__*/React__default.createElement(Input, {
     bg: "coolGray.100",
     size: "full",
@@ -451,30 +393,24 @@ function AppBar(_ref) {
       w: "1/8",
       name: "times",
       pl: "0",
-      onPress: function onPress(e) {
-        return setSearchInput(false);
-      }
+      onPress: e => setSearchInput(false)
     }),
     placeholder: "search",
-    onChange: function onChange(e) {
-      return setSearch(e.target.value);
-    }
+    onChange: e => setSearch(e.target.value)
   }) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null)), /*#__PURE__*/React__default.createElement(HStack, {
     alignItems: "center"
   }, !searchInput && isEnableSearchBtn ? /*#__PURE__*/React__default.createElement(IconByName, {
     color: color ? color : "",
     size: "sm",
     name: "search",
-    onPress: function onPress(e) {
-      return setSearchInput(true);
-    }
+    onPress: e => setSearchInput(true)
   }) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), /*#__PURE__*/React__default.createElement(Center, {
     flex: 1,
     px: "3"
   }, /*#__PURE__*/React__default.createElement(Menu$1, {
     w: "190",
-    trigger: function trigger(triggerProps) {
-      return /*#__PURE__*/React__default.createElement(Pressable, _extends({
+    trigger: triggerProps => {
+      return /*#__PURE__*/React__default.createElement(Pressable, Object.assign({
         accessibilityLabel: "More options menu"
       }, triggerProps), /*#__PURE__*/React__default.createElement(IconByName, {
         size: "sm",
@@ -483,31 +419,26 @@ function AppBar(_ref) {
         color: color ? color : ""
       }));
     }
-  }, languages.map(function (e, index) {
-    return /*#__PURE__*/React__default.createElement(Menu$1.Item, {
-      key: index,
-      label: e.title,
-      textValue: e.code,
-      onPress: function onPress(item) {
-        return setLang(e.code);
-      }
-    }, e.title);
-  }), /*#__PURE__*/React__default.createElement(Menu$1.Item, {
-    onPress: function onPress(item) {
-      return setLang("logout");
-    }
+  }, languages.map((e, index) => /*#__PURE__*/React__default.createElement(Menu$1.Item, {
+    key: index,
+    label: e.title,
+    textValue: e.code,
+    onPress: item => setLang(e.code)
+  }, e.title)), /*#__PURE__*/React__default.createElement(Menu$1.Item, {
+    onPress: item => setLang("logout")
   }, "Logout"))))));
 }
 
-function Layout(_ref) {
-  var isDisabledAppBar = _ref.isDisabledAppBar,
-      subHeader = _ref.subHeader,
-      children = _ref.children,
-      imageUrl = _ref.imageUrl,
-      _appBar = _ref._appBar,
-      _header = _ref._header,
-      _subHeader = _ref._subHeader,
-      _footer = _ref._footer;
+function Layout({
+  isDisabledAppBar,
+  subHeader,
+  children,
+  imageUrl,
+  _appBar,
+  _header,
+  _subHeader,
+  _footer
+}) {
   return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Stack, {
     width: "100%",
     style: {
@@ -517,9 +448,9 @@ function Layout(_ref) {
       backgroundSize: "cover"
     },
     space: 5
-  }, !isDisabledAppBar ? /*#__PURE__*/React__default.createElement(AppBar, _extends({
+  }, !isDisabledAppBar ? /*#__PURE__*/React__default.createElement(AppBar, Object.assign({
     color: imageUrl ? "white" : ""
-  }, _appBar)) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), _header ? /*#__PURE__*/React__default.createElement(Header, _header) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null)), subHeader ? /*#__PURE__*/React__default.createElement(Box, _extends({
+  }, _appBar)) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), _header ? /*#__PURE__*/React__default.createElement(Header, _header) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null)), subHeader ? /*#__PURE__*/React__default.createElement(Box, Object.assign({}, {
     p: 4,
     position: "relative",
     bg: "purple.400",
@@ -530,19 +461,35 @@ function Layout(_ref) {
   }, _subHeader), subHeader) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), children, /*#__PURE__*/React__default.createElement(Footer, _footer));
 }
 
-var _excluded$3 = ["route", "children"];
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
-var chunk = function chunk(array, _chunk) {
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+const chunk = (array, chunk) => {
   return [].concat.apply([], array.map(function (elem, i) {
-    return i % _chunk ? [] : [array.slice(i, i + _chunk)];
+    return i % chunk ? [] : [array.slice(i, i + chunk)];
   }));
 };
 
-var PressableNew = function PressableNew(_ref) {
-  var route = _ref.route,
-      children = _ref.children,
-      prop = _objectWithoutPropertiesLoose(_ref, _excluded$3);
-
+const PressableNew = ({
+  route,
+  children,
+  ...prop
+}) => {
   return route ? /*#__PURE__*/React__default.createElement(Pressable, prop, /*#__PURE__*/React__default.createElement(Link, {
     style: {
       color: "rgb(63, 63, 70)",
@@ -552,11 +499,12 @@ var PressableNew = function PressableNew(_ref) {
   }, children)) : /*#__PURE__*/React__default.createElement(Box, prop, children);
 };
 
-function Widget(_ref2) {
-  var data = _ref2.data,
-      title = _ref2.title;
-  var newData = chunk(data ? data : [], 2);
-  var rotate = {
+function Widget({
+  data,
+  title
+}) {
+  const newData = chunk(data ? data : [], 2);
+  const rotate = {
     bottom: "-20px",
     right: "-20px",
     minW: "50px",
@@ -574,63 +522,55 @@ function Widget(_ref2) {
     fontSize: "lg"
   }, title), /*#__PURE__*/React__default.createElement(VStack, {
     space: 3
-  }, newData.map(function (subData, index) {
-    return /*#__PURE__*/React__default.createElement(HStack, {
-      key: index,
-      space: 3,
-      width: "100%"
-    }, subData.map(function (item, subIndex) {
-      return /*#__PURE__*/React__default.createElement(Box, _extends({
-        key: subIndex,
-        rounded: "xl",
-        shadow: 3,
-        p: 4,
-        width: "48%",
-        overflow: "hidden"
-      }, item === null || item === void 0 ? void 0 : item._box), /*#__PURE__*/React__default.createElement(PressableNew, {
-        route: item.link
-      }, /*#__PURE__*/React__default.createElement(Text, _extends({
-        fontSize: "md",
-        fontWeight: "medium",
-        color: "coolGray.50"
-      }, item === null || item === void 0 ? void 0 : item._text), /*#__PURE__*/React__default.createElement(VStack, null, /*#__PURE__*/React__default.createElement(Text, {
-        bold: true
-      }, item === null || item === void 0 ? void 0 : item.title), /*#__PURE__*/React__default.createElement(Text, {
-        fontSize: "xs"
-      }, item === null || item === void 0 ? void 0 : item.subTitle))), item.icon ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Box, _extends({}, rotate, {
-        bg: "coolGray.700",
-        roundedTop: "20px",
-        opacity: "0.1"
-      })), /*#__PURE__*/React__default.createElement(IconByName, _extends({
-        name: item.icon
-      }, _extends({
-        color: "coolGray.700",
-        opacity: "0.5"
-      }, rotate, item === null || item === void 0 ? void 0 : item._icon)))) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null)));
-    }));
-  })));
+  }, newData.map((subData, index) => /*#__PURE__*/React__default.createElement(HStack, {
+    key: index,
+    space: 3,
+    width: "100%"
+  }, subData.map((item, subIndex) => /*#__PURE__*/React__default.createElement(Box, Object.assign({
+    key: subIndex,
+    rounded: "xl",
+    shadow: 3,
+    p: 4,
+    width: "48%",
+    overflow: "hidden"
+  }, item === null || item === void 0 ? void 0 : item._box), /*#__PURE__*/React__default.createElement(PressableNew, {
+    route: item.link
+  }, /*#__PURE__*/React__default.createElement(Text, Object.assign({}, {
+    fontSize: "md",
+    fontWeight: "medium",
+    color: "coolGray.50"
+  }, item === null || item === void 0 ? void 0 : item._text), /*#__PURE__*/React__default.createElement(VStack, null, /*#__PURE__*/React__default.createElement(Text, {
+    bold: true
+  }, item === null || item === void 0 ? void 0 : item.title), /*#__PURE__*/React__default.createElement(Text, {
+    fontSize: "xs"
+  }, item === null || item === void 0 ? void 0 : item.subTitle))), item.icon ? /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Box, _extends({}, rotate, {
+    bg: "coolGray.700",
+    roundedTop: "20px",
+    opacity: "0.1"
+  })), /*#__PURE__*/React__default.createElement(IconByName, Object.assign({
+    name: item.icon
+  }, {
+    color: "coolGray.700",
+    opacity: "0.5",
+    ...rotate,
+    ...(item === null || item === void 0 ? void 0 : item._icon)
+  }))) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null))))))));
 }
 
-var Collapsible = function Collapsible(_ref) {
-  var _ref$header = _ref.header,
-      header = _ref$header === void 0 ? "" : _ref$header,
-      children = _ref.children,
-      _ref$isHeaderBold = _ref.isHeaderBold,
-      isHeaderBold = _ref$isHeaderBold === void 0 ? true : _ref$isHeaderBold;
-
-  var _useState = useState(false),
-      isOpen = _useState[0],
-      setIsOpen = _useState[1];
-
+const Collapsible = ({
+  header: _header = "",
+  children,
+  defaultCollapse: _defaultCollapse = true,
+  isHeaderBold: _isHeaderBold = true
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
   return /*#__PURE__*/React__default.createElement(Box, {
     bg: "white",
     p: 4
   }, /*#__PURE__*/React__default.createElement(Stack, {
     space: 2
   }, /*#__PURE__*/React__default.createElement(Pressable, {
-    onPress: function onPress() {
-      return setIsOpen(!isOpen);
-    }
+    onPress: () => setIsOpen(!isOpen)
   }, /*#__PURE__*/React__default.createElement(Box, {
     px: 2,
     py: 1
@@ -638,9 +578,9 @@ var Collapsible = function Collapsible(_ref) {
     alignItems: "center",
     justifyContent: "space-between"
   }, /*#__PURE__*/React__default.createElement(Text, {
-    bold: typeof isHeaderBold === "undefined" ? true : isHeaderBold,
-    fontSize: typeof isHeaderBold === "undefined" ? "md" : ""
-  }, header), /*#__PURE__*/React__default.createElement(IconByName, {
+    bold: typeof _isHeaderBold === "undefined" ? true : _isHeaderBold,
+    fontSize: typeof _isHeaderBold === "undefined" ? "md" : ""
+  }, _header), /*#__PURE__*/React__default.createElement(IconByName, {
     size: "sm",
     isDisabled: true,
     color: !isOpen ? "coolGray.400" : "coolGray.600",
@@ -659,90 +599,88 @@ var Collapsible = function Collapsible(_ref) {
   }, isOpen ? children : /*#__PURE__*/React__default.createElement(React__default.Fragment, null))));
 };
 
-var _excluded$4 = ["item", "children"];
-function Menu(_ref) {
-  var items = _ref.items,
-      type = _ref.type,
-      routeDynamics = _ref.routeDynamics,
-      bg = _ref.bg,
-      _box = _ref._box,
-      _boxMenu = _ref._boxMenu,
-      _icon = _ref._icon;
+function Menu({
+  items,
+  type,
+  routeDynamics,
+  bg,
+  _box,
+  _boxMenu,
+  _icon
+}) {
+  const {
+    t
+  } = useTranslation();
 
-  var _useTranslation = useTranslation(),
-      t = _useTranslation.t;
-
-  var chunk = function chunk(array, _chunk) {
+  const chunk = (array, chunk) => {
     return [].concat.apply([], array.map(function (elem, i) {
-      return i % _chunk ? [] : [array.slice(i, i + _chunk)];
+      return i % chunk ? [] : [array.slice(i, i + chunk)];
     }));
   };
 
-  var PressableNew = function PressableNew(_ref2) {
-    var item = _ref2.item,
-        children = _ref2.children,
-        prop = _objectWithoutPropertiesLoose(_ref2, _excluded$4);
-
+  const PressableNew = ({
+    item,
+    children,
+    ...prop
+  }) => {
     return item !== null && item !== void 0 && item.route ? /*#__PURE__*/React__default.createElement(Pressable, prop, /*#__PURE__*/React__default.createElement(Link, {
       style: {
         color: "rgb(63, 63, 70)",
         textDecoration: "none"
       },
-      to: routeDynamics ? generatePath(item.route, _extends({}, {
-        id: item.id
-      })) : item.route
+      to: routeDynamics ? generatePath(item.route, { ...{
+          id: item.id
+        }
+      }) : item.route
     }, children)) : /*#__PURE__*/React__default.createElement(Box, prop, children);
   };
 
   if (type === "veritical") {
-    var newItems = chunk(items, 3);
-    return /*#__PURE__*/React__default.createElement(Box, _extends({
+    const newItems = chunk(items, 3);
+    return /*#__PURE__*/React__default.createElement(Box, Object.assign({
       bg: bg
-    }, _box), newItems.map(function (subItems, index) {
-      return /*#__PURE__*/React__default.createElement(HStack, {
-        key: index,
-        justifyContent: "center",
-        space: 4
-      }, subItems.map(function (item) {
-        return /*#__PURE__*/React__default.createElement(PressableNew, {
-          key: item.keyId ? item.keyId : item.id,
-          item: item,
-          bg: "button.500",
-          rounded: "md",
-          p: "2",
-          minW: item !== null && item !== void 0 && item.boxMinW ? item === null || item === void 0 ? void 0 : item.boxMinW : "104px"
-        }, /*#__PURE__*/React__default.createElement(VStack, {
-          space: "2",
-          my: "2",
-          mx: "1",
-          alignItems: "center",
-          textAlign: "center"
-        }, item.icon ? /*#__PURE__*/React__default.createElement(IconByName, _extends({
-          name: item.icon,
-          p: "0",
-          color: "white",
-          _icon: {
-            style: {
-              fontSize: "28px"
-            }
-          }
-        }, _icon)) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), /*#__PURE__*/React__default.createElement(Text, _extends({
-          color: "white",
-          maxW: 20,
-          lineHeight: 14
-        }, item === null || item === void 0 ? void 0 : item._text), item.title)));
-      }));
-    }));
+    }, _box), newItems.map((subItems, index) => /*#__PURE__*/React__default.createElement(HStack, {
+      key: index,
+      justifyContent: "center",
+      space: 4
+    }, subItems.map(item => /*#__PURE__*/React__default.createElement(PressableNew, {
+      key: item.keyId ? item.keyId : item.id,
+      item: item,
+      bg: "button.500",
+      rounded: "md",
+      p: "2",
+      minW: item !== null && item !== void 0 && item.boxMinW ? item === null || item === void 0 ? void 0 : item.boxMinW : "104px"
+    }, /*#__PURE__*/React__default.createElement(VStack, {
+      space: "2",
+      my: "2",
+      mx: "1",
+      alignItems: "center",
+      textAlign: "center"
+    }, item.icon ? /*#__PURE__*/React__default.createElement(IconByName, Object.assign({
+      name: item.icon,
+      p: "0",
+      color: "white",
+      _icon: {
+        style: {
+          fontSize: "28px"
+        }
+      }
+    }, _icon)) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), /*#__PURE__*/React__default.createElement(Text, Object.assign({
+      color: "white",
+      maxW: 20,
+      lineHeight: 14
+    }, item === null || item === void 0 ? void 0 : item._text), item.title)))))));
   } else {
-    return /*#__PURE__*/React__default.createElement(Box, _extends({
+    return /*#__PURE__*/React__default.createElement(Box, Object.assign({
       bg: bg
     }, _box), /*#__PURE__*/React__default.createElement(FlatList, {
       data: items,
-      renderItem: function renderItem(_ref3) {
+      renderItem: ({
+        item
+      }) => {
         var _item$_boxMenu;
 
-        var item = _ref3.item;
-        return /*#__PURE__*/React__default.createElement(Box, _extends({
+        return /*#__PURE__*/React__default.createElement(Box, Object.assign({
           borderBottomWidth: "1",
           _dark: {
             borderColor: "gray.600"
@@ -762,29 +700,27 @@ function Menu(_ref) {
         }, item.leftText ? /*#__PURE__*/React__default.createElement(Text, {
           color: "gray.700",
           fontWeight: "500"
-        }, item.leftText) : item.icon ? /*#__PURE__*/React__default.createElement(IconByName, _extends({
+        }, item.leftText) : item.icon ? /*#__PURE__*/React__default.createElement(IconByName, Object.assign({
           name: item.icon,
           p: "0"
         }, _icon)) : /*#__PURE__*/React__default.createElement(React__default.Fragment, null), /*#__PURE__*/React__default.createElement(Text, {
           color: "gray.700",
           fontWeight: "500"
-        }, t(item.title))), /*#__PURE__*/React__default.createElement(IconByName, _extends({
+        }, t(item.title))), /*#__PURE__*/React__default.createElement(IconByName, Object.assign({
           name: item.rightIcon ? item.rightIcon : "ArrowRightSLineIcon",
           p: "0",
           color: "#C1C1DE"
         }, _icon)))));
       },
-      keyExtractor: function keyExtractor(item, index) {
-        return item.id ? item.id : index;
-      }
+      keyExtractor: (item, index) => item.id ? item.id : index
     }));
   }
 }
 
-var maxWidth = "1080";
-var fontFamily = localStorage.getItem("lang") === "hi" ? "'Baloo 2'" : "Inter";
-var fontSize = localStorage.getItem("lang") === "hi" ? "20px" : "";
-var red = {
+const maxWidth = "1080";
+const fontFamily = localStorage.getItem("lang") === "hi" ? "'Baloo 2'" : "Inter";
+const fontSize = localStorage.getItem("lang") === "hi" ? "20px" : "";
+let red = {
   50: "#fef2f2",
   100: "#fde5e5",
   150: "#fcd7d7",
@@ -805,7 +741,7 @@ var red = {
   900: "#311919",
   950: "#180c0c"
 };
-var green = {
+let green = {
   50: "#e7f4e8",
   100: "#cfe9d1",
   150: "#b6debb",
@@ -826,7 +762,7 @@ var green = {
   900: "#031d05",
   950: "#010f03"
 };
-var DEFAULT_THEME = {
+const DEFAULT_THEME = {
   fonts: {
     heading: fontFamily,
     body: fontFamily,
@@ -940,100 +876,66 @@ var DEFAULT_THEME = {
 };
 
 function fetchToken(authUrl, username, password) {
-  var params = new URLSearchParams();
+  const params = new URLSearchParams();
   params.append("client_id", "registry-frontend");
   params.append("username", username);
   params.append("password", password);
   params.append("grant_type", "password");
-  var config = {
+  const config = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       "Access-Control-Allow-Origin": "*"
     }
   };
-  return axios.post(authUrl, params, config)["catch"](function (e) {
-    return e;
+  return axios.post(authUrl, params, config).catch(e => e);
+}
+
+async function get(url, headers = {}) {
+  return await axios.get(url, { ...headers,
+    headers: { ...(headers === null || headers === void 0 ? void 0 : headers.headers),
+      "Access-Control-Allow-Origin": "*"
+    }
+  });
+}
+async function post(url, body, headers = {}) {
+  return await axios.post(url, body, { ...headers,
+    headers: { ...(headers === null || headers === void 0 ? void 0 : headers.headers),
+      "Access-Control-Allow-Origin": "*"
+    }
+  });
+}
+async function update(url, body, headers = {}) {
+  return await axios.put(url, body, { ...headers,
+    headers: { ...(headers === null || headers === void 0 ? void 0 : headers.headers),
+      "Access-Control-Allow-Origin": "*"
+    }
   });
 }
 
-var update = function update(url, body, headers) {
-  if (headers === void 0) {
-    headers = {};
-  }
-
-  try {
-    var _headers3;
-
-    return Promise.resolve(axios.put(url, body, _extends({}, headers, {
-      headers: _extends({}, (_headers3 = headers) === null || _headers3 === void 0 ? void 0 : _headers3.headers, {
-        "Access-Control-Allow-Origin": "*"
-      })
-    })));
-  } catch (e) {
-    return Promise.reject(e);
-  }
-};
-var post = function post(url, body, headers) {
-  if (headers === void 0) {
-    headers = {};
-  }
-
-  try {
-    var _headers2;
-
-    return Promise.resolve(axios.post(url, body, _extends({}, headers, {
-      headers: _extends({}, (_headers2 = headers) === null || _headers2 === void 0 ? void 0 : _headers2.headers, {
-        "Access-Control-Allow-Origin": "*"
-      })
-    })));
-  } catch (e) {
-    return Promise.reject(e);
-  }
-};
-var get = function get(url, headers) {
-  if (headers === void 0) {
-    headers = {};
-  }
-
-  try {
-    var _headers;
-
-    return Promise.resolve(axios.get(url, _extends({}, headers, {
-      headers: _extends({}, (_headers = headers) === null || _headers === void 0 ? void 0 : _headers.headers, {
-        "Access-Control-Allow-Origin": "*"
-      })
-    })));
-  } catch (e) {
-    return Promise.reject(e);
-  }
-};
-
-var EventBus = /*#__PURE__*/function () {
-  function EventBus() {
+class EventBus {
+  constructor() {
     this.channel = postal.channel("app_events");
   }
 
-  var _proto = EventBus.prototype;
-
-  _proto.publish = function publish(topic, message) {
+  publish(topic, message) {
     this.channel.publish(topic, message);
-  };
+  }
 
-  _proto.subscribe = function subscribe(topic, callbackfunction) {
+  subscribe(topic, callbackfunction) {
     return this.channel.subscribe(topic, callbackfunction);
-  };
+  }
 
-  _proto.unsubscribe = function unsubscribe(subscription) {
+  unsubscribe(subscription) {
     subscription.unsubscribe();
-  };
+  }
 
-  return EventBus;
-}();
+}
 
-var eventBus = new EventBus();
+const eventBus = new EventBus();
 
-var ExampleComponent = function ExampleComponent(_ref) {
-  var text = _ref.text;
+const ExampleComponent = ({
+  text
+}) => {
   return createElement("div", {
     className: styles.test
   }, "Example Component: ", text);
