@@ -13,7 +13,8 @@ const languageDetector:any = {
     detect: function(callback:any) { // You'll receive a callback if you passed async true
       /* return detected language */
       // callback('de'); if you used the async flag
-      return callback('hi');
+      let selectedLanguage = localStorage.getItem("lang");
+      return callback(selectedLanguage);
     },
     cacheUserLanguage: function(lng:any) {
       /* cache language */
@@ -41,7 +42,7 @@ i18n
     ns: namespaces, 
     fallbackNS:'translation',
     backend:{
-      loadPath: '/locales/{{lng}}/{{ns}}.json' // http://moodule-base-url/
+      loadPath: '/locales/{{lng}}/{{ns}}.json' // http://module-base-url/locales/
     },
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
