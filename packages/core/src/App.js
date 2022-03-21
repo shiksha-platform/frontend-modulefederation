@@ -14,16 +14,14 @@ const theme = extendTheme(DEFAULT_THEME);
 function App() {
   return (
     <NativeBaseProvider theme={theme}>
-      
-        <Router>
-          <Routes>
-            <Route path="my-classes" element={<MyClasses />} />
-            <Route path="my-classes/:classId" element={<ClassDetails />} />
+      <Router>
+        <Routes>
+          <Route path="my-classes" element={<MyClasses />} />
+          <Route path="my-classes/:classId" element={<ClassDetails />} />
 
-            <Route path="*" element={<Login />} />
-          </Routes>
-        </Router>
-      
+          <Route path="*" element={<Login />} />
+        </Routes>
+      </Router>
     </NativeBaseProvider>
   );
 }

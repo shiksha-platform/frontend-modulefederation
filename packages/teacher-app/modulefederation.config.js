@@ -6,9 +6,9 @@ module.exports = {
     "./App": "./src/App",
   },
   remotes: {
-    core: `core@[window.appModules.core.url]/moduleEntry.js`, 
-    attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`, 
-    worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`, 
+    core: `core@[window.appModules.core.url]/moduleEntry.js`,
+    attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`,
+    worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

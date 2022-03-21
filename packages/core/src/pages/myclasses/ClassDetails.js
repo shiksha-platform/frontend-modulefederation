@@ -137,13 +137,13 @@ export default function ClassDetails() {
       }}
     >
       <Stack space={1} mb="2" shadow={2}>
-            <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
-            <ClassStudentsPanel
-              classObject={classObject}
-              students={students}
-            ></ClassStudentsPanel>
-            <ClassSubjectsPanel></ClassSubjectsPanel>
-            <ClassDetailsPanel></ClassDetailsPanel>
+        <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
+        <ClassStudentsPanel
+          classObject={classObject}
+          students={students}
+        ></ClassStudentsPanel>
+        <ClassSubjectsPanel></ClassSubjectsPanel>
+        <ClassDetailsPanel></ClassDetailsPanel>
       </Stack>
     </Layout>
   );
