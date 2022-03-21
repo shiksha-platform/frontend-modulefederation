@@ -1,14 +1,10 @@
 const { dependencies } = require("./package.json");
 
 module.exports = {
-  name: "teacherapp",
+  name: "worksheet",
   exposes: {
     "./App": "./src/App",
-  },
-  remotes: {
-    core: `core@[window.appModules.core.url]/moduleEntry.js`, 
-    attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`, 
-    worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`, 
+    "./QuestionBank": "./src/pages/QuestionBank",
   },
   filename: "moduleEntry.js",
   shared: {
