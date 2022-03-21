@@ -17,10 +17,10 @@ import Widget from './components/Widget';
 import Collapsible from './components/Collapsible';
 import Menu from './components/Menu';
 import DEFAULT_THEME from './components/theme';
-import  initializeI18n from './services/i18n';
+
 
 export {Header, Footer, Layout, IconByName, Widget,
-    Collapsible, Menu, DEFAULT_THEME, initializeI18n };
+    Collapsible, Menu, DEFAULT_THEME };
 
 export * from './services/Auth';
 export * from './services/RestClient';
