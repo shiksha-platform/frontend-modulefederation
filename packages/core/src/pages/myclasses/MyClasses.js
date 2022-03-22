@@ -12,16 +12,16 @@ import {
   Button,
   Link,
 } from "native-base";
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import { generatePath } from "react-router-dom";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { Animated, Dimensions } from "react-native-web";
-import { Layout, Widget } from "@shiksha/common-lib";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
+import {Layout, Widget} from "@shiksha/common-lib";
+import * as classServiceRegistry from '../../services/classServiceRegistry';
 
 import moment from "moment";
 import { weekDates } from "services/utils";
-import { DayWiesBar } from "components/DayWiesBar";
+import {DayWiesBar} from "components/DayWiesBar";
 
 const timeTables = [
   {
@@ -113,111 +113,111 @@ const timeTables = [
   },
 ];
 const sampleClassData = [
-  { id: "1", className: "Class I", route: "1" },
-  { id: "2", className: "Class II", route: "2" },
-  { id: "3", className: "Class III", route: "3" },
-];
+ { id:"1", className: "Class I", route:"1"},
+ { id:"2", className: "Class II", route:"2"},
+ { id:"3", className: "Class III", route:"3"},
+]
 
 export default function MyClasses() {
-  const { t } = useTranslation();
+    const { t } = useTranslation('core');
 
-  const renderScene = SceneMap({
-    first: MyClassRoute,
-    second: TimeTableRoute,
-  });
-
-  const initialLayout = { width: Dimensions.get("window").width };
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: "first", title: t("MY_CLASSES") },
-    { key: "second", title: t("TIME_TABLE") },
-  ]);
-  const RenderTabBar = ({ navigationState }) => {
+    const renderScene = SceneMap({
+        first: MyClassRoute,
+        second: TimeTableRoute,
+      });
+    
+      const initialLayout = { width: Dimensions.get("window").width };
+      const [index, setIndex] = React.useState(0);
+      const [routes] = React.useState([
+        { key: "first", title: t("MY_CLASSES") },
+        { key: "second", title: t("TIME_TABLE") },
+      ]);
+      const RenderTabBar = ({ navigationState }) => {
+        return (
+          <Box flexDirection="row">
+            {navigationState.routes.map((route, i) => {
+              return (
+                <Pressable key={i} flex={1} onPress={() => setIndex(i)}>
+                  <Box
+                    borderBottomWidth="3"
+                    borderColor={index === i ? "button.500" : "coolGray.200"}
+                    alignItems="center"
+                    p="3"
+                    cursor="pointer"
+                  >
+                    <Animated.Text>
+                      <Text {...{ color: index === i ? "button.500" : "#a1a1aa" }}>
+                        {route.title}
+                      </Text>
+                    </Animated.Text>
+                  </Box>
+                </Pressable>
+              );
+            })}
+          </Box>
+        );
+      };
     return (
-      <Box flexDirection="row">
-        {navigationState.routes.map((route, i) => {
-          return (
-            <Pressable key={i} flex={1} onPress={() => setIndex(i)}>
-              <Box
-                borderBottomWidth="3"
-                borderColor={index === i ? "button.500" : "coolGray.200"}
-                alignItems="center"
-                p="3"
-                cursor="pointer"
-              >
-                <Animated.Text>
-                  <Text {...{ color: index === i ? "button.500" : "#a1a1aa" }}>
-                    {route.title}
-                  </Text>
-                </Animated.Text>
-              </Box>
-            </Pressable>
-          );
-        })}
-      </Box>
-    );
-  };
-  return (
-    <Layout
-      _header={{
-        title: t("MY_CLASSES"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-        avatar: true,
-      }}
-      _appBar={{ languages: ["en"] }}
-      subHeader={t("THE_CLASSES_YOU_TAKE")}
-      _subHeader={{
-        bg: "classCard.500",
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
-      }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
-    >
-      <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
-        {/* 
+        <Layout
+          _header={{
+            title: t("MY_CLASSES"),
+            icon: "Group",
+            subHeading: moment().format("hh:mm a"),
+            _subHeading: { fontWeight: 500, textTransform: "uppercase" },
+            avatar: true,
+          }}
+          _appBar={{languages:['en']}}
+          subHeader={t("THE_CLASSES_YOU_TAKE")}
+          _subHeader={{
+            bg: "classCard.500",
+            _text: {
+              fontSize: "16px",
+              fontWeight: "600",
+              textTransform: "inherit",
+            },
+          }}
+        _footer={{
+          menues: [
+              {
+                "title": "HOME",
+                "icon": "Home4LineIcon",
+                "module": "Registry",
+                "route": "/",
+                "routeparameters": {}
+              },
+              {
+                "title": "CLASSES",
+                "icon": "TeamLineIcon",
+                "module": "Registry",
+                "route": "/classes",
+                "routeparameters": {}
+              },
+              {
+                "title": "SCHOOL",
+                "icon": "GovernmentLineIcon",
+                "module": "Registry",
+                "route": "/",
+                "routeparameters": {}
+              },
+              {
+                "title": "MATERIALS",
+                "icon": "BookOpenLineIcon",
+                "module": "Registry",
+                "route": "/",
+                "routeparameters": {}
+              },
+              {
+                "title": "CAREER",
+                "icon": "UserLineIcon",
+                "module": "Registry",
+                "route": "/",
+                "routeparameters": {}
+              }
+            ]
+        }}
+        >
+          <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+            {/* 
             //TODO: This is not working in standalone app. some issues with css
             <TabView
               navigationState={{ index, routes }}
@@ -228,84 +228,90 @@ export default function MyClasses() {
               style={{ marginTop: StatusBar.currentHeight }}
             />
             */}
+            
+            <RenderTabBar navigationState={{routes:routes}}/>
+            {
+            (index===0) 
+            ?  <MyClassRoute/>
+            : <TimeTableRoute/>
+            }
+          </Box>
+        </Layout>
+      );
 
-        <RenderTabBar navigationState={{ routes: routes }} />
-        {index === 0 ? <MyClassRoute /> : <TimeTableRoute />}
-      </Box>
-    </Layout>
-  );
-}
+
+} 
 
 const TimeTableRoute = () => {
-  const { t } = useTranslation();
-  const [dayView, setDayView] = useState(false);
-  const [datePage, setDatePage] = useState(0);
-  const [weekdays, setWeekdays] = useState([]);
-
-  useEffect(() => {
-    if (dayView) {
-      setWeekdays([moment()]);
-    } else {
-      setWeekdays(weekDates());
-    }
-  }, [dayView]);
-
-  return (
-    <Stack space={1}>
-      <Box bg="white" pt="30" pb={"25"}>
-        Timetable here...
-      </Box>
-    </Stack>
-  );
-};
-
-const MyClassRoute = () => {
-  const { t } = useTranslation();
-  const [classes, setClasses] = useState([]);
-  const authId = sessionStorage.getItem("id");
-
-  useEffect(() => {
-    let ignore = false;
-    const getData = async () => {
-      if (!ignore) {
-        setClasses(
-          await classServiceRegistry.getAll({
-            filters: {
-              teacherId: {
-                eq: authId,
-              },
-            },
-          })
-        );
+    const { t } = useTranslation('core');
+    const [dayView, setDayView] = useState(false);
+    const [datePage, setDatePage] = useState(0);
+    const [weekdays, setWeekdays] = useState([]);
+  
+    useEffect(() => {
+      if (dayView) {
+        setWeekdays([moment()]);
+      } else {
+        setWeekdays(weekDates());
       }
-    };
-    //getData();
-    setClasses(sampleClassData);
-  }, [authId]);
-
-  return (
-    <Box pb={4} pt="30">
-      <VStack space={10}>
-        <Widget
-          data={classes.map((item, index) => {
-            return {
-              title: item.className,
-              subTitle: t("CLASS_TEACHER"),
-              link: generatePath(item.route, { ...{ id: item.id } }),
-              _box: {
-                style: {
-                  background:
-                    index % 2 === 0
-                      ? "linear-gradient(281.03deg, #FC5858 -21.15%, #F8AF5A 100.04%)"
-                      : "linear-gradient(102.88deg, #D7BEE6 -5.88%, #B143F3 116.6%)",
+    }, [dayView]);
+  
+    return (
+      <Stack space={1}>
+        <Box bg="white" pt="30" pb={"25"}>
+          Timetable here...
+        </Box>
+      </Stack>
+    );
+  };
+  
+  const MyClassRoute = () => {
+    const { t } = useTranslation('core');
+    const [classes, setClasses] = useState([]);
+    const authId = sessionStorage.getItem("id");
+  
+    useEffect(() => {
+      let ignore = false;
+      const getData = async () => {
+        if (!ignore) {
+          setClasses(
+            await classServiceRegistry.getAll({
+              filters: {
+                teacherId: {
+                  eq: authId,
                 },
               },
-            };
-          })}
-        />
-        <HStack space={2} justifyContent={"center"}>
-          <ChooseClassActionSheet />
-          {/*
+            })
+          );
+        }
+      };
+      //getData();
+      setClasses(sampleClassData);
+    }, [authId]);
+  
+    return (
+      <Box pb={4} pt="30">
+        <VStack space={10}>
+          <Widget
+            data={classes.map((item, index) => {
+              return {
+                title: item.className,
+                subTitle: t("CLASS_TEACHER"),
+                link: generatePath(item.route, { ...{ id: item.id } }),
+                _box: {
+                  style: {
+                    background:
+                      index % 2 === 0
+                        ? "linear-gradient(281.03deg, #FC5858 -21.15%, #F8AF5A 100.04%)"
+                        : "linear-gradient(102.88deg, #D7BEE6 -5.88%, #B143F3 116.6%)",
+                  },
+                },
+              };
+            })}
+          />
+          <HStack space={2} justifyContent={"center"}>
+            <ChooseClassActionSheet/>
+            {/*
             <Link
               to={"/classes/attendance/group"}
               style={{
@@ -327,39 +333,48 @@ const MyClassRoute = () => {
               </Box>
             </Link>
             */}
-        </HStack>
-      </VStack>
-    </Box>
-  );
-};
+          </HStack>
+        </VStack>
+      </Box>
+    );
+  };
 
 const ChooseClassActionSheet = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('core');
 
-  const { isOpen, onOpen, onClose } = useDisclose();
+  const {
+    isOpen,
+    onOpen,
+    onClose
+  } = useDisclose();
   return (
     <>
-      <Link onPress={onOpen}>
-        <Box
-          rounded="lg"
-          borderColor="button.500"
-          borderWidth="1"
-          _text={{ color: "button.500" }}
-          px={4}
-          py={2}
-          style={{ textTransform: "uppercase" }}
-        >
-          {t("CHOOSE_ANOTHER_CLASS")}
-        </Box>
-      </Link>
+    
+    <Link
+     onPress={onOpen}>
+      <Box
+                rounded="lg"
+                borderColor="button.500"
+                borderWidth="1"
+                _text={{ color: "button.500" }}
+                px={4}
+                py={2}
+                style={{ textTransform: "uppercase" }}
+              >
+                {t("CHOOSE_ANOTHER_CLASS")}
+              </Box>
+    </Link>
 
-      <Actionsheet isOpen={isOpen} onClose={onClose}>
+    <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>
           <Actionsheet.Item>Option 1</Actionsheet.Item>
           <Actionsheet.Item>Option 2</Actionsheet.Item>
           <Actionsheet.Item>Option 3</Actionsheet.Item>
         </Actionsheet.Content>
       </Actionsheet>
-    </>
+    </>  
   );
-};
+} 
+
+  
+
