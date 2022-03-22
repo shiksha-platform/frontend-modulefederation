@@ -106,10 +106,9 @@ const AppShell = React.lazy(() => import("core/AppShell"));
 </React.Suspense>
 ```
 
-# TODO:
+# Developer Documents
+https://shiksha-platform.github.io/docs/Developer/Frontend/
 
-1. Extracting remote url and configuring webpack to use from config file at runtime
-2. Lazy load error handling
-3. Production depoyment steps and deployer experience
-4. Plugin components
-5. Improve dev experience to bootstrap module, add and expose components.
+
+
+

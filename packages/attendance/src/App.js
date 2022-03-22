@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
@@ -10,14 +10,16 @@ function App() {
   const theme = extendTheme(DEFAULT_THEME);
   return (
     <NativeBaseProvider theme={theme}>
-      <Router>
-        <Routes>
-          <Route path="my-attendace" element={<Attendance />} />
-          <Route path="my-attendace/:classId" element={<Attendance />} />
+      <Suspense fallback="Loadng...">
+        <Router>
+          <Routes>
+            <Route path="my-attendace" element={<Attendance />} />
+            <Route path="my-attendace/:classId" element={<Attendance />} />
 
-          <Route path="*" element={<Attendance />} />
-        </Routes>
-      </Router>
+            <Route path="*" element={<Attendance />} />
+          </Routes>
+        </Router>
+      </Suspense>
     </NativeBaseProvider>
   );
 }
