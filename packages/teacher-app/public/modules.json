@@ -4,5 +4,8 @@
     },
     "attendance":{
         "url": "http://localhost:3002"
+    },
+    "classes":{
+        "url":"http://localhost:3003"
     }
 }

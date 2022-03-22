@@ -199,10 +199,9 @@ function App() {
       </NativeBaseProvider>
     );
   } else {
-    const MyClasses = React.lazy(() => import("core/MyClasses"));
-    const ClassDetails = React.lazy(() => import("core/ClassDetails"));
+    const MyClasses = React.lazy(() => import("classes/MyClasses"));
+    const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
     const Attendance = React.lazy(() => import("attendance/Attendance"));
-
 
     return (
       <NativeBaseProvider theme={theme}>
