@@ -11,9 +11,12 @@
     "build": "lerna run build",
     "serve": "lerna run --parallel serve",
     "clean": "lerna run --parallel clean",
-    "cls-dep": "npx rimraf ./**/node_modules"
+    "cls-dep": "npx rimraf ./**/node_modules",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "lerna": "4.0.0"
+    "lerna": "4.0.0",
+    "prettier": "^2.6.0"
   }
 }

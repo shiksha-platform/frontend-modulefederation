@@ -1,28 +1,36 @@
 # Shiksha Platform Frontend (Uses Module Federation)
 
 ## Modules
-| Module      | Description |
-| ----------- | ----------- |
-| core      | Core features like School, Classes, Students       |
-| teacher-app   | Host Application for teachers        |
+
+| Module      | Description                                  |
+| ----------- | -------------------------------------------- |
+| core        | Core features like School, Classes, Students |
+| teacher-app | Host Application for teachers                |
+
 ## Create New Module
-* copy module-template to packages/[module-name]
-* update ```packages/[module-name]/package.json```
+
+- copy module-template to packages/[module-name]
+- update `packages/[module-name]/package.json`
+
 ```
 {
 "name": "[module-name]",
 ...
 }
 ```
-* Update packages/[module-name]/craco.config.js and assign a port for dev environment.
+
+- Update packages/[module-name]/craco.config.js and assign a port for dev environment.
+
 ```
 module.exports = {
   devServer: {
     port: 3001,
   },
   ...
-```  
-* update ```packages/[module-name]/moduleFederation.config.js ```
+```
+
+- update `packages/[module-name]/moduleFederation.config.js `
+
 ```
 ...
 module.exports = {
@@ -30,30 +38,39 @@ module.exports = {
 ...
 
 ```
+
 # Run All Modules and Host Application
-* Install dependency
+
+- Install dependency
+
 ```
 yarn install
 ```
-* Run all modules
+
+- Run all modules
+
 ```
 yarn start
 ```
 
 # Build Application for Production
+
 ```
 yarn build
 
 ```
 
 # Run Module as Standalone Application
+
 ```
 lerna run start --scope=[module-name]
 
 ```
 
 # Use Module in Host Application
-* Add remote module url to remotes in ```packages/[host-app]/moduleFederation.config.js ```
+
+- Add remote module url to remotes in `packages/[host-app]/moduleFederation.config.js `
+
 ```
 
 # e.g. core module is runninig on localhost:3001 then
@@ -62,7 +79,9 @@ lerna run start --scope=[module-name]
     core: 'core@[window.appModules.core.url]/remoteEntry.js',
   },
 ```
-* Add entry to ```moodules.json```
+
+- Add entry to `moodules.json`
+
 ```
 # e.g. core module is runninig on localhost:3001 then
 
@@ -74,8 +93,9 @@ lerna run start --scope=[module-name]
 }
 ```
 
-* To use exposed component from remote module in react.
-The lazy load componennt must be enclosed within ```<React.Suspense>```
+- To use exposed component from remote module in react.
+  The lazy load componennt must be enclosed within `<React.Suspense>`
+
 ```
 # e.g. usiing AppShell component from core module
 

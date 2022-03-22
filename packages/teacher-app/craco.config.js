@@ -5,15 +5,12 @@ module.exports = {
   devServer: {
     port: 4000,
   },
-  webpack:{
-    plugins:[
-      new ExternalTemplateRemotesPlugin()
-    ]
+  webpack: {
+    plugins: [new ExternalTemplateRemotesPlugin()],
   },
   plugins: [
     {
       plugin: cracoModuleFederation,
     },
-    
   ],
 };

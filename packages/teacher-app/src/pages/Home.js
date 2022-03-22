@@ -110,7 +110,7 @@ function Home() {
           _subHeading: { fontWeight: 500, textTransform: "uppercase" },
           avatar: true,
         }}
-        _appBar={{languages:['en']}}
+        _appBar={{ languages: ["en"] }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
         _subHeader={{
           bg: "classCard.500",
@@ -121,54 +121,54 @@ function Home() {
           },
         }}
         _footer={{
-            menues: [
-                {
-                  "title": "HOME",
-                  "icon": "Home4LineIcon",
-                  "module": "Registry",
-                  "route": "/",
-                  "routeparameters": {}
-                },
-                {
-                  "title": "CLASSES",
-                  "icon": "TeamLineIcon",
-                  "module": "Registry",
-                  "route": "/classes",
-                  "routeparameters": {}
-                },
-                {
-                  "title": "SCHOOL",
-                  "icon": "GovernmentLineIcon",
-                  "module": "Registry",
-                  "route": "/",
-                  "routeparameters": {}
-                },
-                {
-                  "title": "MATERIALS",
-                  "icon": "BookOpenLineIcon",
-                  "module": "Registry",
-                  "route": "/",
-                  "routeparameters": {}
-                },
-                {
-                  "title": "CAREER",
-                  "icon": "UserLineIcon",
-                  "module": "Registry",
-                  "route": "/",
-                  "routeparameters": {}
-                }
-              ]
+          menues: [
+            {
+              title: "HOME",
+              icon: "Home4LineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+            {
+              title: "CLASSES",
+              icon: "TeamLineIcon",
+              module: "Registry",
+              route: "/classes",
+              routeparameters: {},
+            },
+            {
+              title: "SCHOOL",
+              icon: "GovernmentLineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+            {
+              title: "MATERIALS",
+              icon: "BookOpenLineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+            {
+              title: "CAREER",
+              icon: "UserLineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+          ],
         }}
       >
         <Box bg="white" roundedBottom={"2xl"} py={6} px={4} shadow={3}>
-        <Stack>
-          <VStack space={6}>
-            {widgetData.map((item, index) => {
-              return <Widget {...item} key={index} />;
-            })}
-          </VStack>
-        </Stack>
-      </Box>
+          <Stack>
+            <VStack space={6}>
+              {widgetData.map((item, index) => {
+                return <Widget {...item} key={index} />;
+              })}
+            </VStack>
+          </Stack>
+        </Box>
       </Layout>
     </>
   );
