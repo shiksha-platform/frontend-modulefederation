@@ -18,104 +18,10 @@ import { TabView, SceneMap } from "react-native-tab-view";
 import { Animated, Dimensions } from "react-native-web";
 import {Layout, Widget} from "@shiksha/common-lib";
 import * as classServiceRegistry from '../services/classServiceRegistry';
-
+import {footerMenus, sampleClassData} from './parts/assets'
 import moment from "moment";
 import { weekDates } from "services/utils";
 
-const timeTables = [
-  {
-    id: "1",
-    from: "08:30 AM",
-    to: "09:25 AM",
-    title: "MATHS",
-    subTitle: "Class V, Sec B",
-    _boxMenu: {
-      bg: "timeTableCardOrange.500",
-      borderWidth: 1,
-      borderColor: "timeTableCardOrange.500",
-    },
-  },
-  {
-    id: "2",
-    from: "09:30 AM",
-    to: "10:25 AM",
-    title: "MATHS",
-    subTitle: "Class V, Sec C",
-    _boxMenu: {
-      bg: "timeTableCardOrange.500",
-      borderWidth: 1,
-      borderColor: "timeTableCardOrange.500",
-    },
-  },
-  {
-    id: "3",
-    from: "10:30 AM",
-    to: "11:25 AM",
-    title: "SPECIAL_DANCE_MID_DROUP",
-    subTitle: "N/A",
-    rightIcon: "More2LineIcon",
-    _boxMenu: {
-      bg: "timeTableCardOrange.500",
-      borderWidth: 1,
-      borderColor: "timeTableCardOrange.500",
-    },
-  },
-  {
-    id: "4",
-    from: "11:30 AM",
-    to: "12:25 PM",
-    title: "FREE_PERIOD",
-    subTitle: "N/A",
-    rightIcon: "More2LineIcon",
-    _boxMenu: {
-      bg: "timeTableCardOrange.500",
-      borderWidth: 1,
-      borderColor: "timeTableCardOrange.500",
-    },
-  },
-  {
-    id: "5",
-    from: "12:30 PM",
-    to: "01:25 PM",
-    title: "SCIENCE",
-    subTitle: "Class VI, Sec A",
-    activeMenu: true,
-    _boxMenu: {
-      bg: "emerald.400",
-      borderWidth: 1,
-      borderColor: "green.100",
-    },
-    _text: { color: "white" },
-  },
-  {
-    id: "6",
-    from: "01:30 PM",
-    to: "02:25 PM",
-    title: "SUBSTITUTION",
-    subTitle: "N/A",
-    rightIcon: "More2LineIcon",
-  },
-  {
-    id: "7",
-    from: "02:30 PM",
-    to: "03:25 PM",
-    title: "FREE_PERIOD",
-    subTitle: "N/A",
-    rightIcon: "More2LineIcon",
-  },
-  {
-    id: "8",
-    from: "03:30 PM",
-    to: "04:25 PM",
-    title: "MATHS",
-    subTitle: "Class VI, Sec A",
-  },
-];
-const sampleClassData = [
- { id:"1", className: "Class I", route:"1"},
- { id:"2", className: "Class II", route:"2"},
- { id:"3", className: "Class III", route:"3"},
-]
 
 export default function MyClasses() {
     const { t } = useTranslation();
@@ -175,45 +81,7 @@ export default function MyClasses() {
               textTransform: "inherit",
             },
           }}
-        _footer={{
-          menues: [
-              {
-                "title": "HOME",
-                "icon": "Home4LineIcon",
-                "module": "Registry",
-                "route": "/",
-                "routeparameters": {}
-              },
-              {
-                "title": "CLASSES",
-                "icon": "TeamLineIcon",
-                "module": "Registry",
-                "route": "/classes",
-                "routeparameters": {}
-              },
-              {
-                "title": "SCHOOL",
-                "icon": "GovernmentLineIcon",
-                "module": "Registry",
-                "route": "/",
-                "routeparameters": {}
-              },
-              {
-                "title": "MATERIALS",
-                "icon": "BookOpenLineIcon",
-                "module": "Registry",
-                "route": "/",
-                "routeparameters": {}
-              },
-              {
-                "title": "CAREER",
-                "icon": "UserLineIcon",
-                "module": "Registry",
-                "route": "/",
-                "routeparameters": {}
-              }
-            ]
-        }}
+        _footer={footerMenus}
         >
           <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
             {/* 
@@ -269,22 +137,31 @@ const TimeTableRoute = () => {
     const [classes, setClasses] = useState([]);
     const authId = sessionStorage.getItem("id");
   
-    useEffect(() => {
-      let ignore = false;
+    // useEffect(() => {
+    //   let ignore = false;
+    //   const getData = async () => {
+    //     if (!ignore) {
+    //       setClasses(
+    //         await classServiceRegistry.getAll({
+    //           filters: {
+    //             teacherId: {
+    //               eq: authId,
+    //             },
+    //           },
+    //         })
+    //       );
+    //     }
+    //   };
+    //   //getData();
+    //   setClasses(sampleClassData);
+    // }, [authId]);
+  
+    useEffect(async() => {
+      // GET ALL CLASSES
       const getData = async () => {
-        if (!ignore) {
-          setClasses(
-            await classServiceRegistry.getAll({
-              filters: {
-                teacherId: {
-                  eq: authId,
-                },
-              },
-            })
-          );
-        }
+         return await classServiceRegistry.getAllClasses("ebecc2ee-4f56-43bf-8cc8-d4847a12762e")
       };
-      //getData();
+      let sampleClassData = await getData();
       setClasses(sampleClassData);
     }, [authId]);
   
@@ -294,9 +171,9 @@ const TimeTableRoute = () => {
           <Widget
             data={classes.map((item, index) => {
               return {
-                title: item.className,
+                title: item.name,
                 subTitle: t("CLASS_TEACHER"),
-                link: generatePath(item.route, { ...{ id: item.id } }),
+                link: generatePath(item.id, { ...{ id: item.id } }),
                 _box: {
                   style: {
                     background:

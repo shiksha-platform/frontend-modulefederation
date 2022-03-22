@@ -38,6 +38,23 @@ export const getAll = async (
   }
 };
 
+export const getAllClasses = async (user_id="") => {
+  const result = await generalServices.get(
+    `https://dev.shikshaplatform.io/group/memberships/${user_id}`,
+    {
+      headers:{
+        "Authorization":`Bearer ${sessionStorage.getItem('token')}`
+      }
+    }
+  );
+  if (result.data.data) {
+    return result.data.data
+  } else {
+    return [];
+  }
+};
+
+
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await generalServices.get(
     manifest.api_url + "Class/" + filters.id,
