@@ -6,7 +6,7 @@ import { extendTheme, NativeBaseProvider } from "native-base";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MyClasses from "pages/myclasses/MyClasses";
 import ClassDetails from "pages/myclasses/ClassDetails";
-import { DEFAULT_THEME } from "@shiksha/common-lib";
+import { AppShell, DEFAULT_THEME } from "@shiksha/common-lib";
 
 import {initializeI18n}  from '@shiksha/common-lib';
 
@@ -16,19 +16,22 @@ const theme = extendTheme(DEFAULT_THEME);
  
 
 function App() {
+  const routes  = [
+    {
+      path: "my-classes",
+      component: MyClasses
+    },
+    {
+      path: "my-classes/:classId",
+      component: ClassDetails
+    },
+    {
+      path: "*",
+      component: MyClasses
+    }
+  ]
   return (
-    <NativeBaseProvider theme={theme}>
-      <Suspense fallback="loadng...">
-        <Router>
-          <Routes>
-            <Route path="my-classes" element={<MyClasses />} />
-            <Route path="my-classes/:classId" element={<ClassDetails />} />
-
-            <Route path="*" element={<Login />} />
-          </Routes>
-        </Router>
-        </Suspense> 
-    </NativeBaseProvider>
+    <AppShell theme={theme} routes={routes} AuthComponent={Login}/>
   );
 }
 
