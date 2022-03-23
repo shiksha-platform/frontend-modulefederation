@@ -1,5 +1,5 @@
-import React from "react";
-import { HStack, Text, Box, VStack, Avatar } from "native-base";
+import React from 'react'
+import { HStack, Text, Box, VStack, Avatar } from 'native-base'
 
 export default function Header({
   iconComponent,
@@ -13,25 +13,25 @@ export default function Header({
   _subHeading,
   title,
   isDisabledHeader,
-  fullRightComponent,
-}:any) {
-  let newAvatar = sessionStorage.getItem("firstName");
+  fullRightComponent
+}: any) {
+  let newAvatar = sessionStorage.getItem('firstName')
   return !isDisabledHeader ? (
     !fullRightComponent ? (
       <Box {..._box} py={7} px={5}>
-        <HStack justifyContent="space-between" alignItems="center">
+        <HStack justifyContent='space-between' alignItems='center'>
           <VStack>
             {subHeadingComponent ? (
               subHeadingComponent
             ) : (
-              <Text fontSize="12px" {..._subHeading}>
+              <Text fontSize='12px' {..._subHeading}>
                 {subHeading}
               </Text>
             )}
             {headingComponent ? (
               headingComponent
             ) : (
-              <Text bold fontSize="24px" {..._heading}>
+              <Text bold fontSize='24px' {..._heading}>
                 {title ? title : heading}
               </Text>
             )}
@@ -39,12 +39,12 @@ export default function Header({
           {iconComponent ? (
             iconComponent
           ) : avatar ? (
-            <Avatar bg="amber.500">
+            <Avatar bg='amber.500'>
               {newAvatar?.toUpperCase().substr(0, 2)}
-              <Avatar.Badge bg="green.500" top="0" />
+              <Avatar.Badge bg='green.500' top='0' />
             </Avatar>
           ) : (
-            <React.Fragment/>
+            <React.Fragment />
           )}
         </HStack>
       </Box>
@@ -52,6 +52,6 @@ export default function Header({
       fullRightComponent
     )
   ) : (
-    <React.Fragment/>
-  );
+    <React.Fragment />
+  )
 }

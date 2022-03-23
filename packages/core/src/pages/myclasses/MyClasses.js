@@ -12,7 +12,7 @@ import {
   Button,
   Link,
 } from "native-base";
-import { useTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import { generatePath } from "react-router-dom";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { Animated, Dimensions } from "react-native-web";
@@ -119,7 +119,7 @@ const sampleClassData = [
 ]
 
 export default function MyClasses() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('core');
 
     const renderScene = SceneMap({
         first: MyClassRoute,
@@ -243,7 +243,7 @@ export default function MyClasses() {
 } 
 
 const TimeTableRoute = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('core');
     const [dayView, setDayView] = useState(false);
     const [datePage, setDatePage] = useState(0);
     const [weekdays, setWeekdays] = useState([]);
@@ -266,7 +266,7 @@ const TimeTableRoute = () => {
   };
   
   const MyClassRoute = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('core');
     const [classes, setClasses] = useState([]);
     const authId = sessionStorage.getItem("id");
   
@@ -340,7 +340,7 @@ const TimeTableRoute = () => {
   };
 
 const ChooseClassActionSheet = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('core');
 
   const {
     isOpen,
