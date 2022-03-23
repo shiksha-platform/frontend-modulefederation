@@ -21,6 +21,7 @@ import * as classServiceRegistry from '../services/classServiceRegistry';
 import {footerMenus, sampleClassData} from './parts/assets'
 import moment from "moment";
 import { weekDates } from "services/utils";
+import TimeTableRoute from "./parts/TimeTableRoute";
 
 
 export default function MyClasses() {
@@ -109,28 +110,28 @@ export default function MyClasses() {
 
 } 
 
-const TimeTableRoute = () => {
-    const { t } = useTranslation();
-    const [dayView, setDayView] = useState(false);
-    const [datePage, setDatePage] = useState(0);
-    const [weekdays, setWeekdays] = useState([]);
+// const TimeTableRoute = () => {
+//     const { t } = useTranslation();
+//     const [dayView, setDayView] = useState(false);
+//     const [datePage, setDatePage] = useState(0);
+//     const [weekdays, setWeekdays] = useState([]);
   
-    useEffect(() => {
-      if (dayView) {
-        setWeekdays([moment()]);
-      } else {
-        setWeekdays(weekDates());
-      }
-    }, [dayView]);
+//     useEffect(() => {
+//       if (dayView) {
+//         setWeekdays([moment()]);
+//       } else {
+//         setWeekdays(weekDates());
+//       }
+//     }, [dayView]);
   
-    return (
-      <Stack space={1}>
-        <Box bg="white" pt="30" pb={"25"}>
-          Timetable here...
-        </Box>
-      </Stack>
-    );
-  };
+//     return (
+//       <Stack space={1}>
+//         <Box bg="white" pt="30" pb={"25"}>
+//           Timetable here...
+//         </Box>
+//       </Stack>
+//     );
+//   };
   
   const MyClassRoute = () => {
     const { t } = useTranslation();
