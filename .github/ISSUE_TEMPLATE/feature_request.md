@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Request a new feature in FOSSologyUI
+about: Request a new feature in Shiksha Frontend
 labels: enhancement
 ---
 
