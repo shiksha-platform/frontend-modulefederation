@@ -10,6 +10,7 @@ const QuestionHeading = ({ text }) => {
       color={colourPalette.fontPrimary}
       pt="5"
       pl="5"
+      bg="white"
     >
       {text}
     </Text>

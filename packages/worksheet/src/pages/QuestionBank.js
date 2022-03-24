@@ -5,6 +5,7 @@ import { colourPalette } from "constants/colours";
 import QuestionHeading from "components/Heading";
 import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
+import { Box, Button, Text } from "native-base";
 
 export default function QuestionBank() {
   const { t } = useTranslation();
@@ -19,69 +20,88 @@ export default function QuestionBank() {
   };
 
   return (
-    <Layout
-      _header={{
-        title: translationCheck("MY_CLASSES", "Question Bank"),
-        icon: "Group",
-        subHeading: "Test",
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-        avatar: true,
-      }}
-      _appBar={{ languages: ["en"] }}
-      subHeader={t("THE_CLASSES_YOU_TAKE")}
-      _subHeader={{
-        bg: colourPalette.primary,
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
-      }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
+    <Box bg="white">
+      <Layout
+        _header={{
+          title: translationCheck("MY_CLASSES", "Question Bank"),
+          icon: "Group",
+          subHeading: "Test",
+          _subHeading: { fontWeight: 500, textTransform: "uppercase" },
+          avatar: true,
+        }}
+        bg="white"
+        _appBar={{ languages: ["en"] }}
+        subHeader={t("THE_CLASSES_YOU_TAKE")}
+        _subHeader={{
+          bg: colourPalette.primary,
+          _text: {
+            fontSize: "16px",
+            fontWeight: "600",
+            textTransform: "inherit",
           },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
-    >
-      <QuestionHeading text="FILL IN THE BLANKS" />
-      {questions &&
-        questions.map((question, index) => (
-          <QuestionBox key={index}>{question}</QuestionBox>
-        ))}
-    </Layout>
+        }}
+        _footer={{
+          menues: [
+            {
+              title: "HOME",
+              icon: "Home4LineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+            {
+              title: "CLASSES",
+              icon: "TeamLineIcon",
+              module: "Registry",
+              route: "/classes",
+              routeparameters: {},
+            },
+            {
+              title: "SCHOOL",
+              icon: "GovernmentLineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+            {
+              title: "MATERIALS",
+              icon: "BookOpenLineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+            {
+              title: "CAREER",
+              icon: "UserLineIcon",
+              module: "Registry",
+              route: "/",
+              routeparameters: {},
+            },
+          ],
+        }}
+      >
+        <Box style={{ flex: "0" }}>
+          <Button
+            rounded="full"
+            color={colourPalette.fontSecondary}
+            bg={colourPalette.tertiary}
+          >
+            <Text>Success</Text>
+          </Button>
+          <Button
+            rounded="full"
+            color={colourPalette.fontSecondary}
+            bg={colourPalette.tertiary}
+          >
+            <Text>Success</Text>
+          </Button>
+        </Box>
+        <QuestionHeading text="FILL IN THE BLANKS" />
+        {questions &&
+          questions.map((question, index) => (
+            <QuestionBox key={index}>{question}</QuestionBox>
+          ))}
+      </Layout>
+    </Box>
   );
 }
