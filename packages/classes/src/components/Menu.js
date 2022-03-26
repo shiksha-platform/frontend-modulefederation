@@ -1,5 +1,5 @@
 
-  
+
 import React from "react";
 
 import {
@@ -27,8 +27,8 @@ export default function Menu({ items, type, routeDynamics, bg }) {
               <Link
                 href={
                   routeDynamics
-                    ? generatePath(item.route, { ...{ id: item.id } })
-                    : item.route
+                    ? generatePath(item.id, { ...{ id: item.id } })
+                    : item.id
                 }
               >
                 <VStack space="4" my="2" mx="1" alignItems="center">
@@ -68,8 +68,8 @@ export default function Menu({ items, type, routeDynamics, bg }) {
                   <Link
                     href={
                       routeDynamics
-                        ? generatePath(item.route, { ...{ id: item.id } })
-                        : item.route
+                        ? generatePath(item.id, { ...{ id: item.id } })
+                        : item.id
                     }
                   >
                     <HStack space={3}>

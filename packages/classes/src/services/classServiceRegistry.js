@@ -32,18 +32,21 @@ export const getAll = async (
     filters
   );
   if (result.data) {
-    return result.data.map((e) => mapInterfaceData(e, interfaceData));
+    console.log(result.data);
+    // console.log(result.data.map((e) => mapInterfaceData(e, interfaceData)))
+    // return result.data.map((e) => mapInterfaceData(e, interfaceData));
+    return result.data
   } else {
     return [];
   }
 };
 
-export const getAllClasses = async (user_id="") => {
+export const getAllClasses = async (user_id = "") => {
   const result = await generalServices.get(
     `https://dev.shikshaplatform.io/group/memberships/${user_id}`,
     {
-      headers:{
-        "Authorization":`Bearer ${sessionStorage.getItem('token')}`
+      headers: {
+        "Authorization": `Bearer ${sessionStorage.getItem('token')}`
       }
     }
   );
