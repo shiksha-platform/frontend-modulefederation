@@ -4,23 +4,12 @@ import {
   Box,
   HStack,
   VStack,
-  Stack,
-  Pressable,
-  StatusBar,
-  Button,
-  ScrollView,
-  useTheme,
   useToken,
 } from "native-base";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
-import Layout from "../../components/layout/Layout";
 import { useTranslation } from "react-i18next";
-import DayWiesBar from "../../components/CalendarBar";
-import { generatePath, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { TabView, SceneMap } from "react-native-tab-view";
-import { Animated, Dimensions } from "react-native-web";
-import Widget from "../../components/Widget";
 import IconByName from "../../components/IconByName";
 import { weekDates } from "../../components/attendance/AttendanceComponent";
 import FullCalendar from "@fullcalendar/react";
@@ -153,149 +142,6 @@ const timeTables = [
   },
 ];
 
-// Start editing here, save and see your changes.
-// export default function App() {
-//   const { t } = useTranslation();
-
-//   const renderScene = SceneMap({
-//     first: MyClassRoute,
-//     second: TimeTableRoute1,
-//   });
-
-//   const initialLayout = { width: Dimensions.get("window").width };
-//   const [index, setIndex] = React.useState(0);
-//   const [routes] = React.useState([
-//     { key: "first", title: t("MY_CLASSES") },
-//     { key: "second", title: t("TIME_TABLE") },
-//   ]);
-
-//   const renderTabBar = ({ navigationState }) => {
-//     return (
-//       <Box flexDirection="row">
-//         {navigationState.routes.map((route, i) => {
-//           return (
-//             <Pressable key={i} flex={1} onPress={() => setIndex(i)}>
-//               <Box
-//                 borderBottomWidth="3"
-//                 borderColor={index === i ? "button.500" : "coolGray.200"}
-//                 alignItems="center"
-//                 p="3"
-//                 cursor="pointer"
-//               >
-//                 <Animated.Text>
-//                   <Text {...{ color: index === i ? "button.500" : "#a1a1aa" }}>
-//                     {route.title}
-//                   </Text>
-//                 </Animated.Text>
-//               </Box>
-//             </Pressable>
-//           );
-//         })}
-//       </Box>
-//     );
-//   };
-
-//   return (
-//     <Layout
-//       _header={{
-//         title: t("MY_CLASSES"),
-//         icon: "Group",
-//         subHeading: moment().format("hh:mm a"),
-//         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-//         avatar: true,
-//       }}
-//       subHeader={t("THE_CLASSES_YOU_TAKE")}
-//       _subHeader={{
-//         bg: "classCard.500",
-//         _text: {
-//           fontSize: "16px",
-//           fontWeight: "600",
-//           textTransform: "inherit",
-//         },
-//       }}
-//     >
-//       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
-//         <TabView
-//           navigationState={{ index, routes }}
-//           renderScene={renderScene}
-//           renderTabBar={renderTabBar}
-//           onIndexChange={setIndex}
-//           initialLayout={initialLayout}
-//           style={{ marginTop: StatusBar.currentHeight }}
-//         />
-//       </Box>
-//     </Layout>
-//   );
-// }
-
-
-// const MyClassRoute = () => {
-//   const { t } = useTranslation();
-//   const [classes, setClasses] = useState([]);
-//   const teacherId = localStorage.getItem("id");
-
-//   useEffect(() => {
-//     let ignore = false;
-//     const getData = async () => {
-//       if (!ignore) {
-//         setClasses(
-//           await classServiceRegistry.getAll({
-//             teacherId: teacherId,
-//             type: "class",
-//             role: "teacher",
-//           })
-//         );
-//       }
-//     };
-//     getData();
-//   }, [teacherId]);
-
-//   return (
-//     <Box pb={4} pt="30">
-//       <VStack space={10}>
-//         <Widget
-//           data={classes.map((item, index) => {
-//             return {
-//               title: item.name,
-//               subTitle: t("CLASS_TEACHER"),
-//               link: generatePath(item.route, { ...{ id: item.id } }),
-//               _box: {
-//                 style: {
-//                   background:
-//                     index % 2 === 0
-//                       ? "linear-gradient(281.03deg, #FC5858 -21.15%, #F8AF5A 100.04%)"
-//                       : "linear-gradient(102.88deg, #D7BEE6 -5.88%, #B143F3 116.6%)",
-//                 },
-//               },
-//             };
-//           })}
-//         />
-//         <HStack space={2} justifyContent={"center"}>
-//           <Link
-//             to={"/classes/attendance/group"}
-//             style={{
-//               textDecoration: "none",
-//               flex: "1",
-//               textAlign: "center",
-//             }}
-//           >
-//             <Box
-//               rounded="lg"
-//               borderColor="button.500"
-//               borderWidth="1"
-//               _text={{ color: "button.500" }}
-//               px={4}
-//               py={2}
-//               style={{ textTransform: "uppercase" }}
-//             >
-//               {t("CHOOSE_ANOTHER_CLASS")}
-//             </Box>
-//           </Link>
-//         </HStack>
-//       </VStack>
-//     </Box>
-//   );
-// };
 
 const TimeTableRoute = () => {
   const navigate = useNavigate();
