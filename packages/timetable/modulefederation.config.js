@@ -1,11 +1,10 @@
 const { dependencies } = require("./package.json");
 
 module.exports = {
-  name: "classes",
+  name: "timetable",
   exposes: {
     "./App": "./src/App",
-    "./MyClassRoute": "./src/pages/MyClassRoute.js",
-    "./ClassDetails": "./src/pages/ClassDetails.js"
+    "./TimeTableRoute": "./src/pages/TimeTableRoute.js",
   },
   filename: "moduleEntry.js",
   shared: {

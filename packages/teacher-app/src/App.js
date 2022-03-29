@@ -15,12 +15,13 @@ import init from "lang/init";
 
 import manifest from "./manifest.json";
 import { DEFAULT_THEME, eventBus, initializeI18n } from "@shiksha/common-lib";
+import MyClasses from "pages/MyClasses";
 
 //TODO: separate out the theme related code from App
 
 
 
-initializeI18n(['translation','core', 'attendance']);
+initializeI18n(['translation', 'core', 'attendance']);
 
 const theme = extendTheme(DEFAULT_THEME);
 
@@ -48,7 +49,7 @@ function App() {
       </NativeBaseProvider>
     );
   } else {
-    const MyClasses = React.lazy(() => import("classes/MyClasses"));
+
     const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
     const Attendance = React.lazy(() => import("attendance/Attendance"));
     const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
