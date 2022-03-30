@@ -31,7 +31,15 @@ function App() {
     }
   ]
   return (
-    <AppShell theme={theme} routes={routes} AuthComponent={Login}/>
+    <NativeBaseProvider theme={theme}>
+      
+        <Router>
+          <Routes>
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </Router>
+      
+    </NativeBaseProvider>
   );
 }
 

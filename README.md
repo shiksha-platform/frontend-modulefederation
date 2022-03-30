@@ -79,9 +79,7 @@ lerna run start --scope=[module-name]
     core: 'core@[window.appModules.core.url]/remoteEntry.js',
   },
 ```
-
-- Add entry to `moodules.json`
-
+* Add entry to ```modules.json```
 ```
 # e.g. core module is runninig on localhost:3001 then
 
