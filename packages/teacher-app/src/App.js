@@ -53,6 +53,8 @@ function App() {
     const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
     const Attendance = React.lazy(() => import("attendance/Attendance"));
     const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
+    const Student = React.lazy(() => import("students/Student"));
+    const StudentDetails = React.lazy(() => import("students/StudentDetails"));
 
     return (
       <NativeBaseProvider theme={theme}>
@@ -62,7 +64,14 @@ function App() {
               <Route path="worksheet" element={<QuestionBank />} />
               <Route path="classes" element={<MyClasses />} />
               <Route path="/classes/:classId" element={<ClassDetails />} />
+              <Route path="class/students/:classId" element={<Student />} />
+              <Route path="students/:studentId" element={<Student />} />
               <Route path="/attendance/:classId" element={<Attendance />} />
+
+              {/* 
+
+class/students/
+*/}
               <Route path="*" element={<Home />} />
             </Routes>
           </Router>

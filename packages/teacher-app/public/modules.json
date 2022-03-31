@@ -13,5 +13,8 @@
     },
     "worksheet": {
         "url": "http://localhost:3005"
+    },
+    "students": {
+        "url": "http://localhost:3006"
     }
 }
