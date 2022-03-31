@@ -7,10 +7,6 @@ import {
   Stack,
   Box,
   FlatList,
-  PresenceTransition,
-  Pressable,
-  StatusBar,
-  Center,
   Progress,
   Avatar,
   Icon,
@@ -21,13 +17,13 @@ import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import * as classServiceRegistry from "../services/classServiceRegistry";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
+import manifest from "../manifest.json";
 
 export default function ClassDetails() {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   const { classId } = useParams();
-  const fullName = sessionStorage.getItem("fullName");
 
   useEffect(() => {
     let ignore = false;
@@ -75,7 +71,7 @@ export default function ClassDetails() {
           </Box>
         ),
       }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={
         <Menu
           routeDynamics={true}
@@ -137,13 +133,13 @@ export default function ClassDetails() {
       }}
     >
       <Stack space={1} mb="2" shadow={2}>
-            <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
-            <ClassStudentsPanel
-              classObject={classObject}
-              students={students}
-            ></ClassStudentsPanel>
-            <ClassSubjectsPanel></ClassSubjectsPanel>
-            <ClassDetailsPanel></ClassDetailsPanel>
+        <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
+        <ClassStudentsPanel
+          classObject={classObject}
+          students={students}
+        ></ClassStudentsPanel>
+        <ClassSubjectsPanel></ClassSubjectsPanel>
+        <ClassDetailsPanel></ClassDetailsPanel>
       </Stack>
     </Layout>
   );
