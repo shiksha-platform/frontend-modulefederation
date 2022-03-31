@@ -24,6 +24,7 @@ export default function Camera({
         setCameraUrl(webcamRef.current.getScreenshot());
     }, [webcamRef]);
 
+
     React.useEffect(() => {
         let newHeight =
             height -
