@@ -20,6 +20,7 @@ import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
+import Tab from './components/Tab'
 
 export {
   Header,
@@ -32,7 +33,8 @@ export {
   DEFAULT_THEME,
   initializeI18n,
   AppShell,
-  ProgressBar
+  ProgressBar,
+  Tab
 }
 
 export * from './services/Auth'

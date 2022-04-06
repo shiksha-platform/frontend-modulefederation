@@ -23,6 +23,7 @@ import {
   Layout,
   Menu,
   getStudentsPresentAbsent,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import Report from "./Report";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
@@ -149,6 +150,7 @@ export const MultipalAttendance = ({
   const [showModal, setShowModal] = useState(false);
   const [presentStudents, setPresentStudents] = useState([]);
   const teacherId = localStorage.getItem("id");
+  const [width, Height] = useWindowSize();
 
   useEffect(() => {
     const getPresentStudents = async ({ students }) => {
@@ -312,149 +314,154 @@ export const MultipalAttendance = ({
             </VStack>
           </Box>
           <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-            <Actionsheet.Content alignItems={"left"} bg="attendanceCard.500">
-              <HStack justifyContent={"space-between"}>
-                <Stack p={5} pt={2} pb="25px">
-                  <Text color={"white"} fontSize="16px" fontWeight={"600"}>
-                    {t("ATTENDANCE_SUMMARY_REPORT")}
-                  </Text>
-                  <Text color={"white"} fontSize="12px" fontWeight={"400"}>
-                    {classObject?.title ?? ""}
-                  </Text>
-                </Stack>
-                <IconByName
-                  name="CloseCircleLineIcon"
-                  color="white"
-                  onPress={(e) => setShowModal(false)}
-                />
-              </HStack>
-            </Actionsheet.Content>
-            <Stack width={"100%"} space="1" bg={"gray.200"}>
-              <Box bg="reportBoxBg.500" p="5" textAlign={"center"}>
-                <VStack space={2}>
-                  <Text fontSize="14px" fontWeight="500">
-                    {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
-                  </Text>
-                  <Text fontSize="10px" fontWeight="300">
-                    {t("STUDENTS_ABSENT")}
-                  </Text>
-                  <Link
-                    style={{
-                      textDecoration: "none",
-                    }}
-                    to={
-                      "/classes/attendance/sendSms/" +
-                      (classObject?.id?.startsWith("1-")
-                        ? classObject?.id?.replace("1-", "")
-                        : classObject?.id)
-                    }
-                  >
-                    <Button
-                      variant="outline"
-                      colorScheme="button"
-                      rounded="lg"
-                      flex="1"
-                    >
-                      {t("SEND_MESSAGE")}
-                    </Button>
-                  </Link>
-                </VStack>
-              </Box>
-              <Box bg="white" p={5}>
-                <HStack
-                  justifyContent="space-between"
-                  alignItems="center"
-                  pb={5}
-                >
-                  <Text fontSize={"16px"} fontWeight={"600"}>
-                    {t("ATTENDANCE_SUMMARY")}
-                  </Text>
-                  <Text fontSize={"14px"}>
-                    {t("TODAY") + ": "}
-                    <Text fontWeight={"600"}>
-                      {moment().format("DD MMM, Y")}
+            <Stack width={"100%"} height={Height} overflowY={"scroll"}>
+              <Actionsheet.Content alignItems={"left"} bg="attendanceCard.500">
+                <HStack justifyContent={"space-between"}>
+                  <Stack p={5} pt={2} pb="25px">
+                    <Text color={"white"} fontSize="16px" fontWeight={"600"}>
+                      {t("ATTENDANCE_SUMMARY_REPORT")}
                     </Text>
-                  </Text>
+                    <Text color={"white"} fontSize="12px" fontWeight={"400"}>
+                      {classObject?.title ?? ""}
+                    </Text>
+                  </Stack>
+                  <IconByName
+                    name="CloseCircleLineIcon"
+                    color="white"
+                    onPress={(e) => setShowModal(false)}
+                  />
                 </HStack>
-                <Report
-                  {...{
-                    students,
-                    attendance: [
-                      attendance.filter(
-                        (e) => e.date === moment().format("Y-MM-DD")
-                      ),
-                    ],
-                  }}
-                />
-              </Box>
-              <Box bg="white" p={5}>
-                <Box bg={"gray.100"} rounded={"md"} p="4">
-                  <VStack space={5}>
-                    <HStack
-                      justifyContent={"space-between"}
-                      alignItems="center"
-                    >
-                      <Text bold>
-                        100% {t("ATTENDANCE") + " " + t("THIS_WEEK")}
-                      </Text>
-                      <IconByName name="More2LineIcon" isDisabled />
-                    </HStack>
-                    <HStack alignItems="center" justifyContent={"space-around"}>
-                      {presentStudents.map((student, index) =>
-                        index < 3 ? (
-                          <Stack key={index}>
-                            <Card
-                              item={student}
-                              hidePopUpButton={true}
-                              type="veritical"
-                            />
-                          </Stack>
-                        ) : (
-                          <div key={index}></div>
-                        )
-                      )}
-                    </HStack>
-                    <Button colorScheme="button" variant="outline">
-                      {(presentStudents?.length > 3
-                        ? "+ " + (presentStudents.length - 3)
-                        : "") +
-                        " " +
-                        t("MORE")}
-                    </Button>
-                  </VStack>
-                </Box>
-              </Box>
-              <Box p="2" py="5" bg="white">
-                <VStack space={"15px"} alignItems={"center"}>
-                  <Text textAlign={"center"} fontSize="10px">
-                    {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
-                  </Text>
-                  <HStack alignItems={"center"} space={4}>
-                    <Button
-                      variant="outline"
-                      colorScheme="button"
-                      onPress={(e) => setShowModal(false)}
-                    >
-                      {t("CLOSE")}
-                    </Button>
+              </Actionsheet.Content>
+              <Stack width={"100%"} space="1" bg={"gray.200"}>
+                <Box bg="reportBoxBg.500" p="5" textAlign={"center"}>
+                  <VStack space={2}>
+                    <Text fontSize="14px" fontWeight="500">
+                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
+                    </Text>
+                    <Text fontSize="10px" fontWeight="300">
+                      {t("STUDENTS_ABSENT")}
+                    </Text>
                     <Link
                       style={{
                         textDecoration: "none",
                       }}
                       to={
-                        "/classes/attendance/report/" +
+                        "/classes/attendance/sendSms/" +
                         (classObject?.id?.startsWith("1-")
                           ? classObject?.id?.replace("1-", "")
                           : classObject?.id)
                       }
                     >
-                      <Button colorScheme="button" _text={{ color: "white" }}>
-                        {t("SEE_FULL_REPORT")}
+                      <Button
+                        variant="outline"
+                        colorScheme="button"
+                        rounded="lg"
+                        flex="1"
+                      >
+                        {t("SEND_MESSAGE")}
                       </Button>
                     </Link>
+                  </VStack>
+                </Box>
+                <Box bg="white" p={5}>
+                  <HStack
+                    justifyContent="space-between"
+                    alignItems="center"
+                    pb={5}
+                  >
+                    <Text fontSize={"16px"} fontWeight={"600"}>
+                      {t("ATTENDANCE_SUMMARY")}
+                    </Text>
+                    <Text fontSize={"14px"}>
+                      {t("TODAY") + ": "}
+                      <Text fontWeight={"600"}>
+                        {moment().format("DD MMM, Y")}
+                      </Text>
+                    </Text>
                   </HStack>
-                </VStack>
-              </Box>
+                  <Report
+                    {...{
+                      students,
+                      attendance: [
+                        attendance.filter(
+                          (e) => e.date === moment().format("Y-MM-DD")
+                        ),
+                      ],
+                    }}
+                  />
+                </Box>
+                <Box bg="white" p={5}>
+                  <Box bg={"gray.100"} rounded={"md"} p="4">
+                    <VStack space={5}>
+                      <HStack
+                        justifyContent={"space-between"}
+                        alignItems="center"
+                      >
+                        <Text bold>
+                          100% {t("ATTENDANCE") + " " + t("THIS_WEEK")}
+                        </Text>
+                        <IconByName name="More2LineIcon" isDisabled />
+                      </HStack>
+                      <HStack
+                        alignItems="center"
+                        justifyContent={"space-around"}
+                      >
+                        {presentStudents.map((student, index) =>
+                          index < 3 ? (
+                            <Stack key={index}>
+                              <Card
+                                item={student}
+                                hidePopUpButton={true}
+                                type="veritical"
+                              />
+                            </Stack>
+                          ) : (
+                            <div key={index}></div>
+                          )
+                        )}
+                      </HStack>
+                      <Button colorScheme="button" variant="outline">
+                        {(presentStudents?.length > 3
+                          ? "+ " + (presentStudents.length - 3)
+                          : "") +
+                          " " +
+                          t("MORE")}
+                      </Button>
+                    </VStack>
+                  </Box>
+                </Box>
+                <Box p="2" py="5" bg="white">
+                  <VStack space={"15px"} alignItems={"center"}>
+                    <Text textAlign={"center"} fontSize="10px">
+                      {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
+                    </Text>
+                    <HStack alignItems={"center"} space={4}>
+                      <Button
+                        variant="outline"
+                        colorScheme="button"
+                        onPress={(e) => setShowModal(false)}
+                      >
+                        {t("CLOSE")}
+                      </Button>
+                      <Link
+                        style={{
+                          textDecoration: "none",
+                        }}
+                        to={
+                          "/classes/attendance/report/" +
+                          (classObject?.id?.startsWith("1-")
+                            ? classObject?.id?.replace("1-", "")
+                            : classObject?.id)
+                        }
+                      >
+                        <Button colorScheme="button" _text={{ color: "white" }}>
+                          {t("SEE_FULL_REPORT")}
+                        </Button>
+                      </Link>
+                    </HStack>
+                  </VStack>
+                </Box>
+              </Stack>
             </Stack>
           </Actionsheet>
         </Stack>
@@ -557,6 +564,7 @@ export default function AttendanceComponent({
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : ""}>
         <Card
+          href={"/students/" + student.id}
           item={student}
           _arrow={{ _icon: { fontSize: "large" } }}
           type="attendance"

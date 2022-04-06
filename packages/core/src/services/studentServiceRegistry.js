@@ -3,26 +3,34 @@ import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
 const interfaceData = {
-  id: "id",
-  fullName: "studentFullName",
-  firstName: "studentFirstName",
+  id: "studentId",
+  fullName: "firstName",
+  firstName: "firstName",
   fathersName: "studentFathersName",
   phoneNumber: "studentPhoneNumber",
-  lastName: "studentLastName",
+  lastName: "lastName",
+  aadhaar: "aadhaar",
+  classId: "classId",
+  schoolId: "schoolId",
   refId: "studentRefId",
+  birthDate: "birthDate",
+  bloodGroup: "bloodGroup",
+  bpl: "bpl",
+  height: "height",
+  weight: "weight",
+  homeless: "homeless",
+  iscwsn: "iscwsn",
+  migrant: "migrant",
+  religion: "religion",
+  singleGirl: "singleGirl",
+  socialCategory: "socialCategory",
   admissionNo: "admissionNo",
   currentClassID: "currentClassID",
   email: "email",
-  osOwner: "osOwner",
   address: "address",
   gender: "gender",
   mergeParameterWithDefaultValue: {
-    fullName: "Sagar Takle",
-    firstName: "Sagar",
-    fathersName: "Arun",
-    lastName: "Takle",
     admissionNo: "1",
-    gender: "Male",
     currentClassID: "dee531ae-9db0-4989-b6a1-da60080679df",
   },
 };
@@ -38,7 +46,21 @@ export const getAll = async (
     filters
   );
   if (result?.data?.data && result.data.data.length) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
+    let ids = result.data.data.map((e) => e.userId).map((e) => e);
+    const newResult = await generalServices.post(
+      manifest.api_url + "/student/getbyids",
+      { ids: ids },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+          ContentType: "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    console.log(newResult.data);
+
+    return newResult.data.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
     return [];
   }

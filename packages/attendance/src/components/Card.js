@@ -179,6 +179,7 @@ export default function Card({
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [studentObject, setStudentObject] = useState(item);
+  // const StudentEdit = React.lazy(() => import("students/StudentEdit"));
 
   const handalOpenPoup = async (e) => {
     let classObj = await classServiceRegistry.getOne({
@@ -191,7 +192,7 @@ export default function Card({
   const PressableNew = ({ item, children, href, ...prop }) => {
     return href ? (
       <Link
-        to={href}
+        href={href}
         style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
       >
         {children}
@@ -252,16 +253,16 @@ export default function Card({
             <Box bg="white" width={"100%"}>
               <Stack space={5}>
                 {/* <StudentEdit
-                    {...{
-                      studentObject,
-                      setStudentObject,
-                      onlyParameterProp: [
-                        "address",
-                        "fathersName",
-                        "admissionNo",
-                      ],
-                    }}
-                  /> */}
+                  {...{
+                    studentObject,
+                    setStudentObject,
+                    onlyParameterProp: [
+                      "address",
+                      "fathersName",
+                      "admissionNo",
+                    ],
+                  }}
+                /> */}
                 <VStack>
                   <Box px="5">
                     <HStack
@@ -293,12 +294,7 @@ export default function Card({
                   </Box>
                 </VStack>
                 <Stack pb={5} alignItems={"center"}>
-                  <Link
-                    to={"/students/" + item.id}
-                    style={{
-                      textDecoration: "none",
-                    }}
-                  >
+                  <Link href={"/students/" + item.id}>
                     <Box
                       rounded="lg"
                       borderColor="button.500"

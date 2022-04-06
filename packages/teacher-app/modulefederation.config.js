@@ -10,7 +10,8 @@ module.exports = {
     attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`,
     classes: `classes@[window.appModules.classes.url]/moduleEntry.js`,
     worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`,
-    timetable: `timetable@[window.appModules.timetable.url]/moduleEntry.js`
+    timetable: `timetable@[window.appModules.timetable.url]/moduleEntry.js`,
+    students: `students@[window.appModules.students.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

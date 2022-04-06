@@ -15,7 +15,7 @@ const Collapsible = ({
   defaultCollapse = true,
   isHeaderBold = true
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(defaultCollapse)
   return (
     <Box bg='white' p={4}>
       <Stack space={2}>

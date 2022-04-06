@@ -280,6 +280,7 @@ export default function Attendance() {
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
+              hidePopUpButton={true}
               page={weekPage}
               student={item}
               sms={sms.filter((e) => e.studentId === item.id)}
