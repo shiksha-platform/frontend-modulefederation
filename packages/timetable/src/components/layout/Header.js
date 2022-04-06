@@ -31,10 +31,10 @@ export default function Header({
   let cameraUrl = localStorage.getItem("cameraUrl");
   let avatarUrlObject = cameraUrl
     ? {
-      source: {
-        uri: cameraUrl,
-      },
-    }
+        source: {
+          uri: cameraUrl,
+        },
+      }
     : {};
   return !isDisabledHeader ? (
     !fullRightComponent ? (
@@ -44,17 +44,17 @@ export default function Header({
             {subHeadingComponent ? (
               subHeadingComponent
             ) : (
-                <Text fontSize="12px" {..._subHeading}>
-                  {subHeading}
-                </Text>
-              )}
+              <Text fontSize="12px" {..._subHeading}>
+                {subHeading}
+              </Text>
+            )}
             {headingComponent ? (
               headingComponent
             ) : (
-                <Text bold fontSize="24px" {..._heading}>
-                  {title ? title : heading}
-                </Text>
-              )}
+              <Text bold fontSize="24px" {..._heading}>
+                {title ? title : heading}
+              </Text>
+            )}
           </VStack>
           {iconComponent ? (
             iconComponent
@@ -70,10 +70,10 @@ export default function Header({
                     size="50px"
                   />
                 ) : (
-                    <Avatar bg="amber.500" rounded="lg">
-                      {newAvatar?.toUpperCase().substr(0, 2)}
-                    </Avatar>
-                  )}
+                  <Avatar bg="amber.500" rounded="lg">
+                    {newAvatar?.toUpperCase().substr(0, 2)}
+                  </Avatar>
+                )}
                 {selfAttendance ? (
                   <IconByName
                     name="CheckboxCircleFillIcon"
@@ -86,19 +86,19 @@ export default function Header({
                     rounded="full"
                   />
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
               </Pressable>
             </>
           ) : (
-                <></>
-              )}
+            <></>
+          )}
         </HStack>
       </Box>
     ) : (
-        fullRightComponent
-      )
+      fullRightComponent
+    )
   ) : (
-      <></>
-    );
+    <></>
+  );
 }

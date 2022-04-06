@@ -1,6 +1,6 @@
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
-import * as RestClient from '@shiksha/common-lib';
+import * as RestClient from "@shiksha/common-lib";
 
 const interfaceData = {
   id: "osid",
@@ -34,15 +34,15 @@ export const getAll = async (
 
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await RestClient
-  
-  //edccc63f-fcc7-4529-80b7-feea3fee0f3c
+
+    //edccc63f-fcc7-4529-80b7-feea3fee0f3c
     .get(manifest.api_url + "Teacher/018a8e96-6ba8-496e-93c7-c362696c5da7", {
       headers: headers,
     })
     .catch((error) => error);
-    if (result.data) {
-      return mapInterfaceData(result.data, interfaceData);
-    } else {
-      return {};
-    }
+  if (result.data) {
+    return mapInterfaceData(result.data, interfaceData);
+  } else {
+    return {};
+  }
 };

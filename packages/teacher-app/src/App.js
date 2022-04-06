@@ -19,9 +19,7 @@ import MyClasses from "pages/MyClasses";
 
 //TODO: separate out the theme related code from App
 
-
-
-initializeI18n(['translation', 'core', 'attendance']);
+initializeI18n(["translation", "core", "attendance"]);
 
 const theme = extendTheme(DEFAULT_THEME);
 
@@ -49,10 +47,11 @@ function App() {
       </NativeBaseProvider>
     );
   } else {
-
     const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
     const Attendance = React.lazy(() => import("attendance/Attendance"));
     const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
+    const Student = React.lazy(() => import("students/Student"));
+    const StudentDetails = React.lazy(() => import("students/StudentDetails"));
 
     return (
       <NativeBaseProvider theme={theme}>
@@ -62,7 +61,9 @@ function App() {
               <Route path="worksheet" element={<QuestionBank />} />
               <Route path="classes" element={<MyClasses />} />
               <Route path="/classes/:classId" element={<ClassDetails />} />
+              <Route path="/class/students/:classId" element={<Student />} />
               <Route path="/attendance/:classId" element={<Attendance />} />
+              <Route path="/students/:studentId" element={<StudentDetails />} />
               <Route path="*" element={<Home />} />
             </Routes>
           </Router>

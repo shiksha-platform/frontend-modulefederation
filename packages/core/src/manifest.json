@@ -95,7 +95,7 @@
       "code": "hi"
     }
   ],
-  "api_url": "https://dev-shiksha.uniteframework.io/registry/api/v1/",
+  "api_url": "https://dev.shikshaplatform.io",
   "auth_url": "https://dev-shiksha.uniteframework.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
   "maxWidth": "1080"
 }
