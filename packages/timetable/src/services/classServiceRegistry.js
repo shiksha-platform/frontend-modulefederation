@@ -1,4 +1,4 @@
-import * as generalServices from '@shiksha/common-lib';
+import * as generalServices from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
@@ -35,7 +35,7 @@ export const getAll = async (
     console.log(result.data);
     // console.log(result.data.map((e) => mapInterfaceData(e, interfaceData)))
     // return result.data.map((e) => mapInterfaceData(e, interfaceData));
-    return result.data
+    return result.data;
   } else {
     return [];
   }
@@ -46,17 +46,16 @@ export const getAllClasses = async (user_id = "") => {
     `https://dev.shikshaplatform.io/group/memberships/${user_id}`,
     {
       headers: {
-        "Authorization": `Bearer ${sessionStorage.getItem('token')}`
-      }
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
     }
   );
   if (result.data.data) {
-    return result.data.data
+    return result.data.data;
   } else {
     return [];
   }
 };
-
 
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await generalServices.get(

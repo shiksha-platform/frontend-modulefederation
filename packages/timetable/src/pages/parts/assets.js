@@ -124,11 +124,8 @@ export const timeTables = [
   },
 ];
 
-
 export const sampleClassData = [
   { id: "1", className: "Class I", route: "1" },
   { id: "2", className: "Class II", route: "2" },
   { id: "3", className: "Class III", route: "3" },
-]
-
-
+];

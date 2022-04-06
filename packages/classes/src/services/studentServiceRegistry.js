@@ -1,4 +1,4 @@
-import * as generalServices from '@shiksha/common-lib';
+import * as generalServices from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 

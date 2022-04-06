@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Text,
-  Box,
-  HStack,
-  VStack,
-  useToken,
-} from "native-base";
+import { Text, Box, HStack, VStack, useToken } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -14,8 +8,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import "./../assets/css/fullCalendar.css";
-import { timeTables } from './parts/assets'
-
+import { timeTables } from "./parts/assets";
 
 const TimeTableRoute = () => {
   const navigate = useNavigate();
@@ -48,8 +41,8 @@ const TimeTableRoute = () => {
       backgroundColor: e.activeMenu
         ? emerald
         : index < 4
-          ? timeTableCardOrange
-          : gray,
+        ? timeTableCardOrange
+        : gray,
       borderColor: e.activeMenu ? emerald : timeTableCardOrange,
     };
   });
@@ -157,8 +150,8 @@ const renderEventContent = (eventInfo) => {
               }}
             />
           ) : (
-              <></>
-            )}
+            <></>
+          )}
         </HStack>
         <Text
           fontSize="12px"
@@ -175,5 +168,4 @@ const renderEventContent = (eventInfo) => {
   );
 };
 
-
-export default TimeTableRoute
+export default TimeTableRoute;

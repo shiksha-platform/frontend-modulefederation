@@ -1,15 +1,15 @@
 import moment from "moment";
 
 export const weekDates = (filter = {}, currentDate = moment()) => {
-    if (filter.today) {
-      return [moment()];
-    }
-    let weekStart = currentDate.clone().startOf("isoWeek");
-    let days = [];
-    for (let i = 0; i <= 6; i++) {
-      days.push(moment(weekStart).add(i, "days"));
-    }
-    return days;
+  if (filter.today) {
+    return [moment()];
+  }
+  let weekStart = currentDate.clone().startOf("isoWeek");
+  let days = [];
+  for (let i = 0; i <= 6; i++) {
+    days.push(moment(weekStart).add(i, "days"));
+  }
+  return days;
 };
 
 export function calendar(weekPage, today, type) {

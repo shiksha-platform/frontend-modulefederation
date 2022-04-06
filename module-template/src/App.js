@@ -8,21 +8,20 @@ import Attendance from "pages/Attendance";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
-  const routes  = [
+  const routes = [
     {
       path: "my-attendace",
-      component: Attendance
+      component: Attendance,
     },
     {
       path: "*",
-      component: Attendance
-    }
-  ]
+      component: Attendance,
+    },
+  ];
   const LoginComponent = React.lazy(() => import("core/Login"));
 
   return (
-        <AppShell theme={theme} routes={routes} AuthComponent={LoginComponent}/>
-
+    <AppShell theme={theme} routes={routes} AuthComponent={LoginComponent} />
   );
 }
 
