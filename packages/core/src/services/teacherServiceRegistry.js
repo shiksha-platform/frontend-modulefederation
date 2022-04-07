@@ -35,7 +35,7 @@ export const getAll = async (
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await RestClient.get(
     "https://dev-shiksha.uniteframework.io/registry/api/v1" +
-      "/Teacher/018a8e96-6ba8-496e-93c7-c362696c5da7",
+      "/Teacher/a7024a1b-1fc6-4337-adc9-fc024943e8f8",
     {
       headers: headers,
     }

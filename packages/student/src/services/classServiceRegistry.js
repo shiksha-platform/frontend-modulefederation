@@ -46,7 +46,7 @@ export const getAllClasses = async (user_id = "") => {
     `https://dev.shikshaplatform.io/group/memberships/${user_id}`,
     {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );

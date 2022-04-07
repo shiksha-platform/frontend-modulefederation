@@ -25,7 +25,7 @@ import {
   getStudentsPresentAbsent,
   useWindowSize,
 } from "@shiksha/common-lib";
-import Report from "./Report";
+import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 
 export function calendar(page, type = "weeks") {
@@ -379,7 +379,7 @@ export const MultipalAttendance = ({
                       </Text>
                     </Text>
                   </HStack>
-                  <Report
+                  <ReportSummary
                     {...{
                       students,
                       attendance: [

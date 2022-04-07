@@ -15,7 +15,7 @@ import * as classServiceRegistry from "../services/classServiceRegistry";
 const MyClassRoute = () => {
   const { t } = useTranslation();
   const [classes, setClasses] = useState([]);
-  const teacherId = sessionStorage.getItem("id");
+  const teacherId = localStorage.getItem("id");
 
   useEffect(() => {
     let ignore = false;

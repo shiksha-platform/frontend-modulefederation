@@ -15,7 +15,7 @@ export default function Header({
   isDisabledHeader,
   fullRightComponent
 }: any) {
-  let newAvatar = sessionStorage.getItem('firstName')
+  let newAvatar = localStorage.getItem('firstName')
   return !isDisabledHeader ? (
     !fullRightComponent ? (
       <Box {..._box} py={7} px={5}>

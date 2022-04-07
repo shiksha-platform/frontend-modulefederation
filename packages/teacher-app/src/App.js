@@ -24,13 +24,13 @@ initializeI18n(["translation", "core", "attendance"]);
 const theme = extendTheme(DEFAULT_THEME);
 
 function App() {
-  const [token, setToken] = useState(sessionStorage.getItem("token"));
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
     const subscription = eventBus.subscribe("AUTH", (data, envelop) => {
       console.log(envelop);
       if ((data.eventType = "LOGIN_SUCCESS")) {
-        setToken(sessionStorage.getItem("token"));
+        setToken(localStorage.getItem("token"));
       }
     });
     return () => {
@@ -49,6 +49,9 @@ function App() {
   } else {
     const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
     const Attendance = React.lazy(() => import("attendance/Attendance"));
+    const Report = React.lazy(() => import("attendance/Report"));
+    const ReportDetail = React.lazy(() => import("attendance/ReportDetail"));
+    const CompareReport = React.lazy(() => import("attendance/CompareReport"));
     const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
     const Student = React.lazy(() => import("students/Student"));
     const StudentDetails = React.lazy(() => import("students/StudentDetails"));
@@ -63,6 +66,15 @@ function App() {
               <Route path="/classes/:classId" element={<ClassDetails />} />
               <Route path="/class/students/:classId" element={<Student />} />
               <Route path="/attendance/:classId" element={<Attendance />} />
+              <Route path="/attendance/report" element={<Report />} />
+              <Route
+                path="/attendance/report/:classId/:view"
+                element={<ReportDetail />}
+              />
+              <Route
+                path="/attendance/reportCompare/:classId"
+                element={<CompareReport />}
+              />
               <Route path="/students/:studentId" element={<StudentDetails />} />
               <Route path="*" element={<Home />} />
             </Routes>

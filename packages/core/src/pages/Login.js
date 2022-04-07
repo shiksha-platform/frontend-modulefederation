@@ -67,13 +67,13 @@ export default function Login() {
 
         if (resultTeacher) {
           let id = resultTeacher.id.replace("1-", "");
-          sessionStorage.setItem("id", id);
-          sessionStorage.setItem("fullName", resultTeacher.fullName);
-          sessionStorage.setItem("firstName", resultTeacher.firstName);
-          sessionStorage.setItem("lastName", resultTeacher.lastName);
+          localStorage.setItem("id", id);
+          localStorage.setItem("fullName", resultTeacher.fullName);
+          localStorage.setItem("firstName", resultTeacher.firstName);
+          localStorage.setItem("lastName", resultTeacher.lastName);
           //window.location.reload();
 
-          sessionStorage.setItem("token", token);
+          localStorage.setItem("token", token);
           eventBus.publish("AUTH", {
             eventType: "LOGIN_SUCCESS",
             data: {
@@ -82,7 +82,7 @@ export default function Login() {
           });
         }
       } else {
-        sessionStorage.removeItem("token");
+        localStorage.removeItem("token");
         setErrors({ alert: "Please enter valid credentials" });
       }
     }

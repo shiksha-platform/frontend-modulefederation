@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 const MyClassRoute = () => {
   const { t } = useTranslation();
   const [classes, setClasses] = useState([]);
-  const authId = sessionStorage.getItem("id");
+  const authId = localStorage.getItem("id");
 
   useEffect(() => {
     let ignore = false;

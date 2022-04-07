@@ -51,6 +51,7 @@ export default function Attendance() {
     let ignore = false;
     async function getData() {
       const studentData = await studentServiceRegistry.getAll({ classId });
+      console.log({ studentData });
       setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)

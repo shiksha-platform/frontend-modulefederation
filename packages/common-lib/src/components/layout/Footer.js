@@ -3,31 +3,13 @@ import { Box, Text, HStack, Center, Stack } from 'native-base'
 import IconByName from '../IconByName'
 import { useTranslation } from 'react-i18next'
 import { Link, generatePath } from 'react-router-dom'
-
-//TODO: move this hook out
-function useWindowSize() {
-  const [size, setSize] = useState([0, 0])
-  const maxWidth = 1080 //TODO: manifest?.maxWidth ? manifest?.maxWidth : "414";
-
-  useLayoutEffect(() => {
-    function updateSize() {
-      setSize([
-        window.outerWidth > maxWidth ? maxWidth : window.outerWidth,
-        window.innerHeight
-      ])
-    }
-    window.addEventListener('resize', updateSize)
-    updateSize()
-    return () => window.removeEventListener('resize', updateSize)
-  }, [])
-  return size
-}
+import { useWindowSize } from '../helper'
 
 export default function Footer({ menues, routeDynamics, ...props }) {
   const [selected, setSelected] = React.useState(0)
   const { t } = useTranslation()
   const [refFoot, serRefFoot] = React.useState({})
-  const [width] = useWindowSize()
+  const [width, Height] = useWindowSize()
 
   const footerMenus = menues //TODO: manifest.menus.footer;
 
@@ -71,7 +53,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
       >
         <Center flex={1}></Center>
         <HStack bg='white' alignItems='center' safeAreaBottom shadow={6}>
-          {footerMenus.map((item, index) => (
+          {footerMenus?.map((item, index) => (
             <PressableNew
               item={item}
               key={index}
