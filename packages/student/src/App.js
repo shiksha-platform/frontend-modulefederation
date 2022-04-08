@@ -13,7 +13,7 @@ function App() {
       component: Student,
     },
     {
-      path: "student/:studentId",
+      path: "students/:studentId",
       component: StudentDetails,
     },
     {

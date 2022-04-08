@@ -3,7 +3,7 @@ import { Text, Box, HStack, VStack, useToken } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import IconByName from "../components/IconByName";
+import { IconByName } from "@shiksha/common-lib";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";

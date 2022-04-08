@@ -1,4 +1,4 @@
-import { get, post } from "@shiksha/common-lib";
+import { get, post, update as coreUpdate } from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
@@ -63,10 +63,10 @@ export const getAll = async (params = {}, header = {}) => {
 
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await get(manifest.api_url + "/student/" + filters.id, {
-    headers: headers,
+    headers,
   });
-  if (result.data) {
-    let resultStudent = mapInterfaceData(result.data, interfaceData);
+  if (result?.data?.data) {
+    let resultStudent = mapInterfaceData(result.data.data, interfaceData);
     resultStudent.id = resultStudent.id?.startsWith("1-")
       ? resultStudent.id?.replace("1-", "")
       : resultStudent.id;
@@ -87,14 +87,14 @@ export const update = async (data = {}, headers = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true);
 
-  const result = await update(
+  const result = await coreUpdate(
     manifest.api_url + "/student/" + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {},
     }
   );
-  if (result.data) {
+  if (result?.data) {
     return result;
   } else {
     return {};

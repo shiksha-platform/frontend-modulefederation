@@ -10,7 +10,7 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
@@ -21,7 +21,6 @@ import AttendanceComponent, {
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
 import { Link, useParams } from "react-router-dom";
-import Card from "../../components/Card";
 
 import {
   IconByName,
@@ -49,6 +48,7 @@ export default function ReportDetail() {
         : "days"
       : "days"
   );
+  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     let ignore = false;
@@ -258,21 +258,25 @@ export default function ReportDetail() {
                           rounded="lg"
                           my="10px"
                         >
-                          <Card
-                            item={item}
-                            type="rollFather"
-                            textTitle={
-                              <VStack alignItems="center">
-                                <Text fontSize="14" fontWeight="500">
-                                  <Text>{item.fullName}</Text>
-                                  <Text color="gray.300"> • </Text>
-                                  <Text color="presentCardText.500">100%</Text>
-                                </Text>
-                              </VStack>
-                            }
-                            href={"/students/" + item.id}
-                            hidePopUpButton
-                          />
+                          <Suspense fallback="logding">
+                            <Card
+                              item={item}
+                              type="rollFather"
+                              textTitle={
+                                <VStack alignItems="center">
+                                  <Text fontSize="14" fontWeight="500">
+                                    <Text>{item.fullName}</Text>
+                                    <Text color="gray.300"> • </Text>
+                                    <Text color="presentCardText.500">
+                                      100%
+                                    </Text>
+                                  </Text>
+                                </VStack>
+                              }
+                              href={"/students/" + item.id}
+                              hidePopUpButton
+                            />
+                          </Suspense>
                         </Box>
                       )}
                       keyExtractor={(item) => item.id}
@@ -323,23 +327,25 @@ export default function ReportDetail() {
                           rounded="lg"
                           my="10px"
                         >
-                          <Card
-                            item={item}
-                            type="rollFather"
-                            textTitle={
-                              <VStack alignItems="center">
-                                <Text fontSize="14" fontWeight="500">
-                                  <Text>{item.fullName}</Text>
-                                  <Text color="gray.300"> • </Text>
-                                  <Text color="absentCardText.500">
-                                    3 {t("DAYS")}
+                          <Suspense fallback="logding">
+                            <Card
+                              item={item}
+                              type="rollFather"
+                              textTitle={
+                                <VStack alignItems="center">
+                                  <Text fontSize="14" fontWeight="500">
+                                    <Text>{item.fullName}</Text>
+                                    <Text color="gray.300"> • </Text>
+                                    <Text color="absentCardText.500">
+                                      3 {t("DAYS")}
+                                    </Text>
                                   </Text>
-                                </Text>
-                              </VStack>
-                            }
-                            href={"/students/" + item.id}
-                            hidePopUpButton
-                          />
+                                </VStack>
+                              }
+                              href={"/students/" + item.id}
+                              hidePopUpButton
+                            />
+                          </Suspense>
                         </Box>
                       )}
                       keyExtractor={(item) => item.id}

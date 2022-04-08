@@ -33,7 +33,7 @@ export const getAll = async (params = {}, header = {}) => {
       headers,
     }
   );
-  if (result.data) {
+  if (result?.data?.data) {
     return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
     return [];
@@ -43,11 +43,9 @@ export const getAll = async (params = {}, header = {}) => {
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await generalServices.get(
     manifest.api_url + "/group/" + filters.id,
-    {
-      headers: headers,
-    }
+    { headers }
   );
-  if (result.data) {
+  if (result?.data?.data) {
     return mapInterfaceData(result.data.data, interfaceData);
   } else {
     return {};

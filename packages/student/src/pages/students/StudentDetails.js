@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  Button,
-  Stack,
-  Box,
-  VStack,
-  HStack,
-  Pressable,
-  PresenceTransition,
-  Link,
-} from "native-base";
+import { Text, Button, Stack, Box, VStack, HStack, Link } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName, Layout } from "@shiksha/common-lib";
+import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
@@ -72,7 +62,7 @@ export default function StudentDetails() {
       }}
       subHeader={
         <Card
-          textTitle={studentObject.fullName}
+          textTitle={studentObject.firstName + " " + studentObject.lastName}
           _textTitle={{ bold: false, fontWeight: "500", fontSize: "16px" }}
           _textSubTitle={{
             bold: false,
@@ -137,7 +127,7 @@ export default function StudentDetails() {
               {
                 title: t("CLASS"),
                 value: classObject?.name
-                  ? classObject?.class + " " + classObject?.section
+                  ? classObject?.name
                   : studentObject.currentClassID,
               },
             ]}
@@ -151,75 +141,74 @@ export default function StudentDetails() {
               }}
               collapsButton={attendanceView === "month" ? false : true}
               header={t("ATTENDANCE")}
-              body={
-                <>
-                  {manifest.showOnStudentProfile &&
-                  studentObject &&
-                  studentObject?.id ? (
-                    <>
-                      <h2>AttendanceComponent</h2>
-                    </>
-                  ) : (
-                    // <AttendanceComponent
-                    //   type={attendanceView}
-                    //   page={0}
-                    //   student={studentObject}
-                    //   withDate={true}
-                    //   hidePopUpButton={true}
-                    //   attendanceProp={attendance}
-                    //   getAttendance={getAttendance}
-                    //   _card={{
-                    //     img: false,
-                    //     _textTitle: { display: "none" },
-                    //     _textSubTitle: { display: "none" },
-                    //   }}
-                    // />
-                    <></>
-                  )}
-                  <HStack space={2} justifyContent={"center"}>
-                    <Link
-                      to={"/attendance/" + studentObject.currentClassID}
-                      style={{
-                        textDecoration: "none",
-                        flex: "auto",
-                        textAlign: "center",
-                      }}
+            >
+              <>
+                {manifest.showOnStudentProfile &&
+                studentObject &&
+                studentObject?.id ? (
+                  <>
+                    <h2>AttendanceComponent</h2>
+                  </>
+                ) : (
+                  // <AttendanceComponent
+                  //   type={attendanceView}
+                  //   page={0}
+                  //   student={studentObject}
+                  //   withDate={true}
+                  //   hidePopUpButton={true}
+                  //   attendanceProp={attendance}
+                  //   getAttendance={getAttendance}
+                  //   _card={{
+                  //     img: false,
+                  //     _textTitle: { display: "none" },
+                  //     _textSubTitle: { display: "none" },
+                  //   }}
+                  // />
+                  <></>
+                )}
+                <HStack space={2} justifyContent={"center"}>
+                  <Link
+                    to={"/attendance/" + studentObject.currentClassID}
+                    style={{
+                      textDecoration: "none",
+                      flex: "auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Box
+                      rounded="lg"
+                      borderColor="button.500"
+                      borderWidth="1"
+                      _text={{ color: "button.500" }}
+                      px={4}
+                      py={2}
                     >
-                      <Box
-                        rounded="lg"
-                        borderColor="button.500"
-                        borderWidth="1"
-                        _text={{ color: "button.500" }}
-                        px={4}
-                        py={2}
-                      >
-                        {t("FULL_CLASS_ATTENDANCE")}
-                      </Box>
-                    </Link>
-                    <Link
-                      to={"/students/sendSms/" + studentObject.id}
-                      style={{
-                        textDecoration: "none",
-                        flex: "auto",
-                        textAlign: "center",
-                      }}
+                      {t("FULL_CLASS_ATTENDANCE")}
+                    </Box>
+                  </Link>
+                  <Link
+                    to={"/students/sendSms/" + studentObject.id}
+                    style={{
+                      textDecoration: "none",
+                      flex: "auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Box
+                      rounded="lg"
+                      bg="button.500"
+                      borderColor="button.500"
+                      borderWidth="1"
+                      _text={{ color: "white" }}
+                      px={4}
+                      py={2}
                     >
-                      <Box
-                        rounded="lg"
-                        bg="button.500"
-                        borderColor="button.500"
-                        borderWidth="1"
-                        _text={{ color: "white" }}
-                        px={4}
-                        py={2}
-                      >
-                        {t("MESSAGE_HISTORY")}
-                      </Box>
-                    </Link>
-                  </HStack>
-                </>
-              }
-            />
+                      {t("MESSAGE_HISTORY")}
+                    </Box>
+                  </Link>
+                </HStack>
+              </>
+            </Collapsible>
           </Box>
         </Section>
 
@@ -247,17 +236,13 @@ export default function StudentDetails() {
               borderBottomWidth="1"
               borderColor={"coolGray.200"}
             >
-              <Collapsible
-                defaultCollapse
-                header={item.title}
-                body={
-                  <Box pt="18px">
-                    <Text fontWeight="500" fontSize="14px">
-                      {item.value}
-                    </Text>
-                  </Box>
-                }
-              />
+              <Collapsible defaultCollapse header={item.title}>
+                <Box pt="18px">
+                  <Text fontWeight="500" fontSize="14px">
+                    {item.value}
+                  </Text>
+                </Box>
+              </Collapsible>
             </Box>
           ))}
         </Section>
@@ -276,17 +261,13 @@ export default function StudentDetails() {
           }
         >
           <Box p="5">
-            <Collapsible
-              defaultCollapse
-              header={t("NOTES")}
-              body={
-                <Box pt="18px">
-                  <Text fontWeight="500" fontSize="14px" pb="30">
-                    {"2 " + t("NOTES")}
-                  </Text>
-                </Box>
-              }
-            />
+            <Collapsible defaultCollapse header={t("NOTES")}>
+              <Box pt="18px">
+                <Text fontWeight="500" fontSize="14px" pb="30">
+                  {"2 " + t("NOTES")}
+                </Text>
+              </Box>
+            </Collapsible>
           </Box>
         </Section>
       </Stack>
@@ -329,59 +310,3 @@ const Section = ({ title, button, children, _box }) => (
     {children}
   </Box>
 );
-
-const Collapsible = ({
-  header,
-  body,
-  defaultCollapse,
-  isHeaderBold,
-  isDisableCollapse,
-  onPressFuction,
-  collapsButton,
-  _header,
-  _icon,
-  _box,
-}) => {
-  const [collaps, setCollaps] = useState(defaultCollapse);
-
-  return (
-    <>
-      <Pressable
-        onPress={() => {
-          if (onPressFuction) {
-            onPressFuction();
-          }
-          if (!isDisableCollapse) {
-            setCollaps(!collaps);
-          }
-        }}
-      >
-        <Box>
-          <HStack alignItems={"center"} justifyContent={"space-between"}>
-            <Text
-              fontSize={typeof isHeaderBold === "undefined" ? "14px" : ""}
-              color="coolGray.400"
-              fontWeight="500"
-            >
-              {header}
-            </Text>
-            <IconByName
-              size="sm"
-              isDisabled={true}
-              color={
-                !collaps || collapsButton ? "coolGray.400" : "coolGray.600"
-              }
-              name={
-                !collaps || collapsButton
-                  ? "ArrowDownSLineIcon"
-                  : "ArrowUpSLineIcon"
-              }
-              {..._icon}
-            />
-          </HStack>
-        </Box>
-      </Pressable>
-      <PresenceTransition visible={collaps}>{body}</PresenceTransition>
-    </>
-  );
-};

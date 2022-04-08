@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   VStack,
   Text,
@@ -16,7 +16,7 @@ import manifest from "../manifest.json";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
 import moment from "moment";
-import Card from "../components/Card";
+
 import {
   Collapsible,
   IconByName,
@@ -409,11 +409,13 @@ export const MultipalAttendance = ({
                         {presentStudents.map((student, index) =>
                           index < 3 ? (
                             <Stack key={index}>
-                              <Card
-                                item={student}
-                                hidePopUpButton={true}
-                                type="veritical"
-                              />
+                              <Suspense fallback="loding">
+                                <Card
+                                  item={student}
+                                  hidePopUpButton={true}
+                                  type="veritical"
+                                />
+                              </Suspense>
                             </Stack>
                           ) : (
                             <div key={index}></div>
@@ -493,6 +495,7 @@ export default function AttendanceComponent({
   const [smsShowModal, setSmsShowModal] = useState(false);
   const [loding, setLoding] = useState({});
   const status = manifest?.status ? manifest?.status : [];
+  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     if (typeof page === "object") {
@@ -563,38 +566,40 @@ export default function AttendanceComponent({
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : ""}>
-        <Card
-          href={"/students/" + student.id}
-          item={student}
-          _arrow={{ _icon: { fontSize: "large" } }}
-          type="attendance"
-          hidePopUpButton={hidePopUpButton}
-          {...(type === "day" ? { _textTitle: { fontSize: "xl" } } : {})}
-          {..._card}
-          rightComponent={
-            type === "day"
-              ? days.map((day, index) => (
-                  <CalendarComponent
-                    key={index}
-                    monthDays={[[day]]}
-                    isIconSizeSmall={true}
-                    isEditDisabled={isEditDisabled}
-                    {...{
-                      attendance,
-                      student,
-                      markAttendance,
-                      setAttendanceObject,
-                      setShowModal,
-                      setSmsShowModal,
-                      loding,
-                      type,
-                      _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
-                    }}
-                  />
-                ))
-              : false
-          }
-        />
+        <Suspense fallback="loding">
+          <Card
+            href={"/students/" + student.id}
+            item={student}
+            _arrow={{ _icon: { fontSize: "large" } }}
+            type="attendance"
+            hidePopUpButton={hidePopUpButton}
+            {...(type === "day" ? { _textTitle: { fontSize: "xl" } } : {})}
+            {..._card}
+            rightComponent={
+              type === "day"
+                ? days.map((day, index) => (
+                    <CalendarComponent
+                      key={index}
+                      monthDays={[[day]]}
+                      isIconSizeSmall={true}
+                      isEditDisabled={isEditDisabled}
+                      {...{
+                        attendance,
+                        student,
+                        markAttendance,
+                        setAttendanceObject,
+                        setShowModal,
+                        setSmsShowModal,
+                        loding,
+                        type,
+                        _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
+                      }}
+                    />
+                  ))
+                : false
+            }
+          />
+        </Suspense>
         {type !== "day" ? (
           <Box borderWidth={1} borderColor={"coolGray.200"} rounded="xl">
             {days.map((day, index) => (

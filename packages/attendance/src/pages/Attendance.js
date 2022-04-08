@@ -51,7 +51,7 @@ export default function Attendance() {
     let ignore = false;
     async function getData() {
       const studentData = await studentServiceRegistry.getAll({ classId });
-      console.log({ studentData });
+
       setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)
@@ -150,7 +150,7 @@ export default function Attendance() {
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
           <Link
-            to="/classes/attendance/report"
+            to="/attendance/report"
             style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
           >
             <Box
@@ -281,7 +281,7 @@ export default function Attendance() {
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
-              hidePopUpButton={true}
+              hidePopUpButton={false}
               page={weekPage}
               student={item}
               sms={sms.filter((e) => e.studentId === item.id)}

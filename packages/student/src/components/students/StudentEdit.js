@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   Button,
@@ -129,6 +129,8 @@ export default function App({
       setEditChangeState(false);
     }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <Section

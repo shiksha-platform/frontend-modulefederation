@@ -23,7 +23,7 @@ export default function Student() {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
-  const { classId } = "ee6afd98-785d-47e5-aa67-90b1eba1b5af";
+  const classId = "ee6afd98-785d-47e5-aa67-90b1eba1b5af";
 
   useEffect(() => {
     let ignore = false;

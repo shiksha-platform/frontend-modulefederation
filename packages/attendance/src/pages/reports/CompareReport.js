@@ -10,7 +10,7 @@ import {
   Text,
   VStack,
 } from "native-base";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
 import {
@@ -30,7 +30,6 @@ import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
-import Card from "../../components/Card";
 
 export default function ClassReportDetail() {
   const { t } = useTranslation();
@@ -48,6 +47,7 @@ export default function ClassReportDetail() {
   const [presentCount, setPresentCount] = useState(0);
   const [thisTitle, setThisTitle] = useState("");
   const [lastTitle, setLastTitle] = useState("");
+  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     let ignore = false;
@@ -293,48 +293,50 @@ export default function ClassReportDetail() {
                           rounded="lg"
                           my="10px"
                         >
-                          <Card
-                            item={item}
-                            href={"/students/" + item.id}
-                            hidePopUpButton
-                            rightComponent={
-                              <HStack space="2">
-                                <VStack alignItems="center">
-                                  <Text
-                                    fontSize="14"
-                                    fontWeight="500"
-                                    color="presentCardText.500"
-                                  >
-                                    {getPercentage(attendance, item) + "%"}
-                                  </Text>
-                                  <Text
-                                    fontSize="10"
-                                    fontWeight="400"
-                                    color="presentCardText.500"
-                                  >
-                                    {thisTitle}
-                                  </Text>
-                                </VStack>
-                                <VStack alignItems="center">
-                                  <Text
-                                    fontSize="14"
-                                    fontWeight="500"
-                                    color="presentCardCompareText.500"
-                                  >
-                                    {getPercentage(compareAttendance, item) +
-                                      "%"}
-                                  </Text>
-                                  <Text
-                                    fontSize="10"
-                                    fontWeight="400"
-                                    color="presentCardCompareText.500"
-                                  >
-                                    {lastTitle}
-                                  </Text>
-                                </VStack>
-                              </HStack>
-                            }
-                          />
+                          <Suspense fallback="loding">
+                            <Card
+                              item={item}
+                              href={"/students/" + item.id}
+                              hidePopUpButton
+                              rightComponent={
+                                <HStack space="2">
+                                  <VStack alignItems="center">
+                                    <Text
+                                      fontSize="14"
+                                      fontWeight="500"
+                                      color="presentCardText.500"
+                                    >
+                                      {getPercentage(attendance, item) + "%"}
+                                    </Text>
+                                    <Text
+                                      fontSize="10"
+                                      fontWeight="400"
+                                      color="presentCardText.500"
+                                    >
+                                      {thisTitle}
+                                    </Text>
+                                  </VStack>
+                                  <VStack alignItems="center">
+                                    <Text
+                                      fontSize="14"
+                                      fontWeight="500"
+                                      color="presentCardCompareText.500"
+                                    >
+                                      {getPercentage(compareAttendance, item) +
+                                        "%"}
+                                    </Text>
+                                    <Text
+                                      fontSize="10"
+                                      fontWeight="400"
+                                      color="presentCardCompareText.500"
+                                    >
+                                      {lastTitle}
+                                    </Text>
+                                  </VStack>
+                                </HStack>
+                              }
+                            />
+                          </Suspense>
                         </Box>
                       )}
                       keyExtractor={(item) => item.id}
@@ -384,63 +386,65 @@ export default function ClassReportDetail() {
                           rounded="lg"
                           my="10px"
                         >
-                          <Card
-                            item={item}
-                            href={"/students/" + item.id}
-                            hidePopUpButton
-                            rightComponent={
-                              <HStack space="2">
-                                <VStack alignItems="center">
-                                  <Text
-                                    fontSize="14"
-                                    fontWeight="500"
-                                    color="absentCardText.500"
-                                  >
-                                    {getPercentage(
-                                      attendance,
-                                      item,
-                                      6,
-                                      "Absent",
-                                      "count"
-                                    ) +
-                                      " " +
-                                      t("DAYS")}
-                                  </Text>
-                                  <Text
-                                    fontSize="10"
-                                    fontWeight="400"
-                                    color="absentCardText.500"
-                                  >
-                                    {thisTitle}
-                                  </Text>
-                                </VStack>
-                                <VStack alignItems="center">
-                                  <Text
-                                    fontSize="14"
-                                    fontWeight="500"
-                                    color="absentCardCompareText.500"
-                                  >
-                                    {getPercentage(
-                                      compareAttendance,
-                                      item,
-                                      6,
-                                      "Absent",
-                                      "count"
-                                    ) +
-                                      " " +
-                                      t("DAYS")}
-                                  </Text>
-                                  <Text
-                                    fontSize="10"
-                                    fontWeight="400"
-                                    color="absentCardCompareText.500"
-                                  >
-                                    {lastTitle}
-                                  </Text>
-                                </VStack>
-                              </HStack>
-                            }
-                          />
+                          <Suspense fallback="loding">
+                            <Card
+                              item={item}
+                              href={"/students/" + item.id}
+                              hidePopUpButton
+                              rightComponent={
+                                <HStack space="2">
+                                  <VStack alignItems="center">
+                                    <Text
+                                      fontSize="14"
+                                      fontWeight="500"
+                                      color="absentCardText.500"
+                                    >
+                                      {getPercentage(
+                                        attendance,
+                                        item,
+                                        6,
+                                        "Absent",
+                                        "count"
+                                      ) +
+                                        " " +
+                                        t("DAYS")}
+                                    </Text>
+                                    <Text
+                                      fontSize="10"
+                                      fontWeight="400"
+                                      color="absentCardText.500"
+                                    >
+                                      {thisTitle}
+                                    </Text>
+                                  </VStack>
+                                  <VStack alignItems="center">
+                                    <Text
+                                      fontSize="14"
+                                      fontWeight="500"
+                                      color="absentCardCompareText.500"
+                                    >
+                                      {getPercentage(
+                                        compareAttendance,
+                                        item,
+                                        6,
+                                        "Absent",
+                                        "count"
+                                      ) +
+                                        " " +
+                                        t("DAYS")}
+                                    </Text>
+                                    <Text
+                                      fontSize="10"
+                                      fontWeight="400"
+                                      color="absentCardCompareText.500"
+                                    >
+                                      {lastTitle}
+                                    </Text>
+                                  </VStack>
+                                </HStack>
+                              }
+                            />
+                          </Suspense>
                         </Box>
                       )}
                       keyExtractor={(item) => item.id}
