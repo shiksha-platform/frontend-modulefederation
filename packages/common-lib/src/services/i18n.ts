@@ -22,7 +22,7 @@ const languageDetector: any = {
 }
 
 const initializeI18n = (namespaces: string[]) => {
-  console.log(namespaces)
+  // console.log(namespaces)
 
   i18n
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -38,7 +38,7 @@ const initializeI18n = (namespaces: string[]) => {
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
       fallbackLng: 'en',
-      debug: true,
+      debug: false,
       ns: namespaces,
       fallbackNS: 'translation',
       backend: {

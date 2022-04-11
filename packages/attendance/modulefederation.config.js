@@ -5,6 +5,9 @@ module.exports = {
   exposes: {
     "./App": "./src/App",
     "./Attendance": "./src/pages/Attendance",
+    "./Report": "./src/pages/reports/Report",
+    "./ReportDetail": "./src/pages/reports/ReportDetail",
+    "./CompareReport": "./src/pages/reports/CompareReport",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

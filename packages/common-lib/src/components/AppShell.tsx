@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 
 function AppShell({ theme, routes, AuthComponent, ...otherProps }: any) {
-  const [token, setToken] = useState(sessionStorage.getItem('token'))
+  const [token, setToken] = useState(localStorage.getItem('token'))
 
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
-        setToken(sessionStorage.getItem('token'))
+        setToken(localStorage.getItem('token'))
       }
     })
     return () => {

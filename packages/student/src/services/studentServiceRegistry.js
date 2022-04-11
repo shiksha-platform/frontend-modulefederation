@@ -1,4 +1,4 @@
-import * as generalServices from "@shiksha/common-lib";
+import { get, post, update as coreUpdate } from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
@@ -35,46 +35,38 @@ const interfaceData = {
   },
 };
 
-export const getAll = async (
-  filters = {
-    limit: 5,
-    filters: {},
-  }
-) => {
-  const result = await generalServices.get(
-    manifest.api_url + "/group/" + filters?.classId + "/members",
-    filters
+export const getAll = async (params = {}, header = {}) => {
+  let headers = {
+    Authorization: "Bearer " + localStorage.getItem("token"),
+    ContentType: "application/json",
+    Accept: "application/json",
+    ...header,
+  };
+  const result = await get(
+    manifest.api_url + "/group/" + params?.classId + "/members",
+    { params: { role: "student", ...params }, headers }
   );
   if (result?.data?.data && result.data.data.length) {
     let ids = result.data.data.map((e) => e.userId).map((e) => e);
-    const newResult = await generalServices.post(
-      manifest.api_url + "/student/getbyids",
-      { ids: ids },
-      {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-          ContentType: "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
-    console.log(newResult.data);
+    if (ids.length > 0) {
+      const newResult = await post(
+        manifest.api_url + "/student/getbyids",
+        { ids: ids },
+        { headers }
+      );
 
-    return newResult.data.data.map((e) => mapInterfaceData(e, interfaceData));
-  } else {
-    return [];
+      return newResult.data.data.map((e) => mapInterfaceData(e, interfaceData));
+    }
   }
+  return [];
 };
 
 export const getOne = async (filters = {}, headers = {}) => {
-  const result = await generalServices.get(
-    manifest.api_url + "/student/" + filters.id,
-    {
-      headers: headers,
-    }
-  );
-  if (result.data) {
-    let resultStudent = mapInterfaceData(result.data, interfaceData);
+  const result = await get(manifest.api_url + "/student/" + filters.id, {
+    headers,
+  });
+  if (result?.data?.data) {
+    let resultStudent = mapInterfaceData(result.data.data, interfaceData);
     resultStudent.id = resultStudent.id?.startsWith("1-")
       ? resultStudent.id?.replace("1-", "")
       : resultStudent.id;
@@ -95,14 +87,14 @@ export const update = async (data = {}, headers = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true);
 
-  const result = await generalServices.update(
+  const result = await coreUpdate(
     manifest.api_url + "/student/" + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {},
     }
   );
-  if (result.data) {
+  if (result?.data) {
     return result;
   } else {
     return {};
