@@ -79,7 +79,13 @@ lerna run start --scope=[module-name]
     core: 'core@[window.appModules.core.url]/remoteEntry.js',
   },
 ```
+<<<<<<< HEAD
 * Add entry to ```modules.json```
+=======
+
+- Add entry to `modules.json`
+
+>>>>>>> 996d0d8fbcc71ecb7ac140c68988fb6878f24ed5
 ```
 # e.g. core module is runninig on localhost:3001 then
 
@@ -105,8 +111,5 @@ const AppShell = React.lazy(() => import("core/AppShell"));
 ```
 
 # Developer Documents
+
 https://shiksha-platform.github.io/docs/Developer/Frontend/
-
-
-
-

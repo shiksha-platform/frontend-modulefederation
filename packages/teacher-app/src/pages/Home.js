@@ -2,6 +2,7 @@ import { Box, Stack, VStack } from "native-base";
 
 import { Layout, Widget } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import manifest from "../manifest.json";
 
 import * as moment from "moment";
 function Home() {
@@ -110,7 +111,7 @@ function Home() {
           _subHeading: { fontWeight: 500, textTransform: "uppercase" },
           avatar: true,
         }}
-        _appBar={{ languages: ["en"] }}
+        _appBar={{ languages: manifest.languages }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
         _subHeader={{
           bg: "classCard.500",

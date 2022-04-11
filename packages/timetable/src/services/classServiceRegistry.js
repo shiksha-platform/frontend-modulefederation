@@ -1,4 +1,4 @@
-import * as generalServices from '@shiksha/common-lib';
+import { get, post } from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
@@ -27,44 +27,37 @@ export const getAll = async (
     filters: {},
   }
 ) => {
-  const result = await generalServices.post(
-    manifest.api_url + "Class/search",
-    filters
-  );
+  const result = await post(manifest.api_url + "Class/search", filters);
   if (result.data) {
     console.log(result.data);
     // console.log(result.data.map((e) => mapInterfaceData(e, interfaceData)))
     // return result.data.map((e) => mapInterfaceData(e, interfaceData));
-    return result.data
+    return result.data;
   } else {
     return [];
   }
 };
 
 export const getAllClasses = async (user_id = "") => {
-  const result = await generalServices.get(
+  const result = await get(
     `https://dev.shikshaplatform.io/group/memberships/${user_id}`,
     {
       headers: {
-        "Authorization": `Bearer ${sessionStorage.getItem('token')}`
-      }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     }
   );
   if (result.data.data) {
-    return result.data.data
+    return result.data.data;
   } else {
     return [];
   }
 };
 
-
 export const getOne = async (filters = {}, headers = {}) => {
-  const result = await generalServices.get(
-    manifest.api_url + "Class/" + filters.id,
-    {
-      headers: headers,
-    }
-  );
+  const result = await get(manifest.api_url + "Class/" + filters.id, {
+    headers,
+  });
   if (result.data) {
     return mapInterfaceData(result.data, interfaceData);
   } else {

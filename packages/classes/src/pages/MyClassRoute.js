@@ -10,43 +10,28 @@ import {
 import { useTranslation } from "react-i18next";
 import { generatePath } from "react-router-dom";
 import { Widget } from "@shiksha/common-lib";
-import * as classServiceRegistry from '../services/classServiceRegistry';
-
-
-
+import * as classServiceRegistry from "../services/classServiceRegistry";
 
 const MyClassRoute = () => {
   const { t } = useTranslation();
   const [classes, setClasses] = useState([]);
-  const authId = sessionStorage.getItem("id");
+  const teacherId = localStorage.getItem("id");
 
-  // useEffect(() => {
-  //   let ignore = false;
-  //   const getData = async () => {
-  //     if (!ignore) {
-  //       setClasses(
-  //         await classServiceRegistry.getAll({
-  //           filters: {
-  //             teacherId: {
-  //               eq: authId,
-  //             },
-  //           },
-  //         })
-  //       );
-  //     }
-  //   };
-  //   //getData();
-  //   setClasses(sampleClassData);
-  // }, [authId]);
-
-  useEffect(async () => {
-    // GET ALL CLASSES
+  useEffect(() => {
+    let ignore = false;
     const getData = async () => {
-      return await classServiceRegistry.getAllClasses("ebecc2ee-4f56-43bf-8cc8-d4847a12762e")
+      if (!ignore) {
+        setClasses(
+          await classServiceRegistry.getAll({
+            teacherId: teacherId,
+            type: "class",
+            role: "teacher",
+          })
+        );
+      }
     };
-    let sampleClassData = await getData();
-    setClasses(sampleClassData);
-  }, [authId]);
+    getData();
+  }, [teacherId]);
 
   return (
     <Box pb={4} pt="30">
@@ -101,16 +86,10 @@ const MyClassRoute = () => {
 const ChooseClassActionSheet = () => {
   const { t } = useTranslation();
 
-  const {
-    isOpen,
-    onOpen,
-    onClose
-  } = useDisclose();
+  const { isOpen, onOpen, onClose } = useDisclose();
   return (
     <>
-
-      <Link
-        onPress={onOpen}>
+      <Link onPress={onOpen}>
         <Box
           rounded="lg"
           borderColor="button.500"
@@ -133,10 +112,6 @@ const ChooseClassActionSheet = () => {
       </Actionsheet>
     </>
   );
-}
+};
 
-
-
-
-
-export default MyClassRoute
+export default MyClassRoute;

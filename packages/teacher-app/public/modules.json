@@ -1,20 +1,20 @@
 {
-    "core": {
-        "url": "http://localhost:3001"
-    },
-    "attendance": {
-        "url": "http://localhost:3002"
-    },
-    "classes": {
-        "url": "http://localhost:3003"
-    },
-    "timetable": {
-        "url": "http://localhost:3004"
-    },
-    "worksheet": {
-        "url": "http://localhost:3005"
-    },
-    "students": {
-        "url": "http://localhost:3006"
-    }
+  "core": {
+    "url": "http://localhost:3001"
+  },
+  "attendance": {
+    "url": "http://localhost:3002"
+  },
+  "classes": {
+    "url": "http://localhost:3003"
+  },
+  "timetable": {
+    "url": "http://localhost:3004"
+  },
+  "students": {
+    "url": "http://localhost:3006"
+  },
+  "worksheet": {
+    "url": "http://localhost:3005"
+  }
 }
