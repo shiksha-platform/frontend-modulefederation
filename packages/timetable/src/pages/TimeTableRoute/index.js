@@ -9,6 +9,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import "./../../assets/css/fullCalendar.css";
 import { timeTables } from "../parts/assets";
 import renderEventContent from "./molecule/renderEventContent";
+import { localLanguage, momentDateFormats } from "assets/constants";
 
 const TimeTableRoute = () => {
   const navigate = useNavigate();
@@ -16,17 +17,17 @@ const TimeTableRoute = () => {
   let calendarRef = React.createRef();
   const [buttonName, setButtonName] = React.useState();
   let datesMin = timeTables.map((e) =>
-    moment(e?.start, "Y-MM-DD HH:mm:ss").toDate()
+    moment(e?.start,momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
   );
   let datesMax = timeTables.map((e) =>
-    moment(e?.end, "Y-MM-DD HH:mm:ss").toDate()
+    moment(e?.end,momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
   );
   const minMaxTime = {
     slotMinTime: datesMin.length
-      ? moment(Math.min(...datesMin)).format("HH:mm:ss")
+      ? moment(Math.min(...datesMin)).format(momentDateFormats.hh_mm_ss)
       : "00:00:00",
     slotMaxTime: datesMax.length
-      ? moment(Math.max(...datesMax)).format("HH:mm:ss")
+      ? moment(Math.max(...datesMax)).format(momentDateFormats.hh_mm_ss)
       : "23:59:59",
   };
   const [timeTableCardOrange, emerald, gray] = useToken("colors", [
@@ -56,14 +57,14 @@ const TimeTableRoute = () => {
       calendarApi.view.type === "timeGridDay"
         ? "timeGridTowDay"
         : "timeGridDay",
-      moment().format("Y-MM-DD")
+      moment().format(momentDateFormats.mm_mm_yyy)
     );
   };
 
   return (
     <Box py="5">
       <FullCalendar
-        locale={localStorage.getItem("lang")}
+        locale={localLanguage()}
         {...minMaxTime}
         height="auto"
         stickyHeaderDates
