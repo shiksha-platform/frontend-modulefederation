@@ -4,7 +4,7 @@ module.exports = {
   name: "timetable",
   exposes: {
     "./App": "./src/App",
-    "./TimeTableRoute": "./src/pages/TimeTableRoute.js",
+    "./TimeTableRoute": "./src/pages/TimeTableRoute/index.js",
   },
   filename: "moduleEntry.js",
   shared: {

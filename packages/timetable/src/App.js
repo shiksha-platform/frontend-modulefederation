@@ -5,6 +5,7 @@ import "./App.css";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { DEFAULT_THEME } from "@shiksha/common-lib";
 import TimeTableRoute from "pages/TimeTableRoute";
+import { navigationRoute } from "services/routes";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -12,7 +13,7 @@ function App() {
     <NativeBaseProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="*" element={<TimeTableRoute />} />
+          <Route path={navigationRoute.fourOfour} element={<TimeTableRoute />} />
         </Routes>
       </Router>
     </NativeBaseProvider>
