@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { IconByName } from "@shiksha/common-lib";
 
 // Start editing here, save and see your changes.
-export default function App({
+export default function StudentEdit({
   studentObject,
   setStudentObject,
   onlyParameterProp,
@@ -181,7 +181,12 @@ export default function App({
                       {item.placeholder}
                     </Text>
                   </FormControl.Label>
-                  <Input key={index} variant="filled" p={2} {...item} />
+                  <Input
+                    variant="filled"
+                    p={2}
+                    {...item}
+                    key={index + item.name}
+                  />
                   {item.name in errors ? (
                     <FormControl.ErrorMessage
                       _text={{
