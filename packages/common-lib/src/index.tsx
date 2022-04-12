@@ -21,6 +21,7 @@ import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
+import Loding from './components/Loding'
 
 export {
   Header,
@@ -34,7 +35,8 @@ export {
   initializeI18n,
   AppShell,
   ProgressBar,
-  Tab
+  Tab,
+  Loding
 }
 
 export * from './services/Auth'

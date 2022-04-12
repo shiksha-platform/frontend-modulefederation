@@ -7,14 +7,14 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import { extendTheme, NativeBaseProvider } from "native-base";
-import { initReactI18next } from "react-i18next";
-import i18n from "i18next";
 
 import Home from "./pages/Home";
-import init from "lang/init";
-
-import manifest from "./manifest.json";
-import { DEFAULT_THEME, eventBus, initializeI18n } from "@shiksha/common-lib";
+import {
+  DEFAULT_THEME,
+  eventBus,
+  initializeI18n,
+  Loding,
+} from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 
 //TODO: separate out the theme related code from App
@@ -52,13 +52,17 @@ function App() {
     const Report = React.lazy(() => import("attendance/Report"));
     const ReportDetail = React.lazy(() => import("attendance/ReportDetail"));
     const CompareReport = React.lazy(() => import("attendance/CompareReport"));
+    const SendSMS = React.lazy(() => import("attendance/SendSMS"));
+    const MessageHistory = React.lazy(() =>
+      import("attendance/MessageHistory")
+    );
     const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
     const Student = React.lazy(() => import("students/Student"));
     const StudentDetails = React.lazy(() => import("students/StudentDetails"));
 
     return (
       <NativeBaseProvider theme={theme}>
-        <React.Suspense fallback="Loading ">
+        <React.Suspense fallback={<Loding />}>
           <Router>
             <Routes>
               <Route path="worksheet" element={<QuestionBank />} />
@@ -74,6 +78,14 @@ function App() {
               <Route
                 path="/attendance/reportCompare/:classId"
                 element={<CompareReport />}
+              />
+              <Route
+                path="/students/sendSms/:studentId"
+                element={<MessageHistory />}
+              />
+              <Route
+                path="/attendance/sendSms/:classId"
+                element={<SendSMS />}
               />
               <Route path="/students/:studentId" element={<StudentDetails />} />
               <Route path="*" element={<Home />} />

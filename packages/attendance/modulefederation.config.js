@@ -5,9 +5,12 @@ module.exports = {
   exposes: {
     "./App": "./src/App",
     "./Attendance": "./src/pages/Attendance",
+    "./AttendanceComponent": "./src/components/AttendanceComponent",
     "./Report": "./src/pages/reports/Report",
     "./ReportDetail": "./src/pages/reports/ReportDetail",
     "./CompareReport": "./src/pages/reports/CompareReport",
+    "./SendSMS": "./src/pages/sms/SendSMS",
+    "./MessageHistory": "./src/pages/sms/MessageHistory",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
