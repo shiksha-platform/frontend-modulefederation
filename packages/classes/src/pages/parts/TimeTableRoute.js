@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  Box,
-  HStack,
-  VStack,
-  useToken,
-} from "native-base";
+import { Text, Box, HStack, VStack, useToken } from "native-base";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -142,7 +136,6 @@ const timeTables = [
   },
 ];
 
-
 const TimeTableRoute = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -174,8 +167,8 @@ const TimeTableRoute = () => {
       backgroundColor: e.activeMenu
         ? emerald
         : index < 4
-          ? timeTableCardOrange
-          : gray,
+        ? timeTableCardOrange
+        : gray,
       borderColor: e.activeMenu ? emerald : timeTableCardOrange,
     };
   });
@@ -283,8 +276,8 @@ const renderEventContent = (eventInfo) => {
               }}
             />
           ) : (
-              <></>
-            )}
+            <></>
+          )}
         </HStack>
         <Text
           fontSize="12px"
@@ -301,5 +294,4 @@ const renderEventContent = (eventInfo) => {
   );
 };
 
-
-export default TimeTableRoute
+export default TimeTableRoute;

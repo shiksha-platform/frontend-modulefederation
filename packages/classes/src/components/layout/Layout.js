@@ -63,13 +63,13 @@ export default function Layout({
         {!isDisabledAppBar ? (
           <AppBar color={imageUrl ? "white" : ""} {..._appBar} />
         ) : (
-            <></>
-          )}
+          <></>
+        )}
         {_header ? (
           <Header {..._header} setShowModal={attMarkSheetAttr.setShowModal} />
         ) : (
-            <></>
-          )}
+          <></>
+        )}
       </Stack>
       {subHeader ? (
         <Box
@@ -85,8 +85,8 @@ export default function Layout({
           {subHeader}
         </Box>
       ) : (
-          <></>
-        )}
+        <></>
+      )}
       {children}
       <Footer {..._footer} />
     </>
@@ -255,22 +255,22 @@ const AttendanceMarkSheet = ({ showModal, setShowModal, selfAttendance }) => {
                     rounded="full"
                     bg={
                       markAttendance === item.name ||
-                        (specialDutyList.some((e) => e.name === markAttendance) &&
-                          item.color === "special_duty")
+                      (specialDutyList.some((e) => e.name === markAttendance) &&
+                        item.color === "special_duty")
                         ? item.color + ".500"
                         : "gray.100"
                     }
                     colorScheme={
                       markAttendance === item.name ||
-                        (specialDutyList.some((e) => e.name === markAttendance) &&
-                          item.color === "special_duty")
+                      (specialDutyList.some((e) => e.name === markAttendance) &&
+                        item.color === "special_duty")
                         ? item.color
                         : "gray"
                     }
                     color={
                       markAttendance === item.name ||
-                        (specialDutyList.some((e) => e.name === markAttendance) &&
-                          item.color === "special_duty")
+                      (specialDutyList.some((e) => e.name === markAttendance) &&
+                        item.color === "special_duty")
                         ? "white"
                         : "gray.500"
                     }
@@ -284,8 +284,8 @@ const AttendanceMarkSheet = ({ showModal, setShowModal, selfAttendance }) => {
                 {item.rightIcon ? (
                   <IconByName name={item.rightIcon} isDisabled />
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
               </HStack>
             </Pressable>
           ))}
@@ -375,8 +375,8 @@ const AttendanceMarkSheet = ({ showModal, setShowModal, selfAttendance }) => {
                 {item.rightIcon ? (
                   <IconByName name={item.rightIcon} isDisabled />
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
               </HStack>
             </Pressable>
           ))}

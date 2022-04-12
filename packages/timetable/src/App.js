@@ -13,7 +13,10 @@ function App() {
     <NativeBaseProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path={navigationRoute.fourOfour} element={<TimeTableRoute />} />
+          <Route
+            path={navigationRoute.fourOfour}
+            element={<TimeTableRoute />}
+          />
         </Routes>
       </Router>
     </NativeBaseProvider>

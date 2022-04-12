@@ -37,8 +37,8 @@ export default function Footer({ routeDynamics }) {
         </Link>
       </Box>
     ) : (
-        <Box {...prop}>{children}</Box>
-      );
+      <Box {...prop}>{children}</Box>
+    );
   };
 
   return (
