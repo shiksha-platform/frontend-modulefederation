@@ -1,5 +1,5 @@
 import React from "react";
-import {  Box, useToken } from "native-base";
+import { Box, useToken } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -17,10 +17,10 @@ const TimeTableRoute = () => {
   let calendarRef = React.createRef();
   const [buttonName, setButtonName] = React.useState();
   let datesMin = timeTables.map((e) =>
-    moment(e?.start,momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
+    moment(e?.start, momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
   );
   let datesMax = timeTables.map((e) =>
-    moment(e?.end,momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
+    moment(e?.end, momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
   );
   const minMaxTime = {
     slotMinTime: datesMin.length
@@ -117,7 +117,5 @@ const TimeTableRoute = () => {
     </Box>
   );
 };
-
-
 
 export default TimeTableRoute;
