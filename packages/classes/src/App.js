@@ -11,7 +11,7 @@ function App() {
   const theme = extendTheme(DEFAULT_THEME);
   return (
     <NativeBaseProvider theme={theme}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="my-classes/:classId" element={<ClassDetails />} />
           <Route path="*" element={<MyClassRoute />} />

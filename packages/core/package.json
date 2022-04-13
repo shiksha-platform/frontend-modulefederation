@@ -42,6 +42,7 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
   },
+  "homepage": "modules/core",
   "scripts": {
     "start": "craco start",
     "build": "craco build",
