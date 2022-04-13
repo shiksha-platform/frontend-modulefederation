@@ -88,6 +88,7 @@
   "NOTES": "Notes",
   "STUDENT_IS_GOOD_NEED": "Student is... good at... has issues... has special needs",
   "SAVE": "Save",
+  "SAVE_VIEW_REPORT": "Save and View Report",
   "ATTENDANCE_REGISTER": "Attendance register",
   "SEE_FULL_REPORT": "See full report",
   "TOTAL": "Total",
@@ -195,5 +196,6 @@
   "CONTINUE": "Continue",
   "CAPTURE": "Capture",
   "YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE": "You have successfully uploaded your image and marked your attendance for the day.",
-  "BACK_TO_HOME": "Back to Home"
+  "BACK_TO_HOME": "Back to Home",
+  "CANCEL": "Cancel"
 }
