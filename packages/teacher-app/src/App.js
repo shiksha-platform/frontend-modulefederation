@@ -63,7 +63,7 @@ function App() {
     return (
       <NativeBaseProvider theme={theme}>
         <React.Suspense fallback={<Loding />}>
-          <Router>
+          <Router basename={process.env.PUBLIC_URL}>
             <Routes>
               <Route path="worksheet" element={<QuestionBank />} />
               <Route path="classes" element={<MyClasses />} />

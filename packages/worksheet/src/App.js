@@ -9,7 +9,7 @@ export default function App() {
   const theme = extendTheme(DEFAULT_THEME);
   return (
     <NativeBaseProvider theme={theme}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="/" element={<QuestionBank />} />
         </Routes>
