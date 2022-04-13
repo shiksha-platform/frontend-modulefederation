@@ -1,14 +1,140 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, Box, HStack, VStack, useToken } from "native-base";
+import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { IconByName } from "@shiksha/common-lib";
+import IconByName from "../../components/IconByName";
+import { weekDates } from "../../components/attendance/AttendanceComponent";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import "./../assets/css/fullCalendar.css";
-import { timeTables } from "./parts/assets";
+import "./../../assets/css/fullCalendar.css";
+
+const timeTables = [
+  {
+    id: "1",
+    start: moment().format("Y-MM-DD") + " 08:30",
+    end: moment().format("Y-MM-DD") + " 09:25",
+    title: "MATHS",
+    subTitle: "Class V, Sec B",
+  },
+  {
+    id: "2",
+    start: moment().format("Y-MM-DD") + " 09:30",
+    end: moment().format("Y-MM-DD") + " 10:25",
+    title: "MATHS",
+    subTitle: "Class V, Sec C",
+  },
+  {
+    id: "3",
+    start: moment().format("Y-MM-DD") + " 10:30",
+    end: moment().format("Y-MM-DD") + " 11:25",
+    title: "SPECIAL_DANCE_MID_DROUP",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "4",
+    start: moment().format("Y-MM-DD") + " 11:30",
+    end: moment().format("Y-MM-DD") + " 12:25",
+    title: "FREE_PERIOD",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "5",
+    start: moment().format("Y-MM-DD") + " 12:30",
+    end: moment().format("Y-MM-DD") + " 13:25",
+    title: "SCIENCE",
+    subTitle: "Class VI, Sec A",
+    activeMenu: true,
+    _text: { color: "white" },
+  },
+  {
+    id: "6",
+    start: moment().format("Y-MM-DD") + " 13:30",
+    end: moment().format("Y-MM-DD") + " 14:25",
+    title: "SUBSTITUTION",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "7",
+    start: moment().format("Y-MM-DD") + " 14:30",
+    end: moment().format("Y-MM-DD") + " 15:25",
+    title: "FREE_PERIOD",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "8",
+    start: moment().format("Y-MM-DD") + " 15:30",
+    end: moment().format("Y-MM-DD") + " 16:25",
+    title: "MATHS",
+    subTitle: "Class VI, Sec A",
+  },
+  {
+    id: "1",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 08:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 09:25",
+    title: "MATHS",
+    subTitle: "Class V, Sec B",
+  },
+  {
+    id: "2",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 09:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 10:25",
+    title: "MATHS",
+    subTitle: "Class V, Sec C",
+  },
+  {
+    id: "3",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 10:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 11:25",
+    title: "SPECIAL_DANCE_MID_DROUP",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "4",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 11:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 12:25",
+    title: "FREE_PERIOD",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "5",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 12:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 13:25",
+    title: "SCIENCE",
+    subTitle: "Class VI, Sec A",
+  },
+  {
+    id: "6",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 13:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 14:25",
+    title: "SUBSTITUTION",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "7",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 14:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 15:25",
+    title: "FREE_PERIOD",
+    subTitle: "N/A",
+    rightIcon: "More2LineIcon",
+  },
+  {
+    id: "8",
+    start: moment().add(1, "days").format("Y-MM-DD") + " 15:30",
+    end: moment().add(1, "days").format("Y-MM-DD") + " 16:25",
+    title: "MATHS",
+    subTitle: "Class VI, Sec A",
+  },
+];
 
 const TimeTableRoute = () => {
   const navigate = useNavigate();
