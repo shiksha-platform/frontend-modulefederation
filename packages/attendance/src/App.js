@@ -8,6 +8,8 @@ import Attendance from "pages/Attendance";
 import Report from "pages/reports/Report";
 import ReportDetail from "pages/reports/ReportDetail";
 import CompareReport from "pages/reports/CompareReport";
+import MessageHistory from "pages/sms/MessageHistory";
+import SendSMS from "pages/sms/SendSMS";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -27,6 +29,14 @@ function App() {
     {
       path: "attendance/reportCompare/:classId",
       component: CompareReport,
+    },
+    {
+      path: "students/sendSms/:studentId",
+      component: SendSMS,
+    },
+    {
+      path: "attendance/sendSms/:studentId",
+      component: MessageHistory,
     },
     {
       path: "*",

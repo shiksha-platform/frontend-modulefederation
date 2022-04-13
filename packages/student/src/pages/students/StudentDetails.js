@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Text, Button, Stack, Box, VStack, HStack, Link } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
+import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
 import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
@@ -18,6 +19,9 @@ export default function StudentDetails() {
   const [attendance, setAttendance] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [attendanceView, setAttendanceView] = useState("month");
+  const AttendanceComponent = React.lazy(() =>
+    import("attendance/AttendanceComponent")
+  );
 
   useEffect(() => {
     let ignore = false;
@@ -38,19 +42,11 @@ export default function StudentDetails() {
   }, [studentId]);
 
   const getAttendance = async (e) => {
-    // const attendanceData = await GetAttendance({
-    //   studentId: {
-    //     eq: studentId,
-    //   },
-    //   classId: {
-    //     eq: e.classId ? e.classId : studentObject.currentClassID,
-    //   },
-    //   teacherId: {
-    //     eq: teacherId,
-    //   },
-    // });
-
-    const attendanceData = [];
+    const attendanceData = await attendanceServiceRegistry.getAll({
+      studentId,
+      classId: e.classId ? e.classId : studentObject.currentClassID,
+      teacherId,
+    });
     setAttendance(attendanceData);
   };
 
@@ -137,7 +133,9 @@ export default function StudentDetails() {
               defaultCollapse
               isDisableCollapse
               onPressFuction={(e) => {
-                setAttendanceView(attendanceView === "month" ? "" : "month");
+                setAttendanceView(
+                  attendanceView === "month" ? "weeks" : "month"
+                );
               }}
               collapsButton={attendanceView === "month" ? false : true}
               header={t("ATTENDANCE")}
@@ -146,25 +144,22 @@ export default function StudentDetails() {
                 {manifest.showOnStudentProfile &&
                 studentObject &&
                 studentObject?.id ? (
-                  <>
-                    <h2>AttendanceComponent</h2>
-                  </>
-                ) : (
-                  // <AttendanceComponent
-                  //   type={attendanceView}
-                  //   page={0}
-                  //   student={studentObject}
-                  //   withDate={true}
-                  //   hidePopUpButton={true}
-                  //   attendanceProp={attendance}
-                  //   getAttendance={getAttendance}
-                  //   _card={{
-                  //     img: false,
-                  //     _textTitle: { display: "none" },
-                  //     _textSubTitle: { display: "none" },
-                  //   }}
-                  // />
                   <></>
+                ) : (
+                  <Suspense fallback="loding">
+                    <AttendanceComponent
+                      type={attendanceView}
+                      page={0}
+                      student={studentObject}
+                      withDate={true}
+                      hidePopUpButton={true}
+                      attendanceProp={attendance}
+                      getAttendance={getAttendance}
+                      _card={{
+                        isHideStudentCard: true,
+                      }}
+                    />
+                  </Suspense>
                 )}
                 <HStack space={2} justifyContent={"center"}>
                   <Link
@@ -187,7 +182,7 @@ export default function StudentDetails() {
                     </Box>
                   </Link>
                   <Link
-                    to={"/students/sendSms/" + studentObject.id}
+                    href={"/students/sendSms/" + studentObject.id}
                     style={{
                       textDecoration: "none",
                       flex: "auto",

@@ -14,14 +14,17 @@ const Collapsible = ({
   children,
   defaultCollapse = true,
   isHeaderBold = true,
-  onPressFuction
+  onPressFuction,
+  isDisableCollapse,
+  collapsButton,
+  _icon
 }) => {
   const [isOpen, setIsOpen] = useState(defaultCollapse)
   return (
     <Box bg='white' p={4}>
       <Pressable
         onPress={() => {
-          setIsOpen(!isOpen)
+          if (!isDisableCollapse) setIsOpen(!isOpen)
           if (onPressFuction) onPressFuction()
         }}
       >
@@ -35,8 +38,13 @@ const Collapsible = ({
           <IconByName
             size='sm'
             isDisabled={true}
-            color={!isOpen ? 'coolGray.400' : 'coolGray.600'}
-            name={!isOpen ? 'ArrowDownSLineIcon' : 'ArrowUpSLineIcon'}
+            color={!isOpen || collapsButton ? 'coolGray.400' : 'coolGray.600'}
+            name={
+              !isOpen || collapsButton
+                ? 'ArrowDownSLineIcon'
+                : 'ArrowUpSLineIcon'
+            }
+            {..._icon}
           />
         </HStack>
       </Pressable>
