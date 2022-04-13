@@ -2,8 +2,7 @@
 rm -rf prod-build
 mkdir prod-build
 mkdir prod-build/modules
-
-find packages \( ! -path packages/common-lib -o ! -path packages/teacher-app \) -type d  -maxdepth 1 -mindepth 1 -exec sh -c '
+find packages \( ! -path packages/common-lib -o ! -path packages/teacher-app \) -type d  -maxdepth 1 -mindepth 1 -exec bash -c '
 for f  do
     # echo $f
     if [ $f != "packages/common-lib" ] &&  [ $f != "packages/teacher-app" ] ; then
