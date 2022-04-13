@@ -16,12 +16,8 @@ import manifest from "../manifest.json";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
 import moment from "moment";
-
 import {
-  Collapsible,
   IconByName,
-  Layout,
-  Menu,
   getStudentsPresentAbsent,
   useWindowSize,
 } from "@shiksha/common-lib";
@@ -345,8 +341,8 @@ export const MultipalAttendance = ({
                       style={{
                         textDecoration: "none",
                       }}
-                      to={
-                        "/classes/attendance/sendSms/" +
+                      href={
+                        "/attendance/sendSms/" +
                         (classObject?.id?.startsWith("1-")
                           ? classObject?.id?.replace("1-", "")
                           : classObject?.id)
@@ -449,7 +445,7 @@ export const MultipalAttendance = ({
                         style={{
                           textDecoration: "none",
                         }}
-                        to={
+                        href={
                           "/classes/attendance/report/" +
                           (classObject?.id?.startsWith("1-")
                             ? classObject?.id?.replace("1-", "")
@@ -566,40 +562,44 @@ export default function AttendanceComponent({
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : ""}>
-        <Suspense fallback="loding">
-          <Card
-            href={"/students/" + student.id}
-            item={student}
-            _arrow={{ _icon: { fontSize: "large" } }}
-            type="attendance"
-            hidePopUpButton={hidePopUpButton}
-            {...(type === "day" ? { _textTitle: { fontSize: "xl" } } : {})}
-            {..._card}
-            rightComponent={
-              type === "day"
-                ? days.map((day, index) => (
-                    <CalendarComponent
-                      key={index}
-                      monthDays={[[day]]}
-                      isIconSizeSmall={true}
-                      isEditDisabled={isEditDisabled}
-                      {...{
-                        attendance,
-                        student,
-                        markAttendance,
-                        setAttendanceObject,
-                        setShowModal,
-                        setSmsShowModal,
-                        loding,
-                        type,
-                        _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
-                      }}
-                    />
-                  ))
-                : false
-            }
-          />
-        </Suspense>
+        {!_card.isHideStudentCard ? (
+          <Suspense fallback="loding">
+            <Card
+              href={"/students/" + student.id}
+              item={student}
+              _arrow={{ _icon: { fontSize: "large" } }}
+              type="attendance"
+              hidePopUpButton={hidePopUpButton}
+              {...(type === "day" ? { _textTitle: { fontSize: "xl" } } : {})}
+              {..._card}
+              rightComponent={
+                type === "day"
+                  ? days.map((day, index) => (
+                      <CalendarComponent
+                        key={index}
+                        monthDays={[[day]]}
+                        isIconSizeSmall={true}
+                        isEditDisabled={isEditDisabled}
+                        {...{
+                          attendance,
+                          student,
+                          markAttendance,
+                          setAttendanceObject,
+                          setShowModal,
+                          setSmsShowModal,
+                          loding,
+                          type,
+                          _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
+                        }}
+                      />
+                    ))
+                  : false
+              }
+            />
+          </Suspense>
+        ) : (
+          ""
+        )}
         {type !== "day" ? (
           <Box borderWidth={1} borderColor={"coolGray.200"} rounded="xl">
             {days.map((day, index) => (

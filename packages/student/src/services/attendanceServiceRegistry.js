@@ -22,7 +22,7 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
-  const result = await coreUpdate(manifest.api_url + "/attendance", {
+  const result = await get(manifest.api_url + "/attendance", {
     params,
     headers,
   });

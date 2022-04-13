@@ -7,6 +7,10 @@ module.exports = {
     "./MyClassRoute": "./src/pages/MyClassRoute.js",
     "./ClassDetails": "./src/pages/ClassDetails.js",
   },
+  remotes: {
+    core: `core@[window.appModules.core.url]/moduleEntry.js`,
+    students: `students@[window.appModules.students.url]/moduleEntry.js`,
+  },
   filename: "moduleEntry.js",
   shared: {
     ...dependencies,

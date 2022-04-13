@@ -1,6 +1,5 @@
 import { IconByName, Layout } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import * as moment from "moment";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack } from "native-base";
