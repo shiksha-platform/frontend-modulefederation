@@ -3,7 +3,7 @@ import { extendTheme, NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 
-function AppShell({ theme, routes, AuthComponent, ...otherProps }: any) {
+function AppShell({ theme, routes, AuthComponent, basename, ...otherProps }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function AppShell({ theme, routes, AuthComponent, ...otherProps }: any) {
     return (
       <NativeBaseProvider theme={theme}>
         <Suspense fallback='loadng...'>
-          <Router>
+          <Router basename={basename}>
             <Routes>
               {routes.map((item: any, index: number) => (
                 <Route
