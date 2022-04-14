@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
-import { Loding } from '@shiksha/common-lib'
+import Loding from './Loding'
 
 function AppShell({
   theme,
