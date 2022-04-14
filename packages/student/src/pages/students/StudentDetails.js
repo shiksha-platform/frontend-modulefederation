@@ -12,7 +12,7 @@ import manifest from "../../manifest.json";
 
 // Start editing here, save and see your changes.
 export default function StudentDetails() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('student');
   const [studentObject, setStudentObject] = useState({});
   const [classObject, setClassObject] = useState({});
   const { studentId } = useParams();
@@ -271,7 +271,7 @@ export default function StudentDetails() {
 }
 
 const InfoSection = ({ items, isLastBorderEnable }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('student');
   return items.map((item, index) => (
     <VStack
       space="3"

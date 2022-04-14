@@ -1,12 +1,13 @@
 import React from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
+import { DEFAULT_THEME, initializeI18n, AppShell } from "@shiksha/common-lib";
 import StudentDetails from "./pages/students/StudentDetails";
 import Student from "./pages/students/Student";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
+  initializeI18n(["student"], `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`);
   const routes = [
     {
       path: "class/students/:classId",
