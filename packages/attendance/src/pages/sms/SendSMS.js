@@ -19,7 +19,7 @@ import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
 import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
 
-export default function SendSMS() {
+export default function SendSMS({ footerLinks }) {
   const { t } = useTranslation();
   const [datePage, setDatePage] = useState(0);
   const { classId } = useParams();
@@ -81,6 +81,7 @@ export default function SendSMS() {
         </HStack>
       }
       _subHeader={{ bg: "attendanceCard.500", mb: 1 }}
+      _footer={footerLinks}
     >
       <VStack space="1">
         <Box bg="white" p="5">

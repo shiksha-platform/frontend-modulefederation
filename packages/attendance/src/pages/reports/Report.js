@@ -19,7 +19,7 @@ import ReportSummary from "../../components/ReportSummary";
 import { Link } from "react-router-dom";
 import manifest from "../../manifest.json";
 
-export default function Report() {
+export default function Report({ footerLinks }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const [calsses, setClasses] = useState([]);
@@ -124,45 +124,7 @@ export default function Report() {
         />
       }
       _subHeader={{ bg: "reportCard.500" }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         {calsses.map((item, index) => (

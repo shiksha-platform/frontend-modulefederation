@@ -29,7 +29,7 @@ import {
   getUniqAttendance,
 } from "@shiksha/common-lib";
 
-export default function ReportDetail() {
+export default function ReportDetail({ footerLinks }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId, view } = useParams();
@@ -170,6 +170,7 @@ export default function ReportDetail() {
         </Stack>
       }
       _subHeader={{ bg: "reportCard.500", mb: 1 }}
+      _footer={footerLinks}
     >
       <VStack space="1">
         <Box bg="white" p="5">

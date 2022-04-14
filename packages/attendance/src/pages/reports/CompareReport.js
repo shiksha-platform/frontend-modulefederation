@@ -31,7 +31,7 @@ import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function ClassReportDetail() {
+export default function ClassReportDetail({ footerLinks }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId } = useParams();
@@ -163,45 +163,7 @@ export default function ClassReportDetail() {
         </Stack>
       }
       _subHeader={{ bg: "reportCard.500", mb: 1 }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       {compare ? (
         <VStack space="1">

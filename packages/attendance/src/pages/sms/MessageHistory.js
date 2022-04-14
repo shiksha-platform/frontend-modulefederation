@@ -19,7 +19,7 @@ import { calendar } from "../../components/AttendanceComponent";
 import CalendarBar from "../../components/CalendarBar";
 import manifest from "../../manifest.json";
 
-export default function MessageHistory() {
+export default function MessageHistory({ footerLinks }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [calendarView, setCalendarView] = useState();
@@ -190,45 +190,7 @@ export default function MessageHistory() {
         </HStack>
       }
       _subHeader={{ bg: "studentCard.500" }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <VStack space="1">
         <Box bg="white" p="5" py="30">

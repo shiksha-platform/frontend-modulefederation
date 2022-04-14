@@ -26,7 +26,7 @@ import * as classServiceRegistry from "../services/classServiceRegistry";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import manifest from "../manifest.json";
 
-export default function ClassDetails() {
+export default function ClassDetails({ footerLinks }) {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
@@ -91,45 +91,7 @@ export default function ClassDetails() {
         bottom: "15px",
         bg: "classCard.500",
       }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Stack space={1} mb="2" shadow={2}>
         <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
@@ -361,7 +323,7 @@ function ClassSubjectsPanel() {
 function ClassDetailsPanel({ students }) {
   const { t } = useTranslation();
   const fullName = localStorage.getItem("fullName");
-  console.log("ClassDetailsPanel", students);
+
   return (
     <Collapsible defaultCollapse={true} header={t("CLASS_DETAILS")}>
       <Collapsible defaultCollapse={true} header={t("SUMMARY")}>

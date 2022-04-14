@@ -9,7 +9,7 @@ import manifest from "../manifest.json";
 const MyClassRoute = React.lazy(() => import("classes/MyClassRoute"));
 const TimeTableRoute = React.lazy(() => import("timetable/TimeTableRoute"));
 
-const MyClasses = () => {
+const MyClasses = ({ footerMenus }) => {
   const { t } = useTranslation();
   return (
     <Layout

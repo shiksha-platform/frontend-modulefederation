@@ -25,7 +25,7 @@ import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
 
-export default function Attendance() {
+export default function Attendance({ footerLinks }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
@@ -186,45 +186,7 @@ export default function Attendance() {
         </Link>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Stack space={1}>
         <Box bg="white" px="5" py="30">

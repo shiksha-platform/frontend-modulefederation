@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 
 import * as moment from "moment";
-function Home() {
+function Home({ footerLinks }) {
   const { t } = useTranslation();
 
   const widgetData = [
@@ -121,45 +121,7 @@ function Home() {
             textTransform: "inherit",
           },
         }}
-        _footer={{
-          menues: [
-            {
-              title: "HOME",
-              icon: "Home4LineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "CLASSES",
-              icon: "TeamLineIcon",
-              module: "Registry",
-              route: "/classes",
-              routeparameters: {},
-            },
-            {
-              title: "SCHOOL",
-              icon: "GovernmentLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "MATERIALS",
-              icon: "BookOpenLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "CAREER",
-              icon: "UserLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-          ],
-        }}
+        _footer={footerLinks}
       >
         <Box bg="white" roundedBottom={"2xl"} py={6} px={4} shadow={3}>
           <Stack>

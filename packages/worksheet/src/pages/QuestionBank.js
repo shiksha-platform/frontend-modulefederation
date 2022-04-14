@@ -7,7 +7,7 @@ import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
 import { Box, Button, Text } from "native-base";
 
-export default function QuestionBank() {
+export default function QuestionBank({ footerLinks }) {
   const { t } = useTranslation();
   const [questions, setQuestions] = useState([]);
   useEffect(async () => {
@@ -40,45 +40,7 @@ export default function QuestionBank() {
             textTransform: "inherit",
           },
         }}
-        _footer={{
-          menues: [
-            {
-              title: "HOME",
-              icon: "Home4LineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "CLASSES",
-              icon: "TeamLineIcon",
-              module: "Registry",
-              route: "/classes",
-              routeparameters: {},
-            },
-            {
-              title: "SCHOOL",
-              icon: "GovernmentLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "MATERIALS",
-              icon: "BookOpenLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "CAREER",
-              icon: "UserLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-          ],
-        }}
+        _footer={footerLinks}
       >
         <Box style={{ flex: "0" }}>
           <Button

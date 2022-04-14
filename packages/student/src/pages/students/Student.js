@@ -19,7 +19,7 @@ import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
 
 // Start editing here, save and see your changes.
-export default function Student() {
+export default function Student({ footerLinks }) {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
@@ -31,7 +31,7 @@ export default function Student() {
       setStudents(await studentServiceRegistry.getAll({ classId }));
 
       let classObj = await classServiceRegistry.getOne({ id: classId });
-      console.log(classObj);
+
       if (!ignore) setClassObject(classObj);
     };
     getData();
@@ -51,45 +51,7 @@ export default function Student() {
       }
       _subHeader={{ bg: "studentCard.500" }}
       _appBar={{ languages: manifest.languages }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Box bg="white" p={4}>
         <Stack space={2}>
