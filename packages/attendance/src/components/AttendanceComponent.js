@@ -286,7 +286,7 @@ export const MultipalAttendance = ({
                     colorScheme="button"
                     onPress={(e) => setShowModal(true)}
                   >
-                    {t("SAVE")}
+                    {t("SAVE_VIEW_REPORT")}
                   </Button>
                   <Button
                     colorScheme="button"
@@ -309,7 +309,13 @@ export const MultipalAttendance = ({
               )}
             </VStack>
           </Box>
-          <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
+          <Actionsheet
+            isOpen={showModal}
+            onClose={() => {
+              setShowModal(false);
+              setIsEditDisabled(true);
+            }}
+          >
             <Stack width={"100%"} height={Height} overflowY={"scroll"}>
               <Actionsheet.Content alignItems={"left"} bg="attendanceCard.500">
                 <HStack justifyContent={"space-between"}>
@@ -324,7 +330,10 @@ export const MultipalAttendance = ({
                   <IconByName
                     name="CloseCircleLineIcon"
                     color="white"
-                    onPress={(e) => setShowModal(false)}
+                    onPress={(e) => {
+                      setShowModal(false);
+                      setIsEditDisabled(true);
+                    }}
                   />
                 </HStack>
               </Actionsheet.Content>
@@ -437,7 +446,10 @@ export const MultipalAttendance = ({
                       <Button
                         variant="outline"
                         colorScheme="button"
-                        onPress={(e) => setShowModal(false)}
+                        onPress={(e) => {
+                          setShowModal(false);
+                          setIsEditDisabled(true);
+                        }}
                       >
                         {t("CLOSE")}
                       </Button>
@@ -562,7 +574,7 @@ export default function AttendanceComponent({
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : ""}>
-        {!_card.isHideStudentCard ? (
+        {!_card?.isHideStudentCard ? (
           <Suspense fallback="loding">
             <Card
               href={"/students/" + student.id}

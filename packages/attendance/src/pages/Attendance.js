@@ -271,7 +271,7 @@ export default function Attendance() {
               _text={{ fontWeight: "400" }}
               onPress={(e) => setIsEditDisabled(!isEditDisabled)}
             >
-              {isEditDisabled ? t("EDIT") : t("DONE")}
+              {isEditDisabled ? t("EDIT") : t("CANCEL")}
             </Button>
           </HStack>
         </Box>
