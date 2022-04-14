@@ -2,11 +2,11 @@ name: CICD
 on: 
   push: 
     branches:
-      - fix-cicd
+      - main
 jobs:
   build:
     name: build-deploy-to-sandbox
-    environment: qa
+    environment: sandbox
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
