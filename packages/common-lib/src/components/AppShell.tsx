@@ -1,10 +1,59 @@
 import React, { Suspense, useEffect, useState } from 'react'
-import { extendTheme, NativeBaseProvider } from 'native-base'
+import { NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
+import { Loding } from '@shiksha/common-lib'
 
-function AppShell({ theme, routes, AuthComponent, basename, ...otherProps }: any) {
+function AppShell({
+  theme,
+  routes,
+  AuthComponent,
+  basename,
+  isShowFooterLink,
+  ...otherProps
+}: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
+  const footerLinks = !isShowFooterLink
+    ? {}
+    : {
+        menues: [
+          {
+            title: 'HOME',
+            icon: 'Home4LineIcon',
+            module: 'Registry',
+            route: '/',
+            routeparameters: {}
+          },
+          {
+            title: 'CLASSES',
+            icon: 'TeamLineIcon',
+            module: 'Registry',
+            route: '/classes',
+            routeparameters: {}
+          },
+          {
+            title: 'SCHOOL',
+            icon: 'GovernmentLineIcon',
+            module: 'Registry',
+            route: '/',
+            routeparameters: {}
+          },
+          {
+            title: 'MATERIALS',
+            icon: 'BookOpenLineIcon',
+            module: 'Registry',
+            route: '/',
+            routeparameters: {}
+          },
+          {
+            title: 'CAREER',
+            icon: 'UserLineIcon',
+            module: 'Registry',
+            route: '/',
+            routeparameters: {}
+          }
+        ]
+      }
 
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
@@ -19,7 +68,7 @@ function AppShell({ theme, routes, AuthComponent, basename, ...otherProps }: any
   if (!token) {
     return (
       <NativeBaseProvider theme={theme}>
-        <React.Suspense fallback='Loading '>
+        <React.Suspense fallback={<Loding />}>
           <AuthComponent />
         </React.Suspense>
       </NativeBaseProvider>
@@ -27,14 +76,14 @@ function AppShell({ theme, routes, AuthComponent, basename, ...otherProps }: any
   } else {
     return (
       <NativeBaseProvider theme={theme}>
-        <Suspense fallback='loadng...'>
+        <Suspense fallback={<Loding />}>
           <Router basename={basename}>
             <Routes>
               {routes.map((item: any, index: number) => (
                 <Route
                   key={index}
                   path={item.path}
-                  element={<item.component />}
+                  element={<item.component {...{ footerLinks }} />}
                 />
               ))}
             </Routes>
