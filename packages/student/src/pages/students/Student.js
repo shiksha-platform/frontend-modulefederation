@@ -20,7 +20,7 @@ import manifest from "../../manifest.json";
 
 // Start editing here, save and see your changes.
 export default function Student({ footerLinks }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('student');
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   const { classId } = useParams();
