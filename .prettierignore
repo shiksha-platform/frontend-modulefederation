@@ -10,7 +10,8 @@ package-lock.json
 
 # production
 /build
-
+/**/build
+/prod-build
 .github/
 /public
 .min.js
