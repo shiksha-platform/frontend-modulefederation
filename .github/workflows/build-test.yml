@@ -30,8 +30,8 @@ jobs:
     - name: Run prettier test
       run: yarn format:check
 
-    - name: Run the tests and generate coverage report
-      run: yarn test
+  #  - name: Run the tests and generate coverage report
+  #    run: yarn test
 
     - name: Build
       run: yarn build
