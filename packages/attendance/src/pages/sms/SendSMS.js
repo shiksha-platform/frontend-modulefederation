@@ -7,8 +7,6 @@ import {
   Checkbox,
   FlatList,
   HStack,
-  PresenceTransition,
-  Pressable,
   Stack,
   Text,
   VStack,
@@ -18,6 +16,7 @@ import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
 import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
+import ButtonHOC from "atoms/ButtonHOC";
 
 export default function SendSMS({ footerLinks }) {
   const { t } = useTranslation();
@@ -229,12 +228,12 @@ export default function SendSMS({ footerLinks }) {
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
             </Text>
             <Button.Group>
-              <Button variant="outline" colorScheme="button">
+              <ButtonHOC variant="outline" colorScheme="button">
                 {t("SELECT_ALL")}
-              </Button>
-              <Button colorScheme="button" _text={{ color: "white" }}>
+              </ButtonHOC>
+              <ButtonHOC colorScheme="button" _text={{ color: "white" }}>
                 {t("SEND")}
-              </Button>
+              </ButtonHOC>
             </Button.Group>
           </VStack>
         </Box>

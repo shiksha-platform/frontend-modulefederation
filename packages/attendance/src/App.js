@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 import "./App.css";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
@@ -10,36 +9,37 @@ import ReportDetail from "pages/reports/ReportDetail";
 import CompareReport from "pages/reports/CompareReport";
 import MessageHistory from "pages/sms/MessageHistory";
 import SendSMS from "pages/sms/SendSMS";
+import {navigationRoute} from './services/routes';
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
   const routes = [
     {
-      path: "attendance",
+      path: navigationRoute.attendance,
       component: Attendance,
     },
     {
-      path: "attendance/report",
+      path: navigationRoute.report,
       component: Report,
     },
     {
-      path: "attendance/report/:classId/:view",
+      path: navigationRoute.attendanceReport,
       component: ReportDetail,
     },
     {
-      path: "attendance/reportCompare/:classId",
+      path: navigationRoute.reportCompare,
       component: CompareReport,
     },
     {
-      path: "students/sendSms/:studentId",
+      path: navigationRoute.sendSms,
       component: SendSMS,
     },
     {
-      path: "attendance/sendSms/:studentId",
+      path: navigationRoute.sendSmsStudentId,
       component: MessageHistory,
     },
     {
-      path: "*",
+      path: navigationRoute.fourOfour,
       component: Attendance,
     },
   ];
