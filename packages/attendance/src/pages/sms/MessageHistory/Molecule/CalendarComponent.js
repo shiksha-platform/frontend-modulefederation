@@ -8,6 +8,7 @@ import {
   VStack,
 } from "native-base";
 import { TouchableHighlight } from "react-native-web";
+import GetIcon from 'atoms/GetIcon';
 
 
 const CalendarComponent = ({
