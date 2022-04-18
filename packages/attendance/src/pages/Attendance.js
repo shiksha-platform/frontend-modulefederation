@@ -2,15 +2,11 @@ import { IconByName, Layout } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Box,
-  Button,
-  Center,
   FlatList,
-  Heading,
   HStack,
-  Spinner,
   Stack,
   Text,
   VStack,
@@ -24,6 +20,10 @@ import AttendanceComponent, {
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
+import ButtonHOC from "atoms/ButtonHOC";
+import LinkHOC from "atoms/LinkHOC";
+import Loader from "atoms/Loader";
+import FourOFour from "atoms/FourOFour";
 
 export default function Attendance({ footerLinks }) {
   const { t } = useTranslation();
@@ -93,52 +93,14 @@ export default function Attendance({ footerLinks }) {
   };
 
   if (!classObject && !classObject?.name) {
-    return (
-      <Center flex={1} px="3">
-        <Center
-          height={200}
-          width={{
-            base: 200,
-            lg: 400,
-          }}
-        >
-          404
-        </Center>
-      </Center>
-    );
+    return <FourOFour/>;
   }
 
   if (loding) {
-    return (
-      <Center flex={1} px="3">
-        <Center
-          _text={{
-            color: "white",
-            fontWeight: "bold",
-          }}
-          height={200}
-          width={{
-            base: 200,
-            lg: 400,
-          }}
-        >
-          <VStack space={2} alignItems={"center"}>
-            <Text>
-              {allAttendanceStatus.success ? allAttendanceStatus.success : ""}
-            </Text>
-            <Text>
-              {allAttendanceStatus.fail ? allAttendanceStatus.fail : ""}
-            </Text>
-            <HStack space={2} alignItems="center">
-              <Spinner accessibilityLabel="Loading posts" />
-              <Heading color="primary.500" fontSize="md">
-                Loading
-              </Heading>
-            </HStack>
-          </VStack>
-        </Center>
-      </Center>
-    );
+    return  <Loader 
+              success={allAttendanceStatus.success} 
+              fail={allAttendanceStatus.fail} 
+            />
   }
 
   return (
@@ -149,11 +111,11 @@ export default function Attendance({ footerLinks }) {
         setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
-          <Link
-            to="/attendance/report"
-            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+          <LinkHOC 
+          to="/attendance/report"
+          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
           >
-            <Box
+          <Box
               rounded="full"
               borderColor="button.500"
               borderWidth="1"
@@ -163,13 +125,13 @@ export default function Attendance({ footerLinks }) {
             >
               {t("REPORT")}
             </Box>
-          </Link>
+          </LinkHOC>
         ),
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={
-        <Link
-          to={"/students/class/" + classId}
+        <LinkHOC
+          to={`/students/class/${classId}`}
           style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
         >
           <HStack space="4" justifyContent="space-between">
@@ -183,7 +145,7 @@ export default function Attendance({ footerLinks }) {
             </VStack>
             <IconByName size="sm" name="ArrowRightSLineIcon" />
           </HStack>
-        </Link>
+        </LinkHOC>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
       _footer={footerLinks}
@@ -221,20 +183,22 @@ export default function Attendance({ footerLinks }) {
                   : false
               }
             />
-            <Button
-              variant="ghost"
-              colorScheme="button"
-              endIcon={
-                <IconByName
-                  name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
-                  isDisabled
-                />
-              }
-              _text={{ fontWeight: "400" }}
-              onPress={(e) => setIsEditDisabled(!isEditDisabled)}
+    
+            <ButtonHOC 
+            variant="ghost"
+            colorScheme="button"
+            endIcon={
+              <IconByName
+                name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
+                isDisabled
+              />
+            }
+            _text={{ fontWeight: "400" }}
+            onPress={(e) => setIsEditDisabled(!isEditDisabled)}
             >
               {isEditDisabled ? t("EDIT") : t("CANCEL")}
-            </Button>
+            </ButtonHOC>
+
           </HStack>
         </Box>
       </Stack>
