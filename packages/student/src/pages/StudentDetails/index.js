@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Text, Button, Stack, Box, VStack, HStack, Link } from "native-base";
+import { Text, Stack, Box, HStack } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
@@ -9,6 +9,10 @@ import { useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
+import InfoSection from './Molecules/InfoSection';
+import Section from './Molecules/Section';
+import LinkHOC from "atoms/LinkHOC";
+import ButtonHOC from "atoms/ButtonHOC";
 
 // Start editing here, save and see your changes.
 export default function StudentDetails({ footerLinks }) {
@@ -124,8 +128,8 @@ export default function StudentDetails({ footerLinks }) {
                   </Suspense>
                 )}
                 <HStack space={2} justifyContent={"center"}>
-                  <Link
-                    to={"/attendance/" + studentObject.currentClassID}
+                  <LinkHOC
+                    to={`/attendance/${studentObject.currentClassID}`}
                     style={{
                       textDecoration: "none",
                       flex: "auto",
@@ -142,9 +146,9 @@ export default function StudentDetails({ footerLinks }) {
                     >
                       {t("FULL_CLASS_ATTENDANCE")}
                     </Box>
-                  </Link>
-                  <Link
-                    href={"/students/sendSms/" + studentObject.id}
+                  </LinkHOC>
+                  <LinkHOC
+                    href={`/students/sendSms/${studentObject.id}`}
                     style={{
                       textDecoration: "none",
                       flex: "auto",
@@ -162,7 +166,7 @@ export default function StudentDetails({ footerLinks }) {
                     >
                       {t("MESSAGE_HISTORY")}
                     </Box>
-                  </Link>
+                  </LinkHOC>
                 </HStack>
               </>
             </Collapsible>
@@ -172,14 +176,14 @@ export default function StudentDetails({ footerLinks }) {
         <Section
           title={t("LEARNING")}
           button={
-            <Button
+            <ButtonHOC
               variant="ghost"
               colorScheme="button"
               endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
               _text={{ fontWeight: "400" }}
             >
               {t("EDIT")}
-            </Button>
+            </ButtonHOC>
           }
         >
           {[
@@ -207,14 +211,14 @@ export default function StudentDetails({ footerLinks }) {
           title={t("NOTES_FEEDBACK_ON_STUDENT")}
           _box={{ mb: "4", roundedBottom: "xl", shadow: 2 }}
           button={
-            <Button
+            <ButtonHOC
               variant="ghost"
               colorScheme="button"
               endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
               _text={{ fontWeight: "400" }}
             >
               {t("EDIT")}
-            </Button>
+            </ButtonHOC>
           }
         >
           <Box p="5">
@@ -232,38 +236,5 @@ export default function StudentDetails({ footerLinks }) {
   );
 }
 
-const InfoSection = ({ items, isLastBorderEnable }) => {
-  const { t } = useTranslation();
-  return items.map((item, index) => (
-    <VStack
-      space="3"
-      py="5"
-      borderBottomWidth={
-        items.length - 1 !== index || isLastBorderEnable ? "1" : "0"
-      }
-      borderColor={"coolGray.200"}
-      key={index}
-    >
-      <Text fontSize={"14px"} fontWeight="500" color={"coolGray.400"}>
-        {item.title}
-      </Text>
-      {item.value ? (
-        <Text>{item.value}</Text>
-      ) : (
-        <Text italic>{t("NOT_ENTERED")}</Text>
-      )}
-    </VStack>
-  ));
-};
 
-const Section = ({ title, button, children, _box }) => (
-  <Box bg={"white"} p="5" {..._box}>
-    <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <Text fontSize="16px" fontWeight="500">
-        {title}
-      </Text>
-      {button}
-    </HStack>
-    {children}
-  </Box>
-);
+

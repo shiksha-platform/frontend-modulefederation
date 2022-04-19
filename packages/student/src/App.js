@@ -2,22 +2,23 @@ import React from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
-import StudentDetails from "./pages/students/StudentDetails";
-import Student from "./pages/students/Student";
+import StudentDetails from "./pages/StudentDetails";
+import Student from "./pages/students";
+import { navigationRoute } from "services/routes";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
   const routes = [
     {
-      path: "class/students/:classId",
+      path: navigationRoute.student,
       component: Student,
     },
     {
-      path: "students/:studentId",
+      path: navigationRoute.studentDetails,
       component: StudentDetails,
     },
     {
-      path: "*",
+      path: navigationRoute.fourOfour,
       component: Student,
     },
   ];
