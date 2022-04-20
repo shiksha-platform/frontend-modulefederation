@@ -6,6 +6,9 @@ module.exports = {
     "./App": "./src/App",
     "./TimeTableRoute": "./src/pages/TimeTableRoute/index.js",
   },
+  remotes: {
+    core: `core@[window.appModules.core.url]/moduleEntry.js`,
+  },
   filename: "moduleEntry.js",
   shared: {
     ...dependencies,

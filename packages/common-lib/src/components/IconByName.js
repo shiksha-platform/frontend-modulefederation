@@ -26,6 +26,7 @@ import Loader4LineIcon from 'remixicon-react/Loader4LineIcon'
 import UserSmileLineIcon from 'remixicon-react/UserSmileLineIcon'
 import ListUnorderedIcon from 'remixicon-react/ListUnorderedIcon'
 import EmotionUnhappyLineIcon from 'remixicon-react/EmotionUnhappyLineIcon'
+import BriefcaseLineIcon from 'remixicon-react/BriefcaseLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, _fontawesome, ...props }) {
   if (!isDisabled) {
@@ -117,6 +118,9 @@ export default function IconByName(props) {
       break
     case 'EmotionUnhappyLineIcon':
       icon = <IconButton {...props} icon={<EmotionUnhappyLineIcon />} />
+      break
+    case 'BriefcaseLineIcon':
+      icon = <IconButton {...props} icon={<BriefcaseLineIcon />} />
       break
     default:
       if (props.name !== 'Home4LineIcon') {

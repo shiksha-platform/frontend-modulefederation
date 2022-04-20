@@ -17,7 +17,6 @@
 .fc-timeGridTowDay-button,
 .fc-changeViewButton-button {
   background-color: rgba(0, 0, 0, 0) !important;
-  border: 0px !important;
   color: rgb(248, 117, 88) !important;
   padding: 8px 24px !important;
   border-radius: 9999px !important;
@@ -31,12 +30,11 @@
 .fc .fc-button-primary:focus {
   box-shadow: none !important;
 }
-.fc-timegrid-slot,
+/* .fc-timegrid-slot,
 .fc-col-header-cell,
-.fc-timegrid-axis,
-.fc-scrollgrid,
-.fc-theme-standard td,
-.fc-theme-standard th {
+.fc-timegrid-axis, */
+.fc .fc-timegrid-slot-minor,
+.fc-scrollgrid {
   border: none !important;
 }
 .fc .fc-timegrid-col.fc-day-today {
@@ -60,12 +58,22 @@
 .fc-timegrid-slot-label-cushion.fc-scrollgrid-shrink-cushion {
   font-size: small !important;
 }
-.fc-col-header-cell,
+/* .fc-col-header-cell,
 .fc-timegrid-axis {
   text-align: left !important;
-}
+} */
 .fc .fc-timegrid-axis-frame {
   justify-content: left;
+}
+.fc .fc-timegrid-now-indicator-line {
+  border-color: #3cb983;
+  border-width: 2px 0 0;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+  border-color: #3cb983;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
 }
 @media only screen and (max-width: 414px) {
   .fc-toolbar-title {

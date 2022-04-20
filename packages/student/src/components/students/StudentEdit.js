@@ -9,6 +9,7 @@ import {
   useToast,
   HStack,
   VStack,
+  Select,
 } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { useTranslation } from "react-i18next";
@@ -44,10 +45,15 @@ export default function StudentEdit({
     fathersName: { placeholder: t("FATHERS_NAME") },
     phoneNumber: { placeholder: t("PHONE_NUMBER") },
     email: { placeholder: t("EMAIL"), type: "email" },
-    gender: { placeholder: t("GENDER") },
+    gender: {
+      placeholder: t("GENDER"),
+      type: "select",
+      data: ["Male", "Female"],
+    },
   };
   const formInputs = onlyParameter.map((e) => {
     return {
+      ...parameter[e],
       name: e,
       placeholder: parameter[e]?.placeholder ? parameter[e].placeholder : e,
       isRequired: parameter[e]?.required ? parameter[e].required : false,
@@ -67,6 +73,8 @@ export default function StudentEdit({
             [e]: item.target.value,
             fullName: studentObject.firstName + " " + item.target.value,
           });
+        } else if (parameter[e]?.type === "select") {
+          setStudentObject({ ...studentObject, [e]: item });
         } else {
           setStudentObject({ ...studentObject, [e]: item.target.value });
         }
@@ -163,6 +171,7 @@ export default function StudentEdit({
     >
       <VStack>
         {formInputs.map((item, index) => {
+          if (item.type === "select") console.log(item);
           return (
             <Stack
               p="5"
@@ -181,12 +190,27 @@ export default function StudentEdit({
                       {item.placeholder}
                     </Text>
                   </FormControl.Label>
-                  <Input
-                    variant="filled"
-                    p={2}
-                    {...item}
-                    key={index + item.name}
-                  />
+                  {item.type === "select" ? (
+                    <Select
+                      accessibilityLabel={item.placeholder}
+                      placeholder={item.placeholder}
+                      key={index + item.name}
+                      selectedValue={item?.value}
+                      onValueChange={item.onChange}
+                    >
+                      {item?.data &&
+                        item?.data.map((e, index) => (
+                          <Select.Item key={index} label={e} value={e} />
+                        ))}
+                    </Select>
+                  ) : (
+                    <Input
+                      variant="filled"
+                      p={2}
+                      {...item}
+                      key={index + item.name}
+                    />
+                  )}
                   {item.name in errors ? (
                     <FormControl.ErrorMessage
                       _text={{
