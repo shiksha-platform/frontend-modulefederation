@@ -4,8 +4,8 @@ module.exports = {
   name: "classes",
   exposes: {
     "./App": "./src/App",
-    "./MyClassRoute": "./src/pages/MyClassRoute.js",
-    "./ClassDetails": "./src/pages/ClassDetails.js",
+    "./MyClassRoute": "./src/pages/MyClassRoute/index.js",
+    "./ClassDetails": "./src/pages/ClassDetails/index.js",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

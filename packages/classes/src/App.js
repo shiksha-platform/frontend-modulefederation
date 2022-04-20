@@ -4,6 +4,7 @@ import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
 import ClassDetails from "./pages/ClassDetails";
 import MyClassRoute from "pages/MyClassRoute";
+import { navigationRoutes } from "services/routes";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
