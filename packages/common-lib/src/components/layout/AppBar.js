@@ -18,6 +18,7 @@ export default function AppBar({
   setSearch,
   color,
   languages,
+  onPressBackButton,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
@@ -49,7 +50,10 @@ export default function AppBar({
               size='sm'
               name='ArrowLeftLineIcon'
               color={color ? color : ''}
-              onPress={() => navigate(-1)}
+              onPress={() => {
+                if (onPressBackButton) onPressBackButton()
+                navigate(-1)
+              }}
             />
           )}
           {searchInput ? (

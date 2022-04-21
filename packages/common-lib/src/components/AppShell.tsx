@@ -10,6 +10,7 @@ function AppShell({
   AuthComponent,
   basename,
   isShowFooterLink,
+  appName,
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -83,7 +84,7 @@ function AppShell({
                 <Route
                   key={index}
                   path={item.path}
-                  element={<item.component {...{ footerLinks }} />}
+                  element={<item.component {...{ footerLinks, appName }} />}
                 />
               ))}
             </Routes>

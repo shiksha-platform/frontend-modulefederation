@@ -69,6 +69,7 @@ function App() {
       routes={routes}
       AuthComponent={LoginComponent}
       isShowFooterLink={true}
+      appName="Teacher App"
     />
   );
 }

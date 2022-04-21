@@ -20,6 +20,8 @@ import {
   getPercentageStudentsPresentAbsent,
   getStudentsPresentAbsent,
   getUniqAttendance,
+  capture,
+  generateUUID,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
@@ -31,7 +33,7 @@ import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function ClassReportDetail({ footerLinks }) {
+export default function ClassReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId } = useParams();
@@ -48,6 +50,7 @@ export default function ClassReportDetail({ footerLinks }) {
   const [thisTitle, setThisTitle] = useState("");
   const [lastTitle, setLastTitle] = useState("");
   const Card = React.lazy(() => import("students/Card"));
+  const teacherId = localStorage.getItem("id");
 
   useEffect(() => {
     let ignore = false;
@@ -257,6 +260,7 @@ export default function ClassReportDetail({ footerLinks }) {
                         >
                           <Suspense fallback="loding">
                             <Card
+                              appName={appName}
                               item={item}
                               href={"/students/" + item.id}
                               hidePopUpButton
@@ -350,6 +354,7 @@ export default function ClassReportDetail({ footerLinks }) {
                         >
                           <Suspense fallback="loding">
                             <Card
+                              appName={appName}
                               item={item}
                               href={"/students/" + item.id}
                               hidePopUpButton
@@ -507,6 +512,23 @@ export default function ClassReportDetail({ footerLinks }) {
                     } else {
                       setCompare(item.value);
                       setShowModal(false);
+                      capture("INTERACT", {
+                        type: "Attendance-Compare-Report",
+                        eid: generateUUID(),
+                        $set_once: { id: teacherId },
+                        actor: {
+                          id: teacherId,
+                          type: "Teacher",
+                        },
+                        context: {
+                          type: appName ? appName : "Standalone",
+                        },
+                        edata: {
+                          type: "Attendance-Compare-Report",
+                          groupID: classId,
+                          typeOfComparison: item.name,
+                        },
+                      });
                     }
                   }}
                 >

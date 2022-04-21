@@ -18,6 +18,8 @@ import {
   Layout,
   Menu,
   getStudentsPresentAbsent,
+  capture,
+  generateUUID,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import StudentEdit from "./StudentEdit";
@@ -175,10 +177,12 @@ export default function Card({
   _textTitle,
   _textSubTitle,
   _arrow,
+  appName,
 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [studentObject, setStudentObject] = useState(item);
+  const teacherId = localStorage.getItem("id");
 
   const handalOpenPoup = async (e) => {
     let classObj = await classServiceRegistry.getOne({
@@ -186,6 +190,23 @@ export default function Card({
     });
     item.className = classObj.className;
     setOpen(true);
+    capture("INTERACT", {
+      type: "Attendance-Student-Card",
+      eid: generateUUID(),
+      $set_once: { id: teacherId },
+      actor: {
+        id: teacherId,
+        type: "Teacher",
+      },
+      context: {
+        type: appName ? appName : "Standalone",
+      },
+      edata: {
+        type: "Attendance-Student-Card",
+        groupID: studentObject?.currentClassID,
+        studentId: studentObject?.id,
+      },
+    });
   };
 
   const PressableNew = ({ item, children, href, ...prop }) => {

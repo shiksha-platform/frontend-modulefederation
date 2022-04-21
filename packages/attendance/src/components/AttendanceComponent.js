@@ -20,6 +20,8 @@ import {
   IconByName,
   getStudentsPresentAbsent,
   useWindowSize,
+  capture,
+  generateUUID,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
@@ -141,12 +143,26 @@ export const MultipalAttendance = ({
   isEditDisabled,
   setIsEditDisabled,
   isWithEditButton,
+  appName,
 }) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [presentStudents, setPresentStudents] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [width, Height] = useWindowSize();
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    let interval = null;
+    if (showModal) {
+      interval = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    } else if (!showModal && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [showModal, seconds]);
 
   useEffect(() => {
     const getPresentStudents = async ({ students }) => {
@@ -186,7 +202,6 @@ export const MultipalAttendance = ({
     if (typeof students === "object") {
       let ctr = 0;
       let attendanceAll = getStudentsAttendance();
-
       students.forEach((item, index) => {
         let attendanceObject = attendanceAll.find(
           (e) => item.id === e.studentId
@@ -258,7 +273,48 @@ export const MultipalAttendance = ({
           }
         }, index * 900);
       });
+      if (classId) {
+        capture("INTERACT", {
+          type: "Attendance-Mark-All-Present",
+          eid: generateUUID(),
+          $set_once: { id: teacherId },
+          actor: {
+            id: teacherId,
+            type: "Teacher",
+          },
+          context: {
+            type: appName ? appName : "Standalone",
+          },
+          edata: {
+            type: "Attendance-Mark-All-Present",
+            groupID: classObject.id,
+          },
+        });
+      }
     }
+  };
+
+  const modalClose = () => {
+    setShowModal(false);
+    setIsEditDisabled(true);
+    capture("END", {
+      type: "Attendance-Summary-End",
+      eid: generateUUID(),
+      $set_once: { id: teacherId },
+      actor: {
+        id: teacherId,
+        type: "Teacher",
+      },
+      context: {
+        type: appName ? appName : "Standalone",
+      },
+      edata: {
+        type: "Attendance-Summary-End",
+        groupID: classObject.id,
+        duration: seconds,
+      },
+    });
+    setSeconds(0);
   };
 
   return (
@@ -284,7 +340,25 @@ export const MultipalAttendance = ({
                   <Button
                     variant="outline"
                     colorScheme="button"
-                    onPress={(e) => setShowModal(true)}
+                    onPress={(e) => {
+                      setShowModal(true);
+                      capture("START", {
+                        type: "Attendance-Summary-Start",
+                        eid: generateUUID(),
+                        $set_once: { id: teacherId },
+                        actor: {
+                          id: teacherId,
+                          type: "Teacher",
+                        },
+                        context: {
+                          type: appName ? appName : "Standalone",
+                        },
+                        edata: {
+                          type: "Attendance-Summary-Start",
+                          groupID: classObject.id,
+                        },
+                      });
+                    }}
                   >
                     {t("SAVE_VIEW_REPORT")}
                   </Button>
@@ -309,13 +383,7 @@ export const MultipalAttendance = ({
               )}
             </VStack>
           </Box>
-          <Actionsheet
-            isOpen={showModal}
-            onClose={() => {
-              setShowModal(false);
-              setIsEditDisabled(true);
-            }}
-          >
+          <Actionsheet isOpen={showModal} onClose={() => modalClose()}>
             <Stack width={"100%"} height={Height} overflowY={"scroll"}>
               <Actionsheet.Content alignItems={"left"} bg="attendanceCard.500">
                 <HStack justifyContent={"space-between"}>
@@ -330,10 +398,7 @@ export const MultipalAttendance = ({
                   <IconByName
                     name="CloseCircleLineIcon"
                     color="white"
-                    onPress={(e) => {
-                      setShowModal(false);
-                      setIsEditDisabled(true);
-                    }}
+                    onPress={(e) => modalClose()}
                   />
                 </HStack>
               </Actionsheet.Content>
@@ -419,6 +484,7 @@ export const MultipalAttendance = ({
                                   item={student}
                                   hidePopUpButton={true}
                                   type="veritical"
+                                  appName={appName}
                                 />
                               </Suspense>
                             </Stack>
@@ -446,10 +512,7 @@ export const MultipalAttendance = ({
                       <Button
                         variant="outline"
                         colorScheme="button"
-                        onPress={(e) => {
-                          setShowModal(false);
-                          setIsEditDisabled(true);
-                        }}
+                        onPress={(e) => modalClose()}
                       >
                         {t("CLOSE")}
                       </Button>
@@ -493,6 +556,7 @@ export default function AttendanceComponent({
   _card,
   isEditDisabled,
   _weekBox,
+  appName,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -577,6 +641,7 @@ export default function AttendanceComponent({
         {!_card?.isHideStudentCard ? (
           <Suspense fallback="loding">
             <Card
+              appName={appName}
               href={"/students/" + student.id}
               item={student}
               _arrow={{ _icon: { fontSize: "large" } }}

@@ -1,16 +1,9 @@
-import { IconByName, Layout } from "@shiksha/common-lib";
+import { capture, generateUUID, IconByName, Layout } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Box,
-  FlatList,
-  HStack,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, FlatList, HStack, Stack, Text, VStack } from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
@@ -25,7 +18,7 @@ import LinkHOC from "atoms/LinkHOC";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
 
-export default function Attendance({ footerLinks }) {
+export default function Attendance({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
@@ -39,6 +32,27 @@ export default function Attendance({ footerLinks }) {
   const [search, setSearch] = useState();
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [sms, setSms] = useState([]);
+  const teacherId = localStorage.getItem("id");
+  const [attendanceStartTime, setAttendanceStartTime] = useState();
+  const [unmarkStudents, setUnmarkStudents] = useState([]);
+
+  useEffect(() => {
+    let studentIds = attendance
+      .filter((e) => e.attendance !== "Unmarked")
+      .map((e) =>
+        e?.studentId?.startsWith("1-")
+          ? e?.studentId?.replace("1-", "")
+          : e?.studentId
+      );
+    setUnmarkStudents(
+      students.filter(
+        (e) =>
+          !studentIds.includes(
+            e.id.startsWith("1-") ? e.id.replace("1-", "") : e.id
+          )
+      )
+    );
+  }, [attendance, students]);
 
   useEffect(() => {
     const filterStudent = students.filter((e) =>
@@ -92,15 +106,64 @@ export default function Attendance({ footerLinks }) {
     setAttendance(attendanceData);
   };
 
+  const newSetIsEditDisabled = (isEditDisabled) => {
+    setIsEditDisabled(isEditDisabled);
+    if (!isEditDisabled) {
+      capture("START", {
+        type: "Attendance-Start",
+        eid: generateUUID(),
+        $set: { id: teacherId },
+        actor: {
+          id: teacherId,
+          type: "Teacher",
+        },
+        context: {
+          type: appName ? appName : "Standalone",
+        },
+        edata: {
+          type: "Attendance-Start",
+          groupID: classId,
+        },
+      });
+      setAttendanceStartTime(moment());
+    } else {
+      capture("END", {
+        type: "Attendance-End",
+        eid: generateUUID(),
+        $set_once: { id: teacherId },
+        actor: {
+          id: teacherId,
+          type: "Teacher",
+        },
+        context: {
+          type: appName ? appName : "Standalone",
+        },
+        edata: {
+          type: "Attendance-End",
+          groupID: classId,
+          duration: attendanceStartTime
+            ? moment().diff(attendanceStartTime, "seconds")
+            : 0,
+          percentage:
+            ((students?.length - unmarkStudents.length) / students?.length) *
+            100,
+        },
+      });
+      setAttendanceStartTime();
+    }
+  };
+
   if (!classObject && !classObject?.name) {
-    return <FourOFour/>;
+    return <FourOFour />;
   }
 
   if (loding) {
-    return  <Loader 
-              success={allAttendanceStatus.success} 
-              fail={allAttendanceStatus.fail} 
-            />
+    return (
+      <Loader
+        success={allAttendanceStatus.success}
+        fail={allAttendanceStatus.fail}
+      />
+    );
   }
 
   return (
@@ -111,11 +174,11 @@ export default function Attendance({ footerLinks }) {
         setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
-          <LinkHOC 
-          to="/attendance/report"
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+          <LinkHOC
+            to="/attendance/report"
+            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
           >
-          <Box
+            <Box
               rounded="full"
               borderColor="button.500"
               borderWidth="1"
@@ -183,22 +246,23 @@ export default function Attendance({ footerLinks }) {
                   : false
               }
             />
-    
-            <ButtonHOC 
-            variant="ghost"
-            colorScheme="button"
-            endIcon={
-              <IconByName
-                name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
-                isDisabled
-              />
-            }
-            _text={{ fontWeight: "400" }}
-            onPress={(e) => setIsEditDisabled(!isEditDisabled)}
+
+            <ButtonHOC
+              variant="ghost"
+              colorScheme="button"
+              endIcon={
+                <IconByName
+                  name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
+                  isDisabled
+                />
+              }
+              _text={{ fontWeight: "400" }}
+              onPress={(e) => {
+                newSetIsEditDisabled(!isEditDisabled);
+              }}
             >
               {isEditDisabled ? t("EDIT") : t("CANCEL")}
             </ButtonHOC>
-
           </HStack>
         </Box>
       </Stack>
@@ -215,6 +279,7 @@ export default function Attendance({ footerLinks }) {
               attendanceProp={attendance}
               getAttendance={getAttendance}
               isEditDisabled={isEditDisabled}
+              appName
             />
           )}
           keyExtractor={(item, index) => (item?.id ? item?.id : index)}
@@ -232,7 +297,8 @@ export default function Attendance({ footerLinks }) {
           classId,
           classObject,
           isEditDisabled,
-          setIsEditDisabled,
+          setIsEditDisabled: newSetIsEditDisabled,
+          appName,
         }}
       />
     </Layout>
