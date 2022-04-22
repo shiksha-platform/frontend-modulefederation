@@ -1,4 +1,4 @@
 export const navigationRoutes = {
-    myClasses:'my-classes/:classId',
-    fourOfour:'*'
-}
+  myClasses: "my-classes/:classId",
+  fourOfour: "*",
+};

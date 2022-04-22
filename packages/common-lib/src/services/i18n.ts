@@ -21,8 +21,11 @@ const languageDetector: any = {
   }
 }
 
-const initializeI18n = (namespaces: string[], basePath='/locales/{{lng}}/{{ns}}.json') => {
-//  console.log(`${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`)
+const initializeI18n = (
+  namespaces: string[],
+  basePath = '/locales/{{lng}}/{{ns}}.json'
+) => {
+  //  console.log(`${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`)
   i18n
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
     // learn more: https://github.com/i18next/i18next-http-backend

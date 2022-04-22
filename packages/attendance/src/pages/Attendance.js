@@ -3,14 +3,7 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Box,
-  FlatList,
-  HStack,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, FlatList, HStack, Stack, Text, VStack } from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
@@ -93,14 +86,16 @@ export default function Attendance({ footerLinks }) {
   };
 
   if (!classObject && !classObject?.name) {
-    return <FourOFour/>;
+    return <FourOFour />;
   }
 
   if (loding) {
-    return  <Loader 
-              success={allAttendanceStatus.success} 
-              fail={allAttendanceStatus.fail} 
-            />
+    return (
+      <Loader
+        success={allAttendanceStatus.success}
+        fail={allAttendanceStatus.fail}
+      />
+    );
   }
 
   return (
@@ -111,11 +106,11 @@ export default function Attendance({ footerLinks }) {
         setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
-          <LinkHOC 
-          to="/attendance/report"
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+          <LinkHOC
+            to="/attendance/report"
+            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
           >
-          <Box
+            <Box
               rounded="full"
               borderColor="button.500"
               borderWidth="1"
@@ -183,22 +178,21 @@ export default function Attendance({ footerLinks }) {
                   : false
               }
             />
-    
-            <ButtonHOC 
-            variant="ghost"
-            colorScheme="button"
-            endIcon={
-              <IconByName
-                name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
-                isDisabled
-              />
-            }
-            _text={{ fontWeight: "400" }}
-            onPress={(e) => setIsEditDisabled(!isEditDisabled)}
+
+            <ButtonHOC
+              variant="ghost"
+              colorScheme="button"
+              endIcon={
+                <IconByName
+                  name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
+                  isDisabled
+                />
+              }
+              _text={{ fontWeight: "400" }}
+              onPress={(e) => setIsEditDisabled(!isEditDisabled)}
             >
               {isEditDisabled ? t("EDIT") : t("CANCEL")}
             </ButtonHOC>
-
           </HStack>
         </Box>
       </Stack>
