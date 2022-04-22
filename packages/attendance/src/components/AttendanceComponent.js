@@ -273,7 +273,7 @@ export const MultipalAttendance = ({
           }
         }, index * 900);
       });
-      if (classId) {
+      if (classObject.id) {
         capture("INTERACT", {
           type: "Attendance-Mark-All-Present",
           eid: generateUUID(),
