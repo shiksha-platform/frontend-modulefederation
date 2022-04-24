@@ -31,7 +31,7 @@ const SubCard = ({
   _textTitle,
   _textSubTitle,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("student");
   return type === "veritical" ? (
     <VStack alignItems={"center"}>
       {typeof img === "undefined" || img === true ? (
@@ -176,7 +176,7 @@ export default function Card({
   _textSubTitle,
   _arrow,
 }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("student");
   const [open, setOpen] = useState(false);
   const [studentObject, setStudentObject] = useState(item);
 
