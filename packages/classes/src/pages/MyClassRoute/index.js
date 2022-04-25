@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  HStack,
-  VStack,
-} from "native-base";
+import { Box, HStack, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { generatePath } from "react-router-dom";
 import { Widget } from "@shiksha/common-lib";
@@ -80,7 +76,5 @@ const MyClassRoute = () => {
     </Box>
   );
 };
-
-
 
 export default MyClassRoute;

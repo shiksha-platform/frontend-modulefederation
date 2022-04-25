@@ -225,6 +225,3 @@ export default function MessageHistory({ footerLinks }) {
     </Layout>
   );
 }
-
-
-
