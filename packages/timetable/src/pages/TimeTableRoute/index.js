@@ -95,7 +95,7 @@ const TimeTableRoute = () => {
   };
 
   return (
-    <Box py="5">
+    <Box py="5" bg="white">
       <Box p="5">
         <HStack justifyContent="space-between" alignItems="center">
           <DayWiesBar

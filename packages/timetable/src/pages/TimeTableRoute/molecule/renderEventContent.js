@@ -9,8 +9,14 @@ const renderEventContent = (eventInfo) => {
     timeText: eventInfo?.timeText,
   };
 
+  const inlineEllipsisStyle = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  };
+
   return (
-    <Box p="4">
+    <Box p="4" {...inlineEllipsisStyle}>
       <VStack space={"8px"}>
         <HStack
           justifyContent={"space-between"}
@@ -20,6 +26,7 @@ const renderEventContent = (eventInfo) => {
           <Text
             fontSize="14px"
             fontWeight="600"
+            {...inlineEllipsisStyle}
             {...{
               ...item._text,
               color: item._text?.color,
@@ -30,6 +37,7 @@ const renderEventContent = (eventInfo) => {
           <Text
             fontSize="14px"
             fontWeight="600"
+            {...inlineEllipsisStyle}
             {...{
               ...item._text,
               color: item._text?.color,
@@ -41,6 +49,7 @@ const renderEventContent = (eventInfo) => {
         <Text
           fontSize="12px"
           fontWeight="500"
+          {...inlineEllipsisStyle}
           {...{
             ...item._text,
             color: item._text?.color,

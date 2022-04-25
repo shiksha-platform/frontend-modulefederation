@@ -11,11 +11,11 @@ function App() {
 
   const routes = [
     {
-      path: "my-classes/:classId",
+      path: navigationRoutes.myClasses,
       component: ClassDetails,
     },
     {
-      path: "*",
+      path: navigationRoutes.fourOfour,
       component: MyClassRoute,
     },
   ];

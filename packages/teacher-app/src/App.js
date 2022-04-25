@@ -6,6 +6,7 @@ import {
   initializeI18n,
   Loding,
   AppShell,
+  capturePage,
 } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
@@ -15,7 +16,6 @@ initializeI18n(["translation", "core", "attendance"]);
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
-
   const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
   const Attendance = React.lazy(() => import("attendance/Attendance"));
   const Report = React.lazy(() => import("attendance/Report"));
@@ -26,6 +26,7 @@ function App() {
   const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
   const Student = React.lazy(() => import("students/Student"));
   const StudentDetails = React.lazy(() => import("students/StudentDetails"));
+  capturePage();
   const routes = [
     {
       path: "worksheet",
