@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  Stack,
-  Box,
-  VStack,
-  FlatList,
-} from "native-base";
+import { Text, Stack, Box, VStack, FlatList } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
@@ -13,11 +7,11 @@ import { IconByName, Layout } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
-import Collapsible from './Molecules/Collapsible';
+import Collapsible from "./Molecules/Collapsible";
 import ButtonHOC from "atoms/ButtonHOC";
 
 // Start editing here, save and see your changes.
-const Student = ({ footerLinks }) =>  {
+const Student = ({ footerLinks }) => {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
@@ -99,7 +93,6 @@ const Student = ({ footerLinks }) =>  {
       </Box>
     </Layout>
   );
-}
-
+};
 
 export default Student;

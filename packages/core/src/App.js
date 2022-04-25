@@ -15,7 +15,7 @@ const theme = extendTheme(DEFAULT_THEME);
 function App() {
   return (
     <NativeBaseProvider theme={theme}>
-      <Router  basename={process.env.PUBLIC_URL}>
+      <Router basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="*" element={<Login />} />
         </Routes>

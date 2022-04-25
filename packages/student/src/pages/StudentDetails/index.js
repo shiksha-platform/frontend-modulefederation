@@ -9,14 +9,14 @@ import { useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
-import InfoSection from './Molecules/InfoSection';
-import Section from './Molecules/Section';
+import InfoSection from "./Molecules/InfoSection";
+import Section from "./Molecules/Section";
 import LinkHOC from "atoms/LinkHOC";
 import ButtonHOC from "atoms/ButtonHOC";
 
 // Start editing here, save and see your changes.
 export default function StudentDetails({ footerLinks }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("student");
   const [studentObject, setStudentObject] = useState({});
   const [classObject, setClassObject] = useState({});
   const { studentId } = useParams();
@@ -235,6 +235,3 @@ export default function StudentDetails({ footerLinks }) {
     </Layout>
   );
 }
-
-
-
