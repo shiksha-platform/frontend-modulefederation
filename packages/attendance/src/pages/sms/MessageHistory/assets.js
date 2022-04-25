@@ -1,6 +1,5 @@
 import moment from "moment";
 
-
 export const sms = (student) => {
   return [
     {
@@ -47,5 +46,5 @@ export const sms = (student) => {
         student.firstName +
         " is present in school on Wednesday, 12th of January 2022.",
     },
-  ]
-}
+  ];
+};

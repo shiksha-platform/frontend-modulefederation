@@ -21,7 +21,7 @@ export default function StudentEdit({
   setStudentObject,
   onlyParameterProp,
 }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("student");
   const [editState, setEditState] = useState(false);
   const [editChangeState, setEditChangeState] = useState(false);
   const [errors, setErrors] = React.useState({});

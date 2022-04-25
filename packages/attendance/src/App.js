@@ -9,7 +9,7 @@ import ReportDetail from "pages/reports/ReportDetail";
 import CompareReport from "pages/reports/CompareReport";
 import MessageHistory from "pages/sms/MessageHistory";
 import SendSMS from "pages/sms/SendSMS";
-import {navigationRoute} from './services/routes';
+import { navigationRoute } from "./services/routes";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
