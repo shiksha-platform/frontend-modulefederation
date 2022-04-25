@@ -173,6 +173,7 @@
   "MARK": "निशान",
   "GO_TO_PROFILE": "प्रोफ़ाइल पर जाएं",
   "RESET_TO_UNMARK": "अचिह्नित करने के लिए रीसेट करें",
+  "RESET": "रीसेट करें",
   "MARK_PRESENT": "मार्क प्रेजेंट",
   "MARK_SPECIAL_DUTY": "मार्क स्पेशल ड्यूटी",
   "MARK_ABSENT": "मार्क अनुपस्थित",
@@ -197,5 +198,8 @@
   "CAPTURE": "तस्वीर लेना",
   "YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE": "आपने अपनी छवि सफलतापूर्वक अपलोड कर दी है और दिन के लिए अपनी उपस्थिति दर्ज कर ली है।",
   "BACK_TO_HOME": "घर वापिस जा",
-  "CANCEL": "रद्द करना"
+  "CANCEL": "रद्द करना",
+  "ATTENDANCE_SUBMITTED": "उपस्थिति प्रस्तुत",
+  "MARKING_ALL_STUDENTS_PRESENT": "उपस्थित सभी छात्रों को चिह्नित करना",
+  "LAST_UPDATED_AT": "अंतिम बार अपडेट किया गया"
 }

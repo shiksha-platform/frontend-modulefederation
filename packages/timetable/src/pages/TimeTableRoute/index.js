@@ -515,7 +515,7 @@ const Sheet = ({
                 setSelectedData(false);
               }}
             >
-              {t("REST")}
+              {t("RESET")}
             </Button>
             <Button
               flex="1"

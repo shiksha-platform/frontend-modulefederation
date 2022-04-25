@@ -173,6 +173,7 @@
   "MARK": "Mark",
   "GO_TO_PROFILE": "Go To Profile",
   "RESET_TO_UNMARK": "Reset to Unmark",
+  "RESET": "Reset",
   "MARK_PRESENT": "Mark Present",
   "MARK_SPECIAL_DUTY": "Mark Special Duty",
   "MARK_ABSENT": "Mark Absent",
@@ -197,5 +198,8 @@
   "CAPTURE": "Capture",
   "YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE": "You have successfully uploaded your image and marked your attendance for the day.",
   "BACK_TO_HOME": "Back to Home",
-  "CANCEL": "Cancel"
+  "CANCEL": "Cancel",
+  "ATTENDANCE_SUBMITTED": "Attendance Submitted",
+  "MARKING_ALL_STUDENTS_PRESENT": "Marking all students present",
+  "LAST_UPDATED_AT": "Last updated at"
 }

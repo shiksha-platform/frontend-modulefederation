@@ -3,13 +3,16 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 import { extendTheme } from "native-base";
-import { AppShell, DEFAULT_THEME } from "@shiksha/common-lib";
+import { AppShell, DEFAULT_THEME, initializeI18n } from "@shiksha/common-lib";
 import TimeTableRoute from "pages/TimeTableRoute";
 import { navigationRoute } from "services/routes";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
-
+  initializeI18n(
+    ["timeTable"],
+    `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+  );
   const routes = [
     {
       path: navigationRoute.fourOfour,
