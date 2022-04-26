@@ -1,7 +1,11 @@
 import React from "react";
-import { Center, Heading, HStack, Spinner, Text, VStack } from "native-base";
+import { Center, Heading, Spinner, Text, VStack } from "native-base";
+import { useTranslation } from "react-i18next";
+import { useWindowSize } from "@shiksha/common-lib";
 
 const Loader = ({ success, fail }) => {
+  const { t } = useTranslation();
+  const [width, height] = useWindowSize();
   return (
     <Center flex={1} px="3">
       <Center
@@ -9,21 +13,28 @@ const Loader = ({ success, fail }) => {
           color: "white",
           fontWeight: "bold",
         }}
-        height={200}
-        width={{
-          base: 200,
-          lg: 400,
-        }}
+        height={height}
+        width={width}
       >
         <VStack space={2} alignItems={"center"}>
-          <Text>{success ? success : ""}</Text>
-          <Text>{fail ? fail : ""}</Text>
-          <HStack space={2} alignItems="center">
-            <Spinner accessibilityLabel="Loading posts" />
-            <Heading color="primary.500" fontSize="md">
-              Loading
-            </Heading>
-          </HStack>
+          <VStack space={10} alignItems="center">
+            <Spinner
+              color={"button.500"}
+              accessibilityLabel="Loading posts"
+              size="50"
+            />
+            <VStack alignItems="center" space={2}>
+              <Text fontSize="22px" color="button.500">
+                {success ? success : ""}
+              </Text>
+              <Text fontSize="22px" color="button.500">
+                {fail ? fail : ""}
+              </Text>
+              <Heading color="button.500" fontSize="22px">
+                {t("MARKING_ALL_STUDENTS_PRESENT")}
+              </Heading>
+            </VStack>
+          </VStack>
         </VStack>
       </Center>
     </Center>

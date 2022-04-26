@@ -79,6 +79,12 @@ const DEFAULT_THEME = {
     studentCard: {
       500: '#B9FBC0'
     },
+    successAlert: {
+      500: '#B9FBC0'
+    },
+    successAlertText: {
+      500: '#0D921B'
+    },
     classCard: {
       500: '#D9F0FC'
     },
@@ -90,6 +96,7 @@ const DEFAULT_THEME = {
       500: '#373839'
     },
     reportCard: {
+      100: '#FFF9F9',
       500: '#FFCAAC'
     },
     present: green,
@@ -153,6 +160,17 @@ const DEFAULT_THEME = {
     },
     timeTableCardOrange: {
       500: '#FFF7F5'
+    },
+    timeTableFlashIcon: {
+      100: '#BDB3E7',
+      200: '#BDB3E7',
+      300: '#BDB3E7',
+      400: '#BDB3E7',
+      500: '#BDB3E7',
+      600: '#BDB3E7',
+      700: '#BDB3E7',
+      800: '#BDB3E7',
+      900: '#BDB3E7'
     }
   }
 }

@@ -15,7 +15,12 @@ import * as classServiceRegistry from "../../services/classServiceRegistry";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
-import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  capturePage,
+} from "@shiksha/common-lib";
 import ButtonHOC from "atoms/ButtonHOC";
 
 export default function SendSMS({ footerLinks }) {
@@ -48,6 +53,10 @@ export default function SendSMS({ footerLinks }) {
       ignore = true;
     };
   }, [classId]);
+
+  useEffect(() => {
+    capturePage();
+  }, []);
 
   const getAttendance = async (e) => {
     const attendanceData = await GetAttendance({

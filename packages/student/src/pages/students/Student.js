@@ -13,7 +13,7 @@ import {
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName, Layout } from "@shiksha/common-lib";
+import { capturePage, IconByName, Layout } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
@@ -36,6 +36,10 @@ export default function Student({ footerLinks }) {
     };
     getData();
   }, [classId]);
+
+  useEffect(() => {
+    capturePage();
+  }, []);
 
   return (
     <Layout

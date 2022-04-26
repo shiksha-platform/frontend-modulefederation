@@ -13,6 +13,7 @@ const interfaceData = {
   admissionNo: "admissionNo",
   currentClassID: "groupId",
   email: "email",
+  updatedOn: "updatedOn",
 };
 
 let only = Object.keys(interfaceData);

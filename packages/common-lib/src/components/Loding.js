@@ -1,7 +1,9 @@
-import { Center, VStack, Text, HStack, Spinner, Heading } from 'native-base'
+import { Center, VStack, Text, Spinner, Heading } from 'native-base'
 import React from 'react'
+import { useWindowSize } from './helper'
 
-export default function Loding() {
+export default function Loding({ message = 'Loding' }) {
+  const [width, height] = useWindowSize()
   return (
     <Center flex={1} px='3'>
       <Center
@@ -9,19 +11,22 @@ export default function Loding() {
           color: 'white',
           fontWeight: 'bold'
         }}
-        height={200}
-        width={{
-          base: 200,
-          lg: 400
-        }}
+        height={height}
+        width={width}
       >
         <VStack space={2} alignItems={'center'}>
-          <HStack space={2} alignItems='center'>
-            <Spinner accessibilityLabel='Loading posts' />
-            <Heading color='primary.500' fontSize='md'>
-              Loading
-            </Heading>
-          </HStack>
+          <VStack space={10} alignItems='center'>
+            <Spinner
+              color={'button.500'}
+              accessibilityLabel='Loading posts'
+              size='lg'
+            />
+            <VStack alignItems='center' space={2}>
+              <Heading color='button.500' fontSize='22px'>
+                {message}
+              </Heading>
+            </VStack>
+          </VStack>
         </VStack>
       </Center>
     </Center>

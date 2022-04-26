@@ -201,5 +201,7 @@
   "CANCEL": "Cancel",
   "ATTENDANCE_SUBMITTED": "Attendance Submitted",
   "MARKING_ALL_STUDENTS_PRESENT": "Marking all students present",
-  "LAST_UPDATED_AT": "Last updated at"
+  "LAST_UPDATED_AT": "Last updated at",
+  "LOCATION": "Location",
+  "ORGANIZER": "Organizer"
 }

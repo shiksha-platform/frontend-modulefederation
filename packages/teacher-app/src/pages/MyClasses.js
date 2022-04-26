@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, Box, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
-import { Layout, Tab } from "@shiksha/common-lib";
+import { capturePage, Layout, Tab } from "@shiksha/common-lib";
 import { footerMenus } from "./parts/assets";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -11,6 +11,11 @@ const TimeTableRoute = React.lazy(() => import("timetable/TimeTableRoute"));
 
 const MyClasses = ({ footerMenus }) => {
   const { t } = useTranslation();
+
+  React.useEffect(() => {
+    capturePage();
+  }, []);
+
   return (
     <Layout
       _header={{

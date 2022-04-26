@@ -41,7 +41,10 @@ const TimeTableRoute = () => {
   const [activeDate, setActiveDate] = React.useState();
   const [compare, setCompare] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
+  const [showModalMessages, setShowModalMessages] = React.useState(false);
+  const [showModalClash, setShowModalClash] = React.useState(false);
   const [timeTables, setTimeTables] = React.useState([]);
+  const [selectedEvent, setSelectedEvent] = React.useState({});
   const weekDateArray = weekDates();
   let datesMin = timeTables.map((e) =>
     moment(e?.start, momentDateFormats.y_mm_dd_HH_mm_ss).toDate()
@@ -85,9 +88,6 @@ const TimeTableRoute = () => {
   const changeView = (date) => {
     let calendarApi = calendarRef.current.getApi();
     setActiveDate(date);
-    // setButtonName(
-    //   calendarApi.view.type === "timeGridDay" ? t("COMPARE") : t("TODAY")
-    // );
     calendarApi.changeView(
       "timeGridDay",
       date.format(momentDateFormats.mm_mm_yyy)
@@ -225,11 +225,196 @@ const TimeTableRoute = () => {
           view.el.querySelector(".fc-timegrid-axis-frame").innerHTML =
             t("TIME");
         }}
-        eventContent={renderEventContent}
+        eventContent={(event) => {
+          let item = {
+            ...event?.event?._def,
+            ...event?.event?._def?.extendedProps,
+            timeText: event?.timeText,
+            start: event?.event?._instance?.range?.start,
+            end: event?.event?._instance?.range?.end,
+          };
+          return renderEventContent({
+            ...event,
+            showModal: showModalMessages,
+            setShowModal: (e) => {
+              setShowModalMessages(true);
+              setSelectedEvent(item);
+            },
+            setShowModalClash: (e) => {
+              setShowModalClash(true);
+              setSelectedEvent(item);
+            },
+          });
+        }}
         dayHeaderFormat={{ weekday: "long" }}
         ref={calendarRef}
-        eventClick={(e) => navigate("/subject/" + e.event._def.publicId)}
       />
+      <Actionsheet
+        isOpen={showModalMessages}
+        onClose={() => setShowModalMessages(false)}
+      >
+        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+          <HStack justifyContent={"space-between"}>
+            <Stack p={5} pt={2} pb="25px">
+              <Text fontSize="16px" fontWeight={"600"}>
+                {"Period Details"}
+              </Text>
+            </Stack>
+            <IconByName
+              name="CloseCircleLineIcon"
+              onPress={(e) => setShowModalMessages(false)}
+            />
+          </HStack>
+        </Actionsheet.Content>
+        <Box bg="white" p="5" width="100%">
+          <VStack space="30px">
+            <VStack space="10px">
+              <Text fontSize="16px" fontWeight="600">
+                {selectedEvent?.title}
+              </Text>
+              <Text fontSize="14px" fontWeight="400" color="gray.500">
+                The classses will be seated as per their roll numbers, and
+                teachers are to follow the exam timing strictly.
+              </Text>
+            </VStack>
+            <Stack space={4}>
+              <HStack space="2">
+                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <Text fontSize="14px" fontWeight="500">
+                  {t("LOCATION")}
+                </Text>
+                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                  {selectedEvent?.subTitle}
+                </Text>
+              </HStack>
+              <HStack space="2">
+                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <Text fontSize="14px" fontWeight="500">
+                  {t("Time")}
+                </Text>
+                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                  {selectedEvent?.timeText}
+                </Text>
+              </HStack>
+              <HStack space="2">
+                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <Text fontSize="14px" fontWeight="500">
+                  {t("Date")}
+                </Text>
+                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                  {moment(selectedEvent?.start).format("DD, MMM Y")}
+                </Text>
+              </HStack>
+              <HStack space="2">
+                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <Text fontSize="14px" fontWeight="500">
+                  {t("ORGANIZER")}
+                </Text>
+                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                  {selectedEvent?.organizer}
+                </Text>
+              </HStack>
+              <HStack space="2">
+                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <Text fontSize="14px" fontWeight="500">
+                  {t("ATTENDANCE")}
+                </Text>
+                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                  {selectedEvent?.subTitle}
+                </Text>
+              </HStack>
+            </Stack>
+          </VStack>
+        </Box>
+      </Actionsheet>
+      <Actionsheet
+        isOpen={showModalClash}
+        onClose={() => setShowModalClash(false)}
+        hideDragIndicator
+      >
+        <Actionsheet.Content alignItems={"left"} p="0">
+          <IconByName
+            position="absolute"
+            zIndex="10"
+            top="2"
+            right="2"
+            name="CloseCircleLineIcon"
+            onPress={(e) => setShowModalClash(false)}
+          />
+          {["Mathematics", "Middle school term exams", "Sports day"].map(
+            (name, index) => (
+              <Stack key={index}>
+                {index ? (
+                  <Box borderWidth={1} borderColor="gray.200">
+                    <IconByName
+                      size="sm"
+                      name="FlashlightLineIcon"
+                      colorScheme="timeTableFlashIcon"
+                      variant="solid"
+                      rounded="full"
+                      _icon={{
+                        style: {
+                          fill: "white",
+                        },
+                      }}
+                      right="50%"
+                      bottom="-16px"
+                      position="absolute"
+                    />
+                  </Box>
+                ) : (
+                  ""
+                )}
+                <VStack py={7} px="5" space={2}>
+                  <HStack space="10px" alignItems="center">
+                    <IconByName
+                      p="0"
+                      name="CheckboxBlankFillIcon"
+                      isDisabledinlineEllipsisStyle
+                      color="timeTableFlashIcon.500"
+                    />
+                    <Text fontSize="16px" fontWeight="600">
+                      {index ? name : selectedEvent?.title}
+                    </Text>
+                  </HStack>
+                  <HStack space="2" alignItems="center">
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="MapPinLineIcon"
+                        isDisabled
+                        _icon={{ size: "14" }}
+                      />
+                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                        {selectedEvent?.subTitle}
+                      </Text>
+                    </HStack>
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="TimeLineIcon"
+                        isDisabled
+                        _icon={{ size: "14" }}
+                      />
+                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                        {selectedEvent?.timeText}
+                      </Text>
+                    </HStack>
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="CalendarEventLineIcon"
+                        isDisabled
+                        _icon={{ size: "14" }}
+                      />
+                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                        {moment(selectedEvent?.start).format("DD, MMM Y")}
+                      </Text>
+                    </HStack>
+                  </HStack>
+                </VStack>
+              </Stack>
+            )
+          )}
+        </Actionsheet.Content>
+      </Actionsheet>
     </Box>
   );
 };

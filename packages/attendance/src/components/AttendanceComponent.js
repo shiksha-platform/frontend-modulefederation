@@ -197,6 +197,12 @@ export const MultipalAttendance = ({
       .filter((e) => e);
   };
 
+  const getLastAttedance = () => {
+    let dates = attendance.map((d) => moment(d.updatedOn));
+    let date = moment.max(dates);
+    return dates.length ? date.format("hh:mma") : "N/A";
+  };
+
   const markAllAttendance = async () => {
     setLoding(true);
     if (typeof students === "object") {
@@ -322,22 +328,28 @@ export const MultipalAttendance = ({
       {isWithEditButton || !isEditDisabled ? (
         <Stack
           position={"sticky"}
-          bottom={74}
+          bottom={75}
           width={"100%"}
           style={{ boxShadow: "rgb(0 0 0 / 22%) 0px -2px 10px" }}
         >
-          <Box p="2" py="5" bg="white">
-            <VStack space={"15px"} alignItems={"center"}>
-              <Text
-                textAlign={"center"}
-                fontSize="10px"
-                textTransform={"inherit"}
-              >
-                {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
-              </Text>
+          <Box p="5" bg="white">
+            <VStack space={"15px"}>
+              <VStack>
+                <Text
+                  fontSize="12px"
+                  fontWeight="700"
+                  textTransform={"inherit"}
+                >
+                  {t("LAST_UPDATED_AT") + " " + getLastAttedance()}
+                </Text>
+                <Text fontSize="12px" textTransform={"inherit"}>
+                  {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
+                </Text>
+              </VStack>
               {!isEditDisabled ? (
                 <Button.Group>
                   <Button
+                    flex={1}
                     variant="outline"
                     colorScheme="button"
                     onPress={(e) => {
@@ -363,6 +375,7 @@ export const MultipalAttendance = ({
                     {t("SAVE_VIEW_REPORT")}
                   </Button>
                   <Button
+                    flex={1}
                     colorScheme="button"
                     onPress={markAllAttendance}
                     _text={{ color: "white" }}
@@ -403,34 +416,23 @@ export const MultipalAttendance = ({
                 </HStack>
               </Actionsheet.Content>
               <Stack width={"100%"} space="1" bg={"gray.200"}>
-                <Box bg="reportBoxBg.500" p="5" textAlign={"center"}>
-                  <VStack space={2}>
-                    <Text fontSize="14px" fontWeight="500">
-                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
-                    </Text>
-                    <Text fontSize="10px" fontWeight="300">
-                      {t("STUDENTS_ABSENT")}
-                    </Text>
-                    <Link
-                      style={{
-                        textDecoration: "none",
+                <Box bg="successAlert.500" px={5} py={10}>
+                  <VStack alignItems="center" space="2">
+                    <IconByName
+                      color="successAlertText.500"
+                      name="CheckboxCircleFillIcon"
+                      _icon={{
+                        size: "70",
                       }}
-                      href={
-                        "/attendance/sendSms/" +
-                        (classObject?.id?.startsWith("1-")
-                          ? classObject?.id?.replace("1-", "")
-                          : classObject?.id)
-                      }
+                      isDisabled
+                    />
+                    <Text
+                      color="successAlertText.500"
+                      fontWeight="600"
+                      fontSize="22px"
                     >
-                      <Button
-                        variant="outline"
-                        colorScheme="button"
-                        rounded="lg"
-                        flex="1"
-                      >
-                        {t("SEND_MESSAGE")}
-                      </Button>
-                    </Link>
+                      {t("ATTENDANCE_SUBMITTED")}
+                    </Text>
                   </VStack>
                 </Box>
                 <Box bg="white" p={5}>
@@ -460,8 +462,38 @@ export const MultipalAttendance = ({
                     }}
                   />
                 </Box>
+                <Box bg="white" p="5" textAlign={"center"}>
+                  <VStack space={2}>
+                    <Text fontSize="14px" fontWeight="500">
+                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
+                    </Text>
+                    <Text fontSize="10px" fontWeight="300">
+                      {t("STUDENTS_ABSENT")}
+                    </Text>
+                    <Link
+                      style={{
+                        textDecoration: "none",
+                      }}
+                      href={
+                        "/attendance/sendSms/" +
+                        (classObject?.id?.startsWith("1-")
+                          ? classObject?.id?.replace("1-", "")
+                          : classObject?.id)
+                      }
+                    >
+                      <Button
+                        colorScheme="button"
+                        _text={{ color: "white" }}
+                        rounded="lg"
+                        flex="1"
+                      >
+                        {t("SEND_MESSAGE")}
+                      </Button>
+                    </Link>
+                  </VStack>
+                </Box>
                 <Box bg="white" p={5}>
-                  <Box bg={"gray.100"} rounded={"md"} p="4">
+                  <Box bg={"reportCard.100"} rounded={"md"} p="4">
                     <VStack space={5}>
                       <HStack
                         justifyContent={"space-between"}
@@ -493,13 +525,17 @@ export const MultipalAttendance = ({
                           )
                         )}
                       </HStack>
-                      <Button colorScheme="button" variant="outline">
-                        {(presentStudents?.length > 3
-                          ? "+ " + (presentStudents.length - 3)
-                          : "") +
-                          " " +
-                          t("MORE")}
-                      </Button>
+                      {presentStudents?.length ? (
+                        <Button colorScheme="button" variant="outline">
+                          {(presentStudents?.length > 3
+                            ? "+ " + (presentStudents.length - 3)
+                            : "") +
+                            " " +
+                            t("MORE")}
+                        </Button>
+                      ) : (
+                        ""
+                      )}
                     </VStack>
                   </Box>
                 </Box>
@@ -508,30 +544,23 @@ export const MultipalAttendance = ({
                     <Text textAlign={"center"} fontSize="10px">
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
                     </Text>
-                    <HStack alignItems={"center"} space={4}>
+                    <Button.Group width="100%">
                       <Button
+                        flex={1}
                         variant="outline"
                         colorScheme="button"
                         onPress={(e) => modalClose()}
                       >
                         {t("CLOSE")}
                       </Button>
-                      <Link
-                        style={{
-                          textDecoration: "none",
-                        }}
-                        href={
-                          "/classes/attendance/report/" +
-                          (classObject?.id?.startsWith("1-")
-                            ? classObject?.id?.replace("1-", "")
-                            : classObject?.id)
-                        }
+                      <Button
+                        flex={1}
+                        colorScheme="button"
+                        _text={{ color: "white" }}
                       >
-                        <Button colorScheme="button" _text={{ color: "white" }}>
-                          {t("SEE_FULL_REPORT")}
-                        </Button>
-                      </Link>
-                    </HStack>
+                        {t("SEE_FULL_REPORT")}
+                      </Button>
+                    </Button.Group>
                   </VStack>
                 </Box>
               </Stack>

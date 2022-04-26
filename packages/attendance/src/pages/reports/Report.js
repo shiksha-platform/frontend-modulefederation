@@ -11,7 +11,12 @@ import {
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
-import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  capturePage,
+} from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { calendar, GetAttendance } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
@@ -53,6 +58,10 @@ export default function Report({ footerLinks }) {
       ignore = true;
     };
   }, [page, calendarView]);
+
+  useEffect(() => {
+    capturePage();
+  }, []);
 
   const getAttendance = async (classId) => {
     let weekdays = calendar(page, calendarView);

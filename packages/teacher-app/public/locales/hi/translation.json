@@ -201,5 +201,7 @@
   "CANCEL": "रद्द करना",
   "ATTENDANCE_SUBMITTED": "उपस्थिति प्रस्तुत",
   "MARKING_ALL_STUDENTS_PRESENT": "उपस्थित सभी छात्रों को चिह्नित करना",
-  "LAST_UPDATED_AT": "अंतिम बार अपडेट किया गया"
+  "LAST_UPDATED_AT": "अंतिम बार अपडेट किया गया",
+  "LOCATION": "जगह",
+  "ORGANIZER": "व्यवस्था करनेवाला"
 }

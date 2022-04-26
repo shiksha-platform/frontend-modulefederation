@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu } from "@shiksha/common-lib";
+import { capturePage, Layout, Menu } from "@shiksha/common-lib";
 import { Stack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -28,6 +28,10 @@ const ClassDetails = ({ footerLinks }) => {
     };
     getData();
   }, [classId]);
+
+  React.useEffect(() => {
+    capturePage();
+  }, []);
 
   return (
     <Layout

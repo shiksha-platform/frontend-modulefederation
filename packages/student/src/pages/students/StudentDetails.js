@@ -4,7 +4,12 @@ import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  capturePage,
+} from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
@@ -40,6 +45,10 @@ export default function StudentDetails({ footerLinks }) {
     };
     getData();
   }, [studentId]);
+
+  useEffect(() => {
+    capturePage();
+  }, []);
 
   const getAttendance = async (e) => {
     const attendanceData = await attendanceServiceRegistry.getAll({
