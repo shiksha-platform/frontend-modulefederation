@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
+import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import StudentDetails from "./pages/StudentDetails";
 import Student from "./pages/students";
 import { navigationRoute } from "services/routes";
