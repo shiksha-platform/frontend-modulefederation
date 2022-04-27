@@ -21,7 +21,7 @@ import {
   getStudentsPresentAbsent,
   useWindowSize,
   capture,
-  generateUUID,
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
@@ -280,22 +280,12 @@ export const MultipalAttendance = ({
         }, index * 900);
       });
       if (classObject.id) {
-        capture("INTERACT", {
+        const telemetryData = telemetryFactory.interact({
+          appName,
           type: "Attendance-Mark-All-Present",
-          eid: generateUUID(),
-          $set_once: { id: teacherId },
-          actor: {
-            id: teacherId,
-            type: "Teacher",
-          },
-          context: {
-            type: appName ? appName : "Standalone",
-          },
-          edata: {
-            type: "Attendance-Mark-All-Present",
-            groupID: classObject.id,
-          },
+          groupID: classObject.id,
         });
+        capture("INTERACT", telemetryData);
       }
     }
   };
@@ -303,23 +293,13 @@ export const MultipalAttendance = ({
   const modalClose = () => {
     setShowModal(false);
     setIsEditDisabled(true);
-    capture("END", {
+    const telemetryData = telemetryFactory.end({
+      appName,
       type: "Attendance-Summary-End",
-      eid: generateUUID(),
-      $set_once: { id: teacherId },
-      actor: {
-        id: teacherId,
-        type: "Teacher",
-      },
-      context: {
-        type: appName ? appName : "Standalone",
-      },
-      edata: {
-        type: "Attendance-Summary-End",
-        groupID: classObject.id,
-        duration: seconds,
-      },
+      groupID: classObject.id,
+      duration: seconds,
     });
+    capture("END", telemetryData);
     setSeconds(0);
   };
 
@@ -354,22 +334,12 @@ export const MultipalAttendance = ({
                     colorScheme="button"
                     onPress={(e) => {
                       setShowModal(true);
-                      capture("START", {
+                      const telemetryData = telemetryFactory.start({
+                        appName,
                         type: "Attendance-Summary-Start",
-                        eid: generateUUID(),
-                        $set_once: { id: teacherId },
-                        actor: {
-                          id: teacherId,
-                          type: "Teacher",
-                        },
-                        context: {
-                          type: appName ? appName : "Standalone",
-                        },
-                        edata: {
-                          type: "Attendance-Summary-Start",
-                          groupID: classObject.id,
-                        },
+                        groupID: classObject.id,
                       });
+                      capture("START", telemetryData);
                     }}
                   >
                     {t("SAVE_VIEW_REPORT")}

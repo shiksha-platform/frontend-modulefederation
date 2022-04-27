@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, Box, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
-import { capturePage, Layout, Tab } from "@shiksha/common-lib";
+import { capture, Layout, Tab } from "@shiksha/common-lib";
 import { footerMenus } from "./parts/assets";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -13,7 +13,7 @@ const MyClasses = ({ footerMenus }) => {
   const { t } = useTranslation();
 
   React.useEffect(() => {
-    capturePage();
+    capture("PAGE");
   }, []);
 
   return (

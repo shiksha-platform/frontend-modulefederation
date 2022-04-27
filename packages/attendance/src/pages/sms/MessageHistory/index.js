@@ -11,7 +11,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { capturePage, IconByName, Layout } from "@shiksha/common-lib";
+import { capture, IconByName, Layout } from "@shiksha/common-lib";
 import * as studentServiceRegistry from "../../../services/studentServiceRegistry";
 import { calendar } from "../../../components/AttendanceComponent";
 import CalendarBar from "../../../components/CalendarBar";
@@ -56,7 +56,7 @@ export default function MessageHistory({ footerLinks }) {
   }, [studentId]);
 
   useEffect(() => {
-    capturePage();
+    capture("PAGE");
   }, []);
 
   return (

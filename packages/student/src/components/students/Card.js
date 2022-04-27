@@ -19,7 +19,7 @@ import {
   Menu,
   getStudentsPresentAbsent,
   capture,
-  generateUUID,
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import StudentEdit from "./StudentEdit";
@@ -190,23 +190,13 @@ export default function Card({
     });
     item.className = classObj.className;
     setOpen(true);
-    capture("INTERACT", {
+    const telemetryData = telemetryFactory.interact({
+      appName,
       type: "Attendance-Student-Card",
-      eid: generateUUID(),
-      $set_once: { id: teacherId },
-      actor: {
-        id: teacherId,
-        type: "Teacher",
-      },
-      context: {
-        type: appName ? appName : "Standalone",
-      },
-      edata: {
-        type: "Attendance-Student-Card",
-        groupID: studentObject?.currentClassID,
-        studentId: studentObject?.id,
-      },
+      groupID: studentObject?.currentClassID,
+      studentId: studentObject?.id,
     });
+    capture("INTERACT", telemetryData);
   };
 
   const PressableNew = ({ item, children, href, ...prop }) => {

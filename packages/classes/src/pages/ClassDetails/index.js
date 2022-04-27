@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { capturePage, Layout, Menu } from "@shiksha/common-lib";
+import { capture, Layout, Menu } from "@shiksha/common-lib";
 import { Stack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -30,7 +30,7 @@ const ClassDetails = ({ footerLinks }) => {
   }, [classId]);
 
   React.useEffect(() => {
-    capturePage();
+    capture("PAGE");
   }, []);
 
   return (

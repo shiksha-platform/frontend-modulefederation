@@ -21,7 +21,7 @@ import {
   getStudentsPresentAbsent,
   getUniqAttendance,
   capture,
-  generateUUID,
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
@@ -512,23 +512,13 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                     } else {
                       setCompare(item.value);
                       setShowModal(false);
-                      capture("INTERACT", {
+                      const telemetryData = telemetryFactory.interact({
+                        appName,
                         type: "Attendance-Compare-Report",
-                        eid: generateUUID(),
-                        $set_once: { id: teacherId },
-                        actor: {
-                          id: teacherId,
-                          type: "Teacher",
-                        },
-                        context: {
-                          type: appName ? appName : "Standalone",
-                        },
-                        edata: {
-                          type: "Attendance-Compare-Report",
-                          groupID: classId,
-                          typeOfComparison: item.name,
-                        },
+                        groupID: classId,
+                        typeOfComparison: item.name,
                       });
+                      capture("INTERACT", telemetryData);
                     }
                   }}
                 >

@@ -28,7 +28,7 @@ import {
   getStudentsPresentAbsent,
   getUniqAttendance,
   capture,
-  generateUUID,
+  telemetryFactory,
 } from "@shiksha/common-lib";
 
 export default function ReportDetail({ footerLinks, appName }) {
@@ -55,22 +55,12 @@ export default function ReportDetail({ footerLinks, appName }) {
   const [attendanceStartTime, setAttendanceStartTime] = useState();
 
   useEffect(() => {
-    capture("START", {
+    const telemetryData = telemetryFactory.start({
+      appName,
       type: "Attendance-Full-Report-Start",
-      eid: generateUUID(),
-      $set: { id: teacherId },
-      actor: {
-        id: teacherId,
-        type: "Teacher",
-      },
-      context: {
-        type: appName ? appName : "Standalone",
-      },
-      edata: {
-        type: "Attendance-Full-Report-Start",
-        groupID: classId,
-      },
+      groupID: classId,
     });
+    capture("START", telemetryData);
     setAttendanceStartTime(moment());
   }, []);
 
@@ -150,25 +140,15 @@ export default function ReportDetail({ footerLinks, appName }) {
     <Layout
       _appBar={{
         onPressBackButton: (e) => {
-          capture("END", {
+          const telemetryData = telemetryFactory.end({
+            appName,
             type: "Attendance-Full-Report-End",
-            eid: generateUUID(),
-            $set_once: { id: teacherId },
-            actor: {
-              id: teacherId,
-              type: "Teacher",
-            },
-            context: {
-              type: appName ? appName : "Standalone",
-            },
-            edata: {
-              type: "Attendance-Full-Report-End",
-              groupID: classId,
-              duration: attendanceStartTime
-                ? moment().diff(attendanceStartTime, "seconds")
-                : 0,
-            },
+            groupID: classId,
+            duration: attendanceStartTime
+              ? moment().diff(attendanceStartTime, "seconds")
+              : 0,
           });
+          capture("END", telemetryData);
         },
       }}
       _header={{

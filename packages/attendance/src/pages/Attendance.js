@@ -1,4 +1,9 @@
-import { capture, generateUUID, IconByName, Layout } from "@shiksha/common-lib";
+import {
+  capture,
+  telemetryFactory,
+  IconByName,
+  Layout,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
@@ -109,46 +114,25 @@ export default function Attendance({ footerLinks, appName }) {
   const newSetIsEditDisabled = (isEditDisabled) => {
     setIsEditDisabled(isEditDisabled);
     if (!isEditDisabled) {
-      capture("START", {
+      const telemetryData = telemetryFactory.start({
+        appName,
         type: "Attendance-Start",
-        eid: generateUUID(),
-        $set: { id: teacherId },
-        actor: {
-          id: teacherId,
-          type: "Teacher",
-        },
-        context: {
-          type: appName ? appName : "Standalone",
-        },
-        edata: {
-          type: "Attendance-Start",
-          groupID: classId,
-        },
+        groupID: classId,
       });
+      capture("START", telemetryData);
       setAttendanceStartTime(moment());
     } else {
-      capture("END", {
+      const telemetryData = telemetryFactory.end({
+        appName,
         type: "Attendance-End",
-        eid: generateUUID(),
-        $set_once: { id: teacherId },
-        actor: {
-          id: teacherId,
-          type: "Teacher",
-        },
-        context: {
-          type: appName ? appName : "Standalone",
-        },
-        edata: {
-          type: "Attendance-End",
-          groupID: classId,
-          duration: attendanceStartTime
-            ? moment().diff(attendanceStartTime, "seconds")
-            : 0,
-          percentage:
-            ((students?.length - unmarkStudents.length) / students?.length) *
-            100,
-        },
+        groupID: classId,
+        duration: attendanceStartTime
+          ? moment().diff(attendanceStartTime, "seconds")
+          : 0,
+        percentage:
+          ((students?.length - unmarkStudents.length) / students?.length) * 100,
       });
+      capture("END", telemetryData);
       setAttendanceStartTime();
     }
   };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack, VStack } from "native-base";
-import { capturePage, Layout, Widget } from "@shiksha/common-lib";
+import { capture, Layout, Widget } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 
@@ -103,7 +103,7 @@ function Home({ footerLinks }) {
   ];
 
   React.useEffect(() => {
-    capturePage();
+    capture("PAGE");
   }, []);
 
   return (

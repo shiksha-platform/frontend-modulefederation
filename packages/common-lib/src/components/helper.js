@@ -1,5 +1,4 @@
 import React from 'react'
-import posthog from 'posthog-js'
 
 export const maxWidth = '1080'
 export function useWindowSize() {
@@ -78,37 +77,19 @@ export const getPercentageStudentsPresentAbsent = (
   }
 }
 
-export const capturePage = () => {
-  posthog.init(process.env.PH_PROJECT_API_KEY, {
-    api_host: process.env.PH_INSTANCE_ADDRESS,
-    autocapture: false
-  })
-}
-
-export const capture = (event, data) => {
-  posthog.init(process.env.PH_PROJECT_API_KEY, {
-    api_host: process.env.PH_INSTANCE_ADDRESS,
-    autocapture: false
-  })
-  posthog.capture(event, data)
-}
-
 export const generateUUID = () => {
-  // Public Domain/MIT
-  var d = new Date().getTime() //Timestamp
+  var d = new Date().getTime()
   var d2 =
     (typeof performance !== 'undefined' &&
       performance.now &&
       performance.now() * 1000) ||
-    0 //Time in microseconds since page-load or 0 if unsupported
+    0
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    var r = Math.random() * 16 //random number between 0 and 16
+    var r = Math.random() * 16
     if (d > 0) {
-      //Use timestamp until depleted
       r = (d + r) % 16 | 0
       d = Math.floor(d / 16)
     } else {
-      //Use microseconds since page-load if supported
       r = (d2 + r) % 16 | 0
       d2 = Math.floor(d2 / 16)
     }
