@@ -10,7 +10,7 @@ module.exports = {
     attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`,
     classes: `classes@[window.appModules.classes.url]/moduleEntry.js`,
     worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`,
-    timetable: `timetable@[window.appModules.timetable.url]/moduleEntry.js`,
+    calendar: `calendar@[window.appModules.calendar.url]/moduleEntry.js`,
     students: `students@[window.appModules.students.url]/moduleEntry.js`,
     notification: `notification@[window.appModules.notification.url]/moduleEntry.js`,
   },

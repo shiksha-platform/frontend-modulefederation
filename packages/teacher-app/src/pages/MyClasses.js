@@ -6,7 +6,7 @@ import moment from "moment";
 import manifest from "../manifest.json";
 
 const MyClassRoute = React.lazy(() => import("classes/MyClassRoute"));
-const TimeTableRoute = React.lazy(() => import("timetable/TimeTableRoute"));
+const TimeTableRoute = React.lazy(() => import("calendar/TimeTableRoute"));
 
 const MyClasses = ({ footerLinks }) => {
   const { t } = useTranslation();
