@@ -91,6 +91,10 @@ export default function AppBar({
           ) : (
             <React.Fragment />
           )}
+          <IconByName
+            name='Notification2LineIcon'
+            onPress={(e) => navigate('/notification')}
+          />
           <Center flex={1} px='3'>
             <Menu
               w='190'

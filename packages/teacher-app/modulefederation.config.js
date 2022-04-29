@@ -12,6 +12,7 @@ module.exports = {
     worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`,
     timetable: `timetable@[window.appModules.timetable.url]/moduleEntry.js`,
     students: `students@[window.appModules.students.url]/moduleEntry.js`,
+    notification: `notification@[window.appModules.notification.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

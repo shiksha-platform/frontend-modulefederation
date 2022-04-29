@@ -2,14 +2,13 @@ import React from "react";
 import { Text, Box, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
 import { capture, Layout, Tab } from "@shiksha/common-lib";
-import { footerMenus } from "./parts/assets";
 import moment from "moment";
 import manifest from "../manifest.json";
 
 const MyClassRoute = React.lazy(() => import("classes/MyClassRoute"));
 const TimeTableRoute = React.lazy(() => import("timetable/TimeTableRoute"));
 
-const MyClasses = ({ footerMenus }) => {
+const MyClasses = ({ footerLinks }) => {
   const { t } = useTranslation();
 
   React.useEffect(() => {
@@ -35,7 +34,7 @@ const MyClasses = ({ footerMenus }) => {
           textTransform: "inherit",
         },
       }}
-      _footer={footerMenus}
+      _footer={footerLinks}
     >
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         <Tab

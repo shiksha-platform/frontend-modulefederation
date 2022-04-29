@@ -12,7 +12,7 @@ export default function Attendance() {
   const [searchStudents, setSearchStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   const { classId } = useParams();
-  const [loding, setLoding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const teacherId = sessionStorage.getItem("id");
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();

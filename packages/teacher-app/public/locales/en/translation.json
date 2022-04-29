@@ -203,5 +203,20 @@
   "MARKING_ALL_STUDENTS_PRESENT": "Marking all students present",
   "LAST_UPDATED_AT": "Last updated at",
   "LOCATION": "Location",
-  "ORGANIZER": "Organizer"
+  "ORGANIZER": "Organizer",
+  "MY_NOTIFICATIONS": "My Notification",
+  "VIEW_NOTIFCATION": "View Notification",
+  "VIEW_YOUR_INCOMING_NOTIFICATIONS": "View your incoming notifications",
+  "INBOX": "Inbox",
+  "MARK_ALL_READ": "Mark all read",
+  "FILTER": "Filter",
+  "CREATE_NEW": "Create New",
+  "NOTIFCATION_ACTION": "Notifcation Action",
+  "MARK_AS_READ": "Mark as read",
+  "DELETE_MESSAGES": "Delete messages",
+  "NOTICE": "Notice",
+  "RECEIVED_FROM_ADMIN": "Received from Admin",
+  "RESET_FILTER": "Reset Filter",
+  "SELECT_MODULE": "Select Module",
+  "ADD_NEW_NOTIFICATION": "Add New Notification"
 }

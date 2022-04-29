@@ -258,7 +258,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                           rounded="lg"
                           my="10px"
                         >
-                          <Suspense fallback="loding">
+                          <Suspense fallback="loading">
                             <Card
                               appName={appName}
                               item={item}
@@ -352,7 +352,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                           rounded="lg"
                           my="10px"
                         >
-                          <Suspense fallback="loding">
+                          <Suspense fallback="loading">
                             <Card
                               appName={appName}
                               item={item}

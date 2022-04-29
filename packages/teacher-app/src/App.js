@@ -4,7 +4,7 @@ import { extendTheme } from "native-base";
 import {
   DEFAULT_THEME,
   initializeI18n,
-  Loding,
+  Loading,
   AppShell,
 } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
@@ -25,6 +25,13 @@ function App() {
   const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
   const Student = React.lazy(() => import("students/Student"));
   const StudentDetails = React.lazy(() => import("students/StudentDetails"));
+
+  const Notification = React.lazy(() => import("notification/Notification"));
+  const CreateNotification = React.lazy(() =>
+    import("notification/CreateNotification")
+  );
+  const Outbox = React.lazy(() => import("notification/Outbox"));
+
   const routes = [
     {
       path: "worksheet",
@@ -56,6 +63,9 @@ function App() {
     },
     { path: "/attendance/sendSms/:classId", component: SendSMS },
     { path: "/students/:studentId", component: StudentDetails },
+    { path: "/notification", component: Notification },
+    { path: "/notification/create", component: CreateNotification },
+    { path: "/notification/outbox", component: Outbox },
     { path: "*", component: Home },
   ];
 

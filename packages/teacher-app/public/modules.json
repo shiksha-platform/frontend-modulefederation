@@ -11,10 +11,13 @@
   "timetable": {
     "url": "http://localhost:3004/modules/timetable"
   },
+  "worksheet": {
+    "url": "http://localhost:3005/modules/worksheet"
+  },
   "students": {
     "url": "http://localhost:3006/modules/student"
   },
-  "worksheet": {
-    "url": "http://localhost:3005/modules/worksheet"
+  "notification": {
+    "url": "http://localhost:3007/modules/notification"
   }
 }

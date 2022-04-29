@@ -136,7 +136,7 @@ export const MultipalAttendance = ({
   students,
   attendance,
   getAttendance,
-  setLoding,
+  setLoading,
   setAllAttendanceStatus,
   allAttendanceStatus,
   classObject,
@@ -204,7 +204,7 @@ export const MultipalAttendance = ({
   };
 
   const markAllAttendance = async () => {
-    setLoding(true);
+    setLoading(true);
     if (typeof students === "object") {
       let ctr = 0;
       let attendanceAll = getStudentsAttendance();
@@ -274,7 +274,7 @@ export const MultipalAttendance = ({
           ctr++;
           if (ctr === students.length) {
             setAllAttendanceStatus({});
-            setLoding(false);
+            setLoading(false);
             await getAttendance();
           }
         }, index * 900);
@@ -481,7 +481,7 @@ export const MultipalAttendance = ({
                         {presentStudents.map((student, index) =>
                           index < 3 ? (
                             <Stack key={index}>
-                              <Suspense fallback="loding">
+                              <Suspense fallback="loading">
                                 <Card
                                   item={student}
                                   hidePopUpButton={true}
@@ -564,7 +564,7 @@ export default function AttendanceComponent({
   const [days, setDays] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [smsShowModal, setSmsShowModal] = useState(false);
-  const [loding, setLoding] = useState({});
+  const [loading, setLoading] = useState({});
   const status = manifest?.status ? manifest?.status : [];
   const Card = React.lazy(() => import("students/Card"));
 
@@ -578,13 +578,13 @@ export default function AttendanceComponent({
       if (attendanceProp) {
         setAttendance(attendanceProp);
       }
-      setLoding({});
+      setLoading({});
     }
     getData();
   }, [page, attendanceProp, type]);
 
   const markAttendance = async (dataObject) => {
-    setLoding({
+    setLoading({
       [dataObject.date + dataObject.id]: true,
     });
 
@@ -638,7 +638,7 @@ export default function AttendanceComponent({
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : ""}>
         {!_card?.isHideStudentCard ? (
-          <Suspense fallback="loding">
+          <Suspense fallback="loading">
             <Card
               appName={appName}
               href={"/students/" + student.id}
@@ -663,7 +663,7 @@ export default function AttendanceComponent({
                           setAttendanceObject,
                           setShowModal,
                           setSmsShowModal,
-                          loding,
+                          loading,
                           type,
                           _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
                         }}
@@ -691,7 +691,7 @@ export default function AttendanceComponent({
                   setAttendanceObject,
                   setShowModal,
                   setSmsShowModal,
-                  loding,
+                  loading,
                   type,
                   _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
                 }}
@@ -799,7 +799,7 @@ const CalendarComponent = ({
   setAttendanceObject,
   setShowModal,
   setSmsShowModal,
-  loding,
+  loading,
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
@@ -966,7 +966,7 @@ const CalendarComponent = ({
               }}
             >
               <Box alignItems="center">
-                {loding[dateValue + student.id] ? (
+                {loading[dateValue + student.id] ? (
                   <GetIcon
                     {...attendanceIconProp}
                     status="Loader4LineIcon"

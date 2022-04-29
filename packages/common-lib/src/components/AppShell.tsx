@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
-import Loding from './Loding'
+import Loading from './Loading'
 
 function AppShell({
   theme,
@@ -69,7 +69,7 @@ function AppShell({
   if (!token) {
     return (
       <NativeBaseProvider theme={theme}>
-        <React.Suspense fallback={<Loding />}>
+        <React.Suspense fallback={<Loading />}>
           <AuthComponent />
         </React.Suspense>
       </NativeBaseProvider>
@@ -77,7 +77,7 @@ function AppShell({
   } else {
     return (
       <NativeBaseProvider theme={theme}>
-        <Suspense fallback={<Loding />}>
+        <Suspense fallback={<Loading />}>
           <Router basename={basename}>
             <Routes>
               {routes.map((item: any, index: number) => (

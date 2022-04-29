@@ -33,6 +33,11 @@ import FlashlightLineIcon from 'remixicon-react/FlashlightLineIcon'
 import CheckboxBlankFillIcon from 'remixicon-react/CheckboxBlankFillIcon'
 import MapPinLineIcon from 'remixicon-react/MapPinLineIcon'
 import TimeLineIcon from 'remixicon-react/TimeLineIcon'
+import SurveyLineIcon from 'remixicon-react/SurveyLineIcon'
+import CheckDoubleLineIcon from 'remixicon-react/CheckDoubleLineIcon'
+import MailOpenLineIcon from 'remixicon-react/MailOpenLineIcon'
+import MailSendLineIcon from 'remixicon-react/MailSendLineIcon'
+import Notification2LineIcon from 'remixicon-react/Notification2LineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -205,11 +210,11 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
-    case 'CheckboxBlankFillIcon':
+    case 'CheckboxBlankCircleLineIcon':
       icon = (
         <IconButton
           {...props}
-          icon={<CheckboxBlankFillIcon {...(_icon ? _icon : {})} />}
+          icon={<CheckboxBlankCircleLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -221,11 +226,11 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
-    case 'CheckboxBlankCircleLineIcon':
+    case 'CheckboxBlankFillIcon':
       icon = (
         <IconButton
           {...props}
-          icon={<CheckboxBlankCircleLineIcon {...(_icon ? _icon : {})} />}
+          icon={<CheckboxBlankFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -298,6 +303,46 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<TimeLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'SurveyLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SurveyLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CheckDoubleLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CheckDoubleLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MailOpenLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MailOpenLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MailSendLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MailSendLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Notification2LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Notification2LineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

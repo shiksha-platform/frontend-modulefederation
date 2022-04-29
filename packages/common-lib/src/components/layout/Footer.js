@@ -42,7 +42,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
 
   return (
     <Stack>
-      <Box minH={refFoot?.clientHeight}></Box>
+      <Box minH={refFoot?.clientHeight ? refFoot?.clientHeight : 85}></Box>
       <Box
         flex={1}
         safeAreaTop

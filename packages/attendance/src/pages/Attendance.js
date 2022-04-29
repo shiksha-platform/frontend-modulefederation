@@ -32,7 +32,7 @@ export default function Attendance({ footerLinks, appName }) {
   const [classObject, setClassObject] = useState({});
   let { classId } = useParams();
   if (!classId) classId = "dee531ae-9db0-4989-b6a1-da60080679df";
-  const [loding, setLoding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
   const [isEditDisabled, setIsEditDisabled] = useState(true);
@@ -141,7 +141,7 @@ export default function Attendance({ footerLinks, appName }) {
     return <FourOFour />;
   }
 
-  if (loding) {
+  if (loading) {
     return (
       <Loader
         success={allAttendanceStatus.success}
@@ -275,7 +275,7 @@ export default function Attendance({ footerLinks, appName }) {
           students,
           attendance,
           getAttendance,
-          setLoding,
+          setLoading,
           setAllAttendanceStatus,
           allAttendanceStatus,
           classId,

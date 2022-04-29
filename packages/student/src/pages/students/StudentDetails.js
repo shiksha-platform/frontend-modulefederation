@@ -112,7 +112,7 @@ export default function StudentDetails({ footerLinks }) {
                 studentObject?.id ? (
                   <></>
                 ) : (
-                  <Suspense fallback="loding">
+                  <Suspense fallback="loading">
                     <AttendanceComponent
                       type={attendanceView}
                       page={0}

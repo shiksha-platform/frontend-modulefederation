@@ -25,7 +25,7 @@ const ClassStudentsPanel = ({ classObject, students }) => {
                 pr="1"
                 py="4"
               >
-                <Suspense fallback="loding">
+                <Suspense fallback="loading">
                   <Card item={item} href={`/students/${item.id}`} />
                 </Suspense>
               </Box>

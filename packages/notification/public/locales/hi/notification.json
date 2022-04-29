@@ -1,0 +1,23 @@
+{
+  "MY_NOTIFICATIONS": "मेरी अधिसूचना",
+  "VIEW_YOUR_INCOMING_NOTIFICATIONS": "अपनी आने वाली सूचनाएं देखें",
+  "INBOX": "इनबॉक्स",
+  "VIEW_NOTIFCATION": "अधिसूचना देखें",
+  "MARK_ALL_READ": "सभी को पढ़ा दिखाएं",
+  "TODAY": "आज",
+  "YESTERDAY": "बिता कल",
+  "TOMORROW": "कल का दिन",
+  "FILTER": "फ़िल्टर",
+  "CREATE_NEW": "नया बनाओ",
+  "NOTIFCATION_ACTION": "अधिसूचना कार्रवाई",
+  "MARK_AS_READ": "पढ़े हुए का चिह्न",
+  "DELETE_MESSAGES": "संदेश हटाएं",
+  "CONTINUE": "जारी रखें",
+  "DONE": "पूर्ण",
+  "NOTICE": "सूचना",
+  "RECEIVED_FROM_ADMIN": "व्यवस्थापक से प्राप्त",
+  "RESET_FILTER": "फ़िल्टर रीसेट करें",
+  "SELECT_MODULE": "मॉड्यूल का चयन करें",
+  "SELECT_ALL": "सभी का चयन करे",
+  "ADD_NEW_NOTIFICATION": "नई अधिसूचना जोड़ें"
+}
