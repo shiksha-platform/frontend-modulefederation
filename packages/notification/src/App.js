@@ -7,6 +7,7 @@ import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import Notification from "pages/Notification";
 import CreateNotification from "pages/CreateNotification";
 import Outbox from "pages/Outbox";
+import ScheduleNotification from "pages/ScheduleNotification";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -17,6 +18,7 @@ function App() {
   const routes = [
     { path: "/notification", component: Notification },
     { path: "/notification/create", component: CreateNotification },
+    { path: "/notification/schedule", component: ScheduleNotification },
     { path: "/notification/outbox", component: Outbox },
     { path: "*", component: Notification },
   ];

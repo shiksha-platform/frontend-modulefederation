@@ -19,5 +19,17 @@
   "RESET_FILTER": "Reset Filter",
   "SELECT_MODULE": "Select Module",
   "SELECT_ALL": "Select all",
-  "ADD_NEW_NOTIFICATION": "Add New Notification"
+  "ADD_NEW_NOTIFICATION": "Add New Notification",
+  "SEND_LATER": "Send later",
+  "SCHEDULE_NOTIFICATION": "Schedule Notification",
+  "PICK_DATE_AND_TIME": "Pick Date and Time",
+  "DATE": "Date",
+  "MONTH": "Month",
+  "TIME": "Time",
+  "SELECT": "Select",
+  "THIS_IS_A_RECURRING_NOTIFICATION": "This is a recurring notification",
+  "REPEAT": "Repeat",
+  "FREQUENCY": "Frequency",
+  "REVIEW": "Review",
+  "CANCEL": "Cancel"
 }

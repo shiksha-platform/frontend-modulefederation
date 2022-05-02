@@ -38,6 +38,7 @@ import CheckDoubleLineIcon from 'remixicon-react/CheckDoubleLineIcon'
 import MailOpenLineIcon from 'remixicon-react/MailOpenLineIcon'
 import MailSendLineIcon from 'remixicon-react/MailSendLineIcon'
 import Notification2LineIcon from 'remixicon-react/Notification2LineIcon'
+import MailLockLineIcon from 'remixicon-react/MailLockLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -327,6 +328,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<MailOpenLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MailLockLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MailLockLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
