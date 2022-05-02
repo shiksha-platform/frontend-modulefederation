@@ -1,7 +1,7 @@
 const { dependencies } = require("./package.json");
 
 module.exports = {
-  name: "timetable",
+  name: "calendar",
   exposes: {
     "./App": "./src/App",
     "./TimeTableRoute": "./src/pages/TimeTableRoute/index.js",

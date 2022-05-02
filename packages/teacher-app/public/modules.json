@@ -8,8 +8,8 @@
   "classes": {
     "url": "http://localhost:3003/modules/classes"
   },
-  "timetable": {
-    "url": "http://localhost:3004/modules/timetable"
+  "calendar": {
+    "url": "http://localhost:3004/modules/calendar"
   },
   "students": {
     "url": "http://localhost:3006/modules/student"
