@@ -3,11 +3,11 @@ import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
 const interfaceData = {
-  id: "id",
+  id: "attendanceId",
   studentId: "userId",
   topicId: "topicId",
   attendance: "attendance",
-  date: "date",
+  date: "attendanceDate",
   classId: "groupId",
   teacherId: "teacherId",
   admissionNo: "admissionNo",
@@ -22,13 +22,13 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
+
   const result = await generalServices.get(manifest.api_url + "/attendance", {
     ...params,
     headers,
   });
-
-  if (result.data) {
-    return result.data.map((e) => mapInterfaceData(e, interfaceData));
+  if (result.data.data) {
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
     return [];
   }

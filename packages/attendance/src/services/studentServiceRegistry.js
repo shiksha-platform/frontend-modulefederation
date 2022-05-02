@@ -42,21 +42,13 @@ export const getAll = async (params = {}, header = {}) => {
     Accept: "application/json",
     ...header,
   };
+  params.classId ="d287fa46-5308-48b8-a2ec-ee78f83e5f14";
   const result = await get(
-    manifest.api_url + "/group/" + params?.classId + "/members",
-    { params: { role: "student", ...params }, headers }
+    manifest.api_url + "/group/" + params?.classId + "/participants",
+    { params: { role: "Student", ...params }, headers }
   );
-  if (result?.data?.data && result.data.data.length) {
-    let ids = result.data.data.map((e) => e.userId).map((e) => e);
-    if (ids.length > 0) {
-      const newResult = await post(
-        manifest.api_url + "/student/getbyids",
-        { ids: ids },
-        { headers: headers }
-      );
-
-      return newResult.data.data.map((e) => mapInterfaceData(e, interfaceData));
-    }
+  if(result.data.data.length !== 0) {
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
   }
   return [];
 };
@@ -102,5 +94,6 @@ export const update = async (data = {}, headers = {}) => {
 };
 
 export const setDefaultValue = async (data) => {
+  console.log(data.map((e) => mapInterfaceData(e, interfaceData)));
   return data.map((e) => mapInterfaceData(e, interfaceData));
 };

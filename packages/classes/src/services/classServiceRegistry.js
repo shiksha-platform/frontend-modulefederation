@@ -3,15 +3,11 @@ import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
 const interfaceData = {
-  id: "id",
+  id: "groupId",
   schoolId: "schoolId",
   type: "type",
   name: "name",
   status: "status",
-  createdOn: "createdOn",
-  createdBy: "createdBy",
-  updatedBy: "updatedBy",
-  updatedOn: "updatedOn",
   mergeParameterWithValue: {
     title: "name",
   },
@@ -20,6 +16,7 @@ const interfaceData = {
     route: "/classes/:id",
   },
 };
+// /api/v1/student/{id}
 
 export const getAll = async (params = {}, header = {}) => {
   let headers = {
@@ -27,21 +24,28 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
   const result = await get(
-    manifest.api_url + "/group/memberships/" + params.teacherId,
+    `${manifest.api_url}/${manifest.api_version}/group/participant/49819de2-3c8e-473c-bda7-a1b6ea9efbbb?role=Teacher`
+    ,
     {
       ...params,
       headers,
     }
   );
   if (result.data) {
+
     return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
+    return []
   } else {
     return [];
   }
 };
 
-export const getOne = async (filters = {}, headers = {}) => {
-  const result = await get(manifest.api_url + "/group/" + filters.id, {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: "Bearer " + localStorage.getItem("token"),
+  };
+  const result = await get(`${manifest.api_url}/${manifest.api_version}/group/${filters.id}`, {
     headers,
   });
   if (result.data) {

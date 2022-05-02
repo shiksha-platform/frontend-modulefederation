@@ -28,7 +28,7 @@ const ClassDetails = ({ footerLinks }) => {
     };
     getData();
   }, [classId]);
-
+  
   return (
     <Layout
       imageUrl={`${window.location.origin}/class.png`}

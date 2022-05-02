@@ -31,6 +31,7 @@ export default function StudentDetails({ footerLinks }) {
     let ignore = false;
 
     const getData = async () => {
+      console.log("Abc", studentId);
       let student = await studentServiceRegistry.getOne({ id: studentId });
 
       let classObj = await classServiceRegistry.getOne({
