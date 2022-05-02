@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
@@ -26,6 +26,8 @@ export default function SendSMS({ footerLinks }) {
   const teacherId = localStorage.getItem("id");
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
+  const navigate = useNavigate();
+  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     let ignore = false;
@@ -33,13 +35,7 @@ export default function SendSMS({ footerLinks }) {
     const getData = async () => {
       let classObj = await classServiceRegistry.getOne({ id: classId });
       if (!ignore) setClassObject(classObj);
-      const studentData = await studentServiceRegistry.getAll({
-        filters: {
-          currentClassID: {
-            eq: classId,
-          },
-        },
-      });
+      const studentData = await studentServiceRegistry.getAll({ classId });
       setStudents(studentData);
       await getAttendance();
     };
@@ -140,12 +136,6 @@ export default function SendSMS({ footerLinks }) {
                               </Text>
                             </VStack>
                           }
-                          rightComponent={
-                            <Checkbox
-                              value="test"
-                              accessibilityLabel="This is a dummy checkbox"
-                            />
-                          }
                         />
                       </Box>
                     )}
@@ -203,12 +193,6 @@ export default function SendSMS({ footerLinks }) {
                               </Text>
                             </VStack>
                           }
-                          rightComponent={
-                            <Checkbox
-                              value="test"
-                              accessibilityLabel="This is a dummy checkbox"
-                            />
-                          }
                         />
                       </Box>
                     )}
@@ -220,7 +204,7 @@ export default function SendSMS({ footerLinks }) {
           </Stack>
         </Box>
         <Box p="2" py="5" bg="white" mb="1">
-          <VStack space={"15px"} alignItems={"center"}>
+          <VStack space={"15px"}>
             <Text
               textAlign={"center"}
               fontSize="10px"
@@ -232,11 +216,16 @@ export default function SendSMS({ footerLinks }) {
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
             </Text>
             <Button.Group>
-              <ButtonHOC variant="outline" colorScheme="button">
-                {t("SELECT_ALL")}
+              <ButtonHOC variant="outline" colorScheme="button" flex="1">
+                {t("CLOSE")}
               </ButtonHOC>
-              <ButtonHOC colorScheme="button" _text={{ color: "white" }}>
-                {t("SEND")}
+              <ButtonHOC
+                flex="1"
+                colorScheme="button"
+                _text={{ color: "white" }}
+                onPress={(e) => navigate("/notification")}
+              >
+                {t("SEND_ANOTHER_MESSAGE")}
               </ButtonHOC>
             </Button.Group>
           </VStack>
