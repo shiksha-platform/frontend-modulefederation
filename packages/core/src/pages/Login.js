@@ -64,7 +64,7 @@ export default function Login() {
           {},
           { Authorization: "Bearer " + token }
         );
-          console.log(resultTeacher);
+        console.log(resultTeacher);
         if (resultTeacher) {
           let id = resultTeacher.id.replace("1-", "");
           localStorage.setItem("id", id);

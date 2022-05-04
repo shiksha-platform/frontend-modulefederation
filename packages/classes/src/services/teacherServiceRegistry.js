@@ -20,7 +20,7 @@ const interfaceData = {
   designation: "designation",
   image: "image",
   schoolId: "schoolId",
-  workingStatus: "workingStatus"
+  workingStatus: "workingStatus",
 };
 
 export const getAll = async (
@@ -28,7 +28,10 @@ export const getAll = async (
     filters: {},
   }
 ) => {
-  const result = await post(`${manifest.api_url}${manifest.api_version}/teacher/search/`, filters);
+  const result = await post(
+    `${manifest.api_url}${manifest.api_version}/teacher/search/`,
+    filters
+  );
   if (result.data) {
     return result.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
@@ -38,7 +41,7 @@ export const getAll = async (
 
 export const getOne = async (filters = {}, headers = {}) => {
   const result = await get(
-   `${ manifest.api_url}${manifest.api_version}/teacher`,
+    `${manifest.api_url}${manifest.api_version}/teacher`,
     { headers }
   ).catch((error) => error);
   if (result.data) {

@@ -68,13 +68,12 @@ export const weekDates = (currentDate = moment()) => {
 };
 
 export const GetAttendance = async (params) => {
-  let test =   await attendanceServiceRegistry.getAll({
+  let test = await attendanceServiceRegistry.getAll({
     params: params,
   });
 
   // console.log(test);
-  return test
-
+  return test;
 };
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
@@ -161,7 +160,9 @@ export const MultipalAttendance = ({
         toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
       };
       // await attendanceServiceRegistry.getAll({ params: params});
-      let attendanceData = await attendanceServiceRegistry.getAll({ params: params});
+      let attendanceData = await attendanceServiceRegistry.getAll({
+        params: params,
+      });
       console.log("attendanceData", attendanceData);
       const present = getStudentsPresentAbsent(
         attendanceData,
@@ -169,7 +170,7 @@ export const MultipalAttendance = ({
         workingDaysCount
       );
 
-      setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
+      // setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
     };
     getPresentStudents({ students });
   }, [students]);
@@ -268,6 +269,7 @@ export const MultipalAttendance = ({
     }
   };
 
+  console.log(presentStudents);
   return (
     <>
       {isWithEditButton || !isEditDisabled ? (
@@ -527,7 +529,6 @@ export default function AttendanceComponent({
     getData();
   }, [page, attendanceProp, type]);
 
-  console.log("A b c", attendance);
   const markAttendance = async (dataObject) => {
     setLoding({
       [dataObject.date + dataObject.id]: true,

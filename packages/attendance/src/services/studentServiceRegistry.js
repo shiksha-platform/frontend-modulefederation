@@ -42,13 +42,13 @@ export const getAll = async (params = {}, header = {}) => {
     Accept: "application/json",
     ...header,
   };
-  params.classId ="d287fa46-5308-48b8-a2ec-ee78f83e5f14";
+  params.classId = "d287fa46-5308-48b8-a2ec-ee78f83e5f14";
   const result = await get(
     manifest.api_url + "/group/" + params?.classId + "/participants",
     { params: { role: "Student", ...params }, headers }
   );
-  if(result.data.data.length !== 0) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+  if (result.data.data.length !== 0) {
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
   }
   return [];
 };

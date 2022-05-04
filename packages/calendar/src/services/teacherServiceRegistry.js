@@ -20,9 +20,8 @@ const interfaceData = {
   designation: "designation",
   image: "image",
   schoolId: "schoolId",
-  workingStatus: "workingStatus"
+  workingStatus: "workingStatus",
 };
-
 
 export const getAll = async (
   filters = {
@@ -38,10 +37,9 @@ export const getAll = async (
 };
 
 export const getOne = async (filters = {}, headers = {}) => {
-  const result = await get(
-    `${manifest.api_url}/teacher`,
-    { headers }
-  ).catch((error) => error);
+  const result = await get(`${manifest.api_url}/teacher`, { headers }).catch(
+    (error) => error
+  );
   if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData);
   } else {

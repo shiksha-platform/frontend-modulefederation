@@ -94,7 +94,7 @@
     }
   ],
   "api_url": "https://sandbox.shikshaplatform.io/api",
-  "api_version":"v1",
+  "api_version": "v1",
   "auth_url": "https://dev-shiksha.uniteframework.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
   "maxWidth": "1080"
 }
