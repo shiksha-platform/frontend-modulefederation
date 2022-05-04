@@ -30,6 +30,9 @@ function App() {
   const CreateNotification = React.lazy(() =>
     import("notification/CreateNotification")
   );
+  const ScheduleNotification = React.lazy(() =>
+    import("notification/ScheduleNotification")
+  );
   const Outbox = React.lazy(() => import("notification/Outbox"));
 
   const routes = [
@@ -65,6 +68,7 @@ function App() {
     { path: "/students/:studentId", component: StudentDetails },
     { path: "/notification", component: Notification },
     { path: "/notification/create", component: CreateNotification },
+    { path: "/notification/schedule", component: ScheduleNotification },
     { path: "/notification/outbox", component: Outbox },
     { path: "*", component: Home },
   ];

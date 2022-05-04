@@ -220,5 +220,6 @@
   "SELECT_MODULE": "Select Module",
   "ADD_NEW_NOTIFICATION": "Add New Notification",
   "SEND_LATER": "Send later",
-  "SEND_ANOTHER_MESSAGE": "Send another message"
+  "SEND_ANOTHER_MESSAGE": "Send another message",
+  "VIEW_MESSAGE": "View message"
 }

@@ -25,6 +25,7 @@ import {
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
+import { useNavigate } from "react-router-dom";
 
 export function calendar(page, type = "weeks") {
   let date = moment();
@@ -151,6 +152,7 @@ export const MultipalAttendance = ({
   const teacherId = localStorage.getItem("id");
   const [width, Height] = useWindowSize();
   const [seconds, setSeconds] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let interval = null;
@@ -440,26 +442,27 @@ export const MultipalAttendance = ({
                     <Text fontSize="10px" fontWeight="300">
                       {t("STUDENTS_ABSENT")}
                     </Text>
-                    <Link
-                      style={{
-                        textDecoration: "none",
+                    <Button
+                      colorScheme="button"
+                      _text={{ color: "white" }}
+                      rounded="lg"
+                      flex="1"
+                      onPress={(e) => {
+                        const telemetryData = telemetryFactory.interact({
+                          appName,
+                          type: "Attendance-Notification-View-Message",
+                        });
+                        capture("INTERACT", telemetryData);
+                        navigate(
+                          "/attendance/sendSms/" +
+                            (classObject?.id?.startsWith("1-")
+                              ? classObject?.id?.replace("1-", "")
+                              : classObject?.id)
+                        );
                       }}
-                      href={
-                        "/attendance/sendSms/" +
-                        (classObject?.id?.startsWith("1-")
-                          ? classObject?.id?.replace("1-", "")
-                          : classObject?.id)
-                      }
                     >
-                      <Button
-                        colorScheme="button"
-                        _text={{ color: "white" }}
-                        rounded="lg"
-                        flex="1"
-                      >
-                        {t("SEND_MESSAGE")}
-                      </Button>
-                    </Link>
+                      {t("VIEW_MESSAGE")}
+                    </Button>
                   </VStack>
                 </Box>
                 <Box bg="white" p={5}>

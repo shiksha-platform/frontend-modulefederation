@@ -6,7 +6,7 @@ module.exports = {
     "./App": "./src/App",
     "./Notification": "./src/pages/Notification",
     "./CreateNotification": "./src/pages/CreateNotification",
-    "./ScheduleNotification": "./src/Pages/ScheduleNotification",
+    "./ScheduleNotification": "./src/pages/ScheduleNotification",
     "./Outbox": "./src/pages/Outbox",
   },
   remotes: {

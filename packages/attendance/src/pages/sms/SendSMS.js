@@ -15,10 +15,16 @@ import * as classServiceRegistry from "../../services/classServiceRegistry";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
-import { IconByName, Layout, Collapsible, capture } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  capture,
+  telemetryFactory,
+} from "@shiksha/common-lib";
 import ButtonHOC from "atoms/ButtonHOC";
 
-export default function SendSMS({ footerLinks }) {
+export default function SendSMS({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [datePage, setDatePage] = useState(0);
   const { classId } = useParams();
@@ -44,10 +50,6 @@ export default function SendSMS({ footerLinks }) {
       ignore = true;
     };
   }, [classId]);
-
-  useEffect(() => {
-    capture("PAGE");
-  }, []);
 
   const getAttendance = async (e) => {
     const attendanceData = await GetAttendance({
@@ -223,7 +225,14 @@ export default function SendSMS({ footerLinks }) {
                 flex="1"
                 colorScheme="button"
                 _text={{ color: "white" }}
-                onPress={(e) => navigate("/notification")}
+                onPress={(e) => {
+                  const telemetryData = telemetryFactory.interact({
+                    appName,
+                    type: "Attendance-Notification-View-Message",
+                  });
+                  capture("INTERACT", telemetryData);
+                  navigate("/notification/create");
+                }}
               >
                 {t("SEND_ANOTHER_MESSAGE")}
               </ButtonHOC>

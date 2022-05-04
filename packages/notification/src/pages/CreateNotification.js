@@ -25,7 +25,7 @@ import RecipientList, { StudentList } from "component/RecipientList";
 
 const CreateNotification = ({ footerLinks, appName }) => {
   const { t } = useTranslation();
-  const [pageName, setPageName] = React.useState("RecipientList");
+  const [pageName, setPageName] = React.useState();
   const [students, setStudents] = React.useState([]);
   const [width, height] = useWindowSize();
 
@@ -87,7 +87,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
       {pageName === "StudentList" ? (
         <StudentList {...{ setPageName, students, setStudents }} />
       ) : pageName === "RecipientList" ? (
-        <RecipientList {...{ setPageName, students, setStudents }} />
+        <RecipientList {...{ setPageName, students, setStudents, appName }} />
       ) : (
         <FormNotification {...{ setPageName, students, setStudents }} />
       )}
@@ -143,7 +143,20 @@ const CreateNotification = ({ footerLinks, appName }) => {
                 colorScheme="button"
                 _text={{ color: "white" }}
                 px="5"
-                onPress={(e) => setPageName("Success")}
+                onPress={(e) => {
+                  const telemetryData = telemetryFactory.interact({
+                    appName,
+                    type: "Attendance-Notification-End-Send-Another-Message",
+                    startEventId: "UUID",
+                    badTemplate: "10%",
+                    goodTemplate: "50%",
+                    Now: "10%",
+                    Later: "50%",
+                    channel: "SMS,Whatsapp,email",
+                  });
+                  capture("INTERACT", telemetryData);
+                  setPageName("Success");
+                }}
               >
                 {t("Send message")}
               </Button>

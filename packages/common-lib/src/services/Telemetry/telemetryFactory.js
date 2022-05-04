@@ -1,9 +1,9 @@
 import { generateUUID } from '../../components/helper'
 
 export const telemetryFactory = {
-  interact: ({ appName, type, groupID, typeOfComparison, studentId }) => {
+  interact: ({ appName, ...edata }) => {
     return {
-      type,
+      type: edata?.type,
       eid: generateUUID(),
       $set: { id: localStorage.getItem('id') },
       actor: {
@@ -13,13 +13,13 @@ export const telemetryFactory = {
       context: {
         type: appName ? appName : 'Standalone'
       },
-      edata: { type, groupID, typeOfComparison, studentId }
+      edata
     }
   },
 
-  start: ({ appName, type, groupID }) => {
+  start: ({ appName, ...edata }) => {
     return {
-      type,
+      type: edata?.type,
       eid: generateUUID(),
       $set: { id: localStorage.getItem('id') },
       actor: {
@@ -29,13 +29,13 @@ export const telemetryFactory = {
       context: {
         type: appName ? appName : 'Standalone'
       },
-      edata: { type, groupID }
+      edata
     }
   },
 
-  end: ({ appName, type, groupID, duration, percentage }) => {
+  end: ({ appName, ...edata }) => {
     return {
-      type,
+      type: edata?.type,
       eid: generateUUID(),
       $set: { id: localStorage.getItem('id') },
       actor: {
@@ -45,7 +45,7 @@ export const telemetryFactory = {
       context: {
         type: appName ? appName : 'Standalone'
       },
-      edata: { type, groupID, duration, percentage }
+      edata
     }
   }
 }

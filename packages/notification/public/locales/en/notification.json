@@ -31,5 +31,8 @@
   "REPEAT": "Repeat",
   "FREQUENCY": "Frequency",
   "REVIEW": "Review",
-  "CANCEL": "Cancel"
+  "CANCEL": "Cancel",
+  "ADD_STUDENTS": "Add Students",
+  "SAVE_CHANGES": "Save Changes",
+  "SEND_MESSAGE": "Send Message"
 }

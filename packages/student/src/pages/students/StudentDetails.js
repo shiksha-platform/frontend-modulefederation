@@ -4,14 +4,20 @@ import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName, Layout, Collapsible, capture } from "@shiksha/common-lib";
-import { useParams } from "react-router-dom";
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  capture,
+  telemetryFactory,
+} from "@shiksha/common-lib";
+import { useNavigate, useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
 
 // Start editing here, save and see your changes.
-export default function StudentDetails({ footerLinks }) {
+export default function StudentDetails({ footerLinks, appName }) {
   const { t } = useTranslation("student");
   const [studentObject, setStudentObject] = useState({});
   const [classObject, setClassObject] = useState({});
@@ -19,6 +25,8 @@ export default function StudentDetails({ footerLinks }) {
   const [attendance, setAttendance] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [attendanceView, setAttendanceView] = useState("month");
+  const navigate = useNavigate();
+
   const AttendanceComponent = React.lazy(() =>
     import("attendance/AttendanceComponent")
   );
@@ -127,47 +135,35 @@ export default function StudentDetails({ footerLinks }) {
                     />
                   </Suspense>
                 )}
-                <HStack space={2} justifyContent={"center"}>
-                  <Link
-                    to={"/attendance/" + studentObject.currentClassID}
-                    style={{
-                      textDecoration: "none",
-                      flex: "auto",
-                      textAlign: "center",
+                <Button.Group>
+                  <Button
+                    flex="1"
+                    colorScheme="button"
+                    variant="outline"
+                    onPress={(e) => {
+                      navigate("/attendance/" + studentObject.currentClassID);
                     }}
                   >
-                    <Box
-                      rounded="lg"
-                      borderColor="button.500"
-                      borderWidth="1"
-                      _text={{ color: "button.500" }}
-                      px={4}
-                      py={2}
-                    >
-                      {t("FULL_CLASS_ATTENDANCE")}
-                    </Box>
-                  </Link>
-                  <Link
-                    href={"/students/sendSms/" + studentObject.id}
-                    style={{
-                      textDecoration: "none",
-                      flex: "auto",
-                      textAlign: "center",
+                    {t("FULL_CLASS_ATTENDANCE")}
+                  </Button>
+                  <Button
+                    flex="1"
+                    colorScheme="button"
+                    _text={{ color: "white" }}
+                    onPress={(e) => {
+                      const telemetryData = telemetryFactory.interact({
+                        appName,
+                        type: "Attendance-Notification-Message-History",
+                        sentCount: 10,
+                        failedCount: 5,
+                      });
+                      capture("INTERACT", telemetryData);
+                      navigate("/students/sendSms/" + studentObject.id);
                     }}
                   >
-                    <Box
-                      rounded="lg"
-                      bg="button.500"
-                      borderColor="button.500"
-                      borderWidth="1"
-                      _text={{ color: "white" }}
-                      px={4}
-                      py={2}
-                    >
-                      {t("MESSAGE_HISTORY")}
-                    </Box>
-                  </Link>
-                </HStack>
+                    {t("MESSAGE_HISTORY")}
+                  </Button>
+                </Button.Group>
               </>
             </Collapsible>
           </Box>

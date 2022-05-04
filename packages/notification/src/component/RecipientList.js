@@ -1,8 +1,14 @@
+import { capture, telemetryFactory } from "@shiksha/common-lib";
 import { Box, Button, Stack, Text, VStack } from "native-base";
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function RecipientList({ setPageName, students, setStudents }) {
+export default function RecipientList({
+  setPageName,
+  students,
+  setStudents,
+  appName,
+}) {
   const { t } = useTranslation();
   const Card = React.lazy(() => import("students/Card"));
   const [checkStudents, setCheckStudents] = React.useState([]);
@@ -117,13 +123,18 @@ export default function RecipientList({ setPageName, students, setStudents }) {
             variant="outline"
             px="5"
             onPress={(e) => {
+              const telemetryData = telemetryFactory.interact({
+                appName,
+                type: "Attendance-Notification-Add-Another-Student",
+              });
+              capture("INTERACT", telemetryData);
               setStudents(
                 newStudents.filter((e) => checkStudents.includes(e.admissionNo))
               );
               setPageName("StudentList");
             }}
           >
-            {t("ADD STUDENTS")}
+            {t("ADD_STUDENTS")}
           </Button>
           <Button
             flex="1"
@@ -132,7 +143,7 @@ export default function RecipientList({ setPageName, students, setStudents }) {
             px="5"
             onPress={(e) => setPageName("Popup")}
           >
-            {t("SAVE CHANGES")}
+            {t("SAVE_CHANGES")}
           </Button>
         </Button.Group>
       </Box>
@@ -253,7 +264,7 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
             px="5"
             onPress={(e) => setPageName("Popup")}
           >
-            {t("ADD STUDENTS")}
+            {t("ADD_STUDENTS")}
           </Button>
         </Button.Group>
       </Box>

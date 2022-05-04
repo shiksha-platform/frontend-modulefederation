@@ -1,7 +1,9 @@
 import {
+  capture,
   IconByName,
   Layout,
   Loading,
+  telemetryFactory,
   useWindowSize,
 } from "@shiksha/common-lib";
 import moment from "moment";
@@ -264,6 +266,16 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 onPress={(e) => {
                   setSuccess(true);
                   setShowSummaryModal({});
+                  if (recurring) {
+                    const telemetryData = telemetryFactory.interact({
+                      appName,
+                      type: "Attendance-Notification-Recurring-Notifications",
+                      repeat: dateTime?.REPEAT,
+                      frequency: dateTime?.FREQUENCY,
+                      time: dateTime?.TIME,
+                    });
+                    capture("INTERACT", telemetryData);
+                  }
                 }}
               >
                 {t("SELECT")}

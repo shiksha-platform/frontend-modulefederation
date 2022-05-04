@@ -218,5 +218,8 @@
   "RECEIVED_FROM_ADMIN": "व्यवस्थापक से प्राप्त",
   "RESET_FILTER": "फ़िल्टर रीसेट करें",
   "SELECT_MODULE": "मॉड्यूल का चयन करें",
-  "ADD_NEW_NOTIFICATION": "नई अधिसूचना जोड़ें"
+  "ADD_NEW_NOTIFICATION": "नई अधिसूचना जोड़ें",
+  "SEND_LATER": "बाद में भेजें",
+  "SEND_ANOTHER_MESSAGE": "एक और संदेश भेजें",
+  "VIEW_MESSAGE": "संदेश देखें"
 }

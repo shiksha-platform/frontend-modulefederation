@@ -171,7 +171,6 @@ export default function StudentEdit({
     >
       <VStack>
         {formInputs.map((item, index) => {
-          if (item.type === "select") console.log(item);
           return (
             <Stack
               p="5"

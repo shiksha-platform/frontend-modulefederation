@@ -14,10 +14,12 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export const FormNotification = ({ setPageName }) => {
   const { t } = useTranslation();
   const [showModalTemplate, setShowModalTemplate] = React.useState(false);
+  const navigate = useNavigate();
 
   return (
     <Stack space={1} mb="2">
@@ -129,7 +131,13 @@ export const FormNotification = ({ setPageName }) => {
       </Box>
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
-          <Button flex="1" colorScheme="button" variant="outline" px="5">
+          <Button
+            flex="1"
+            colorScheme="button"
+            variant="outline"
+            px="5"
+            onPress={(e) => navigate("/notification/schedule")}
+          >
             {t("SEND_LATER")}
           </Button>
           <Button
