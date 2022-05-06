@@ -129,6 +129,15 @@ const DEFAULT_THEME = {
       500: '#FA8129'
     },
     special_duty: { 500: '#06D6A0' },
+    attendanceSuccessCardCompareBg: {
+      500: '#0D921B'
+    },
+    attendanceWarningCardCompareBg: {
+      500: '#FFC369'
+    },
+    attendanceDangerCardCompareBg: {
+      500: '#F57B7B'
+    },
     weekCardCompareBg: {
       500: '#FFF8F7'
     },

@@ -40,6 +40,10 @@ export default function Menu({
           {children}
         </Link>
       </Pressable>
+    ) : item?.onPress ? (
+      <Pressable onPress={item.onPress} {...prop}>
+        <Box {...prop}>{children}</Box>
+      </Pressable>
     ) : (
       <Box {...prop}>{children}</Box>
     )

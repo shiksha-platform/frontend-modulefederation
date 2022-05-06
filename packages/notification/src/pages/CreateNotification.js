@@ -15,7 +15,7 @@ import {
   IconByName,
   Layout,
   Loading,
-  Tab,
+  telemetryFactory,
   useWindowSize,
 } from "@shiksha/common-lib";
 import moment from "moment";
@@ -147,12 +147,12 @@ const CreateNotification = ({ footerLinks, appName }) => {
                   const telemetryData = telemetryFactory.interact({
                     appName,
                     type: "Attendance-Notification-End-Send-Another-Message",
-                    startEventId: "UUID",
+                    startEventId: "2fd27a3a-27d6-481e-9ea5-24c5a976b0e9",
                     badTemplate: "10%",
                     goodTemplate: "50%",
                     Now: "10%",
                     Later: "50%",
-                    channel: "SMS,Whatsapp,email",
+                    channel: "SMS",
                   });
                   capture("INTERACT", telemetryData);
                   setPageName("Success");

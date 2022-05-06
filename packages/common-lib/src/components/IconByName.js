@@ -39,6 +39,18 @@ import MailOpenLineIcon from 'remixicon-react/MailOpenLineIcon'
 import MailSendLineIcon from 'remixicon-react/MailSendLineIcon'
 import Notification2LineIcon from 'remixicon-react/Notification2LineIcon'
 import MailLockLineIcon from 'remixicon-react/MailLockLineIcon'
+import CameraLineIcon from 'remixicon-react/CameraLineIcon'
+import ShareLineIcon from 'remixicon-react/ShareLineIcon'
+import AwardLineIcon from 'remixicon-react/AwardLineIcon'
+import EmotionHappyLineIcon from 'remixicon-react/EmotionHappyLineIcon'
+import EmotionSadLineIcon from 'remixicon-react/EmotionSadLineIcon'
+import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
+import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
+import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
+import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
+import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
+import StarLineIcon from 'remixicon-react/StarLineIcon'
+import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -352,6 +364,102 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<Notification2LineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CameraLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CameraLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ShareLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ShareLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AwardLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AwardLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'EmotionHappyLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<EmotionHappyLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'EmotionSadLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<EmotionSadLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'EmotionNormalLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<EmotionNormalLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'RefreshLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<RefreshLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'UserStarLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<UserStarLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'BookMarkLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<BookMarkLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'SearchEyeLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SearchEyeLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'StarLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<StarLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'SpyLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SpyLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

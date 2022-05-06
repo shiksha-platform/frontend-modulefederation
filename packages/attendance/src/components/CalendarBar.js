@@ -2,8 +2,8 @@ import moment from "moment";
 import { Box, HStack, Text, useToast, VStack } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { calendar } from "./AttendanceComponent";
 import { IconByName } from "@shiksha/common-lib";
+import { calendar } from "./AttendanceComponent";
 
 const FormatDate = ({ date, type }) => {
   if (type === "Month") {

@@ -221,5 +221,18 @@
   "ADD_NEW_NOTIFICATION": "Add New Notification",
   "SEND_LATER": "Send later",
   "SEND_ANOTHER_MESSAGE": "Send another message",
-  "VIEW_MESSAGE": "View message"
+  "VIEW_MESSAGE": "View message",
+  "SCHEDULE_NOTIFICATION": "Schedule Notification",
+  "PICK_DATE_AND_TIME": "Pick Date and Time",
+  "DATE": "Date",
+  "MONTH": "Month",
+  "SELECT": "Select",
+  "THIS_IS_A_RECURRING_NOTIFICATION": "This is a recurring notification",
+  "REPEAT": "Repeat",
+  "FREQUENCY": "Frequency",
+  "REVIEW": "Review",
+  "ADD_STUDENTS": "Add Students",
+  "SAVE_CHANGES": "Save Changes",
+  "ABSENT_TODAY_POOR_THAN_LAST_WEEK": "absent today! Poor than last week",
+  "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "Agerage than last month. Can be improved"
 }

@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
-  Checkbox,
   FlatList,
   HStack,
   Stack,

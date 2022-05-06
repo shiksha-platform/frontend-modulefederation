@@ -34,6 +34,8 @@ function App() {
     import("notification/ScheduleNotification")
   );
   const Outbox = React.lazy(() => import("notification/Outbox"));
+  const Profile = React.lazy(() => import("profile/Profile"));
+  const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
   const routes = [
     {
@@ -70,6 +72,8 @@ function App() {
     { path: "/notification/create", component: CreateNotification },
     { path: "/notification/schedule", component: ScheduleNotification },
     { path: "/notification/outbox", component: Outbox },
+    { path: "/profile", component: Profile },
+    { path: "/profile/attendance", component: AttendanceReport },
     { path: "*", component: Home },
   ];
 

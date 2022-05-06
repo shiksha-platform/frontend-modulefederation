@@ -1,12 +1,28 @@
 import React from "react";
-import { Box, Stack, VStack } from "native-base";
-import { capture, Layout, Widget } from "@shiksha/common-lib";
+import { Avatar, Box, Image, Pressable, Stack, VStack } from "native-base";
+import { capture, IconByName, Layout, Widget } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
+import moment from "moment";
 
-import * as moment from "moment";
-function Home({ footerLinks }) {
+const SelfAttedanceSheet = React.lazy(() =>
+  import("profile/SelfAttedanceSheet")
+);
+
+function Home({ footerLinks, appName }) {
   const { t } = useTranslation();
+  const [showModal, setShowModal] = React.useState(false);
+  let newAvatar = localStorage.getItem("firstName");
+  const [selfAttendance, setSelfAttendance] = React.useState({});
+
+  let cameraUrl = "";
+  let avatarUrlObject = cameraUrl
+    ? {
+        source: {
+          uri: cameraUrl,
+        },
+      }
+    : {};
 
   const widgetData = [
     {
@@ -114,7 +130,37 @@ function Home({ footerLinks }) {
           icon: "Group",
           subHeading: moment().format("hh:mm a"),
           _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-          avatar: true,
+          iconComponent: (
+            <Pressable onPress={(e) => setShowModal(true)}>
+              {cameraUrl ? (
+                <Image
+                  ref={myRef}
+                  {...avatarUrlObject}
+                  rounded="lg"
+                  alt="Profile"
+                  size="50px"
+                />
+              ) : (
+                <Avatar bg="amber.500" rounded="lg">
+                  {newAvatar?.toUpperCase().substr(0, 2)}
+                </Avatar>
+              )}
+              {selfAttendance?.attendance ? (
+                <IconByName
+                  name="CheckboxCircleFillIcon"
+                  isDisabled
+                  color="present.500"
+                  position="absolute"
+                  bottom="-5px"
+                  right="-5px"
+                  bg="white"
+                  rounded="full"
+                />
+              ) : (
+                ""
+              )}
+            </Pressable>
+          ),
         }}
         _appBar={{ languages: manifest.languages }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
@@ -128,6 +174,14 @@ function Home({ footerLinks }) {
         }}
         _footer={footerLinks}
       >
+        <SelfAttedanceSheet
+          {...{
+            showModal,
+            setShowModal,
+            setAttendance: setSelfAttendance,
+            appName,
+          }}
+        />
         <Box bg="white" roundedBottom={"2xl"} py={6} px={4} shadow={3}>
           <Stack>
             <VStack space={6}>

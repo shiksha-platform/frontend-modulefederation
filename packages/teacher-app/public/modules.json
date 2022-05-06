@@ -19,5 +19,8 @@
   },
   "notification": {
     "url": "http://localhost:3007/modules/notification"
+  },
+  "profile": {
+    "url": "http://localhost:3008/modules/profile"
   }
 }

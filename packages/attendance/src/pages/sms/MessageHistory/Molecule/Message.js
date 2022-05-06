@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Box, HStack, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, capture, telemetryFactory } from "@shiksha/common-lib";
 import ButtonHOC from "atoms/ButtonHOC";
 
 const Message = ({ item, isDisableRetry }) => {
@@ -24,7 +24,20 @@ const Message = ({ item, isDisableRetry }) => {
             </Text>
           </HStack>
           {item.status !== "Send" && !isDisableRetry ? (
-            <ButtonHOC variant="ghost" colorScheme="button" py="0">
+            <ButtonHOC
+              variant="ghost"
+              colorScheme="button"
+              py="0"
+              onPress={(e) => {
+                const telemetryData = telemetryFactory.interact({
+                  appName,
+                  type: "Attendance-Notification-Message-Retried",
+                  sentCount: 10,
+                  failedCount: 5,
+                });
+                capture("INTERACT", telemetryData);
+              }}
+            >
               {t("RETRY")}
             </ButtonHOC>
           ) : (
