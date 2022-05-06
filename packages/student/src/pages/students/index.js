@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
 import Collapsible from "./Molecules/Collapsible";
-import ButtonHOC from "atoms/ButtonHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 // Start editing here, save and see your changes.
 const Student = ({ footerLinks }) => {
@@ -83,9 +83,9 @@ const Student = ({ footerLinks }) => {
                     keyExtractor={(item) => item.id}
                   />
                 </Box>
-                <ButtonHOC mt="2" variant="outline" colorScheme="button">
+                <ButtonWrapper mt="2" variant="outline" colorScheme="button">
                   {t("SEE_ALL_STUDENTS")}
-                </ButtonHOC>
+                </ButtonWrapper>
               </VStack>
             }
           />

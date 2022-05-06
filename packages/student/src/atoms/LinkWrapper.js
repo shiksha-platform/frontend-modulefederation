@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "native-base";
 
-const LinkHOC = ({ children, ...rest }) => {
+const LinkWrapper = ({ children, ...rest }) => {
   return <Link {...rest}>{children}</Link>;
 };
 
-export default LinkHOC;
+export default LinkWrapper;

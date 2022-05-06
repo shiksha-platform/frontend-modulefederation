@@ -16,7 +16,7 @@ import * as studentServiceRegistry from "../../../services/studentServiceRegistr
 import { calendar } from "../../../components/AttendanceComponent";
 import CalendarBar from "../../../components/CalendarBar";
 import manifest from "../../../manifest.json";
-import ButtonHOC from "atoms/ButtonHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
 import { sms } from "./assets";
 import CalendarComponent from "./Molecule/CalendarComponent";
 import Message from "./Molecule/Message";
@@ -75,7 +75,7 @@ export default function MessageHistory({ footerLinks }) {
             _box={{ p: 0, bg: "transparent" }}
           />
           <Stack>
-            <ButtonHOC
+            <ButtonWrapper
               rounded={"full"}
               colorScheme="button"
               variant="outline"
@@ -96,7 +96,7 @@ export default function MessageHistory({ footerLinks }) {
                   ? t("WEEK_VIEW")
                   : t("TODAY_VIEW")}
               </Text>
-            </ButtonHOC>
+            </ButtonWrapper>
             <Actionsheet
               isOpen={showModal}
               _backdrop={{ opacity: "0.9", bg: "gray.500" }}
@@ -199,15 +199,15 @@ export default function MessageHistory({ footerLinks }) {
             <Box bg="white" w="100%">
               <Message item={smsObject} isDisableRetry />
               <Button.Group p="5">
-                <ButtonHOC
+                <ButtonWrapper
                   flex={1}
                   variant="outline"
                   colorScheme="button"
                   onPress={(e) => setShowModal(true)}
                 >
                   {smsObject?.status === "Send" ? t("RESEND") : t("RETRY")}
-                </ButtonHOC>
-                <ButtonHOC
+                </ButtonWrapper>
+                <ButtonWrapper
                   flex={1}
                   colorScheme="button"
                   onPress={(e) => {
@@ -216,7 +216,7 @@ export default function MessageHistory({ footerLinks }) {
                   _text={{ color: "white" }}
                 >
                   {t("DONE")}
-                </ButtonHOC>
+                </ButtonWrapper>
               </Button.Group>
             </Box>
           </Actionsheet>

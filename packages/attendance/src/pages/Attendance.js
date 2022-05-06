@@ -13,8 +13,8 @@ import AttendanceComponent, {
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
-import ButtonHOC from "atoms/ButtonHOC";
-import LinkHOC from "atoms/LinkHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
+import LinkWrapper from "atoms/LinkWrapper";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
 
@@ -106,7 +106,7 @@ export default function Attendance({ footerLinks }) {
         setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
-          <LinkHOC
+          <LinkWrapper
             to="/attendance/report"
             style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
           >
@@ -120,12 +120,12 @@ export default function Attendance({ footerLinks }) {
             >
               {t("REPORT")}
             </Box>
-          </LinkHOC>
+          </LinkWrapper>
         ),
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={
-        <LinkHOC
+        <LinkWrapper
           to={`/students/class/${classId}`}
           style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
         >
@@ -140,7 +140,7 @@ export default function Attendance({ footerLinks }) {
             </VStack>
             <IconByName size="sm" name="ArrowRightSLineIcon" />
           </HStack>
-        </LinkHOC>
+        </LinkWrapper>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
       _footer={footerLinks}
@@ -179,7 +179,7 @@ export default function Attendance({ footerLinks }) {
               }
             />
 
-            <ButtonHOC
+            <ButtonWrapper
               variant="ghost"
               colorScheme="button"
               endIcon={
@@ -192,7 +192,7 @@ export default function Attendance({ footerLinks }) {
               onPress={(e) => setIsEditDisabled(!isEditDisabled)}
             >
               {isEditDisabled ? t("EDIT") : t("CANCEL")}
-            </ButtonHOC>
+            </ButtonWrapper>
           </HStack>
         </Box>
       </Stack>

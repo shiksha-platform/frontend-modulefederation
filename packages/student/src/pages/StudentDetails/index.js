@@ -11,8 +11,8 @@ import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
 import InfoSection from "./Molecules/InfoSection";
 import Section from "./Molecules/Section";
-import LinkHOC from "atoms/LinkHOC";
-import ButtonHOC from "atoms/ButtonHOC";
+import LinkWrapper from "atoms/LinkWrapper";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 // Start editing here, save and see your changes.
 export default function StudentDetails({ footerLinks }) {
@@ -129,7 +129,7 @@ export default function StudentDetails({ footerLinks }) {
                   </Suspense>
                 )}
                 <HStack space={2} justifyContent={"center"}>
-                  <LinkHOC
+                  <LinkWrapper
                     to={`/attendance/${studentObject.currentClassID}`}
                     style={{
                       textDecoration: "none",
@@ -147,8 +147,8 @@ export default function StudentDetails({ footerLinks }) {
                     >
                       {t("FULL_CLASS_ATTENDANCE")}
                     </Box>
-                  </LinkHOC>
-                  <LinkHOC
+                  </LinkWrapper>
+                  <LinkWrapper
                     href={`/students/sendSms/${studentObject.id}`}
                     style={{
                       textDecoration: "none",
@@ -167,7 +167,7 @@ export default function StudentDetails({ footerLinks }) {
                     >
                       {t("MESSAGE_HISTORY")}
                     </Box>
-                  </LinkHOC>
+                  </LinkWrapper>
                 </HStack>
               </>
             </Collapsible>
@@ -177,14 +177,14 @@ export default function StudentDetails({ footerLinks }) {
         <Section
           title={t("LEARNING")}
           button={
-            <ButtonHOC
+            <ButtonWrapper
               variant="ghost"
               colorScheme="button"
               endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
               _text={{ fontWeight: "400" }}
             >
               {t("EDIT")}
-            </ButtonHOC>
+            </ButtonWrapper>
           }
         >
           {[
@@ -212,14 +212,14 @@ export default function StudentDetails({ footerLinks }) {
           title={t("NOTES_FEEDBACK_ON_STUDENT")}
           _box={{ mb: "4", roundedBottom: "xl", shadow: 2 }}
           button={
-            <ButtonHOC
+            <ButtonWrapper
               variant="ghost"
               colorScheme="button"
               endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
               _text={{ fontWeight: "400" }}
             >
               {t("EDIT")}
-            </ButtonHOC>
+            </ButtonWrapper>
           }
         >
           <Box p="5">
