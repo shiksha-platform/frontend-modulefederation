@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
-  calendar,
   GetAttendance,
 } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
@@ -29,6 +28,7 @@ import {
   getUniqAttendance,
   capture,
   telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 
 export default function ReportDetail({ footerLinks, appName }) {

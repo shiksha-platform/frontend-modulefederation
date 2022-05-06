@@ -22,10 +22,10 @@ import {
   getUniqAttendance,
   capture,
   telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
-  calendar,
   GetAttendance,
 } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";

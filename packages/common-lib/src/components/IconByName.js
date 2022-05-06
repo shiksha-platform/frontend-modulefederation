@@ -51,6 +51,7 @@ import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
+import MailFillIcon from 'remixicon-react/MailFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -460,6 +461,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<SpyLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MailFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MailFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

@@ -11,9 +11,8 @@ import {
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { capture, IconByName, Layout } from "@shiksha/common-lib";
+import { capture, IconByName, Layout, calendar } from "@shiksha/common-lib";
 import * as studentServiceRegistry from "../../../services/studentServiceRegistry";
-import { calendar } from "../../../components/AttendanceComponent";
 import CalendarBar from "../../../components/CalendarBar";
 import manifest from "../../../manifest.json";
 import ButtonHOC from "atoms/ButtonHOC";

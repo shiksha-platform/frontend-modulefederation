@@ -3,6 +3,7 @@ import {
   telemetryFactory,
   IconByName,
   Layout,
+  calendar,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -13,7 +14,6 @@ import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
-  calendar,
 } from "components/AttendanceComponent";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import * as classServiceRegistry from "../services/classServiceRegistry";

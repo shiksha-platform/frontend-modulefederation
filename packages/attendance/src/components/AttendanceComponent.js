@@ -22,53 +22,16 @@ import {
   useWindowSize,
   capture,
   telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import { useNavigate } from "react-router-dom";
+const Card = React.lazy(() => import("students/Card"));
 
-export function calendar(page, type = "weeks") {
-  let date = moment();
-  if (type === "month") {
-    let startDate = moment().add(page, "months").startOf("month");
-    let endDate = moment(startDate).endOf("month");
-    var weeks = [];
-    weeks.push(weekDates(startDate));
-    while (startDate.add(7, "days").diff(endDate) < 8) {
-      weeks.push(weekDates(startDate));
-    }
-    return weeks;
-  } else if (type === "monthInDays") {
-    let startDate = moment().add(page, "months").startOf("month");
-    let endDate = moment(startDate).endOf("month");
-    var days = [];
-    days.push(startDate.clone());
-    while (startDate.add(1, "days").diff(endDate) < 1) {
-      days.push(startDate.clone());
-    }
-    return days;
-  } else if (["week", "weeks"].includes(type)) {
-    date.add(page * 7, "days");
-    if (type === "week") {
-      return weekDates(date);
-    }
-    return [weekDates(date)];
-  } else {
-    if (type === "days") {
-      return [date.add(page * 1, "days")];
-    }
-    return date.add(page * 1, "days");
-  }
-}
-
-export const weekDates = (currentDate = moment()) => {
-  let weekStart = currentDate.clone().startOf("isoWeek");
-  let days = [];
-  for (let i = 0; i <= 6; i++) {
-    days.push(moment(weekStart).add(i, "days"));
-  }
-  return days;
-};
+const PRESENT = "Present";
+const ABSENT = "Absent";
+const UNMARKED = "Unmarked";
 
 export const GetAttendance = async (params) => {
   return await attendanceServiceRegistry.getAll({
@@ -171,8 +134,8 @@ export const MultipalAttendance = ({
       let weekdays = calendar(-1, "week");
       let workingDaysCount = weekdays.filter((e) => e.day())?.length;
       let params = {
-        fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-        toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+        fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
+        toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
       };
       const attendanceData = await GetAttendance(params);
       const present = getStudentsPresentAbsent(
@@ -193,7 +156,8 @@ export const MultipalAttendance = ({
           .reverse()
           .find(
             (e) =>
-              e.date === moment().format("Y-MM-DD") && e.studentId === item.id
+              e.date === moment().format("YYYY-MM-DD") &&
+              e.studentId === item.id
           );
       })
       .filter((e) => e);
@@ -204,7 +168,7 @@ export const MultipalAttendance = ({
     let date = moment.max(dates);
     return dates.length ? date.format("hh:mma") : "N/A";
   };
-
+  const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
     if (typeof students === "object") {
@@ -216,12 +180,12 @@ export const MultipalAttendance = ({
         );
         let result = null;
         if (attendanceObject?.id) {
-          if (attendanceObject.attendance !== "Present") {
+          if (attendanceObject.attendance !== PRESENT) {
             result = attendanceServiceRegistry
               .update(
                 {
                   id: attendanceObject.id,
-                  attendance: "Present",
+                  attendance: PRESENT,
                 },
                 {
                   headers: {
@@ -241,8 +205,8 @@ export const MultipalAttendance = ({
           result = attendanceServiceRegistry.create(
             {
               studentId: item.id,
-              date: moment().format("Y-MM-DD"),
-              attendance: "Present",
+              date: moment().format("YYYY-MM-DD"),
+              attendance: PRESENT,
               attendanceNote: "Test",
               classId: item.currentClassID,
               subjectId: "History",
@@ -281,7 +245,7 @@ export const MultipalAttendance = ({
           }
         }, index * 900);
       });
-      if (classObject.id) {
+      if (groupExists(classObject)) {
         const telemetryData = telemetryFactory.interact({
           appName,
           type: "Attendance-Mark-All-Present",
@@ -303,6 +267,16 @@ export const MultipalAttendance = ({
     });
     capture("END", telemetryData);
     setSeconds(0);
+  };
+
+  const saveViewReportHandler = () => {
+    setShowModal(true);
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Attendance-Summary-Start",
+      groupID: classObject.id,
+    });
+    capture("START", telemetryData);
   };
 
   return (
@@ -334,15 +308,7 @@ export const MultipalAttendance = ({
                     flex={1}
                     variant="outline"
                     colorScheme="button"
-                    onPress={(e) => {
-                      setShowModal(true);
-                      const telemetryData = telemetryFactory.start({
-                        appName,
-                        type: "Attendance-Summary-Start",
-                        groupID: classObject.id,
-                      });
-                      capture("START", telemetryData);
-                    }}
+                    onPress={saveViewReportHandler}
                   >
                     {t("SAVE_VIEW_REPORT")}
                   </Button>
@@ -428,7 +394,7 @@ export const MultipalAttendance = ({
                       students,
                       attendance: [
                         attendance.filter(
-                          (e) => e.date === moment().format("Y-MM-DD")
+                          (e) => e.date === moment().format("YYYY-MM-DD")
                         ),
                       ],
                     }}
@@ -569,7 +535,6 @@ export default function AttendanceComponent({
   const [smsShowModal, setSmsShowModal] = useState(false);
   const [loading, setLoading] = useState({});
   const status = manifest?.status ? manifest?.status : [];
-  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     if (typeof page === "object") {
@@ -806,6 +771,76 @@ const CalendarComponent = ({
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
+
+  const handleAttendaceData = (attendance, day) => {
+    let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
+    let isFutureDay = day.format("YYYY-MM-DD") > moment().format("YYYY-MM-DD");
+    let isHoliday = day.day() === 0;
+    let dateValue = day.format("YYYY-MM-DD");
+    let smsDay = sms?.find(
+      (e) => e.date === day.format("YYYY-MM-DD") && e.studentId === student.id
+    );
+    let attendanceItem = attendance
+      .slice()
+      .reverse()
+      .find((e) => e.date === dateValue && e.studentId === student.id);
+    let attendanceIconProp = !isIconSizeSmall
+      ? {
+          _box: { py: 2, minW: "46px", alignItems: "center" },
+          status: "CheckboxBlankCircleLineIcon",
+        }
+      : {};
+    let attendanceType = PRESENT;
+    if (attendanceItem?.attendance && attendanceItem?.attendance === PRESENT) {
+      attendanceIconProp = {
+        ...attendanceIconProp,
+        status: attendanceItem?.attendance,
+      };
+    } else if (
+      attendanceItem?.attendance &&
+      attendanceItem?.attendance === ABSENT
+    ) {
+      attendanceIconProp = {
+        ...attendanceIconProp,
+        status: attendanceItem?.attendance,
+      };
+    } else if (
+      attendanceItem?.attendance &&
+      attendanceItem?.attendance === "Late"
+    ) {
+      attendanceIconProp = {
+        ...attendanceIconProp,
+        status: attendanceItem?.attendance,
+      };
+    } else if (day.day() === 0) {
+      attendanceIconProp = { ...attendanceIconProp, status: "Holiday" };
+    } else if (isToday) {
+      attendanceIconProp = { ...attendanceIconProp, status: "Today" };
+    } else if (moment().diff(day, "days") > 0) {
+      attendanceIconProp = { ...attendanceIconProp, status: UNMARKED };
+    }
+
+    if (manifest.status) {
+      const arr = manifest.status;
+      const i = arr.indexOf(attendanceItem?.attendance);
+      if (i === -1) {
+        attendanceType = arr[0];
+      } else {
+        attendanceType = arr[(i + 1) % arr.length];
+      }
+    }
+
+    return [
+      isToday,
+      isFutureDay,
+      isHoliday,
+      dateValue,
+      smsDay,
+      attendanceItem,
+      attendanceIconProp,
+    ];
+  };
+
   return monthDays.map((week, index) => (
     <HStack
       justifyContent="space-around"
@@ -819,65 +854,15 @@ const CalendarComponent = ({
       {..._weekBox}
     >
       {week.map((day, subIndex) => {
-        let smsDay = sms?.find(
-          (e) => e.date === day.format("Y-MM-DD") && e.studentId === student.id
-        );
-        let isToday = moment().format("Y-MM-DD") === day.format("Y-MM-DD");
-        let isFutureDay = day.format("Y-MM-DD") > moment().format("Y-MM-DD");
-        let isHoliday = day.day() === 0;
-        let dateValue = day.format("Y-MM-DD");
-        let attendanceItem = attendance
-          .slice()
-          .reverse()
-          .find((e) => e.date === dateValue && e.studentId === student.id);
-        let attendanceIconProp = !isIconSizeSmall
-          ? {
-              _box: { py: 2, minW: "46px", alignItems: "center" },
-              status: "CheckboxBlankCircleLineIcon",
-            }
-          : {};
-        let attendanceType = "Present";
-        if (
-          attendanceItem?.attendance &&
-          attendanceItem?.attendance === "Present"
-        ) {
-          attendanceIconProp = {
-            ...attendanceIconProp,
-            status: attendanceItem?.attendance,
-          };
-        } else if (
-          attendanceItem?.attendance &&
-          attendanceItem?.attendance === "Absent"
-        ) {
-          attendanceIconProp = {
-            ...attendanceIconProp,
-            status: attendanceItem?.attendance,
-          };
-        } else if (
-          attendanceItem?.attendance &&
-          attendanceItem?.attendance === "Late"
-        ) {
-          attendanceIconProp = {
-            ...attendanceIconProp,
-            status: attendanceItem?.attendance,
-          };
-        } else if (day.day() === 0) {
-          attendanceIconProp = { ...attendanceIconProp, status: "Holiday" };
-        } else if (isToday) {
-          attendanceIconProp = { ...attendanceIconProp, status: "Today" };
-        } else if (moment().diff(day, "days") > 0) {
-          attendanceIconProp = { ...attendanceIconProp, status: "Unmarked" };
-        }
-
-        if (manifest.status) {
-          const arr = manifest.status;
-          const i = arr.indexOf(attendanceItem?.attendance);
-          if (i === -1) {
-            attendanceType = arr[0];
-          } else {
-            attendanceType = arr[(i + 1) % arr.length];
-          }
-        }
+        const [
+          isToday,
+          isFutureDay,
+          isHoliday,
+          dateValue,
+          smsDay,
+          attendanceItem,
+          attendanceIconProp,
+        ] = handleAttendaceData(attendance, day);
 
         return (
           <VStack

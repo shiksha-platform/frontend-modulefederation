@@ -1,19 +1,17 @@
 import moment from "moment";
-import {
-  Box,
-  HStack,
-  Menu,
-  PresenceTransition,
-  Pressable,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, HStack, Menu, Pressable, Text, VStack } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
-import { IconByName, Layout, Collapsible, capture } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  capture,
+  calendar,
+} from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
-import { calendar, GetAttendance } from "../../components/AttendanceComponent";
+import { GetAttendance } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
 import { Link } from "react-router-dom";

@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
 import {
+  calendar,
   capture,
   IconByName,
   Layout,
@@ -23,7 +24,6 @@ import {
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "components/SelfAttedanceSheet";
-import { calendar } from "./AttendanceReport";
 import moment from "moment";
 
 // Start editing here, save and see your changes.
