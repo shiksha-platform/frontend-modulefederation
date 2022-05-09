@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  Button,
-  Stack,
-  Box,
-  VStack,
-  HStack,
-  Pressable,
-  PresenceTransition,
-  FlatList,
-} from "native-base";
+import { Text, Stack, Box, VStack, FlatList } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
@@ -17,10 +7,12 @@ import { IconByName, Layout } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
+import Collapsible from "./Molecules/Collapsible";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 // Start editing here, save and see your changes.
-export default function Student({ footerLinks }) {
-  const { t } = useTranslation("student");
+const Student = ({ footerLinks }) => {
+  const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   const { classId } = useParams();
@@ -91,9 +83,9 @@ export default function Student({ footerLinks }) {
                     keyExtractor={(item) => item.id}
                   />
                 </Box>
-                <Button mt="2" variant="outline" colorScheme="button">
+                <ButtonWrapper mt="2" variant="outline" colorScheme="button">
                   {t("SEE_ALL_STUDENTS")}
-                </Button>
+                </ButtonWrapper>
               </VStack>
             }
           />
@@ -101,60 +93,6 @@ export default function Student({ footerLinks }) {
       </Box>
     </Layout>
   );
-}
-
-const Collapsible = ({
-  header,
-  body,
-  defaultCollapse,
-  isHeaderBold,
-  isDisableCollapse,
-  onPressFuction,
-  collapsButton,
-  _header,
-  _icon,
-  _box,
-}) => {
-  const [collaps, setCollaps] = useState(defaultCollapse);
-
-  return (
-    <>
-      <Pressable
-        onPress={() => {
-          if (onPressFuction) {
-            onPressFuction();
-          }
-          if (!isDisableCollapse) {
-            setCollaps(!collaps);
-          }
-        }}
-      >
-        <Box>
-          <HStack alignItems={"center"} justifyContent={"space-between"}>
-            <Text
-              fontSize={typeof isHeaderBold === "undefined" ? "14px" : ""}
-              color="coolGray.400"
-              fontWeight="500"
-            >
-              {header}
-            </Text>
-            <IconByName
-              size="sm"
-              isDisabled={true}
-              color={
-                !collaps || collapsButton ? "coolGray.400" : "coolGray.600"
-              }
-              name={
-                !collaps || collapsButton
-                  ? "ArrowDownSLineIcon"
-                  : "ArrowUpSLineIcon"
-              }
-              {..._icon}
-            />
-          </HStack>
-        </Box>
-      </Pressable>
-      <PresenceTransition visible={collaps}>{body}</PresenceTransition>
-    </>
-  );
 };
+
+export default Student;

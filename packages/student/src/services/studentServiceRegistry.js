@@ -31,7 +31,7 @@ const interfaceData = {
   gender: "gender",
   mergeParameterWithDefaultValue: {
     admissionNo: "1",
-    currentClassID: "dee531ae-9db0-4989-b6a1-da60080679df",
+    currentClassID: "d287fa46-5308-48b8-a2ec-ee78f83e5f14",
   },
 };
 
@@ -42,9 +42,12 @@ export const getAll = async (params = {}, header = {}) => {
     Accept: "application/json",
     ...header,
   };
+  params.classId = "d287fa46-5308-48b8-a2ec-ee78f83e5f14";
   const result = await get(
-    manifest.api_url + "/group/" + params?.classId + "/members",
-    { params: { role: "student", ...params }, headers }
+    `${manifest.api_url}/${manifest.api_version}/group/${params?.classId}/participants?role=Student`,
+    {
+      headers,
+    }
   );
   if (result?.data?.data && result.data.data.length) {
     let ids = result.data.data.map((e) => e.userId).map((e) => e);
@@ -61,7 +64,13 @@ export const getAll = async (params = {}, header = {}) => {
   return [];
 };
 
-export const getOne = async (filters = {}, headers = {}) => {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    Authorization: "Bearer " + localStorage.getItem("token"),
+    ContentType: "application/json",
+    Accept: "application/json",
+    ...header,
+  };
   const result = await get(manifest.api_url + "/student/" + filters.id, {
     headers,
   });

@@ -2,7 +2,7 @@ import React from "react";
 import { Collapsible, IconByName } from "@shiksha/common-lib";
 import { HStack, Text, VStack, Stack, Box, Progress } from "native-base";
 import { useTranslation } from "react-i18next";
-import LinkHOC from "atoms/LinkHOC";
+import LinkWrapper from "atoms/LinkWrapper";
 
 const ClassAttendanceCard = ({ classId }) => {
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ const ClassAttendanceCard = ({ classId }) => {
             </HStack>
           </VStack>
         </Box>
-        <LinkHOC
+        <LinkWrapper
           style={{
             color: "rgb(63, 63, 70)",
             textDecoration: "none",
@@ -51,7 +51,7 @@ const ClassAttendanceCard = ({ classId }) => {
           >
             {t("ATTENDANCE_REGISTER")}
           </Box>
-        </LinkHOC>
+        </LinkWrapper>
 
         <Box
           bg="white"

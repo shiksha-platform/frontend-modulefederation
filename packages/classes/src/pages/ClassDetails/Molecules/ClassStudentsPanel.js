@@ -2,8 +2,8 @@ import React, { Suspense } from "react";
 import { Collapsible } from "@shiksha/common-lib";
 import { VStack, Box, FlatList } from "native-base";
 import { useTranslation } from "react-i18next";
-import ButtonHOC from "atoms/ButtonHOC";
-import LinkHOC from "atoms/LinkHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
+import LinkWrapper from "atoms/LinkWrapper";
 
 const ClassStudentsPanel = ({ classObject, students }) => {
   const { t } = useTranslation();
@@ -33,16 +33,16 @@ const ClassStudentsPanel = ({ classObject, students }) => {
             keyExtractor={(item) => item.id}
           />
         </Box>
-        <LinkHOC
+        <LinkWrapper
           style={{
             textDecoration: "none",
           }}
           to={`/class/students/${classObject?.id?.replace("1-", "")}`}
         >
-          <ButtonHOC mt="2" variant="outline" colorScheme="button">
+          <ButtonWrapper mt="2" variant="outline" colorScheme="button">
             {t("SHOW_ALL_STUDENTS")}
-          </ButtonHOC>
-        </LinkHOC>
+          </ButtonWrapper>
+        </LinkWrapper>
       </VStack>
     </Collapsible>
   );

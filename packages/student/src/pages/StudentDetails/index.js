@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Text, Button, Stack, Box, VStack, HStack, Link } from "native-base";
+import { Text, Stack, Box, HStack } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
@@ -9,6 +9,10 @@ import { useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
+import InfoSection from "./Molecules/InfoSection";
+import Section from "./Molecules/Section";
+import LinkWrapper from "atoms/LinkWrapper";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 // Start editing here, save and see your changes.
 export default function StudentDetails({ footerLinks }) {
@@ -27,6 +31,7 @@ export default function StudentDetails({ footerLinks }) {
     let ignore = false;
 
     const getData = async () => {
+      console.log("Abc", studentId);
       let student = await studentServiceRegistry.getOne({ id: studentId });
 
       let classObj = await classServiceRegistry.getOne({
@@ -124,8 +129,8 @@ export default function StudentDetails({ footerLinks }) {
                   </Suspense>
                 )}
                 <HStack space={2} justifyContent={"center"}>
-                  <Link
-                    to={"/attendance/" + studentObject.currentClassID}
+                  <LinkWrapper
+                    to={`/attendance/${studentObject.currentClassID}`}
                     style={{
                       textDecoration: "none",
                       flex: "auto",
@@ -142,9 +147,9 @@ export default function StudentDetails({ footerLinks }) {
                     >
                       {t("FULL_CLASS_ATTENDANCE")}
                     </Box>
-                  </Link>
-                  <Link
-                    href={"/students/sendSms/" + studentObject.id}
+                  </LinkWrapper>
+                  <LinkWrapper
+                    href={`/students/sendSms/${studentObject.id}`}
                     style={{
                       textDecoration: "none",
                       flex: "auto",
@@ -162,7 +167,7 @@ export default function StudentDetails({ footerLinks }) {
                     >
                       {t("MESSAGE_HISTORY")}
                     </Box>
-                  </Link>
+                  </LinkWrapper>
                 </HStack>
               </>
             </Collapsible>
@@ -172,14 +177,14 @@ export default function StudentDetails({ footerLinks }) {
         <Section
           title={t("LEARNING")}
           button={
-            <Button
+            <ButtonWrapper
               variant="ghost"
               colorScheme="button"
               endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
               _text={{ fontWeight: "400" }}
             >
               {t("EDIT")}
-            </Button>
+            </ButtonWrapper>
           }
         >
           {[
@@ -207,14 +212,14 @@ export default function StudentDetails({ footerLinks }) {
           title={t("NOTES_FEEDBACK_ON_STUDENT")}
           _box={{ mb: "4", roundedBottom: "xl", shadow: 2 }}
           button={
-            <Button
+            <ButtonWrapper
               variant="ghost"
               colorScheme="button"
               endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
               _text={{ fontWeight: "400" }}
             >
               {t("EDIT")}
-            </Button>
+            </ButtonWrapper>
           }
         >
           <Box p="5">
@@ -231,39 +236,3 @@ export default function StudentDetails({ footerLinks }) {
     </Layout>
   );
 }
-
-const InfoSection = ({ items, isLastBorderEnable }) => {
-  const { t } = useTranslation("student");
-  return items.map((item, index) => (
-    <VStack
-      space="3"
-      py="5"
-      borderBottomWidth={
-        items.length - 1 !== index || isLastBorderEnable ? "1" : "0"
-      }
-      borderColor={"coolGray.200"}
-      key={index}
-    >
-      <Text fontSize={"14px"} fontWeight="500" color={"coolGray.400"}>
-        {item.title}
-      </Text>
-      {item.value ? (
-        <Text>{item.value}</Text>
-      ) : (
-        <Text italic>{t("NOT_ENTERED")}</Text>
-      )}
-    </VStack>
-  ));
-};
-
-const Section = ({ title, button, children, _box }) => (
-  <Box bg={"white"} p="5" {..._box}>
-    <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <Text fontSize="16px" fontWeight="500">
-        {title}
-      </Text>
-      {button}
-    </HStack>
-    {children}
-  </Box>
-);

@@ -3,7 +3,7 @@ import manifest from "../manifest.json";
 import { get, post } from "@shiksha/common-lib";
 
 const interfaceData = {
-  id: "osid",
+  id: "teacherId",
   fullName: "teacherFullName",
   refId: "teacherRefId",
   highestQualification: "highestQualification",
@@ -14,6 +14,13 @@ const interfaceData = {
   mergeParameterWithValue: {
     title: "teacherFullName",
   },
+  aadhaar: "",
+  cadre: "cadre",
+  compSkills: "compSkills",
+  designation: "designation",
+  image: "image",
+  schoolId: "schoolId",
+  workingStatus: "workingStatus",
 };
 
 export const getAll = async (
@@ -21,10 +28,7 @@ export const getAll = async (
     filters: {},
   }
 ) => {
-  const result = await post(
-    "https://dev-shiksha.uniteframework.io/registry/api/v1" + "/Teacher/search",
-    filters
-  );
+  const result = await post(`${manifest.api_url}/teacher/search`, filters);
   if (result.data) {
     return result.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
@@ -33,13 +37,11 @@ export const getAll = async (
 };
 
 export const getOne = async (filters = {}, headers = {}) => {
-  const result = await get(
-    "https://dev-shiksha.uniteframework.io/registry/api/v1" +
-      "/Teacher/a7024a1b-1fc6-4337-adc9-fc024943e8f8",
-    { headers }
-  ).catch((error) => error);
+  const result = await get(`${manifest.api_url}/teacher`, { headers }).catch(
+    (error) => error
+  );
   if (result.data) {
-    return mapInterfaceData(result.data, interfaceData);
+    return mapInterfaceData(result.data.data[0], interfaceData);
   } else {
     return {};
   }

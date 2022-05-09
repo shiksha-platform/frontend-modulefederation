@@ -16,7 +16,7 @@ import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
 import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
-import ButtonHOC from "atoms/ButtonHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 export default function SendSMS({ footerLinks }) {
   const { t } = useTranslation();
@@ -228,12 +228,12 @@ export default function SendSMS({ footerLinks }) {
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
             </Text>
             <Button.Group>
-              <ButtonHOC variant="outline" colorScheme="button">
+              <ButtonWrapper variant="outline" colorScheme="button">
                 {t("SELECT_ALL")}
-              </ButtonHOC>
-              <ButtonHOC colorScheme="button" _text={{ color: "white" }}>
+              </ButtonWrapper>
+              <ButtonWrapper colorScheme="button" _text={{ color: "white" }}>
                 {t("SEND")}
-              </ButtonHOC>
+              </ButtonWrapper>
             </Button.Group>
           </VStack>
         </Box>
