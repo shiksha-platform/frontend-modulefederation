@@ -1,7 +1,6 @@
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React from "react";
 import "./App.css";
-import { extendTheme, NativeBaseProvider } from "native-base";
+import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import Attendance from "pages/Attendance";
 import Report from "pages/reports/Report";

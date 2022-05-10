@@ -52,6 +52,14 @@ import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 import MailFillIcon from 'remixicon-react/MailFillIcon'
+import AddCircleFillIcon from 'remixicon-react/AddCircleFillIcon'
+import Heart3FillIcon from 'remixicon-react/Heart3FillIcon'
+import Heart3LineIcon from 'remixicon-react/Heart3LineIcon'
+import AccountBoxFillIcon from 'remixicon-react/AccountBoxFillIcon'
+import BarChart2LineIcon from 'remixicon-react/BarChart2LineIcon'
+import ArticleLineIcon from 'remixicon-react/ArticleLineIcon'
+import QuestionLineIcon from 'remixicon-react/QuestionLineIcon'
+import Download2LineIcon from 'remixicon-react/Download2LineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -469,6 +477,70 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<MailFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AddCircleFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AddCircleFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Heart3FillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Heart3FillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Heart3LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Heart3LineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AccountBoxFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AccountBoxFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'BarChart2LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<BarChart2LineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ArticleLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ArticleLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'QuestionLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<QuestionLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Download2LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Download2LineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

@@ -141,6 +141,9 @@ const DEFAULT_THEME = {
     weekCardCompareBg: {
       500: '#FFF8F7'
     },
+    worksheetCard: {
+      500: '#F9CCE4'
+    },
     reportBoxBg: {
       400: '#FFF8F7',
       500: '#FEF1EE',

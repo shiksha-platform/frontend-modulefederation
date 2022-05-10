@@ -6,6 +6,9 @@ module.exports = {
     "./App": "./src/App",
     "./QuestionBank": "./src/pages/QuestionBank",
   },
+  remotes: {
+    core: `core@[window.appModules.core.url]/moduleEntry.js`,
+  },
   filename: "moduleEntry.js",
   shared: {
     ...dependencies,

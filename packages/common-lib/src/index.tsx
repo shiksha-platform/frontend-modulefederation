@@ -16,7 +16,7 @@ import Layout from './components/layout/Layout'
 import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
-import Menu from './components/Menu'
+import Menu, { SubMenu } from './components/Menu'
 import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
@@ -33,6 +33,7 @@ export {
   Widget,
   Collapsible,
   Menu,
+  SubMenu,
   DEFAULT_THEME,
   initializeI18n,
   AppShell,
