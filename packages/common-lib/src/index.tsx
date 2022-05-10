@@ -9,6 +9,7 @@ export const ExampleComponent = ({ text }: Props) => {
   return <div className={styles.test}>Example Component: {text}</div>
 }
 
+import AppBar from './components/layout/AppBar'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Layout from './components/layout/Layout'
@@ -24,6 +25,7 @@ import Tab from './components/Tab'
 import Loading from './components/Loading'
 
 export {
+  AppBar,
   Header,
   Footer,
   Layout,

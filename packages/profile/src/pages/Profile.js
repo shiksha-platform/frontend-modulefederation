@@ -116,7 +116,7 @@ export default function Profile({ footerLinks, appName }) {
       _appBar={{ languages: manifest.languages }}
       _header={{
         title: t("MY_CLASSES"),
-        fullRightComponent: (
+        customeComponent: (
           <Box minH={"150px"}>
             <Box
               position={"absolute"}

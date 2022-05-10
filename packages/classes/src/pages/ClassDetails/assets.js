@@ -82,7 +82,7 @@ export const _header = (name) => {
   const { t } = useTranslation();
   return {
     title: t("MY_CLASSES"),
-    fullRightComponent: (
+    customeComponent: (
       <Box minH={"150px"}>
         <Box
           position={"absolute"}
