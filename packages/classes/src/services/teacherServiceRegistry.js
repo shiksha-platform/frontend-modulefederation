@@ -3,7 +3,7 @@ import manifest from "../manifest.json";
 import { get, post } from "@shiksha/common-lib";
 
 const interfaceData = {
-  id: "osid",
+  id: "teacherId",
   fullName: "teacherFullName",
   refId: "teacherRefId",
   highestQualification: "highestQualification",
@@ -14,6 +14,13 @@ const interfaceData = {
   mergeParameterWithValue: {
     title: "teacherFullName",
   },
+  aadhaar: "aadhaar",
+  cadre: "cadre",
+  compSkills: "compSkills",
+  designation: "designation",
+  image: "image",
+  schoolId: "schoolId",
+  workingStatus: "workingStatus",
 };
 
 export const getAll = async (
@@ -21,7 +28,7 @@ export const getAll = async (
     filters: {},
   }
 ) => {
-  const result = await post(manifest.api_url + "Teacher/search", filters);
+  const result = await post(`${manifest.api_url}/teacher/search/`, filters);
   if (result.data) {
     return result.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
@@ -30,12 +37,11 @@ export const getAll = async (
 };
 
 export const getOne = async (filters = {}, headers = {}) => {
-  const result = await get(
-    manifest.api_url + "Teacher/018a8e96-6ba8-496e-93c7-c362696c5da7",
-    { headers }
-  ).catch((error) => error);
+  const result = await get(`${manifest.api_url}/teacher`, { headers }).catch(
+    (error) => error
+  );
   if (result.data) {
-    return mapInterfaceData(result.data, interfaceData);
+    return mapInterfaceData(result.data.data[0], interfaceData);
   } else {
     return {};
   }

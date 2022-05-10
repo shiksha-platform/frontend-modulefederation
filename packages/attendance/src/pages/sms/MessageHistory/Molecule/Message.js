@@ -3,7 +3,7 @@ import moment from "moment";
 import { Box, HStack, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { IconByName, capture, telemetryFactory } from "@shiksha/common-lib";
-import ButtonHOC from "atoms/ButtonHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 const Message = ({ item, isDisableRetry }) => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ const Message = ({ item, isDisableRetry }) => {
             </Text>
           </HStack>
           {item.status !== "Send" && !isDisableRetry ? (
-            <ButtonHOC
+            <ButtonWrapper
               variant="ghost"
               colorScheme="button"
               py="0"
@@ -39,7 +39,7 @@ const Message = ({ item, isDisableRetry }) => {
               }}
             >
               {t("RETRY")}
-            </ButtonHOC>
+            </ButtonWrapper>
           ) : (
             ""
           )}

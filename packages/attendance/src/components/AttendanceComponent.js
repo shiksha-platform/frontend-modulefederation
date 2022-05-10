@@ -34,9 +34,7 @@ const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
 export const GetAttendance = async (params) => {
-  return await attendanceServiceRegistry.getAll({
-    params: params,
-  });
+  return await attendanceServiceRegistry.getAll(params);
 };
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
@@ -137,7 +135,7 @@ export const MultipalAttendance = ({
         fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
         toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
       };
-      const attendanceData = await GetAttendance(params);
+      let attendanceData = await GetAttendance(params);
       const present = getStudentsPresentAbsent(
         attendanceData,
         students,

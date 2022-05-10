@@ -3,15 +3,11 @@ import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
 const interfaceData = {
-  id: "id",
+  id: "groupId",
   schoolId: "schoolId",
   type: "type",
   name: "name",
   status: "status",
-  createdOn: "createdOn",
-  createdBy: "createdBy",
-  updatedBy: "updatedBy",
-  updatedOn: "updatedOn",
   mergeParameterWithValue: {
     title: "name",
   },
@@ -27,7 +23,7 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
   const result = await get(
-    manifest.api_url + "/group/memberships/" + params.teacherId,
+    `${manifest.api_url}/group/participant/${params.teacherId}?role=Teacher`,
     {
       ...params,
       headers,
@@ -40,8 +36,12 @@ export const getAll = async (params = {}, header = {}) => {
   }
 };
 
-export const getOne = async (filters = {}, headers = {}) => {
-  const result = await get(manifest.api_url + "/group/" + filters.id, {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: "Bearer " + localStorage.getItem("token"),
+  };
+  const result = await get(`${manifest.api_url}/group/${filters.id}`, {
     headers,
   });
   if (result.data) {

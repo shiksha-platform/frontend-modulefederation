@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getAllQuestions = async () => {
   const questionList = await axios.post(
-    "https://dockstaging.sunbirded.org/action/composite/v3/search",
+    "https://vdn.diksha.gov.in/action/composite/v3/search",
     {
       request: {
         filters: {
@@ -25,7 +25,7 @@ export const getAllQuestions = async () => {
 
 const readQuestion = async (questionId) => {
   const question = await axios.get(
-    `https://dockstaging.sunbirded.org/action/question/v1/read/${questionId}`,
+    `https://vdn.diksha.gov.in/action/question/v1/read/${questionId}`,
     {
       params: {
         fields:

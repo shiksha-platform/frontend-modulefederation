@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { extendTheme, NativeBaseProvider } from "native-base";
-import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
+import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import Attendance from "pages/Attendance";
 import Report from "pages/reports/Report";
 import ReportDetail from "pages/reports/ReportDetail";
@@ -13,6 +13,10 @@ import { navigationRoute } from "./services/routes";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
+  initializeI18n(
+    ["attendance"],
+    `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+  );
   const routes = [
     {
       path: navigationRoute.attendance,

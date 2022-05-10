@@ -43,20 +43,11 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
   };
   const result = await get(
-    manifest.api_url + "/group/" + params?.classId + "/members",
-    { params: { role: "student", ...params }, headers }
+    `${manifest.api_url}/group/${params?.classId}/participants?role=Student`,
+    { headers }
   );
   if (result?.data?.data && result.data.data.length) {
-    let ids = result.data.data.map((e) => e.userId).map((e) => e);
-    if (ids.length > 0) {
-      const newResult = await post(
-        manifest.api_url + "/student/getbyids",
-        { ids: ids },
-        { headers: headers }
-      );
-
-      return newResult.data.data.map((e) => mapInterfaceData(e, interfaceData));
-    }
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
   }
   return [];
 };

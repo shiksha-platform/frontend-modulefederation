@@ -21,7 +21,7 @@ import {
   capture,
   telemetryFactory,
 } from "@shiksha/common-lib";
-import ButtonHOC from "atoms/ButtonHOC";
+import ButtonWrapper from "atoms/ButtonWrapper";
 
 export default function SendSMS({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -217,11 +217,10 @@ export default function SendSMS({ footerLinks, appName }) {
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
             </Text>
             <Button.Group>
-              <ButtonHOC variant="outline" colorScheme="button" flex="1">
+              <ButtonWrapper variant="outline" colorScheme="button">
                 {t("CLOSE")}
-              </ButtonHOC>
-              <ButtonHOC
-                flex="1"
+              </ButtonWrapper>
+              <ButtonWrapper
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {
@@ -234,7 +233,7 @@ export default function SendSMS({ footerLinks, appName }) {
                 }}
               >
                 {t("SEND_ANOTHER_MESSAGE")}
-              </ButtonHOC>
+              </ButtonWrapper>
             </Button.Group>
           </VStack>
         </Box>
