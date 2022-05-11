@@ -1,11 +1,15 @@
 import React from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
+import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import ClassDetails from "./pages/ClassDetails";
 import MyClassRoute from "pages/MyClassRoute";
 import { navigationRoutes } from "services/routes";
 
+initializeI18n(
+  ["classes"],
+  `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+);
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
 

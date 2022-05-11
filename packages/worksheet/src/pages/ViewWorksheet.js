@@ -50,9 +50,7 @@ export default function ViewWorksheet({ footerLinks }) {
                   <Box px="4" pt="4">
                     NativeBase
                   </Box>
-                  <Box px="3">
-                    {sheet.description}
-                  </Box>
+                  <Box px="3">{sheet.description}</Box>
                   <Box px="4" pb="4">
                     GeekyAnts
                   </Box>
