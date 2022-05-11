@@ -23,6 +23,7 @@ import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
+import FilterButton from './components/FilterButton'
 
 export {
   AppBar,
@@ -30,6 +31,7 @@ export {
   Footer,
   Layout,
   IconByName,
+  FilterButton,
   Widget,
   Collapsible,
   Menu,

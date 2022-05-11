@@ -66,9 +66,11 @@ const Worksheets = ({ data, leftTitle, rightTitle }) => {
           ""
         )}
         {rightTitle ? (
-          <Text fontWeight="500" fontSize="14px" color={"button.500"}>
-            {rightTitle}
-          </Text>
+          <Button variant="ghost" onPress={(e) => navigate("/questionBank")}>
+            <Text fontWeight="500" fontSize="14px" color={"button.500"}>
+              {rightTitle}
+            </Text>
+          </Button>
         ) : (
           ""
         )}

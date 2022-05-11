@@ -6,6 +6,7 @@ import QuestionBank from "pages/QuestionBank";
 import ViewWorksheet from "pages/ViewWorksheet";
 import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";
+import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -25,6 +26,10 @@ function App() {
     {
       path: "/questionBank",
       component: QuestionBank,
+    },
+    {
+      path: "/worksheetQuestionBank",
+      component: WorksheetQuestionBank,
     },
     {
       path: "*",

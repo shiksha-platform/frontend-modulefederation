@@ -1,69 +1,112 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Layout } from "@shiksha/common-lib";
+import { Layout, FilterButton, useWindowSize } from "@shiksha/common-lib";
 import { colourPalette } from "constants/colours";
 import QuestionHeading from "components/Heading";
 import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
-import { Box, Button, Text } from "native-base";
+import { Box, Button, ScrollView, Text, VStack } from "native-base";
 
 export default function QuestionBank({ footerLinks }) {
   const { t } = useTranslation();
+  const [width, Height] = useWindowSize();
   const [questions, setQuestions] = useState([]);
+  const [filterObject, setFilterObject] = useState({});
   useEffect(async () => {
-    const questions = await getAllQuestions();
+    const questions = await getAllQuestions(filterObject);
     setQuestions(questions);
-  }, []);
+  }, [filterObject]);
 
   const translationCheck = (name, title) => {
     return (t(name) !== name && t(name)) || title;
   };
 
   return (
-    <Box bg="white">
-      <Layout
-        _header={{
-          title: translationCheck("MY_CLASSES", "Question Bank"),
-          icon: "Group",
-          subHeading: "Test",
-          _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-          avatar: true,
-        }}
-        bg="white"
-        _appBar={{ languages: ["en"] }}
-        subHeader={t("THE_CLASSES_YOU_TAKE")}
-        _subHeader={{
-          bg: colourPalette.primary,
-          _text: {
-            fontSize: "16px",
-            fontWeight: "600",
-            textTransform: "inherit",
+    <Layout
+      _header={{
+        title: translationCheck("MY_CLASSES", "Question Bank"),
+        icon: "Group",
+        subHeading: "Test",
+        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
+        avatar: true,
+      }}
+      bg="white"
+      _appBar={{ languages: ["en"] }}
+      subHeader={t("THE_CLASSES_YOU_TAKE")}
+      _subHeader={{
+        bg: colourPalette.primary,
+        _text: {
+          fontSize: "16px",
+          fontWeight: "600",
+          textTransform: "inherit",
+        },
+      }}
+      _footer={footerLinks}
+    >
+      <FilterButton
+        getObject={setFilterObject}
+        _box={{ p: 5 }}
+        filters={[
+          {
+            name: "Subject",
+            attributeName: "subject",
+            data: [
+              "Social Science",
+              "Science",
+              "Mathematics",
+              "Hindi",
+              "English",
+              "History",
+              "Geography",
+            ],
           },
-        }}
-        _footer={footerLinks}
-      >
-        <Box style={{ flex: "0" }}>
-          <Button
-            rounded="full"
-            color={colourPalette.fontSecondary}
-            bg={colourPalette.tertiary}
-          >
-            <Text>Success</Text>
-          </Button>
-          <Button
-            rounded="full"
-            color={colourPalette.fontSecondary}
-            bg={colourPalette.tertiary}
-          >
-            <Text>Success</Text>
-          </Button>
+          {
+            name: "Class",
+            attributeName: "gradeLevel",
+            data: [
+              "Class 1",
+              "Class 2",
+              "Class 3",
+              "Class 4",
+              "Class 5",
+              "Class 6",
+              "Class 7",
+              "Class 8",
+              "Class 9",
+              "Class 10",
+            ],
+          },
+          {
+            name: "Topic",
+            attributeName: "topic",
+            data: [
+              "भोजन के घटक",
+              "भोजन: यह कहाँ से आता है?",
+              "तंतु से वस्त्र तक",
+              "संसाधन",
+              "समानता",
+              "संश्लेशित रेशे  और प्लास्टिक",
+              "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
+            ],
+          },
+        ]}
+      />
+      <QuestionHeading text="FILL IN THE BLANKS" />
+      <ScrollView maxH={Height}>
+        <Box bg="white" p="5">
+          <VStack space="5">
+            {questions &&
+              questions.map((question, index) => (
+                <QuestionBox
+                  _box={{ py: "12px", px: "16px" }}
+                  key={index}
+                  question={question.question}
+                  options={question?.options}
+                />
+              ))}
+          </VStack>
         </Box>
-        <QuestionHeading text="FILL IN THE BLANKS" />
-        {questions &&
-          questions.map((question, index) => (
-            <QuestionBox key={index}>{question}</QuestionBox>
-          ))}
-      </Layout>
-    </Box>
+      </ScrollView>
+    </Layout>
   );
 }

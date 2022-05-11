@@ -142,7 +142,8 @@ const DEFAULT_THEME = {
       500: '#FFF8F7'
     },
     worksheetCard: {
-      500: '#F9CCE4'
+      500: '#F9CCE4',
+      900: '#C08FA9'
     },
     reportBoxBg: {
       400: '#FFF8F7',
