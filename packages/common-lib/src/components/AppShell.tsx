@@ -43,7 +43,7 @@ function AppShell({
             title: 'MATERIALS',
             icon: 'BookOpenLineIcon',
             module: 'Registry',
-            route: '/',
+            route: '/worksheet',
             routeparameters: {}
           },
           {
