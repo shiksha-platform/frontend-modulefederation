@@ -36,11 +36,7 @@ const Student = ({ footerLinks }) => {
         subHeading: t("STUDENTS_DETAIL"),
         avatar: true,
       }}
-      subHeader={
-        <H2 fontWeight="400">
-          {t("VIEW_ALL_STUDENTS")}
-        </H2>
-      }
+      subHeader={<H2 fontWeight="400">{t("VIEW_ALL_STUDENTS")}</H2>}
       _subHeader={{ bg: "studentCard.500" }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}

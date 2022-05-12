@@ -8,8 +8,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import "./../../assets/css/fullCalendar.css";
-import { H2, H4 , IconByName} from "@shiksha/common-lib";
-
+import { H2, H4, IconByName } from "@shiksha/common-lib";
 
 const timeTables = [
   {

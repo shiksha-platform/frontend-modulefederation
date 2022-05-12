@@ -35,7 +35,7 @@ H5.defaultProps = {
   bold: false,
   textAlign: '',
   textTransform: '',
-  pb:''
+  pb: ''
 }
 
 H5.propTypes = {
@@ -46,7 +46,7 @@ H5.propTypes = {
   bold: PropTypes.bool,
   textAlign: PropTypes.string,
   textTransform: PropTypes.string,
-  pb: PropTypes.string,
+  pb: PropTypes.string
 }
 
 export default H5

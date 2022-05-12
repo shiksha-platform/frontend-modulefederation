@@ -111,7 +111,7 @@ export default function StudentEdit({
             render: () => {
               return (
                 <Box bg="emerald.500" px="3" py="2" rounded="sm" mb={5}>
-                  <H1  color="coolGray.100">
+                  <H1 color="coolGray.100">
                     {result.data?.params?.status
                       ? result.data?.params?.status
                       : "successful"}
@@ -173,10 +173,7 @@ export default function StudentEdit({
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3
-                      fontWeight="500"
-                      color={"coolGray.400"}
-                    >
+                    <H3 fontWeight="500" color={"coolGray.400"}>
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
@@ -202,11 +199,7 @@ export default function StudentEdit({
                 </FormControl>
               ) : (
                 <>
-                  <H3
-                    fontWeight="500"
-                    color={"coolGray.400"}
-                    pb={2}
-                  >
+                  <H3 fontWeight="500" color={"coolGray.400"} pb={2}>
                     {item.placeholder}
                   </H3>
                   {item.value ? (
@@ -231,9 +224,7 @@ export default function StudentEdit({
 const Section = ({ title, button, children, _box }) => (
   <Box bg={"white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <H2  fontWeight="500">
-        {title}
-      </H2>
+      <H2 fontWeight="500">{title}</H2>
       {button}
     </HStack>
     {children}

@@ -35,7 +35,7 @@ H4.defaultProps = {
   bold: false,
   textAlign: '',
   textTransform: '',
-  pb:''
+  pb: ''
 }
 
 H4.propTypes = {
@@ -46,7 +46,7 @@ H4.propTypes = {
   bold: PropTypes.bool,
   textAlign: PropTypes.string,
   textTransform: PropTypes.string,
-  pb: PropTypes.string,
+  pb: PropTypes.string
 }
 
 export default H4

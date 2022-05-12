@@ -23,7 +23,7 @@ const renderEventContent = (eventInfo) => {
             //   ...item._text,
             //   color: item._text?.color,
             // }}
-            color={item._text?.color }
+            color={item._text?.color}
           >
             {item.title}
           </H2>

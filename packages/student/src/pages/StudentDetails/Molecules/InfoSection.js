@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import {H3} from '@shiksha/common-lib';
+import { H3 } from "@shiksha/common-lib";
 
 const InfoSection = ({ items, isLastBorderEnable }) => {
   const { t } = useTranslation();

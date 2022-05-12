@@ -200,9 +200,7 @@ export default function StudentDetails({ footerLinks }) {
             >
               <Collapsible defaultCollapse header={item.title}>
                 <Box pt="18px">
-                  <H3 fontWeight="500">
-                    {item.value}
-                  </H3>
+                  <H3 fontWeight="500">{item.value}</H3>
                 </Box>
               </Collapsible>
             </Box>
