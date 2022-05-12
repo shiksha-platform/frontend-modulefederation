@@ -3,7 +3,7 @@ import moment from "moment";
 import { Box, HStack, Pressable, Text, VStack } from "native-base";
 import { TouchableHighlight } from "react-native-web";
 import GetIcon from "atoms/GetIcon";
-import Message from './Message';
+import Message from "./Message";
 
 const CalendarComponent = ({
   monthDays,

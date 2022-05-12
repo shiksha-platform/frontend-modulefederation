@@ -3,7 +3,15 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Box, FlatList, HStack, Stack, Text, VStack, Button } from "native-base";
+import {
+  Box,
+  FlatList,
+  HStack,
+  Stack,
+  Text,
+  VStack,
+  Button,
+} from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
@@ -15,7 +23,6 @@ import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
- 
 
 export default function Attendance({ footerLinks }) {
   const { t } = useTranslation();
@@ -130,9 +137,7 @@ export default function Attendance({ footerLinks }) {
         >
           <HStack space="4" justifyContent="space-between">
             <VStack>
-              <H1>
-                {classObject?.title ? classObject?.title : ""}
-              </H1>
+              <H1>{classObject?.title ? classObject?.title : ""}</H1>
               <H3>
                 {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
               </H3>

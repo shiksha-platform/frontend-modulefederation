@@ -15,9 +15,15 @@ import * as classServiceRegistry from "../../services/classServiceRegistry";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
-import { IconByName, Layout, Collapsible, H2, H3, H4, H5 } from "@shiksha/common-lib";
-
-
+import {
+  IconByName,
+  Layout,
+  Collapsible,
+  H2,
+  H3,
+  H4,
+  H5,
+} from "@shiksha/common-lib";
 
 export default function SendSMS({ footerLinks }) {
   const { t } = useTranslation();
@@ -85,9 +91,7 @@ export default function SendSMS({ footerLinks }) {
     >
       <VStack space="1">
         <Box bg="white" p="5">
-          <H2 fontWeight="600">
-            {classObject.name}
-          </H2>
+          <H2 fontWeight="600">{classObject.name}</H2>
           <H5 fontWeight="300">
             {t("TOTAL")}: {students.length} {t("PRESENT")}:
             {attendance.filter((e) => e.attendance === "Present").length}
@@ -104,9 +108,7 @@ export default function SendSMS({ footerLinks }) {
                     <H2 bold={true} fontSize={"md"}>
                       100% {t("THIS_WEEK")}
                     </H2>
-                    <H4>
-                      {students?.length + " " + t("STUDENTS")}
-                    </H4>
+                    <H4>{students?.length + " " + t("STUDENTS")}</H4>
                   </VStack>
                 </>
               }
@@ -130,7 +132,7 @@ export default function SendSMS({ footerLinks }) {
                           hidePopUpButton
                           textTitle={
                             <VStack alignItems="center">
-                              <H3  fontWeight="500">
+                              <H3 fontWeight="500">
                                 <Text>{item.fullName}</Text>
                                 <Text color="gray.300"> • </Text>
                                 <Text color="presentCardText.500">100%</Text>
@@ -162,12 +164,8 @@ export default function SendSMS({ footerLinks }) {
               header={
                 <>
                   <VStack>
-                    <H2 bold={true}>
-                      {t("ABSENT_CONSECUTIVE_3_DAYS")}
-                    </H2>
-                    <H4>
-                      {students?.length + " " + t("STUDENTS")}
-                    </H4>
+                    <H2 bold={true}>{t("ABSENT_CONSECUTIVE_3_DAYS")}</H2>
+                    <H4>{students?.length + " " + t("STUDENTS")}</H4>
                   </VStack>
                 </>
               }
@@ -191,7 +189,7 @@ export default function SendSMS({ footerLinks }) {
                           hidePopUpButton
                           textTitle={
                             <VStack alignItems="center">
-                              <H3  fontWeight="500">
+                              <H3 fontWeight="500">
                                 <Text>{item.fullName}</Text>
                                 <Text color="gray.300"> • </Text>
                                 <Text color="absentCardText.500">
@@ -218,10 +216,7 @@ export default function SendSMS({ footerLinks }) {
         </Box>
         <Box p="2" py="5" bg="white" mb="1">
           <VStack space={"15px"} alignItems={"center"}>
-            <H5
-              textAlign={"center"}
-              textTransform={"inherit"}
-            >
+            <H5 textAlign={"center"} textTransform={"inherit"}>
               <Text bold color={"gray.700"}>
                 {t("NOTES") + ": "}
               </Text>

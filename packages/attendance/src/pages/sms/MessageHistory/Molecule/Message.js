@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Box, Button, HStack, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { IconByName, H3, H4,  } from "@shiksha/common-lib";
+import { IconByName, H3, H4 } from "@shiksha/common-lib";
 
 const Message = ({ item, isDisableRetry }) => {
   const { t } = useTranslation();
@@ -33,9 +33,7 @@ const Message = ({ item, isDisableRetry }) => {
         <H4 fontWeight="500" color="#B5B5C8">
           {moment(item.date).format("Do MMM, hh:ssa")}
         </H4>
-        <H3 fontWeight="400">
-          {item.message}
-        </H3>
+        <H3 fontWeight="400">{item.message}</H3>
       </VStack>
     </Box>
   );

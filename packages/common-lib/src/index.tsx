@@ -21,8 +21,8 @@ import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
-import Loding from './components/Loding';
-import {H1, H2, H3, H4, H5}  from './components/layout/HeaderTags/index';
+import Loding from './components/Loding'
+import { H1, H2, H3, H4, H5 } from './components/layout/HeaderTags/index'
 
 export {
   Header,
@@ -39,9 +39,9 @@ export {
   Tab,
   Loding,
   H1,
-  H2, 
-  H3, 
-  H4, 
+  H2,
+  H3,
+  H4,
   H5
 }
 

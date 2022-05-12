@@ -107,9 +107,7 @@ export default function MessageHistory({ footerLinks }) {
               >
                 <HStack justifyContent={"space-between"}>
                   <Stack p={5} pt={2} pb="25px">
-                    <H2 fontWeight={"600"}>
-                      {t("SELECT_VIEW")}
-                    </H2>
+                    <H2 fontWeight={"600"}>{t("SELECT_VIEW")}</H2>
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
@@ -151,17 +149,13 @@ export default function MessageHistory({ footerLinks }) {
       <VStack space="1">
         <Box bg="white" p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <H2 fontWeight="600">
-              {studentObject.fullName}
-            </H2>
+            <H2 fontWeight="600">{studentObject.fullName}</H2>
           </HStack>
         </Box>
         <Box bg="white">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box p="5">
-              <H2 fontWeight="600">
-                {t("SEND_MESSAGE")}
-              </H2>
+              <H2 fontWeight="600">{t("SEND_MESSAGE")}</H2>
             </Box>
           </HStack>
           <VStack>
