@@ -1,9 +1,9 @@
-import { IconByName, Layout } from "@shiksha/common-lib";
+import { IconByName, Layout, H1, H3 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Box, FlatList, HStack, Stack, Text, VStack } from "native-base";
+import { Link, useParams } from "react-router-dom";
+import { Box, FlatList, HStack, Stack, Text, VStack, Button } from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
@@ -13,10 +13,9 @@ import AttendanceComponent, {
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
-import ButtonWrapper from "atoms/ButtonWrapper";
-import LinkWrapper from "atoms/LinkWrapper";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
+ 
 
 export default function Attendance({ footerLinks }) {
   const { t } = useTranslation();
@@ -106,7 +105,7 @@ export default function Attendance({ footerLinks }) {
         setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
-          <LinkWrapper
+          <Link
             to="/attendance/report"
             style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
           >
@@ -120,27 +119,27 @@ export default function Attendance({ footerLinks }) {
             >
               {t("REPORT")}
             </Box>
-          </LinkWrapper>
+          </Link>
         ),
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={
-        <LinkWrapper
+        <Link
           to={`/students/class/${classId}`}
           style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
         >
           <HStack space="4" justifyContent="space-between">
             <VStack>
-              <Text fontSize={"lg"}>
+              <H1>
                 {classObject?.title ? classObject?.title : ""}
-              </Text>
-              <Text fontSize={"sm"}>
+              </H1>
+              <H3>
                 {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
-              </Text>
+              </H3>
             </VStack>
             <IconByName size="sm" name="ArrowRightSLineIcon" />
           </HStack>
-        </LinkWrapper>
+        </Link>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
       _footer={footerLinks}
@@ -179,7 +178,7 @@ export default function Attendance({ footerLinks }) {
               }
             />
 
-            <ButtonWrapper
+            <Button
               variant="ghost"
               colorScheme="button"
               endIcon={
@@ -192,7 +191,7 @@ export default function Attendance({ footerLinks }) {
               onPress={(e) => setIsEditDisabled(!isEditDisabled)}
             >
               {isEditDisabled ? t("EDIT") : t("CANCEL")}
-            </ButtonWrapper>
+            </Button>
           </HStack>
         </Box>
       </Stack>
