@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
+import {H3} from '@shiksha/common-lib';
 
 const InfoSection = ({ items, isLastBorderEnable }) => {
   const { t } = useTranslation();
@@ -14,9 +15,9 @@ const InfoSection = ({ items, isLastBorderEnable }) => {
       borderColor={"coolGray.200"}
       key={index}
     >
-      <Text fontSize={"14px"} fontWeight="500" color={"coolGray.400"}>
+      <H3 fontWeight="500" color="coolGray.400">
         {item.title}
-      </Text>
+      </H3>
       {item.value ? (
         <Text>{item.value}</Text>
       ) : (

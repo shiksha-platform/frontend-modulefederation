@@ -4,7 +4,7 @@ import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName, Layout, Collapsible } from "@shiksha/common-lib";
+import { IconByName, Layout, Collapsible, H3 } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
@@ -200,9 +200,9 @@ export default function StudentDetails({ footerLinks }) {
             >
               <Collapsible defaultCollapse header={item.title}>
                 <Box pt="18px">
-                  <Text fontWeight="500" fontSize="14px">
+                  <H3 fontWeight="500">
                     {item.value}
-                  </Text>
+                  </H3>
                 </Box>
               </Collapsible>
             </Box>
@@ -225,9 +225,9 @@ export default function StudentDetails({ footerLinks }) {
           <Box p="5">
             <Collapsible defaultCollapse header={t("NOTES")}>
               <Box pt="18px">
-                <Text fontWeight="500" fontSize="14px" pb="30">
+                <H3 fontWeight="500" pb="30">
                   {"2 " + t("NOTES")}
-                </Text>
+                </H3>
               </Box>
             </Collapsible>
           </Box>

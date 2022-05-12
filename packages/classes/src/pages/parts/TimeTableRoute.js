@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Text, Box, HStack, VStack, useToken } from "native-base";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
+import React from "react";
+import { Box, HStack, VStack, useToken } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import IconByName from "../../components/IconByName";
-import { weekDates } from "../../components/attendance/AttendanceComponent";
+// import IconByName from "../../components/IconByName";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import "./../../assets/css/fullCalendar.css";
+import { H2, H4 , IconByName} from "@shiksha/common-lib";
+
 
 const timeTables = [
   {
@@ -256,16 +256,16 @@ const renderEventContent = (eventInfo) => {
           space="2"
           alignItems={"center"}
         >
-          <Text
-            fontSize="16px"
+          <H2
             fontWeight="600"
-            {...{
-              ...item._text,
-              color: item._text?.color,
-            }}
+            // {...{
+            //   ...item._text,
+            //   color: item._text?.color,
+            // }}
+            color={item._text?.color}
           >
             {item.title}
-          </Text>
+          </H2>
           {item?.rightIcon ? (
             <IconByName
               name={item?.rightIcon}
@@ -279,16 +279,16 @@ const renderEventContent = (eventInfo) => {
             <></>
           )}
         </HStack>
-        <Text
-          fontSize="12px"
+        <H4
           fontWeight="500"
-          {...{
-            ...item._text,
-            color: item._text?.color,
-          }}
+          // {...{
+          //   ...item._text,
+          //   color: item._text?.color,
+          // }}
+          color={item._text?.color}
         >
           {item?.subTitle}
-        </Text>
+        </H4>
       </VStack>
     </Box>
   );

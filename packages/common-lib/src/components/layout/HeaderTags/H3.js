@@ -9,7 +9,8 @@ const H3 = ({
   fontWeight,
   bold,
   textAlign,
-  textTransform
+  textTransform,
+  pb
 }) => {
   return (
     <Text
@@ -19,6 +20,7 @@ const H3 = ({
       bold={bold}
       textAlign={textAlign}
       textTransform={textTransform}
+      pb={pb}
     >
       {children}
     </Text>
@@ -32,7 +34,8 @@ H3.defaultProps = {
   fontWeight: '',
   bold: false,
   textAlign: '',
-  textTransform: ''
+  textTransform: '',
+  pb:''
 }
 
 H3.propTypes = {
@@ -42,7 +45,8 @@ H3.propTypes = {
   fontWeight: PropTypes.string,
   bold: PropTypes.bool,
   textAlign: PropTypes.string,
-  textTransform: PropTypes.string
+  textTransform: PropTypes.string,
+  pb: PropTypes.string,
 }
 
 export default H3

@@ -2,15 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Text } from 'native-base'
 
-const H4 = ({
+const Heading1 = ({
   fontSize,
   children,
   color,
   fontWeight,
   bold,
   textAlign,
-  textTransform,
-  pb
+  textTransform
 }) => {
   return (
     <Text
@@ -20,33 +19,30 @@ const H4 = ({
       bold={bold}
       textAlign={textAlign}
       textTransform={textTransform}
-      pb={pb}
     >
       {children}
     </Text>
   )
 }
 
-H4.defaultProps = {
-  fontSize: 'xs',
+Heading1.defaultProps = {
+  fontSize: '2xl',
   children: 'unknown',
   color: '',
   fontWeight: '',
   bold: false,
   textAlign: '',
-  textTransform: '',
-  pb:''
+  textTransform: ''
 }
 
-H4.propTypes = {
+Heading1.propTypes = {
   fontSize: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   color: PropTypes.string,
   fontWeight: PropTypes.string,
   bold: PropTypes.bool,
   textAlign: PropTypes.string,
-  textTransform: PropTypes.string,
-  pb: PropTypes.string,
+  textTransform: PropTypes.string
 }
 
-export default H4
+export default Heading1
