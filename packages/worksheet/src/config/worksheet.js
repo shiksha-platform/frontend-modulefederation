@@ -1,5 +1,6 @@
 export const worksheets = [
   {
+    id: 1,
     image: "",
     heading: "Learning Made Easy",
     subHeading: "NCERT Workbook",
@@ -16,6 +17,7 @@ export const worksheets = [
     downloads: "3",
   },
   {
+    id: 2,
     image: "",
     heading: "Learning Made Easy",
     subHeading: "NCERT Workbook",

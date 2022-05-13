@@ -89,7 +89,7 @@ export default function QuestionBank({ footerLinks, appName }) {
           },
         ]}
       />
-      {/* <QuestionHeading text="FILL IN THE BLANKS" /> */}
+      {/* <QuestionHeading text="Fill in the blanks" /> */}
       <ScrollView maxH={Height}>
         <Box bg="white" p="5">
           <VStack space="5">

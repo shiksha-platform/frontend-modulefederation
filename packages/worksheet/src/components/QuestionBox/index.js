@@ -5,8 +5,8 @@ import "../../App.css";
 import { IconByName } from "@shiksha/common-lib";
 
 const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
-  const createMarkup = (abc) => {
-    return { __html: abc };
+  const createMarkup = (markup) => {
+    return { __html: markup };
   };
   const alphabet = [
     "a",
@@ -14,27 +14,7 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
     "c",
     "d",
     "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
+    "f"  
   ];
 
   const isExist = () =>

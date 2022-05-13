@@ -3,7 +3,6 @@ import "./App.css";
 import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import QuestionBank from "pages/QuestionBank";
-import ViewWorksheet from "pages/ViewWorksheet";
 import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";
 import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
@@ -15,13 +14,9 @@ function App() {
     ["worksheet"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
   );
-  const routes = [
+  const routes = [    
     {
-      path: "/viewworksheets",
-      component: ViewWorksheet,
-    },
-    {
-      path: "/teaching/:id",
+      path: "/view",
       component: TeachingDetail,
     },
     {
@@ -29,7 +24,7 @@ function App() {
       component: QuestionBank,
     },
     {
-      path: "/worksheetQuestionBank",
+      path: "/:id",
       component: WorksheetQuestionBank,
     },
     {

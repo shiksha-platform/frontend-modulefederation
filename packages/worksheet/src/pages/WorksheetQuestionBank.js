@@ -133,7 +133,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    question={question.question}
+                    questionObject={question}
                     options={question?.options}
                   />
                 ))}
@@ -141,7 +141,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </Box>
         </ScrollView>
       </Collapsible>
-      <Collapsible header="FILL IN THE BLANKS">
+      <Collapsible header="Fill in the blanks">
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
@@ -150,8 +150,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    question={question.question}
-                    options={question?.options}
+                    questionObject={question}
                   />
                 ))}
             </VStack>
@@ -167,8 +166,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    question={question.question}
-                    options={question?.options}
+                    questionObject={question}
                   />
                 ))}
             </VStack>

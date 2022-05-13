@@ -337,7 +337,7 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
           </Box>
         </ScrollView>
       </Collapsible>
-      <Collapsible header="FILL IN THE BLANKS" _header={{ py: 5 }}>
+      <Collapsible header="Fill in the blanks" _header={{ py: 5 }}>
         <ScrollView maxH={Height}>
           <Box bg="white">
             <VStack space="5">
