@@ -165,7 +165,7 @@ export default function FilterButton({
                     : 'CheckboxBlankLineIcon'
                 }
               />
-              <Text>{t('SELECT_ALL')}</Text>
+              <Text>{t('Select All')}</Text>
             </HStack>
           </Pressable>
           {filterData?.data &&

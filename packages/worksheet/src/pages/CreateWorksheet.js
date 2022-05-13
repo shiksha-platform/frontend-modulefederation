@@ -241,7 +241,7 @@ const FormPage = ({ formObject, setFormObject, setPageName }) => {
             flex="1"
             onPress={(e) => setPageName("ListOfWorksheet")}
           >
-            {t("ADD Questions")}
+            {t("Add Questions")}
           </Button>
         </Button.Group>
       </Box>
@@ -379,7 +379,7 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
               variant="outline"
               onPress={(e) => setPageName("FormPage")}
             >
-              {t("SAve As Draft")}
+              {t("Save As Draft")}
             </Button>
             <Button
               colorScheme="button"
@@ -416,7 +416,7 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
                   setIsDataFilter(true);
                 }}
               >
-                {t("ADD Questions")}
+                {t("Add Questions")}
               </Button>
             </Button.Group>
           </>

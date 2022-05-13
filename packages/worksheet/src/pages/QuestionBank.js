@@ -89,7 +89,7 @@ export default function QuestionBank({ footerLinks, appName }) {
           },
         ]}
       />
-      <QuestionHeading text="FILL IN THE BLANKS" />
+      {/* <QuestionHeading text="FILL IN THE BLANKS" /> */}
       <ScrollView maxH={Height}>
         <Box bg="white" p="5">
           <VStack space="5">
@@ -98,8 +98,7 @@ export default function QuestionBank({ footerLinks, appName }) {
                 <QuestionBox
                   _box={{ py: "12px", px: "16px" }}
                   key={index}
-                  question={question.question}
-                  options={question?.options}
+                  questionObject={question}                  
                 />
               ))}
           </VStack>

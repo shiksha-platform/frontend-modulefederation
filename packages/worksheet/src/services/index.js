@@ -9,8 +9,6 @@ export const getAllQuestions = async (filter) => {
           objectType: "Question",
           status: ["Live"],
           ...filter,
-          // qType: "MCQ",
-          // qType: "SA",
         },
       },
     }
