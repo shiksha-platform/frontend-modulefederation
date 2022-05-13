@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Layout, FilterButton, useWindowSize } from "@shiksha/common-lib";
-import { colourPalette } from "constants/colours";
-import QuestionHeading from "components/Heading";
+import {
+  Layout,
+  FilterButton,
+  useWindowSize,
+  Loading,
+} from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
-import { Box, Button, ScrollView, Text, VStack } from "native-base";
+import { Box, ScrollView, VStack } from "native-base";
 
 export default function QuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
   const [questions, setQuestions] = useState([]);
   const [filterObject, setFilterObject] = useState({});
+  const [loading, setLoading] = React.useState(true);
+
   useEffect(async () => {
     const questions = await getAllQuestions(filterObject);
     setQuestions(questions);
+    setLoading(false);
   }, [filterObject]);
 
   const translationCheck = (name, title) => {
     return (t(name) !== name && t(name)) || title;
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Layout
@@ -98,7 +108,7 @@ export default function QuestionBank({ footerLinks, appName }) {
                 <QuestionBox
                   _box={{ py: "12px", px: "16px" }}
                   key={index}
-                  questionObject={question}                  
+                  questionObject={question}
                 />
               ))}
           </VStack>

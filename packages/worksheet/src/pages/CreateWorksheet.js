@@ -1,14 +1,13 @@
 import {
-  capture,
   Collapsible,
+  H1,
   IconByName,
   Layout,
   Loading,
-  telemetryFactory,
   useWindowSize,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
-import moment from "moment";
+import WorksheetBox from "components/WorksheertBox";
 import {
   HStack,
   Stack,
@@ -33,48 +32,99 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [pageName, setPageName] = React.useState();
   const [questions, setQuestions] = React.useState([]);
-
+  const [loading, setLoading] = React.useState(false);
   const [formObject, setFormObject] = React.useState({});
-
-  const [success, setSuccess] = React.useState(false);
   const [width, height] = useWindowSize();
 
   React.useEffect(async () => {
     if (pageName === "ListOfWorksheet") {
       const questions = await getAllQuestions(formObject);
       setQuestions(questions);
+      setLoading(false);
     }
   }, [formObject, pageName === "ListOfWorksheet"]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (pageName === "success") {
     return (
       <Layout
-        _appBar={{ languages: manifest.languages, bg: "successAlert.500" }}
+        _appBar={{
+          languages: manifest.languages,
+          color: "successAlertText.500",
+          _box: { bg: "successAlert.500" },
+        }}
       >
         <Loading
           width={width}
-          height={height - 153}
-          icon={<IconByName name="MailLockLineIcon" _icon={{ size: 100 }} />}
-          message={
-            <Center>
-              <Text fontSize="24" fontWeight="600" color="gray.500">
-                {"Notification Scheduled"}
-              </Text>
-              <Text fontSize="14" fontWeight="400" color="gray.500">
-                {`Attendance Notification has been scheduled for Thursdays 2:00pm`}
-              </Text>
-              <Button
-                colorScheme="button"
-                variant="outline"
-                onPress={(e) => {
-                  setSuccess(false);
-                }}
-              >
-                {"Done"}
-              </Button>
-            </Center>
+          height={height - 230}
+          customComponent={
+            <VStack space="2" flex="1">
+              <VStack bg="successAlert.500" pb="100px" pt="32px">
+                <IconByName
+                  alignSelf="center"
+                  name="CheckboxCircleLineIcon"
+                  color="successAlertText.500"
+                  _icon={{ size: 100 }}
+                />
+                <Box alignSelf="center">
+                  <H1
+                    fontSize="22px"
+                    fontWeight="600"
+                    color="successAlertText.500"
+                  >
+                    Worksheet Published
+                  </H1>
+                </Box>
+              </VStack>
+              <Box p="5">
+                <WorksheetBox
+                  {...{
+                    item: {
+                      id: 1,
+                      image: "",
+                      heading: "Maps of the World",
+                      subHeading: "NCERT Workbook",
+                      class: "V",
+                      likes: "4",
+                      comments: "0",
+                      description:
+                        "Worksheets help the kids in exploring multiple concepts and ideas. They develop fine motor skills and logical thinking.",
+                      subject: "Math",
+                      level: "Beginner",
+                      grade: "VI",
+                      questions: "30",
+                      chapter: "3",
+                      downloads: "3",
+                    },
+                  }}
+                />
+              </Box>
+            </VStack>
           }
         />
+        <Box
+          bg="white"
+          p="5"
+          position="fixed"
+          width="100%"
+          bottom="0"
+          shadow={2}
+        >
+          <Button
+            colorScheme="button"
+            _text={{ color: "white" }}
+            px="5"
+            flex="1"
+            onPress={(e) => {
+              setPageName();
+            }}
+          >
+            {t("Back to Worksheets")}
+          </Button>
+        </Box>
       </Layout>
     );
   }
@@ -113,7 +163,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       ) : pageName === "AddDescriptionPage" ? (
         <AddDescriptionPage {...{ questions, setQuestions, setPageName }} />
       ) : (
-        <FormPage {...{ formObject, setFormObject, setPageName }} />
+        <FormPage {...{ formObject, setFormObject, setPageName, setLoading }} />
       )}
     </Layout>
   );
@@ -176,10 +226,13 @@ const FormInput = ({
   );
 };
 
-const FormPage = ({ formObject, setFormObject, setPageName }) => {
+const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
-
+  const handelAddQuestion = () => {
+    setLoading(true);
+    setPageName("ListOfWorksheet");
+  };
   return (
     <Stack space={1} mb="2">
       <FormInput
@@ -239,7 +292,7 @@ const FormPage = ({ formObject, setFormObject, setPageName }) => {
             _text={{ color: "white" }}
             px="5"
             flex="1"
-            onPress={(e) => setPageName("ListOfWorksheet")}
+            onPress={handelAddQuestion}
           >
             {t("Add Questions")}
           </Button>
@@ -311,9 +364,17 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
     <Stack>
       {isDataFilter ? (
         <Box bg="successAlert.500" p="5">
-          <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
-            ({questions.length}) New Questions Added
-          </Text>
+          <HStack justifyContent="space-between">
+            <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
+              ({questions.length}) New Questions Added
+            </Text>
+            <IconByName
+              name="CloseCircleLineIcon"
+              color="successAlertText.500"
+              p="0"
+              onPress={(e) => setIsDataFilter(false)}
+            />
+          </HStack>
         </Box>
       ) : (
         ""
@@ -426,7 +487,7 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
   );
 };
 
-const AddDescriptionPage = () => {
+const AddDescriptionPage = ({ setPageName }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
   const formInput = [
@@ -469,7 +530,7 @@ const AddDescriptionPage = () => {
           _text={{ color: "white" }}
           px="5"
           flex="1"
-          onPress={(e) => {}}
+          onPress={(e) => setPageName("success")}
         >
           {t("Save and Publish")}
         </Button>
