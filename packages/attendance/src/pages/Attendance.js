@@ -31,6 +31,9 @@ import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
 
+const PRESENT = "Present";
+const ABSENT = "Absent";
+
 export default function Attendance({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
@@ -86,7 +89,7 @@ export default function Attendance({ footerLinks, appName }) {
 
       setSms(
         studentData.map((e, index) => ({
-          type: index % 2 === 0 ? "Absent" : "Present",
+          type: index % 2 === 0 ? ABSENT : PRESENT,
           date: moment().add(-1, "days").format("Y-MM-DD"),
           studentId: e.id,
         }))

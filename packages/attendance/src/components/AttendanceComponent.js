@@ -836,6 +836,7 @@ const CalendarComponent = ({
       smsDay,
       attendanceItem,
       attendanceIconProp,
+      attendanceType,
     ];
   };
 
@@ -860,6 +861,7 @@ const CalendarComponent = ({
           smsDay,
           attendanceItem,
           attendanceIconProp,
+          attendanceType,
         ] = handleAttendaceData(attendance, day);
 
         return (
