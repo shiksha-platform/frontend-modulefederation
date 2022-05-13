@@ -11,11 +11,18 @@ import {
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { capture, IconByName, Layout, calendar } from "@shiksha/common-lib";
+import {
+  IconByName,
+  capture,
+  Layout,
+  H3,
+  H2,
+  H4,
+  calendar,
+} from "@shiksha/common-lib";
 import * as studentServiceRegistry from "../../../services/studentServiceRegistry";
 import CalendarBar from "../../../components/CalendarBar";
 import manifest from "../../../manifest.json";
-import ButtonWrapper from "atoms/ButtonWrapper";
 import { sms } from "./assets";
 import CalendarComponent from "./Molecule/CalendarComponent";
 import Message from "./Molecule/Message";
@@ -78,7 +85,7 @@ export default function MessageHistory({ footerLinks }) {
             _box={{ p: 0, bg: "transparent" }}
           />
           <Stack>
-            <ButtonWrapper
+            <Button
               rounded={"full"}
               colorScheme="button"
               variant="outline"
@@ -92,14 +99,14 @@ export default function MessageHistory({ footerLinks }) {
               }
               onPress={(e) => setShowModal(true)}
             >
-              <Text color="button.500" fontSize="14" fontWeight="500">
+              <H3 color="button.500" fontWeight="500">
                 {calendarView === "month"
                   ? t("MONTH_VIEW")
                   : calendarView === "week"
                   ? t("WEEK_VIEW")
                   : t("TODAY_VIEW")}
-              </Text>
-            </ButtonWrapper>
+              </H3>
+            </Button>
             <Actionsheet
               isOpen={showModal}
               _backdrop={{ opacity: "0.9", bg: "gray.500" }}
@@ -111,9 +118,7 @@ export default function MessageHistory({ footerLinks }) {
               >
                 <HStack justifyContent={"space-between"}>
                   <Stack p={5} pt={2} pb="25px">
-                    <Text fontSize="16px" fontWeight={"600"}>
-                      {t("SELECT_VIEW")}
-                    </Text>
+                    <H2 fontWeight={"600"}>{t("SELECT_VIEW")}</H2>
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
@@ -155,17 +160,13 @@ export default function MessageHistory({ footerLinks }) {
       <VStack space="1">
         <Box bg="white" p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <Text fontSize="16" fontWeight="600">
-              {studentObject.fullName}
-            </Text>
+            <H2 fontWeight="600">{studentObject.fullName}</H2>
           </HStack>
         </Box>
         <Box bg="white">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box p="5">
-              <Text fontSize="16" fontWeight="600">
-                {t("SEND_MESSAGE")}
-              </Text>
+              <H2 fontWeight="600">{t("SEND_MESSAGE")}</H2>
             </Box>
           </HStack>
           <VStack>
@@ -184,14 +185,14 @@ export default function MessageHistory({ footerLinks }) {
             <Actionsheet.Content p="0" alignItems={"left"} bg="studentCard.500">
               <HStack justifyContent={"space-between"}>
                 <Stack p={5} pt={2} pb="25px">
-                  <Text fontSize="16px" fontWeight={"600"}>
+                  <H2 fontWeight={"600"}>
                     {smsObject?.status === "Send"
                       ? t("MESSAGE_SENT")
                       : t("MESSAGE_FAILED")}
-                  </Text>
-                  <Text fontSize="12px" fontWeight="500" color="#5B7E5F">
+                  </H2>
+                  <H4 fontWeight="500" color="#5B7E5F">
                     {smsObject?.date}
-                  </Text>
+                  </H4>
                 </Stack>
                 <IconByName
                   name="CloseCircleLineIcon"
@@ -202,15 +203,15 @@ export default function MessageHistory({ footerLinks }) {
             <Box bg="white" w="100%">
               <Message item={smsObject} isDisableRetry />
               <Button.Group p="5">
-                <ButtonWrapper
+                <Button
                   flex={1}
                   variant="outline"
                   colorScheme="button"
                   onPress={(e) => setShowModal(true)}
                 >
                   {smsObject?.status === "Send" ? t("RESEND") : t("RETRY")}
-                </ButtonWrapper>
-                <ButtonWrapper
+                </Button>
+                <Button
                   flex={1}
                   colorScheme="button"
                   onPress={(e) => {
@@ -219,7 +220,7 @@ export default function MessageHistory({ footerLinks }) {
                   _text={{ color: "white" }}
                 >
                   {t("DONE")}
-                </ButtonWrapper>
+                </Button>
               </Button.Group>
             </Box>
           </Actionsheet>

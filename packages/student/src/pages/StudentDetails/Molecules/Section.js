@@ -1,12 +1,11 @@
 import React from "react";
-import { Text, Box, HStack } from "native-base";
+import { Box, HStack } from "native-base";
+import { H2 } from "@shiksha/common-lib";
 
 const Section = ({ title, button, children, _box }) => (
   <Box bg={"white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <Text fontSize="16px" fontWeight="500">
-        {title}
-      </Text>
+      <H2 fontWeight="500">{title}</H2>
       {button}
     </HStack>
     {children}
