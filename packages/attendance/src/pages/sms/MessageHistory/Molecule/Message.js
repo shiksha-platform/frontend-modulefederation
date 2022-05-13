@@ -1,9 +1,8 @@
 import React from "react";
 import moment from "moment";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Box, Button, HStack, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { IconByName } from "@shiksha/common-lib";
-import ButtonWrapper from "atoms/ButtonWrapper";
+import { IconByName, H3, H4 } from "@shiksha/common-lib";
 
 const Message = ({ item, isDisableRetry }) => {
   const { t } = useTranslation();
@@ -19,24 +18,22 @@ const Message = ({ item, isDisableRetry }) => {
               }
               color={item.status === "Send" ? "present.500" : "absent.500"}
             />
-            <Text fontSize="14px" fontWeight="500">
+            <H3 fontWeight="500">
               {item.status === "Send" ? t("SENT") : t("FAILED")}
-            </Text>
+            </H3>
           </HStack>
           {item.status !== "Send" && !isDisableRetry ? (
-            <ButtonWrapper variant="ghost" colorScheme="button" py="0">
+            <Button variant="ghost" colorScheme="button" py="0">
               {t("RETRY")}
-            </ButtonWrapper>
+            </Button>
           ) : (
             ""
           )}
         </HStack>
-        <Text fontSize="12px" fontWeight="500" color="#B5B5C8">
+        <H4 fontWeight="500" color="#B5B5C8">
           {moment(item.date).format("Do MMM, hh:ssa")}
-        </Text>
-        <Text fontSize="14px" fontWeight="400">
-          {item.message}
-        </Text>
+        </H4>
+        <H3 fontWeight="400">{item.message}</H3>
       </VStack>
     </Box>
   );

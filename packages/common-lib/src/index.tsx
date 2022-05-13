@@ -22,6 +22,14 @@ import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loding from './components/Loding'
+import {
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  Heading1
+} from './components/layout/HeaderTags/index'
 
 export {
   Header,
@@ -36,7 +44,13 @@ export {
   AppShell,
   ProgressBar,
   Tab,
-  Loding
+  Loding,
+  H1,
+  H2,
+  H3,
+  H4,
+  H5,
+  Heading1
 }
 
 export * from './services/Auth'

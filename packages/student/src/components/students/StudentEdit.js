@@ -12,7 +12,7 @@ import {
 } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, H1, H2, H3 } from "@shiksha/common-lib";
 
 // Start editing here, save and see your changes.
 export default function StudentEdit({
@@ -111,11 +111,11 @@ export default function StudentEdit({
             render: () => {
               return (
                 <Box bg="emerald.500" px="3" py="2" rounded="sm" mb={5}>
-                  <Text fontSize={"lg"} color="coolGray.100">
+                  <H1 color="coolGray.100">
                     {result.data?.params?.status
                       ? result.data?.params?.status
                       : "successful"}
-                  </Text>
+                  </H1>
                 </Box>
               );
             },
@@ -173,13 +173,9 @@ export default function StudentEdit({
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <Text
-                      fontSize={"14px"}
-                      fontWeight="500"
-                      color={"coolGray.400"}
-                    >
+                    <H3 fontWeight="500" color={"coolGray.400"}>
                       {item.placeholder}
-                    </Text>
+                    </H3>
                   </FormControl.Label>
                   <Input
                     variant="filled"
@@ -203,14 +199,9 @@ export default function StudentEdit({
                 </FormControl>
               ) : (
                 <>
-                  <Text
-                    fontSize={"14px"}
-                    fontWeight="500"
-                    color={"coolGray.400"}
-                    pb={2}
-                  >
+                  <H3 fontWeight="500" color={"coolGray.400"} pb={2}>
                     {item.placeholder}
-                  </Text>
+                  </H3>
                   {item.value ? (
                     <Text p={2} textTransform="inherit">
                       {item.value}
@@ -233,9 +224,7 @@ export default function StudentEdit({
 const Section = ({ title, button, children, _box }) => (
   <Box bg={"white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <Text fontSize="16px" fontWeight="500">
-        {title}
-      </Text>
+      <H2 fontWeight="500">{title}</H2>
       {button}
     </HStack>
     {children}

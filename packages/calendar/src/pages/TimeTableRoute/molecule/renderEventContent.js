@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, Box, HStack, VStack } from "native-base";
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, H2, H4 } from "@shiksha/common-lib";
 import "./../../../assets/css/fullCalendar.css";
 
 const renderEventContent = (eventInfo) => {
@@ -8,6 +8,7 @@ const renderEventContent = (eventInfo) => {
     ...eventInfo?.event?._def,
     ...eventInfo?.event?._def?.extendedProps,
   };
+
   return (
     <Box p="4">
       <VStack space={"8px"}>
@@ -16,16 +17,16 @@ const renderEventContent = (eventInfo) => {
           space="2"
           alignItems={"center"}
         >
-          <Text
-            fontSize="16px"
+          <H2
             fontWeight="600"
-            {...{
-              ...item._text,
-              color: item._text?.color,
-            }}
+            // {...{
+            //   ...item._text,
+            //   color: item._text?.color,
+            // }}
+            color={item._text?.color}
           >
             {item.title}
-          </Text>
+          </H2>
           {item?.rightIcon ? (
             <IconByName
               name={item?.rightIcon}
@@ -39,16 +40,16 @@ const renderEventContent = (eventInfo) => {
             <></>
           )}
         </HStack>
-        <Text
+        <H4
           fontSize="12px"
-          fontWeight="500"
-          {...{
-            ...item._text,
-            color: item._text?.color,
-          }}
+          // {...{
+          //   ...item._text,
+          //   color: item._text?.color,
+          // }}
+          color={item._text?.color}
         >
           {item?.subTitle}
-        </Text>
+        </H4>
       </VStack>
     </Box>
   );
