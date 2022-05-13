@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu } from "@shiksha/common-lib";
+import { capture, Layout, Menu } from "@shiksha/common-lib";
 import { Stack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -29,6 +29,10 @@ const ClassDetails = ({ footerLinks }) => {
     getData();
   }, [classId]);
 
+  React.useEffect(() => {
+    capture("PAGE");
+  }, []);
+
   return (
     <Layout
       imageUrl={`${window.location.origin}/class.png`}
@@ -57,7 +61,10 @@ const ClassDetails = ({ footerLinks }) => {
       _footer={footerLinks}
     >
       <Stack space={1} mb="2" shadow={2}>
-        <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
+        <ClassAttendanceCard
+          classId={classObject.id}
+          students={students}
+        ></ClassAttendanceCard>
         <ClassStudentsPanel
           classObject={classObject}
           students={students}

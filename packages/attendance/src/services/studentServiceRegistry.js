@@ -42,7 +42,6 @@ export const getAll = async (params = {}, header = {}) => {
     Accept: "application/json",
     ...header,
   };
-  params.classId = "d287fa46-5308-48b8-a2ec-ee78f83e5f14";
   const result = await get(
     manifest.api_url + "/group/" + params?.classId + "/participants",
     { params: { role: "Student", ...params }, headers }
@@ -94,6 +93,5 @@ export const update = async (data = {}, headers = {}) => {
 };
 
 export const setDefaultValue = async (data) => {
-  console.log(data.map((e) => mapInterfaceData(e, interfaceData)));
   return data.map((e) => mapInterfaceData(e, interfaceData));
 };

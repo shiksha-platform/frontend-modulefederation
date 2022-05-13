@@ -1,0 +1,171 @@
+import React, { Suspense } from "react";
+import {
+  Text,
+  Box,
+  Button,
+  HStack,
+  VStack,
+  Stack,
+  Actionsheet,
+  Center,
+} from "native-base";
+import { useTranslation } from "react-i18next";
+import {
+  capture,
+  IconByName,
+  Layout,
+  Loading,
+  telemetryFactory,
+  useWindowSize,
+} from "@shiksha/common-lib";
+import moment from "moment";
+import manifest from "../manifest.json";
+import { FormNotification } from "component/FormNotification";
+import RecipientList, { StudentList } from "component/RecipientList";
+
+const CreateNotification = ({ footerLinks, appName }) => {
+  const { t } = useTranslation();
+  const [pageName, setPageName] = React.useState();
+  const [students, setStudents] = React.useState([]);
+  const [width, height] = useWindowSize();
+
+  const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
+
+  React.useEffect(() => {
+    capture("PAGE");
+  }, []);
+
+  if (pageName === "Success") {
+    return (
+      <Layout _appBar={{ languages: manifest.languages }}>
+        <Loading
+          width={width}
+          height={height - 60}
+          icon={<IconByName name="MailSendLineIcon" _icon={{ size: 100 }} />}
+          message={
+            <Center>
+              <Text fontSize="24" fontWeight="600" color="gray.500">
+                {"Notification Sent"}
+              </Text>
+              <Text fontSize="14" fontWeight="400" color="gray.500">
+                {`Attendance Notification has been sent to ${students.length} parents`}
+              </Text>
+              <Button
+                colorScheme="button"
+                variant="outline"
+                onPress={(e) => setPageName()}
+              >
+                {"Done"}
+              </Button>
+            </Center>
+          }
+        />
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout
+      _header={{
+        title: t("MY_NOTIFICATIONS"),
+        icon: "Group",
+        subHeading: moment().format("hh:mm a"),
+        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
+      }}
+      _appBar={{ languages: manifest.languages }}
+      subHeader={t("ADD_NEW_NOTIFICATION")}
+      _subHeader={{
+        bg: "classCard.500",
+        _text: {
+          fontSize: "16px",
+          fontWeight: "600",
+          textTransform: "inherit",
+        },
+      }}
+      _footer={footerLinks}
+    >
+      {pageName === "StudentList" ? (
+        <StudentList {...{ setPageName, students, setStudents }} />
+      ) : pageName === "RecipientList" ? (
+        <RecipientList {...{ setPageName, students, setStudents, appName }} />
+      ) : (
+        <FormNotification {...{ setPageName, students, setStudents }} />
+      )}
+      <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
+        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+          <HStack justifyContent={"space-between"}>
+            <Stack p={5} pt={2} pb="25px">
+              <Text fontSize="16px" fontWeight={"600"}>
+                {t("VIEW_NOTIFCATION")}
+              </Text>
+            </Stack>
+            <IconByName
+              name="CloseCircleLineIcon"
+              onPress={(e) => setPageName()}
+            />
+          </HStack>
+        </Actionsheet.Content>
+        <Box bg="white" width={"100%"}>
+          <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+            <HStack alignItems="center" space="1">
+              <IconByName
+                _icon={{ size: "16" }}
+                name="CheckDoubleLineIcon"
+                isDisabled
+              />
+              <Text fontSize="14" fontWeight="500">
+                {t(`Sending to ${students.length} parents`)}
+              </Text>
+            </HStack>
+          </Box>
+          <VStack p="5" space={4} shadow="1">
+            <Text fontSize="14" fontWeight="600">
+              {t("NOTICE")}
+            </Text>
+            <Text fontSize="14" fontWeight="400" textTransform={"inherit"}>
+              Worksheets help the kids in exploring multiple concepts They
+              develop fine motor skills, logical thinking
+            </Text>
+          </VStack>
+          <Box p="5">
+            <Button.Group>
+              <Button
+                flex="1"
+                colorScheme="button"
+                variant="outline"
+                px="5"
+                onPress={(e) => setPageName()}
+              >
+                {t("Cancel")}
+              </Button>
+              <Button
+                flex="1"
+                colorScheme="button"
+                _text={{ color: "white" }}
+                px="5"
+                onPress={(e) => {
+                  const telemetryData = telemetryFactory.interact({
+                    appName,
+                    type: "Attendance-Notification-End-Send-Another-Message",
+                    startEventId: "2fd27a3a-27d6-481e-9ea5-24c5a976b0e9",
+                    badTemplate: "10%",
+                    goodTemplate: "50%",
+                    Now: "10%",
+                    Later: "50%",
+                    channel: "SMS",
+                  });
+                  capture("INTERACT", telemetryData);
+                  setPageName("Success");
+                }}
+              >
+                {t("Send message")}
+              </Button>
+            </Button.Group>
+          </Box>
+        </Box>
+      </Actionsheet>
+    </Layout>
+  );
+};
+
+export default CreateNotification;

@@ -1,16 +1,20 @@
 import React from "react";
 import { Text, Box, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
-import { Layout, Tab } from "@shiksha/common-lib";
-import { footerMenus } from "./parts/assets";
+import { capture, Layout, Tab } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
 
 const MyClassRoute = React.lazy(() => import("classes/MyClassRoute"));
 const TimeTableRoute = React.lazy(() => import("calendar/TimeTableRoute"));
 
-const MyClasses = ({ footerMenus }) => {
+const MyClasses = ({ footerLinks }) => {
   const { t } = useTranslation();
+
+  React.useEffect(() => {
+    capture("PAGE");
+  }, []);
+
   return (
     <Layout
       _header={{
@@ -30,7 +34,7 @@ const MyClasses = ({ footerMenus }) => {
           textTransform: "inherit",
         },
       }}
-      _footer={footerMenus}
+      _footer={footerLinks}
     >
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         <Tab

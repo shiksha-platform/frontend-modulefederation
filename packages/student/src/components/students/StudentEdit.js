@@ -9,8 +9,10 @@ import {
   useToast,
   HStack,
   VStack,
+  Select,
 } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
+import * as teacherServiceRegistry from "../../services/teacherServiceRegistry";
 import { useTranslation } from "react-i18next";
 import { IconByName, H1, H2, H3 } from "@shiksha/common-lib";
 
@@ -19,8 +21,10 @@ export default function StudentEdit({
   studentObject,
   setStudentObject,
   onlyParameterProp,
+  type,
 }) {
   const { t } = useTranslation("student");
+  const [object, setObject] = useState(studentObject);
   const [editState, setEditState] = useState(false);
   const [editChangeState, setEditChangeState] = useState(false);
   const [errors, setErrors] = React.useState({});
@@ -44,31 +48,38 @@ export default function StudentEdit({
     fathersName: { placeholder: t("FATHERS_NAME") },
     phoneNumber: { placeholder: t("PHONE_NUMBER") },
     email: { placeholder: t("EMAIL"), type: "email" },
-    gender: { placeholder: t("GENDER") },
+    gender: {
+      placeholder: t("GENDER"),
+      type: "select",
+      data: ["Male", "Female"],
+    },
   };
   const formInputs = onlyParameter.map((e) => {
     return {
+      ...parameter[e],
       name: e,
       placeholder: parameter[e]?.placeholder ? parameter[e].placeholder : e,
       isRequired: parameter[e]?.required ? parameter[e].required : false,
       type: parameter[e]?.type ? parameter[e].type : "text",
-      value: studentObject[e] ? studentObject[e] : "",
+      value: object[e] ? object[e] : "",
       onChange: (item) => {
         setEditChangeState(true);
         if (e === "firstName") {
-          setStudentObject({
-            ...studentObject,
+          setObject({
+            ...object,
             [e]: item.target.value,
-            fullName: item.target.value + " " + studentObject.lastName,
+            fullName: item.target.value + " " + object.lastName,
           });
         } else if (e === "lastName") {
-          setStudentObject({
-            ...studentObject,
+          setObject({
+            ...object,
             [e]: item.target.value,
-            fullName: studentObject.firstName + " " + item.target.value,
+            fullName: object.firstName + " " + item.target.value,
           });
+        } else if (parameter[e]?.type === "select") {
+          setObject({ ...object, [e]: item });
         } else {
-          setStudentObject({ ...studentObject, [e]: item.target.value });
+          setObject({ ...object, [e]: item.target.value });
         }
       },
     };
@@ -77,15 +88,15 @@ export default function StudentEdit({
   const validate = () => {
     let arr = {};
     if (
-      (onlyParameter.includes("phoneNumber") && !studentObject?.phoneNumber) ||
-      studentObject?.phoneNumber === ""
+      (onlyParameter.includes("phoneNumber") && !object?.phoneNumber) ||
+      object?.phoneNumber === ""
     ) {
       arr = { ...arr, phoneNumber: "Phone Number is invalid" };
     }
 
     if (
-      (onlyParameter.includes("email") && !studentObject?.email) ||
-      studentObject?.email === ""
+      (onlyParameter.includes("email") && !object?.email) ||
+      object?.email === ""
     ) {
       arr = { ...arr, email: "email is invalid" };
     }
@@ -97,16 +108,27 @@ export default function StudentEdit({
     return true;
   };
 
-  const handalSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     if (validate()) {
       if (editChangeState) {
-        let result = await studentServiceRegistry.update(studentObject, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          onlyParameter: [...onlyParameter, "fullName"],
-        });
+        let result = {};
+        if (type && type === "Teacher") {
+          result = await teacherServiceRegistry.update(object, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            onlyParameter: [...onlyParameter, "fullName"],
+          });
+        } else {
+          result = await studentServiceRegistry.update(object, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            onlyParameter: [...onlyParameter, "fullName"],
+          });
+        }
         if (result.data) {
+          setStudentObject(object);
           toast.show({
             render: () => {
               return (
@@ -130,8 +152,6 @@ export default function StudentEdit({
     }
   };
 
-  useEffect(() => {}, []);
-
   return (
     <Section
       title={t("DETAILS")}
@@ -142,7 +162,7 @@ export default function StudentEdit({
             _text={{ fontWeight: "400", color: "white" }}
             py={1}
             px={2}
-            onPress={handalSubmit}
+            onPress={handleSubmit}
           >
             {t("SAVE")}
           </Button>
@@ -177,12 +197,27 @@ export default function StudentEdit({
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
-                  <Input
-                    variant="filled"
-                    p={2}
-                    {...item}
-                    key={index + item.name}
-                  />
+                  {item.type === "select" ? (
+                    <Select
+                      accessibilityLabel={item.placeholder}
+                      placeholder={item.placeholder}
+                      key={index + item.name}
+                      selectedValue={item?.value}
+                      onValueChange={item.onChange}
+                    >
+                      {item?.data &&
+                        item?.data.map((e, index) => (
+                          <Select.Item key={index} label={e} value={e} />
+                        ))}
+                    </Select>
+                  ) : (
+                    <Input
+                      variant="filled"
+                      p={2}
+                      {...item}
+                      key={index + item.name}
+                    />
+                  )}
                   {item.name in errors ? (
                     <FormControl.ErrorMessage
                       _text={{

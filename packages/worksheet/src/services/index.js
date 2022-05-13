@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getAllQuestions = async () => {
+export const getAllQuestions = async (filter) => {
   const questionList = await axios.post(
     "https://vdn.diksha.gov.in/action/composite/v3/search",
     {
@@ -8,12 +8,15 @@ export const getAllQuestions = async () => {
         filters: {
           objectType: "Question",
           status: ["Live"],
-          qType: "SA",
+          ...filter,
+          // qType: "MCQ",
+          // qType: "SA",
         },
       },
     }
   );
-  if (questionList.data) {
+
+  if (questionList.data && questionList?.data?.result.count > 0) {
     const data = questionList?.data?.result?.Question.map(
       async (question) => await readQuestion(question.identifier)
     );
@@ -34,7 +37,9 @@ const readQuestion = async (questionId) => {
     }
   );
   if (question.data) {
-    return question.data.result.question.body;
+    const { editorState, subject, topic, gradeLevel } =
+      question.data.result.question;
+    return { ...editorState, subject, topic, class: gradeLevel };
   } else {
     return [];
   }

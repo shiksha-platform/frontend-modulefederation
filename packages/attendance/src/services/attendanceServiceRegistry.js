@@ -1,4 +1,4 @@
-import * as generalServices from "@shiksha/common-lib";
+import { get, post, update as coreUpdate } from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
@@ -13,6 +13,11 @@ const interfaceData = {
   admissionNo: "admissionNo",
   currentClassID: "groupId",
   email: "email",
+  remark: "remark",
+  latitude: "latitude",
+  longitude: "longitude",
+  image: "image",
+  updatedOn: "updatedOn",
 };
 
 let only = Object.keys(interfaceData);
@@ -23,8 +28,8 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
 
-  const result = await generalServices.get(manifest.api_url + "/attendance", {
-    ...params,
+  const result = await get(manifest.api_url + "/attendance", {
+    params: { ...params },
     headers,
   });
   if (result.data.data) {
@@ -42,13 +47,9 @@ export const create = async (data, headers = {}) => {
     onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only,
   };
   let newData = mapInterfaceData(data, newInterfaceData, true);
-  const result = await generalServices.post(
-    manifest.api_url + "/attendance",
-    newData,
-    {
-      headers: headers?.headers ? headers?.headers : {},
-    }
-  );
+  const result = await post(manifest.api_url + "/attendance", newData, {
+    headers: headers?.headers ? headers?.headers : {},
+  });
   if (result.data) {
     return true;
     // return result.data.map((e) => mapInterfaceData(e, interfaceData));
@@ -66,7 +67,7 @@ export const update = async (data = {}, headers = {}) => {
   };
   let newData = mapInterfaceData(data, newInterfaceData, true);
 
-  const result = await generalServices.update(
+  const result = await coreUpdate(
     manifest.api_url + "/attendance/" + data.id,
     newData,
     {

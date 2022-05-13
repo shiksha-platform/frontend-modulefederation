@@ -19,7 +19,7 @@ const ClassDetailsPanel = ({ students }) => {
               </HStack>
               <Text>{fullName}</Text>
             </VStack>
-            students
+            {t("STUDENT")}
           </Box>
           <Box bg={"gray.100"} rounded={"md"} p="4">
             <VStack space={2}>
