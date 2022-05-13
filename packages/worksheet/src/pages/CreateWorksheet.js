@@ -379,7 +379,7 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
               variant="outline"
               onPress={(e) => setPageName("FormPage")}
             >
-              {t("SAve As Draft")}
+              {t("Save As Draft")}
             </Button>
             <Button
               colorScheme="button"
