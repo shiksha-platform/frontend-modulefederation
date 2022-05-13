@@ -29,8 +29,6 @@ const CreateNotification = ({ footerLinks, appName }) => {
   const [students, setStudents] = React.useState([]);
   const [width, height] = useWindowSize();
 
-  const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
-
   React.useEffect(() => {
     capture("PAGE");
   }, []);

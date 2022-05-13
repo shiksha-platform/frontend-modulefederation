@@ -4,17 +4,21 @@ import { useTranslation } from "react-i18next";
 import { Avatar, Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { worksheets } from "./../config/worksheet";
 import { useNavigate } from "react-router-dom";
+import manifest from "../manifest.json";
 
-export default function TeachingDetail() {
+export default function TeachingDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <Layout
       _header={{
         title: t("MY_TEACHING"),
       }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={t("ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL")}
       _subHeader={{ bg: "worksheetCard.500" }}
+      _footer={footerLinks}
     >
       <VStack>
         <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
@@ -42,12 +46,16 @@ export default function TeachingDetail() {
             ]}
           />
         </Box>
-        <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
-          <Button _text={{ color: "white" }} p="3">
-            {t("Create new")}
-          </Button>
-        </Box>
       </VStack>
+      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+        <Button
+          _text={{ color: "white" }}
+          p="3"
+          onPress={(e) => navigate("/worksheet/create")}
+        >
+          {t("Create new")}
+        </Button>
+      </Box>
     </Layout>
   );
 }

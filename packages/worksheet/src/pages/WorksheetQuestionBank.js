@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Layout,
-  FilterButton,
   useWindowSize,
   Collapsible,
   IconByName,
 } from "@shiksha/common-lib";
 import { colourPalette } from "constants/colours";
-import QuestionHeading from "components/Heading";
 import QuestionBox from "components/QuestionBox";
-import { getAllQuestions } from "services";
 import {
   Actionsheet,
   Avatar,
@@ -24,6 +21,7 @@ import {
   Text,
   VStack,
 } from "native-base";
+import manifest from "../manifest.json";
 
 const questions = [
   {
@@ -77,7 +75,7 @@ const questionsThree = [
     question: `Q9. Convert 4kg, 9 hg, 7dag, 2g into grams.`,
   },
 ];
-export default function WorksheetQuestionBank({ footerLinks }) {
+export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
   const [showModule, setShowModule] = useState(false);
@@ -101,13 +99,10 @@ export default function WorksheetQuestionBank({ footerLinks }) {
     <Layout
       _header={{
         title: translationCheck("MY_CLASSES", "Question Bank"),
-        icon: "Group",
-        subHeading: "Test",
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         avatar: true,
       }}
       bg="white"
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={
         <HStack alignItems="center" justifyContent="space-between">
           <Text fontSize="16px" fontWeight={"600"}>
@@ -120,7 +115,7 @@ export default function WorksheetQuestionBank({ footerLinks }) {
         </HStack>
       }
       _subHeader={{
-        bg: colourPalette.primary,
+        bg: "worksheetCard.500",
         _text: {
           fontSize: "16px",
           fontWeight: "600",

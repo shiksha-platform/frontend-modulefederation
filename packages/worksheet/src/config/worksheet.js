@@ -11,7 +11,7 @@ export const worksheets = [
     subject: "Math",
     level: "Beginner",
     grade: "VI",
-    questions: [{}],
+    questions: "30",
     chapter: "3",
     downloads: "3",
   },

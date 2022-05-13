@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import { Box, Button } from "native-base";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import { useNavigate } from "react-router-dom";
+import manifest from "../manifest.json";
 
-export default function Teaching() {
+export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
 
   return (
@@ -13,8 +14,10 @@ export default function Teaching() {
       _header={{
         title: t("MY_TEACHING"),
       }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={t("ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL")}
       _subHeader={{ bg: "worksheetCard.500" }}
+      _footer={footerLinks}
     >
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         <Tab
