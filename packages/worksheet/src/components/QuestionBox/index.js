@@ -13,7 +13,8 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
     "b",
     "c",
     "d",
-    "e",   
+    "e",
+    "f"  
   ];
 
   const isExist = () =>

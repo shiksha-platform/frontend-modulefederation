@@ -6,10 +6,10 @@ import {
   Box,
   Button,
   HStack,
+  Pressable,
   Stack,
   Text,
   VStack,
-  Pressable,
 } from "native-base";
 import { worksheets } from "./../config/worksheet";
 import { useNavigate } from "react-router-dom";
@@ -103,7 +103,7 @@ const Worksheets = ({ data, leftTitle, rightTitle }) => {
                 borderColor="gray.300"
                 rounded="lg"
               >
-                <VStack space="4">
+                <VStack space={4}>
                   <HStack
                     justifyContent="space-between"
                     alignItems="flex-start"
@@ -151,7 +151,6 @@ const Worksheets = ({ data, leftTitle, rightTitle }) => {
                       p="0"
                     />
                   </HStack>
-
                   <Text fontWeight="600" fontSize="10px">
                     {item.description}
                   </Text>
