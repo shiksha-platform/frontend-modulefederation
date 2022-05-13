@@ -2,11 +2,11 @@ import React from 'react'
 import { Text, Box, Pressable, VStack } from 'native-base'
 import { Animated, Dimensions } from 'react-native-web'
 
-export default function Tab({ routes }) {
+export default function Tab({ routes, _box }) {
   const [index, setIndex] = React.useState(0)
   return (
     <VStack>
-      <Box flexDirection='row'>
+      <Box flexDirection='row' {..._box}>
         {routes.map((route, i) => {
           return (
             <Pressable key={i} flex={1} onPress={() => setIndex(i)}>

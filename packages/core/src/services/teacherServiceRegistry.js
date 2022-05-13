@@ -14,7 +14,7 @@ const interfaceData = {
   mergeParameterWithValue: {
     title: "teacherFullName",
   },
-  aadhaar: "",
+  aadhaar: "aadhaar",
   cadre: "cadre",
   compSkills: "compSkills",
   designation: "designation",

@@ -1,12 +1,24 @@
 import React from "react";
-import { Text, Box, HStack, VStack } from "native-base";
+import { Text, Box, HStack, VStack, Pressable } from "native-base";
 import { IconByName, H2, H4 } from "@shiksha/common-lib";
 import "./../../../assets/css/fullCalendar.css";
 
-const renderEventContent = (eventInfo) => {
+const renderEventContent = ({
+  showModal,
+  setShowModal,
+  setShowModalClash,
+  ...eventInfo
+}) => {
   let item = {
     ...eventInfo?.event?._def,
     ...eventInfo?.event?._def?.extendedProps,
+    timeText: eventInfo?.timeText,
+  };
+
+  const inlineEllipsisStyle = {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   };
 
   return (

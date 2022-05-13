@@ -18,6 +18,8 @@ import {
   Layout,
   Menu,
   getStudentsPresentAbsent,
+  capture,
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import StudentEdit from "./StudentEdit";
@@ -175,10 +177,12 @@ export default function Card({
   _textTitle,
   _textSubTitle,
   _arrow,
+  appName,
 }) {
   const { t } = useTranslation("student");
   const [open, setOpen] = useState(false);
   const [studentObject, setStudentObject] = useState(item);
+  const teacherId = localStorage.getItem("id");
 
   const handalOpenPoup = async (e) => {
     let classObj = await classServiceRegistry.getOne({
@@ -186,6 +190,13 @@ export default function Card({
     });
     item.className = classObj.className;
     setOpen(true);
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Attendance-Student-Card",
+      groupID: studentObject?.currentClassID,
+      studentId: studentObject?.id,
+    });
+    capture("INTERACT", telemetryData);
   };
 
   const PressableNew = ({ item, children, href, ...prop }) => {

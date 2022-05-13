@@ -18,6 +18,7 @@ export default function AppBar({
   setSearch,
   color,
   languages,
+  onPressBackButton,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
@@ -49,7 +50,10 @@ export default function AppBar({
               size='sm'
               name='ArrowLeftLineIcon'
               color={color ? color : ''}
-              onPress={() => navigate(-1)}
+              onPress={() => {
+                if (onPressBackButton) onPressBackButton()
+                navigate(-1)
+              }}
             />
           )}
           {searchInput ? (
@@ -87,6 +91,10 @@ export default function AppBar({
           ) : (
             <React.Fragment />
           )}
+          <IconByName
+            name='Notification2LineIcon'
+            onPress={(e) => navigate('/notification')}
+          />
           <Center flex={1} px='3'>
             <Menu
               w='190'

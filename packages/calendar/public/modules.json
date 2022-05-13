@@ -1,0 +1,8 @@
+{
+  "core": {
+    "url": "http://localhost:3001/modules/core"
+  },
+  "students": {
+    "url": "http://localhost:3006/modules/student"
+  }
+}

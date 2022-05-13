@@ -4,8 +4,9 @@ import { Layout } from "@shiksha/common-lib";
 import { colourPalette } from "constants/colours";
 import { Box, Button, Text, VStack, Divider } from "native-base";
 import { worksheets } from "config/worksheet";
+import manifest from "../manifest.json";
 
-export default function ViewWorksheet({ footerLinks }) {
+export default function ViewWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
 
   const translationCheck = (name, title) => {
@@ -23,10 +24,10 @@ export default function ViewWorksheet({ footerLinks }) {
           avatar: true,
         }}
         bg="white"
-        _appBar={{ languages: ["en"] }}
+        _appBar={{ languages: manifest.languages }}
         subHeader={t("THE_CLASSES_YOU_TAKE")}
         _subHeader={{
-          bg: colourPalette.primary,
+          bg: "worksheetCard.500",
           _text: {
             fontSize: "16px",
             fontWeight: "600",

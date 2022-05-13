@@ -12,6 +12,8 @@ module.exports = {
     worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`,
     calendar: `calendar@[window.appModules.calendar.url]/moduleEntry.js`,
     students: `students@[window.appModules.students.url]/moduleEntry.js`,
+    notification: `notification@[window.appModules.notification.url]/moduleEntry.js`,
+    profile: `profile@[window.appModules.profile.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

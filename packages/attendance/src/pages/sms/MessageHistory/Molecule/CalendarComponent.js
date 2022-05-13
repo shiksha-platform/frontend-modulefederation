@@ -12,7 +12,7 @@ const CalendarComponent = ({
   sms,
   setSmsObject,
   student,
-  loding,
+  loading,
   _weekBox,
 }) => {
   if (type === "month") {
@@ -112,7 +112,7 @@ const CalendarComponent = ({
                 // }}
               >
                 <Box alignItems="center">
-                  {loding && loding[dateValue + student.id] ? (
+                  {loading && loading[dateValue + student.id] ? (
                     <GetIcon
                       {...smsIconProp}
                       status="Loader4LineIcon"

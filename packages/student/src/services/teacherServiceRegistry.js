@@ -1,6 +1,6 @@
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
-import { get, post } from "@shiksha/common-lib";
+import { get, post, update as coreUpdate } from "@shiksha/common-lib";
 
 const interfaceData = {
   id: "osid",
@@ -36,6 +36,31 @@ export const getOne = async (filters = {}, headers = {}) => {
   ).catch((error) => error);
   if (result.data) {
     return mapInterfaceData(result.data, interfaceData);
+  } else {
+    return {};
+  }
+};
+
+export const update = async (data = {}, headers = {}) => {
+  let newInterfaceData = interfaceData;
+  if (headers?.removeParameter || headers?.onlyParameter) {
+    newInterfaceData = {
+      ...interfaceData,
+      removeParameter: headers?.removeParameter ? headers?.removeParameter : [],
+      onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : [],
+    };
+  }
+  let newData = mapInterfaceData(data, newInterfaceData, true);
+
+  const result = await coreUpdate(
+    manifest.api_url + "/Teacher/" + data.id,
+    newData,
+    {
+      headers: headers?.headers ? headers?.headers : {},
+    }
+  );
+  if (result?.data) {
+    return result;
   } else {
     return {};
   }

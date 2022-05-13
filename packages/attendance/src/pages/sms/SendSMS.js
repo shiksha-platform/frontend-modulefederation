@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
-  Checkbox,
   FlatList,
   HStack,
   Stack,
@@ -19,13 +18,15 @@ import {
   IconByName,
   Layout,
   Collapsible,
+  capture,
+  telemetryFactory,
   H2,
   H3,
   H4,
   H5,
 } from "@shiksha/common-lib";
 
-export default function SendSMS({ footerLinks }) {
+export default function SendSMS({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [datePage, setDatePage] = useState(0);
   const { classId } = useParams();
@@ -33,6 +34,8 @@ export default function SendSMS({ footerLinks }) {
   const teacherId = localStorage.getItem("id");
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
+  const navigate = useNavigate();
+  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     let ignore = false;
@@ -40,13 +43,7 @@ export default function SendSMS({ footerLinks }) {
     const getData = async () => {
       let classObj = await classServiceRegistry.getOne({ id: classId });
       if (!ignore) setClassObject(classObj);
-      const studentData = await studentServiceRegistry.getAll({
-        filters: {
-          currentClassID: {
-            eq: classId,
-          },
-        },
-      });
+      const studentData = await studentServiceRegistry.getAll({ classId });
       setStudents(studentData);
       await getAttendance();
     };
@@ -139,12 +136,6 @@ export default function SendSMS({ footerLinks }) {
                               </H3>
                             </VStack>
                           }
-                          rightComponent={
-                            <Checkbox
-                              value="test"
-                              accessibilityLabel="This is a dummy checkbox"
-                            />
-                          }
                         />
                       </Box>
                     )}
@@ -198,12 +189,6 @@ export default function SendSMS({ footerLinks }) {
                               </H3>
                             </VStack>
                           }
-                          rightComponent={
-                            <Checkbox
-                              value="test"
-                              accessibilityLabel="This is a dummy checkbox"
-                            />
-                          }
                         />
                       </Box>
                     )}
@@ -224,10 +209,21 @@ export default function SendSMS({ footerLinks }) {
             </H5>
             <Button.Group>
               <Button variant="outline" colorScheme="button">
-                {t("SELECT_ALL")}
+                {t("CLOSE")}
               </Button>
-              <Button colorScheme="button" _text={{ color: "white" }}>
-                {t("SEND")}
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                onPress={(e) => {
+                  const telemetryData = telemetryFactory.interact({
+                    appName,
+                    type: "Attendance-Notification-View-Message",
+                  });
+                  capture("INTERACT", telemetryData);
+                  navigate("/notification/create");
+                }}
+              >
+                {t("SEND_ANOTHER_MESSAGE")}
               </Button>
             </Button.Group>
           </VStack>

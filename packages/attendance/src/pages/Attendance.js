@@ -1,4 +1,12 @@
-import { IconByName, Layout, H1, H3 } from "@shiksha/common-lib";
+import {
+  capture,
+  telemetryFactory,
+  IconByName,
+  Layout,
+  calendar,
+  H1,
+  H3,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
@@ -16,7 +24,6 @@ import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
-  calendar,
 } from "components/AttendanceComponent";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import * as classServiceRegistry from "../services/classServiceRegistry";
@@ -24,7 +31,7 @@ import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
 
-export default function Attendance({ footerLinks }) {
+export default function Attendance({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
@@ -32,12 +39,33 @@ export default function Attendance({ footerLinks }) {
   const [searchStudents, setSearchStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   let { classId } = useParams();
-  if (!classId) classId = "ee6afd98-785d-47e5-aa67-90b1eba1b5af";
-  const [loding, setLoding] = useState(false);
+  if (!classId) classId = "dee531ae-9db0-4989-b6a1-da60080679df";
+  const [loading, setLoading] = useState(false);
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [sms, setSms] = useState([]);
+  const teacherId = localStorage.getItem("id");
+  const [attendanceStartTime, setAttendanceStartTime] = useState();
+  const [unmarkStudents, setUnmarkStudents] = useState([]);
+
+  useEffect(() => {
+    let studentIds = attendance
+      .filter((e) => e.attendance !== "Unmarked")
+      .map((e) =>
+        e?.studentId?.startsWith("1-")
+          ? e?.studentId?.replace("1-", "")
+          : e?.studentId
+      );
+    setUnmarkStudents(
+      students.filter(
+        (e) =>
+          !studentIds.includes(
+            e.id.startsWith("1-") ? e.id.replace("1-", "") : e.id
+          )
+      )
+    );
+  }, [attendance, students]);
 
   useEffect(() => {
     const filterStudent = students.filter((e) =>
@@ -91,11 +119,37 @@ export default function Attendance({ footerLinks }) {
     setAttendance(attendanceData);
   };
 
+  const newSetIsEditDisabled = (isEditDisabled) => {
+    setIsEditDisabled(isEditDisabled);
+    if (!isEditDisabled) {
+      const telemetryData = telemetryFactory.start({
+        appName,
+        type: "Attendance-Start",
+        groupID: classId,
+      });
+      capture("START", telemetryData);
+      setAttendanceStartTime(moment());
+    } else {
+      const telemetryData = telemetryFactory.end({
+        appName,
+        type: "Attendance-End",
+        groupID: classId,
+        duration: attendanceStartTime
+          ? moment().diff(attendanceStartTime, "seconds")
+          : 0,
+        percentage:
+          ((students?.length - unmarkStudents.length) / students?.length) * 100,
+      });
+      capture("END", telemetryData);
+      setAttendanceStartTime();
+    }
+  };
+
   if (!classObject && !classObject?.name) {
     return <FourOFour />;
   }
 
-  if (loding) {
+  if (loading) {
     return (
       <Loader
         success={allAttendanceStatus.success}
@@ -193,7 +247,9 @@ export default function Attendance({ footerLinks }) {
                 />
               }
               _text={{ fontWeight: "400" }}
-              onPress={(e) => setIsEditDisabled(!isEditDisabled)}
+              onPress={(e) => {
+                newSetIsEditDisabled(!isEditDisabled);
+              }}
             >
               {isEditDisabled ? t("EDIT") : t("CANCEL")}
             </Button>
@@ -213,6 +269,7 @@ export default function Attendance({ footerLinks }) {
               attendanceProp={attendance}
               getAttendance={getAttendance}
               isEditDisabled={isEditDisabled}
+              appName
             />
           )}
           keyExtractor={(item, index) => (item?.id ? item?.id : index)}
@@ -224,13 +281,14 @@ export default function Attendance({ footerLinks }) {
           students,
           attendance,
           getAttendance,
-          setLoding,
+          setLoading,
           setAllAttendanceStatus,
           allAttendanceStatus,
           classId,
           classObject,
           isEditDisabled,
-          setIsEditDisabled,
+          setIsEditDisabled: newSetIsEditDisabled,
+          appName,
         }}
       />
     </Layout>

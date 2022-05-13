@@ -11,9 +11,16 @@ import {
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { IconByName, Layout, H3, H2, H4 } from "@shiksha/common-lib";
+import {
+  IconByName,
+  capture,
+  Layout,
+  H3,
+  H2,
+  H4,
+  calendar,
+} from "@shiksha/common-lib";
 import * as studentServiceRegistry from "../../../services/studentServiceRegistry";
-import { calendar } from "../../../components/AttendanceComponent";
 import CalendarBar from "../../../components/CalendarBar";
 import manifest from "../../../manifest.json";
 import { sms } from "./assets";
@@ -53,6 +60,10 @@ export default function MessageHistory({ footerLinks }) {
     };
     getData();
   }, [studentId]);
+
+  useEffect(() => {
+    capture("PAGE");
+  }, []);
 
   return (
     <Layout

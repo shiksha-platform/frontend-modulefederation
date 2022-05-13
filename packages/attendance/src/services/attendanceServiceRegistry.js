@@ -13,6 +13,11 @@ const interfaceData = {
   admissionNo: "admissionNo",
   currentClassID: "groupId",
   email: "email",
+  remark: "remark",
+  latitude: "latitude",
+  longitude: "longitude",
+  image: "image",
+  updatedOn: "updatedOn",
 };
 
 let only = Object.keys(interfaceData);
@@ -24,7 +29,7 @@ export const getAll = async (params = {}, header = {}) => {
   };
 
   const result = await generalServices.get(manifest.api_url + "/attendance", {
-    ...params,
+    params: { ...params },
     headers,
   });
   if (result.data.data) {
