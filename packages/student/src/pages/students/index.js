@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Text, Stack, Box, VStack, FlatList } from "native-base";
+import { Stack, Box, VStack, FlatList } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { capture, IconByName, Layout } from "@shiksha/common-lib";
+import { capture, Layout, H2, H4 } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
@@ -40,11 +40,7 @@ const Student = ({ footerLinks }) => {
         subHeading: t("STUDENTS_DETAIL"),
         avatar: true,
       }}
-      subHeader={
-        <Text fontWeight="400" fontSize="16px">
-          {t("VIEW_ALL_STUDENTS")}
-        </Text>
-      }
+      subHeader={<H2 fontWeight="400">{t("VIEW_ALL_STUDENTS")}</H2>}
       _subHeader={{ bg: "studentCard.500" }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
@@ -57,12 +53,12 @@ const Student = ({ footerLinks }) => {
             header={
               <>
                 <VStack>
-                  <Text fontWeight="600" fontSize={"16px"} color="gray.800">
+                  <H2 fontWeight="600" color="gray.800">
                     {t("STUDENTS_LIST")}
-                  </Text>
-                  <Text fontSize={"xs"}>
+                  </H2>
+                  <H4 fontSize={"xs"}>
                     {t("TOTAL") + ": " + students?.length}
-                  </Text>
+                  </H4>
                 </VStack>
               </>
             }

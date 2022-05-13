@@ -1,7 +1,8 @@
 import React from "react";
+
 import { Text, Box, HStack, VStack, Pressable } from "native-base";
+import { IconByName, H2, H4, H3 } from "@shiksha/common-lib";
 import "./../../../assets/css/fullCalendar.css";
-import { IconByName } from "@shiksha/common-lib";
 
 const renderEventContent = ({
   showModal,
@@ -30,19 +31,18 @@ const renderEventContent = ({
             space="2"
             alignItems={"center"}
           >
-            <Text
-              fontSize="14px"
+            <H2
               fontWeight="600"
               {...inlineEllipsisStyle}
               {...{
                 ...item._text,
                 color: item._text?.color,
               }}
+              color={item._text?.color}
             >
               {item.title}
-            </Text>
-            <Text
-              fontSize="14px"
+            </H2>
+            <H3
               fontWeight="600"
               {...inlineEllipsisStyle}
               {...{
@@ -51,10 +51,9 @@ const renderEventContent = ({
               }}
             >
               {item.subTitle}
-            </Text>
+            </H3>
           </HStack>
-          <Text
-            fontSize="12px"
+          <H4
             fontWeight="500"
             {...inlineEllipsisStyle}
             {...{
@@ -63,7 +62,7 @@ const renderEventContent = ({
             }}
           >
             {item?.timeText}
-          </Text>
+          </H4>
         </VStack>
       </Pressable>
       <IconByName

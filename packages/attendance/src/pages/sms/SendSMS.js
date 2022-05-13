@@ -18,10 +18,13 @@ import {
   IconByName,
   Layout,
   Collapsible,
+  H2,
+  H3,
+  H4,
+  H5,
   capture,
   telemetryFactory,
 } from "@shiksha/common-lib";
-import ButtonWrapper from "atoms/ButtonWrapper";
 
 export default function SendSMS({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -85,13 +88,11 @@ export default function SendSMS({ footerLinks, appName }) {
     >
       <VStack space="1">
         <Box bg="white" p="5">
-          <Text fontSize="16" fontWeight="600">
-            {classObject.name}
-          </Text>
-          <Text fontSize="10" fontWeight="300">
+          <H2 fontWeight="600">{classObject.name}</H2>
+          <H5 fontWeight="300">
             {t("TOTAL")}: {students.length} {t("PRESENT")}:
             {attendance.filter((e) => e.attendance === "Present").length}
-          </Text>
+          </H5>
         </Box>
         <Box bg="white" p={4}>
           <Stack space={2}>
@@ -101,12 +102,10 @@ export default function SendSMS({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <Text bold fontSize={"md"}>
+                    <H2 bold={true} fontSize={"md"}>
                       100% {t("THIS_WEEK")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {students?.length + " " + t("STUDENTS")}
-                    </Text>
+                    </H2>
+                    <H4>{students?.length + " " + t("STUDENTS")}</H4>
                   </VStack>
                 </>
               }
@@ -130,11 +129,11 @@ export default function SendSMS({ footerLinks, appName }) {
                           hidePopUpButton
                           textTitle={
                             <VStack alignItems="center">
-                              <Text fontSize="14" fontWeight="500">
+                              <H3 fontWeight="500">
                                 <Text>{item.fullName}</Text>
                                 <Text color="gray.300"> • </Text>
                                 <Text color="presentCardText.500">100%</Text>
-                              </Text>
+                              </H3>
                             </VStack>
                           }
                         />
@@ -156,12 +155,8 @@ export default function SendSMS({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <Text bold fontSize={"md"}>
-                      {t("ABSENT_CONSECUTIVE_3_DAYS")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {students?.length + " " + t("STUDENTS")}
-                    </Text>
+                    <H2 bold={true}>{t("ABSENT_CONSECUTIVE_3_DAYS")}</H2>
+                    <H4>{students?.length + " " + t("STUDENTS")}</H4>
                   </VStack>
                 </>
               }
@@ -185,13 +180,13 @@ export default function SendSMS({ footerLinks, appName }) {
                           hidePopUpButton
                           textTitle={
                             <VStack alignItems="center">
-                              <Text fontSize="14" fontWeight="500">
+                              <H3 fontWeight="500">
                                 <Text>{item.fullName}</Text>
                                 <Text color="gray.300"> • </Text>
                                 <Text color="absentCardText.500">
                                   3 {t("DAYS")}
                                 </Text>
-                              </Text>
+                              </H3>
                             </VStack>
                           }
                         />
@@ -205,22 +200,18 @@ export default function SendSMS({ footerLinks, appName }) {
           </Stack>
         </Box>
         <Box p="2" py="5" bg="white" mb="1">
-          <VStack space={"15px"}>
-            <Text
-              textAlign={"center"}
-              fontSize="10px"
-              textTransform={"inherit"}
-            >
+          <VStack space={"15px"} alignItems={"center"}>
+            <H5 textAlign={"center"} textTransform={"inherit"}>
               <Text bold color={"gray.700"}>
                 {t("NOTES") + ": "}
               </Text>
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
-            </Text>
+            </H5>
             <Button.Group>
-              <ButtonWrapper variant="outline" colorScheme="button">
+              <Button variant="outline" colorScheme="button">
                 {t("CLOSE")}
-              </ButtonWrapper>
-              <ButtonWrapper
+              </Button>
+              <Button
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {
@@ -233,7 +224,7 @@ export default function SendSMS({ footerLinks, appName }) {
                 }}
               >
                 {t("SEND_ANOTHER_MESSAGE")}
-              </ButtonWrapper>
+              </Button>
             </Button.Group>
           </VStack>
         </Box>

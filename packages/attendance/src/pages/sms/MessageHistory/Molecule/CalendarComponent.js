@@ -3,8 +3,7 @@ import moment from "moment";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import { TouchableHighlight } from "react-native-web";
 import GetIcon from "atoms/GetIcon";
-import { useTranslation } from "react-i18next";
-import { IconByName } from "@shiksha/common-lib";
+import Message from "./Message";
 
 const CalendarComponent = ({
   monthDays,
@@ -134,46 +133,10 @@ const CalendarComponent = ({
   } else {
     return sms.map((item, index) => (
       <Pressable key={index} onPress={(e) => setSmsObject(item)}>
-        <Massage key={index} item={item} />
+        <Message key={index} item={item} />
       </Pressable>
     ));
   }
 };
 
-const Massage = ({ item, isDisableRetry }) => {
-  const { t } = useTranslation();
-  return (
-    <Box p="5" borderBottomWidth="1" borderBottomColor="gray.100">
-      <VStack space="2">
-        <HStack space="1" justifyContent="space-between">
-          <HStack space="1" alignItems="center">
-            <IconByName
-              isDisabled
-              name={
-                item.status === "Send" ? "CheckDoubleLineIcon" : "SpamLineIcon"
-              }
-              color={item.status === "Send" ? "present.500" : "absent.500"}
-            />
-            <Text fontSize="14px" fontWeight="500">
-              {item.status === "Send" ? t("SENT") : t("FAILED")}
-            </Text>
-          </HStack>
-          {item.status !== "Send" && !isDisableRetry ? (
-            <Button variant="ghost" colorScheme="button" py="0">
-              {t("RETRY")}
-            </Button>
-          ) : (
-            ""
-          )}
-        </HStack>
-        <Text fontSize="12px" fontWeight="500" color="#B5B5C8">
-          {moment(item.date).format("Do MMM, hh:ssa")}
-        </Text>
-        <Text fontSize="14px" fontWeight="400">
-          {item.message}
-        </Text>
-      </VStack>
-    </Box>
-  );
-};
 export default CalendarComponent;
