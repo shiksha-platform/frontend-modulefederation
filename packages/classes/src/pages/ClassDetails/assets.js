@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Collapsible, H2 } from "@shiksha/common-lib";
+import { Collapsible, H2, Heading1 } from "@shiksha/common-lib";
 import { Stack, Box, Center, VStack } from "native-base";
 
 export const routes = () => {
