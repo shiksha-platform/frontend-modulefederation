@@ -16,7 +16,8 @@ export default function FilterButton({
   filters = [],
   getObject,
   _box,
-  _button
+  _button,
+  _actionSheet
 }) {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
@@ -113,7 +114,11 @@ export default function FilterButton({
         )}
       </HStack>
       <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-        <Actionsheet.Content alignItems={'left'} bg='classCard.500'>
+        <Actionsheet.Content
+          alignItems={'left'}
+          bg='classCard.500'
+          {..._actionSheet}
+        >
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>

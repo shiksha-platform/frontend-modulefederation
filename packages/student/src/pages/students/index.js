@@ -3,7 +3,7 @@ import { Stack, Box, VStack, FlatList } from "native-base";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { capture, Layout, H2, H4 } from "@shiksha/common-lib";
+import { Layout, H2, H4, capture } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";

@@ -16,6 +16,16 @@ export default function Footer({ menues, routeDynamics, ...props }) {
   useEffect(() => {
     if (['/'].includes(window?.location?.pathname)) {
       setSelected(0)
+    } else if (
+      [
+        '/worksheet',        
+        '/teaching/:id',
+        '/questionBank',
+        '/:id',
+        '/worksheet/create'
+      ].includes(window?.location?.pathname)
+    ) {
+      setSelected(3)
     } else {
       setSelected(1)
     }

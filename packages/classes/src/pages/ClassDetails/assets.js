@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { Collapsible, H2, Heading1 } from "@shiksha/common-lib";
-import { Stack, Box, Center, VStack } from "native-base";
+import { Collapsible, H2 } from "@shiksha/common-lib";
+import { Stack, Box, Center, VStack, Heading } from "native-base";
 
 export const routes = () => {
   const { t } = useTranslation();
@@ -96,9 +96,9 @@ export const _header = (name) => {
               {name}
             </H2>
 
-            <Heading1 color="gray.100" fontWeight="700" fontSize="2xl">
+            <Heading color="gray.100" fontWeight="700" fontSize="2xl">
               {t("CLASS_DETAILS")}
-            </Heading1>
+            </Heading>
           </VStack>
         </Box>
       </Box>

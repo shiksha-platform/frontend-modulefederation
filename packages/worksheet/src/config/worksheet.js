@@ -1,5 +1,6 @@
 export const worksheets = [
   {
+    id: 1,
     image: "",
     heading: "Learning Made Easy",
     subHeading: "NCERT Workbook",
@@ -11,11 +12,12 @@ export const worksheets = [
     subject: "Math",
     level: "Beginner",
     grade: "VI",
-    questions: [{}],
+    questions: "30",
     chapter: "3",
     downloads: "3",
   },
   {
+    id: 2,
     image: "",
     heading: "Learning Made Easy",
     subHeading: "NCERT Workbook",
