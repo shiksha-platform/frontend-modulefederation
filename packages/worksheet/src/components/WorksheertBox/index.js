@@ -10,9 +10,11 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function WorksheetBox({ item, url, canShare }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <Pressable onPress={() => (url ? navigate(url) : "")}>
