@@ -65,7 +65,6 @@ import CheckboxBlankLineIcon from 'remixicon-react/CheckboxBlankLineIcon'
 import InformationLineIcon from 'remixicon-react/InformationLineIcon'
 import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
-import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -590,6 +589,7 @@ export default function IconByName({ _icon, ...props }) {
           icon={<SendPlane2LineIcon {...(_icon ? _icon : {})} />}
         />
       )
+<<<<<<< HEAD
       break
     case 'StarSFillIcon':
       icon = (
@@ -598,6 +598,8 @@ export default function IconByName({ _icon, ...props }) {
           icon={<StarSFillIcon {...(_icon ? _icon : {})} />}
         />
       )
+=======
+>>>>>>> feat: telemetry and question bank
       break
     default:
       if (props.name !== 'Home4LineIcon') {

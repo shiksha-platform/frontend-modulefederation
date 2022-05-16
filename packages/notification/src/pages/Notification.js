@@ -324,7 +324,7 @@ const Notification = ({ footerLinks, appName }) => {
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
             <Box p="5">
-              <Checkbox colorScheme="button">{t("SELECT_ALL")}</Checkbox>
+              <Checkbox colorScheme="button">{t("Select All")}</Checkbox>
             </Box>
             {filterData &&
               filterData.map((value, index) => (

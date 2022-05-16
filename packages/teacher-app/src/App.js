@@ -21,8 +21,14 @@ function App() {
   const ReportDetail = React.lazy(() => import("attendance/ReportDetail"));
   const CompareReport = React.lazy(() => import("attendance/CompareReport"));
   const SendSMS = React.lazy(() => import("attendance/SendSMS"));
-  const MessageHistory = React.lazy(() => import("attendance/MessageHistory"));
+  const MessageHistory = React.lazy(() => import("attendance/MessageHistory"));  
+  const TeachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
   const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
+  const WorksheetQuestionBank = React.lazy(() =>
+    import("worksheet/WorksheetQuestionBank")
+  );
+  const CreateWorksheet = React.lazy(() => import("worksheet/CreateWorksheet"));
+  const Teaching = React.lazy(() => import("worksheet/Teaching"));
   const Student = React.lazy(() => import("students/Student"));
   const StudentDetails = React.lazy(() => import("students/StudentDetails"));
 
@@ -37,10 +43,26 @@ function App() {
   const Profile = React.lazy(() => import("profile/Profile"));
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
-  const routes = [
+  const routes = [    
+    {
+      path: "/teaching/:id",
+      component: TeachingDetail,
+    },
+    {
+      path: "/questionBank",
+      component: QuestionBank,
+    },
+    {
+      path: "/:id",
+      component: WorksheetQuestionBank,
+    },
+    {
+      path: "/worksheet/create",
+      component: CreateWorksheet,
+    },
     {
       path: "worksheet",
-      component: QuestionBank,
+      component: Teaching,
     },
     {
       path: "classes",

@@ -8,6 +8,9 @@ const interfaceData = {
   firstName: "firstName",
   lastName: "lastName",
   email: "email",
+  mergeParameterWithValue: {
+    title: "teacherFullName",
+  },
   aadhaar: "aadhaar",
   cadre: "cadre",
   compSkills: "compSkills",

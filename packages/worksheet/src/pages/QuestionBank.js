@@ -7,7 +7,7 @@ import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
 import { Box, Button, ScrollView, Text, VStack } from "native-base";
 
-export default function QuestionBank({ footerLinks }) {
+export default function QuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
   const [questions, setQuestions] = useState([]);
@@ -25,16 +25,13 @@ export default function QuestionBank({ footerLinks }) {
     <Layout
       _header={{
         title: translationCheck("MY_CLASSES", "Question Bank"),
-        icon: "Group",
-        subHeading: "Test",
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         avatar: true,
       }}
       bg="white"
       _appBar={{ languages: ["en"] }}
       subHeader={t("THE_CLASSES_YOU_TAKE")}
       _subHeader={{
-        bg: colourPalette.primary,
+        bg: "worksheetCard.500",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -46,6 +43,7 @@ export default function QuestionBank({ footerLinks }) {
       <FilterButton
         getObject={setFilterObject}
         _box={{ p: 5 }}
+        _actionSheet={{ bg: "worksheetCard.500" }}
         filters={[
           {
             name: "Subject",
@@ -91,7 +89,7 @@ export default function QuestionBank({ footerLinks }) {
           },
         ]}
       />
-      <QuestionHeading text="FILL IN THE BLANKS" />
+      {/* <QuestionHeading text="Fill in the blanks" /> */}
       <ScrollView maxH={Height}>
         <Box bg="white" p="5">
           <VStack space="5">
@@ -100,8 +98,7 @@ export default function QuestionBank({ footerLinks }) {
                 <QuestionBox
                   _box={{ py: "12px", px: "16px" }}
                   key={index}
-                  question={question.question}
-                  options={question?.options}
+                  questionObject={question}                  
                 />
               ))}
           </VStack>

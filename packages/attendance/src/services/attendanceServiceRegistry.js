@@ -28,7 +28,7 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
 
-  const result = await get(manifest.api_url + "/attendance", {
+  const result = await generalServices.get(manifest.api_url + "/attendance", {
     params: { ...params },
     headers,
   });
