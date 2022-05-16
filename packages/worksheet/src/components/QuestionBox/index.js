@@ -8,14 +8,7 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
   const createMarkup = (markup) => {
     return { __html: markup };
   };
-  const alphabet = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f"  
-  ];
+  const alphabet = ["a", "b", "c", "d", "e", "f"];
 
   const isExist = () =>
     selectData &&

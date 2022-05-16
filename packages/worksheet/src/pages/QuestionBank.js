@@ -98,7 +98,7 @@ export default function QuestionBank({ footerLinks, appName }) {
                 <QuestionBox
                   _box={{ py: "12px", px: "16px" }}
                   key={index}
-                  questionObject={question}                  
+                  questionObject={question}
                 />
               ))}
           </VStack>
