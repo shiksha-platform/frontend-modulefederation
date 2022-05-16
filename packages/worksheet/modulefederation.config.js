@@ -3,7 +3,7 @@ const { dependencies } = require("./package.json");
 module.exports = {
   name: "worksheet",
   exposes: {
-    "./App": "./src/App",   
+    "./App": "./src/App",
     "./TeachingDetail": "./src/pages/TeachingDetail",
     "./QuestionBank": "./src/pages/QuestionBank",
     "./WorksheetQuestionBank": "./src/pages/WorksheetQuestionBank",

@@ -18,7 +18,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
       setSelected(0)
     } else if (
       [
-        '/worksheet',        
+        '/worksheet',
         '/teaching/:id',
         '/questionBank',
         '/:id',

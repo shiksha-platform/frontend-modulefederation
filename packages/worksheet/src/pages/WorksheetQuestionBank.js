@@ -133,7 +133,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    questionObject={question}                    
+                    questionObject={question}
                   />
                 ))}
             </VStack>
@@ -149,7 +149,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    questionObject={question}                    
+                    questionObject={question}
                   />
                 ))}
             </VStack>
@@ -165,7 +165,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    questionObject={question}                    
+                    questionObject={question}
                   />
                 ))}
             </VStack>

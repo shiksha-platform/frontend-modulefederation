@@ -17,13 +17,13 @@ import DayWiesBar from "../../components/CalendarBar";
 import {
   IconByName,
   Layout,
-  Collapsible,  
+  Collapsible,
   telemetryFactory,
   H2,
   H3,
   H4,
   H5,
-  capture  
+  capture,
 } from "@shiksha/common-lib";
 
 export default function SendSMS({ footerLinks, appName }) {

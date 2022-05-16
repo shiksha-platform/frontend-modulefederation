@@ -589,7 +589,6 @@ export default function IconByName({ _icon, ...props }) {
           icon={<SendPlane2LineIcon {...(_icon ? _icon : {})} />}
         />
       )
-<<<<<<< HEAD
       break
     case 'StarSFillIcon':
       icon = (
@@ -598,8 +597,6 @@ export default function IconByName({ _icon, ...props }) {
           icon={<StarSFillIcon {...(_icon ? _icon : {})} />}
         />
       )
-=======
->>>>>>> feat: telemetry and question bank
       break
     default:
       if (props.name !== 'Home4LineIcon') {

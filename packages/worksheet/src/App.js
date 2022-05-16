@@ -14,7 +14,7 @@ function App() {
     ["worksheet"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
   );
-  const routes = [    
+  const routes = [
     {
       path: "/view",
       component: TeachingDetail,
