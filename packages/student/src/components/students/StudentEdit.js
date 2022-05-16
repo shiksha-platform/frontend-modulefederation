@@ -234,7 +234,7 @@ export default function StudentEdit({
                 </FormControl>
               ) : (
                 <>
-                  <H3 fontWeight="500" color={"coolGray.400"} pb={2}>
+                  <H3 fontWeight="500" color={"coolGray.400"} pb="2">
                     {item.placeholder}
                   </H3>
                   {item.value ? (
