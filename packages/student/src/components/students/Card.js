@@ -18,6 +18,7 @@ import {
   getStudentsPresentAbsent,
   capture,
   telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";

@@ -494,6 +494,15 @@ export const MultipalAttendance = ({
                         flex={1}
                         colorScheme="button"
                         _text={{ color: "white" }}
+                        onPress={(e) =>
+                          navigate(
+                            "/attendance/report/" +
+                              (classObject?.id?.startsWith("1-")
+                                ? classObject?.id?.replace("1-", "")
+                                : classObject?.id) +
+                              "/days"
+                          )
+                        }
                       >
                         {t("SEE_FULL_REPORT")}
                       </Button>
@@ -836,6 +845,7 @@ const CalendarComponent = ({
       smsDay,
       attendanceItem,
       attendanceIconProp,
+      attendanceType,
     ];
   };
 
@@ -860,6 +870,7 @@ const CalendarComponent = ({
           smsDay,
           attendanceItem,
           attendanceIconProp,
+          attendanceType,
         ] = handleAttendaceData(attendance, day);
 
         return (
