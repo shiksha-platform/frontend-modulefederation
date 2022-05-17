@@ -6,18 +6,15 @@ export default function Loading({ message = 'Loading', ...prop }) {
   const [width, height] = useWindowSize()
 
   return (
-    <Center
-      _text={{
-        color: 'white',
-        fontWeight: 'bold'
-      }}
-      height={prop?.height ? prop.height : height}
-      width={prop?.width ? prop.width : width}
-      {...prop?._center}
-    >
-      {prop?.customComponent ? (
-        prop?.customComponent
-      ) : (
+    <Center flex={1} px='3'>
+      <Center
+        _text={{
+          color: 'white',
+          fontWeight: 'bold'
+        }}
+        height={prop?.height ? prop.height : height}
+        width={prop?.width ? prop.width : width}
+      >
         <VStack space={2} alignItems={'center'}>
           <VStack space={10} alignItems='center'>
             {prop?.icon ? (
@@ -36,7 +33,7 @@ export default function Loading({ message = 'Loading', ...prop }) {
             </VStack>
           </VStack>
         </VStack>
-      )}
+      </Center>
     </Center>
   )
 }
