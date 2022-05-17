@@ -1,6 +1,7 @@
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 import { get, post } from "@shiksha/common-lib";
+//Merge conflict
 
 const interfaceData = {
   id: "teacherId",

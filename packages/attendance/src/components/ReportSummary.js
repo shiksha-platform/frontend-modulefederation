@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { IconByName, ProgressBar, calendar } from "@shiksha/common-lib";
 import moment from "moment";
-
+//Merge conflict
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";

@@ -1,6 +1,7 @@
 import { get, post, update as coreUpdate } from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
+//Merge conflict
 
 const interfaceData = {
   id: "attendanceId",

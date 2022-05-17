@@ -10,6 +10,7 @@ import {
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import IconByName from '../IconByName'
+//Merge conflict
 
 export default function AppBar({
   isEnableHamburgerMenuButton,

@@ -24,6 +24,7 @@ import * as classServiceRegistry from "../../services/classServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import StudentEdit from "./StudentEdit";
 import moment from "moment";
+//Merge conflict
 
 const PRESENT = "Present";
 const STUDNET = "Student";

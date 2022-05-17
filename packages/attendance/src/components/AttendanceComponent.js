@@ -28,7 +28,7 @@ import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import { useNavigate } from "react-router-dom";
 const Card = React.lazy(() => import("students/Card"));
-
+//Merge conflict
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
