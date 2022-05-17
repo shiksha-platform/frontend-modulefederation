@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { IconByName, ProgressBar, calendar } from "@shiksha/common-lib";
+import moment from "moment";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -54,37 +55,35 @@ export default function Report({
             calendarView
           )
         );
-        let percentage = 0;
-        let attendanceAll = getStudentsAttendance(attendance);
-        let presentAttendanceCount = attendanceAll.filter(
-          (e) => e.attendance !== PRESENT
-        ).length;
-        percentage =
-          (presentAttendanceCount * 100) / daysWithoutHolidays.length;
-        console.log({
-          presentAttendanceCount,
-          daysWithoutHolidays: daysWithoutHolidays.length,
-          percentage,
-        });
-        if (percentage && percentage >= 100) {
-          setDesign({
-            bg: "attendanceSuccessCardCompareBg.500",
-            iconName: "EmotionHappyLineIcon",
-            titleHeading:
-              t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
-          });
-        } else if (percentage && percentage < 100 && percentage >= 50) {
-          setDesign({
-            bg: "attendanceWarningCardCompareBg.500",
-            iconName: "EmotionNormalLineIcon",
-            titleHeading: t("AGERAGE_CAN_BE_IMPROVED"),
-          });
-        } else {
-          setDesign({
-            bg: "attendanceDangerCardCompareBg.500",
-            iconName: "EmotionSadLineIcon",
-            titleHeading: t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
-          });
+        if (attendance[0]) {
+          let percentage = 0;
+          let attendanceAll = getStudentsAttendance(attendance[0]);
+          let presentAttendanceCount = attendanceAll.filter(
+            (e) => e.attendance && e.attendance !== PRESENT
+          ).length;
+          percentage =
+            (presentAttendanceCount * 100) / daysWithoutHolidays.length;
+          if (percentage && percentage >= 100) {
+            setDesign({
+              bg: "attendanceSuccessCardCompareBg.500",
+              iconName: "EmotionHappyLineIcon",
+              titleHeading:
+                t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
+            });
+          } else if (percentage && percentage < 100 && percentage >= 50) {
+            setDesign({
+              bg: "attendanceWarningCardCompareBg.500",
+              iconName: "EmotionNormalLineIcon",
+              titleHeading: t("AGERAGE_CAN_BE_IMPROVED"),
+            });
+          } else {
+            setDesign({
+              bg: "attendanceDangerCardCompareBg.500",
+              iconName: "EmotionSadLineIcon",
+              titleHeading:
+                t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
+            });
+          }
         }
       }
     }

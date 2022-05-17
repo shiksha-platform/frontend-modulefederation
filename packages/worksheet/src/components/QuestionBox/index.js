@@ -55,10 +55,19 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
             {questionObject.options?.map((item, index) => {
               return (
                 <HStack key={index} space="1" alignItems="baseline">
-                  <Text fontSize="14" fontWeight="400" textTransform="inherit">
+                  <Text
+                    fontSize="14"
+                    fontWeight="400"
+                    textTransform="inherit"
+                    color={item.answer ? "successAlertText.500" : ""}
+                  >
                     {alphabet[index] + ". "}
                   </Text>
-                  <Text fontSize="14" fontWeight="400">
+                  <Text
+                    fontSize="14"
+                    fontWeight="400"
+                    color={item.answer ? "successAlertText.500" : ""}
+                  >
                     <div
                       dangerouslySetInnerHTML={createMarkup(item?.value?.body)}
                     />

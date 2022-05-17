@@ -13,9 +13,6 @@ module.exports = {
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
   },
-  remotes: {
-    core: `core@[window.appModules.core.url]/moduleEntry.js`,
-  },
   filename: "moduleEntry.js",
   shared: {
     ...dependencies,
