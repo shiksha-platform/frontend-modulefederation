@@ -6,7 +6,8 @@ import {
   Pressable,
   ScrollView,
   Stack,
-  Text
+  Text,
+  Tooltip
 } from 'native-base'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -80,10 +81,17 @@ export default function FilterButton({
                     {..._button}
                   >
                     <Text color={isSelect > 0 ? 'white' : 'button.500'}>
-                      {value.name}{' '}
-                      {isSelect > 0 && groupValue?.[attributeName][0]
-                        ? groupValue?.[attributeName][0]
-                        : ''}
+                      {isSelect > 0 ? '' : value.name}
+                      {isSelect > 0 && groupValue?.[attributeName][0] ? (
+                        <Tooltip
+                          label={groupValue?.[attributeName].toString()}
+                          openDelay={50}
+                        >
+                          {groupValue?.[attributeName][0]}
+                        </Tooltip>
+                      ) : (
+                        ''
+                      )}
                     </Text>
                   </Button>
                 )
