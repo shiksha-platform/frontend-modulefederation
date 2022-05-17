@@ -6,6 +6,7 @@ import {
   Collapsible,
   IconByName,
 } from "@shiksha/common-lib";
+import { colourPalette } from "constants/colours";
 import QuestionBox from "components/QuestionBox";
 import {
   Actionsheet,
@@ -105,7 +106,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       subHeader={
         <HStack alignItems="center" justifyContent="space-between">
           <Text fontSize="16px" fontWeight={"600"}>
-            {t("Chapter 1 : Learning Made Easy")}
+            Chapter 1 : Learning Made Easy
           </Text>
           <IconByName
             name="InformationLineIcon"
@@ -114,7 +115,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         </HStack>
       }
       _subHeader={{
-        bg: "worksheetCard.500",
+        bg: colourPalette.primary,
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -123,10 +124,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      <Collapsible
-        header="Choose correct answer(s) from the given choices"
-        _header={{ py: 5 }}
-      >
+      <Collapsible header="Choose correct answer(s) from the given choices">
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
@@ -142,7 +140,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </Box>
         </ScrollView>
       </Collapsible>
-      <Collapsible header="Fill in the blanks" _header={{ py: 5 }}>
+      <Collapsible header="Fill in the Blanks">
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
@@ -158,7 +156,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </Box>
         </ScrollView>
       </Collapsible>
-      <Collapsible header="Answer the questions" _header={{ py: 5 }}>
+      <Collapsible header="Answer the questions">
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
