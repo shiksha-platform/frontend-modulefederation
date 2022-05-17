@@ -114,6 +114,7 @@ export const MultipalAttendance = ({
   const [width, Height] = useWindowSize();
   const [seconds, setSeconds] = useState(0);
   const navigate = useNavigate();
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   useEffect(() => {
     let interval = null;
@@ -130,7 +131,9 @@ export const MultipalAttendance = ({
   useEffect(() => {
     const getPresentStudents = async ({ students }) => {
       let weekdays = calendar(-1, "week");
-      let workingDaysCount = weekdays.filter((e) => e.day())?.length;
+      let workingDaysCount = weekdays.filter(
+        (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+      )?.length;
       let params = {
         fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
         toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
@@ -778,11 +781,13 @@ const CalendarComponent = ({
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
     let isFutureDay = day.format("YYYY-MM-DD") > moment().format("YYYY-MM-DD");
-    let isHoliday = day.day() === 0;
+    let isHoliday =
+      day.day() === 0 || holidays.includes(day.format("YYYY-MM-DD"));
     let dateValue = day.format("YYYY-MM-DD");
     let smsDay = sms?.find(
       (e) => e.date === day.format("YYYY-MM-DD") && e.studentId === student.id
@@ -882,9 +887,7 @@ const CalendarComponent = ({
             p={type === "day" ? "1" : "0"}
             rounded="lg"
             opacity={
-              type !== "month" && day.day() !== 0
-                ? 1
-                : thisMonth && day.format("M") !== thisMonth
+              type !== "month" && thisMonth && day.format("M") !== thisMonth
                 ? 0
                 : isHoliday
                 ? 0.3

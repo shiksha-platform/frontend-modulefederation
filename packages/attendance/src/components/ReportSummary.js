@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { IconByName, ProgressBar, calendar } from "@shiksha/common-lib";
 
+const PRESENT = "Present";
+const ABSENT = "Absent";
+const UNMARKED = "Unmarked";
+
 export default function Report({
   students,
   attendance,
@@ -13,38 +17,75 @@ export default function Report({
 }) {
   const { t } = useTranslation();
   const [studentIds, setStudentIds] = React.useState([]);
+  const [design, setDesign] = React.useState({});
   const [withoutHolidays, setWithoutHolidays] = React.useState([]);
   const [isAvrage, setIsAvrage] = React.useState(false);
   const fullName = localStorage.getItem("fullName");
   const status = manifest?.status ? manifest?.status : [];
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   React.useEffect(() => {
     let ignore = false;
     async function getData() {
       if (!ignore) {
+        let daysWithoutHolidays = [];
         setStudentIds(students.map((e) => e.id));
         if (typeof page === "object") {
-          setWithoutHolidays(
-            page.map(
-              (e) =>
-                calendar(e, calendarView ? calendarView : "days").filter((e) =>
-                  e.day()
-                ).length
-            )
+          daysWithoutHolidays = page.map(
+            (e) =>
+              calendar(e, calendarView ? calendarView : "days").filter(
+                (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+              ).length
           );
+          setWithoutHolidays(daysWithoutHolidays);
         } else {
-          setWithoutHolidays([
+          daysWithoutHolidays = [
             calendar(
               page ? page : 0,
               calendarView ? calendarView : "days"
-            ).filter((e) => e.day()).length,
-          ]);
+            ).filter(
+              (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+            ).length,
+          ];
+          setWithoutHolidays(daysWithoutHolidays);
         }
         setIsAvrage(
           ["week", "weeks", "month", "months", "monthInDays"].includes(
             calendarView
           )
         );
+        let percentage = 0;
+        let attendanceAll = getStudentsAttendance(attendance);
+        let presentAttendanceCount = attendanceAll.filter(
+          (e) => e.attendance !== PRESENT
+        ).length;
+        percentage =
+          (presentAttendanceCount * 100) / daysWithoutHolidays.length;
+        console.log({
+          presentAttendanceCount,
+          daysWithoutHolidays: daysWithoutHolidays.length,
+          percentage,
+        });
+        if (percentage && percentage >= 100) {
+          setDesign({
+            bg: "attendanceSuccessCardCompareBg.500",
+            iconName: "EmotionHappyLineIcon",
+            titleHeading:
+              t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
+          });
+        } else if (percentage && percentage < 100 && percentage >= 50) {
+          setDesign({
+            bg: "attendanceWarningCardCompareBg.500",
+            iconName: "EmotionNormalLineIcon",
+            titleHeading: t("AGERAGE_CAN_BE_IMPROVED"),
+          });
+        } else {
+          setDesign({
+            bg: "attendanceDangerCardCompareBg.500",
+            iconName: "EmotionSadLineIcon",
+            titleHeading: t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
+          });
+        }
       }
     }
     getData();
@@ -133,11 +174,11 @@ export default function Report({
 
   return (
     <Box rounded={"xl"}>
-      <Box roundedTop={"xl"} p="5" bg={"button.500"}>
+      <Box roundedTop={"xl"} p="5" bg={design?.bg}>
         <HStack alignItems={"center"} space={2}>
-          <IconByName name="EmotionUnhappyLineIcon" isDisabled color="white" />
+          <IconByName name={design?.iconName} isDisabled color="white" />
           <Text color="white" textTransform={"inherit"}>
-            {t("ABSENT_TODAY_POOR_LAST_WEEK")}
+            {design?.titleHeading}
           </Text>
         </HStack>
       </Box>
@@ -193,11 +234,11 @@ export default function Report({
                             return {
                               name: subItem,
                               color:
-                                subItem === "Present"
+                                subItem === PRESENT
                                   ? "attendancePresent.500"
-                                  : subItem === "Absent"
+                                  : subItem === ABSENT
                                   ? "attendanceAbsent.500"
-                                  : subItem === "Unmarked"
+                                  : subItem === UNMARKED
                                   ? "attendanceUnmarked.500"
                                   : "coolGray.500",
                               value: statusCount,
@@ -219,7 +260,7 @@ export default function Report({
       <Box roundedBottom={"xl"} p="5" bg={"reportBoxBg.500"}>
         <HStack justifyContent={"space-between"}>
           <Text>{t("ATTENDANCE_TAKEN_BY")}</Text>
-          <Text>{fullName}</Text>
+          <Text>{fullName ? fullName : ""}</Text>
         </HStack>
       </Box>
     </Box>

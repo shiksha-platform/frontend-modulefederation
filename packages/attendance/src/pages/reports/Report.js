@@ -36,7 +36,10 @@ export default function Report({ footerLinks }) {
         type: "class",
         role: "teacher",
       });
-      if (!ignore) setClasses(responceClass);
+      if (!ignore) {
+        if (responceClass[0].id) getAttendance(responceClass[0].id);
+        setClasses(responceClass);
+      }
     };
     getData();
     return () => {
@@ -46,7 +49,10 @@ export default function Report({ footerLinks }) {
 
   useEffect(() => {
     let ignore = false;
-    if (!ignore) setMakeDefaultCollapse(makeDefaultCollapse);
+    if (!ignore) {
+      if (calsses[0]?.id) getAttendance(calsses[0].id);
+      setMakeDefaultCollapse(makeDefaultCollapse);
+    }
     return () => {
       ignore = true;
     };
@@ -78,6 +84,7 @@ export default function Report({ footerLinks }) {
         iconComponent: (
           <Menu
             w="120"
+            placement="bottom right"
             trigger={(triggerProps) => {
               return (
                 <Pressable
@@ -136,7 +143,7 @@ export default function Report({ footerLinks }) {
             borderBottomColor="coolGray.200"
           >
             <Collapsible
-              defaultCollapse={makeDefaultCollapse}
+              defaultCollapse={!index ? true : makeDefaultCollapse}
               onPressFuction={(e) => getAttendance(item.id)}
               header={
                 <VStack>
