@@ -95,7 +95,13 @@ const Worksheets = ({ data, leftTitle, rightTitle }) => {
       </HStack>
       <VStack space={3}>
         {data.map((item, index) => {
-          return <WorksheetBox key={index} {...{ item, url: `/${item.id}` }} />;
+          return (
+            <WorksheetBox
+              canShare={true}
+              key={index}
+              {...{ item, url: `/${item.id}` }}
+            />
+          );
         })}
       </VStack>
     </Stack>
