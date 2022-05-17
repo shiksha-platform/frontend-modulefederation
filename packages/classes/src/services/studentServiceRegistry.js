@@ -31,7 +31,6 @@ const interfaceData = {
   gender: "gender",
   mergeParameterWithDefaultValue: {
     admissionNo: "1",
-    currentClassID: "dee531ae-9db0-4989-b6a1-da60080679df",
   },
 };
 
@@ -42,9 +41,8 @@ export const getAll = async (params = {}, header = {}) => {
     Accept: "application/json",
     ...header,
   };
-  params.classId = "d287fa46-5308-48b8-a2ec-ee78f83e5f14";
   const result = await get(
-    `${manifest.api_url}/${manifest.api_version}/group/${params?.classId}/participants?role=Student`,
+    `${manifest.api_url}/group/${params?.classId}/participants?role=Student`,
     {
       headers,
     }

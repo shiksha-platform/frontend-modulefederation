@@ -3,9 +3,30 @@ import { Collapsible, IconByName } from "@shiksha/common-lib";
 import { HStack, Text, VStack, Stack, Box, Progress } from "native-base";
 import { useTranslation } from "react-i18next";
 import LinkWrapper from "atoms/LinkWrapper";
+import * as attendanceServiceRegistry from "./../../../services/attendanceServiceRegistry";
+import moment from "moment";
 
-const ClassAttendanceCard = ({ classId }) => {
+const PRESENT = "Present";
+
+const ClassAttendanceCard = ({ classId, students }) => {
   const { t } = useTranslation();
+  const [attendance, setAttendance] = React.useState([]);
+  const [presentAttendance, setPresentAttendance] = React.useState([]);
+
+  React.useEffect(() => {
+    const getData = async () => {
+      let params = {
+        fromDate: moment().format("YYYY-MM-DD"),
+        toDate: moment().format("YYYY-MM-DD"),
+      };
+      let attendanceData = await attendanceServiceRegistry.getAll(params);
+      setAttendance(attendanceData);
+      setPresentAttendance(
+        attendanceData.filter((e) => e.attendance === PRESENT)
+      );
+    };
+    getData();
+  }, []);
 
   return (
     <Collapsible defaultCollapse={true} header={t("CLASS_ATTENDANCE")}>
@@ -17,18 +38,26 @@ const ClassAttendanceCard = ({ classId }) => {
               <IconByName name="More2LineIcon" />
             </HStack>
             <Progress
-              value={17}
-              max={24}
+              value={presentAttendance?.length}
+              max={students?.length}
               my="4"
               size={"2xl"}
               colorScheme="green"
               bg="button.400"
             >
-              <Text color="white">17 {t("PRESENT")}</Text>
+              {presentAttendance?.length ? (
+                <Text color="white">
+                  {presentAttendance?.length} {t("PRESENT")}
+                </Text>
+              ) : (
+                ""
+              )}
             </Progress>
             <HStack justifyContent={"space-between"} alignItems="center">
               {/* <Text>{t("GRADE") + ": " + t("GOOD")}</Text> */}
-              <Text>{t("TOTAL") + ": 24 " + t("STUDENTS")}</Text>
+              <Text>
+                {t("TOTAL") + `: ${students?.length} ` + t("STUDENTS")}
+              </Text>
             </HStack>
           </VStack>
         </Box>

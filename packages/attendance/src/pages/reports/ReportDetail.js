@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
-  calendar,
   GetAttendance,
 } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
@@ -27,9 +26,12 @@ import {
   Layout,
   getStudentsPresentAbsent,
   getUniqAttendance,
+  capture,
+  telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 
-export default function ReportDetail({ footerLinks }) {
+export default function ReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId, view } = useParams();
@@ -49,6 +51,18 @@ export default function ReportDetail({ footerLinks }) {
       : "days"
   );
   const Card = React.lazy(() => import("students/Card"));
+  const teacherId = localStorage.getItem("id");
+  const [attendanceStartTime, setAttendanceStartTime] = useState();
+
+  useEffect(() => {
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Attendance-Full-Report-Start",
+      groupID: classId,
+    });
+    capture("START", telemetryData);
+    setAttendanceStartTime(moment());
+  }, []);
 
   useEffect(() => {
     let ignore = false;
@@ -124,6 +138,19 @@ export default function ReportDetail({ footerLinks }) {
 
   return (
     <Layout
+      _appBar={{
+        onPressBackButton: (e) => {
+          const telemetryData = telemetryFactory.end({
+            appName,
+            type: "Attendance-Full-Report-End",
+            groupID: classId,
+            duration: attendanceStartTime
+              ? moment().diff(attendanceStartTime, "seconds")
+              : 0,
+          });
+          capture("END", telemetryData);
+        },
+      }}
       _header={{
         title: t("MY_CLASSES"),
         icon: "Group",
@@ -261,6 +288,7 @@ export default function ReportDetail({ footerLinks }) {
                         >
                           <Suspense fallback="logding">
                             <Card
+                              appName={appName}
                               item={item}
                               type="rollFather"
                               textTitle={
@@ -330,6 +358,7 @@ export default function ReportDetail({ footerLinks }) {
                         >
                           <Suspense fallback="logding">
                             <Card
+                              appName={appName}
                               item={item}
                               type="rollFather"
                               textTitle={

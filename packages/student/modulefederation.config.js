@@ -7,6 +7,7 @@ module.exports = {
     "./Student": "./src/pages/students/index.js",
     "./StudentDetails": "./src/pages/StudentDetails/index.js",
     "./Card": "./src/components/students/Card.js",
+    "./StudentEdit": "./src/components/students/StudentEdit.js",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

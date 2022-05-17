@@ -1,17 +1,13 @@
-import * as generalServices from "@shiksha/common-lib";
+import { get, post } from "@shiksha/common-lib";
 import mapInterfaceData from "./mapInterfaceData";
 import manifest from "../manifest.json";
 
 const interfaceData = {
-  id: "id",
+  id: "groupId",
   schoolId: "schoolId",
   type: "type",
   name: "name",
   status: "status",
-  createdOn: "createdOn",
-  createdBy: "createdBy",
-  updatedBy: "updatedBy",
-  updatedOn: "updatedOn",
   mergeParameterWithValue: {
     title: "name",
   },
@@ -26,26 +22,29 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
-  const result = await generalServices.get(
-    manifest.api_url + "/group/memberships/" + params.teacherId,
+  const result = await get(
+    `${manifest.api_url}/group/participant/${params.teacherId}?role=Teacher`,
     {
       ...params,
       headers,
     }
   );
-  if (result?.data?.data) {
+  if (result.data) {
     return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
   } else {
     return [];
   }
 };
 
-export const getOne = async (filters = {}, headers = {}) => {
-  const result = await generalServices.get(
-    manifest.api_url + "/group/" + filters.id,
-    { headers }
-  );
-  if (result?.data?.data) {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: "Bearer " + localStorage.getItem("token"),
+  };
+  const result = await get(`${manifest.api_url}/group/${filters.id}`, {
+    headers,
+  });
+  if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData);
   } else {
     return {};

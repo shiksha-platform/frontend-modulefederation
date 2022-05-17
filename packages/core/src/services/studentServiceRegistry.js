@@ -42,10 +42,8 @@ export const getAll = async (params = {}, header = {}) => {
     Accept: "application/json",
     ...header,
   };
-  params.classId = "d287fa46-5308-48b8-a2ec-ee78f83e5f14";
-  //
   const result = await get(
-    `${manifest.api_url}/${manifest.api_version}/group/${params?.classId}/participants?role=Student`,
+    `${manifest.api_url}/group/${params?.classId}/participants?role=Student`,
     { headers }
   );
   if (result?.data?.data && result.data.data.length) {

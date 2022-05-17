@@ -2,22 +2,21 @@ import React from 'react'
 import { HStack, Text, Box, VStack, Avatar } from 'native-base'
 
 export default function Header({
+  title,
   iconComponent,
   headingComponent,
   subHeadingComponent,
   avatar,
-  heading,
   subHeading,
+  isDisabledHeader,
+  customeComponent,
   _box,
   _heading,
-  _subHeading,
-  title,
-  isDisabledHeader,
-  fullRightComponent
+  _subHeading
 }: any) {
   let newAvatar = localStorage.getItem('firstName')
   return !isDisabledHeader ? (
-    !fullRightComponent ? (
+    !customeComponent ? (
       <Box {..._box} py={7} px={5}>
         <HStack justifyContent='space-between' alignItems='center'>
           <VStack>
@@ -32,7 +31,7 @@ export default function Header({
               headingComponent
             ) : (
               <Text bold fontSize='24px' {..._heading}>
-                {title ? title : heading}
+                {title}
               </Text>
             )}
           </VStack>
@@ -49,7 +48,7 @@ export default function Header({
         </HStack>
       </Box>
     ) : (
-      fullRightComponent
+      customeComponent
     )
   ) : (
     <React.Fragment />

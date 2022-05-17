@@ -18,6 +18,7 @@ export default function AppBar({
   setSearch,
   color,
   languages,
+  onPressBackButton,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
@@ -33,9 +34,9 @@ export default function AppBar({
   }
 
   return (
-    <Box pt={7} px={5}>
-      <StatusBar backgroundColor='gray.600' barStyle='light-content' />
-      <Box safeAreaTop backgroundColor='gray.600' />
+    <Box pt={7} px={5} {...props?._box}>
+      <StatusBar bg='gray.600' barStyle='light-content' />
+      <Box safeAreaTop bg='gray.600' />
       <HStack
         bg='transparent'
         justifyContent='space-between'
@@ -49,7 +50,10 @@ export default function AppBar({
               size='sm'
               name='ArrowLeftLineIcon'
               color={color ? color : ''}
-              onPress={() => navigate(-1)}
+              onPress={() => {
+                if (onPressBackButton) onPressBackButton()
+                navigate(-1)
+              }}
             />
           )}
           {searchInput ? (
@@ -87,6 +91,11 @@ export default function AppBar({
           ) : (
             <React.Fragment />
           )}
+          <IconByName
+            name='Notification2LineIcon'
+            onPress={(e) => navigate('/notification')}
+            color={color ? color : ''}
+          />
           <Center flex={1} px='3'>
             <Menu
               w='190'

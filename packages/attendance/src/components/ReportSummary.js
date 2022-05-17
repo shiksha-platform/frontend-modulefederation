@@ -2,15 +2,7 @@ import { Box, FlatList, HStack, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import { calendar } from "./AttendanceComponent";
-import {
-  Collapsible,
-  IconByName,
-  ProgressBar,
-  Layout,
-  Menu,
-  getStudentsPresentAbsent,
-} from "@shiksha/common-lib";
+import { IconByName, ProgressBar, calendar } from "@shiksha/common-lib";
 
 export default function Report({
   students,

@@ -23,7 +23,7 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
   const result = await get(
-    `${manifest.api_url}/${manifest.api_version}/group/participant/49819de2-3c8e-473c-bda7-a1b6ea9efbbb?role=Teacher`,
+    `${manifest.api_url}/group/participant/${params.teacherId}?role=Teacher`,
     {
       ...params,
       headers,
@@ -31,7 +31,6 @@ export const getAll = async (params = {}, header = {}) => {
   );
   if (result.data) {
     return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
-    return [];
   } else {
     return [];
   }
@@ -42,12 +41,9 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: "Bearer " + localStorage.getItem("token"),
   };
-  const result = await get(
-    `${manifest.api_url}/${manifest.api_version}/group/${filters.id}`,
-    {
-      headers,
-    }
-  );
+  const result = await get(`${manifest.api_url}/group/${filters.id}`, {
+    headers,
+  });
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData);
   } else {

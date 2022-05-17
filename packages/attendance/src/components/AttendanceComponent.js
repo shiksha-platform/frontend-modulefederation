@@ -20,60 +20,21 @@ import {
   IconByName,
   getStudentsPresentAbsent,
   useWindowSize,
+  capture,
+  telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
+import { useNavigate } from "react-router-dom";
+const Card = React.lazy(() => import("students/Card"));
 
-export function calendar(page, type = "weeks") {
-  let date = moment();
-  if (type === "month") {
-    let startDate = moment().add(page, "months").startOf("month");
-    let endDate = moment(startDate).endOf("month");
-    var weeks = [];
-    weeks.push(weekDates(startDate));
-    while (startDate.add(7, "days").diff(endDate) < 8) {
-      weeks.push(weekDates(startDate));
-    }
-    return weeks;
-  } else if (type === "monthInDays") {
-    let startDate = moment().add(page, "months").startOf("month");
-    let endDate = moment(startDate).endOf("month");
-    var days = [];
-    days.push(startDate.clone());
-    while (startDate.add(1, "days").diff(endDate) < 1) {
-      days.push(startDate.clone());
-    }
-    return days;
-  } else if (["week", "weeks"].includes(type)) {
-    date.add(page * 7, "days");
-    if (type === "week") {
-      return weekDates(date);
-    }
-    return [weekDates(date)];
-  } else {
-    if (type === "days") {
-      return [date.add(page * 1, "days")];
-    }
-    return date.add(page * 1, "days");
-  }
-}
-
-export const weekDates = (currentDate = moment()) => {
-  let weekStart = currentDate.clone().startOf("isoWeek");
-  let days = [];
-  for (let i = 0; i <= 6; i++) {
-    days.push(moment(weekStart).add(i, "days"));
-  }
-  return days;
-};
+const PRESENT = "Present";
+const ABSENT = "Absent";
+const UNMARKED = "Unmarked";
 
 export const GetAttendance = async (params) => {
-  let test = await attendanceServiceRegistry.getAll({
-    params: params,
-  });
-
-  // console.log(test);
-  return test;
+  return await attendanceServiceRegistry.getAll(params);
 };
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
@@ -137,40 +98,50 @@ export const MultipalAttendance = ({
   students,
   attendance,
   getAttendance,
-  setLoding,
+  setLoading,
   setAllAttendanceStatus,
   allAttendanceStatus,
   classObject,
   isEditDisabled,
   setIsEditDisabled,
   isWithEditButton,
+  appName,
 }) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [presentStudents, setPresentStudents] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [width, Height] = useWindowSize();
+  const [seconds, setSeconds] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let interval = null;
+    if (showModal) {
+      interval = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    } else if (!showModal && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [showModal, seconds]);
 
   useEffect(() => {
     const getPresentStudents = async ({ students }) => {
       let weekdays = calendar(-1, "week");
       let workingDaysCount = weekdays.filter((e) => e.day())?.length;
       let params = {
-        fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-        toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+        fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
+        toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
       };
-      // await attendanceServiceRegistry.getAll({ params: params});
-      let attendanceData = await attendanceServiceRegistry.getAll({
-        params: params,
-      });
-      console.log("attendanceData", attendanceData);
+      let attendanceData = await GetAttendance(params);
       const present = getStudentsPresentAbsent(
         attendanceData,
         students,
         workingDaysCount
       );
-
-      // setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
+      setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
     };
     getPresentStudents({ students });
   }, [students]);
@@ -183,30 +154,36 @@ export const MultipalAttendance = ({
           .reverse()
           .find(
             (e) =>
-              e.date === moment().format("Y-MM-DD") && e.studentId === item.id
+              e.date === moment().format("YYYY-MM-DD") &&
+              e.studentId === item.id
           );
       })
       .filter((e) => e);
   };
 
+  const getLastAttedance = () => {
+    let dates = attendance.map((d) => moment(d.updatedOn));
+    let date = moment.max(dates);
+    return dates.length ? date.format("hh:mma") : "N/A";
+  };
+  const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
-    setLoding(true);
+    setLoading(true);
     if (typeof students === "object") {
       let ctr = 0;
       let attendanceAll = getStudentsAttendance();
-
       students.forEach((item, index) => {
         let attendanceObject = attendanceAll.find(
           (e) => item.id === e.studentId
         );
         let result = null;
         if (attendanceObject?.id) {
-          if (attendanceObject.attendance !== "Present") {
+          if (attendanceObject.attendance !== PRESENT) {
             result = attendanceServiceRegistry
               .update(
                 {
                   id: attendanceObject.id,
-                  attendance: "Present",
+                  attendance: PRESENT,
                 },
                 {
                   headers: {
@@ -226,8 +203,8 @@ export const MultipalAttendance = ({
           result = attendanceServiceRegistry.create(
             {
               studentId: item.id,
-              date: moment().format("Y-MM-DD"),
-              attendance: "Present",
+              date: moment().format("YYYY-MM-DD"),
+              attendance: PRESENT,
               attendanceNote: "Test",
               classId: item.currentClassID,
               subjectId: "History",
@@ -261,43 +238,80 @@ export const MultipalAttendance = ({
           ctr++;
           if (ctr === students.length) {
             setAllAttendanceStatus({});
-            setLoding(false);
+            setLoading(false);
             await getAttendance();
           }
         }, index * 900);
       });
+      if (groupExists(classObject)) {
+        const telemetryData = telemetryFactory.interact({
+          appName,
+          type: "Attendance-Mark-All-Present",
+          groupID: classObject.id,
+        });
+        capture("INTERACT", telemetryData);
+      }
     }
   };
 
-  console.log(presentStudents);
+  const modalClose = () => {
+    setShowModal(false);
+    setIsEditDisabled(true);
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Attendance-Summary-End",
+      groupID: classObject.id,
+      duration: seconds,
+    });
+    capture("END", telemetryData);
+    setSeconds(0);
+  };
+
+  const saveViewReportHandler = () => {
+    setShowModal(true);
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Attendance-Summary-Start",
+      groupID: classObject.id,
+    });
+    capture("START", telemetryData);
+  };
+
   return (
     <>
       {isWithEditButton || !isEditDisabled ? (
         <Stack
           position={"sticky"}
-          bottom={74}
+          bottom={75}
           width={"100%"}
           style={{ boxShadow: "rgb(0 0 0 / 22%) 0px -2px 10px" }}
         >
-          <Box p="2" py="5" bg="white">
-            <VStack space={"15px"} alignItems={"center"}>
-              <Text
-                textAlign={"center"}
-                fontSize="10px"
-                textTransform={"inherit"}
-              >
-                {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
-              </Text>
+          <Box p="5" bg="white">
+            <VStack space={"15px"}>
+              <VStack>
+                <Text
+                  fontSize="12px"
+                  fontWeight="700"
+                  textTransform={"inherit"}
+                >
+                  {t("LAST_UPDATED_AT") + " " + getLastAttedance()}
+                </Text>
+                <Text fontSize="12px" textTransform={"inherit"}>
+                  {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
+                </Text>
+              </VStack>
               {!isEditDisabled ? (
                 <Button.Group>
                   <Button
+                    flex={1}
                     variant="outline"
                     colorScheme="button"
-                    onPress={(e) => setShowModal(true)}
+                    onPress={saveViewReportHandler}
                   >
                     {t("SAVE_VIEW_REPORT")}
                   </Button>
                   <Button
+                    flex={1}
                     colorScheme="button"
                     onPress={markAllAttendance}
                     _text={{ color: "white" }}
@@ -318,13 +332,7 @@ export const MultipalAttendance = ({
               )}
             </VStack>
           </Box>
-          <Actionsheet
-            isOpen={showModal}
-            onClose={() => {
-              setShowModal(false);
-              setIsEditDisabled(true);
-            }}
-          >
+          <Actionsheet isOpen={showModal} onClose={() => modalClose()}>
             <Stack width={"100%"} height={Height} overflowY={"scroll"}>
               <Actionsheet.Content alignItems={"left"} bg="attendanceCard.500">
                 <HStack justifyContent={"space-between"}>
@@ -339,42 +347,28 @@ export const MultipalAttendance = ({
                   <IconByName
                     name="CloseCircleLineIcon"
                     color="white"
-                    onPress={(e) => {
-                      setShowModal(false);
-                      setIsEditDisabled(true);
-                    }}
+                    onPress={(e) => modalClose()}
                   />
                 </HStack>
               </Actionsheet.Content>
               <Stack width={"100%"} space="1" bg={"gray.200"}>
-                <Box bg="reportBoxBg.500" p="5" textAlign={"center"}>
-                  <VStack space={2}>
-                    <Text fontSize="14px" fontWeight="500">
-                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
-                    </Text>
-                    <Text fontSize="10px" fontWeight="300">
-                      {t("STUDENTS_ABSENT")}
-                    </Text>
-                    <Link
-                      style={{
-                        textDecoration: "none",
+                <Box bg="successAlert.500" px={5} py={10}>
+                  <VStack alignItems="center" space="2">
+                    <IconByName
+                      color="successAlertText.500"
+                      name="CheckboxCircleFillIcon"
+                      _icon={{
+                        size: "70",
                       }}
-                      href={
-                        "/attendance/sendSms/" +
-                        (classObject?.id?.startsWith("1-")
-                          ? classObject?.id?.replace("1-", "")
-                          : classObject?.id)
-                      }
+                      isDisabled
+                    />
+                    <Text
+                      color="successAlertText.500"
+                      fontWeight="600"
+                      fontSize="22px"
                     >
-                      <Button
-                        variant="outline"
-                        colorScheme="button"
-                        rounded="lg"
-                        flex="1"
-                      >
-                        {t("SEND_MESSAGE")}
-                      </Button>
-                    </Link>
+                      {t("ATTENDANCE_SUBMITTED")}
+                    </Text>
                   </VStack>
                 </Box>
                 <Box bg="white" p={5}>
@@ -398,14 +392,45 @@ export const MultipalAttendance = ({
                       students,
                       attendance: [
                         attendance.filter(
-                          (e) => e.date === moment().format("Y-MM-DD")
+                          (e) => e.date === moment().format("YYYY-MM-DD")
                         ),
                       ],
                     }}
                   />
                 </Box>
+                <Box bg="white" p="5" textAlign={"center"}>
+                  <VStack space={2}>
+                    <Text fontSize="14px" fontWeight="500">
+                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
+                    </Text>
+                    <Text fontSize="10px" fontWeight="300">
+                      {t("STUDENTS_ABSENT")}
+                    </Text>
+                    <Button
+                      colorScheme="button"
+                      _text={{ color: "white" }}
+                      rounded="lg"
+                      flex="1"
+                      onPress={(e) => {
+                        const telemetryData = telemetryFactory.interact({
+                          appName,
+                          type: "Attendance-Notification-View-Message",
+                        });
+                        capture("INTERACT", telemetryData);
+                        navigate(
+                          "/attendance/sendSms/" +
+                            (classObject?.id?.startsWith("1-")
+                              ? classObject?.id?.replace("1-", "")
+                              : classObject?.id)
+                        );
+                      }}
+                    >
+                      {t("VIEW_MESSAGE")}
+                    </Button>
+                  </VStack>
+                </Box>
                 <Box bg="white" p={5}>
-                  <Box bg={"gray.100"} rounded={"md"} p="4">
+                  <Box bg={"reportCard.100"} rounded={"md"} p="4">
                     <VStack space={5}>
                       <HStack
                         justifyContent={"space-between"}
@@ -423,11 +448,12 @@ export const MultipalAttendance = ({
                         {presentStudents.map((student, index) =>
                           index < 3 ? (
                             <Stack key={index}>
-                              <Suspense fallback="loding">
+                              <Suspense fallback="loading">
                                 <Card
                                   item={student}
                                   hidePopUpButton={true}
                                   type="veritical"
+                                  appName={appName}
                                 />
                               </Suspense>
                             </Stack>
@@ -436,13 +462,17 @@ export const MultipalAttendance = ({
                           )
                         )}
                       </HStack>
-                      <Button colorScheme="button" variant="outline">
-                        {(presentStudents?.length > 3
-                          ? "+ " + (presentStudents.length - 3)
-                          : "") +
-                          " " +
-                          t("MORE")}
-                      </Button>
+                      {presentStudents?.length ? (
+                        <Button colorScheme="button" variant="outline">
+                          {(presentStudents?.length > 3
+                            ? "+ " + (presentStudents.length - 3)
+                            : "") +
+                            " " +
+                            t("MORE")}
+                        </Button>
+                      ) : (
+                        ""
+                      )}
                     </VStack>
                   </Box>
                 </Box>
@@ -451,33 +481,23 @@ export const MultipalAttendance = ({
                     <Text textAlign={"center"} fontSize="10px">
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
                     </Text>
-                    <HStack alignItems={"center"} space={4}>
+                    <Button.Group width="100%">
                       <Button
+                        flex={1}
                         variant="outline"
                         colorScheme="button"
-                        onPress={(e) => {
-                          setShowModal(false);
-                          setIsEditDisabled(true);
-                        }}
+                        onPress={(e) => modalClose()}
                       >
                         {t("CLOSE")}
                       </Button>
-                      <Link
-                        style={{
-                          textDecoration: "none",
-                        }}
-                        href={
-                          "/classes/attendance/report/" +
-                          (classObject?.id?.startsWith("1-")
-                            ? classObject?.id?.replace("1-", "")
-                            : classObject?.id)
-                        }
+                      <Button
+                        flex={1}
+                        colorScheme="button"
+                        _text={{ color: "white" }}
                       >
-                        <Button colorScheme="button" _text={{ color: "white" }}>
-                          {t("SEE_FULL_REPORT")}
-                        </Button>
-                      </Link>
-                    </HStack>
+                        {t("SEE_FULL_REPORT")}
+                      </Button>
+                    </Button.Group>
                   </VStack>
                 </Box>
               </Stack>
@@ -502,6 +522,7 @@ export default function AttendanceComponent({
   _card,
   isEditDisabled,
   _weekBox,
+  appName,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -510,9 +531,8 @@ export default function AttendanceComponent({
   const [days, setDays] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [smsShowModal, setSmsShowModal] = useState(false);
-  const [loding, setLoding] = useState({});
+  const [loading, setLoading] = useState({});
   const status = manifest?.status ? manifest?.status : [];
-  const Card = React.lazy(() => import("students/Card"));
 
   useEffect(() => {
     if (typeof page === "object") {
@@ -524,13 +544,13 @@ export default function AttendanceComponent({
       if (attendanceProp) {
         setAttendance(attendanceProp);
       }
-      setLoding({});
+      setLoading({});
     }
     getData();
   }, [page, attendanceProp, type]);
 
   const markAttendance = async (dataObject) => {
-    setLoding({
+    setLoading({
       [dataObject.date + dataObject.id]: true,
     });
 
@@ -584,8 +604,9 @@ export default function AttendanceComponent({
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : ""}>
         {!_card?.isHideStudentCard ? (
-          <Suspense fallback="loding">
+          <Suspense fallback="loading">
             <Card
+              appName={appName}
               href={"/students/" + student.id}
               item={student}
               _arrow={{ _icon: { fontSize: "large" } }}
@@ -608,7 +629,7 @@ export default function AttendanceComponent({
                           setAttendanceObject,
                           setShowModal,
                           setSmsShowModal,
-                          loding,
+                          loading,
                           type,
                           _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
                         }}
@@ -636,7 +657,7 @@ export default function AttendanceComponent({
                   setAttendanceObject,
                   setShowModal,
                   setSmsShowModal,
-                  loding,
+                  loading,
                   type,
                   _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
                 }}
@@ -744,10 +765,80 @@ const CalendarComponent = ({
   setAttendanceObject,
   setShowModal,
   setSmsShowModal,
-  loding,
+  loading,
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
+
+  const handleAttendaceData = (attendance, day) => {
+    let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
+    let isFutureDay = day.format("YYYY-MM-DD") > moment().format("YYYY-MM-DD");
+    let isHoliday = day.day() === 0;
+    let dateValue = day.format("YYYY-MM-DD");
+    let smsDay = sms?.find(
+      (e) => e.date === day.format("YYYY-MM-DD") && e.studentId === student.id
+    );
+    let attendanceItem = attendance
+      .slice()
+      .reverse()
+      .find((e) => e.date === dateValue && e.studentId === student.id);
+    let attendanceIconProp = !isIconSizeSmall
+      ? {
+          _box: { py: 2, minW: "46px", alignItems: "center" },
+          status: "CheckboxBlankCircleLineIcon",
+        }
+      : {};
+    let attendanceType = PRESENT;
+    if (attendanceItem?.attendance && attendanceItem?.attendance === PRESENT) {
+      attendanceIconProp = {
+        ...attendanceIconProp,
+        status: attendanceItem?.attendance,
+      };
+    } else if (
+      attendanceItem?.attendance &&
+      attendanceItem?.attendance === ABSENT
+    ) {
+      attendanceIconProp = {
+        ...attendanceIconProp,
+        status: attendanceItem?.attendance,
+      };
+    } else if (
+      attendanceItem?.attendance &&
+      attendanceItem?.attendance === "Late"
+    ) {
+      attendanceIconProp = {
+        ...attendanceIconProp,
+        status: attendanceItem?.attendance,
+      };
+    } else if (day.day() === 0) {
+      attendanceIconProp = { ...attendanceIconProp, status: "Holiday" };
+    } else if (isToday) {
+      attendanceIconProp = { ...attendanceIconProp, status: "Today" };
+    } else if (moment().diff(day, "days") > 0) {
+      attendanceIconProp = { ...attendanceIconProp, status: UNMARKED };
+    }
+
+    if (manifest.status) {
+      const arr = manifest.status;
+      const i = arr.indexOf(attendanceItem?.attendance);
+      if (i === -1) {
+        attendanceType = arr[0];
+      } else {
+        attendanceType = arr[(i + 1) % arr.length];
+      }
+    }
+
+    return [
+      isToday,
+      isFutureDay,
+      isHoliday,
+      dateValue,
+      smsDay,
+      attendanceItem,
+      attendanceIconProp,
+    ];
+  };
+
   return monthDays.map((week, index) => (
     <HStack
       justifyContent="space-around"
@@ -761,65 +852,15 @@ const CalendarComponent = ({
       {..._weekBox}
     >
       {week.map((day, subIndex) => {
-        let smsDay = sms?.find(
-          (e) => e.date === day.format("Y-MM-DD") && e.studentId === student.id
-        );
-        let isToday = moment().format("Y-MM-DD") === day.format("Y-MM-DD");
-        let isFutureDay = day.format("Y-MM-DD") > moment().format("Y-MM-DD");
-        let isHoliday = day.day() === 0;
-        let dateValue = day.format("Y-MM-DD");
-        let attendanceItem = attendance
-          .slice()
-          .reverse()
-          .find((e) => e.date === dateValue && e.studentId === student.id);
-        let attendanceIconProp = !isIconSizeSmall
-          ? {
-              _box: { py: 2, minW: "46px", alignItems: "center" },
-              status: "CheckboxBlankCircleLineIcon",
-            }
-          : {};
-        let attendanceType = "Present";
-        if (
-          attendanceItem?.attendance &&
-          attendanceItem?.attendance === "Present"
-        ) {
-          attendanceIconProp = {
-            ...attendanceIconProp,
-            status: attendanceItem?.attendance,
-          };
-        } else if (
-          attendanceItem?.attendance &&
-          attendanceItem?.attendance === "Absent"
-        ) {
-          attendanceIconProp = {
-            ...attendanceIconProp,
-            status: attendanceItem?.attendance,
-          };
-        } else if (
-          attendanceItem?.attendance &&
-          attendanceItem?.attendance === "Late"
-        ) {
-          attendanceIconProp = {
-            ...attendanceIconProp,
-            status: attendanceItem?.attendance,
-          };
-        } else if (day.day() === 0) {
-          attendanceIconProp = { ...attendanceIconProp, status: "Holiday" };
-        } else if (isToday) {
-          attendanceIconProp = { ...attendanceIconProp, status: "Today" };
-        } else if (moment().diff(day, "days") > 0) {
-          attendanceIconProp = { ...attendanceIconProp, status: "Unmarked" };
-        }
-
-        if (manifest.status) {
-          const arr = manifest.status;
-          const i = arr.indexOf(attendanceItem?.attendance);
-          if (i === -1) {
-            attendanceType = arr[0];
-          } else {
-            attendanceType = arr[(i + 1) % arr.length];
-          }
-        }
+        const [
+          isToday,
+          isFutureDay,
+          isHoliday,
+          dateValue,
+          smsDay,
+          attendanceItem,
+          attendanceIconProp,
+        ] = handleAttendaceData(attendance, day);
 
         return (
           <VStack
@@ -911,7 +952,7 @@ const CalendarComponent = ({
               }}
             >
               <Box alignItems="center">
-                {loding[dateValue + student.id] ? (
+                {loading[dateValue + student.id] ? (
                   <GetIcon
                     {...attendanceIconProp}
                     status="Loader4LineIcon"

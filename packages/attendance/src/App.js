@@ -1,7 +1,6 @@
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React from "react";
 import "./App.css";
-import { extendTheme, NativeBaseProvider } from "native-base";
+import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import Attendance from "pages/Attendance";
 import Report from "pages/reports/Report";
@@ -11,13 +10,12 @@ import MessageHistory from "pages/sms/MessageHistory";
 import SendSMS from "pages/sms/SendSMS";
 import { navigationRoute } from "./services/routes";
 
-initializeI18n(
-  ["attendance"],
-  `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
-);
-
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
+  initializeI18n(
+    ["attendance"],
+    `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+  );
   const routes = [
     {
       path: navigationRoute.attendance,

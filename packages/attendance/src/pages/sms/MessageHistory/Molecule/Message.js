@@ -2,7 +2,13 @@ import React from "react";
 import moment from "moment";
 import { Box, Button, HStack, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { IconByName, H3, H4 } from "@shiksha/common-lib";
+import {
+  IconByName,
+  H3,
+  H4,
+  capture,
+  telemetryFactory,
+} from "@shiksha/common-lib";
 
 const Message = ({ item, isDisableRetry }) => {
   const { t } = useTranslation();
@@ -23,7 +29,20 @@ const Message = ({ item, isDisableRetry }) => {
             </H3>
           </HStack>
           {item.status !== "Send" && !isDisableRetry ? (
-            <Button variant="ghost" colorScheme="button" py="0">
+            <Button
+              variant="ghost"
+              colorScheme="button"
+              py="0"
+              onPress={(e) => {
+                const telemetryData = telemetryFactory.interact({
+                  appName,
+                  type: "Attendance-Notification-Message-Retried",
+                  sentCount: 10,
+                  failedCount: 5,
+                });
+                capture("INTERACT", telemetryData);
+              }}
+            >
               {t("RETRY")}
             </Button>
           ) : (

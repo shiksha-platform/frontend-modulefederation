@@ -20,10 +20,12 @@ import {
   getPercentageStudentsPresentAbsent,
   getStudentsPresentAbsent,
   getUniqAttendance,
+  capture,
+  telemetryFactory,
+  calendar,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
-  calendar,
   GetAttendance,
 } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
@@ -31,7 +33,7 @@ import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function ClassReportDetail({ footerLinks }) {
+export default function ClassReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId } = useParams();
@@ -48,6 +50,7 @@ export default function ClassReportDetail({ footerLinks }) {
   const [thisTitle, setThisTitle] = useState("");
   const [lastTitle, setLastTitle] = useState("");
   const Card = React.lazy(() => import("students/Card"));
+  const teacherId = localStorage.getItem("id");
 
   useEffect(() => {
     let ignore = false;
@@ -255,8 +258,9 @@ export default function ClassReportDetail({ footerLinks }) {
                           rounded="lg"
                           my="10px"
                         >
-                          <Suspense fallback="loding">
+                          <Suspense fallback="loading">
                             <Card
+                              appName={appName}
                               item={item}
                               href={"/students/" + item.id}
                               hidePopUpButton
@@ -348,8 +352,9 @@ export default function ClassReportDetail({ footerLinks }) {
                           rounded="lg"
                           my="10px"
                         >
-                          <Suspense fallback="loding">
+                          <Suspense fallback="loading">
                             <Card
+                              appName={appName}
                               item={item}
                               href={"/students/" + item.id}
                               hidePopUpButton
@@ -507,6 +512,13 @@ export default function ClassReportDetail({ footerLinks }) {
                     } else {
                       setCompare(item.value);
                       setShowModal(false);
+                      const telemetryData = telemetryFactory.interact({
+                        appName,
+                        type: "Attendance-Compare-Report",
+                        groupID: classId,
+                        typeOfComparison: item.name,
+                      });
+                      capture("INTERACT", telemetryData);
                     }
                   }}
                 >
