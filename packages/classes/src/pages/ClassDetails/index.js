@@ -61,7 +61,10 @@ const ClassDetails = ({ footerLinks }) => {
       _footer={footerLinks}
     >
       <Stack space={1} mb="2" shadow={2}>
-        <ClassAttendanceCard classId={classObject.id}></ClassAttendanceCard>
+        <ClassAttendanceCard
+          classId={classObject.id}
+          students={students}
+        ></ClassAttendanceCard>
         <ClassStudentsPanel
           classObject={classObject}
           students={students}

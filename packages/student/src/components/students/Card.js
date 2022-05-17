@@ -9,11 +9,9 @@ import {
   VStack,
   Link,
 } from "native-base";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import {
-  Collapsible,
   IconByName,
   Layout,
   Menu,
@@ -22,7 +20,12 @@ import {
   telemetryFactory,
 } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
+import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import StudentEdit from "./StudentEdit";
+import moment from "moment";
+
+const PRESENT = "Present";
+const STUDNET = "Student";
 
 const SubCard = ({
   item,
@@ -34,6 +37,24 @@ const SubCard = ({
   _textSubTitle,
 }) => {
   const { t } = useTranslation("student");
+  const [attendance, setAttendance] = React.useState([]);
+  const [workingDaysCount, setWorkingDaysCount] = React.useState();
+
+  React.useEffect(() => {
+    const getData = async () => {
+      let weekdays = calendar(-1, "week");
+      setWorkingDaysCount(weekdays.filter((e) => e.day())?.length);
+      let params = {
+        fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
+        toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
+        userId: item.id,
+      };
+      let attendanceData = await attendanceServiceRegistry.getAll(params);
+      setAttendance(attendanceData.filter((e) => e.attendance === PRESENT));
+    };
+    getData();
+  }, []);
+
   return type === "veritical" ? (
     <VStack alignItems={"center"}>
       {typeof img === "undefined" || img === true ? (
@@ -85,29 +106,45 @@ const SubCard = ({
         <></>
       )}
       <VStack>
-        <Text color="coolGray.800" bold {..._textTitle}>
-          {textTitle ? (
-            textTitle
-          ) : item?.fullName ? (
-            <>
-              {type !== "card" ? (
-                <HStack alignItems={"center"}>
-                  {item.admissionNo ? (
-                    item.admissionNo.toString().padStart(2, "0")
-                  ) : (
-                    <Text italic>{t("NOT_ENTERED")}</Text>
-                  )}
-                  <Text color={"coolGray.300"}>{" • "}</Text>
-                </HStack>
-              ) : (
-                <></>
-              )}
-              {item?.fullName}
-            </>
+        <HStack alignItems="center" space="2">
+          <Text color="coolGray.800" bold {..._textTitle}>
+            {textTitle ? (
+              textTitle
+            ) : item?.fullName ? (
+              <>
+                {type !== "card" ? (
+                  <HStack alignItems={"center"}>
+                    {item.admissionNo ? (
+                      item.admissionNo.toString().padStart(2, "0")
+                    ) : (
+                      <Text italic>{t("NOT_ENTERED")}</Text>
+                    )}
+                    <Text color={"coolGray.300"}>{" • "}</Text>
+                  </HStack>
+                ) : (
+                  <></>
+                )}
+                {item?.fullName}
+              </>
+            ) : (
+              <Text italic>{t("NOT_ENTERED")}</Text>
+            )}
+          </Text>
+          {attendance &&
+          workingDaysCount &&
+          attendance.length >= workingDaysCount ? (
+            <Box bg={"#FFC326"} rounded="full">
+              <IconByName
+                p="1px"
+                name="StarSFillIcon"
+                _icon={{ size: 16 }}
+                color="#E78D12"
+              />
+            </Box>
           ) : (
-            <Text italic>{t("NOT_ENTERED")}</Text>
+            ""
           )}
-        </Text>
+        </HStack>
         {type === "card" ? (
           <HStack alignItems={"center"}>
             {item?.className ? (

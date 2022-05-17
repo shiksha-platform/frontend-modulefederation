@@ -68,7 +68,12 @@ export default function Login() {
         if (resultTeacher) {
           let id = resultTeacher.id.replace("1-", "");
           localStorage.setItem("id", id);
-          localStorage.setItem("fullName", resultTeacher.fullName);
+          localStorage.setItem(
+            "fullName",
+            resultTeacher.fullName
+              ? resultTeacher.fullName
+              : `${resultTeacher.firstName} ${resultTeacher.lastName}`
+          );
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           //window.location.reload();

@@ -18,12 +18,12 @@ import {
   IconByName,
   Layout,
   Collapsible,
-  capture,
   telemetryFactory,
   H2,
   H3,
   H4,
   H5,
+  capture,
 } from "@shiksha/common-lib";
 
 export default function SendSMS({ footerLinks, appName }) {

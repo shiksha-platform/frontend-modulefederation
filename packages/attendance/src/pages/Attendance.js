@@ -86,7 +86,7 @@ export default function Attendance({ footerLinks, appName }) {
 
       setSms(
         studentData.map((e, index) => ({
-          type: index % 2 === 0 ? "Absent" : "Present",
+          type: index % 2 === 0 ? ABSENT : PRESENT,
           date: moment().add(-1, "days").format("Y-MM-DD"),
           studentId: e.id,
         }))

@@ -136,7 +136,6 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
                     questionObject={question}
-                    options={question?.options}
                   />
                 ))}
             </VStack>
