@@ -6,7 +6,7 @@ const interfaceData = {
   id: "studentId",
   fullName: "firstName",
   firstName: "firstName",
-  fathersName: "studentFathersName",
+  fathersName: "fatherFirstName",
   phoneNumber: "studentPhoneNumber",
   lastName: "lastName",
   aadhaar: "aadhaar",
@@ -26,7 +26,7 @@ const interfaceData = {
   socialCategory: "socialCategory",
   admissionNo: "admissionNo",
   currentClassID: "currentClassID",
-  email: "email",
+  email: "studentEmail",
   address: "address",
   gender: "gender",
   mergeParameterWithDefaultValue: {

@@ -9,8 +9,6 @@ export const getAllQuestions = async (filter) => {
           objectType: "Question",
           status: ["Live"],
           ...filter,
-          // qType: "MCQ",
-          // qType: "SA",
         },
       },
     }
@@ -37,9 +35,16 @@ const readQuestion = async (questionId) => {
     }
   );
   if (question.data) {
-    const { editorState, subject, topic, gradeLevel } =
+    const { editorState, subject, topic, gradeLevel, qType, identifier } =
       question.data.result.question;
-    return { ...editorState, subject, topic, class: gradeLevel };
+    return {
+      ...editorState,
+      subject,
+      topic,
+      class: gradeLevel,
+      qType,
+      questionId: identifier,
+    };
   } else {
     return [];
   }

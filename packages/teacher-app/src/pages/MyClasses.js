@@ -19,8 +19,7 @@ const MyClasses = ({ footerLinks }) => {
     <Layout
       _header={{
         title: t("MY_CLASSES"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
+        subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         avatar: true,
       }}

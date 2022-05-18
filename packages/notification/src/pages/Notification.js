@@ -65,8 +65,7 @@ const Notification = ({ footerLinks, appName }) => {
     <Layout
       _header={{
         title: t("MY_NOTIFICATIONS"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
+        subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         iconComponent: (
           <Button
@@ -324,7 +323,7 @@ const Notification = ({ footerLinks, appName }) => {
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
             <Box p="5">
-              <Checkbox colorScheme="button">{t("SELECT_ALL")}</Checkbox>
+              <Checkbox colorScheme="button">{t("Select All")}</Checkbox>
             </Box>
             {filterData &&
               filterData.map((value, index) => (

@@ -2,15 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Layout,
-  FilterButton,
   useWindowSize,
   Collapsible,
   IconByName,
 } from "@shiksha/common-lib";
-import { colourPalette } from "constants/colours";
-import QuestionHeading from "components/Heading";
 import QuestionBox from "components/QuestionBox";
-import { getAllQuestions } from "services";
 import {
   Actionsheet,
   Avatar,
@@ -24,6 +20,7 @@ import {
   Text,
   VStack,
 } from "native-base";
+import manifest from "../manifest.json";
 
 const questions = [
   {
@@ -77,7 +74,7 @@ const questionsThree = [
     question: `Q9. Convert 4kg, 9 hg, 7dag, 2g into grams.`,
   },
 ];
-export default function WorksheetQuestionBank({ footerLinks }) {
+export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
   const [showModule, setShowModule] = useState(false);
@@ -101,17 +98,14 @@ export default function WorksheetQuestionBank({ footerLinks }) {
     <Layout
       _header={{
         title: translationCheck("MY_CLASSES", "Question Bank"),
-        icon: "Group",
-        subHeading: "Test",
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         avatar: true,
       }}
       bg="white"
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={
         <HStack alignItems="center" justifyContent="space-between">
           <Text fontSize="16px" fontWeight={"600"}>
-            Chapter 1 : Learning Made Easy
+            {t("Chapter 1 : Learning Made Easy")}
           </Text>
           <IconByName
             name="InformationLineIcon"
@@ -120,7 +114,7 @@ export default function WorksheetQuestionBank({ footerLinks }) {
         </HStack>
       }
       _subHeader={{
-        bg: colourPalette.primary,
+        bg: "worksheetCard.500",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -129,7 +123,10 @@ export default function WorksheetQuestionBank({ footerLinks }) {
       }}
       _footer={footerLinks}
     >
-      <Collapsible header="Choose correct answer(s) from the given choices">
+      <Collapsible
+        header="Choose correct answer(s) from the given choices"
+        _header={{ py: 5 }}
+      >
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
@@ -138,15 +135,14 @@ export default function WorksheetQuestionBank({ footerLinks }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    question={question.question}
-                    options={question?.options}
+                    questionObject={question}
                   />
                 ))}
             </VStack>
           </Box>
         </ScrollView>
       </Collapsible>
-      <Collapsible header="FILL IN THE BLANKS">
+      <Collapsible header="Fill in the blanks" _header={{ py: 5 }}>
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
@@ -155,15 +151,14 @@ export default function WorksheetQuestionBank({ footerLinks }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    question={question.question}
-                    options={question?.options}
+                    questionObject={question}
                   />
                 ))}
             </VStack>
           </Box>
         </ScrollView>
       </Collapsible>
-      <Collapsible header="Answer the questions">
+      <Collapsible header="Answer the questions" _header={{ py: 5 }}>
         <ScrollView maxH={Height}>
           <Box bg="white" p="5">
             <VStack space="5">
@@ -172,8 +167,7 @@ export default function WorksheetQuestionBank({ footerLinks }) {
                   <QuestionBox
                     _box={{ py: "12px", px: "16px" }}
                     key={index}
-                    question={question.question}
-                    options={question?.options}
+                    questionObject={question}
                   />
                 ))}
             </VStack>

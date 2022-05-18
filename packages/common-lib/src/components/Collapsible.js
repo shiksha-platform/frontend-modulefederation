@@ -17,7 +17,8 @@ const Collapsible = ({
   onPressFuction,
   isDisableCollapse,
   collapsButton,
-  _icon
+  _icon,
+  _header
 }) => {
   const [isOpen, setIsOpen] = useState(defaultCollapse)
   return (
@@ -28,7 +29,11 @@ const Collapsible = ({
           if (onPressFuction) onPressFuction()
         }}
       >
-        <HStack alignItems={'center'} justifyContent={'space-between'}>
+        <HStack
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          {..._header}
+        >
           <Text
             bold={typeof isHeaderBold === 'undefined' ? true : isHeaderBold}
             fontSize={typeof isHeaderBold === 'undefined' ? 'md' : ''}

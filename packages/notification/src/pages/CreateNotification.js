@@ -22,22 +22,77 @@ import moment from "moment";
 import manifest from "../manifest.json";
 import { FormNotification } from "component/FormNotification";
 import RecipientList, { StudentList } from "component/RecipientList";
-
+import { useNavigate } from "react-router-dom";
+const newStudents = [
+  {
+    fullName: "Shah Rukh Khan",
+    admissionNo: "1",
+    fathersName: "Mr. Fathers Name",
+    days: "11",
+  },
+  {
+    fullName: "Salman Khan",
+    admissionNo: "7",
+    fathersName: "Mr. Fathers Name",
+    days: "11",
+  },
+  {
+    fullName: "Rahul Dravid",
+    admissionNo: "8",
+    fathersName: "Mr. Fathers Name",
+    days: "3",
+  },
+  {
+    fullName: "Shah Rukh Khan",
+    admissionNo: "9",
+    fathersName: "Mr. Fathers Name",
+    days: "11",
+  },
+  {
+    fullName: "Sandhya Shankar",
+    admissionNo: "3",
+    fathersName: "Mr. Fathers Name",
+    days: "11",
+  },
+  {
+    fullName: "Siddharth Kabra",
+    admissionNo: "6",
+    fathersName: "Mr. Fathers Name",
+    days: "3",
+  },
+];
 const CreateNotification = ({ footerLinks, appName }) => {
   const { t } = useTranslation();
   const [pageName, setPageName] = React.useState();
   const [students, setStudents] = React.useState([]);
   const [width, height] = useWindowSize();
-
-  const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     capture("PAGE");
+    setStudents(newStudents);
   }, []);
+
+  const handleBackButton = () => {
+    if (pageName === "Success") {
+      setPageName("StudentList");
+    } else if (pageName === "StudentList") {
+      setPageName("RecipientList");
+    } else if (pageName === "RecipientList") {
+      setPageName("");
+    } else {
+      navigate(0);
+    }
+  };
 
   if (pageName === "Success") {
     return (
-      <Layout _appBar={{ languages: manifest.languages }}>
+      <Layout
+        _appBar={{
+          languages: manifest.languages,
+          onPressBackButton: handleBackButton,
+        }}
+      >
         <Loading
           width={width}
           height={height - 60}
@@ -68,11 +123,13 @@ const CreateNotification = ({ footerLinks, appName }) => {
     <Layout
       _header={{
         title: t("MY_NOTIFICATIONS"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
+        subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{
+        languages: manifest.languages,
+        onPressBackButton: handleBackButton,
+      }}
       subHeader={t("ADD_NEW_NOTIFICATION")}
       _subHeader={{
         bg: "classCard.500",

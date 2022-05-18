@@ -6,7 +6,8 @@ import {
   Pressable,
   ScrollView,
   Stack,
-  Text
+  Text,
+  Tooltip
 } from 'native-base'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +17,8 @@ export default function FilterButton({
   filters = [],
   getObject,
   _box,
-  _button
+  _button,
+  _actionSheet
 }) {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
@@ -79,10 +81,17 @@ export default function FilterButton({
                     {..._button}
                   >
                     <Text color={isSelect > 0 ? 'white' : 'button.500'}>
-                      {value.name}{' '}
-                      {isSelect > 0 && groupValue?.[attributeName][0]
-                        ? groupValue?.[attributeName][0]
-                        : ''}
+                      {isSelect > 0 ? '' : value.name}
+                      {isSelect > 0 && groupValue?.[attributeName][0] ? (
+                        <Tooltip
+                          label={groupValue?.[attributeName].toString()}
+                          openDelay={50}
+                        >
+                          {groupValue?.[attributeName][0]}
+                        </Tooltip>
+                      ) : (
+                        ''
+                      )}
                     </Text>
                   </Button>
                 )
@@ -113,7 +122,11 @@ export default function FilterButton({
         )}
       </HStack>
       <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-        <Actionsheet.Content alignItems={'left'} bg='classCard.500'>
+        <Actionsheet.Content
+          alignItems={'left'}
+          bg='classCard.500'
+          {..._actionSheet}
+        >
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>
@@ -160,7 +173,7 @@ export default function FilterButton({
                     : 'CheckboxBlankLineIcon'
                 }
               />
-              <Text>{t('SELECT_ALL')}</Text>
+              <Text>{t('Select All')}</Text>
             </HStack>
           </Pressable>
           {filterData?.data &&

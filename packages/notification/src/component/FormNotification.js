@@ -145,7 +145,7 @@ export const FormNotification = ({ setPageName }) => {
             colorScheme="button"
             _text={{ color: "white" }}
             px="5"
-            onPress={(e) => setPageName("RecipientList")}
+            onPress={(e) => setPageName("Popup")}
           >
             {t("Review & Send Now")}
           </Button>

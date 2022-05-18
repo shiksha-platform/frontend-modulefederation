@@ -28,7 +28,6 @@ import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import { useNavigate } from "react-router-dom";
 const Card = React.lazy(() => import("students/Card"));
-
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
@@ -112,25 +111,20 @@ export const MultipalAttendance = ({
   const [presentStudents, setPresentStudents] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [width, Height] = useWindowSize();
-  const [seconds, setSeconds] = useState(0);
   const navigate = useNavigate();
+  const [startTime, setStartTime] = useState();
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   useEffect(() => {
-    let interval = null;
-    if (showModal) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds + 1);
-      }, 1000);
-    } else if (!showModal && seconds !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [showModal, seconds]);
+    if (showModal) setStartTime(moment());
+  }, [showModal]);
 
   useEffect(() => {
     const getPresentStudents = async ({ students }) => {
       let weekdays = calendar(-1, "week");
-      let workingDaysCount = weekdays.filter((e) => e.day())?.length;
+      let workingDaysCount = weekdays.filter(
+        (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+      )?.length;
       let params = {
         fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
         toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
@@ -141,7 +135,12 @@ export const MultipalAttendance = ({
         students,
         workingDaysCount
       );
-      setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
+      let presentNew = students.filter((e) =>
+        present.map((e) => e.id).includes(e.id)
+      );
+      setPresentStudents(
+        await studentServiceRegistry.setDefaultValue(presentNew)
+      );
     };
     getPresentStudents({ students });
   }, [students]);
@@ -261,10 +260,10 @@ export const MultipalAttendance = ({
       appName,
       type: "Attendance-Summary-End",
       groupID: classObject.id,
-      duration: seconds,
+      duration: moment().diff(startTime, "seconds"),
     });
     capture("END", telemetryData);
-    setSeconds(0);
+    setStartTime(moment());
   };
 
   const saveViewReportHandler = () => {
@@ -381,7 +380,6 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_SUMMARY")}
                     </Text>
                     <Text fontSize={"14px"}>
-                      {t("TODAY") + ": "}
                       <Text fontWeight={"600"}>
                         {moment().format("DD MMM, Y")}
                       </Text>
@@ -452,7 +450,7 @@ export const MultipalAttendance = ({
                                 <Card
                                   item={student}
                                   hidePopUpButton={true}
-                                  type="veritical"
+                                  type="vertical"
                                   appName={appName}
                                 />
                               </Suspense>
@@ -462,13 +460,9 @@ export const MultipalAttendance = ({
                           )
                         )}
                       </HStack>
-                      {presentStudents?.length ? (
+                      {presentStudents?.length > 3 ? (
                         <Button colorScheme="button" variant="outline">
-                          {(presentStudents?.length > 3
-                            ? "+ " + (presentStudents.length - 3)
-                            : "") +
-                            " " +
-                            t("MORE")}
+                          {t("MORE")}
                         </Button>
                       ) : (
                         ""
@@ -494,6 +488,15 @@ export const MultipalAttendance = ({
                         flex={1}
                         colorScheme="button"
                         _text={{ color: "white" }}
+                        onPress={(e) =>
+                          navigate(
+                            "/attendance/report/" +
+                              (classObject?.id?.startsWith("1-")
+                                ? classObject?.id?.replace("1-", "")
+                                : classObject?.id) +
+                              "/days"
+                          )
+                        }
                       >
                         {t("SEE_FULL_REPORT")}
                       </Button>
@@ -602,7 +605,7 @@ export default function AttendanceComponent({
   };
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
-      <VStack space={type !== "day" ? "15px" : ""}>
+      <VStack space={type !== "day" ? "15px" : "2"}>
         {!_card?.isHideStudentCard ? (
           <Suspense fallback="loading">
             <Card
@@ -769,11 +772,13 @@ const CalendarComponent = ({
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
     let isFutureDay = day.format("YYYY-MM-DD") > moment().format("YYYY-MM-DD");
-    let isHoliday = day.day() === 0;
+    let isHoliday =
+      day.day() === 0 || holidays.includes(day.format("YYYY-MM-DD"));
     let dateValue = day.format("YYYY-MM-DD");
     let smsDay = sms?.find(
       (e) => e.date === day.format("YYYY-MM-DD") && e.studentId === student.id
@@ -873,9 +878,7 @@ const CalendarComponent = ({
             p={type === "day" ? "1" : "0"}
             rounded="lg"
             opacity={
-              type !== "month" && day.day() !== 0
-                ? 1
-                : thisMonth && day.format("M") !== thisMonth
+              type !== "month" && thisMonth && day.format("M") !== thisMonth
                 ? 0
                 : isHoliday
                 ? 0.3
@@ -897,7 +900,7 @@ const CalendarComponent = ({
                 position="absolute"
                 right="0"
                 top="0"
-              ></Badge>
+              />
             ) : (
               ""
             )}
