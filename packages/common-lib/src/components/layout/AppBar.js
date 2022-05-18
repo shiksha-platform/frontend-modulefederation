@@ -10,7 +10,6 @@ import {
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import IconByName from '../IconByName'
-//Merge conflict
 
 export default function AppBar({
   isEnableHamburgerMenuButton,
@@ -52,8 +51,11 @@ export default function AppBar({
               name='ArrowLeftLineIcon'
               color={color ? color : ''}
               onPress={() => {
-                if (onPressBackButton) onPressBackButton()
-                navigate(-1)
+                if (onPressBackButton) {
+                  onPressBackButton()
+                } else {
+                  navigate(-1)
+                }
               }}
             />
           )}

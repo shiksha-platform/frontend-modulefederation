@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { IconByName, ProgressBar, calendar } from "@shiksha/common-lib";
 import moment from "moment";
-//Merge conflict
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
@@ -20,10 +19,25 @@ export default function Report({
   const [studentIds, setStudentIds] = React.useState([]);
   const [design, setDesign] = React.useState({});
   const [withoutHolidays, setWithoutHolidays] = React.useState([]);
+  const [genderList, setGenderList] = React.useState([]);
   const [isAvrage, setIsAvrage] = React.useState(false);
   const fullName = localStorage.getItem("fullName");
   const status = manifest?.status ? manifest?.status : [];
   const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+
+  const handleGenderList = () => {
+    let genderList = [];
+    genderList = [t("BOYS"), t("GIRLS")].filter((gender) => {
+      return (
+        (gender === t("BOYS") &&
+          students.filter((e) => e.gender === "Male").length) ||
+        (gender === t("GIRLS") &&
+          students.filter((e) => e.gender === "Female").length)
+      );
+    });
+
+    setGenderList([...genderList, t("TOTAL")]);
+  };
 
   React.useEffect(() => {
     let ignore = false;
@@ -31,6 +45,7 @@ export default function Report({
       if (!ignore) {
         let daysWithoutHolidays = [];
         setStudentIds(students.map((e) => e.id));
+        handleGenderList();
         if (typeof page === "object") {
           daysWithoutHolidays = page.map(
             (e) =>
@@ -184,7 +199,7 @@ export default function Report({
       <Box bg={"reportBoxBg.400"}>
         {attendance && attendance.length ? (
           <FlatList
-            data={[t("BOYS"), t("GIRLS"), t("TOTAL")]}
+            data={genderList}
             renderItem={({ item, index }) => (
               <VStack
                 p="5"

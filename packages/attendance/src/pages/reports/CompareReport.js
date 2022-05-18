@@ -140,8 +140,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
     <Layout
       _header={{
         title: t("MY_CLASSES"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
+        subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500 },
         iconComponent: (
           <Box rounded={"full"} px="5" py="2" bg="button.500">

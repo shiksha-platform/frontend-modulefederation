@@ -21,6 +21,7 @@ import {
   ProgressBar,
   calendar,
 } from "@shiksha/common-lib";
+import { useNavigate } from "react-router-dom";
 
 export default function AttendanceReport({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -34,6 +35,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
   const [showModal, setShowModal] = useState(false);
   const [weekDays, setWeekDays] = useState([]);
   const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
@@ -87,6 +89,17 @@ export default function AttendanceReport({ footerLinks, appName }) {
     getData();
   }, [weekPage, teacherId, token]);
 
+  const handleBackButton = () => {
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Self-Attendance-End-Report",
+      startEventId: localStorage.getItem("UUID"),
+      duration: 0,
+    });
+    capture("END", telemetryData);
+    navigate(0);
+  };
+
   return (
     <Layout
       _header={{
@@ -107,17 +120,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         </HStack>
       }
       _subHeader={{ bg: "classCard.500" }}
-      _appBar={{
-        onPressBackButton: (e) => {
-          const telemetryData = telemetryFactory.end({
-            appName,
-            type: "Self-Attendance-End-Report",
-            startEventId: localStorage.getItem("UUID"),
-            duration: 0,
-          });
-          capture("END", telemetryData);
-        },
-      }}
+      _appBar={{ onPressBackButton: handleBackButton }}
       _footer={footerLinks}
     >
       <VStack space="1">

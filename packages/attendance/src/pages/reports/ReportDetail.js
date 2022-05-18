@@ -19,7 +19,7 @@ import AttendanceComponent, {
 } from "../../components/AttendanceComponent";
 import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import {
   IconByName,
@@ -53,6 +53,7 @@ export default function ReportDetail({ footerLinks, appName }) {
   const Card = React.lazy(() => import("students/Card"));
   const teacherId = localStorage.getItem("id");
   const [attendanceStartTime, setAttendanceStartTime] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const telemetryData = telemetryFactory.start({
@@ -87,6 +88,7 @@ export default function ReportDetail({ footerLinks, appName }) {
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+      fun: "getAttendance",
     };
     const attendanceData = await GetAttendance(params);
     setAttendance(attendanceData);
@@ -101,6 +103,7 @@ export default function ReportDetail({ footerLinks, appName }) {
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+      fun: "getPresentStudents",
     };
     const attendanceData = await GetAttendance(params);
     const present = getStudentsPresentAbsent(
@@ -108,13 +111,20 @@ export default function ReportDetail({ footerLinks, appName }) {
       students,
       workingDaysCount
     );
-    setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
+    let presentNew = students.filter((e) =>
+      present.map((e) => e.id).includes(e.id)
+    );
+    setPresentStudents(
+      await studentServiceRegistry.setDefaultValue(presentNew)
+    );
   };
 
   const getAbsentStudents = async (students) => {
+    let weekdays = calendar(-1, calendarView);
     let params = {
-      fromDate: moment().add(-2, "days").format("Y-MM-DD"),
-      toDate: moment().format("Y-MM-DD"),
+      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
+      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+      fun: "getAbsentStudents",
     };
     const attendanceData = await GetAttendance(params);
     const absent = getStudentsPresentAbsent(
@@ -123,7 +133,10 @@ export default function ReportDetail({ footerLinks, appName }) {
       3,
       "Absent"
     );
-    setAbsentStudents(await studentServiceRegistry.setDefaultValue(absent));
+    let absentNew = students.filter((e) =>
+      absent.map((e) => e.id).includes(e.id)
+    );
+    setAbsentStudents(await studentServiceRegistry.setDefaultValue(absentNew));
   };
 
   const getAttendanceForReport = async (e) => {
@@ -131,31 +144,33 @@ export default function ReportDetail({ footerLinks, appName }) {
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+      fun: "getAttendanceForReport",
     };
     const attendanceData = await GetAttendance(params);
     setAttendanceForReport(attendanceData);
   };
 
+  const handleBackButton = () => {
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Attendance-Full-Report-End",
+      groupID: classId,
+      duration: attendanceStartTime
+        ? moment().diff(attendanceStartTime, "seconds")
+        : 0,
+    });
+    capture("END", telemetryData);
+    navigate(0);
+  };
+
   return (
     <Layout
       _appBar={{
-        onPressBackButton: (e) => {
-          const telemetryData = telemetryFactory.end({
-            appName,
-            type: "Attendance-Full-Report-End",
-            groupID: classId,
-            duration: attendanceStartTime
-              ? moment().diff(attendanceStartTime, "seconds")
-              : 0,
-          });
-          capture("END", telemetryData);
-        },
+        onPressBackButton: handleBackButton,
       }}
       _header={{
-        title: t("MY_CLASSES"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
-        _subHeading: { fontWeight: 500 },
+        title: t("REPORT_DETAILS"),
+        subHeading: classObject?.name,
         iconComponent: (
           <Link
             to={"/attendance/reportCompare/" + classId}

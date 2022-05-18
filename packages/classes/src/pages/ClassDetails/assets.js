@@ -1,81 +1,86 @@
 import { useTranslation } from "react-i18next";
 import { Collapsible, H2 } from "@shiksha/common-lib";
-import { Stack, Box, Center, VStack, Heading } from "native-base";
+import { Stack, Box, VStack, Heading, HStack } from "native-base";
 
 export const routes = () => {
   const { t } = useTranslation();
   return [
     {
       title: t("SCIENCE"),
-      component: (
-        <Box>
-          <Box
-            borderBottomWidth="1"
-            _dark={{
-              borderColor: "gray.600",
-            }}
-            borderColor="coolGray.200"
-            pr="1"
-            py="4"
-          >
-            <Stack space={2}>
-              <Collapsible header={t("ASSIGNMENTS")} />
-            </Stack>
-          </Box>
-          <Box
-            borderBottomWidth="1"
-            _dark={{
-              borderColor: "gray.600",
-            }}
-            borderColor="coolGray.200"
-            pr="1"
-            py="4"
-          >
-            <Stack space={2}>
-              <Collapsible header={t("LESSON_PLANS")} />
-            </Stack>
-          </Box>
-          <Box pr="1" py="4">
-            <Stack space={2}>
-              <Collapsible header={t("ASSESSMENTS")} />
-            </Stack>
-          </Box>
-        </Box>
-      ),
+      component: <SubjectRoute />,
     },
     {
       title: t("MATHS"),
-      component: (
-        <Center flex={1} p={4}>
-          This is Tab {t("MATHS")}
-        </Center>
-      ),
+      component: <SubjectRoute />,
     },
     {
       title: t("ENGLISH"),
-      component: (
-        <Center flex={1} p={4}>
-          This is Tab {t("ENGLISH")}
-        </Center>
-      ),
+      component: <SubjectRoute />,
     },
     {
       title: t("HISTORY"),
-      component: (
-        <Center flex={1} p={4}>
-          This is Tab {t("HISTORY")}
-        </Center>
-      ),
+      component: <SubjectRoute />,
     },
     {
       title: t("GEOGRAPHY"),
-      component: (
-        <Center flex={1} p={4}>
-          This is Tab {t("GEOGRAPHY")}
-        </Center>
-      ),
+      component: <SubjectRoute />,
     },
   ];
+};
+
+const SubjectRoute = () => {
+  const { t } = useTranslation();
+
+  return (
+    <Box>
+      <Box
+        borderBottomWidth="1"
+        _dark={{
+          borderColor: "gray.600",
+        }}
+        borderColor="coolGray.200"
+        pr="1"
+      >
+        <Stack space={2}>
+          <Collapsible
+            header={
+              <HStack alignItems="center" space="2">
+                {t("ASSIGNMENTS")}
+                <Box
+                  rounded="full"
+                  borderWidth="1"
+                  borderColor="button.500"
+                  px="6px"
+                  fontSize="10px"
+                  fontWeight="600"
+                  color="button.500"
+                >
+                  Coming Soon...
+                </Box>
+              </HStack>
+            }
+          />
+        </Stack>
+      </Box>
+      <Box
+        borderBottomWidth="1"
+        _dark={{
+          borderColor: "gray.600",
+        }}
+        borderColor="coolGray.200"
+        pr="1"
+      >
+        <Stack space={2}>
+          <Collapsible header={t("LESSON_PLANS")} />
+        </Stack>
+      </Box>
+      <Box pr="1">
+        <Stack space={2}>
+          <Collapsible header={t("ASSESSMENTS")} />
+        </Stack>
+      </Box>
+    </Box>
+  );
 };
 
 export const _header = (name) => {

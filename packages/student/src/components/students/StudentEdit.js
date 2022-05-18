@@ -24,7 +24,7 @@ export default function StudentEdit({
   type,
 }) {
   const { t } = useTranslation("student");
-  const [object, setObject] = useState(studentObject);
+  const [object, setObject] = useState({});
   const [editState, setEditState] = useState(false);
   const [editChangeState, setEditChangeState] = useState(false);
   const [errors, setErrors] = React.useState({});
@@ -151,6 +151,17 @@ export default function StudentEdit({
       setEditChangeState(false);
     }
   };
+
+  useEffect(() => {
+    let ignore = false;
+
+    const getData = async () => {
+      if (!ignore) {
+        setObject(studentObject);
+      }
+    };
+    getData();
+  }, [studentObject]);
 
   return (
     <Section

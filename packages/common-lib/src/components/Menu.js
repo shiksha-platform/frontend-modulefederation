@@ -49,7 +49,7 @@ export default function Menu({
     )
   }
 
-  if (type === 'veritical') {
+  if (type === 'vertical') {
     const newItems = chunk(items, 3)
     return (
       <Box bg={bg} {..._box}>

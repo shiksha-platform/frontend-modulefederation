@@ -26,6 +26,7 @@ export default function Report({ footerLinks }) {
   const [attendance, setAttendance] = useState({});
   const [calendarView, setCalendarView] = useState("days");
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
+  const titleName = t("ATTENDANCE_REPORTS");
 
   useEffect(() => {
     let ignore = false;
@@ -77,10 +78,15 @@ export default function Report({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: t("MY_CLASSES"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
-        _subHeading: { fontWeight: 500 },
+        title: (
+          <VStack>
+            {titleName.split(" ").map((item, subIndex) => (
+              <Text key={subIndex} bold fontSize="24px">
+                {item}
+              </Text>
+            ))}
+          </VStack>
+        ),
         iconComponent: (
           <Menu
             w="120"
@@ -135,7 +141,7 @@ export default function Report({ footerLinks }) {
       _subHeader={{ bg: "reportCard.500" }}
       _footer={footerLinks}
     >
-      <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg="white" mb="4" roundedBottom={"xl"} shadow={2}>
         {calsses.map((item, index) => (
           <Box
             key={index}

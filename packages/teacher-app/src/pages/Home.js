@@ -127,8 +127,7 @@ function Home({ footerLinks, appName }) {
       <Layout
         _header={{
           title: t("HOME"),
-          icon: "Group",
-          subHeading: moment().format("hh:mm a"),
+          subHeading: moment().format("hh:mm A"),
           _subHeading: { fontWeight: 500, textTransform: "uppercase" },
           iconComponent: (
             <Pressable onPress={(e) => setShowModal(true)}>

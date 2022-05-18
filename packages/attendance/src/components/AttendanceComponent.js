@@ -28,7 +28,6 @@ import ReportSummary from "./ReportSummary";
 import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import { useNavigate } from "react-router-dom";
 const Card = React.lazy(() => import("students/Card"));
-//Merge conflict
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
@@ -112,21 +111,13 @@ export const MultipalAttendance = ({
   const [presentStudents, setPresentStudents] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [width, Height] = useWindowSize();
-  const [seconds, setSeconds] = useState(0);
   const navigate = useNavigate();
+  const [startTime, setStartTime] = useState();
   const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   useEffect(() => {
-    let interval = null;
-    if (showModal) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds + 1);
-      }, 1000);
-    } else if (!showModal && seconds !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [showModal, seconds]);
+    if (showModal) setStartTime(moment());
+  }, [showModal]);
 
   useEffect(() => {
     const getPresentStudents = async ({ students }) => {
@@ -144,7 +135,12 @@ export const MultipalAttendance = ({
         students,
         workingDaysCount
       );
-      setPresentStudents(await studentServiceRegistry.setDefaultValue(present));
+      let presentNew = students.filter((e) =>
+        present.map((e) => e.id).includes(e.id)
+      );
+      setPresentStudents(
+        await studentServiceRegistry.setDefaultValue(presentNew)
+      );
     };
     getPresentStudents({ students });
   }, [students]);
@@ -264,10 +260,10 @@ export const MultipalAttendance = ({
       appName,
       type: "Attendance-Summary-End",
       groupID: classObject.id,
-      duration: seconds,
+      duration: moment().diff(startTime, "seconds"),
     });
     capture("END", telemetryData);
-    setSeconds(0);
+    setStartTime(moment());
   };
 
   const saveViewReportHandler = () => {
@@ -384,7 +380,6 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_SUMMARY")}
                     </Text>
                     <Text fontSize={"14px"}>
-                      {t("TODAY") + ": "}
                       <Text fontWeight={"600"}>
                         {moment().format("DD MMM, Y")}
                       </Text>
@@ -455,7 +450,7 @@ export const MultipalAttendance = ({
                                 <Card
                                   item={student}
                                   hidePopUpButton={true}
-                                  type="veritical"
+                                  type="vertical"
                                   appName={appName}
                                 />
                               </Suspense>
@@ -465,13 +460,9 @@ export const MultipalAttendance = ({
                           )
                         )}
                       </HStack>
-                      {presentStudents?.length ? (
+                      {presentStudents?.length > 3 ? (
                         <Button colorScheme="button" variant="outline">
-                          {(presentStudents?.length > 3
-                            ? "+ " + (presentStudents.length - 3)
-                            : "") +
-                            " " +
-                            t("MORE")}
+                          {t("MORE")}
                         </Button>
                       ) : (
                         ""
@@ -614,7 +605,7 @@ export default function AttendanceComponent({
   };
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
-      <VStack space={type !== "day" ? "15px" : ""}>
+      <VStack space={type !== "day" ? "15px" : "2"}>
         {!_card?.isHideStudentCard ? (
           <Suspense fallback="loading">
             <Card
@@ -909,7 +900,7 @@ const CalendarComponent = ({
                 position="absolute"
                 right="0"
                 top="0"
-              ></Badge>
+              />
             ) : (
               ""
             )}

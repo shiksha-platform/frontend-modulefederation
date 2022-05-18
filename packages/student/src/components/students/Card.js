@@ -13,9 +13,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   IconByName,
-  Layout,
-  Menu,
-  getStudentsPresentAbsent,
   capture,
   telemetryFactory,
   calendar,
@@ -24,7 +21,6 @@ import * as classServiceRegistry from "../../services/classServiceRegistry";
 import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import StudentEdit from "./StudentEdit";
 import moment from "moment";
-//Merge conflict
 
 const PRESENT = "Present";
 const STUDNET = "Student";
@@ -41,11 +37,16 @@ const SubCard = ({
   const { t } = useTranslation("student");
   const [attendance, setAttendance] = React.useState([]);
   const [workingDaysCount, setWorkingDaysCount] = React.useState();
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   React.useEffect(() => {
     const getData = async () => {
       let weekdays = calendar(-1, "week");
-      setWorkingDaysCount(weekdays.filter((e) => e.day())?.length);
+      setWorkingDaysCount(
+        weekdays.filter(
+          (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+        ).length
+      );
       let params = {
         fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
         toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
@@ -57,7 +58,7 @@ const SubCard = ({
     getData();
   }, []);
 
-  return type === "veritical" ? (
+  return type === "vertical" ? (
     <VStack alignItems={"center"}>
       {typeof img === "undefined" || img === true ? (
         <Avatar
@@ -224,10 +225,12 @@ export default function Card({
   const teacherId = localStorage.getItem("id");
 
   const handalOpenPoup = async (e) => {
-    let classObj = await classServiceRegistry.getOne({
-      id: e.currentClassID,
-    });
-    item.className = classObj.className;
+    if (e?.currentClassID) {
+      let classObj = await classServiceRegistry.getOne({
+        id: e.currentClassID,
+      });
+      item.className = classObj?.className;
+    }
     setOpen(true);
     const telemetryData = telemetryFactory.interact({
       appName,
