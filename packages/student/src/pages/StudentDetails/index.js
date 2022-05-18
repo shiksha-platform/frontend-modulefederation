@@ -20,6 +20,9 @@ import InfoSection from "./Molecules/InfoSection";
 import Section from "./Molecules/Section";
 import ButtonWrapper from "atoms/ButtonWrapper";
 
+const AttendanceComponent = React.lazy(() =>
+  import("attendance/AttendanceComponent")
+);
 // Start editing here, save and see your changes.
 export default function StudentDetails({ footerLinks, appName }) {
   const { t } = useTranslation("student");
@@ -31,24 +34,23 @@ export default function StudentDetails({ footerLinks, appName }) {
   const [attendanceView, setAttendanceView] = useState("month");
   const navigate = useNavigate();
 
-  const AttendanceComponent = React.lazy(() =>
-    import("attendance/AttendanceComponent")
-  );
-
   useEffect(() => {
     let ignore = false;
 
     const getData = async () => {
-      console.log("Abc", studentId);
-      let student = await studentServiceRegistry.getOne({ id: studentId });
-
-      let classObj = await classServiceRegistry.getOne({
-        id: student.currentClassID,
-      });
       if (!ignore) {
-        setStudentObject({ ...student, name: classObj.name });
-        setClassObject(classObj);
-        await getAttendance({ classId: student.currentClassID });
+        let student = await studentServiceRegistry.getOne({ id: studentId });
+        let newStudent = student;
+
+        if (student.currentClassID) {
+          let classObj = await classServiceRegistry.getOne({
+            id: student.currentClassID,
+          });
+          newStudent = { ...student, name: classObj.name };
+          setClassObject(classObj);
+        }
+        setStudentObject(newStudent);
+        await getAttendance({ studentId: student.id });
       }
     };
     getData();

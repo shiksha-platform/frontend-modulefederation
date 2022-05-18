@@ -69,7 +69,7 @@ export default function SendSMS({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("SEND_MESSAGE"),
+        title: t("Message Sent By Admin"),
         subHeading: classObject.name,
         _subHeading: { fontWeight: 500 },
       }}

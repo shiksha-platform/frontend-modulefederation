@@ -24,7 +24,7 @@ export default function StudentEdit({
   type,
 }) {
   const { t } = useTranslation("student");
-  const [object, setObject] = useState(studentObject);
+  const [object, setObject] = useState({});
   const [editState, setEditState] = useState(false);
   const [editChangeState, setEditChangeState] = useState(false);
   const [errors, setErrors] = React.useState({});
@@ -152,6 +152,17 @@ export default function StudentEdit({
     }
   };
 
+  useEffect(() => {
+    let ignore = false;
+
+    const getData = async () => {
+      if (!ignore) {
+        setObject(studentObject);
+      }
+    };
+    getData();
+  }, [studentObject]);
+
   return (
     <Section
       title={t("DETAILS")}
@@ -234,7 +245,7 @@ export default function StudentEdit({
                 </FormControl>
               ) : (
                 <>
-                  <H3 fontWeight="500" color={"coolGray.400"} pb={2}>
+                  <H3 fontWeight="500" color={"coolGray.400"} pb="2">
                     {item.placeholder}
                   </H3>
                   {item.value ? (

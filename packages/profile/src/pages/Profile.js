@@ -156,7 +156,7 @@ export default function Profile({ footerLinks, appName }) {
               onPress: (e) => handalSelfAttendance(),
             },
           ]}
-          type={"veritical"}
+          type={"vertical"}
         />
       }
       _subHeader={{

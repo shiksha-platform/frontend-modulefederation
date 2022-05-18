@@ -65,8 +65,7 @@ const Notification = ({ footerLinks, appName }) => {
     <Layout
       _header={{
         title: t("MY_NOTIFICATIONS"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
+        subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         iconComponent: (
           <Button

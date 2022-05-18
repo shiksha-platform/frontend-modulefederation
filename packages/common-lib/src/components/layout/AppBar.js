@@ -6,7 +6,7 @@ import {
   Pressable,
   Input,
   Menu,
-  Center
+  Stack
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import IconByName from '../IconByName'
@@ -51,8 +51,11 @@ export default function AppBar({
               name='ArrowLeftLineIcon'
               color={color ? color : ''}
               onPress={() => {
-                if (onPressBackButton) onPressBackButton()
-                navigate(-1)
+                if (onPressBackButton) {
+                  onPressBackButton()
+                } else {
+                  navigate(-1)
+                }
               }}
             />
           )}
@@ -75,9 +78,6 @@ export default function AppBar({
             />
           ) : (
             <React.Fragment />
-            // <Text fontSize="20" fontWeight="bold">
-            //   {props.title ?? manifest.name}
-            // </Text>
           )}
         </HStack>
         <HStack alignItems={'center'}>
@@ -93,12 +93,13 @@ export default function AppBar({
           )}
           <IconByName
             name='Notification2LineIcon'
-            onPress={(e) => navigate('/notification')}
             color={color ? color : ''}
+            onPress={(e) => navigate('/notification')}
           />
-          <Center flex={1} px='3'>
+          <Stack px='3'>
             <Menu
               w='190'
+              placement='bottom right'
               trigger={(triggerProps) => {
                 return (
                   <Pressable
@@ -129,7 +130,7 @@ export default function AppBar({
                 Logout
               </Menu.Item>
             </Menu>
-          </Center>
+          </Stack>
         </HStack>
       </HStack>
     </Box>

@@ -51,7 +51,7 @@ const ClassDetails = ({ footerLinks }) => {
               boxMinW: "200px",
             },
           ]}
-          type={"veritical"}
+          type={"vertical"}
         />
       }
       _subHeader={{
@@ -62,7 +62,7 @@ const ClassDetails = ({ footerLinks }) => {
     >
       <Stack space={1} mb="2" shadow={2}>
         <ClassAttendanceCard
-          classId={classObject.id}
+          classId={classId}
           students={students}
         ></ClassAttendanceCard>
         <ClassStudentsPanel

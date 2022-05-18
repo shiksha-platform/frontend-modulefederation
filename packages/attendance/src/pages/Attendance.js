@@ -30,6 +30,8 @@ import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
+const PRESENT = "Present";
+const ABSENT = "Absent";
 
 export default function Attendance({ footerLinks, appName }) {
   const { t } = useTranslation();

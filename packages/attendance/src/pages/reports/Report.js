@@ -26,6 +26,7 @@ export default function Report({ footerLinks }) {
   const [attendance, setAttendance] = useState({});
   const [calendarView, setCalendarView] = useState("days");
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
+  const titleName = t("ATTENDANCE_REPORTS");
 
   useEffect(() => {
     let ignore = false;
@@ -36,7 +37,10 @@ export default function Report({ footerLinks }) {
         type: "class",
         role: "teacher",
       });
-      if (!ignore) setClasses(responceClass);
+      if (!ignore) {
+        if (responceClass[0].id) getAttendance(responceClass[0].id);
+        setClasses(responceClass);
+      }
     };
     getData();
     return () => {
@@ -46,7 +50,10 @@ export default function Report({ footerLinks }) {
 
   useEffect(() => {
     let ignore = false;
-    if (!ignore) setMakeDefaultCollapse(makeDefaultCollapse);
+    if (!ignore) {
+      if (calsses[0]?.id) getAttendance(calsses[0].id);
+      setMakeDefaultCollapse(makeDefaultCollapse);
+    }
     return () => {
       ignore = true;
     };
@@ -71,13 +78,19 @@ export default function Report({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: t("MY_CLASSES"),
-        icon: "Group",
-        subHeading: moment().format("hh:mm a"),
-        _subHeading: { fontWeight: 500 },
+        title: (
+          <VStack>
+            {titleName.split(" ").map((item, subIndex) => (
+              <Text key={subIndex} bold fontSize="24px">
+                {item}
+              </Text>
+            ))}
+          </VStack>
+        ),
         iconComponent: (
           <Menu
             w="120"
+            placement="bottom right"
             trigger={(triggerProps) => {
               return (
                 <Pressable
@@ -128,7 +141,7 @@ export default function Report({ footerLinks }) {
       _subHeader={{ bg: "reportCard.500" }}
       _footer={footerLinks}
     >
-      <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg="white" mb="4" roundedBottom={"xl"} shadow={2}>
         {calsses.map((item, index) => (
           <Box
             key={index}
@@ -136,7 +149,7 @@ export default function Report({ footerLinks }) {
             borderBottomColor="coolGray.200"
           >
             <Collapsible
-              defaultCollapse={makeDefaultCollapse}
+              defaultCollapse={!index ? true : makeDefaultCollapse}
               onPressFuction={(e) => getAttendance(item.id)}
               header={
                 <VStack>

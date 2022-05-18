@@ -6,7 +6,7 @@ const interfaceData = {
   id: "studentId",
   fullName: "firstName",
   firstName: "firstName",
-  fathersName: "studentFathersName",
+  fathersName: "fatherFirstName",
   phoneNumber: "studentPhoneNumber",
   lastName: "lastName",
   aadhaar: "aadhaar",
@@ -26,7 +26,7 @@ const interfaceData = {
   socialCategory: "socialCategory",
   admissionNo: "admissionNo",
   currentClassID: "currentClassID",
-  email: "email",
+  email: "studentEmail",
   address: "address",
   gender: "gender",
   mergeParameterWithDefaultValue: {
@@ -48,27 +48,12 @@ export const getAll = async (params = {}, header = {}) => {
     }
   );
   if (result?.data?.data && result.data.data.length) {
-    let ids = result.data.data.map((e) => e.userId).map((e) => e);
-    if (ids.length > 0) {
-      const newResult = await post(
-        manifest.api_url + "/student/getbyids",
-        { ids: ids },
-        { headers }
-      );
-
-      return newResult.data.data.map((e) => mapInterfaceData(e, interfaceData));
-    }
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
   }
   return [];
 };
 
-export const getOne = async (filters = {}, header = {}) => {
-  let headers = {
-    Authorization: "Bearer " + localStorage.getItem("token"),
-    ContentType: "application/json",
-    Accept: "application/json",
-    ...header,
-  };
+export const getOne = async (filters = {}, headers = {}) => {
   const result = await get(manifest.api_url + "/student/" + filters.id, {
     headers,
   });

@@ -13,48 +13,8 @@ export default function RecipientList({
   const Card = React.lazy(() => import("students/Card"));
   const [checkStudents, setCheckStudents] = React.useState([]);
 
-  const newStudents = [
-    {
-      fullName: "Shah Rukh Khan",
-      admissionNo: "1",
-      fathersName: "Mr. Fathers Name",
-      days: "11",
-    },
-    {
-      fullName: "Salman Khan",
-      admissionNo: "7",
-      fathersName: "Mr. Fathers Name",
-      days: "11",
-    },
-    {
-      fullName: "Rahul Dravid",
-      admissionNo: "8",
-      fathersName: "Mr. Fathers Name",
-      days: "3",
-    },
-    {
-      fullName: "Shah Rukh Khan",
-      admissionNo: "9",
-      fathersName: "Mr. Fathers Name",
-      days: "11",
-    },
-    {
-      fullName: "Sandhya Shankar",
-      admissionNo: "3",
-      fathersName: "Mr. Fathers Name",
-      days: "11",
-    },
-    {
-      fullName: "Siddharth Kabra",
-      admissionNo: "6",
-      fathersName: "Mr. Fathers Name",
-      days: "3",
-    },
-  ];
-
   React.useEffect((e) => {
-    setStudents(newStudents);
-    setCheckStudents(newStudents.map((e) => e.admissionNo));
+    setCheckStudents(students.map((e) => e.admissionNo));
   }, []);
 
   return (
@@ -65,7 +25,7 @@ export default function RecipientList({
             {"Recipient List"}
           </Text>
         </Box>
-        {newStudents.map((item, index) => (
+        {students.map((item, index) => (
           <Box
             key={index}
             borderWidth="1"
@@ -129,7 +89,7 @@ export default function RecipientList({
               });
               capture("INTERACT", telemetryData);
               setStudents(
-                newStudents.filter((e) => checkStudents.includes(e.admissionNo))
+                students.filter((e) => checkStudents.includes(e.admissionNo))
               );
               setPageName("StudentList");
             }}

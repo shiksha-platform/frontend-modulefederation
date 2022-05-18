@@ -126,6 +126,7 @@
   "CHOOSE_ANOTHER_CLASS": "Choose another Class",
   "ACADEMIC": "Academic",
   "REPORT": "Report",
+  "REPORT_DETAILS": "Report Details",
   "MORNING": "Morning",
   "MID_DAY_MEAL": "Mid-day Meal",
   "HOLIDAYS": "Holidays",
@@ -185,6 +186,7 @@
   "INVIGILITION": "Invigilition",
   "TRAINING": "Training",
   "YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS_MONTH": "You have been present all days this month",
+  "YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS": "You have been present this",
   "THIS_MONTH": "This month",
   "LAST_MONTH": "Last month",
   "MY_CLASS_RESULT": "My Class Result",
@@ -235,7 +237,9 @@
   "ADD_STUDENTS": "Add Students",
   "SAVE_CHANGES": "Save Changes",
   "ABSENT_TODAY_POOR_THAN_LAST_WEEK": "absent today! Poor than last week",
+  "ABSENT_TODAY_POOR_THAN_LAST": "absent today! Poor than last",
   "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "Agerage than last month. Can be improved",
+  "AGERAGE_CAN_BE_IMPROVED": "Agerage. can be improved",
   "MY_TEACHING": "My Teaching",
   "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "Access and plan your teaching material"
 }
