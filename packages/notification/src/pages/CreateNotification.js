@@ -75,13 +75,13 @@ const CreateNotification = ({ footerLinks, appName }) => {
 
   const handleBackButton = () => {
     if (pageName === "Success") {
-      setPageName("StudentList");
+      setPageName("");
     } else if (pageName === "StudentList") {
       setPageName("RecipientList");
     } else if (pageName === "RecipientList") {
       setPageName("");
     } else {
-      navigate(0);
+      navigate(-1);
     }
   };
 

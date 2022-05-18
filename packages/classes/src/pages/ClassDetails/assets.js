@@ -51,9 +51,11 @@ const SubjectRoute = () => {
                   borderWidth="1"
                   borderColor="button.500"
                   px="6px"
-                  fontSize="10px"
-                  fontWeight="600"
-                  color="button.500"
+                  _text={{
+                    color: "button.500",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                  }}
                 >
                   Coming Soon...
                 </Box>
@@ -71,12 +73,50 @@ const SubjectRoute = () => {
         pr="1"
       >
         <Stack space={2}>
-          <Collapsible header={t("LESSON_PLANS")} />
+          <Collapsible
+            header={
+              <HStack alignItems="center" space="2">
+                {t("LESSON_PLANS")}
+                <Box
+                  rounded="full"
+                  borderWidth="1"
+                  borderColor="button.500"
+                  px="6px"
+                  _text={{
+                    color: "button.500",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Coming Soon...
+                </Box>
+              </HStack>
+            }
+          />
         </Stack>
       </Box>
       <Box pr="1">
         <Stack space={2}>
-          <Collapsible header={t("ASSESSMENTS")} />
+          <Collapsible
+            header={
+              <HStack alignItems="center" space="2">
+                {t("ASSESSMENTS")}
+                <Box
+                  rounded="full"
+                  borderWidth="1"
+                  borderColor="button.500"
+                  px="6px"
+                  _text={{
+                    color: "button.500",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Coming Soon...
+                </Box>
+              </HStack>
+            }
+          />
         </Stack>
       </Box>
     </Box>

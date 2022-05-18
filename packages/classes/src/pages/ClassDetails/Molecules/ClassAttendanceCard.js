@@ -26,6 +26,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
       let params = {
         fromDate: moment().format("YYYY-MM-DD"),
         toDate: moment().format("YYYY-MM-DD"),
+        // groupId: classId,
       };
       let attendanceData = await attendanceServiceRegistry.getAll(params);
       setPresentAttendance(

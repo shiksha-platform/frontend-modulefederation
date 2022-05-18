@@ -36,6 +36,22 @@ export const getAll = async (params = {}, header = {}) => {
   }
 };
 
+export const getAllData = async (params = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: "Bearer " + localStorage.getItem("token"),
+  };
+  const result = await post(`${manifest.api_url}/group/search`, params, {
+    headers,
+  });
+
+  if (result.data) {
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData));
+  } else {
+    return [];
+  }
+};
+
 export const getOne = async (filters = {}, header = {}) => {
   let headers = {
     ...header,

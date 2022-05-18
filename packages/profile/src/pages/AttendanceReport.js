@@ -97,7 +97,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
       duration: 0,
     });
     capture("END", telemetryData);
-    navigate(0);
+    navigate(-1);
   };
 
   return (

@@ -160,7 +160,7 @@ export default function ReportDetail({ footerLinks, appName }) {
         : 0,
     });
     capture("END", telemetryData);
-    navigate(0);
+    navigate(-1);
   };
 
   return (
@@ -440,7 +440,7 @@ export default function ReportDetail({ footerLinks, appName }) {
                         calendarView === "monthInDays"
                           ? "month"
                           : calendarView === "days"
-                          ? "day"
+                          ? "weeks"
                           : "weeks"
                       }
                       attendanceProp={attendance}

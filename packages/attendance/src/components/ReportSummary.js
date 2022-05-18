@@ -14,6 +14,7 @@ export default function Report({
   title,
   page,
   calendarView,
+  footer,
 }) {
   const { t } = useTranslation();
   const [studentIds, setStudentIds] = React.useState([]);
@@ -272,10 +273,14 @@ export default function Report({
         )}
       </Box>
       <Box roundedBottom={"xl"} p="5" bg={"reportBoxBg.500"}>
-        <HStack justifyContent={"space-between"}>
-          <Text>{t("ATTENDANCE_TAKEN_BY")}</Text>
-          <Text>{fullName ? fullName : ""}</Text>
-        </HStack>
+        {footer ? (
+          footer
+        ) : (
+          <HStack justifyContent={"space-between"}>
+            <Text>{t("ATTENDANCE_TAKEN_BY")}</Text>
+            <Text>{fullName ? fullName : ""}</Text>
+          </HStack>
+        )}
       </Box>
     </Box>
   );
