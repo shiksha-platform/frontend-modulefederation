@@ -36,6 +36,7 @@ export default function RecipientList({
           >
             <Suspense fallback="logding">
               <Card
+                attendanceProp={[]}
                 item={item}
                 type="rollFather"
                 textTitle={
@@ -101,7 +102,7 @@ export default function RecipientList({
             colorScheme="button"
             _text={{ color: "white" }}
             px="5"
-            onPress={(e) => setPageName("Popup")}
+            onPress={(e) => setPageName("FormNotification")}
           >
             {t("SAVE_CHANGES")}
           </Button>
@@ -171,6 +172,7 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
           >
             <Suspense fallback="logding">
               <Card
+                attendanceProp={[]}
                 item={item}
                 type="rollFather"
                 textTitle={
@@ -222,7 +224,7 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
             colorScheme="button"
             _text={{ color: "white" }}
             px="5"
-            onPress={(e) => setPageName("Popup")}
+            onPress={(e) => setPageName("FormNotification")}
           >
             {t("ADD_STUDENTS")}
           </Button>

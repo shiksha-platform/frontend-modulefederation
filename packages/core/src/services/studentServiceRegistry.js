@@ -24,7 +24,7 @@ const interfaceData = {
   religion: "religion",
   singleGirl: "singleGirl",
   socialCategory: "socialCategory",
-  admissionNo: "admissionNo",
+  admissionNo: "refId1",
   currentClassID: "currentClassID",
   email: "studentEmail",
   address: "address",

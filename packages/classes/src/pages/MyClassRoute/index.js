@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, HStack, VStack } from "native-base";
+import { Box, Button, HStack, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { generatePath } from "react-router-dom";
+import { generatePath, Navigate, useNavigate } from "react-router-dom";
 import { Widget } from "@shiksha/common-lib";
 import * as classServiceRegistry from "../../services/classServiceRegistry";
 import ChooseClassActionSheet from "./Molecules/ChooseClassActionSheet";
@@ -10,7 +10,7 @@ const MyClassRoute = () => {
   const { t } = useTranslation();
   const [classes, setClasses] = useState([]);
   const teacherId = localStorage.getItem("id");
-
+  const navigate = useNavigate();
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
@@ -49,28 +49,6 @@ const MyClassRoute = () => {
         />
         <HStack space={2} justifyContent={"center"}>
           <ChooseClassActionSheet />
-          {/*
-            <Link
-              to={"/classes/attendance/group"}
-              style={{
-                textDecoration: "none",
-                flex: "1",
-                textAlign: "center",
-              }}
-            >
-              <Box
-                rounded="lg"
-                borderColor="button.500"
-                borderWidth="1"
-                _text={{ color: "button.500" }}
-                px={4}
-                py={2}
-                style={{ textTransform: "uppercase" }}
-              >
-                {t("CHOOSE_ANOTHER_CLASS")}
-              </Box>
-            </Link>
-            */}
         </HStack>
       </VStack>
     </Box>
