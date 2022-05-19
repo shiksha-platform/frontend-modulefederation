@@ -29,10 +29,6 @@ const interfaceData = {
   email: "studentEmail",
   address: "address",
   gender: "gender",
-  mergeParameterWithDefaultValue: {
-    admissionNo: "1",
-    currentClassID: "dee531ae-9db0-4989-b6a1-da60080679df",
-  },
 };
 
 export const getAll = async (params = {}, header = {}) => {

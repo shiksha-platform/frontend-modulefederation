@@ -96,6 +96,7 @@
   "SEARCH": "Search",
   "CALENDAR": "School Calendar",
   "NOT_ENTERED": "not entered",
+  "ENTER": "Enter",
   "WHAT_ATTENDANCE_MARK": "what attendance do you want to mark for class/group",
   "CLASS_CHOOE_ATTENDANCE": "Please choose class / group to mark attendance",
   "SELECT_CLASS": "Select class / group",
@@ -242,5 +243,7 @@
   "AGERAGE_CAN_BE_IMPROVED": "Agerage. can be improved",
   "MY_TEACHING": "My Teaching",
   "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "Access and plan your teaching material",
-  "NAME": "Name"
+  "NAME": "Name",
+  "SIGN_IN": "Sign In",
+  "SIGN_UP": "Sign up"
 }
