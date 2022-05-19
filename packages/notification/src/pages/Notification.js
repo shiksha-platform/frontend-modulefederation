@@ -21,19 +21,19 @@ const notificationData = [
   {
     name: "Absent Today",
     text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mma"),
+    dateTime: moment().add("2", "minute").format("hh:mmA"),
     type: "Attendance",
   },
   {
     name: "Absent Today",
     text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mma"),
+    dateTime: moment().add("2", "minute").format("hh:mmA"),
     type: "Attendance",
   },
   {
     name: "Absent Today",
     text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mma"),
+    dateTime: moment().add("2", "minute").format("hh:mmA"),
     type: "Attendance",
   },
 ];

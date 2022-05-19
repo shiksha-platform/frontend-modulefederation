@@ -24,7 +24,13 @@ import {
   H4,
   H5,
   capture,
+  calendar,
+  getStudentsPresentAbsent,
 } from "@shiksha/common-lib";
+import moment from "moment";
+
+const PRESENT = "Present";
+const ABSENT = "Absent";
 
 export default function SendSMS({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -33,9 +39,12 @@ export default function SendSMS({ footerLinks, appName }) {
   const [classObject, setClassObject] = useState({});
   const teacherId = localStorage.getItem("id");
   const [students, setStudents] = useState([]);
-  const [attendance, setAttendance] = useState([]);
   const navigate = useNavigate();
   const Card = React.lazy(() => import("students/Card"));
+  const [presentStudents, setPresentStudents] = useState([]);
+  const [absentStudents, setAbsentStudents] = useState([]);
+  const [attendance, setAttendance] = useState([]);
+  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
 
   useEffect(() => {
     let ignore = false;
@@ -46,6 +55,8 @@ export default function SendSMS({ footerLinks, appName }) {
       const studentData = await studentServiceRegistry.getAll({ classId });
       setStudents(studentData);
       await getAttendance();
+      await getPresentStudents({ students: studentData });
+      await getAbsentStudents({ students: studentData });
     };
     getData();
     return () => {
@@ -54,16 +65,57 @@ export default function SendSMS({ footerLinks, appName }) {
   }, [classId]);
 
   const getAttendance = async (e) => {
-    const attendanceData = await GetAttendance({
-      classId: {
-        eq: classId,
-      },
-      teacherId: {
-        eq: teacherId,
-      },
-    });
-
+    let weekdays = calendar(datePage, "week");
+    let params = {
+      fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
+      toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
+      attendance: PRESENT,
+    };
+    const attendanceData = await GetAttendance(params);
     setAttendance(attendanceData);
+  };
+
+  const getPresentStudents = async ({ students }) => {
+    let weekdays = calendar(-1, "week");
+    let workingDaysCount = weekdays.filter(
+      (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+    )?.length;
+    let params = {
+      fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
+      toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
+    };
+    let attendanceData = await GetAttendance(params);
+    const present = getStudentsPresentAbsent(
+      attendanceData,
+      students,
+      workingDaysCount
+    );
+    let presentNew = students.filter((e) =>
+      present.map((e) => e.id).includes(e.id)
+    );
+    setPresentStudents(
+      await studentServiceRegistry.setDefaultValue(presentNew)
+    );
+  };
+
+  const getAbsentStudents = async (students) => {
+    let weekdays = calendar(-1, "week");
+    let params = {
+      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
+      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+      fun: "getAbsentStudents",
+    };
+    const attendanceData = await GetAttendance(params);
+    const absent = getStudentsPresentAbsent(
+      attendanceData,
+      students,
+      3,
+      "Absent"
+    );
+    let absentNew = students.filter((e) =>
+      absent.map((e) => e.id).includes(e.id)
+    );
+    setAbsentStudents(await studentServiceRegistry.setDefaultValue(absentNew));
   };
 
   return (
@@ -90,8 +142,7 @@ export default function SendSMS({ footerLinks, appName }) {
         <Box bg="white" p="5">
           <H2 fontWeight="600">{classObject.name}</H2>
           <H5 fontWeight="300">
-            {t("TOTAL")}: {students.length} {t("PRESENT")}:
-            {attendance.filter((e) => e.attendance === "Present").length}
+            {t("TOTAL")}: {students.length} {t("PRESENT")}:{attendance?.length}
           </H5>
         </Box>
         <Box bg="white" p={4}>
@@ -105,7 +156,7 @@ export default function SendSMS({ footerLinks, appName }) {
                     <H2 bold={true} fontSize={"md"}>
                       100% {t("THIS_WEEK")}
                     </H2>
-                    <H4>{students?.length + " " + t("STUDENTS")}</H4>
+                    <H4>{presentStudents?.length + " " + t("STUDENTS")}</H4>
                   </VStack>
                 </>
               }
@@ -113,7 +164,7 @@ export default function SendSMS({ footerLinks, appName }) {
               <VStack space={2} pt="2">
                 <Box>
                   <FlatList
-                    data={students}
+                    data={presentStudents}
                     renderItem={({ item }) => (
                       <Box
                         borderWidth="1"
@@ -139,7 +190,7 @@ export default function SendSMS({ footerLinks, appName }) {
                         />
                       </Box>
                     )}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item, index) => index}
                   />
                 </Box>
               </VStack>
@@ -156,7 +207,7 @@ export default function SendSMS({ footerLinks, appName }) {
                 <>
                   <VStack>
                     <H2 bold={true}>{t("ABSENT_CONSECUTIVE_3_DAYS")}</H2>
-                    <H4>{students?.length + " " + t("STUDENTS")}</H4>
+                    <H4>{absentStudents?.length + " " + t("STUDENTS")}</H4>
                   </VStack>
                 </>
               }
@@ -164,7 +215,7 @@ export default function SendSMS({ footerLinks, appName }) {
               <VStack space={2} pt="2">
                 <Box>
                   <FlatList
-                    data={students}
+                    data={absentStudents}
                     renderItem={({ item }) => (
                       <Box
                         borderWidth="1"
@@ -192,7 +243,7 @@ export default function SendSMS({ footerLinks, appName }) {
                         />
                       </Box>
                     )}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item, index) => index}
                   />
                 </Box>
               </VStack>

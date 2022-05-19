@@ -17,9 +17,11 @@ const ClassDetailsPanel = ({ students }) => {
                 <Text bold>{t("CLASS_TEACHER")}</Text>
                 <IconByName name="More2LineIcon" />
               </HStack>
-              <Text>{fullName}</Text>
+              <Text>
+                <Text bold>{t("NAME")}: </Text>
+                {fullName}
+              </Text>
             </VStack>
-            {t("STUDENT")}
           </Box>
           <Box bg={"gray.100"} rounded={"md"} p="4">
             <VStack space={2}>
@@ -68,24 +70,107 @@ const ClassDetailsPanel = ({ students }) => {
                 <Text bold>{t("DETAILS")}</Text>
                 <IconByName name="More2LineIcon" />
               </HStack>
-              <Text>
-                <Text bold>{t("MATHS")}: </Text>
-                {fullName}
-              </Text>
-              <Text>
-                <Text bold>{t("ENGLISH")}: </Text>
-                {fullName}
-              </Text>
-              <Text>
-                <Text bold>{t("SCIENCE")}: </Text>
-                {fullName}
-              </Text>
+              <HStack space="2" alignItems="center">
+                <Text>
+                  <Text bold>{t("MATHS")}: </Text>
+                  {fullName}
+                </Text>
+                <Box
+                  rounded="full"
+                  borderWidth="1"
+                  borderColor="button.500"
+                  px="6px"
+                  _text={{
+                    color: "button.500",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Coming Soon...
+                </Box>
+              </HStack>
+              <HStack space="2" alignItems="center">
+                <Text>
+                  <Text bold>{t("ENGLISH")}: </Text>
+                  {fullName}
+                </Text>
+                <Box
+                  rounded="full"
+                  borderWidth="1"
+                  borderColor="button.500"
+                  px="6px"
+                  _text={{
+                    color: "button.500",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Coming Soon...
+                </Box>
+              </HStack>
+              <HStack space="2" alignItems="center">
+                <Text>
+                  <Text bold>{t("SCIENCE")}: </Text>
+                  {fullName}
+                </Text>
+                <Box
+                  rounded="full"
+                  borderWidth="1"
+                  borderColor="button.500"
+                  px="6px"
+                  _text={{
+                    color: "button.500",
+                    fontSize: "10px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Coming Soon...
+                </Box>
+              </HStack>
             </VStack>
           </Box>
         </VStack>
       </Collapsible>
-      <Collapsible header={t("AWARDS_AND_RECOGNITION")} />
-      <Collapsible header={t("STUDENT_COMPETENCIES")} />
+      <Collapsible
+        header={
+          <HStack alignItems="center" space="2">
+            {t("AWARDS_AND_RECOGNITION")}
+            <Box
+              rounded="full"
+              borderWidth="1"
+              borderColor="button.500"
+              px="6px"
+              _text={{
+                color: "button.500",
+                fontSize: "10px",
+                fontWeight: "600",
+              }}
+            >
+              Coming Soon...
+            </Box>
+          </HStack>
+        }
+      />
+      <Collapsible
+        header={
+          <HStack alignItems="center" space="2">
+            {t("STUDENT_COMPETENCIES")}
+            <Box
+              rounded="full"
+              borderWidth="1"
+              borderColor="button.500"
+              px="6px"
+              _text={{
+                color: "button.500",
+                fontSize: "10px",
+                fontWeight: "600",
+              }}
+            >
+              Coming Soon...
+            </Box>
+          </HStack>
+        }
+      />
     </Collapsible>
   );
 };

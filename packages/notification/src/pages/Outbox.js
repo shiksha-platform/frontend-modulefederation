@@ -27,13 +27,13 @@ const notificationData = [
   {
     name: "Absent Today",
     text: "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal is absent in school on Wednesday, 12th of January 2022.",
-    dateTime: moment().add("2", "minute").format("hh:mma"),
+    dateTime: moment().add("2", "minute").format("hh:mmA"),
     type: "Attendance",
   },
   {
     name: "Absent Today",
     text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mma"),
+    dateTime: moment().add("2", "minute").format("hh:mmA"),
     type: "Attendance",
   },
 ];

@@ -114,6 +114,7 @@ export const MultipalAttendance = ({
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
   const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const fullName = localStorage.getItem("fullName");
 
   useEffect(() => {
     if (showModal) setStartTime(moment());
@@ -143,7 +144,7 @@ export const MultipalAttendance = ({
       );
     };
     getPresentStudents({ students });
-  }, [students]);
+  }, [students, attendance]);
 
   const getStudentsAttendance = (e) => {
     return students
@@ -161,9 +162,9 @@ export const MultipalAttendance = ({
   };
 
   const getLastAttedance = () => {
-    let dates = attendance.map((d) => moment(d.updatedOn));
+    let dates = attendance.map((d) => moment(d.updatedAt));
     let date = moment.max(dates);
-    return dates.length ? date.format("hh:mma") : "N/A";
+    return dates.length ? date.format("hh:mmA") : "N/A";
   };
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
@@ -393,6 +394,22 @@ export const MultipalAttendance = ({
                           (e) => e.date === moment().format("YYYY-MM-DD")
                         ),
                       ],
+                      footer: (
+                        <HStack justifyContent={"space-between"}>
+                          <Text fontSize="12px" fontWeight="500">
+                            {t("ATTENDANCE_TAKEN_BY")}
+                          </Text>
+                          <Text
+                            fontSize="12px"
+                            fontWeight="500"
+                            color="successAlertText.500"
+                          >
+                            {fullName ? fullName : ""}
+                            {" at "}
+                            {getLastAttedance()}
+                          </Text>
+                        </HStack>
+                      ),
                     }}
                   />
                 </Box>
@@ -448,6 +465,7 @@ export const MultipalAttendance = ({
                             <Stack key={index}>
                               <Suspense fallback="loading">
                                 <Card
+                                  attendanceProp={attendance ? attendance : []}
                                   item={student}
                                   hidePopUpButton={true}
                                   type="vertical"
@@ -460,6 +478,13 @@ export const MultipalAttendance = ({
                           )
                         )}
                       </HStack>
+                      {presentStudents?.length <= 0 ? (
+                        <Text fontWeight="500" fontSize="12px">
+                          No Student Has Achieved 100% Attendance This Week
+                        </Text>
+                      ) : (
+                        ""
+                      )}
                       {presentStudents?.length > 3 ? (
                         <Button colorScheme="button" variant="outline">
                           {t("MORE")}
@@ -603,12 +628,14 @@ export default function AttendanceComponent({
         });
     }
   };
+
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : "2"}>
         {!_card?.isHideStudentCard ? (
           <Suspense fallback="loading">
             <Card
+              attendanceProp={attendance ? attendance : []}
               appName={appName}
               href={"/students/" + student.id}
               item={student}

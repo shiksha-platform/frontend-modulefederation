@@ -31,6 +31,7 @@ const SubCard = ({
   img,
   textTitle,
   textSubTitle,
+  attendanceProp,
   _textTitle,
   _textSubTitle,
 }) => {
@@ -47,13 +48,17 @@ const SubCard = ({
           (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
         ).length
       );
-      let params = {
-        fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
-        toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
-        userId: item.id,
-      };
-      let attendanceData = await attendanceServiceRegistry.getAll(params);
-      setAttendance(attendanceData.filter((e) => e.attendance === PRESENT));
+      if (!attendanceProp) {
+        let params = {
+          fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
+          toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
+          userId: item.id,
+        };
+        let attendanceData = await attendanceServiceRegistry.getAll(params);
+        setAttendance(attendanceData.filter((e) => e.attendance === PRESENT));
+      } else {
+        setAttendance(attendanceProp.filter((e) => e.attendance === PRESENT));
+      }
     };
     getData();
   }, []);
@@ -214,6 +219,7 @@ export default function Card({
   hidePopUpButton,
   textTitle,
   textSubTitle,
+  attendanceProp,
   _textTitle,
   _textSubTitle,
   _arrow,
@@ -264,6 +270,7 @@ export default function Card({
             type,
             textTitle,
             textSubTitle,
+            attendanceProp,
             _textTitle,
             _textSubTitle,
           }}
@@ -291,6 +298,7 @@ export default function Card({
                       type: type ? type : "card",
                       textTitle,
                       textSubTitle,
+                      attendanceProp,
                       _textTitle,
                       _textSubTitle,
                     }}
