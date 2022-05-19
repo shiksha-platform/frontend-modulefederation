@@ -226,4 +226,3 @@ const CreateNotification = ({ footerLinks, appName }) => {
 };
 
 export default CreateNotification;
-
