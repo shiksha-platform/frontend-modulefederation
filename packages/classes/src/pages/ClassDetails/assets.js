@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Collapsible, H2 } from "@shiksha/common-lib";
+import { Collapsible, H2, IconByName } from "@shiksha/common-lib";
 import { Stack, Box, VStack, Heading, HStack } from "native-base";
 
 export const routes = () => {
@@ -136,15 +136,25 @@ export const _header = (name) => {
           p={5}
           width={"100%"}
         >
-          <VStack>
-            <H2 color="gray.100" fontWeight="700">
-              {name}
-            </H2>
+          <HStack alignItems="center" justifyContent="space-between">
+            <VStack>
+              <H2 color="gray.100" fontWeight="700">
+                {name}
+              </H2>
 
-            <Heading color="gray.100" fontWeight="700" fontSize="2xl">
-              {t("CLASS_DETAILS")}
-            </Heading>
-          </VStack>
+              <Heading color="gray.100" fontWeight="700" fontSize="2xl">
+                {t("CLASS_DETAILS")}
+              </Heading>
+            </VStack>
+            <HStack>
+              <IconByName
+                color="white"
+                name="CameraLineIcon"
+                onPress={(e) => console.log(e)}
+              />
+              <IconByName color="white" name="ShareLineIcon" />
+            </HStack>
+          </HStack>
         </Box>
       </Box>
     ),

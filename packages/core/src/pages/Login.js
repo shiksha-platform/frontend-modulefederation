@@ -10,18 +10,19 @@ import {
   Alert,
   IconButton,
   CloseIcon,
+  Center,
+  Stack,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import * as teacherServiceRegistry from "../services/teacherServiceRegistry";
 import manifest from "../manifest";
-import { Header } from "@shiksha/common-lib";
-import { fetchToken } from "@shiksha/common-lib";
-import { eventBus } from "@shiksha/common-lib";
+import { fetchToken, eventBus, useWindowSize } from "@shiksha/common-lib";
 
 export default function Login() {
   const [credentials, setCredentials] = useState();
   const [errors, setErrors] = React.useState({});
   const { t } = useTranslation();
+  const [width, Height] = useWindowSize();
 
   const validate = () => {
     let arr = {};
@@ -94,111 +95,162 @@ export default function Login() {
   };
 
   return (
-    <>
-      <Header
-        title={t("MY_SCHOOL_APP")}
-        icon="sign-in-alt"
-        heading={t("LOGIN")}
-        _box={{ backgroundColor: "lightBlue.100" }}
-        _icon={{ color: "black" }}
-        _heading={{ color: "black" }}
-        _subHeading={{ color: "black" }}
-      />
-      <Box backgroundColor="gray.100" m={3} p={3}>
-        <Text fontSize="lg" color="primary.500" bold={true}>
-          {t("LOGIN")}
-        </Text>
-        <VStack space={2}>
-          {"alert" in errors ? (
-            <Alert w="100%" status={"error"}>
-              <VStack space={2} flexShrink={1} w="100%">
-                <HStack flexShrink={1} space={2} justifyContent="space-between">
-                  <HStack space={2} flexShrink={1}>
-                    <Alert.Icon mt="1" />
-                    <Text fontSize="md" color="coolGray.800">
-                      {errors.alert}
-                    </Text>
-                  </HStack>
-                  <IconButton
+    <Box
+      style={{
+        background:
+          "linear-gradient(135deg, #e2f2fc -10%, #faf6f3 35%, #faf6f3 60%,#faf6f3 70%, #e2f2fc 110%)",
+      }}
+      minH={Height}
+      w={width}
+    >
+      <Center
+        _text={{
+          color: "white",
+          fontWeight: "bold",
+        }}
+        height={Height}
+        width={width}
+      >
+        <Center>
+          <VStack space="50px" w="300px">
+            <Box>
+              <Text fontSize="30px" fontWeight="400">
+                {t("SIGN_IN")}
+              </Text>
+              <Text fontSize="14px" fontWeight="400" textTransform="inherit">
+                Hello, welcome back to our your account !
+              </Text>
+            </Box>
+            <VStack space={2}>
+              {"alert" in errors ? (
+                <Alert w="100%" status={"error"}>
+                  <VStack space={2} flexShrink={1} w="100%">
+                    <HStack
+                      flexShrink={1}
+                      space={2}
+                      justifyContent="space-between"
+                    >
+                      <HStack space={2} flexShrink={1}>
+                        <Alert.Icon mt="1" />
+                        <Text fontSize="md" color="coolGray.800">
+                          {errors.alert}
+                        </Text>
+                      </HStack>
+                      <IconButton
+                        variant="unstyled"
+                        icon={<CloseIcon size="3" color="coolGray.600" />}
+                        onPress={(e) => setErrors({})}
+                      />
+                    </HStack>
+                  </VStack>
+                </Alert>
+              ) : (
+                <></>
+              )}
+              <VStack space="30px">
+                <FormControl isRequired isInvalid={"username" in errors}>
+                  <FormControl.Label
+                    _text={{ fontSize: "14px", fontWeight: "400" }}
+                    mb="10px"
+                  >
+                    {t("USERNAME")}
+                  </FormControl.Label>
+                  <Input
+                    rounded="lg"
+                    height="48px"
+                    bg="white"
                     variant="unstyled"
-                    icon={<CloseIcon size="3" color="coolGray.600" />}
-                    onPress={(e) => setErrors({})}
+                    p={"10px"}
+                    placeholder={t("ENTER") + " " + t("USERNAME")}
+                    onChange={(e) =>
+                      setCredentials({
+                        ...credentials,
+                        username: e.target.value,
+                      })
+                    }
                   />
+                  {"username" in errors ? (
+                    <FormControl.ErrorMessage
+                      _text={{
+                        fontSize: "xs",
+                        color: "error.500",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {errors.username}
+                    </FormControl.ErrorMessage>
+                  ) : (
+                    <></>
+                  )}
+                </FormControl>
+                <FormControl isRequired isInvalid={"password" in errors}>
+                  <FormControl.Label
+                    _text={{ fontSize: "14px", fontWeight: "400" }}
+                  >
+                    {t("PASSWORD")}
+                  </FormControl.Label>
+                  <Input
+                    rounded="lg"
+                    height="48px"
+                    bg="white"
+                    variant="unstyled"
+                    p={"10px"}
+                    placeholder={t("ENTER") + " " + t("PASSWORD")}
+                    type="password"
+                    onChange={(e) =>
+                      setCredentials({
+                        ...credentials,
+                        password: e.target.value,
+                      })
+                    }
+                  />
+                  {"password" in errors ? (
+                    <FormControl.ErrorMessage
+                      _text={{
+                        fontSize: "xs",
+                        color: "error.500",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {errors.password}
+                    </FormControl.ErrorMessage>
+                  ) : (
+                    <></>
+                  )}
+                </FormControl>
+                <Button
+                  colorScheme="button"
+                  p="3"
+                  _text={{ color: "white" }}
+                  onPress={handleLogin}
+                >
+                  {t("SUBMIT")}
+                </Button>
+                <Text
+                  color="button.500"
+                  fontSize="14px"
+                  fontWeight="400"
+                  textAlign="center"
+                >
+                  Forgot Password?
+                </Text>
+                <HStack alignItems="center" space="2">
+                  <Text
+                    fontSize="14px"
+                    fontWeight="400"
+                    textTransform="inherit"
+                  >
+                    Dont have an account?
+                  </Text>
+                  <Text color="button.500" fontSize="14px" fontWeight="400">
+                    {t("SIGN_UP")}
+                  </Text>
                 </HStack>
               </VStack>
-            </Alert>
-          ) : (
-            <></>
-          )}
-          <FormControl isRequired isInvalid={"username" in errors}>
-            <FormControl.Label _text={{ bold: true }}>
-              {t("USERNAME")}
-            </FormControl.Label>
-            <Input
-              variant="underlined"
-              p={2}
-              placeholder={t("USERNAME")}
-              onChange={(e) =>
-                setCredentials({
-                  ...credentials,
-                  username: e.target.value,
-                })
-              }
-            />
-            {"username" in errors ? (
-              <FormControl.ErrorMessage
-                _text={{
-                  fontSize: "xs",
-                  color: "error.500",
-                  fontWeight: 500,
-                }}
-              >
-                {errors.username}
-              </FormControl.ErrorMessage>
-            ) : (
-              <></>
-            )}
-          </FormControl>
-          <FormControl isRequired isInvalid={"password" in errors}>
-            <FormControl.Label _text={{ bold: true }}>
-              {t("PASSWORD")}
-            </FormControl.Label>
-            <Input
-              variant="underlined"
-              p={2}
-              placeholder={t("PASSWORD")}
-              type="password"
-              onChange={(e) =>
-                setCredentials({
-                  ...credentials,
-                  password: e.target.value,
-                })
-              }
-            />
-            {"password" in errors ? (
-              <FormControl.ErrorMessage
-                _text={{
-                  fontSize: "xs",
-                  color: "error.500",
-                  fontWeight: 500,
-                }}
-              >
-                {errors.password}
-              </FormControl.ErrorMessage>
-            ) : (
-              <></>
-            )}
-          </FormControl>
-          <Button
-            backgroundColor="lightBlue.900"
-            type="submit"
-            p={2}
-            onPress={handleLogin}
-          >
-            {t("SUBMIT")}
-          </Button>
-        </VStack>
-      </Box>
-    </>
+            </VStack>
+          </VStack>
+        </Center>
+      </Center>
+    </Box>
   );
 }
