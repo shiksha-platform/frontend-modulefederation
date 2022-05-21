@@ -57,7 +57,11 @@ const SubCard = ({
         let attendanceData = await attendanceServiceRegistry.getAll(params);
         setAttendance(attendanceData.filter((e) => e.attendance === PRESENT));
       } else {
-        setAttendance(attendanceProp.filter((e) => e.attendance === PRESENT));
+        setAttendance(
+          attendanceProp.filter(
+            (e) => e.attendance === PRESENT && item.id === e.studentId
+          )
+        );
       }
     };
     getData();
