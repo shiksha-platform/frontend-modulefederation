@@ -306,17 +306,18 @@ export const MultipalAttendance = ({
                     flex={1}
                     variant="outline"
                     colorScheme="button"
-                    onPress={saveViewReportHandler}
+                    onPress={markAllAttendance}
+                    _text={{ fontSize:'12px', fontWeight:'600' }}
                   >
-                    {t("SAVE_VIEW_REPORT")}
+                    {t("MARK_ALL_PRESENT")}
                   </Button>
                   <Button
                     flex={1}
                     colorScheme="button"
-                    onPress={markAllAttendance}
-                    _text={{ color: "white" }}
+                    onPress={saveViewReportHandler}
+                    _text={{ color: "white",fontSize:'12px', fontWeight:'600'}}
                   >
-                    {t("MARK_ALL_PRESENT")}
+                    {t("SUBMIT")}
                   </Button>
                 </Button.Group>
               ) : (
@@ -901,7 +902,7 @@ const CalendarComponent = ({
             key={subIndex}
             alignItems="center"
             borderWidth={isToday ? "1" : ""}
-            borderColor={isToday ? "button.500" : ""}
+            borderColor={isToday ? "#BCBCBC" : ""}
             p={type === "day" ? "1" : "0"}
             rounded="lg"
             opacity={
@@ -939,7 +940,7 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <Text pb="1" color={"attendanceCardText.400"}>
+                    <Text pb="1" fontSize='12px' fontFamily="Inter" color={"attendanceCardText.400"}>
                       {day.format("ddd")}
                     </Text>
                   ) : (

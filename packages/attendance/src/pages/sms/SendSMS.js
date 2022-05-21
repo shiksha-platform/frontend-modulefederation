@@ -138,6 +138,16 @@ export default function SendSMS({ footerLinks, appName }) {
       _subHeader={{ bg: "attendanceCard.500", mb: 1 }}
       _footer={footerLinks}
     >
+      <Box bg="white" p="5">
+      <HStack space="4" justifyContent="space-between" alignItems="center">
+          <DayWiesBar
+            activeColor="gray.900"
+            _box={{ p: 0, bg: "transparent" }}
+            {...{ page: datePage, setPage: setDatePage }}
+          />
+          <IconByName name={"ListUnorderedIcon"} isDisabled />
+        </HStack>
+      </Box>
       <VStack space="1">
         <Box bg="white" p="5">
           <H2 fontWeight="600">{classObject.name}</H2>

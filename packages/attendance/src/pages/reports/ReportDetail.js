@@ -178,8 +178,8 @@ export default function ReportDetail({ footerLinks, appName }) {
           >
             <Box
               rounded={"full"}
-              px="5"
-              py="2"
+              px="4"
+              py="1"
               borderColor="button.500"
               borderWidth={1}
             >
@@ -222,7 +222,7 @@ export default function ReportDetail({ footerLinks, appName }) {
               {...{ page, setPage }}
               view={calendarView}
             />
-            <IconByName name={"ListUnorderedIcon"} isDisabled />
+            <IconByName name={"ListUnorderedIcon"} isDisabled  />
           </HStack>
         </Box>
         <Box bg="white" p="5">

@@ -71,11 +71,33 @@ const DEFAULT_THEME = {
         rounded: 'lg'
       },
       defaultProps: {
-        colorScheme: 'button'
+        colorScheme: 'button',
+        _text:{textTransform: 'uppercase', fontSize:'12px', fontWeight:'600'},
+
       }
     }
   },
   colors: {
+    widgetColor: {
+      400: '#7F9DAC',
+      500: '#DDD8F3',
+      600: '#FFE2CC',
+      700: '#CCE7FF',
+      800: '#C4F2C5',
+      900: '#CDDAFD',
+      1000: '#FFC6FF'
+    },
+    selfAicon: {
+      500: '#545454'
+    },
+    iconColor: {
+      500: '#aba0db',
+      600: '#c3916c',
+      700: '#83b0d7',
+      800: '#5eb05f',
+      900: '#7c8dbc',
+      1000: '#ea5fff'
+    },
     studentCard: {
       500: '#B9FBC0'
     },
@@ -86,7 +108,8 @@ const DEFAULT_THEME = {
       500: '#0D921B'
     },
     classCard: {
-      500: '#D9F0FC'
+      500: '#D9F0FC',
+      900: '#7F9DAC'
     },
     attendanceCard: {
       500: '#C9AFF4'

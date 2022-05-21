@@ -51,6 +51,7 @@ export const getAll = async (params = {}, header = {}) => {
 };
 
 export const getOne = async (filters = {}, headers = {}) => {
+
   const result = await get(manifest.api_url + "/student/" + filters.id, {
     headers,
   });

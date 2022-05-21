@@ -24,7 +24,7 @@ export default function Layout({
           style={{
             backgroundImage: imageUrl
               ? 'url(' + imageUrl + ')'
-              : 'url(' + window.location.origin + '/headerBg.png)',
+              : 'url(' + window.location.origin + '/header.png)',
             backgroundColor: 'transparent',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover'
