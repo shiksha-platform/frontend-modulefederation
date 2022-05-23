@@ -50,7 +50,11 @@ export const getAll = async (params = {}, header = {}) => {
   return [];
 };
 
-export const getOne = async (filters = {}, headers = {}) => {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: "Bearer " + localStorage.getItem("token"),
+  };
   const result = await get(manifest.api_url + "/student/" + filters.id, {
     headers,
   });

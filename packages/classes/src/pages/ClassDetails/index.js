@@ -16,18 +16,23 @@ const ClassDetails = ({ footerLinks }) => {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
+  const [loading, setLoading] = useState(true);
   const { classId } = useParams();
 
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
       setStudents(await studentServiceRegistry.getAll({ classId }));
-
-      let classObj = await classServiceRegistry.getOne({ id: classId });
-      if (!ignore) setClassObject(classObj);
+      await getClass();
+      setLoading(false);
     };
     getData();
   }, [classId]);
+
+  const getClass = async () => {
+    let classObj = await classServiceRegistry.getOne({ id: classId });
+    setClassObject(classObj);
+  };
 
   React.useEffect(() => {
     capture("PAGE");
@@ -35,8 +40,16 @@ const ClassDetails = ({ footerLinks }) => {
 
   return (
     <Layout
-      imageUrl={`${window.location.origin}/class.png`}
-      _header={_header(classObject.name)}
+      imageUrl={
+        !loading
+          ? classObject.image && classObject.image !== ""
+            ? `${manifest.api_url}/files/${encodeURIComponent(
+                classObject.image
+              )}`
+            : `${window.location.origin}/class.png`
+          : ""
+      }
+      _header={_header({ name: classObject.name, classId, getClass })}
       _appBar={{ languages: manifest.languages }}
       subHeader={
         <Menu

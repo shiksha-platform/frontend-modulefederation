@@ -1,6 +1,8 @@
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Collapsible, H2, IconByName } from "@shiksha/common-lib";
-import { Stack, Box, VStack, Heading, HStack } from "native-base";
+import { Stack, Box, VStack, Heading, HStack, Input } from "native-base";
+import * as classServiceRegistry from "./../../services/classServiceRegistry";
 
 export const routes = () => {
   const { t } = useTranslation();
@@ -123,8 +125,19 @@ const SubjectRoute = () => {
   );
 };
 
-export const _header = (name) => {
+export const _header = (data) => {
   const { t } = useTranslation();
+  const onFileUpload = async (event) => {
+    const formData = new FormData();
+    const file = event.target.files[0];
+    formData.append("image", file, file.name);
+    formData.id = data?.classId;
+    await classServiceRegistry.updateImage(formData);
+    if (data?.getClass) {
+      data.getClass();
+    }
+  };
+
   return {
     title: t("MY_CLASSES"),
     customeComponent: (
@@ -139,19 +152,34 @@ export const _header = (name) => {
           <HStack alignItems="center" justifyContent="space-between">
             <VStack>
               <H2 color="gray.100" fontWeight="700">
-                {name}
+                {data?.name}
               </H2>
 
               <Heading color="gray.100" fontWeight="700" fontSize="2xl">
                 {t("CLASS_DETAILS")}
               </Heading>
             </VStack>
-            <HStack>
-              <IconByName
-                color="white"
-                name="CameraLineIcon"
-                onPress={(e) => console.log(e)}
-              />
+            <HStack alignItems="center">
+              <Stack>
+                <input
+                  type="file"
+                  style={{
+                    opacity: 0,
+                    width: "24px",
+                    position: "absolute",
+                    padding: "5px",
+                    zIndex: "10",
+                    top: "5px",
+                    left: "0",
+                  }}
+                  onChange={onFileUpload}
+                />
+                <IconByName
+                  color="white"
+                  name="CameraLineIcon"
+                  // onPress={onFileUpload}
+                />
+              </Stack>
               <IconByName color="white" name="ShareLineIcon" />
             </HStack>
           </HStack>
