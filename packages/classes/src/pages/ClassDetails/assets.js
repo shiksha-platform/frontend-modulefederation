@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Collapsible, H2, IconByName } from "@shiksha/common-lib";
-import { Stack, Box, VStack, Heading, HStack, Input } from "native-base";
+import { Stack, Box, VStack, Heading, HStack } from "native-base";
 import * as classServiceRegistry from "./../../services/classServiceRegistry";
 
 export const routes = () => {
