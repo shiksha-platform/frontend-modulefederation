@@ -162,17 +162,21 @@ export default function Attendance({ footerLinks, appName }) {
         iconComponent: (
           <Link
             to="/attendance/report"
-            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+            style={{ textDecoration: "none" }}
           >
             <Box
               rounded="full"
               borderColor="button.500"
               borderWidth="1"
               _text={{ color: "button.500" }}
-              px={6}
-              py={2}
+              px={5}
+              py={1}
+              bg="viewNotification.600"
             >
+              <HStack color='button.500' fontSize="14px" bottom="-5" justifyContent="space-between">
               {t("REPORT")}
+              <IconByName size="sm" mt='-8px' name="ArrowDownSLineIcon" />
+              </HStack>
             </Box>
           </Link>
         ),
@@ -181,16 +185,16 @@ export default function Attendance({ footerLinks, appName }) {
       subHeader={
         <Link
           to={`/students/class/${classId}`}
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+          style={{ color: "gray.500", textDecoration: "none" }}
         >
-          <HStack space="4" justifyContent="space-between">
+          <HStack p={1} space="4" justifyContent="space-between">
             <VStack>
-              <H1>{classObject?.title ? classObject?.title : ""}</H1>
-              <H3>
+              <H1 fontSize="16" fontWeight="600">{classObject?.title ? classObject?.title : ""}</H1>
+              <H3 fontSize="12" fontWeight="400">
                 {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
               </H3>
             </VStack>
-            <IconByName size="sm" name="ArrowRightSLineIcon" />
+            <IconByName size="sm" mt='8px' name="ArrowRightSLineIcon" />
           </HStack>
         </Link>
       }
@@ -198,7 +202,7 @@ export default function Attendance({ footerLinks, appName }) {
       _footer={footerLinks}
     >
       <Stack space={1}>
-        <Box bg="white" px="5" py="30">
+        <Box bg="white" px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <WeekWiesBar
               setPage={setWeekPage}
@@ -238,9 +242,13 @@ export default function Attendance({ footerLinks, appName }) {
                 <IconByName
                   name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
                   isDisabled
+                  _icon={{ width:"18", height:"18" }}
+                  w="18px"
+                  h="18px"
                 />
               }
-              _text={{ fontWeight: "400" }}
+              
+              _text={{ fontSize:'14px', fontWeight: "500", textTransform:'capitalize' }}
               onPress={(e) => {
                 newSetIsEditDisabled(!isEditDisabled);
               }}

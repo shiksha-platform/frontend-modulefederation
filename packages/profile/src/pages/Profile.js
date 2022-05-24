@@ -42,50 +42,51 @@ export default function Profile({ footerLinks, appName }) {
     let ignore = false;
 
     const getData = async () => {
-      const resultTeacher = await teacherRegistryService.getOne();
-      let thisMonthParams = {
-        fromDate: moment().startOf("month").format("YYYY-MM-DD"),
-        toDate: moment().format("YYYY-MM-DD"),
-        userId: localStorage.getItem("id"),
-      };
-      const thisDiffDays = moment(thisMonthParams.toDate).diff(
-        thisMonthParams.fromDate,
-        "Days"
-      );
-      const thisMonthAttendance = await attendanceRegistryService.getAll(
-        thisMonthParams
-      );
-
-      const thisMonthCount = thisMonthAttendance.filter(
-        (e) => e.attendance === "Present"
-      ).length;
-      const thisPersantage = (thisMonthCount * 100) / thisDiffDays;
-
-      let lastMonthDays = calendar(-1, "monthInDays");
-      let lastMonthParams = {
-        fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
-        toDate: lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
-        userId: localStorage.getItem("id"),
-      };
-      const lastDiffDays = moment(lastMonthParams.toDate).diff(
-        lastMonthParams.fromDate,
-        "Days"
-      );
-      const lastMonthAttendance = await attendanceRegistryService.getAll(
-        lastMonthParams
-      );
-
-      const lastMonthCount = lastMonthAttendance.filter(
-        (e) => e.attendance === "Present"
-      ).length;
-      const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
-
       if (!ignore) {
+        const resultTeacher = await teacherServiceRegistry.getOne();
+        setTeacherObject(resultTeacher);
+        let thisMonthParams = {
+          fromDate: moment().startOf("month").format("YYYY-MM-DD"),
+          toDate: moment().format("YYYY-MM-DD"),
+          userId: localStorage.getItem("id"),
+        };
+        const thisDiffDays = moment(thisMonthParams.toDate).diff(
+          thisMonthParams.fromDate,
+          "Days"
+        );
+        const thisMonthAttendance = await attendanceRegistryService.getAll(
+          thisMonthParams
+        );
+
+        const thisMonthCount = thisMonthAttendance.filter(
+          (e) => e.attendance === "Present"
+        ).length;
+        const thisPersantage = (thisMonthCount * 100) / thisDiffDays;
+
+        let lastMonthDays = calendar(-1, "monthInDays");
+        let lastMonthParams = {
+          fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
+          toDate:
+            lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
+          userId: localStorage.getItem("id"),
+        };
+        const lastDiffDays = moment(lastMonthParams.toDate).diff(
+          lastMonthParams.fromDate,
+          "Days"
+        );
+        const lastMonthAttendance = await attendanceRegistryService.getAll(
+          lastMonthParams
+        );
+
+        const lastMonthCount = lastMonthAttendance.filter(
+          (e) => e.attendance === "Present"
+        ).length;
+        const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
+
         setAttendance({
           thisMonth: thisPersantage,
           lastMonth: lastPersantage,
         });
-        setTeacherObject(resultTeacher);
       }
     };
     getData();
@@ -120,19 +121,20 @@ export default function Profile({ footerLinks, appName }) {
           <Box minH={"150px"}>
             <Box
               position={"absolute"}
-              style={{ backgroundColor: "rgba(24, 24, 27, 0.4)" }}
+              bg="attendanceCard.600"
               bottom={0}
               p={5}
+              pb={8}
               width={"100%"}
             >
               <HStack alignItems="center" justifyContent="space-between">
                 <VStack>
-                  <Text color="gray.100" fontWeight="700" fontSize="md">
+                  <Text color="gray.100" fontWeight="700" fontSize="14px">
                     {t("MY_PROFILE")}
                   </Text>
 
                   <Text color="gray.100" fontWeight="700" fontSize="2xl">
-                    {teacherObject.fullName}
+                    {teacherObject?.firstName + " " + teacherObject?.lastName}
                   </Text>
                 </VStack>
                 <HStack>
@@ -152,7 +154,8 @@ export default function Profile({ footerLinks, appName }) {
               keyId: 1,
               title: t("TAKE_ATTENDANCE"),
               icon: "CalendarCheckLineIcon",
-              boxMinW: "200px",
+              boxMinW: "177px",
+              _text: { minW: "115px" },
               onPress: (e) => handalSelfAttendance(),
             },
           ]}
@@ -172,14 +175,20 @@ export default function Profile({ footerLinks, appName }) {
           appName,
         }}
       />
-      <Stack space={2}>
+      <Stack space={1}>
         <Section title={t("ATTENDANCE")} />
         <Section>
           <Stack space={5}>
             <AttendanceSummaryCard {...attendance} />
-            <Button variant="outline" onPress={(e) => handalReportTelemetry()}>
-              {t("ATTENDANCE_REPORTS")}
-            </Button>
+            <Stack px="5">
+              <Button
+                flex="1"
+                variant="outline"
+                onPress={(e) => handalReportTelemetry()}
+              >
+                {t("ATTENDANCE_REPORTS")}
+              </Button>
+            </Stack>
           </Stack>
         </Section>
         <StudentEdit

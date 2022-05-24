@@ -40,7 +40,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
   }, []);
 
   return (
-    <Collapsible defaultCollapse={true} header={t("CLASS_ATTENDANCE")}>
+    <Collapsible defaultCollapse={true} header={t("CLASS_ATTENDANCE")} fontSize="2px">
       <VStack p="2" space={4}>
         <Box bg={"gray.100"} rounded={"md"} p="4">
           <VStack space={2}>

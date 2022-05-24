@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Box, HStack, Menu, Pressable, Text, VStack } from "native-base";
+import { Box, HStack, Menu, Pressable, Button, Text, VStack } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
@@ -14,7 +14,7 @@ import {
 } from "@shiksha/common-lib";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import manifest from "../../manifest.json";
 
 export default function Report({ footerLinks }) {
@@ -27,7 +27,8 @@ export default function Report({ footerLinks }) {
   const [calendarView, setCalendarView] = useState("days");
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
   const titleName = t("ATTENDANCE_REPORTS");
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     let ignore = false;
 
@@ -93,27 +94,26 @@ export default function Report({ footerLinks }) {
             placement="bottom right"
             trigger={(triggerProps) => {
               return (
-                <Pressable
-                  accessibilityLabel="More options menu"
+                  <Button 
                   {...triggerProps}
-                >
-                  <Box rounded={"full"} px="5" py="2" bg="button.500">
-                    <HStack space="2">
-                      <Text color="white" fontSize="14" fontWeight="500">
-                        {calendarView === "monthInDays"
+                  rounded='20'
+                  px={5}
+                  py="7px"
+                  _text={{color:'white', fontSize:'14px', lineHeight:'18px', fontWeight:'500', textTransform:'capitalize'}}
+                  rightIcon={<IconByName
+                    color="white"
+                    name="ArrowDownSLineIcon"
+                    isDisabled
+                    p="0"
+                  />}
+                  >
+                    
+                  {calendarView === "monthInDays"
                           ? t("MONTH_VIEW")
                           : calendarView === "week"
                           ? t("WEEK_VIEW")
                           : t("TODAY_VIEW")}
-                      </Text>
-                      <IconByName
-                        color="white"
-                        name="ArrowDownSLineIcon"
-                        isDisabled
-                      />
-                    </HStack>
-                  </Box>
-                </Pressable>
+                  </Button>
               );
             }}
           >
@@ -141,7 +141,7 @@ export default function Report({ footerLinks }) {
       _subHeader={{ bg: "reportCard.500" }}
       _footer={footerLinks}
     >
-      <Box bg="white" mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg="white" mb="4" roundedBottom={"xl"} shadow={2} >
         {calsses.map((item, index) => (
           <Box
             key={index}
@@ -180,33 +180,18 @@ export default function Report({ footerLinks }) {
                   </Text>
                   {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
                 </Text>
-                <Link
-                  style={{
-                    color: "rgb(63, 63, 70)",
-                    textDecoration: "none",
-                  }}
-                  to={
-                    "/attendance/report/" +
+                  <Button
+                    variant="outline"
+                    colorScheme={"button"}
+                    onPress={e => navigate("/attendance/report/" +
                     (item.id.startsWith("1-")
                       ? item.id.replace("1-", "")
                       : item.id) +
                     "/" +
-                    calendarView
-                  }
-                >
-                  <Box
-                    rounded="lg"
-                    borderWidth="1"
-                    px={6}
-                    py={2}
-                    mt="2"
-                    textAlign={"center"}
-                    borderColor={"button.500"}
-                    _text={{ color: "button.500" }}
+                    calendarView)}
                   >
                     {t("SEE_FULL_REPORT")}
-                  </Box>
-                </Link>
+                  </Button>
               </VStack>
             </Collapsible>
           </Box>

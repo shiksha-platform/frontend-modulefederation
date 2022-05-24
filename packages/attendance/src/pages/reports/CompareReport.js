@@ -473,16 +473,16 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           isOpen={showModal}
           _backdrop={{ opacity: "0.9", bg: "gray.500" }}
         >
-          <Actionsheet.Content p="0" alignItems={"left"} bg="reportCard.500">
+          <Actionsheet.Content p="0" alignItems={"left"} bg="#FFCAAC">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
-                <Text color={"white"} fontSize="16px" fontWeight={"600"}>
+                <Text color={"black"} fontSize="16px" fontWeight={"600"}>
                   {t("SELECT_CLASS_MARK_ATTENDANCE")}
                 </Text>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color="white"
+                color="#875234"
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>

@@ -192,7 +192,7 @@ const Display = ({
       <HStack justifyContent="space-between" alignItems="center" space={4}>
         <HStack space="4" alignItems="center">
           <IconByName
-            size="sm"
+            size="sm" 
             color={
               typeof previousDisabled === "undefined" ||
               previousDisabled === false
@@ -221,13 +221,13 @@ const Display = ({
         </HStack>
         <HStack space="2">
           <IconByName
-            size="sm"
+            size="sm" 
             color={
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
-                : "gray.400"
+                  : "coolGray.500"
+                : "gray.900"
             }
             name="ArrowRightSLineIcon"
             onPress={(e) => {

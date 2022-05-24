@@ -182,8 +182,7 @@ export default function StudentDetails({ footerLinks, appName }) {
             <ButtonWrapper
               variant="ghost"
               colorScheme="button"
-              endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
-              _text={{ fontWeight: "400" }}
+              _text={{ fontWeight: "600", fontSize:"14px", textTransform:'capitalize' }}
             >
               {t("EDIT")}
             </ButtonWrapper>
@@ -215,8 +214,7 @@ export default function StudentDetails({ footerLinks, appName }) {
             <ButtonWrapper
               variant="ghost"
               colorScheme="button"
-              endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
-              _text={{ fontWeight: "400" }}
+              _text={{ fontWeight: "600", fontSize:"14px", textTransform:'capitalize' }}
             >
               {t("EDIT")}
             </ButtonWrapper>
