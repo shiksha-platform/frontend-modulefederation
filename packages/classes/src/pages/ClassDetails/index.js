@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { capture, Layout, Menu } from "@shiksha/common-lib";
+import {
+  capture,
+  Layout,
+  Menu,
+  classRegistryService,
+  studentRegistryService,
+} from "@shiksha/common-lib";
 import { Stack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import manifest from "../../manifest.json";
 import ClassStudentsPanel from "./Molecules/ClassStudentsPanel";
 import ClassSubjectsPanel from "./Molecules/ClassSubjectsPanel";
@@ -22,7 +26,7 @@ const ClassDetails = ({ footerLinks }) => {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      setStudents(await studentServiceRegistry.getAll({ classId }));
+      setStudents(await studentRegistryService.getAll({ classId }));
       await getClass();
       setLoading(false);
     };
@@ -30,7 +34,7 @@ const ClassDetails = ({ footerLinks }) => {
   }, [classId]);
 
   const getClass = async () => {
-    let classObj = await classServiceRegistry.getOne({ id: classId });
+    let classObj = await classRegistryService.getOne({ id: classId });
     setClassObject(classObj);
   };
 

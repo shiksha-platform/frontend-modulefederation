@@ -9,10 +9,10 @@ import {
   Collapsible,
   capture,
   calendar,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
 import { Link } from "react-router-dom";
 import manifest from "../../manifest.json";
@@ -32,7 +32,7 @@ export default function Report({ footerLinks }) {
     let ignore = false;
 
     const getData = async () => {
-      let responceClass = await classServiceRegistry.getAll({
+      let responceClass = await classRegistryService.getAll({
         teacherId: teacherId,
         type: "class",
         role: "teacher",
@@ -71,7 +71,7 @@ export default function Report({ footerLinks }) {
     };
     const attendanceData = await GetAttendance(params);
     setAttendance({ ...attendance, [classId]: attendanceData });
-    const studentData = await studentServiceRegistry.getAll({ classId });
+    const studentData = await studentRegistryService.getAll({ classId });
     setStudents({ ...students, [classId]: studentData });
   };
 

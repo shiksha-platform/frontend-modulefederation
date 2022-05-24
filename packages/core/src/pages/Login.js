@@ -11,12 +11,15 @@ import {
   IconButton,
   CloseIcon,
   Center,
-  Stack,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import * as teacherServiceRegistry from "../services/teacherServiceRegistry";
 import manifest from "../manifest";
-import { fetchToken, eventBus, useWindowSize } from "@shiksha/common-lib";
+import {
+  fetchToken,
+  eventBus,
+  useWindowSize,
+  teacherRegistryService,
+} from "@shiksha/common-lib";
 
 export default function Login() {
   const [credentials, setCredentials] = useState();
@@ -61,7 +64,7 @@ export default function Login() {
         }
         */ if (result?.data) {
         let token = result.data.access_token;
-        const resultTeacher = await teacherServiceRegistry.getOne(
+        const resultTeacher = await teacherRegistryService.getOne(
           {},
           { Authorization: "Bearer " + token }
         );

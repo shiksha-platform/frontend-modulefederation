@@ -16,9 +16,9 @@ import {
   capture,
   telemetryFactory,
   calendar,
+  classRegistryService,
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
-import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
 import StudentEdit from "./StudentEdit";
 import moment from "moment";
 
@@ -54,7 +54,7 @@ const SubCard = ({
           toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
           userId: item.id,
         };
-        let attendanceData = await attendanceServiceRegistry.getAll(params);
+        let attendanceData = await attendanceRegistryService.getAll(params);
         setAttendance(attendanceData.filter((e) => e.attendance === PRESENT));
       } else {
         setAttendance(
@@ -236,7 +236,7 @@ export default function Card({
 
   const handalOpenPoup = async (e) => {
     if (e?.currentClassID) {
-      let classObj = await classServiceRegistry.getOne({
+      let classObj = await classRegistryService.getOne({
         id: e.currentClassID,
       });
       item.className = classObj?.className;

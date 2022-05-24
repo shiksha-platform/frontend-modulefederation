@@ -4,6 +4,7 @@ import {
   Loading,
   telemetryFactory,
   useWindowSize,
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import {
   Actionsheet,
@@ -11,7 +12,6 @@ import {
   Button,
   HStack,
   Image,
-  Link,
   Modal,
   Pressable,
   Stack,
@@ -23,7 +23,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Camera from "./Camera";
 import moment from "moment";
-import * as attendanceServiceRegistry from "../services/attendanceServiceRegistry";
 
 const newMarkList = [
   {
@@ -146,7 +145,7 @@ export default function SelfAttedanceSheet({
 
   const handleMarkAttendance = (newAttedance) => {
     if (newAttedance.id) {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .update(
           {
             ...newAttedance,
@@ -182,7 +181,7 @@ export default function SelfAttedanceSheet({
           setAttendance(newAttedance);
         });
     } else {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .create(newAttedance, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -201,7 +200,7 @@ export default function SelfAttedanceSheet({
     async function getData() {
       setMarkList(newMarkList);
       setSpecialDutyList(newSpecialDutyList);
-      const todayAttendanceResult = await attendanceServiceRegistry.getAll({
+      const todayAttendanceResult = await attendanceRegistryService.getAll({
         fromDate: moment().format("YYYY-MM-DD"),
         toDate: moment().format("YYYY-MM-DD"),
         userId: localStorage.getItem("id"),

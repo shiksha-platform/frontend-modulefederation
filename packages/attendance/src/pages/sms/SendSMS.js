@@ -10,8 +10,6 @@ import {
   Text,
   VStack,
 } from "native-base";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
 import {
@@ -26,6 +24,8 @@ import {
   capture,
   calendar,
   getStudentsPresentAbsent,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 
@@ -50,9 +50,9 @@ export default function SendSMS({ footerLinks, appName }) {
     let ignore = false;
 
     const getData = async () => {
-      let classObj = await classServiceRegistry.getOne({ id: classId });
+      let classObj = await classRegistryService.getOne({ id: classId });
       if (!ignore) setClassObject(classObj);
-      const studentData = await studentServiceRegistry.getAll({ classId });
+      const studentData = await studentRegistryService.getAll({ classId });
       setStudents(studentData);
       await getAttendance();
       await getPresentStudents({ students: studentData });
@@ -94,7 +94,7 @@ export default function SendSMS({ footerLinks, appName }) {
       present.map((e) => e.id).includes(e.id)
     );
     setPresentStudents(
-      await studentServiceRegistry.setDefaultValue(presentNew)
+      await studentRegistryService.setDefaultValue(presentNew)
     );
   };
 
@@ -115,7 +115,7 @@ export default function SendSMS({ footerLinks, appName }) {
     let absentNew = students.filter((e) =>
       absent.map((e) => e.id).includes(e.id)
     );
-    setAbsentStudents(await studentServiceRegistry.setDefaultValue(absentNew));
+    setAbsentStudents(await studentRegistryService.setDefaultValue(absentNew));
   };
 
   return (

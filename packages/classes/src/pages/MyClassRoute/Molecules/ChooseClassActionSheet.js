@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, useDisclose, Actionsheet, Link } from "native-base";
 import { useTranslation } from "react-i18next";
-import * as classServiceRegistry from "../../../services/classServiceRegistry";
+import { classRegistryService } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 
 const ChooseClassActionSheet = () => {
@@ -12,7 +12,7 @@ const ChooseClassActionSheet = () => {
     let ignore = false;
     async function getData() {
       setClasses(
-        await classServiceRegistry.getAllData({
+        await classRegistryService.getAllData({
           filters: { schoolId: { eq: 1 } },
         })
       );

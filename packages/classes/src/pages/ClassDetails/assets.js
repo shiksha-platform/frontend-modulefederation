@@ -1,8 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Collapsible, H2, IconByName } from "@shiksha/common-lib";
+import {
+  Collapsible,
+  H2,
+  IconByName,
+  classRegistryService,
+} from "@shiksha/common-lib";
 import { Stack, Box, VStack, Heading, HStack } from "native-base";
-import * as classServiceRegistry from "./../../services/classServiceRegistry";
 
 export const routes = () => {
   const { t } = useTranslation();
@@ -132,7 +136,7 @@ export const _header = (data) => {
     const file = event.target.files[0];
     formData.append("image", file, file.name);
     formData.id = data?.classId;
-    await classServiceRegistry.updateImage(formData);
+    await classRegistryService.updateImage(formData);
     if (data?.getClass) {
       data.getClass();
     }

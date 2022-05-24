@@ -6,27 +6,19 @@ import {
   calendar,
   H1,
   H3,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  Box,
-  FlatList,
-  HStack,
-  Stack,
-  Text,
-  VStack,
-  Button,
-} from "native-base";
+import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
 } from "components/AttendanceComponent";
-import * as studentServiceRegistry from "../services/studentServiceRegistry";
-import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
@@ -79,12 +71,12 @@ export default function Attendance({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     async function getData() {
-      const studentData = await studentServiceRegistry.getAll({ classId });
+      const studentData = await studentRegistryService.getAll({ classId });
 
       setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)
-        setClassObject(await classServiceRegistry.getOne({ id: classId }));
+        setClassObject(await classRegistryService.getOne({ id: classId }));
 
       setSms(
         studentData.map((e, index) => ({

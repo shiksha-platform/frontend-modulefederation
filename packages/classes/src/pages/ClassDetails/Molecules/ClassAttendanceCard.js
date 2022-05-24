@@ -1,5 +1,9 @@
 import React from "react";
-import { Collapsible, IconByName } from "@shiksha/common-lib";
+import {
+  Collapsible,
+  IconByName,
+  attendanceRegistryService,
+} from "@shiksha/common-lib";
 import {
   HStack,
   Text,
@@ -10,7 +14,6 @@ import {
   Button,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import * as attendanceServiceRegistry from "./../../../services/attendanceServiceRegistry";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +31,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
         toDate: moment().format("YYYY-MM-DD"),
         // groupId: classId,
       };
-      let attendanceData = await attendanceServiceRegistry.getAll(params);
+      let attendanceData = await attendanceRegistryService.getAll(params);
       setPresentAttendance(
         attendanceData.filter((e) => e.attendance === PRESENT)
       );

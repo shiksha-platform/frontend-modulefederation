@@ -9,8 +9,6 @@ import {
   Pressable,
   PresenceTransition,
 } from "native-base";
-import * as teacherServiceRegistry from "../services/teacherServiceRegistry";
-import * as attendanceServiceRegistry from "../services/attendanceServiceRegistry";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
@@ -21,6 +19,8 @@ import {
   Layout,
   Menu,
   telemetryFactory,
+  teacherRegistryService,
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "components/SelfAttedanceSheet";
@@ -42,7 +42,7 @@ export default function Profile({ footerLinks, appName }) {
     let ignore = false;
 
     const getData = async () => {
-      const resultTeacher = await teacherServiceRegistry.getOne();
+      const resultTeacher = await teacherRegistryService.getOne();
       let thisMonthParams = {
         fromDate: moment().startOf("month").format("YYYY-MM-DD"),
         toDate: moment().format("YYYY-MM-DD"),
@@ -52,7 +52,7 @@ export default function Profile({ footerLinks, appName }) {
         thisMonthParams.fromDate,
         "Days"
       );
-      const thisMonthAttendance = await attendanceServiceRegistry.getAll(
+      const thisMonthAttendance = await attendanceRegistryService.getAll(
         thisMonthParams
       );
 
@@ -71,7 +71,7 @@ export default function Profile({ footerLinks, appName }) {
         lastMonthParams.fromDate,
         "Days"
       );
-      const lastMonthAttendance = await attendanceServiceRegistry.getAll(
+      const lastMonthAttendance = await attendanceRegistryService.getAll(
         lastMonthParams
       );
 

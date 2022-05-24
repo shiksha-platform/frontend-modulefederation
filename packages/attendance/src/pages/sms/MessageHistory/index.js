@@ -19,8 +19,8 @@ import {
   H2,
   H4,
   calendar,
+  studentRegistryService,
 } from "@shiksha/common-lib";
-import * as studentServiceRegistry from "../../../services/studentServiceRegistry";
 import CalendarBar from "../../../components/CalendarBar";
 import manifest from "../../../manifest.json";
 import { sms } from "./assets";
@@ -52,7 +52,7 @@ export default function MessageHistory({ footerLinks }) {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      let student = await studentServiceRegistry.getOne({ id: studentId });
+      let student = await studentRegistryService.getOne({ id: studentId });
       if (!ignore) {
         setStudentObject(student);
         setSearchSms(sms(student));

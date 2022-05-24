@@ -9,9 +9,7 @@ import {
   Stack,
   Button,
   Badge,
-  Link,
 } from "native-base";
-import * as attendanceServiceRegistry from "../services/attendanceServiceRegistry";
 import manifest from "../manifest.json";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
@@ -23,9 +21,10 @@ import {
   capture,
   telemetryFactory,
   calendar,
+  attendanceRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
-import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import { useNavigate } from "react-router-dom";
 const Card = React.lazy(() => import("students/Card"));
 const PRESENT = "Present";
@@ -33,7 +32,7 @@ const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
 export const GetAttendance = async (params) => {
-  return await attendanceServiceRegistry.getAll(params);
+  return await attendanceRegistryService.getAll(params);
 };
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
@@ -140,7 +139,7 @@ export const MultipalAttendance = ({
         present.map((e) => e.id).includes(e.id)
       );
       setPresentStudents(
-        await studentServiceRegistry.setDefaultValue(presentNew)
+        await studentRegistryService.setDefaultValue(presentNew)
       );
     };
     getPresentStudents({ students });
@@ -179,7 +178,7 @@ export const MultipalAttendance = ({
         let result = null;
         if (attendanceObject?.id) {
           if (attendanceObject.attendance !== PRESENT) {
-            result = attendanceServiceRegistry
+            result = attendanceRegistryService
               .update(
                 {
                   id: attendanceObject.id,
@@ -200,7 +199,7 @@ export const MultipalAttendance = ({
             result = "alreadyPresent";
           }
         } else {
-          result = attendanceServiceRegistry.create(
+          result = attendanceRegistryService.create(
             {
               studentId: item.id,
               date: moment().format("YYYY-MM-DD"),
@@ -583,7 +582,7 @@ export default function AttendanceComponent({
     });
 
     if (dataObject.attendanceId) {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .update(
           {
             id: dataObject.attendanceId,
@@ -603,7 +602,7 @@ export default function AttendanceComponent({
           setShowModal(false);
         });
     } else {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .create(
           {
             studentId: student.id,
