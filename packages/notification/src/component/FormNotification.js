@@ -45,10 +45,13 @@ export const FormNotification = ({ setPageName }) => {
         <Button
           rounded="full"
           colorScheme="button"
-          _text={{ color: "white" }}
+          variant="outline"
+          _text={{ color: "black", textTransform:"capitalize" }}
           px="5"
+          py="1"
+          bg="viewNotification.600"
           rightIcon={
-            <IconByName color={"white"} name="ArrowDownSLineIcon" isDisabled />
+            <IconByName color={"button.500"} name="ArrowDownSLineIcon" isDisabled />
           }
           onPress={(e) => console.log("")}
         >
@@ -66,11 +69,14 @@ export const FormNotification = ({ setPageName }) => {
         </Text>
         <Button
           rounded="full"
+          variant="outline"
           colorScheme="button"
-          _text={{ color: "white" }}
+          _text={{ color: "black", textTransform:"capitalize" }}
           px="5"
+          py="1"
+          bg="viewNotification.600"
           rightIcon={
-            <IconByName color={"white"} name="ArrowDownSLineIcon" isDisabled />
+            <IconByName color={"button.500"} name="ArrowDownSLineIcon" isDisabled />
           }
           onPress={(e) => console.log("")}
         >
@@ -91,6 +97,7 @@ export const FormNotification = ({ setPageName }) => {
           colorScheme="button"
           variant="outline"
           px="5"
+          py="1"
           rightIcon={
             <IconByName
               color={"button.500"}

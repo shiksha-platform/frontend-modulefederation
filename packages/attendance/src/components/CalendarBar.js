@@ -24,7 +24,7 @@ const FormatDate = ({ date, type }) => {
   }
 };
 
-export default function DCalendarBar({ view, ...props }) {
+export default function CalendarBar({ view, ...props }) {
   let CalendarBar = <></>;
   switch (view) {
     case "month":

@@ -29,7 +29,7 @@ export default function RecipientList({
           <Box
             key={index}
             borderWidth="1"
-            borderColor="absentCardBg.600"
+            borderColor="button.500"
             bg="absentCardBg.500"
             p="10px"
             rounded="lg"
@@ -76,13 +76,14 @@ export default function RecipientList({
           </Box>
         ))}
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" pt="0" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
           <Button
             flex="1"
             colorScheme="button"
             variant="outline"
             px="5"
+            mr="5px"
             onPress={(e) => {
               const telemetryData = telemetryFactory.interact({
                 appName,
@@ -102,6 +103,7 @@ export default function RecipientList({
             colorScheme="button"
             _text={{ color: "white" }}
             px="5"
+            ml="5px"
             onPress={(e) => setPageName("FormNotification")}
           >
             {t("SAVE_CHANGES")}

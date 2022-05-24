@@ -87,6 +87,13 @@ const DEFAULT_THEME = {
       900: '#CDDAFD',
       1000: '#FFC6FF'
     },
+    viewNotification: {
+      500: '#FDDFD8',
+      600: '#feefeb'
+    },
+    calendarBtncolor: {
+      500: '#BCBCBC'
+    },
     selfAicon: {
       500: '#545454'
     },
@@ -112,7 +119,8 @@ const DEFAULT_THEME = {
       900: '#7F9DAC'
     },
     attendanceCard: {
-      500: '#C9AFF4'
+      500: '#C9AFF4',
+      600: '#18181b66'
     },
     attendanceCardText: {
       400: '#9C9EA0',

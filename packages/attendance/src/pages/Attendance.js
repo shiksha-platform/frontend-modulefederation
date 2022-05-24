@@ -170,7 +170,7 @@ export default function Attendance({ footerLinks, appName }) {
         iconComponent: (
           <Link
             to="/attendance/report"
-            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+            style={{ textDecoration: "none" }}
           >
             <Box
               rounded="full"
@@ -179,7 +179,7 @@ export default function Attendance({ footerLinks, appName }) {
               _text={{ color: "button.500" }}
               px={5}
               py={1}
-              bg="rgba(254, 239, 235, 1)"
+              bg="viewNotification.600"
             >
               <HStack color='button.500' fontSize="14px" bottom="-5" justifyContent="space-between">
               {t("REPORT")}
@@ -193,7 +193,7 @@ export default function Attendance({ footerLinks, appName }) {
       subHeader={
         <Link
           to={`/students/class/${classId}`}
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+          style={{ color: "gray.500", textDecoration: "none" }}
         >
           <HStack p={1} space="4" justifyContent="space-between">
             <VStack>

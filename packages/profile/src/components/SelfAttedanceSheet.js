@@ -475,7 +475,7 @@ export default function SelfAttedanceSheet({
               ml='5px'
               colorScheme={selfAttendance?.attendance ?  "button" : "coolGray"}
               isDisabled={selfAttendance?.attendance? false:true}
-              _text={{ textTransform: "uppercase", color:selfAttendance?.attendance? 'white' : 'coolGray.500' }}
+              _text={{ textTransform: "uppercase", color:selfAttendance?.attendance? 'white' :  ''}}
               onPress={(e) => {
                 setLocationModal(true);
                 setShowModal(false);

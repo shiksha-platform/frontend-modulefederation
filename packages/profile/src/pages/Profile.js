@@ -120,7 +120,7 @@ console.log(teacherObject)
           <Box minH={"150px"}>
             <Box
               position={"absolute"}
-              style={{ backgroundColor: "rgba(24, 24, 27, 0.4)" }}
+              bg="attendanceCard.600"
               bottom={0}
               p={5}
               pb={8}
