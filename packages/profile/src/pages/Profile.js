@@ -42,7 +42,9 @@ export default function Profile({ footerLinks, appName }) {
     let ignore = false;
 
     const getData = async () => {
-      const resultTeacher = await teacherServiceRegistry.getOne();
+      if (!ignore) {
+        const resultTeacher = await teacherServiceRegistry.getOne();
+        setTeacherObject(resultTeacher);
       let thisMonthParams = {
         fromDate: moment().startOf("month").format("YYYY-MM-DD"),
         toDate: moment().format("YYYY-MM-DD"),
@@ -80,12 +82,10 @@ export default function Profile({ footerLinks, appName }) {
       ).length;
       const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
 
-      if (!ignore) {
         setAttendance({
           thisMonth: thisPersantage,
           lastMonth: lastPersantage,
         });
-        setTeacherObject(resultTeacher);
       }
     };
     getData();
@@ -109,7 +109,7 @@ export default function Profile({ footerLinks, appName }) {
     capture("START", telemetryData);
     navigate("/profile/attendance");
   };
-
+console.log(teacherObject)
   return (
     <Layout
       imageUrl={`${window.location.origin}/class.png`}
@@ -120,19 +120,20 @@ export default function Profile({ footerLinks, appName }) {
           <Box minH={"150px"}>
             <Box
               position={"absolute"}
-              style={{ backgroundColor: "rgba(24, 24, 27, 0.4)" }}
+              bg="attendanceCard.600"
               bottom={0}
               p={5}
+              pb={8}
               width={"100%"}
             >
               <HStack alignItems="center" justifyContent="space-between">
                 <VStack>
-                  <Text color="gray.100" fontWeight="700" fontSize="md">
+                  <Text color="gray.100" fontWeight="700" fontSize="14px">
                     {t("MY_PROFILE")}
                   </Text>
 
                   <Text color="gray.100" fontWeight="700" fontSize="2xl">
-                    {teacherObject.fullName}
+                    {teacherObject?.firstName +" "+ teacherObject?.lastName}
                   </Text>
                 </VStack>
                 <HStack>
@@ -152,7 +153,8 @@ export default function Profile({ footerLinks, appName }) {
               keyId: 1,
               title: t("TAKE_ATTENDANCE"),
               icon: "CalendarCheckLineIcon",
-              boxMinW: "200px",
+              boxMinW: "177px",
+              _text:{minW:"115px"},
               onPress: (e) => handalSelfAttendance(),
             },
           ]}
@@ -172,14 +174,16 @@ export default function Profile({ footerLinks, appName }) {
           appName,
         }}
       />
-      <Stack space={2}>
+      <Stack space={1}>
         <Section title={t("ATTENDANCE")} />
         <Section>
           <Stack space={5}>
             <AttendanceSummaryCard {...attendance} />
-            <Button variant="outline" onPress={(e) => handalReportTelemetry()}>
+            <Stack px="5">
+            <Button flex="1" variant="outline" onPress={(e) => handalReportTelemetry()}>
               {t("ATTENDANCE_REPORTS")}
             </Button>
+            </Stack>
           </Stack>
         </Section>
         <StudentEdit

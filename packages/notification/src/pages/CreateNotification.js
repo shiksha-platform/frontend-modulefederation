@@ -135,8 +135,9 @@ const CreateNotification = ({ footerLinks, appName }) => {
         bg: "classCard.500",
         _text: {
           fontSize: "16px",
-          fontWeight: "600",
+          fontWeight: "500",
           textTransform: "inherit",
+          py:"7px"
         },
       }}
       _footer={footerLinks}
@@ -149,25 +150,27 @@ const CreateNotification = ({ footerLinks, appName }) => {
         <FormNotification {...{ setPageName, students, setStudents }} />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg="viewNotification.500">
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
+            <Stack p={5} pt={1} pb="2px">
               <Text fontSize="16px" fontWeight={"600"}>
                 {t("VIEW_NOTIFCATION")}
               </Text>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
+              color="classCard.900"
               onPress={(e) => setPageName()}
             />
           </HStack>
         </Actionsheet.Content>
         <Box bg="white" width={"100%"}>
-          <Box p="5" borderBottomWidth="1" borderColor="gray.200">
-            <HStack alignItems="center" space="1">
+        <Box px="5" >
+              <HStack py="5" borderBottomWidth="1" borderColor="gray.200" alignItems="center" space="1">
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
+                color="classCard.900"
                 isDisabled
               />
               <Text fontSize="14" fontWeight="500">
@@ -175,7 +178,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
               </Text>
             </HStack>
           </Box>
-          <VStack p="5" space={4} shadow="1">
+          <VStack p="5" space={6} >
             <Text fontSize="14" fontWeight="600">
               {t("NOTICE")}
             </Text>
@@ -191,6 +194,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
                 colorScheme="button"
                 variant="outline"
                 px="5"
+                mr="5px"
                 onPress={(e) => setPageName()}
               >
                 {t("Cancel")}
@@ -200,6 +204,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
                 colorScheme="button"
                 _text={{ color: "white" }}
                 px="5"
+                ml="5px"
                 onPress={(e) => {
                   const telemetryData = telemetryFactory.interact({
                     appName,

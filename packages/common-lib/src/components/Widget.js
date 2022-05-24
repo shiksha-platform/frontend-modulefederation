@@ -1,4 +1,4 @@
-import { Box, HStack, Pressable, Stack, Text, VStack } from 'native-base'
+import { Box, HStack, Pressable, Stack, Badge, Text, VStack } from 'native-base'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import IconByName from './IconByName'
@@ -60,6 +60,9 @@ function Widget({ data, title }) {
                 overflow={'hidden'}
                 {...item?._box}
               >
+                 {item?.label
+                   ? <Badge colorScheme="button" variant='solid' rounded='sm' alignSelf="flex-end" position='absolute' top='9px' right='10px' {...(item._label ? item._label : {})}>{item.label}</Badge> : ''
+                  }
                 <PressableNew route={item.link}>
                   <Text
                     {...{

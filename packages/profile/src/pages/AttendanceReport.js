@@ -114,7 +114,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
               activeColor="gray.900"
               setPage={setWeekPage}
               page={weekPage}
-              _box={{ p: 0, bg: "transparent" }}
+              _box={{ p: 2, bg: "transparent" }}
             />
           </Suspense>
         </HStack>
@@ -127,7 +127,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <Box bg="white" p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Text fontSize="16" fontWeight="600">
-              {teacherObject.fullName}
+            {t("MY_ATTENDANCE")}
             </Text>
             <Stack>
               <Button
@@ -165,11 +165,11 @@ export default function AttendanceReport({ footerLinks, appName }) {
                     </Stack>
                     <IconByName
                       name="CloseCircleLineIcon"
+                      color="classCard.900"
                       onPress={(e) => setShowModal(false)}
                     />
                   </HStack>
                 </Actionsheet.Content>
-
                 <Box w="100%" bg="white">
                   {[
                     { name: t("MORNING_SCHOOL"), value: "MORNING_SCHOOL" },
@@ -263,10 +263,9 @@ export default function AttendanceReport({ footerLinks, appName }) {
             space="4"
             justifyContent="space-between"
             alignItems="center"
-            borderBottomWidth={1}
-            borderBottomColor={"gray.200"}
+            
           >
-            <Box py="30px">
+            <Box py="15px">
               <Text fontSize="16" fontWeight="600">
                 {t("MY_MONTHLY_ATTENDANCE")}
               </Text>
@@ -387,9 +386,6 @@ const CalendarComponent = ({
           <VStack
             key={subIndex}
             alignItems="center"
-            borderWidth={isToday ? "1" : ""}
-            borderColor={isToday ? "button.500" : ""}
-            rounded="lg"
             opacity={
               type && type !== "month" && day.day() !== 0
                 ? 1
