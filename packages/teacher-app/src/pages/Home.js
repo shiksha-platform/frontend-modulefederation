@@ -1,5 +1,15 @@
 import React from "react";
-import { Modal, Avatar, Box, Button, Text, Image, Pressable, Stack, VStack } from "native-base";
+import {
+  Modal,
+  Avatar,
+  Box,
+  Button,
+  Text,
+  Image,
+  Pressable,
+  Stack,
+  VStack,
+} from "native-base";
 import { capture, IconByName, Layout, Widget } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -62,7 +72,7 @@ function Home({ footerLinks, appName }) {
             bg: "widgetColor.500",
           },
           _icon: {
-            color: 'iconColor.500'
+            color: "iconColor.500",
           },
           _text: { color: "warmGray.700" },
         },
@@ -70,12 +80,12 @@ function Home({ footerLinks, appName }) {
           title: t("ACTIVITY"),
           subTitle: "1 " + t("REMAINING"),
           icon: "LightbulbFlashLineIcon",
-          label : "NEW",
+          label: "NEW",
           _box: {
             bg: "widgetColor.600",
           },
           _icon: {
-            color: 'iconColor.600'
+            color: "iconColor.600",
           },
           _text: { color: "warmGray.700" },
         },
@@ -87,7 +97,7 @@ function Home({ footerLinks, appName }) {
             bg: "widgetColor.700",
           },
           _icon: {
-            color: 'iconColor.700'
+            color: "iconColor.700",
           },
           _text: {
             color: "warmGray.700",
@@ -101,7 +111,7 @@ function Home({ footerLinks, appName }) {
             bg: "widgetColor.800",
           },
           _icon: {
-            color: 'iconColor.800'
+            color: "iconColor.800",
           },
           _text: { color: "warmGray.700" },
         },
@@ -118,7 +128,7 @@ function Home({ footerLinks, appName }) {
             bg: "widgetColor.900",
           },
           _icon: {
-            color: 'iconColor.900'
+            color: "iconColor.900",
           },
           _text: { color: "warmGray.700" },
         },
@@ -130,7 +140,7 @@ function Home({ footerLinks, appName }) {
             bg: "widgetColor.1000",
           },
           _icon: {
-            color: 'iconColor.1000'
+            color: "iconColor.1000",
           },
           _text: { color: "warmGray.700" },
         },
@@ -210,41 +220,50 @@ function Home({ footerLinks, appName }) {
             </VStack>
           </Stack>
         </Box>
-        <Modal safeAreaTop={true}  isOpen={popupModal} onClose={() => setPopupModal(false)}>
-        <Modal.Content maxWidth= '1024px' position='fixed' bottom='0' mb='30px'>
-          <VStack space={5} p="5">
-           <Text fontWeight="700" fontSize="22px">
-              How to mark your own attendance?
-            </Text>
-            <Text fontWeight={500} fontSize="14px">
-              To mark your own attendance, tap on your profile picture, select
-              an option according to your choice and mark attendance.
-            </Text> 
-             <Button.Group>
-              <Button
-                flex="1"
-                variant="outline"
-                fontSize='12px'
-                fontWeight='600'
-                colorScheme="button"
-                onPress={(e) => setPopupModal(false)}
-              >
-                {t("SKIP")}
-              </Button>
-              <Button
-                flex="1"
-                fontSize='12px'
-                fontWeight='600'
-                colorScheme="button"
-                _text={{ color: "white" }}
-                onPress={(e) => setPopupModal(false)}
-              >
-                {t("NEXT")}
-              </Button>
-            </Button.Group> 
-          </VStack>
-        </Modal.Content>
-      </Modal>
+        <Modal
+          safeAreaTop={true}
+          isOpen={popupModal}
+          onClose={() => setPopupModal(false)}
+        >
+          <Modal.Content
+            maxWidth="1024px"
+            position="fixed"
+            bottom="0"
+            mb="30px"
+          >
+            <VStack space={5} p="5">
+              <Text fontWeight="700" fontSize="22px">
+                How to mark your own attendance?
+              </Text>
+              <Text fontWeight={500} fontSize="14px">
+                To mark your own attendance, tap on your profile picture, select
+                an option according to your choice and mark attendance.
+              </Text>
+              <Button.Group>
+                <Button
+                  flex="1"
+                  variant="outline"
+                  fontSize="12px"
+                  fontWeight="600"
+                  colorScheme="button"
+                  onPress={(e) => setPopupModal(false)}
+                >
+                  {t("SKIP")}
+                </Button>
+                <Button
+                  flex="1"
+                  fontSize="12px"
+                  fontWeight="600"
+                  colorScheme="button"
+                  _text={{ color: "white" }}
+                  onPress={(e) => setPopupModal(false)}
+                >
+                  {t("NEXT")}
+                </Button>
+              </Button.Group>
+            </VStack>
+          </Modal.Content>
+        </Modal>
       </Layout>
     </>
   );

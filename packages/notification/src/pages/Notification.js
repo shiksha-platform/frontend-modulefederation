@@ -75,7 +75,7 @@ const Notification = ({ footerLinks, appName }) => {
             bg="rgba(254, 239, 235, 1)"
             px="5"
             py="7px"
-            _text={{textTransform:"capitalize", fontSize:"14px"}}
+            _text={{ textTransform: "capitalize", fontSize: "14px" }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalInbox(true)}
           >
@@ -87,7 +87,7 @@ const Notification = ({ footerLinks, appName }) => {
       subHeader={t("VIEW_YOUR_INCOMING_NOTIFICATIONS")}
       _subHeader={{
         bg: "classCard.500",
-        py:"22px",
+        py: "22px",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -101,7 +101,12 @@ const Notification = ({ footerLinks, appName }) => {
           <Box bg="white" p="5">
             <HStack justifyContent="space-between" alignItems="center">
               <CalendarBar {...{ page, setPage }} />
-              <Checkbox colorScheme="button" borderColor="button.500" borderRadius="0" _text={{ color: "button.500" }}>
+              <Checkbox
+                colorScheme="button"
+                borderColor="button.500"
+                borderRadius="0"
+                _text={{ color: "button.500" }}
+              >
                 {t("MARK_ALL_READ")}
               </Checkbox>
             </HStack>
@@ -114,7 +119,7 @@ const Notification = ({ footerLinks, appName }) => {
                   colorScheme="button"
                   variant="outline"
                   px="5"
-                  _text={{textTransform:"capitalize"}}
+                  _text={{ textTransform: "capitalize" }}
                   onPress={(e) => setFiltered(true)}
                 >
                   {t("FILTER")}
@@ -213,16 +218,18 @@ const Notification = ({ footerLinks, appName }) => {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color='classCard.900'
+                color="classCard.900"
                 onPress={(e) => setShowModalMore(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg="white" width={"100%"}
-          _text={{  }}
-          >
-            <Text p="5" fontSize="14px" fontWeight="500" color="#727272">{t("MARK_AS_READ")}</Text>
-            <Text p="5" fontSize="14px" fontWeight="500" color="#727272">{t("DELETE_MESSAGES")}</Text>
+          <Box bg="white" width={"100%"} _text={{}}>
+            <Text p="5" fontSize="14px" fontWeight="500" color="gray.500">
+              {t("MARK_AS_READ")}
+            </Text>
+            <Text p="5" fontSize="14px" fontWeight="500" color="gray.500">
+              {t("DELETE_MESSAGES")}
+            </Text>
             <Box p="5">
               <Button
                 colorScheme="button"
@@ -247,7 +254,7 @@ const Notification = ({ footerLinks, appName }) => {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color='classCard.900'
+                color="classCard.900"
                 onPress={(e) => setShowModalInbox(false)}
               />
             </HStack>
@@ -286,8 +293,14 @@ const Notification = ({ footerLinks, appName }) => {
             </HStack>
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
-            <Box px="5" >
-              <HStack py="5" borderBottomWidth="1" borderColor="gray.200" alignItems="center" space="1">
+            <Box px="5">
+              <HStack
+                py="5"
+                borderBottomWidth="1"
+                borderColor="gray.200"
+                alignItems="center"
+                space="1"
+              >
                 <IconByName
                   _icon={{ size: "16" }}
                   color="classCard.900"
@@ -328,7 +341,7 @@ const Notification = ({ footerLinks, appName }) => {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color='classCard.900'
+                color="classCard.900"
                 onPress={(e) => setFilterData()}
               />
             </HStack>

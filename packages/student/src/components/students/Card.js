@@ -145,12 +145,12 @@ const SubCard = ({
           {attendance &&
           workingDaysCount &&
           attendance.length >= workingDaysCount ? (
-            <Box bg={"#FFC326"} rounded="full">
+            <Box bg={"startIconColor.500"} rounded="full">
               <IconByName
                 p="1px"
                 name="StarSFillIcon"
                 _icon={{ size: 16 }}
-                color="#E78D12"
+                color="startIconColor.700"
               />
             </Box>
           ) : (

@@ -182,7 +182,11 @@ export default function StudentDetails({ footerLinks, appName }) {
             <ButtonWrapper
               variant="ghost"
               colorScheme="button"
-              _text={{ fontWeight: "600", fontSize:"14px", textTransform:'capitalize' }}
+              _text={{
+                fontWeight: "600",
+                fontSize: "14px",
+                textTransform: "capitalize",
+              }}
             >
               {t("EDIT")}
             </ButtonWrapper>
@@ -214,7 +218,11 @@ export default function StudentDetails({ footerLinks, appName }) {
             <ButtonWrapper
               variant="ghost"
               colorScheme="button"
-              _text={{ fontWeight: "600", fontSize:"14px", textTransform:'capitalize' }}
+              _text={{
+                fontWeight: "600",
+                fontSize: "14px",
+                textTransform: "capitalize",
+              }}
             >
               {t("EDIT")}
             </ButtonWrapper>

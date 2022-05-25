@@ -473,7 +473,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           isOpen={showModal}
           _backdrop={{ opacity: "0.9", bg: "gray.500" }}
         >
-          <Actionsheet.Content p="0" alignItems={"left"} bg="#FFCAAC">
+          <Actionsheet.Content p="0" alignItems={"left"} bg="reportCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
                 <Text color={"black"} fontSize="16px" fontWeight={"600"}>
@@ -482,7 +482,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color="#875234"
+                color="reportCard.800"
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>

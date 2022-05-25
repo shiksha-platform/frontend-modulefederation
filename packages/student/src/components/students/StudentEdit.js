@@ -186,7 +186,11 @@ export default function StudentEdit({
           <Button
             variant="ghost"
             colorScheme="button"
-            _text={{ fontWeight: "600", fontSize:"14px",textTransform:'capitalzise' }}
+            _text={{
+              fontWeight: "600",
+              fontSize: "14px",
+              textTransform: "capitalzise",
+            }}
             py={1}
             px={2}
             onPress={(e) => setEditState(true)}
@@ -208,7 +212,11 @@ export default function StudentEdit({
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3 fontWeight="500" color={"coolGray.400"} textTransform={'uppercase'}>
+                    <H3
+                      fontWeight="500"
+                      color={"coolGray.400"}
+                      textTransform={"uppercase"}
+                    >
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
@@ -249,7 +257,12 @@ export default function StudentEdit({
                 </FormControl>
               ) : (
                 <>
-                  <H3 fontWeight="500" color={"coolGray.400"} textTransform={'uppercase'} pb="2">
+                  <H3
+                    fontWeight="500"
+                    color={"coolGray.400"}
+                    textTransform={"uppercase"}
+                    pb="2"
+                  >
                     {item.placeholder}
                   </H3>
                   {item.value ? (

@@ -64,7 +64,7 @@ const ClassDetails = ({ footerLinks }) => {
               keyId: 1,
               title: t("TAKE_ATTENDANCE"),
               icon: "CalendarCheckLineIcon",
-              _text:{minW:"115px"},
+              _text: { minW: "115px" },
               route: "/attendance/:id",
               boxMinW: "200px",
             },

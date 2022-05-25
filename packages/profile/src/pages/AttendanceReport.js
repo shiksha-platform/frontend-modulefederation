@@ -127,7 +127,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <Box bg="white" p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Text fontSize="16" fontWeight="600">
-            {t("MY_ATTENDANCE")}
+              {t("MY_ATTENDANCE")}
             </Text>
             <Stack>
               <Button
@@ -259,12 +259,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </Actionsheet>
         </Box>
         <VStack space={5} bg="white" p="5">
-          <HStack
-            space="4"
-            justifyContent="space-between"
-            alignItems="center"
-            
-          >
+          <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
               <Text fontSize="16" fontWeight="600">
                 {t("MY_MONTHLY_ATTENDANCE")}
