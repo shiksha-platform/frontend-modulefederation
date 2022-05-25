@@ -92,7 +92,8 @@ const DEFAULT_THEME = {
     },
     viewNotification: {
       500: '#FDDFD8',
-      600: '#feefeb'
+      600: '#feefeb',
+      800: '#AA948E'
     },
     calendarBtncolor: {
       500: '#BCBCBC'
@@ -178,7 +179,9 @@ const DEFAULT_THEME = {
       500: '#FFF8F7'
     },
     worksheetCard: {
+      200: '#FEF1F9',
       500: '#F9CCE4',
+      800: '#C79AB2',
       900: '#C08FA9'
     },
     reportBoxBg: {

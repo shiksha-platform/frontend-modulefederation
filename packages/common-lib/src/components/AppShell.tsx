@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react'
-import { NativeBaseProvider } from 'native-base'
+import { Center, NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
@@ -77,7 +77,13 @@ function AppShell({
   } else {
     return (
       <NativeBaseProvider theme={theme}>
-        <Suspense fallback={<Loading />}>
+        <Suspense
+          fallback={
+            <Center>
+              <Loading />
+            </Center>
+          }
+        >
           <Router basename={basename}>
             <Routes>
               {routes.map((item: any, index: number) => (

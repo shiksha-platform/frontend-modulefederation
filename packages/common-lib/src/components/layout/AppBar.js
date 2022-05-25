@@ -19,6 +19,7 @@ export default function AppBar({
   color,
   languages,
   onPressBackButton,
+  rightIcon,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
@@ -91,6 +92,7 @@ export default function AppBar({
           ) : (
             <React.Fragment />
           )}
+          {rightIcon ? rightIcon : <React.Fragment />}
           <IconByName
             name='Notification2LineIcon'
             color={color ? color : ''}

@@ -15,7 +15,8 @@ export const getAllQuestions = async (filter) => {
   );
 
   if (questionList.data && questionList?.data?.result.count > 0) {
-    const data = questionList?.data?.result?.Question.map(
+    const newData = questionList?.data?.result?.Question.slice(0, 20);
+    const data = newData.map(
       async (question) => await readQuestion(question.identifier)
     );
     return Promise.all(data).then((values) => values);

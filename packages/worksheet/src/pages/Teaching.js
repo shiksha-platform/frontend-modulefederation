@@ -47,7 +47,7 @@ const MyTeaching = ({ data }) => {
         key={index}
         item={{
           title: `${item.name} • ${item.subjectName}`,
-          onPress: (e) => navigate("/view"),
+          onPress: (e) => navigate(`/worksheet/${item.id}/view`),
         }}
       />
     );

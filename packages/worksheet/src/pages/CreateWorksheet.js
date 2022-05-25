@@ -1,5 +1,5 @@
 import {
-  Collapsible,
+  FilterButton,
   H1,
   IconByName,
   Layout,
@@ -16,17 +16,79 @@ import {
   Actionsheet,
   Box,
   Pressable,
-  Checkbox,
   VStack,
-  Center,
-  ScrollView,
   FormControl,
   Input,
+  ScrollView,
+  Center,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getAllQuestions } from "services";
 import manifest from "../manifest.json";
+
+const defaultInputs = [
+  {
+    name: "Subject",
+    attributeName: "subject",
+    data: [
+      "Social Science",
+      "Science",
+      "Mathematics",
+      "Hindi",
+      "English",
+      "History",
+      "Geography",
+    ],
+  },
+  {
+    name: "Class",
+    attributeName: "gradeLevel",
+    data: [
+      "Class 1",
+      "Class 2",
+      "Class 3",
+      "Class 4",
+      "Class 5",
+      "Class 6",
+      "Class 7",
+      "Class 8",
+      "Class 9",
+      "Class 10",
+    ],
+  },
+  {
+    name: "Topic",
+    attributeName: "topic",
+    data: [
+      "भोजन के घटक",
+      "भोजन: यह कहाँ से आता है?",
+      "तंतु से वस्त्र तक",
+      "संसाधन",
+      "समानता",
+      "संश्लेशित रेशे  और प्लास्टिक",
+      "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
+    ],
+  },
+  {
+    name: "Source",
+    attributeName: "source",
+    data: ["source 1", "source 2"],
+  },
+];
+
+const autoGenerateInputs = [
+  {
+    name: "Number of Questions",
+    attributeName: "number_of_questions",
+    data: ["10", "20", "30", "40", "50"],
+  },
+  {
+    name: "Add Question type",
+    attributeName: "add_question_type",
+    data: ["MCQ", "SA"],
+  },
+];
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -48,10 +110,19 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     return <Loading />;
   }
 
+  const handleBackButton = () => {
+    if (pageName !== "") {
+      setPageName("");
+    } else {
+      navigate(-1);
+    }
+  };
+
   if (pageName === "success") {
     return (
       <Layout
         _appBar={{
+          onPressBackButton: handleBackButton,
           languages: manifest.languages,
           color: "successAlertText.500",
           _box: { bg: "successAlert.500" },
@@ -61,7 +132,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           width={width}
           height={height - 230}
           customComponent={
-            <VStack space="2" flex="1">
+            <VStack space="2" flex="1" width={width}>
               <VStack bg="successAlert.500" pb="100px" pt="32px">
                 <IconByName
                   alignSelf="center"
@@ -109,9 +180,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           bg="white"
           p="5"
           position="fixed"
-          width="100%"
           bottom="0"
           shadow={2}
+          width={width}
         >
           <Button
             colorScheme="button"
@@ -140,10 +211,13 @@ export default function CreateWorksheet({ footerLinks, appName }) {
             : t("New Worksheet"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{
+        languages: manifest.languages,
+        onPressBackButton: handleBackButton,
+      }}
       subHeader={
         pageName === "ListOfWorksheet"
-          ? t("Chapter 1: The Fish Tail")
+          ? t("You can see all questions here")
           : pageName === "AddDescriptionPage"
           ? t("Enter Worksheet Details")
           : t("Show questions based on")
@@ -159,7 +233,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       _footer={footerLinks}
     >
       {pageName === "ListOfWorksheet" ? (
-        <ListOfWorksheet {...{ questions, setQuestions, setPageName }} />
+        <ListOfWorksheet
+          {...{
+            questions,
+            setQuestions,
+            setPageName,
+            filterObject: formObject,
+            setFilterObject: setFormObject,
+          }}
+        />
       ) : pageName === "AddDescriptionPage" ? (
         <AddDescriptionPage {...{ questions, setQuestions, setPageName }} />
       ) : (
@@ -218,7 +300,7 @@ const FormInput = ({
           >
             {formObject[attributeName]
               ? formObject[attributeName]
-              : `Select ${t(attributeName)}`}
+              : `Select ${t(item.name)}`}
           </Button>
         </HStack>
       );
@@ -229,6 +311,7 @@ const FormInput = ({
 const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
+  const [inputs, setInputs] = React.useState(defaultInputs);
   const handelAddQuestion = () => {
     setLoading(true);
     setPageName("ListOfWorksheet");
@@ -237,56 +320,24 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
     <Stack space={1} mb="2">
       <FormInput
         {...{ formObject, setFormObject, formData, setFormData }}
-        data={[
-          {
-            name: "Subject",
-            attributeName: "subject",
-            data: [
-              "Social Science",
-              "Science",
-              "Mathematics",
-              "Hindi",
-              "English",
-              "History",
-              "Geography",
-            ],
-          },
-          {
-            name: "Class",
-            attributeName: "gradeLevel",
-            data: [
-              "Class 1",
-              "Class 2",
-              "Class 3",
-              "Class 4",
-              "Class 5",
-              "Class 6",
-              "Class 7",
-              "Class 8",
-              "Class 9",
-              "Class 10",
-            ],
-          },
-          {
-            name: "Topic",
-            attributeName: "topic",
-            data: [
-              "भोजन के घटक",
-              "भोजन: यह कहाँ से आता है?",
-              "तंतु से वस्त्र तक",
-              "संसाधन",
-              "समानता",
-              "संश्लेशित रेशे  और प्लास्टिक",
-              "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
-            ],
-          },
-        ]}
+        data={inputs}
       />
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
-          <Button colorScheme="button" px="5" flex="1" variant="outline">
-            {t("Auto Generate")}
-          </Button>
+          {!inputs.filter((e) => e.attributeName === "number_of_questions")
+            .length ? (
+            <Button
+              flex="1"
+              variant="outline"
+              onPress={(e) =>
+                setInputs([...defaultInputs, ...autoGenerateInputs])
+              }
+            >
+              {t("Auto Generate")}
+            </Button>
+          ) : (
+            <></>
+          )}
           <Button
             colorScheme="button"
             _text={{ color: "white" }}
@@ -351,12 +402,15 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
   );
 };
 
-const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
+const ListOfWorksheet = ({
+  questions,
+  setQuestions,
+  setPageName,
+  filterObject,
+  setFilterObject,
+}) => {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
-  let fillInTheBlankQuestions = questions.filter((e) => e.qType === "SA");
-  let mcqQuestions = questions.filter((e) => e.qType === "MCQ");
-  let aqQuestions = questions.filter((e) => e.qType === "AQ");
   const [selectData, setSelectData] = React.useState([]);
   const [isDataFilter, setIsDataFilter] = React.useState(false);
 
@@ -377,59 +431,67 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
           </HStack>
         </Box>
       ) : (
-        ""
+        <Box>
+          <FilterButton
+            getObject={setFilterObject}
+            _box={{ p: 5 }}
+            _actionSheet={{ bg: "worksheetCard.500" }}
+            filters={defaultInputs}
+          />
+          <Box bg="white" px="5">
+            <ScrollView horizontal={true}>
+              {selectData.map((item, index) => (
+                <Box key={index}>
+                  <Box
+                    bg="viewNotification.600"
+                    w="192px"
+                    h="87px"
+                    m="2"
+                    p="3"
+                    borderWidth="1"
+                    borderColor="viewNotification.500"
+                    rounded="lg"
+                    overflow="hidden"
+                  >
+                    <div dangerouslySetInnerHTML={{ __html: item.question }} />
+                  </Box>
+                  <IconByName
+                    name="CloseCircleFillIcon"
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    p="0"
+                    color="button.500"
+                    _icon={{ size: 24 }}
+                    onPress={(e) =>
+                      setSelectData(
+                        selectData.filter(
+                          (e) => e.questionId !== item.questionId
+                        )
+                      )
+                    }
+                  />
+                </Box>
+              ))}
+            </ScrollView>
+          </Box>
+        </Box>
       )}
-      <Collapsible
-        header="Choose correct answer(s) from the given choices"
-        _header={{ py: 5 }}
-      >
+
+      <Box bg="white" p="5">
         <ScrollView maxH={Height}>
-          <Box bg="white">
-            <VStack space="5">
-              {mcqQuestions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                  {...(isDataFilter ? {} : { selectData, setSelectData })}
-                />
-              ))}
-            </VStack>
-          </Box>
+          <VStack space="5">
+            {questions.map((question, index) => (
+              <QuestionBox
+                _box={{ py: "12px", px: "16px" }}
+                key={index}
+                questionObject={question}
+                {...(isDataFilter ? {} : { selectData, setSelectData })}
+              />
+            ))}
+          </VStack>
         </ScrollView>
-      </Collapsible>
-      <Collapsible header="Fill in the blanks" _header={{ py: 5 }}>
-        <ScrollView maxH={Height}>
-          <Box bg="white">
-            <VStack space="5">
-              {fillInTheBlankQuestions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                  {...(isDataFilter ? {} : { selectData, setSelectData })}
-                />
-              ))}
-            </VStack>
-          </Box>
-        </ScrollView>
-      </Collapsible>
-      <Collapsible header="Answer the questions" _header={{ py: 5 }}>
-        <ScrollView maxH={Height}>
-          <Box bg="white">
-            <VStack space="5">
-              {aqQuestions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                  {...(isDataFilter ? {} : { selectData, setSelectData })}
-                />
-              ))}
-            </VStack>
-          </Box>
-        </ScrollView>
-      </Collapsible>
+      </Box>
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
         {isDataFilter ? (
           <Button.Group>

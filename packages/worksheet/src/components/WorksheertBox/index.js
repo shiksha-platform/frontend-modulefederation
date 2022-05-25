@@ -11,12 +11,12 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  LinkedinShareButton,
-  LinkedinIcon,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from "react-share";
+// import {
+//   LinkedinShareButton,
+//   LinkedinIcon,
+//   WhatsappIcon,
+//   WhatsappShareButton,
+// } from "react-share";
 
 export default function WorksheetBox({ item, url, canShare }) {
   const { t } = useTranslation();
@@ -29,7 +29,9 @@ export default function WorksheetBox({ item, url, canShare }) {
           <Pressable onPress={() => (url ? navigate(url) : "")}>
             <HStack space={2} alignItems="center">
               <Avatar bg="amber.500" size="57" rounded="md">
-                {item.heading?.toUpperCase().substr(0, 2)}
+                <Text fontWeight="600" fontSize="16px" color="white">
+                  {item.heading?.toUpperCase().substr(0, 1)}
+                </Text>
               </Avatar>
               <Stack space="1">
                 <VStack space="1px">
@@ -37,9 +39,9 @@ export default function WorksheetBox({ item, url, canShare }) {
                     {item.heading}
                   </Text>
                   <HStack space={1} alignItems="center">
-                    <Text fontWeight="400" fontSize="10px">
+                    {/* <Text fontWeight="400" fontSize="10px">
                       {item.subHeading} {"•"}
-                    </Text>
+                    </Text> */}
                     <Text fontWeight="400" fontSize="10px">
                       {t("CLASS") + " " + item.class}
                     </Text>
@@ -74,97 +76,92 @@ export default function WorksheetBox({ item, url, canShare }) {
         <Text fontWeight="600" fontSize="10px">
           {item.description}
         </Text>
-        <HStack space="2" justifyContent="space-between" alignItems="flex-end">
-          <HStack space="2">
-            <VStack>
-              <HStack space="1" alignItems="center">
-                <IconByName name="SurveyLineIcon" _icon={{ size: 12 }} p="0" />
-                <Text fontWeight="600" fontSize="10px">
-                  {"Subject: " + item.subject}
-                </Text>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="BarChart2LineIcon"
-                  _icon={{ size: 12 }}
-                  p="0"
-                />
-                <Text fontWeight="600" fontSize="10px">
-                  {"Level: " + item.level}
-                </Text>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="QuestionLineIcon"
-                  _icon={{ size: 12 }}
-                  p="0"
-                />
-                <Text fontWeight="600" fontSize="10px">
-                  {"Questions: " + item.questions}
-                </Text>
-              </HStack>
-            </VStack>
-            <VStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="AccountBoxFillIcon"
-                  _icon={{ size: 12 }}
-                  p="0"
-                />
-                <Text fontWeight="600" fontSize="10px">
-                  {"Grade: " + item.grade}
-                </Text>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName name="ArticleLineIcon" _icon={{ size: 12 }} p="0" />
-                <Text fontWeight="600" fontSize="10px">
-                  {"Chapter: " + item.chapter}
-                </Text>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="Download2LineIcon"
-                  _icon={{ size: 12 }}
-                  p="0"
-                />
-                <Text fontWeight="600" fontSize="10px">
-                  {"Downloads: " + item.downloads}
-                </Text>
-              </HStack>
-            </VStack>
-          </HStack>
-          {canShare ? (
-            <HStack space="2">
-              {/* <Box shadow="2" p="2" rounded="full">
-                  <IconByName name="ShareLineIcon" _icon={{ size: 30 }} p="0" />
-                </Box> */}
-              <Box shadow="2" p="2" rounded="full">
+        <HStack space="2">
+          <VStack>
+            <HStack space="1" alignItems="center">
+              <IconByName name="SurveyLineIcon" _icon={{ size: 12 }} p="0" />
+              <Text fontWeight="600" fontSize="10px">
+                {"Subject: " + item.subject}
+              </Text>
+            </HStack>
+            <HStack space="1" alignItems="center">
+              <IconByName name="BarChart2LineIcon" _icon={{ size: 12 }} p="0" />
+              <Text fontWeight="600" fontSize="10px">
+                {"Level: " + item.level}
+              </Text>
+            </HStack>
+            <HStack space="1" alignItems="center">
+              <IconByName name="QuestionLineIcon" _icon={{ size: 12 }} p="0" />
+              <Text fontWeight="600" fontSize="10px">
+                {"Questions: " + item.questions}
+              </Text>
+            </HStack>
+          </VStack>
+          <VStack>
+            <HStack space="1" alignItems="center">
+              <IconByName
+                name="AccountBoxFillIcon"
+                _icon={{ size: 12 }}
+                p="0"
+              />
+              <Text fontWeight="600" fontSize="10px">
+                {"Grade: " + item.grade}
+              </Text>
+            </HStack>
+            <HStack space="1" alignItems="center">
+              <IconByName name="ArticleLineIcon" _icon={{ size: 12 }} p="0" />
+              <Text fontWeight="600" fontSize="10px">
+                {"Chapter: " + item.chapter}
+              </Text>
+            </HStack>
+            <HStack space="1" alignItems="center">
+              <IconByName name="Download2LineIcon" _icon={{ size: 12 }} p="0" />
+              <Text fontWeight="600" fontSize="10px">
+                {"Downloads: " + item.downloads}
+              </Text>
+            </HStack>
+          </VStack>
+        </HStack>
+        {canShare ? (
+          <HStack space="5">
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name="Heart3LineIcon"
+                _icon={{ size: 15 }}
+                color="button.500"
+                p="0"
+              />
+            </Box>
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName name="ShareLineIcon" _icon={{ size: 15 }} p="0" />
+            </Box>
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                onPress={(e) => navigate("/worksheet/template")}
+                name="DownloadLineIcon"
+                _icon={{ size: 15 }}
+                color="button.500"
+                p="0"
+              />
+            </Box>
+            {/* <Box shadow="2" p="2" rounded="full">
                 <WhatsappShareButton
                   url="https://sandbox.shikshaplatform.io/modules/worksheet/"
                   title="Worksheet"
                   separator=":: "
                 >
-                  <WhatsappIcon size={30} round />
+                  <WhatsappIcon size={15} round />
                 </WhatsappShareButton>
               </Box>
               <Box shadow="2" p="2" rounded="full">
                 <LinkedinShareButton url="https://sandbox.shikshaplatform.io/modules/worksheet/">
-                  <LinkedinIcon size={30} round />
+                  <LinkedinIcon size={15} round />
                 </LinkedinShareButton>
-              </Box>
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name="Heart3LineIcon"
-                  _icon={{ size: 30 }}
-                  color="button.500"
-                  p="0"
-                />
-              </Box>
-            </HStack>
-          ) : (
-            ""
-          )}
-        </HStack>
+              </Box> */}
+          </HStack>
+        ) : (
+          ""
+        )}
       </VStack>
     </Box>
   );

@@ -14,17 +14,10 @@ export default function Footer({ menues, routeDynamics, ...props }) {
   const footerMenus = menues //TODO: manifest.menus.footer;
 
   useEffect(() => {
-    if (['/'].includes(window?.location?.pathname)) {
+    let path = window?.location?.pathname.toString()
+    if (['/'].includes(path)) {
       setSelected(0)
-    } else if (
-      [
-        '/worksheet',
-        '/teaching/:id',
-        '/questionBank',
-        '/:id',
-        '/worksheet/create'
-      ].includes(window?.location?.pathname)
-    ) {
+    } else if (path.startsWith('/worksheet')) {
       setSelected(3)
     } else {
       setSelected(1)
