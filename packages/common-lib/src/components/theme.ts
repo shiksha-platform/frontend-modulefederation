@@ -72,8 +72,11 @@ const DEFAULT_THEME = {
       },
       defaultProps: {
         colorScheme: 'button',
-        _text:{textTransform: 'uppercase', fontSize:'12px', fontWeight:'600'},
-
+        _text: {
+          textTransform: 'uppercase',
+          fontSize: '12px',
+          fontWeight: '600'
+        }
       }
     }
   },

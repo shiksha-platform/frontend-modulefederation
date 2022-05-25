@@ -139,7 +139,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("MY_CLASSES"),
+        title: t("MY_CLASS"),
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500 },
         iconComponent: (

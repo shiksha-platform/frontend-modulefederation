@@ -33,7 +33,7 @@ import {
   Heading1
 } from './components/layout/HeaderTags/index'
 
-import * as RegistryService from './services/teacherRegistryService'
+import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
@@ -61,7 +61,7 @@ export {
   H4,
   H5,
   Heading1,
-  RegistryService,
+  teacherRegistryService,
   classRegistryService,
   attendanceRegistryService,
   studentRegistryService

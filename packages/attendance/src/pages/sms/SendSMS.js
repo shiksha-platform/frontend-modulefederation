@@ -138,16 +138,6 @@ export default function SendSMS({ footerLinks, appName }) {
       _subHeader={{ bg: "attendanceCard.500", mb: 1 }}
       _footer={footerLinks}
     >
-      <Box bg="white" p="5">
-      <HStack space="4" justifyContent="space-between" alignItems="center">
-          <DayWiesBar
-            activeColor="gray.900"
-            _box={{ p: 0, bg: "transparent" }}
-            {...{ page: datePage, setPage: setDatePage }}
-          />
-          <IconByName name={"ListUnorderedIcon"} isDisabled />
-        </HStack>
-      </Box>
       <VStack space="1">
         <Box bg="white" p="5">
           <H2 fontWeight="600">{classObject.name}</H2>
@@ -260,7 +250,7 @@ export default function SendSMS({ footerLinks, appName }) {
             </Collapsible>
           </Stack>
         </Box>
-        <Box p="2" py="5" bg="white" mb="1">
+        <Box bg="white" p="5" position="sticky" shadow={2}>
           <VStack space={"15px"} alignItems={"center"}>
             <H5 textAlign={"center"} textTransform={"inherit"}>
               <Text bold color={"gray.700"}>
@@ -268,11 +258,12 @@ export default function SendSMS({ footerLinks, appName }) {
               </Text>
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
             </H5>
-            <Button.Group>
-              <Button variant="outline" colorScheme="button">
+            <Button.Group width="100%">
+              <Button flex="1" variant="outline" colorScheme="button">
                 {t("CLOSE")}
               </Button>
               <Button
+                flex="1"
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {

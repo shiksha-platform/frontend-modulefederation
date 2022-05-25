@@ -1,11 +1,19 @@
 import React from "react";
 import { Collapsible, IconByName } from "@shiksha/common-lib";
-import { HStack, Text, VStack, Box, Progress } from "native-base";
+import { HStack, Text, VStack, Box, Progress, useToken } from "native-base";
 import { useTranslation } from "react-i18next";
+import { Pie } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+Chart.register(ArcElement, Tooltip, Legend);
+
+const MALECOLOR = "#BB6BD9";
+const FEMALECOLOR = "#3498DB";
 
 const ClassDetailsPanel = ({ students }) => {
   const { t } = useTranslation();
   const fullName = localStorage.getItem("fullName");
+  const maleCount = students.filter((e) => e.gender === "Male").length;
+  const femaleCount = students.filter((e) => e.gender === "Female").length;
 
   return (
     <Collapsible defaultCollapse={true} header={t("CLASS_DETAILS")}>
@@ -50,13 +58,19 @@ const ClassDetailsPanel = ({ students }) => {
                     {students.length} {t("STUDENTS")}
                   </Text>
                 </VStack>
-                <Progress
-                  value={students.filter((e) => e.gender === "Male").length}
-                  max={students.length}
-                  size={"20"}
-                  colorScheme="purple"
-                  bg="info.400"
-                />
+                <Box width="100px">
+                  <Pie
+                    data={{
+                      datasets: [
+                        {
+                          data: [maleCount, femaleCount],
+                          backgroundColor: [MALECOLOR, FEMALECOLOR],
+                          borderColor: [MALECOLOR, FEMALECOLOR],
+                        },
+                      ],
+                    }}
+                  />
+                </Box>
               </HStack>
             </VStack>
           </Box>

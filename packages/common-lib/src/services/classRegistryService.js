@@ -1,6 +1,7 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
+import { sortArray } from '../components/helper'
 
 const interfaceData = {
   id: 'groupId',
@@ -31,7 +32,8 @@ export const getAll = async (params = {}, header = {}) => {
     }
   )
   if (result.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    return _.sortBy(data, 'name')
   } else {
     return []
   }
@@ -94,7 +96,8 @@ export const getAllData = async (params = {}, header = {}) => {
   })
 
   if (result.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    return _.sortBy(data, 'name')
   } else {
     return []
   }

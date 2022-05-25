@@ -113,7 +113,7 @@ export const MultipalAttendance = ({
   const [width, Height] = useWindowSize();
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const holidays = [];
   const fullName = localStorage.getItem("fullName");
 
   useEffect(() => {
@@ -421,32 +421,47 @@ export const MultipalAttendance = ({
                 <Box bg="white" p="5" textAlign={"center"}>
                   <VStack space={2}>
                     <Text fontSize="14px" fontWeight="500">
-                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
+                      {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
                     </Text>
                     <Text fontSize="10px" fontWeight="300">
                       {t("STUDENTS_ABSENT")}
                     </Text>
-                    <Button
-                      colorScheme="button"
-                      _text={{ color: "white" }}
-                      rounded="lg"
-                      flex="1"
-                      onPress={(e) => {
-                        const telemetryData = telemetryFactory.interact({
-                          appName,
-                          type: "Attendance-Notification-View-Message",
-                        });
-                        capture("INTERACT", telemetryData);
-                        navigate(
-                          "/attendance/sendSms/" +
-                            (classObject?.id?.startsWith("1-")
-                              ? classObject?.id?.replace("1-", "")
-                              : classObject?.id)
-                        );
-                      }}
-                    >
-                      {t("VIEW_MESSAGE")}
-                    </Button>
+
+                    <Button.Group>
+                      <Button
+                        variant="outline"
+                        flex="1"
+                        onPress={(e) => {
+                          const telemetryData = telemetryFactory.interact({
+                            appName,
+                            type: "Attendance-Notification-View-Message",
+                          });
+                          capture("INTERACT", telemetryData);
+                          navigate(
+                            "/attendance/sendSms/" +
+                              (classObject?.id?.startsWith("1-")
+                                ? classObject?.id?.replace("1-", "")
+                                : classObject?.id)
+                          );
+                        }}
+                      >
+                        {t("VIEW_MESSAGE")}
+                      </Button>
+                      <Button
+                        _text={{ color: "white" }}
+                        flex="1"
+                        onPress={(e) => {
+                          const telemetryData = telemetryFactory.interact({
+                            appName,
+                            type: "Attendance-Notification-View-Message",
+                          });
+                          capture("INTERACT", telemetryData);
+                          navigate("/notification/create");
+                        }}
+                      >
+                        {t("SEND_ANOTHER_MESSAGE")}
+                      </Button>
+                    </Button.Group>
                   </VStack>
                 </Box>
                 <Box bg="white" p={5}>
@@ -598,7 +613,7 @@ export default function AttendanceComponent({
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
-            onlyParameter: ["attendance", "id", "date"],
+            onlyParameter: ["attendance", "id", "date", "classId"],
           }
         )
         .then((e) => {

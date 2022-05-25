@@ -7,6 +7,8 @@ import moment from "moment";
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
+const MALE = "Male";
+const FEMALE = "Female";
 
 export default function Report({
   students,
@@ -24,16 +26,16 @@ export default function Report({
   const [isAvrage, setIsAvrage] = React.useState(false);
   const fullName = localStorage.getItem("fullName");
   const status = manifest?.status ? manifest?.status : [];
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const holidays = [];
 
   const handleGenderList = () => {
     let genderList = [];
     genderList = [t("BOYS"), t("GIRLS")].filter((gender) => {
       return (
         (gender === t("BOYS") &&
-          students.filter((e) => e.gender === "Male").length) ||
+          students.filter((e) => e.gender === MALE).length) ||
         (gender === t("GIRLS") &&
-          students.filter((e) => e.gender === "Female").length)
+          students.filter((e) => e.gender === FEMALE).length)
       );
     });
 
@@ -136,11 +138,7 @@ export default function Report({
         .filter(
           (e) =>
             e.gender ===
-            (gender === t("BOYS")
-              ? "Male"
-              : gender === t("GIRLS")
-              ? "Female"
-              : "")
+            (gender === t("BOYS") ? MALE : gender === t("GIRLS") ? FEMALE : "")
         )
         .map((e) => e.id);
     }
@@ -191,10 +189,10 @@ export default function Report({
     <Box rounded={"xl"}>
       <Box roundedTop={"xl"} p="5" bg={design?.bg}>
         <HStack alignItems={"center"} space={2}>
-          <IconByName name={design?.iconName} isDisabled color="white" />
+          {/* <IconByName name={design?.iconName} isDisabled color="white" />
           <Text color="white" textTransform={"inherit"}>
             {design?.titleHeading}
-          </Text>
+          </Text> */}
         </HStack>
       </Box>
       <Box bg={"reportBoxBg.400"}>

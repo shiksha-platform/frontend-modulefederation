@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useDisclose, Button, Actionsheet, Link } from "native-base";
+import { useDisclose, Button, Actionsheet } from "native-base";
 import { useTranslation } from "react-i18next";
 import { classRegistryService } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
@@ -26,14 +26,9 @@ const ChooseClassActionSheet = () => {
   const { isOpen, onOpen, onClose } = useDisclose();
   return (
     <>
-
-      <Button
-        variant="outline"
-        colorScheme={"button"}
-        onPress={onOpen}
-        >
+      <Button variant="outline" onPress={onOpen}>
         {t("CHOOSE_ANOTHER_CLASS")}
-        </Button>
+      </Button>
 
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>

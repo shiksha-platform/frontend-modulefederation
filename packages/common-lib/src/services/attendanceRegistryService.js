@@ -4,15 +4,16 @@ import manifest from '../manifest.json'
 
 const interfaceData = {
   id: 'attendanceId',
+  schoolId: 'schoolId',
+  userType: 'userType',
   studentId: 'userId',
   topicId: 'topicId',
+  eventId: 'eventId',
   attendance: 'attendance',
   date: 'attendanceDate',
   classId: 'groupId',
   teacherId: 'teacherId',
   admissionNo: 'admissionNo',
-  currentClassID: 'groupId',
-  email: 'email',
   remark: 'remark',
   latitude: 'latitude',
   longitude: 'longitude',

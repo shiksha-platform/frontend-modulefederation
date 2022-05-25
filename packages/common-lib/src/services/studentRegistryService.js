@@ -45,7 +45,8 @@ export const getAll = async (params = {}, header = {}) => {
     }
   )
   if (result?.data?.data && result.data.data.length) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    return _.sortBy(data, 'admissionNo')
   }
   return []
 }
