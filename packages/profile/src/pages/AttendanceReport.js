@@ -12,7 +12,6 @@ import {
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
-import * as teacherServiceRegistry from "../services/teacherServiceRegistry";
 import {
   capture,
   IconByName,
@@ -20,6 +19,7 @@ import {
   telemetryFactory,
   ProgressBar,
   calendar,
+  teacherRegistryService,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 
@@ -50,7 +50,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      const resultTeacher = await teacherServiceRegistry.getOne(
+      const resultTeacher = await teacherRegistryService.getOne(
         { id: teacherId },
         { Authorization: "Bearer " + token }
       );
@@ -127,7 +127,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <Box bg="white" p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Text fontSize="16" fontWeight="600">
-            {t("MY_ATTENDANCE")}
+              {t("MY_ATTENDANCE")}
             </Text>
             <Stack>
               <Button
@@ -259,12 +259,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </Actionsheet>
         </Box>
         <VStack space={5} bg="white" p="5">
-          <HStack
-            space="4"
-            justifyContent="space-between"
-            alignItems="center"
-            
-          >
+          <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
               <Text fontSize="16" fontWeight="600">
                 {t("MY_MONTHLY_ATTENDANCE")}

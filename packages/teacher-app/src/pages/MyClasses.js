@@ -18,13 +18,13 @@ const MyClasses = ({ footerLinks }) => {
   return (
     <Layout
       _header={{
-        title: t("MY_CLASSES"),
+        title: t("MY_CLASS"),
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         avatar: true,
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("THE_CLASSES_YOU_TAKE")}
+      subHeader={t("THE_CLASS_YOU_TAKE")}
       _subHeader={{
         bg: "classCard.500",
         _text: {
@@ -38,7 +38,7 @@ const MyClasses = ({ footerLinks }) => {
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         <Tab
           routes={[
-            { title: t("MY_CLASSES"), component: <MyClassRoute /> },
+            { title: t("MY_CLASS"), component: <MyClassRoute /> },
             { title: t("TIME_TABLE"), component: <TimeTableRoute /> },
           ]}
         />

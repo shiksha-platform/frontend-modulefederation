@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Stack, Box, VStack, FlatList, Button } from "native-base";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { Layout, H2, H4, capture, Collapsible } from "@shiksha/common-lib";
+import {
+  Layout,
+  H2,
+  H4,
+  capture,
+  Collapsible,
+  studentRegistryService,
+  classRegistryService,
+} from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
@@ -18,9 +24,9 @@ const Student = ({ footerLinks }) => {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      setStudents(await studentServiceRegistry.getAll({ classId }));
+      setStudents(await studentRegistryService.getAll({ classId }));
 
-      let classObj = await classServiceRegistry.getOne({ id: classId });
+      let classObj = await classRegistryService.getOne({ id: classId });
 
       if (!ignore) setClassObject(classObj);
     };

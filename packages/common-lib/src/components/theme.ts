@@ -72,8 +72,11 @@ const DEFAULT_THEME = {
       },
       defaultProps: {
         colorScheme: 'button',
-        _text:{textTransform: 'uppercase', fontSize:'12px', fontWeight:'600'},
-
+        _text: {
+          textTransform: 'uppercase',
+          fontSize: '12px',
+          fontWeight: '600'
+        }
       }
     }
   },
@@ -106,7 +109,8 @@ const DEFAULT_THEME = {
       1000: '#ea5fff'
     },
     studentCard: {
-      500: '#B9FBC0'
+      500: '#B9FBC0',
+      800: '#5B7E5F'
     },
     successAlert: {
       500: '#B9FBC0'
@@ -128,7 +132,8 @@ const DEFAULT_THEME = {
     },
     reportCard: {
       100: '#FFF9F9',
-      500: '#FFCAAC'
+      500: '#FFCAAC',
+      800: '#875234'
     },
     present: green,
     presentCardBg: {
@@ -204,6 +209,10 @@ const DEFAULT_THEME = {
     },
     timeTableCardOrange: {
       500: '#FFF7F5'
+    },
+    startIconColor: {
+      500: '#FFC326',
+      700: '#E78D12'
     },
     timeTableFlashIcon: {
       100: '#BDB3E7',

@@ -9,9 +9,7 @@ import {
   Stack,
   Button,
   Badge,
-  Link,
 } from "native-base";
-import * as attendanceServiceRegistry from "../services/attendanceServiceRegistry";
 import manifest from "../manifest.json";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
@@ -23,10 +21,11 @@ import {
   capture,
   telemetryFactory,
   calendar,
+  attendanceRegistryService,
+  studentRegistryService,
   H4,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
-import * as studentServiceRegistry from "../services/studentServiceRegistry";
 import { useNavigate } from "react-router-dom";
 const Card = React.lazy(() => import("students/Card"));
 const PRESENT = "Present";
@@ -34,7 +33,7 @@ const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
 export const GetAttendance = async (params) => {
-  return await attendanceServiceRegistry.getAll(params);
+  return await attendanceRegistryService.getAll(params);
 };
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
@@ -114,7 +113,7 @@ export const MultipalAttendance = ({
   const [width, Height] = useWindowSize();
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const holidays = [];
   const fullName = localStorage.getItem("fullName");
 
   useEffect(() => {
@@ -141,7 +140,7 @@ export const MultipalAttendance = ({
         present.map((e) => e.id).includes(e.id)
       );
       setPresentStudents(
-        await studentServiceRegistry.setDefaultValue(presentNew)
+        await studentRegistryService.setDefaultValue(presentNew)
       );
     };
     getPresentStudents({ students });
@@ -180,7 +179,7 @@ export const MultipalAttendance = ({
         let result = null;
         if (attendanceObject?.id) {
           if (attendanceObject.attendance !== PRESENT) {
-            result = attendanceServiceRegistry
+            result = attendanceRegistryService
               .update(
                 {
                   id: attendanceObject.id,
@@ -201,7 +200,7 @@ export const MultipalAttendance = ({
             result = "alreadyPresent";
           }
         } else {
-          result = attendanceServiceRegistry.create(
+          result = attendanceRegistryService.create(
             {
               studentId: item.id,
               date: moment().format("YYYY-MM-DD"),
@@ -308,7 +307,7 @@ export const MultipalAttendance = ({
                     variant="outline"
                     colorScheme="button"
                     onPress={markAllAttendance}
-                    _text={{ fontSize:'12px', fontWeight:'600' }}
+                    _text={{ fontSize: "12px", fontWeight: "600" }}
                   >
                     {t("MARK_ALL_PRESENT")}
                   </Button>
@@ -316,7 +315,11 @@ export const MultipalAttendance = ({
                     flex={1}
                     colorScheme="button"
                     onPress={saveViewReportHandler}
-                    _text={{ color: "white",fontSize:'12px', fontWeight:'600'}}
+                    _text={{
+                      color: "white",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                    }}
                   >
                     {t("SUBMIT")}
                   </Button>
@@ -418,32 +421,47 @@ export const MultipalAttendance = ({
                 <Box bg="white" p="5" textAlign={"center"}>
                   <VStack space={2}>
                     <Text fontSize="14px" fontWeight="500">
-                      {t("CHOOSE_STUDENTS_FOR_ATTENDANCE_SMS")}
+                      {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
                     </Text>
                     <Text fontSize="10px" fontWeight="300">
                       {t("STUDENTS_ABSENT")}
                     </Text>
-                    <Button
-                      colorScheme="button"
-                      _text={{ color: "white" }}
-                      rounded="lg"
-                      flex="1"
-                      onPress={(e) => {
-                        const telemetryData = telemetryFactory.interact({
-                          appName,
-                          type: "Attendance-Notification-View-Message",
-                        });
-                        capture("INTERACT", telemetryData);
-                        navigate(
-                          "/attendance/sendSms/" +
-                            (classObject?.id?.startsWith("1-")
-                              ? classObject?.id?.replace("1-", "")
-                              : classObject?.id)
-                        );
-                      }}
-                    >
-                      {t("VIEW_MESSAGE")}
-                    </Button>
+
+                    <Button.Group>
+                      <Button
+                        variant="outline"
+                        flex="1"
+                        onPress={(e) => {
+                          const telemetryData = telemetryFactory.interact({
+                            appName,
+                            type: "Attendance-Notification-View-Message",
+                          });
+                          capture("INTERACT", telemetryData);
+                          navigate(
+                            "/attendance/sendSms/" +
+                              (classObject?.id?.startsWith("1-")
+                                ? classObject?.id?.replace("1-", "")
+                                : classObject?.id)
+                          );
+                        }}
+                      >
+                        {t("VIEW_MESSAGE")}
+                      </Button>
+                      <Button
+                        _text={{ color: "white" }}
+                        flex="1"
+                        onPress={(e) => {
+                          const telemetryData = telemetryFactory.interact({
+                            appName,
+                            type: "Attendance-Notification-View-Message",
+                          });
+                          capture("INTERACT", telemetryData);
+                          navigate("/notification/create");
+                        }}
+                      >
+                        {t("SEND_ANOTHER_MESSAGE")}
+                      </Button>
+                    </Button.Group>
                   </VStack>
                 </Box>
                 <Box bg="white" p={5}>
@@ -585,7 +603,7 @@ export default function AttendanceComponent({
     });
 
     if (dataObject.attendanceId) {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .update(
           {
             id: dataObject.attendanceId,
@@ -595,7 +613,7 @@ export default function AttendanceComponent({
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
-            onlyParameter: ["attendance", "id", "date"],
+            onlyParameter: ["attendance", "id", "date", "classId"],
           }
         )
         .then((e) => {
@@ -605,7 +623,7 @@ export default function AttendanceComponent({
           setShowModal(false);
         });
     } else {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .create(
           {
             studentId: student.id,
@@ -941,15 +959,13 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <H4 pb="1"  color={"attendanceCardText.400"}>
+                    <H4 pb="1" color={"attendanceCardText.400"}>
                       {day.format("ddd")}
                     </H4>
                   ) : (
                     ""
                   )}
-                  <H4 color={"attendanceCardText.500"}>
-                    {day.format("DD")}
-                  </H4>
+                  <H4 color={"attendanceCardText.500"}>{day.format("DD")}</H4>
                 </VStack>
               ) : (
                 <HStack alignItems={"center"} space={1}>

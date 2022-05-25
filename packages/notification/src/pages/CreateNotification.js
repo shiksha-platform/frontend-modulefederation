@@ -137,7 +137,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
           fontSize: "16px",
           fontWeight: "500",
           textTransform: "inherit",
-          py:"7px"
+          py: "7px",
         },
       }}
       _footer={footerLinks}
@@ -165,8 +165,14 @@ const CreateNotification = ({ footerLinks, appName }) => {
           </HStack>
         </Actionsheet.Content>
         <Box bg="white" width={"100%"}>
-        <Box px="5" >
-              <HStack py="5" borderBottomWidth="1" borderColor="gray.200" alignItems="center" space="1">
+          <Box px="5">
+            <HStack
+              py="5"
+              borderBottomWidth="1"
+              borderColor="gray.200"
+              alignItems="center"
+              space="1"
+            >
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
@@ -178,7 +184,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
               </Text>
             </HStack>
           </Box>
-          <VStack p="5" space={6} >
+          <VStack p="5" space={6}>
             <Text fontSize="14" fontWeight="600">
               {t("NOTICE")}
             </Text>

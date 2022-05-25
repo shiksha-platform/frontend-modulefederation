@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, Box, Pressable, VStack } from 'native-base'
-import { Animated, Dimensions } from 'react-native-web'
+import { Animated } from 'react-native-web'
 
 export default function Tab({ routes, _box }) {
   const [index, setIndex] = React.useState(0)

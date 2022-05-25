@@ -9,8 +9,6 @@ import {
   Pressable,
   PresenceTransition,
 } from "native-base";
-import * as teacherServiceRegistry from "../services/teacherServiceRegistry";
-import * as attendanceServiceRegistry from "../services/attendanceServiceRegistry";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
@@ -21,6 +19,8 @@ import {
   Layout,
   Menu,
   telemetryFactory,
+  teacherRegistryService,
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "components/SelfAttedanceSheet";
@@ -45,42 +45,43 @@ export default function Profile({ footerLinks, appName }) {
       if (!ignore) {
         const resultTeacher = await teacherServiceRegistry.getOne();
         setTeacherObject(resultTeacher);
-      let thisMonthParams = {
-        fromDate: moment().startOf("month").format("YYYY-MM-DD"),
-        toDate: moment().format("YYYY-MM-DD"),
-        userId: localStorage.getItem("id"),
-      };
-      const thisDiffDays = moment(thisMonthParams.toDate).diff(
-        thisMonthParams.fromDate,
-        "Days"
-      );
-      const thisMonthAttendance = await attendanceServiceRegistry.getAll(
-        thisMonthParams
-      );
+        let thisMonthParams = {
+          fromDate: moment().startOf("month").format("YYYY-MM-DD"),
+          toDate: moment().format("YYYY-MM-DD"),
+          userId: localStorage.getItem("id"),
+        };
+        const thisDiffDays = moment(thisMonthParams.toDate).diff(
+          thisMonthParams.fromDate,
+          "Days"
+        );
+        const thisMonthAttendance = await attendanceRegistryService.getAll(
+          thisMonthParams
+        );
 
-      const thisMonthCount = thisMonthAttendance.filter(
-        (e) => e.attendance === "Present"
-      ).length;
-      const thisPersantage = (thisMonthCount * 100) / thisDiffDays;
+        const thisMonthCount = thisMonthAttendance.filter(
+          (e) => e.attendance === "Present"
+        ).length;
+        const thisPersantage = (thisMonthCount * 100) / thisDiffDays;
 
-      let lastMonthDays = calendar(-1, "monthInDays");
-      let lastMonthParams = {
-        fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
-        toDate: lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
-        userId: localStorage.getItem("id"),
-      };
-      const lastDiffDays = moment(lastMonthParams.toDate).diff(
-        lastMonthParams.fromDate,
-        "Days"
-      );
-      const lastMonthAttendance = await attendanceServiceRegistry.getAll(
-        lastMonthParams
-      );
+        let lastMonthDays = calendar(-1, "monthInDays");
+        let lastMonthParams = {
+          fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
+          toDate:
+            lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
+          userId: localStorage.getItem("id"),
+        };
+        const lastDiffDays = moment(lastMonthParams.toDate).diff(
+          lastMonthParams.fromDate,
+          "Days"
+        );
+        const lastMonthAttendance = await attendanceRegistryService.getAll(
+          lastMonthParams
+        );
 
-      const lastMonthCount = lastMonthAttendance.filter(
-        (e) => e.attendance === "Present"
-      ).length;
-      const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
+        const lastMonthCount = lastMonthAttendance.filter(
+          (e) => e.attendance === "Present"
+        ).length;
+        const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
 
         setAttendance({
           thisMonth: thisPersantage,
@@ -109,7 +110,7 @@ export default function Profile({ footerLinks, appName }) {
     capture("START", telemetryData);
     navigate("/profile/attendance");
   };
-console.log(teacherObject)
+
   return (
     <Layout
       imageUrl={`${window.location.origin}/class.png`}
@@ -133,7 +134,7 @@ console.log(teacherObject)
                   </Text>
 
                   <Text color="gray.100" fontWeight="700" fontSize="2xl">
-                    {teacherObject?.firstName +" "+ teacherObject?.lastName}
+                    {teacherObject?.firstName + " " + teacherObject?.lastName}
                   </Text>
                 </VStack>
                 <HStack>
@@ -154,7 +155,7 @@ console.log(teacherObject)
               title: t("TAKE_ATTENDANCE"),
               icon: "CalendarCheckLineIcon",
               boxMinW: "177px",
-              _text:{minW:"115px"},
+              _text: { minW: "115px" },
               onPress: (e) => handalSelfAttendance(),
             },
           ]}
@@ -180,9 +181,13 @@ console.log(teacherObject)
           <Stack space={5}>
             <AttendanceSummaryCard {...attendance} />
             <Stack px="5">
-            <Button flex="1" variant="outline" onPress={(e) => handalReportTelemetry()}>
-              {t("ATTENDANCE_REPORTS")}
-            </Button>
+              <Button
+                flex="1"
+                variant="outline"
+                onPress={(e) => handalReportTelemetry()}
+              >
+                {t("ATTENDANCE_REPORTS")}
+              </Button>
             </Stack>
           </Stack>
         </Section>

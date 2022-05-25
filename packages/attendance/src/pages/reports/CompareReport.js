@@ -23,12 +23,12 @@ import {
   capture,
   telemetryFactory,
   calendar,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
@@ -59,8 +59,8 @@ export default function ClassReportDetail({ footerLinks, appName }) {
       if (!ignore && compare) {
         setThisTitle(compare === "week" ? t("THIS_WEEK") : t("THIS_MONTH"));
         setLastTitle(compare === "week" ? t("LAST_WEEK") : t("LAST_MONTH"));
-        let classObj = await classServiceRegistry.getOne({ id: classId });
-        const studentData = await studentServiceRegistry.getAll({ classId });
+        let classObj = await classRegistryService.getOne({ id: classId });
+        const studentData = await studentRegistryService.getAll({ classId });
         setClassObject(classObj);
         setStudents(studentData);
         const { attendanceData, workingDaysCount } = await getAttendance(
@@ -75,7 +75,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
         setCompareAttendance(newCompareAttendance);
 
         setPresentStudents(
-          await studentServiceRegistry.setDefaultValue(
+          await studentRegistryService.setDefaultValue(
             getStudentsPresentAbsent(
               attendanceData,
               studentData,
@@ -84,7 +84,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           )
         );
         setAbsentStudents(
-          await studentServiceRegistry.setDefaultValue(
+          await studentRegistryService.setDefaultValue(
             getStudentsPresentAbsent(attendanceData, studentData, 3, "Absent")
           )
         );
@@ -139,7 +139,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("MY_CLASSES"),
+        title: t("MY_CLASS"),
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500 },
         iconComponent: (
@@ -473,7 +473,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           isOpen={showModal}
           _backdrop={{ opacity: "0.9", bg: "gray.500" }}
         >
-          <Actionsheet.Content p="0" alignItems={"left"} bg="#FFCAAC">
+          <Actionsheet.Content p="0" alignItems={"left"} bg="reportCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
                 <Text color={"black"} fontSize="16px" fontWeight={"600"}>
@@ -482,7 +482,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color="#875234"
+                color="reportCard.800"
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>
