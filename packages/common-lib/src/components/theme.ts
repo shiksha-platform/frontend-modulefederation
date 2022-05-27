@@ -94,7 +94,7 @@ const DEFAULT_THEME = {
       500: '#FDDFD8',
       600: '#feefeb',
       700: '#B9FBC0',
-      800: '#FDF2EE',
+      800: '#FDF2EE'
     },
     calendarBtncolor: {
       500: '#BCBCBC'

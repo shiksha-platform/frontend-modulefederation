@@ -276,7 +276,7 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg="viewNotification.700">
+          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
                 <H2 fontWeight="500">
