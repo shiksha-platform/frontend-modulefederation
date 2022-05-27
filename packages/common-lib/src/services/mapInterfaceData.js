@@ -4,19 +4,19 @@ export default function interfaceData(
   reverse = false,
   only = true
 ) {
-  const data = {};
+  const data = {}
   for (var [key1, value1] of Object.entries(formate)) {
     if (!reverse) {
-      if (key1 === "mergeParameterWithDefaultValue") {
+      if (key1 === 'mergeParameterWithDefaultValue') {
         for (var [mKey1, mValue1] of Object.entries(value1)) {
-          data[mKey1] = mValue1;
+          data[mKey1] = mValue1
         }
-      } else if (key1 === "mergeParameterWithValue") {
+      } else if (key1 === 'mergeParameterWithValue') {
         for (var [mvKey1, mvValue1] of Object.entries(value1)) {
-          data[mvKey1] = element[mvValue1];
+          data[mvKey1] = element[mvValue1]
         }
       } else {
-        data[key1] = element[value1];
+        data[key1] = element[value1]
       }
     } else {
       if (only) {
@@ -26,7 +26,7 @@ export default function interfaceData(
           formate?.onlyParameter.includes(key1)
         ) {
           if (element[key1]) {
-            data[value1] = element[key1];
+            data[value1] = element[key1]
           }
         } else if (
           !formate?.onlyParameter &&
@@ -34,11 +34,11 @@ export default function interfaceData(
           !formate?.removeParameter.includes(key1)
         ) {
           if (element[key1]) {
-            data[value1] = element[key1];
+            data[value1] = element[key1]
           }
-        } else if (element[key1]) data[value1] = element[key1];
-      } else data[value1] = element[key1];
+        } else if (element[key1]) data[value1] = element[key1]
+      } else data[value1] = element[key1]
     }
   }
-  return data;
+  return data
 }

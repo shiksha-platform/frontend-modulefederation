@@ -1,5 +1,11 @@
 import React from "react";
-import { Collapsible, IconByName } from "@shiksha/common-lib";
+import {
+  Collapsible,
+  IconByName,
+  attendanceRegistryService,
+  ProgressBar,
+  getUniqAttendance,
+} from "@shiksha/common-lib";
 import {
   HStack,
   Text,
@@ -10,15 +16,16 @@ import {
   Button,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import * as attendanceServiceRegistry from "./../../../services/attendanceServiceRegistry";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 const PRESENT = "Present";
+const ABSENT = "Absent";
+const UNMARKED = "Unmarked";
 
 const ClassAttendanceCard = ({ classId, students }) => {
   const { t } = useTranslation();
-  const [presentAttendance, setPresentAttendance] = React.useState([]);
+  const [progressAttendance, setProgressAttendance] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -28,16 +35,35 @@ const ClassAttendanceCard = ({ classId, students }) => {
         toDate: moment().format("YYYY-MM-DD"),
         // groupId: classId,
       };
-      let attendanceData = await attendanceServiceRegistry.getAll(params);
-      setPresentAttendance(
-        attendanceData.filter((e) => e.attendance === PRESENT)
-      );
+      let attendanceData = await attendanceRegistryService.getAll(params);
+      let lengthAttendance = 0;
+      const data = [PRESENT, ABSENT, UNMARKED].map((item, index) => {
+        const attendance = getUniqAttendance(attendanceData, item, students);
+        let count = 0;
+        lengthAttendance += attendance.length;
+        if (item === UNMARKED) {
+          count = attendance.length + (students.length - lengthAttendance);
+        } else {
+          count = attendance.length;
+        }
+        return {
+          name: count + " " + item,
+          color: `attendance${item}.500`,
+          value: count,
+        };
+      });
+
+      setProgressAttendance(data);
     };
     getData();
-  }, []);
+  }, [students]);
 
   return (
-    <Collapsible defaultCollapse={true} header={t("CLASS_ATTENDANCE")}>
+    <Collapsible
+      defaultCollapse={true}
+      header={t("CLASS_ATTENDANCE")}
+      fontSize="2px"
+    >
       <VStack p="2" space={4}>
         <Box bg={"gray.100"} rounded={"md"} p="4">
           <VStack space={2}>
@@ -45,22 +71,13 @@ const ClassAttendanceCard = ({ classId, students }) => {
               <Text bold>{t("STATUS")}</Text>
               <IconByName name="More2LineIcon" />
             </HStack>
-            <Progress
-              value={presentAttendance?.length}
-              max={students?.length}
-              my="4"
-              size={"2xl"}
-              colorScheme="green"
-              bg="button.400"
-            >
-              {presentAttendance?.length ? (
-                <Text color="white">
-                  {presentAttendance?.length} {t("PRESENT")}
-                </Text>
-              ) : (
-                ""
-              )}
-            </Progress>
+            <ProgressBar
+              isTextInBar
+              h="50px"
+              _bar={{ rounded: "" }}
+              isLabelCountHide
+              data={progressAttendance}
+            />
             <HStack justifyContent={"space-between"} alignItems="center">
               {/* <Text>{t("GRADE") + ": " + t("GOOD")}</Text> */}
               <Text>

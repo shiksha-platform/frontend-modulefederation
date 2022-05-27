@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Box, Text, HStack, Center, Stack } from 'native-base'
 import IconByName from '../IconByName'
 import { useTranslation } from 'react-i18next'

@@ -6,27 +6,19 @@ import {
   calendar,
   H1,
   H3,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import {
-  Box,
-  FlatList,
-  HStack,
-  Stack,
-  Text,
-  VStack,
-  Button,
-} from "native-base";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
 } from "components/AttendanceComponent";
-import * as studentServiceRegistry from "../services/studentServiceRegistry";
-import * as classServiceRegistry from "../services/classServiceRegistry";
 import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
@@ -50,6 +42,7 @@ export default function Attendance({ footerLinks, appName }) {
   const teacherId = localStorage.getItem("id");
   const [attendanceStartTime, setAttendanceStartTime] = useState();
   const [unmarkStudents, setUnmarkStudents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let studentIds = attendance
@@ -79,12 +72,12 @@ export default function Attendance({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     async function getData() {
-      const studentData = await studentServiceRegistry.getAll({ classId });
+      const studentData = await studentRegistryService.getAll({ classId });
 
       setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)
-        setClassObject(await classServiceRegistry.getOne({ id: classId }));
+        setClassObject(await classRegistryService.getOne({ id: classId }));
 
       setSms(
         studentData.map((e, index) => ({
@@ -168,45 +161,44 @@ export default function Attendance({ footerLinks, appName }) {
         setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
-          <Link
-            to="/attendance/report"
-            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
+          <Button
+            variant="outline"
+            rounded="full"
+            px={5}
+            py={1}
+            bg="viewNotification.600"
+            alignItems="center"
+            rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
+            onPress={(e) => navigate("/attendance/report")}
           >
-            <Box
-              rounded="full"
-              borderColor="button.500"
-              borderWidth="1"
-              _text={{ color: "button.500" }}
-              px={6}
-              py={2}
-            >
-              {t("REPORT")}
-            </Box>
-          </Link>
+            {t("REPORT")}
+          </Button>
         ),
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={
-        <Link
-          to={`/students/class/${classId}`}
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
-        >
-          <HStack space="4" justifyContent="space-between">
-            <VStack>
-              <H1>{classObject?.title ? classObject?.title : ""}</H1>
-              <H3>
-                {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
-              </H3>
-            </VStack>
-            <IconByName size="sm" name="ArrowRightSLineIcon" />
-          </HStack>
-        </Link>
+        <HStack p={1} space="4" justifyContent="space-between">
+          <VStack>
+            <H1 fontSize="16" fontWeight="600">
+              {classObject?.title ? classObject?.title : ""}
+            </H1>
+            <H3 fontSize="12" fontWeight="400">
+              {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
+            </H3>
+          </VStack>
+          <IconByName
+            size="sm"
+            mt="8px"
+            name="ArrowRightSLineIcon"
+            onPress={(e) => navigate(`/students/class/${classId}`)}
+          />
+        </HStack>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
       _footer={footerLinks}
     >
       <Stack space={1}>
-        <Box bg="white" px="5" py="30">
+        <Box bg="white" px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <WeekWiesBar
               setPage={setWeekPage}
@@ -246,9 +238,16 @@ export default function Attendance({ footerLinks, appName }) {
                 <IconByName
                   name={isEditDisabled ? "PencilLineIcon" : "CheckLineIcon"}
                   isDisabled
+                  _icon={{ width: "18", height: "18" }}
+                  w="18px"
+                  h="18px"
                 />
               }
-              _text={{ fontWeight: "400" }}
+              _text={{
+                fontSize: "14px",
+                fontWeight: "500",
+                textTransform: "capitalize",
+              }}
               onPress={(e) => {
                 newSetIsEditDisabled(!isEditDisabled);
               }}

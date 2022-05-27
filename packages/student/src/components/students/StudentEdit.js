@@ -11,10 +11,15 @@ import {
   VStack,
   Select,
 } from "native-base";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
-import * as teacherServiceRegistry from "../../services/teacherServiceRegistry";
 import { useTranslation } from "react-i18next";
-import { IconByName, H1, H2, H3 } from "@shiksha/common-lib";
+import {
+  IconByName,
+  H1,
+  H2,
+  H3,
+  teacherRegistryService,
+  studentRegistryService,
+} from "@shiksha/common-lib";
 
 // Start editing here, save and see your changes.
 export default function StudentEdit({
@@ -113,14 +118,14 @@ export default function StudentEdit({
       if (editChangeState) {
         let result = {};
         if (type && type === "Teacher") {
-          result = await teacherServiceRegistry.update(object, {
+          result = await teacherRegistryService.update(object, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
             onlyParameter: [...onlyParameter, "fullName"],
           });
         } else {
-          result = await studentServiceRegistry.update(object, {
+          result = await studentRegistryService.update(object, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
@@ -181,8 +186,11 @@ export default function StudentEdit({
           <Button
             variant="ghost"
             colorScheme="button"
-            endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
-            _text={{ fontWeight: "400" }}
+            _text={{
+              fontWeight: "600",
+              fontSize: "14px",
+              textTransform: "capitalzise",
+            }}
             py={1}
             px={2}
             onPress={(e) => setEditState(true)}
@@ -196,7 +204,7 @@ export default function StudentEdit({
         {formInputs.map((item, index) => {
           return (
             <Stack
-              p="5"
+              p="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
               borderColor={"coolGray.200"}
               key={index}
@@ -204,7 +212,11 @@ export default function StudentEdit({
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3 fontWeight="500" color={"coolGray.400"}>
+                    <H3
+                      fontWeight="500"
+                      color={"coolGray.400"}
+                      textTransform={"uppercase"}
+                    >
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
@@ -245,7 +257,12 @@ export default function StudentEdit({
                 </FormControl>
               ) : (
                 <>
-                  <H3 fontWeight="500" color={"coolGray.400"} pb="2">
+                  <H3
+                    fontWeight="500"
+                    color={"coolGray.400"}
+                    textTransform={"uppercase"}
+                    pb="2"
+                  >
                     {item.placeholder}
                   </H3>
                   {item.value ? (

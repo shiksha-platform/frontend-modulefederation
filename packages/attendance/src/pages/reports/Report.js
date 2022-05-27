@@ -1,5 +1,4 @@
-import moment from "moment";
-import { Box, HStack, Menu, Pressable, Text, VStack } from "native-base";
+import { Box, Menu, Button, Text, VStack } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
@@ -9,12 +8,12 @@ import {
   Collapsible,
   capture,
   calendar,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import manifest from "../../manifest.json";
 
 export default function Report({ footerLinks }) {
@@ -27,12 +26,13 @@ export default function Report({ footerLinks }) {
   const [calendarView, setCalendarView] = useState("days");
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
   const titleName = t("ATTENDANCE_REPORTS");
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
 
     const getData = async () => {
-      let responceClass = await classServiceRegistry.getAll({
+      let responceClass = await classRegistryService.getAll({
         teacherId: teacherId,
         type: "class",
         role: "teacher",
@@ -71,7 +71,7 @@ export default function Report({ footerLinks }) {
     };
     const attendanceData = await GetAttendance(params);
     setAttendance({ ...attendance, [classId]: attendanceData });
-    const studentData = await studentServiceRegistry.getAll({ classId });
+    const studentData = await studentRegistryService.getAll({ classId });
     setStudents({ ...students, [classId]: studentData });
   };
 
@@ -93,27 +93,33 @@ export default function Report({ footerLinks }) {
             placement="bottom right"
             trigger={(triggerProps) => {
               return (
-                <Pressable
-                  accessibilityLabel="More options menu"
+                <Button
                   {...triggerProps}
+                  rounded="20"
+                  px={5}
+                  py="7px"
+                  _text={{
+                    color: "white",
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                    fontWeight: "500",
+                    textTransform: "capitalize",
+                  }}
+                  rightIcon={
+                    <IconByName
+                      color="white"
+                      name="ArrowDownSLineIcon"
+                      isDisabled
+                      p="0"
+                    />
+                  }
                 >
-                  <Box rounded={"full"} px="5" py="2" bg="button.500">
-                    <HStack space="2">
-                      <Text color="white" fontSize="14" fontWeight="500">
-                        {calendarView === "monthInDays"
-                          ? t("MONTH_VIEW")
-                          : calendarView === "week"
-                          ? t("WEEK_VIEW")
-                          : t("TODAY_VIEW")}
-                      </Text>
-                      <IconByName
-                        color="white"
-                        name="ArrowDownSLineIcon"
-                        isDisabled
-                      />
-                    </HStack>
-                  </Box>
-                </Pressable>
+                  {calendarView === "monthInDays"
+                    ? t("MONTH_VIEW")
+                    : calendarView === "week"
+                    ? t("WEEK_VIEW")
+                    : t("TODAY_VIEW")}
+                </Button>
               );
             }}
           >
@@ -180,33 +186,22 @@ export default function Report({ footerLinks }) {
                   </Text>
                   {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
                 </Text>
-                <Link
-                  style={{
-                    color: "rgb(63, 63, 70)",
-                    textDecoration: "none",
-                  }}
-                  to={
-                    "/attendance/report/" +
-                    (item.id.startsWith("1-")
-                      ? item.id.replace("1-", "")
-                      : item.id) +
-                    "/" +
-                    calendarView
+                <Button
+                  variant="outline"
+                  colorScheme={"button"}
+                  onPress={(e) =>
+                    navigate(
+                      "/attendance/report/" +
+                        (item.id.startsWith("1-")
+                          ? item.id.replace("1-", "")
+                          : item.id) +
+                        "/" +
+                        calendarView
+                    )
                   }
                 >
-                  <Box
-                    rounded="lg"
-                    borderWidth="1"
-                    px={6}
-                    py={2}
-                    mt="2"
-                    textAlign={"center"}
-                    borderColor={"button.500"}
-                    _text={{ color: "button.500" }}
-                  >
-                    {t("SEE_FULL_REPORT")}
-                  </Box>
-                </Link>
+                  {t("SEE_FULL_REPORT")}
+                </Button>
               </VStack>
             </Collapsible>
           </Box>

@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { capture, Layout, Menu } from "@shiksha/common-lib";
+import {
+  capture,
+  Layout,
+  Menu,
+  classRegistryService,
+  studentRegistryService,
+} from "@shiksha/common-lib";
 import { Stack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import manifest from "../../manifest.json";
 import ClassStudentsPanel from "./Molecules/ClassStudentsPanel";
 import ClassSubjectsPanel from "./Molecules/ClassSubjectsPanel";
@@ -16,18 +20,23 @@ const ClassDetails = ({ footerLinks }) => {
   const { t } = useTranslation();
   const [students, setStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
+  const [loading, setLoading] = useState(true);
   const { classId } = useParams();
 
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      setStudents(await studentServiceRegistry.getAll({ classId }));
-
-      let classObj = await classServiceRegistry.getOne({ id: classId });
-      if (!ignore) setClassObject(classObj);
+      setStudents(await studentRegistryService.getAll({ classId }));
+      await getClass();
+      setLoading(false);
     };
     getData();
   }, [classId]);
+
+  const getClass = async () => {
+    let classObj = await classRegistryService.getOne({ id: classId });
+    setClassObject(classObj);
+  };
 
   React.useEffect(() => {
     capture("PAGE");
@@ -35,8 +44,16 @@ const ClassDetails = ({ footerLinks }) => {
 
   return (
     <Layout
-      imageUrl={`${window.location.origin}/class.png`}
-      _header={_header(classObject.name)}
+      imageUrl={
+        !loading
+          ? classObject.image && classObject.image !== ""
+            ? `${manifest.api_url}/files/${encodeURIComponent(
+                classObject.image
+              )}`
+            : `${window.location.origin}/class.png`
+          : ""
+      }
+      _header={_header({ name: classObject.name, classId, getClass })}
       _appBar={{ languages: manifest.languages }}
       subHeader={
         <Menu
@@ -47,6 +64,7 @@ const ClassDetails = ({ footerLinks }) => {
               keyId: 1,
               title: t("TAKE_ATTENDANCE"),
               icon: "CalendarCheckLineIcon",
+              _text: { minW: "115px" },
               route: "/attendance/:id",
               boxMinW: "200px",
             },

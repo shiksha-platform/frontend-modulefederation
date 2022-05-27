@@ -38,9 +38,9 @@ export default function Header({
           {iconComponent ? (
             iconComponent
           ) : avatar ? (
-            <Avatar bg='amber.500'>
+            <Avatar bg='amber.500' borderRadius='5px'>
               {newAvatar?.toUpperCase().substr(0, 2)}
-              <Avatar.Badge bg='green.500' top='0' />
+              {/* <Avatar.Badge bg='green.500'  /> */}
             </Avatar>
           ) : (
             <React.Fragment />

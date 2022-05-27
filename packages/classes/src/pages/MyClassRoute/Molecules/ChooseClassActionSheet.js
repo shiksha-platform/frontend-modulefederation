@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, useDisclose, Actionsheet, Link } from "native-base";
+import { useDisclose, Button, Actionsheet } from "native-base";
 import { useTranslation } from "react-i18next";
-import * as classServiceRegistry from "../../../services/classServiceRegistry";
+import { classRegistryService } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 
 const ChooseClassActionSheet = () => {
@@ -12,7 +12,7 @@ const ChooseClassActionSheet = () => {
     let ignore = false;
     async function getData() {
       setClasses(
-        await classServiceRegistry.getAllData({
+        await classRegistryService.getAllData({
           filters: { schoolId: { eq: 1 } },
         })
       );
@@ -26,19 +26,9 @@ const ChooseClassActionSheet = () => {
   const { isOpen, onOpen, onClose } = useDisclose();
   return (
     <>
-      <Link onPress={onOpen}>
-        <Box
-          rounded="lg"
-          borderColor="button.500"
-          borderWidth="1"
-          _text={{ color: "button.500" }}
-          px={4}
-          py={2}
-          style={{ textTransform: "uppercase" }}
-        >
-          {t("CHOOSE_ANOTHER_CLASS")}
-        </Box>
-      </Link>
+      <Button variant="outline" onPress={onOpen}>
+        {t("CHOOSE_ANOTHER_CLASS")}
+      </Button>
 
       <Actionsheet isOpen={isOpen} onClose={onClose}>
         <Actionsheet.Content>

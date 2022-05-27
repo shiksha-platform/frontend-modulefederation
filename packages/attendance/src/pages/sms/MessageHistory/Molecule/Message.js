@@ -49,7 +49,7 @@ const Message = ({ item, isDisableRetry }) => {
             ""
           )}
         </HStack>
-        <H4 fontWeight="500" color="#B5B5C8">
+        <H4 fontWeight="500" color="blueGray.400">
           {moment(item.date).format("Do MMM, hh:ssa")}
         </H4>
         <H3 fontWeight="400">{item.message}</H3>

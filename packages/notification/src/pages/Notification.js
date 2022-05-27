@@ -72,7 +72,10 @@ const Notification = ({ footerLinks, appName }) => {
             rounded="full"
             colorScheme="button"
             variant="outline"
+            bg="rgba(254, 239, 235, 1)"
             px="5"
+            py="7px"
+            _text={{ textTransform: "capitalize", fontSize: "14px" }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalInbox(true)}
           >
@@ -84,6 +87,7 @@ const Notification = ({ footerLinks, appName }) => {
       subHeader={t("VIEW_YOUR_INCOMING_NOTIFICATIONS")}
       _subHeader={{
         bg: "classCard.500",
+        py: "22px",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -97,7 +101,12 @@ const Notification = ({ footerLinks, appName }) => {
           <Box bg="white" p="5">
             <HStack justifyContent="space-between" alignItems="center">
               <CalendarBar {...{ page, setPage }} />
-              <Checkbox colorScheme="button" _text={{ color: "button.500" }}>
+              <Checkbox
+                colorScheme="button"
+                borderColor="button.500"
+                borderRadius="0"
+                _text={{ color: "button.500" }}
+              >
                 {t("MARK_ALL_READ")}
               </Checkbox>
             </HStack>
@@ -110,6 +119,7 @@ const Notification = ({ footerLinks, appName }) => {
                   colorScheme="button"
                   variant="outline"
                   px="5"
+                  _text={{ textTransform: "capitalize" }}
                   onPress={(e) => setFiltered(true)}
                 >
                   {t("FILTER")}
@@ -201,20 +211,25 @@ const Notification = ({ footerLinks, appName }) => {
         >
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
+              <Stack p={5} pt={1} pb="2px">
                 <Text fontSize="16px" fontWeight={"600"}>
                   {t("NOTIFCATION_ACTION")}
                 </Text>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
+                color="classCard.900"
                 onPress={(e) => setShowModalMore(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg="white" width={"100%"}>
-            <Text p="5">{t("MARK_AS_READ")}</Text>
-            <Text p="5">{t("DELETE_MESSAGES")}</Text>
+          <Box bg="white" width={"100%"} _text={{}}>
+            <Text p="5" fontSize="14px" fontWeight="500" color="gray.500">
+              {t("MARK_AS_READ")}
+            </Text>
+            <Text p="5" fontSize="14px" fontWeight="500" color="gray.500">
+              {t("DELETE_MESSAGES")}
+            </Text>
             <Box p="5">
               <Button
                 colorScheme="button"
@@ -232,13 +247,14 @@ const Notification = ({ footerLinks, appName }) => {
         >
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
+              <Stack p={5} pt={1} pb="2px">
                 <Text fontSize="16px" fontWeight={"600"}>
                   {t("NOTIFCATION_ACTION")}
                 </Text>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
+                color="classCard.900"
                 onPress={(e) => setShowModalInbox(false)}
               />
             </HStack>
@@ -262,24 +278,32 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+          <Actionsheet.Content alignItems={"left"} bg="viewNotification.500">
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
+              <Stack p={5} pt={1} pb="2px">
                 <Text fontSize="16px" fontWeight={"600"}>
                   {t("VIEW_NOTIFCATION")}
                 </Text>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
+                color="classCard.900"
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
-            <Box p="5" borderBottomWidth="1" borderColor="gray.200">
-              <HStack alignItems="center" space="1">
+            <Box px="5">
+              <HStack
+                py="5"
+                borderBottomWidth="1"
+                borderColor="gray.200"
+                alignItems="center"
+                space="1"
+              >
                 <IconByName
                   _icon={{ size: "16" }}
+                  color="classCard.900"
                   name="CheckDoubleLineIcon"
                   isDisabled
                 />
@@ -288,7 +312,7 @@ const Notification = ({ footerLinks, appName }) => {
                 </Text>
               </HStack>
             </Box>
-            <VStack p="5" space={4} shadow="1">
+            <VStack p="5" space={6}>
               <Text fontSize="14" fontWeight="600">
                 {t("NOTICE")}
               </Text>
@@ -296,7 +320,7 @@ const Notification = ({ footerLinks, appName }) => {
                 {notification?.text}
               </Text>
             </VStack>
-            <Box p="5">
+            <Box bg="white" p="5" bottom="0" shadow="2">
               <Button
                 colorScheme="button"
                 _text={{ color: "white" }}
@@ -317,6 +341,7 @@ const Notification = ({ footerLinks, appName }) => {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
+                color="classCard.900"
                 onPress={(e) => setFilterData()}
               />
             </HStack>

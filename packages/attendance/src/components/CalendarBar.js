@@ -226,8 +226,8 @@ const Display = ({
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
-                : "gray.400"
+                  : "coolGray.500"
+                : "gray.900"
             }
             name="ArrowRightSLineIcon"
             onPress={(e) => {

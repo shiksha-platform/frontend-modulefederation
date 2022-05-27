@@ -71,13 +71,46 @@ const DEFAULT_THEME = {
         rounded: 'lg'
       },
       defaultProps: {
-        colorScheme: 'button'
+        colorScheme: 'button',
+        _text: {
+          textTransform: 'uppercase',
+          fontSize: '12px',
+          fontWeight: '600'
+        }
       }
     }
   },
   colors: {
+    widgetColor: {
+      400: '#7F9DAC',
+      500: '#DDD8F3',
+      600: '#FFE2CC',
+      700: '#CCE7FF',
+      800: '#C4F2C5',
+      900: '#CDDAFD',
+      1000: '#FFC6FF'
+    },
+    viewNotification: {
+      500: '#FDDFD8',
+      600: '#feefeb'
+    },
+    calendarBtncolor: {
+      500: '#BCBCBC'
+    },
+    selfAicon: {
+      500: '#545454'
+    },
+    iconColor: {
+      500: '#aba0db',
+      600: '#c3916c',
+      700: '#83b0d7',
+      800: '#5eb05f',
+      900: '#7c8dbc',
+      1000: '#ea5fff'
+    },
     studentCard: {
-      500: '#B9FBC0'
+      500: '#B9FBC0',
+      800: '#5B7E5F'
     },
     successAlert: {
       500: '#B9FBC0'
@@ -86,10 +119,12 @@ const DEFAULT_THEME = {
       500: '#0D921B'
     },
     classCard: {
-      500: '#D9F0FC'
+      500: '#D9F0FC',
+      900: '#7F9DAC'
     },
     attendanceCard: {
-      500: '#C9AFF4'
+      500: '#C9AFF4',
+      600: '#18181b66'
     },
     attendanceCardText: {
       400: '#9C9EA0',
@@ -97,7 +132,8 @@ const DEFAULT_THEME = {
     },
     reportCard: {
       100: '#FFF9F9',
-      500: '#FFCAAC'
+      500: '#FFCAAC',
+      800: '#875234'
     },
     present: green,
     presentCardBg: {
@@ -173,6 +209,10 @@ const DEFAULT_THEME = {
     },
     timeTableCardOrange: {
       500: '#FFF7F5'
+    },
+    startIconColor: {
+      500: '#FFC326',
+      700: '#E78D12'
     },
     timeTableFlashIcon: {
       100: '#BDB3E7',

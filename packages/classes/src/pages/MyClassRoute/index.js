@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, HStack, VStack } from "native-base";
+import { Box, HStack, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { generatePath, Navigate, useNavigate } from "react-router-dom";
-import { Widget } from "@shiksha/common-lib";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
+import { generatePath } from "react-router-dom";
+import { Widget, classRegistryService } from "@shiksha/common-lib";
 import ChooseClassActionSheet from "./Molecules/ChooseClassActionSheet";
 
 const MyClassRoute = () => {
   const { t } = useTranslation();
   const [classes, setClasses] = useState([]);
   const teacherId = localStorage.getItem("id");
-  const navigate = useNavigate();
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
       if (!ignore) {
         setClasses(
-          await classServiceRegistry.getAll({
+          await classRegistryService.getAll({
             teacherId: teacherId,
             type: "class",
             role: "teacher",

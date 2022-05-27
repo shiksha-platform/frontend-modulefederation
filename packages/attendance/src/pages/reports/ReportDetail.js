@@ -13,11 +13,9 @@ import {
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "../../components/CalendarBar";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import ReportSummary from "../../components/ReportSummary";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -29,6 +27,8 @@ import {
   capture,
   telemetryFactory,
   calendar,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 
 export default function ReportDetail({ footerLinks, appName }) {
@@ -68,9 +68,9 @@ export default function ReportDetail({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      let classObj = await classServiceRegistry.getOne({ id: classId });
+      let classObj = await classRegistryService.getOne({ id: classId });
       if (!ignore) setClassObject(classObj);
-      const studentData = await studentServiceRegistry.getAll({ classId });
+      const studentData = await studentRegistryService.getAll({ classId });
       setStudents(studentData);
       await getPresentStudents(studentData);
       await getAbsentStudents(studentData);
@@ -115,7 +115,7 @@ export default function ReportDetail({ footerLinks, appName }) {
       present.map((e) => e.id).includes(e.id)
     );
     setPresentStudents(
-      await studentServiceRegistry.setDefaultValue(presentNew)
+      await studentRegistryService.setDefaultValue(presentNew)
     );
   };
 
@@ -136,7 +136,7 @@ export default function ReportDetail({ footerLinks, appName }) {
     let absentNew = students.filter((e) =>
       absent.map((e) => e.id).includes(e.id)
     );
-    setAbsentStudents(await studentServiceRegistry.setDefaultValue(absentNew));
+    setAbsentStudents(await studentRegistryService.setDefaultValue(absentNew));
   };
 
   const getAttendanceForReport = async (e) => {
@@ -178,8 +178,8 @@ export default function ReportDetail({ footerLinks, appName }) {
           >
             <Box
               rounded={"full"}
-              px="5"
-              py="2"
+              px="4"
+              py="1"
               borderColor="button.500"
               borderWidth={1}
             >

@@ -36,7 +36,7 @@ const Collapsible = ({
         >
           <Text
             bold={typeof isHeaderBold === 'undefined' ? true : isHeaderBold}
-            fontSize={typeof isHeaderBold === 'undefined' ? 'md' : ''}
+            fontSize={typeof isHeaderBold === 'undefined' ? 'sm' : ''}
           >
             {header}
           </Text>

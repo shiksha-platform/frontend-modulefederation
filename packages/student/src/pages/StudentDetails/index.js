@@ -1,8 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Text, Stack, Box, HStack, Button } from "native-base";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
-import * as attendanceServiceRegistry from "../../services/attendanceServiceRegistry";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
 import { useTranslation } from "react-i18next";
 import {
   IconByName,
@@ -11,6 +8,9 @@ import {
   capture,
   telemetryFactory,
   H3,
+  studentRegistryService,
+  attendanceRegistryService,
+  classRegistryService,
 } from "@shiksha/common-lib";
 import { useNavigate, useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
@@ -39,11 +39,11 @@ export default function StudentDetails({ footerLinks, appName }) {
 
     const getData = async () => {
       if (!ignore) {
-        let student = await studentServiceRegistry.getOne({ id: studentId });
+        let student = await studentRegistryService.getOne({ id: studentId });
         let newStudent = student;
 
         if (student.currentClassID) {
-          let classObj = await classServiceRegistry.getOne({
+          let classObj = await classRegistryService.getOne({
             id: student.currentClassID,
           });
           newStudent = { ...student, name: classObj.name };
@@ -61,7 +61,7 @@ export default function StudentDetails({ footerLinks, appName }) {
   }, []);
 
   const getAttendance = async (e) => {
-    const attendanceData = await attendanceServiceRegistry.getAll({
+    const attendanceData = await attendanceRegistryService.getAll({
       studentId,
       classId: e.classId ? e.classId : studentObject.currentClassID,
       teacherId,
@@ -182,8 +182,11 @@ export default function StudentDetails({ footerLinks, appName }) {
             <ButtonWrapper
               variant="ghost"
               colorScheme="button"
-              endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
-              _text={{ fontWeight: "400" }}
+              _text={{
+                fontWeight: "600",
+                fontSize: "14px",
+                textTransform: "capitalize",
+              }}
             >
               {t("EDIT")}
             </ButtonWrapper>
@@ -215,8 +218,11 @@ export default function StudentDetails({ footerLinks, appName }) {
             <ButtonWrapper
               variant="ghost"
               colorScheme="button"
-              endIcon={<IconByName name={"PencilLineIcon"} isDisabled />}
-              _text={{ fontWeight: "400" }}
+              _text={{
+                fontWeight: "600",
+                fontSize: "14px",
+                textTransform: "capitalize",
+              }}
             >
               {t("EDIT")}
             </ButtonWrapper>

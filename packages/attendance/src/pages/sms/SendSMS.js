@@ -10,8 +10,6 @@ import {
   Text,
   VStack,
 } from "native-base";
-import * as classServiceRegistry from "../../services/classServiceRegistry";
-import * as studentServiceRegistry from "../../services/studentServiceRegistry";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import DayWiesBar from "../../components/CalendarBar";
 import {
@@ -26,6 +24,8 @@ import {
   capture,
   calendar,
   getStudentsPresentAbsent,
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 
@@ -50,9 +50,9 @@ export default function SendSMS({ footerLinks, appName }) {
     let ignore = false;
 
     const getData = async () => {
-      let classObj = await classServiceRegistry.getOne({ id: classId });
+      let classObj = await classRegistryService.getOne({ id: classId });
       if (!ignore) setClassObject(classObj);
-      const studentData = await studentServiceRegistry.getAll({ classId });
+      const studentData = await studentRegistryService.getAll({ classId });
       setStudents(studentData);
       await getAttendance();
       await getPresentStudents({ students: studentData });
@@ -94,7 +94,7 @@ export default function SendSMS({ footerLinks, appName }) {
       present.map((e) => e.id).includes(e.id)
     );
     setPresentStudents(
-      await studentServiceRegistry.setDefaultValue(presentNew)
+      await studentRegistryService.setDefaultValue(presentNew)
     );
   };
 
@@ -115,7 +115,7 @@ export default function SendSMS({ footerLinks, appName }) {
     let absentNew = students.filter((e) =>
       absent.map((e) => e.id).includes(e.id)
     );
-    setAbsentStudents(await studentServiceRegistry.setDefaultValue(absentNew));
+    setAbsentStudents(await studentRegistryService.setDefaultValue(absentNew));
   };
 
   return (
@@ -250,7 +250,7 @@ export default function SendSMS({ footerLinks, appName }) {
             </Collapsible>
           </Stack>
         </Box>
-        <Box p="2" py="5" bg="white" mb="1">
+        <Box bg="white" p="5" position="sticky" shadow={2}>
           <VStack space={"15px"} alignItems={"center"}>
             <H5 textAlign={"center"} textTransform={"inherit"}>
               <Text bold color={"gray.700"}>
@@ -258,11 +258,12 @@ export default function SendSMS({ footerLinks, appName }) {
               </Text>
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
             </H5>
-            <Button.Group>
-              <Button variant="outline" colorScheme="button">
+            <Button.Group width="100%">
+              <Button flex="1" variant="outline" colorScheme="button">
                 {t("CLOSE")}
               </Button>
               <Button
+                flex="1"
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {

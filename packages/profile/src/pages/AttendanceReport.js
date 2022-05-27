@@ -12,7 +12,6 @@ import {
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
-import * as teacherServiceRegistry from "../services/teacherServiceRegistry";
 import {
   capture,
   IconByName,
@@ -20,6 +19,7 @@ import {
   telemetryFactory,
   ProgressBar,
   calendar,
+  teacherRegistryService,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 
@@ -50,7 +50,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      const resultTeacher = await teacherServiceRegistry.getOne(
+      const resultTeacher = await teacherRegistryService.getOne(
         { id: teacherId },
         { Authorization: "Bearer " + token }
       );
@@ -114,7 +114,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
               activeColor="gray.900"
               setPage={setWeekPage}
               page={weekPage}
-              _box={{ p: 0, bg: "transparent" }}
+              _box={{ p: 2, bg: "transparent" }}
             />
           </Suspense>
         </HStack>
@@ -127,7 +127,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <Box bg="white" p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Text fontSize="16" fontWeight="600">
-              {teacherObject.fullName}
+              {t("MY_ATTENDANCE")}
             </Text>
             <Stack>
               <Button
@@ -165,11 +165,11 @@ export default function AttendanceReport({ footerLinks, appName }) {
                     </Stack>
                     <IconByName
                       name="CloseCircleLineIcon"
+                      color="classCard.900"
                       onPress={(e) => setShowModal(false)}
                     />
                   </HStack>
                 </Actionsheet.Content>
-
                 <Box w="100%" bg="white">
                   {[
                     { name: t("MORNING_SCHOOL"), value: "MORNING_SCHOOL" },
@@ -259,14 +259,8 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </Actionsheet>
         </Box>
         <VStack space={5} bg="white" p="5">
-          <HStack
-            space="4"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottomWidth={1}
-            borderBottomColor={"gray.200"}
-          >
-            <Box py="30px">
+          <HStack space="4" justifyContent="space-between" alignItems="center">
+            <Box py="15px">
               <Text fontSize="16" fontWeight="600">
                 {t("MY_MONTHLY_ATTENDANCE")}
               </Text>
@@ -387,9 +381,6 @@ const CalendarComponent = ({
           <VStack
             key={subIndex}
             alignItems="center"
-            borderWidth={isToday ? "1" : ""}
-            borderColor={isToday ? "button.500" : ""}
-            rounded="lg"
             opacity={
               type && type !== "month" && day.day() !== 0
                 ? 1

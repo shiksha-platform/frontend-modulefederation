@@ -4,6 +4,7 @@ import {
   Loading,
   telemetryFactory,
   useWindowSize,
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import {
   Actionsheet,
@@ -11,7 +12,6 @@ import {
   Button,
   HStack,
   Image,
-  Link,
   Modal,
   Pressable,
   Stack,
@@ -23,7 +23,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Camera from "./Camera";
 import moment from "moment";
-import * as attendanceServiceRegistry from "../services/attendanceServiceRegistry";
 
 const newMarkList = [
   {
@@ -146,7 +145,7 @@ export default function SelfAttedanceSheet({
 
   const handleMarkAttendance = (newAttedance) => {
     if (newAttedance.id) {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .update(
           {
             ...newAttedance,
@@ -182,7 +181,7 @@ export default function SelfAttedanceSheet({
           setAttendance(newAttedance);
         });
     } else {
-      attendanceServiceRegistry
+      attendanceRegistryService
         .create(newAttedance, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -201,7 +200,7 @@ export default function SelfAttedanceSheet({
     async function getData() {
       setMarkList(newMarkList);
       setSpecialDutyList(newSpecialDutyList);
-      const todayAttendanceResult = await attendanceServiceRegistry.getAll({
+      const todayAttendanceResult = await attendanceRegistryService.getAll({
         fromDate: moment().format("YYYY-MM-DD"),
         toDate: moment().format("YYYY-MM-DD"),
         userId: localStorage.getItem("id"),
@@ -383,7 +382,7 @@ export default function SelfAttedanceSheet({
       <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
         <Actionsheet.Content alignItems={"left"} bg="classCard.500">
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
+            <Stack p={5} pt={2} pb="5px">
               <Text fontSize="16px" fontWeight={"600"}>
                 {t("ATTENDANCE")}
               </Text>
@@ -391,6 +390,7 @@ export default function SelfAttedanceSheet({
             <IconByName
               name="CloseCircleLineIcon"
               onPress={(e) => setShowModal(false)}
+              color="classCard.900"
             />
           </HStack>
         </Actionsheet.Content>
@@ -405,7 +405,8 @@ export default function SelfAttedanceSheet({
             return (
               <Pressable
                 key={index}
-                p={5}
+                p={3}
+                bg={selfAttendance?.name === t(item.name) ? "gray.100" : ""}
                 onPress={(e) => {
                   if (item.name === "RESET_TO_UNMARK") {
                     handleResetToUnmarkTelemetry();
@@ -435,7 +436,7 @@ export default function SelfAttedanceSheet({
                       rounded="full"
                       bg={isActive ? item.color + ".500" : "gray.100"}
                       colorScheme={isActive ? item.color : "gray"}
-                      color={isActive ? "white" : "gray.500"}
+                      color={isActive ? "white" : "selfAicon.500"}
                       _icon={{ size: "18" }}
                     />
                     <Text fontSize="14px" fontWeight={500}>
@@ -444,7 +445,11 @@ export default function SelfAttedanceSheet({
                   </HStack>
 
                   {item.rightIcon ? (
-                    <IconByName name={item.rightIcon} isDisabled />
+                    <IconByName
+                      name={item.rightIcon}
+                      _icon={{ size: 18 }}
+                      isDisabled
+                    />
                   ) : (
                     ""
                   )}
@@ -456,16 +461,23 @@ export default function SelfAttedanceSheet({
           <Button.Group m="5">
             <Button
               flex="1"
+              mr="5px"
               colorScheme="button"
               variant={"outline"}
               onPress={(e) => navigate("/profile")}
+              _text={{ textTransform: "uppercase" }}
             >
               {t("GO_TO_PROFILE")}
             </Button>
             <Button
               flex="1"
-              colorScheme={selfAttendance?.attendance ? "button" : "gray"}
-              _text={{ color: "white" }}
+              ml="5px"
+              colorScheme={selfAttendance?.attendance ? "button" : "coolGray"}
+              isDisabled={selfAttendance?.attendance ? false : true}
+              _text={{
+                textTransform: "uppercase",
+                color: selfAttendance?.attendance ? "white" : "",
+              }}
               onPress={(e) => {
                 setLocationModal(true);
                 setShowModal(false);
@@ -482,14 +494,20 @@ export default function SelfAttedanceSheet({
       >
         <Actionsheet.Content alignItems={"left"} bg="classCard.500">
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
+            <HStack pt={2} pb="5px" alignItems="center">
+              <IconByName
+                name="ArrowLeftSLineIcon"
+                onPress={(e) => setSpecialDutyModal(false)}
+                color="classCard.900"
+              />
               <Text fontSize="16px" fontWeight={"600"}>
                 {t("SELECT_DUTY_TYPE")}
               </Text>
-            </Stack>
+            </HStack>
             <IconByName
               name="CloseCircleLineIcon"
               onPress={(e) => setSpecialDutyModal(false)}
+              color="classCard.900"
             />
           </HStack>
         </Actionsheet.Content>
@@ -497,7 +515,8 @@ export default function SelfAttedanceSheet({
           {specialDutyList.map((item, index) => (
             <Pressable
               key={index}
-              p={5}
+              bg={selfAttendance?.name === t(item.name) ? "gray.100" : ""}
+              p={3}
               onPress={(e) => {
                 if (item.name === "RESET_TO_UNMARK") {
                   setSelfAttendance({});
@@ -558,6 +577,7 @@ export default function SelfAttedanceSheet({
           <Button.Group m="5">
             <Button
               flex="1"
+              mr="5px"
               colorScheme="button"
               variant={"outline"}
               onPress={(e) => navigate("/profile")}
@@ -566,6 +586,7 @@ export default function SelfAttedanceSheet({
             </Button>
             <Button
               flex="1"
+              ml="5px"
               colorScheme="button"
               _text={{ color: "white" }}
               onPress={(e) => setSpecialDutyModal(false)}
