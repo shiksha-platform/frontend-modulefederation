@@ -1,4 +1,4 @@
-import { IconByName,H2 } from "@shiksha/common-lib";
+import { IconByName, H2 } from "@shiksha/common-lib";
 import {
   Box,
   FormControl,
@@ -106,7 +106,7 @@ export const FormNotification = ({ setPageName }) => {
           variant="outline"
           px="5"
           py="1"
-          _text={{textTransform:"capitalize"}}
+          _text={{ textTransform: "capitalize" }}
           rightIcon={
             <IconByName
               color={"button.500"}
@@ -174,9 +174,7 @@ export const FormNotification = ({ setPageName }) => {
         <Actionsheet.Content alignItems={"left"} bg="classCard.500">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight="500">
-                {t("Select Template")}
-              </H2>
+              <H2 fontWeight="500">{t("Select Template")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
@@ -194,7 +192,13 @@ export const FormNotification = ({ setPageName }) => {
           ].map((value, index) => {
             return (
               <Box p="5" key={index}>
-                <Checkbox colorScheme="button" borderColor="button.500" borderRadius="0">{value}</Checkbox>
+                <Checkbox
+                  colorScheme="button"
+                  borderColor="button.500"
+                  borderRadius="0"
+                >
+                  {value}
+                </Checkbox>
               </Box>
             );
           })}

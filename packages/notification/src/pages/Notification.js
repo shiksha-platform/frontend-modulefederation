@@ -101,7 +101,12 @@ const Notification = ({ footerLinks, appName }) => {
           <Box bg="white" p="5">
             <HStack justifyContent="space-between" alignItems="center">
               <CalendarBar {...{ page, setPage }} />
-              <Checkbox colorScheme="button" borderColor="button.500" borderRadius="0" _text={{ color: "button.500", fontSize:"14px" }}>
+              <Checkbox
+                colorScheme="button"
+                borderColor="button.500"
+                borderRadius="0"
+                _text={{ color: "button.500", fontSize: "14px" }}
+              >
                 {t("MARK_ALL_READ")}
               </Checkbox>
             </HStack>
@@ -165,7 +170,11 @@ const Notification = ({ footerLinks, appName }) => {
                       variant="outline"
                       bg="viewNotification.800"
                       px="5"
-                      _text={{textTransform:"capitelize", fontWeight:"400", fontSize:"14px" }}
+                      _text={{
+                        textTransform: "capitelize",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                      }}
                       rightIcon={
                         <IconByName
                           color="button.500"
@@ -210,9 +219,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <H2 fontWeight="500">
-                  {t("NOTIFCATION_ACTION")}
-                </H2>
+                <H2 fontWeight="500">{t("NOTIFCATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -246,9 +253,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <H2 fontWeight="600">
-                  {t("NOTIFCATION_ACTION")}
-                </H2>
+                <H2 fontWeight="600">{t("NOTIFCATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -279,9 +284,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <H2 fontWeight="500">
-                  {t("VIEW_NOTIFCATION")}
-                </H2>
+                <H2 fontWeight="500">{t("VIEW_NOTIFCATION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -333,9 +336,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <H2 fontWeight="500">
-                  {t("SELECT_MODULE")}
-                </H2>
+                <H2 fontWeight="500">{t("SELECT_MODULE")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -346,12 +347,24 @@ const Notification = ({ footerLinks, appName }) => {
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
             <Box p="5">
-              <Checkbox colorScheme="button" borderColor="button.500" borderRadius="0">{t("Select All")}</Checkbox>
+              <Checkbox
+                colorScheme="button"
+                borderColor="button.500"
+                borderRadius="0"
+              >
+                {t("Select All")}
+              </Checkbox>
             </Box>
             {filterData &&
               filterData.map((value, index) => (
                 <Box p="5" key={index}>
-                  <Checkbox colorScheme="button" borderColor="button.500" borderRadius="0">{value}</Checkbox>
+                  <Checkbox
+                    colorScheme="button"
+                    borderColor="button.500"
+                    borderRadius="0"
+                  >
+                    {value}
+                  </Checkbox>
                 </Box>
               ))}
             <Box p="5">

@@ -71,11 +71,14 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           height={height - 100}
           icon={<IconByName name="MailLockLineIcon" _icon={{ size: 100 }} />}
           message={
-            <Center  mx="5">
-              <H1 color="gray.500">
-                {"Notification Scheduled"}
-              </H1>
-              <Text fontSize="14" fontWeight="400" textAlign="center" color="gray.500">
+            <Center mx="5">
+              <H1 color="gray.500">{"Notification Scheduled"}</H1>
+              <Text
+                fontSize="14"
+                fontWeight="400"
+                textAlign="center"
+                color="gray.500"
+              >
                 {`Attendance Notification has been scheduled for Thursdays 2:00pm`}
               </Text>
               {/* <Button
@@ -132,7 +135,8 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           <Checkbox
             isChecked={recurring}
             colorScheme="button"
-            borderColor="button.500" borderRadius="0"
+            borderColor="button.500"
+            borderRadius="0"
             onChange={(e) => setRecurring(!recurring)}
           >
             {t("THIS_IS_A_RECURRING_NOTIFICATION")}
@@ -148,7 +152,13 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         )}
         <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
           <Button.Group>
-            <Button colorScheme="button" px="5" mr="5px" flex="1" variant="outline">
+            <Button
+              colorScheme="button"
+              px="5"
+              mr="5px"
+              flex="1"
+              variant="outline"
+            >
               {t("CANCEL")}
             </Button>
             <Button
@@ -243,7 +253,13 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 </Text>
               </HStack>
             </Box>
-            <Box px="5" pt="5" pb="5" borderBottomWidth="1" borderColor="gray.200">
+            <Box
+              px="5"
+              pt="5"
+              pb="5"
+              borderBottomWidth="1"
+              borderColor="gray.200"
+            >
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
@@ -323,7 +339,7 @@ const FormInput = ({
           colorScheme="button"
           px="5"
           bg="viewNotification.500"
-          _text={{textTransform:"capitelize"}}
+          _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName
               color={item?.buttonVariant ? "button.500" : "button.500"}
