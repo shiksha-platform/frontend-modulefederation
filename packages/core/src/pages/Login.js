@@ -21,6 +21,13 @@ import {
   teacherRegistryService,
 } from "@shiksha/common-lib";
 
+const styles = {
+  box: {
+    background:
+      "linear-gradient(135deg, #e2f2fc -10%, #faf6f3 35%, #faf6f3 60%,#faf6f3 70%, #e2f2fc 110%)",
+  },
+};
+
 export default function Login() {
   const [credentials, setCredentials] = useState();
   const [errors, setErrors] = React.useState({});
@@ -80,6 +87,7 @@ export default function Login() {
           );
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
+          localStorage.setItem("schoolId", resultTeacher.schoolId);
           //window.location.reload();
 
           localStorage.setItem("token", token);
@@ -98,23 +106,15 @@ export default function Login() {
   };
 
   return (
-    <Box
-      style={{
-        background:
-          "linear-gradient(135deg, #e2f2fc -10%, #faf6f3 35%, #faf6f3 60%,#faf6f3 70%, #e2f2fc 110%)",
-      }}
-      minH={Height}
-      w={width}
-    >
+    <Box style={styles.box}>
       <Center
         _text={{
           color: "white",
           fontWeight: "bold",
         }}
         height={Height}
-        width={width}
       >
-        <Center>
+        <Center width={width}>
           <VStack space="50px" w="300px">
             <Box>
               <Text fontSize="30px" fontWeight="400">
