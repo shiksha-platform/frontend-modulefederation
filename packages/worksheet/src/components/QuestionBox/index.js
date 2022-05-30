@@ -4,7 +4,13 @@ import { colourPalette } from "constants/colours";
 import "../../App.css";
 import { IconByName } from "@shiksha/common-lib";
 
-const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
+const QuestionBox = ({
+  questionObject,
+  selectData,
+  setSelectData,
+  isAnswerHide,
+  _box,
+}) => {
   const createMarkup = (markup) => {
     return { __html: markup };
   };
@@ -59,14 +65,18 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
                     fontSize="14"
                     fontWeight="400"
                     textTransform="inherit"
-                    color={item.answer ? "successAlertText.500" : ""}
+                    color={
+                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
+                    }
                   >
                     {alphabet[index] + ". "}
                   </Text>
                   <Text
                     fontSize="14"
                     fontWeight="400"
-                    color={item.answer ? "successAlertText.500" : ""}
+                    color={
+                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
+                    }
                   >
                     <div
                       dangerouslySetInnerHTML={createMarkup(item?.value?.body)}

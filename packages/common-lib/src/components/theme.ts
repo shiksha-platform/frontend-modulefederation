@@ -184,6 +184,10 @@ const DEFAULT_THEME = {
       800: '#C79AB2',
       900: '#C08FA9'
     },
+    worksheetBoxText: {
+      400: '#333333',
+      500: '#373839'
+    },
     reportBoxBg: {
       400: '#FFF8F7',
       500: '#FEF1EE',

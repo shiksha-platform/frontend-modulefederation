@@ -18,9 +18,11 @@ import { useNavigate } from "react-router-dom";
 //   WhatsappShareButton,
 // } from "react-share";
 
-export default function WorksheetBox({ item, url, canShare }) {
+export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const colors = ["lightBlue.800", "indigo.900", "fuchsia.700", "rose.600"];
+  const random = Math.floor(Math.random() * (4 - 1) + 1) - 1;
 
   return (
     <Box p="5" borderWidth="1" borderColor="gray.300" rounded="lg">
@@ -28,7 +30,7 @@ export default function WorksheetBox({ item, url, canShare }) {
         <HStack justifyContent="space-between" alignItems="flex-start">
           <Pressable onPress={() => (url ? navigate(url) : "")}>
             <HStack space={2} alignItems="center">
-              <Avatar bg="amber.500" size="57" rounded="md">
+              <Avatar bg={colors[random]} size="57" rounded="md">
                 <Text fontWeight="600" fontSize="16px" color="white">
                   {item.heading?.toUpperCase().substr(0, 1)}
                 </Text>
@@ -38,14 +40,15 @@ export default function WorksheetBox({ item, url, canShare }) {
                   <Text fontWeight="600" fontSize="16px">
                     {item.heading}
                   </Text>
-                  <HStack space={1} alignItems="center">
-                    {/* <Text fontWeight="400" fontSize="10px">
+                  {/*<HStack space={1} alignItems="center">
+                     <Text fontWeight="400" fontSize="10px">
                       {item.subHeading} {"•"}
-                    </Text> */}
+                    </Text> 
                     <Text fontWeight="400" fontSize="10px">
                       {t("CLASS") + " " + item.class}
                     </Text>
-                  </HStack>
+                    
+                  </HStack>*/}
                 </VStack>
 
                 <HStack space={1} alignItems="center">
@@ -60,7 +63,7 @@ export default function WorksheetBox({ item, url, canShare }) {
                   </Text>
 
                   <Text fontWeight="600" fontSize="10px">
-                    {item.comments + " comments"}
+                    ({item.comments + " comments"})
                   </Text>
                 </HStack>
               </Stack>
@@ -71,28 +74,56 @@ export default function WorksheetBox({ item, url, canShare }) {
             _icon={{ size: 30 }}
             color="button.500"
             p="0"
+            {..._addIconButton}
           />
         </HStack>
-        <Text fontWeight="600" fontSize="10px">
+        <Text fontWeight="500" fontSize="12px" color="worksheetBoxText.500">
           {item.description}
         </Text>
         <HStack space="2">
           <VStack>
             <HStack space="1" alignItems="center">
-              <IconByName name="SurveyLineIcon" _icon={{ size: 12 }} p="0" />
-              <Text fontWeight="600" fontSize="10px">
+              <IconByName
+                name="SurveyLineIcon"
+                _icon={{ size: 12 }}
+                color="worksheetBoxText.400"
+                p="0"
+              />
+              <Text
+                fontWeight="600"
+                fontSize="10px"
+                color="worksheetBoxText.400"
+              >
                 {"Subject: " + item.subject}
               </Text>
             </HStack>
             <HStack space="1" alignItems="center">
-              <IconByName name="BarChart2LineIcon" _icon={{ size: 12 }} p="0" />
-              <Text fontWeight="600" fontSize="10px">
+              <IconByName
+                name="BarChart2LineIcon"
+                _icon={{ size: 12 }}
+                color="worksheetBoxText.400"
+                p="0"
+              />
+              <Text
+                fontWeight="600"
+                fontSize="10px"
+                color="worksheetBoxText.400"
+              >
                 {"Level: " + item.level}
               </Text>
             </HStack>
             <HStack space="1" alignItems="center">
-              <IconByName name="QuestionLineIcon" _icon={{ size: 12 }} p="0" />
-              <Text fontWeight="600" fontSize="10px">
+              <IconByName
+                name="QuestionLineIcon"
+                _icon={{ size: 12 }}
+                color="worksheetBoxText.400"
+                p="0"
+              />
+              <Text
+                fontWeight="600"
+                fontSize="10px"
+                color="worksheetBoxText.400"
+              >
                 {"Questions: " + item.questions}
               </Text>
             </HStack>
@@ -102,21 +133,44 @@ export default function WorksheetBox({ item, url, canShare }) {
               <IconByName
                 name="AccountBoxFillIcon"
                 _icon={{ size: 12 }}
+                color="worksheetBoxText.400"
                 p="0"
               />
-              <Text fontWeight="600" fontSize="10px">
+              <Text
+                fontWeight="600"
+                fontSize="10px"
+                color="worksheetBoxText.400"
+              >
                 {"Grade: " + item.grade}
               </Text>
             </HStack>
             <HStack space="1" alignItems="center">
-              <IconByName name="ArticleLineIcon" _icon={{ size: 12 }} p="0" />
-              <Text fontWeight="600" fontSize="10px">
-                {"Chapter: " + item.chapter}
+              <IconByName
+                name="ArticleLineIcon"
+                _icon={{ size: 12 }}
+                color="worksheetBoxText.400"
+                p="0"
+              />
+              <Text
+                fontWeight="600"
+                fontSize="10px"
+                color="worksheetBoxText.400"
+              >
+                {t("TOPIC") + ": " + item.chapter}
               </Text>
             </HStack>
             <HStack space="1" alignItems="center">
-              <IconByName name="Download2LineIcon" _icon={{ size: 12 }} p="0" />
-              <Text fontWeight="600" fontSize="10px">
+              <IconByName
+                name="Download2LineIcon"
+                _icon={{ size: 12 }}
+                color="worksheetBoxText.400"
+                p="0"
+              />
+              <Text
+                fontWeight="600"
+                fontSize="10px"
+                color="worksheetBoxText.400"
+              >
                 {"Downloads: " + item.downloads}
               </Text>
             </HStack>

@@ -155,7 +155,6 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               px="5"
               flex="1"
               onPress={(e) => {
-                console.log({ dateTime });
                 setShowSummaryModal({ ...dateTime, name: "View Summary" });
               }}
             >

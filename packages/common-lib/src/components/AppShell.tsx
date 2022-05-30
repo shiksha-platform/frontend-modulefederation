@@ -40,7 +40,7 @@ function AppShell({
             routeparameters: {}
           },
           {
-            title: 'MATERIALS',
+            title: 'TEACHING',
             icon: 'BookOpenLineIcon',
             module: 'Registry',
             route: '/worksheet',

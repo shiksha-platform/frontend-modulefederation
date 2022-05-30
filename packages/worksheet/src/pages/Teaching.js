@@ -1,13 +1,36 @@
 import React from "react";
-import { Layout, SubMenu, Tab } from "@shiksha/common-lib";
+import {
+  Layout,
+  SubMenu,
+  Tab,
+  classRegistryService,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import { Box, Button } from "native-base";
+import { Actionsheet, Box, Button } from "native-base";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
 
 export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
+  const [clasess, setClasses] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    let ignore = false;
+    async function getData() {
+      setClasses(
+        await classRegistryService.getAllData({
+          filters: { schoolId: { eq: 1 } },
+        })
+      );
+    }
+    getData();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
     <Layout
@@ -15,7 +38,9 @@ export default function Teaching({ footerLinks, appName }) {
         title: t("MY_TEACHING"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL")}
+      subHeader={t(
+        "Access and plan your teaching material like worksheets and lesson plans"
+      )}
       _subHeader={{ bg: "worksheetCard.500" }}
       _footer={footerLinks}
     >
@@ -29,9 +54,20 @@ export default function Teaching({ footerLinks, appName }) {
             { title: t("Schedule"), component: <Schedule /> },
           ]}
         />
-
-        <Button _text={{ color: "white" }} p="3">
-          {t("Choose another Class")}
+        <Actionsheet isOpen={isOpen} onClose={(e) => setIsOpen(false)}>
+          <Actionsheet.Content>
+            {clasess.map((item, index) => (
+              <Actionsheet.Item
+                key={index}
+                onPress={(e) => navigate(`/worksheet/${item?.id}/view`)}
+              >
+                {item?.name}
+              </Actionsheet.Item>
+            ))}
+          </Actionsheet.Content>
+        </Actionsheet>
+        <Button variant="outline" onPress={(e) => setIsOpen(true)}>
+          {t("CHOOSE_ANOTHER_CLASS")}
         </Button>
       </Box>
     </Layout>

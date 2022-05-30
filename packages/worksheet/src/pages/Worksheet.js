@@ -32,10 +32,14 @@ export default function Worksheet({ footerLinks, appName }) {
             rounded="full"
             colorScheme="button"
             variant="outline"
-            bg="button.100"
+            bg="button.50"
             px={5}
             py={1}
-            _text={{ textTransform: "capitalize", fontSize: "14px" }}
+            _text={{
+              textTransform: "capitalize",
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalSort(true)}
           >
@@ -44,14 +48,20 @@ export default function Worksheet({ footerLinks, appName }) {
         ),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("You can look at your worksheets here")}
+      subHeader={t("See all worksheets here")}
       _subHeader={{ bg: "worksheetCard.500" }}
       _footer={footerLinks}
     >
       <FilterButton
         getObject={setFilterObject}
-        _box={{ p: 5 }}
+        _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: "worksheetCard.500" }}
+        _button={{ bg: "button.50", px: "15px", py: "2" }}
+        _filterButton={{
+          rightIcon: "",
+          bg: "white",
+        }}
+        resetButtonText={t("COLLAPSE")}
         filters={[
           {
             name: "Subject",
@@ -120,7 +130,7 @@ export default function Worksheet({ footerLinks, appName }) {
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
-          {t("Create new")}
+          {t("CREATE_NEW_WORKSHEET")}
         </Button>
       </Box>
       <Actionsheet

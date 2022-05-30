@@ -208,7 +208,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
             ? t("Add Questions")
             : pageName === "AddDescriptionPage"
             ? t("Add Description")
-            : t("New Worksheet"),
+            : t("CREATE_NEW_WORKSHEET"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
       _appBar={{
@@ -299,7 +299,7 @@ const FormInput = ({
             onPress={(e) => setFormData(item)}
           >
             {formObject[attributeName]
-              ? formObject[attributeName]
+              ? formObject[attributeName][0]
               : `Select ${t(item.name)}`}
           </Button>
         </HStack>
@@ -312,10 +312,17 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
   const [inputs, setInputs] = React.useState(defaultInputs);
+
+  const attributeName = formData.attributeName
+    ? formData.attributeName
+    : formData?.name;
+  const valueArr = formObject[attributeName] ? formObject[attributeName] : [];
+
   const handelAddQuestion = () => {
     setLoading(true);
     setPageName("ListOfWorksheet");
   };
+
   return (
     <Stack space={1} mb="2">
       <FormInput
@@ -345,12 +352,12 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
             flex="1"
             onPress={handelAddQuestion}
           >
-            {t("Add Questions")}
+            {t("Search Questions")}
           </Button>
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
               <Text fontSize="16px" fontWeight={"600"}>
@@ -364,26 +371,83 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
           </HStack>
         </Actionsheet.Content>
         <Box bg="white" width={"100%"}>
+          <Pressable
+            px="5"
+            pt="5"
+            onPress={(e) => {
+              if (
+                formData?.data &&
+                valueArr &&
+                formData?.data?.length === valueArr?.length
+              ) {
+                setFormObject({ ...formObject, [formData?.attributeName]: [] });
+              } else {
+                setFormObject({
+                  ...formObject,
+                  [formData?.attributeName]: formData.data,
+                });
+              }
+            }}
+          >
+            <HStack space="2" colorScheme="button" alignItems="center">
+              <IconByName
+                isDisabled
+                color={
+                  formData?.data &&
+                  valueArr &&
+                  formData?.data?.length === valueArr?.length
+                    ? "button.500"
+                    : "gray.300"
+                }
+                name={
+                  formData?.data &&
+                  valueArr &&
+                  formData?.data?.length === valueArr?.length
+                    ? "CheckboxLineIcon"
+                    : "CheckboxBlankLineIcon"
+                }
+              />
+              <Text>{t("Select All")}</Text>
+            </HStack>
+          </Pressable>
           {formData?.data &&
-            formData.data.map((value, index) => {
-              let attributeName = formData.attributeName
-                ? formData.attributeName
-                : formData.name;
+            formData?.data.map((value, index) => {
               return (
                 <Pressable
+                  px="5"
+                  pt="5"
                   key={index}
-                  p="5"
-                  onPress={(e) =>
-                    setFormObject({
-                      ...formObject,
-                      [attributeName]: [value],
-                    })
-                  }
-                  bg={
-                    formObject[attributeName]?.includes(value) ? "gray.100" : ""
-                  }
+                  onPress={(e) => {
+                    if (valueArr.includes(value)) {
+                      const newData = formObject[attributeName].filter(
+                        (e) => value !== e
+                      );
+                      setFormObject({
+                        ...formObject,
+                        [attributeName]: newData,
+                      });
+                    } else {
+                      setFormObject({
+                        ...formObject,
+                        [attributeName]: [...valueArr, value],
+                      });
+                    }
+                  }}
                 >
-                  <Text colorScheme="button">{value}</Text>
+                  <HStack space="2" colorScheme="button" alignItems="center">
+                    <IconByName
+                      isDisabled
+                      color={
+                        valueArr.includes(value) ? "button.500" : "gray.300"
+                      }
+                      name={
+                        valueArr.includes(value)
+                          ? "CheckboxLineIcon"
+                          : "CheckboxBlankLineIcon"
+                      }
+                    />
+                    <Text>{value}</Text>
+                  </HStack>
                 </Pressable>
               );
             })}
@@ -413,10 +477,12 @@ const ListOfWorksheet = ({
   const [width, Height] = useWindowSize();
   const [selectData, setSelectData] = React.useState([]);
   const [isDataFilter, setIsDataFilter] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
 
   return (
     <Stack>
-      {isDataFilter ? (
+      {isSuccess ? (
         <Box bg="successAlert.500" p="5">
           <HStack justifyContent="space-between">
             <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
@@ -426,7 +492,7 @@ const ListOfWorksheet = ({
               name="CloseCircleLineIcon"
               color="successAlertText.500"
               p="0"
-              onPress={(e) => setIsDataFilter(false)}
+              onPress={(e) => setIsSuccess(false)}
             />
           </HStack>
         </Box>
@@ -434,8 +500,14 @@ const ListOfWorksheet = ({
         <Box>
           <FilterButton
             getObject={setFilterObject}
-            _box={{ p: 5 }}
             _actionSheet={{ bg: "worksheetCard.500" }}
+            _box={{ pt: 5, px: 5 }}
+            _button={{ bg: "button.50", px: "15px", py: "2" }}
+            _filterButton={{
+              rightIcon: "",
+              bg: "white",
+            }}
+            resetButtonText={t("COLLAPSE")}
             filters={defaultInputs}
           />
           <Box bg="white" px="5">
@@ -483,6 +555,7 @@ const ListOfWorksheet = ({
           <VStack space="5">
             {questions.map((question, index) => (
               <QuestionBox
+                isAnswerHide={!isAnswerFilter}
                 _box={{ py: "12px", px: "16px" }}
                 key={index}
                 questionObject={question}
@@ -516,9 +589,27 @@ const ListOfWorksheet = ({
           </Button.Group>
         ) : (
           <>
-            <Text fontSize="10px" fontWeight="700" py="4">
-              Attention: You have selected 20 questions to add to the worksheet.
+            <Text fontSize="10px" py="4" pb="1">
+              <Text fontWeight="700">Attention:</Text>
+              You have selected {selectData.length} questions to add to the
+              worksheet.
             </Text>
+            <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
+              <HStack alignItems="center" space="1" pt="1" py="4">
+                <IconByName
+                  isDisabled
+                  color={isAnswerFilter ? "button.500" : "gray.300"}
+                  name={
+                    isAnswerFilter
+                      ? "CheckboxLineIcon"
+                      : "CheckboxBlankLineIcon"
+                  }
+                />
+                <Text fontSize="12px" fontWeight="600">
+                  Include answer key in worksheet
+                </Text>
+              </HStack>
+            </Pressable>
             <Button.Group>
               <Button
                 colorScheme="button"
@@ -537,9 +628,10 @@ const ListOfWorksheet = ({
                 onPress={(e) => {
                   setQuestions(selectData);
                   setIsDataFilter(true);
+                  setIsSuccess(true);
                 }}
               >
-                {t("Add Questions")}
+                {t("ADD_TO_WORKSHEET")}
               </Button>
             </Button.Group>
           </>

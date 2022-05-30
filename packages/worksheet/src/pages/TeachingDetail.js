@@ -1,5 +1,10 @@
 import React from "react";
-import { IconByName, Layout, Tab } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Layout,
+  Tab,
+  classRegistryService,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { worksheets } from "./../config/worksheet";
@@ -15,9 +20,18 @@ export default function TeachingDetail({ footerLinks, appName }) {
   const [classObject, setClassObject] = React.useState({});
   const { classId } = useParams();
 
-  React.useState(() => {
+  const getClass = async () => {
     const data = teachingMaterial.find((e) => e.id === classId);
-    setClassObject(data ? data : {});
+    if (data) {
+      setClassObject(data ? data : {});
+    } else {
+      let classObj = await classRegistryService.getOne({ id: classId });
+      setClassObject(classObj);
+    }
+  };
+
+  React.useState(() => {
+    getClass();
   }, []);
 
   return (
@@ -26,7 +40,9 @@ export default function TeachingDetail({ footerLinks, appName }) {
         title: t("MY_TEACHING"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={`Class ${classObject?.name} ${classObject?.subjectName}`}
+      subHeader={`${classObject?.name ? classObject?.name : ""} ${
+        classObject?.subjectName ? classObject?.subjectName : ""
+      }`}
       _subHeader={{ bg: "worksheetCard.500" }}
       _footer={footerLinks}
     >
@@ -61,9 +77,24 @@ export default function TeachingDetail({ footerLinks, appName }) {
                     <Worksheets
                       data={worksheets}
                       leftTitle="My Worksheets"
-                      rightTitle="Explore Worksheets"
+                      rightTitle="Explore All Worksheets"
+                      seeButtonText={t("SEE_ALL_WORKSHEETS")}
                     />
-                    <Worksheets data={worksheets} leftTitle="Drafts" />
+                    <Worksheets
+                      data={worksheets}
+                      leftTitle="Drafts"
+                      seeButtonText={t("SEE_ALL_DRAFTS")}
+                      _woksheetBox={{
+                        _addIconButton: {
+                          name: "EditBoxLineIcon",
+                          color: "white",
+                          rounded: "full",
+                          bg: "button.500",
+                          p: "1",
+                          _icon: { size: 17 },
+                        },
+                      }}
+                    />
                   </VStack>
                 ),
               },
@@ -78,19 +109,26 @@ export default function TeachingDetail({ footerLinks, appName }) {
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
-          {t("Create new")}
+          {t("CREATE_NEW_WORKSHEET")}
         </Button>
       </Box>
     </Layout>
   );
 }
 
-const Worksheets = ({ data, leftTitle, rightTitle }) => {
+const Worksheets = ({
+  data,
+  leftTitle,
+  rightTitle,
+  seeButton,
+  seeButtonText,
+  _woksheetBox,
+}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <Stack>
-      <HStack justifyContent="space-between" py="5">
+      <HStack justifyContent="space-between" py="5" alignItems="center">
         {leftTitle ? (
           <Text fontWeight="600" fontSize="16px">
             {leftTitle}
@@ -115,19 +153,24 @@ const Worksheets = ({ data, leftTitle, rightTitle }) => {
               canShare={true}
               key={index}
               {...{ item, url: `/worksheet/${item.id}` }}
+              {..._woksheetBox}
             />
           );
         })}
       </VStack>
-      <Button
-        mt="2"
-        variant="outline"
-        colorScheme="button"
-        rounded="lg"
-        onPress={(e) => navigate("/worksheet/list")}
-      >
-        {t("SEE_MORE")}
-      </Button>
+      {seeButton ? (
+        seeButton
+      ) : (
+        <Button
+          mt="2"
+          variant="outline"
+          colorScheme="button"
+          rounded="lg"
+          onPress={(e) => navigate("/worksheet/list")}
+        >
+          {seeButtonText}
+        </Button>
+      )}
     </Stack>
   );
 };

@@ -15,16 +15,27 @@ import IconByName from './IconByName'
 
 export default function FilterButton({
   filters = [],
+  object,
   getObject,
+  filterButtonText,
+  resetButtonText,
+  isResettableFilter,
   _box,
-  _button,
-  _actionSheet
+  _filterButton,
+  _resetButton,
+  _optionButton,
+  _actionSheet,
+  _button
 }) {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
   const [groupValue, setGroupValue] = React.useState({})
   const [filterData, setFilterData] = React.useState(false)
   const [selectData, setSelectData] = React.useState([])
+
+  React.useState(() => {
+    if (object) setGroupValue(object)
+  }, [object])
 
   return (
     <Box bg='white' roundedBottom={'xl'} {..._box}>
@@ -35,11 +46,17 @@ export default function FilterButton({
             colorScheme='button'
             variant='outline'
             px='5'
+            _text={{
+              textTransform: 'inherit',
+              fontWeight: '500',
+              fontSize: '14px'
+            }}
             onPress={(e) => setFiltered(true)}
             rightIcon={<IconByName name='ArrowDownSLineIcon' isDisabled />}
             {..._button}
+            {..._filterButton}
           >
-            {t('FILTER')}
+            {filterButtonText ? filterButtonText : t('FILTER')}
           </Button>
         ) : (
           <ScrollView horizontal={true}>
@@ -78,7 +95,12 @@ export default function FilterButton({
                         )
                       }
                     }}
-                    {..._button}
+                    {...(isSelect > 0
+                      ? { ..._button, bg: 'button.500' }
+                      : _button)}
+                    {...(isSelect > 0
+                      ? { ..._optionButton, bg: 'button.500' }
+                      : _optionButton)}
                   >
                     <Text color={isSelect > 0 ? 'white' : 'button.500'}>
                       {isSelect > 0 ? '' : value.name}
@@ -102,20 +124,29 @@ export default function FilterButton({
                 colorScheme='button'
                 variant='outline'
                 px='5'
+                _text={{
+                  textTransform: 'inherit',
+                  fontWeight: '500',
+                  fontSize: '14px'
+                }}
                 rightIcon={
                   <IconByName
                     color='button.500'
-                    name='ArrowDownSLineIcon'
+                    name='ArrowRightSFillIcon'
                     isDisabled
                   />
                 }
                 onPress={(e) => {
                   setFiltered(false)
-                  setGroupValue({})
-                  if (getObject) getObject({})
+                  if (isResettableFilter) {
+                    setGroupValue({})
+                    if (getObject) getObject({})
+                  }
                 }}
+                {..._button}
+                {..._resetButton}
               >
-                {t('RESET_FILTER')}
+                {resetButtonText ? resetButtonText : t('RESET_FILTER')}
               </Button>
             </HStack>
           </ScrollView>
@@ -130,7 +161,7 @@ export default function FilterButton({
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>
-                {t('SELECT_MODULE')}
+                {`${t('SELECT')} ${filterData.name}`}
               </Text>
             </Stack>
             <IconByName
