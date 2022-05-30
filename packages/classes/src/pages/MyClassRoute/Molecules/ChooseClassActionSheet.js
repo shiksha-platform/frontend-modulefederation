@@ -8,12 +8,18 @@ const ChooseClassActionSheet = () => {
   const { t } = useTranslation();
   const [clasess, setClasses] = React.useState([]);
   const navigate = useNavigate();
+  const teacherId = localStorage.getItem("id");
+  const schoolId = localStorage.getItem("schoolId");
+
   React.useEffect(() => {
     let ignore = false;
     async function getData() {
       setClasses(
         await classRegistryService.getAllData({
-          filters: { schoolId: { eq: 1 } },
+          filters: {
+            schoolId: { eq: schoolId },
+            teacherId: { neq: teacherId },
+          },
         })
       );
     }
