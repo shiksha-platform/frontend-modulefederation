@@ -15,6 +15,8 @@ export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [clasess, setClasses] = React.useState([]);
   const [isOpen, setIsOpen] = React.useState(false);
+  const teacherId = localStorage.getItem("id");
+  const schoolId = localStorage.getItem("schoolId");
 
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -22,7 +24,10 @@ export default function Teaching({ footerLinks, appName }) {
     async function getData() {
       setClasses(
         await classRegistryService.getAllData({
-          filters: { schoolId: { eq: 1 } },
+          filters: {
+            schoolId: { eq: schoolId },
+            teacherId: { neq: teacherId },
+          },
         })
       );
     }
@@ -66,9 +71,11 @@ export default function Teaching({ footerLinks, appName }) {
             ))}
           </Actionsheet.Content>
         </Actionsheet>
-        <Button variant="outline" onPress={(e) => setIsOpen(true)}>
-          {t("CHOOSE_ANOTHER_CLASS")}
-        </Button>
+        <Box p="5">
+          <Button variant="outline" onPress={(e) => setIsOpen(true)}>
+            {t("CHOOSE_ANOTHER_CLASS")}
+          </Button>
+        </Box>
       </Box>
     </Layout>
   );

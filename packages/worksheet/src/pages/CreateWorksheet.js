@@ -20,7 +20,6 @@ import {
   FormControl,
   Input,
   ScrollView,
-  Center,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -97,6 +96,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(false);
   const [formObject, setFormObject] = React.useState({});
   const [width, height] = useWindowSize();
+  const [worksheetName, setWorksheetName] = React.useState("Untitled");
 
   React.useEffect(async () => {
     if (pageName === "ListOfWorksheet") {
@@ -111,7 +111,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   }
 
   const handleBackButton = () => {
-    if (pageName !== "") {
+    if (pageName === "success") {
+      setFormObject({});
+      setPageName();
+      setWorksheetName("Untitled");
+    } else if (pageName === "AddDescriptionPage") {
+      setPageName("filterData");
+    } else if (pageName === "filterData") {
+      setPageName("ListOfWorksheet");
+    } else if (pageName === "ListOfWorksheet") {
       setPageName("");
     } else {
       navigate(-1);
@@ -189,9 +197,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
             _text={{ color: "white" }}
             px="5"
             flex="1"
-            onPress={(e) => {
-              setPageName();
-            }}
+            onPress={handleBackButton}
           >
             {t("Back to Worksheets")}
           </Button>
@@ -206,6 +212,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         title:
           pageName === "ListOfWorksheet"
             ? t("Add Questions")
+            : pageName === "filterData"
+            ? worksheetName
             : pageName === "AddDescriptionPage"
             ? t("Add Description")
             : t("CREATE_NEW_WORKSHEET"),
@@ -217,7 +225,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }}
       subHeader={
         pageName === "ListOfWorksheet"
-          ? t("You can see all questions here")
+          ? worksheetName
+            ? t("Your worksheet has been created.")
+            : t("You can see all questions here")
           : pageName === "AddDescriptionPage"
           ? t("Enter Worksheet Details")
           : t("Show questions based on")
@@ -232,14 +242,17 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      {pageName === "ListOfWorksheet" ? (
+      {["ListOfWorksheet", "filterData"].includes(pageName) ? (
         <ListOfWorksheet
           {...{
             questions,
             setQuestions,
+            pageName,
             setPageName,
             filterObject: formObject,
             setFilterObject: setFormObject,
+            worksheetName,
+            setWorksheetName,
           }}
         />
       ) : pageName === "AddDescriptionPage" ? (
@@ -469,20 +482,46 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
 const ListOfWorksheet = ({
   questions,
   setQuestions,
+  pageName,
   setPageName,
   filterObject,
   setFilterObject,
+  worksheetName,
+  setWorksheetName,
 }) => {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
   const [selectData, setSelectData] = React.useState([]);
-  const [isDataFilter, setIsDataFilter] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [showModule, setShowModule] = React.useState(false);
+  const [questionObject, setQuestionObject] = React.useState({});
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
+  const [inputData, setInputData] = React.useState();
+
+  React.useEffect(() => {
+    setInputData(worksheetName);
+  }, [worksheetName, pageName]);
+
+  const handleWorksheetSubmit = () => {
+    setQuestions(selectData);
+    setPageName("filterData");
+    setIsSuccess(true);
+    setWorksheetName(inputData);
+    setShowModule(false);
+  };
+
+  const handelInput = (event) => {
+    if (event.target.value) setInputData(event.target.value);
+  };
+
+  const handelAddQuestionButton = () => {
+    setPageName("ListOfWorksheet");
+    setIsSuccess(false);
+  };
 
   return (
     <Stack>
-      {isSuccess ? (
+      {pageName === "filterData" && isSuccess ? (
         <Box bg="successAlert.500" p="5">
           <HStack justifyContent="space-between">
             <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
@@ -497,9 +536,13 @@ const ListOfWorksheet = ({
           </HStack>
         </Box>
       ) : (
+        <></>
+      )}
+      {pageName === "ListOfWorksheet" ? (
         <Box>
           <FilterButton
             getObject={setFilterObject}
+            object={filterObject}
             _actionSheet={{ bg: "worksheetCard.500" }}
             _box={{ pt: 5, px: 5 }}
             _button={{ bg: "button.50", px: "15px", py: "2" }}
@@ -525,7 +568,16 @@ const ListOfWorksheet = ({
                     rounded="lg"
                     overflow="hidden"
                   >
-                    <div dangerouslySetInnerHTML={{ __html: item.question }} />
+                    <div
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: "3",
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      dangerouslySetInnerHTML={{ __html: item.question }}
+                    />
                   </Box>
                   <IconByName
                     name="CloseCircleFillIcon"
@@ -548,6 +600,16 @@ const ListOfWorksheet = ({
             </ScrollView>
           </Box>
         </Box>
+      ) : (
+        <Button
+          flex="1"
+          variant="ghost"
+          leftIcon={<IconByName name="AddFillIcon" isDisabled />}
+          bg="white"
+          onPress={handelAddQuestionButton}
+        >
+          {t("Add more questions")}
+        </Button>
       )}
 
       <Box bg="white" p="5">
@@ -559,14 +621,24 @@ const ListOfWorksheet = ({
                 _box={{ py: "12px", px: "16px" }}
                 key={index}
                 questionObject={question}
-                {...(isDataFilter ? {} : { selectData, setSelectData })}
+                {...(pageName !== "ListOfWorksheet"
+                  ? {}
+                  : { selectData, setSelectData })}
+                infoIcon={
+                  <IconByName
+                    name="InformationLineIcon"
+                    _icon={{ size: 15 }}
+                    color="button.500"
+                    onPress={(e) => setQuestionObject(question)}
+                  />
+                }
               />
             ))}
           </VStack>
         </ScrollView>
       </Box>
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
-        {isDataFilter ? (
+        {pageName === "filterData" ? (
           <Button.Group>
             <Button
               colorScheme="button"
@@ -626,9 +698,7 @@ const ListOfWorksheet = ({
                 px="5"
                 flex="1"
                 onPress={(e) => {
-                  setQuestions(selectData);
-                  setIsDataFilter(true);
-                  setIsSuccess(true);
+                  setShowModule(true);
                 }}
               >
                 {t("ADD_TO_WORKSHEET")}
@@ -636,6 +706,175 @@ const ListOfWorksheet = ({
             </Button.Group>
           </>
         )}
+        <Actionsheet
+          isOpen={questionObject?.questionId}
+          onClose={() => setQuestionObject({})}
+        >
+          <Actionsheet.Content alignItems={"left"}>
+            <Stack p={5} pt={2} pb="25px" textAlign="center">
+              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+                {t("Maps of the world")}
+              </Text>
+              {/* <Text fontSize="16px" fontWeight={"600"}>
+              {t("Learning Made Easy")}
+            </Text> */}
+            </Stack>
+            <IconByName
+              color="gray.300"
+              position="absolute"
+              top="10px"
+              right="10px"
+              name="CloseCircleLineIcon"
+              onPress={(e) => setQuestionObject({})}
+            />
+          </Actionsheet.Content>
+          <Box bg="white" width={"100%"} p="5">
+            <VStack space="5">
+              <Text
+                fontSize="14px"
+                fontWeight={"400"}
+                color="gray.400"
+                textTransform="inherit"
+              >
+                <div
+                  dangerouslySetInnerHTML={{ __html: questionObject?.question }}
+                />
+              </Text>
+              <VStack space="4">
+                <HStack space="50px">
+                  <VStack space="4">
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="AccountBoxFillIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {`Class: ${questionObject?.class}`}
+                      </Text>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="FileInfoLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {`Topics: ${questionObject?.topic}`}
+                      </Text>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="SurveyLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {"Source: Reasoning"}
+                      </Text>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="SurveyLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {`Language: ${questionObject?.languageCode}`}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                  <VStack space="4">
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="SurveyLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {`Subject: ${questionObject?.subject}`}
+                      </Text>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="BarChart2LineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {"Level: Intermediate"}
+                      </Text>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="BarChart2LineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Text fontWeight="600" fontSize="10px">
+                        {"Outcome: Intermediate"}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </HStack>
+              </VStack>
+            </VStack>
+          </Box>
+        </Actionsheet>
+        <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
+          <Actionsheet.Content alignItems={"left"}>
+            <Stack p={5} pt={2} pb="25px" textAlign="center">
+              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+                {t("Enter Worksheet Details")}
+              </Text>
+            </Stack>
+          </Actionsheet.Content>
+          <Box bg="white" width={"100%"} p="5">
+            <FormControl isRequired>
+              <FormControl.Label
+                _text={{ fontSize: "14px", fontWeight: "400" }}
+                mb="10px"
+              >
+                {t("NAME")}
+              </FormControl.Label>
+              <Input
+                rounded="lg"
+                height="48px"
+                bg="white"
+                variant="unstyled"
+                p={"10px"}
+                placeholder={t("ENTER") + " " + t("NAME")}
+                onChange={handelInput}
+                value={inputData}
+              />
+            </FormControl>
+            <Button.Group>
+              <Button
+                colorScheme="button"
+                px="5"
+                flex="1"
+                variant="outline"
+                onPress={handleWorksheetSubmit}
+              >
+                {t("Skip")}
+              </Button>
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                px="5"
+                flex="1"
+                onPress={handleWorksheetSubmit}
+              >
+                {t("Save")}
+              </Button>
+            </Button.Group>
+          </Box>
+        </Actionsheet>
       </Box>
     </Stack>
   );

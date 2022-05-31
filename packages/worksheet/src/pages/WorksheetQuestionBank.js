@@ -97,7 +97,6 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               name="InformationLineIcon"
               onPress={(e) => setShowModule(true)}
             />
-            <IconByName name="EditBoxLineIcon" />
           </HStack>
         ),
       }}

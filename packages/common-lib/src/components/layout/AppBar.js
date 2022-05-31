@@ -20,6 +20,7 @@ export default function AppBar({
   languages,
   onPressBackButton,
   rightIcon,
+  isShowNotificationButton,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
@@ -93,11 +94,15 @@ export default function AppBar({
             <React.Fragment />
           )}
           {rightIcon ? rightIcon : <React.Fragment />}
-          <IconByName
-            name='Notification2LineIcon'
-            color={color ? color : ''}
-            onPress={(e) => navigate('/notification')}
-          />
+          {isShowNotificationButton ? (
+            <IconByName
+              name='Notification2LineIcon'
+              color={color ? color : ''}
+              onPress={(e) => navigate('/notification')}
+            />
+          ) : (
+            <React.Fragment />
+          )}
           <Stack px='3'>
             <Menu
               w='190'

@@ -161,7 +161,7 @@ export default function FilterButton({
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>
-                {`${t('SELECT')} ${filterData.name}`}
+                {`${t('SELECT')} ${filterData?.name ? filterData?.name : ''}`}
               </Text>
             </Stack>
             <IconByName

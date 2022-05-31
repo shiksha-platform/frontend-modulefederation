@@ -74,6 +74,7 @@ import ArrowRightUpLineIcon from 'remixicon-react/ArrowRightUpLineIcon'
 import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
 import EditBoxLineIcon from 'remixicon-react/EditBoxLineIcon'
 import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
+import AddFillIcon from 'remixicon-react/AddFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -508,6 +509,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<AddCircleFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AddFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AddFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

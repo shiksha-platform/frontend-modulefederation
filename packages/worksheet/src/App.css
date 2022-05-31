@@ -57,3 +57,7 @@ p {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.image.image-style-align-left {
+  margin: 5px;
+}

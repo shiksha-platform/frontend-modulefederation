@@ -1,16 +1,22 @@
 import React from "react";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Actionsheet, Box, HStack, Stack, Text, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
 import { IconByName } from "@shiksha/common-lib";
+import { useTranslation } from "react-i18next";
+
+const styles = { questionDiv: { display: "flex" } };
 
 const QuestionBox = ({
   questionObject,
   selectData,
   setSelectData,
   isAnswerHide,
+  infoIcon,
   _box,
 }) => {
+  const { t } = useTranslation();
+
   const createMarkup = (markup) => {
     return { __html: markup };
   };
@@ -32,9 +38,12 @@ const QuestionBox = ({
         {..._box}
       >
         <HStack justifyContent="space-between">
-          <div
-            dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
-          />
+          <div style={styles.questionDiv}>
+            <div
+              dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
+            />
+            {infoIcon}
+          </div>
           {selectData ? (
             <IconByName
               color={isExist() ? "button.500" : "gray.300"}
