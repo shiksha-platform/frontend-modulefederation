@@ -3,6 +3,7 @@ import {
   IconByName,
   Layout,
   Loading,
+  H1,
   telemetryFactory,
   useWindowSize,
 } from "@shiksha/common-lib";
@@ -43,10 +44,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
     let data = {};
     setDateTime({ ...dateTime, FREQUENCY: "", Time: "" });
     if (dateTime?.REPEAT === "Weekly") {
-      data = { name: "FREQUENCY", data: ["1", "2", "3"] };
+      data = { name: "Frequency", data: ["1", "2", "3"] };
     } else if (dateTime?.REPEAT === "Monthly") {
       data = {
-        name: "FREQUENCY",
+        name: "Frequency",
         data: [
           "Monthly on day 28",
           "Monthly on the fourth thursday",
@@ -57,7 +58,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
       data = { name: "Time", data: ["3:00PM", "4:00PM", "5:00PM"] };
     }
     setRecurringData([
-      { name: "REPEAT", data: ["Daily", "Weekly", "Monthly"] },
+      { name: "Recurring", data: ["Daily", "Weekly", "Monthly"] },
       data,
     ]);
   }, [dateTime?.REPEAT]);
@@ -66,18 +67,21 @@ export default function ScheduleNotification({ footerLinks, appName }) {
     return (
       <Layout _appBar={{ languages: manifest.languages }}>
         <Loading
-          width={width}
-          height={height - 60}
+          width={width - 60}
+          height={height - 100}
           icon={<IconByName name="MailLockLineIcon" _icon={{ size: 100 }} />}
           message={
-            <Center>
-              <Text fontSize="24" fontWeight="600" color="gray.500">
-                {"Notification Scheduled"}
-              </Text>
-              <Text fontSize="14" fontWeight="400" color="gray.500">
+            <Center mx="5">
+              <H1 color="gray.500">{"Notification Scheduled"}</H1>
+              <Text
+                fontSize="14"
+                fontWeight="400"
+                textAlign="center"
+                color="gray.500"
+              >
                 {`Attendance Notification has been scheduled for Thursdays 2:00pm`}
               </Text>
-              <Button
+              {/* <Button
                 colorScheme="button"
                 variant="outline"
                 onPress={(e) => {
@@ -87,7 +91,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 }}
               >
                 {"Done"}
-              </Button>
+              </Button> */}
             </Center>
           }
         />
@@ -108,7 +112,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         bg: "classCard.500",
         _text: {
           fontSize: "16px",
-          fontWeight: "600",
+          fontWeight: "500",
           textTransform: "inherit",
         },
       }}
@@ -118,10 +122,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         <FormInput
           {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
           data={[
-            { name: "DATE", data: ["24", "12"] },
-            { name: "MONTH", data: ["April"] },
+            { name: "Date", data: ["24", "12"] },
+            { name: "Month", data: ["April"] },
             {
-              name: "TIME",
+              name: "Time",
               buttonVariant: "outline",
               data: ["8.30AM", "9.30AM", "10.30AM"],
             },
@@ -131,6 +135,8 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           <Checkbox
             isChecked={recurring}
             colorScheme="button"
+            borderColor="button.500"
+            borderRadius="0"
             onChange={(e) => setRecurring(!recurring)}
           >
             {t("THIS_IS_A_RECURRING_NOTIFICATION")}
@@ -146,19 +152,26 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         )}
         <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
           <Button.Group>
-            <Button colorScheme="button" px="5" flex="1" variant="outline">
+            <Button
+              colorScheme="button"
+              px="5"
+              mr="5px"
+              flex="1"
+              variant="outline"
+            >
               {t("CANCEL")}
             </Button>
             <Button
               colorScheme="button"
               _text={{ color: "white" }}
               px="5"
+              ml="5px"
               flex="1"
               onPress={(e) => {
                 setShowSummaryModal({ ...dateTime, name: "View Summary" });
               }}
             >
-              {t("REVIEW")}
+              {t("VIEW SUMMARY")}
             </Button>
           </Button.Group>
         </Box>
@@ -168,13 +181,14 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         >
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
+              <Stack p={5} pt={1} pb="2px">
                 <Text fontSize="16px" fontWeight={"600"}>
                   {t(`Select ${dateTimeData?.name}`)}
                 </Text>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
+                color="classCard.900"
                 onPress={(e) => setDateTimeData({})}
               />
             </HStack>
@@ -210,25 +224,27 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           isOpen={showSummaryModal?.name}
           onClose={() => setShowSummaryModal({})}
         >
-          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+          <Actionsheet.Content alignItems={"left"} bg="viewNotification.700">
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
+              <Stack p={5} pt={1} pb="2px">
                 <Text fontSize="16px" fontWeight={"600"}>
                   {showSummaryModal?.name}
                 </Text>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
+                color="classCard.900"
                 onPress={(e) => setShowSummaryModal({})}
               />
             </HStack>
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
-            <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+            <Box px="5" pt="5">
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="CheckDoubleLineIcon"
+                  color="classCard.900"
                   isDisabled
                 />
                 <Text fontSize="14" fontWeight="500">
@@ -236,11 +252,18 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 </Text>
               </HStack>
             </Box>
-            <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+            <Box
+              px="5"
+              pt="5"
+              pb="5"
+              borderBottomWidth="1"
+              borderColor="gray.200"
+            >
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="TimeLineIcon"
+                  color="classCard.900"
                   isDisabled
                 />
                 <Text fontSize="14" fontWeight="500">
@@ -248,7 +271,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 </Text>
               </HStack>
             </Box>
-            <VStack p="5" space={4} shadow="1">
+            <VStack p="5" space={6}>
               <Text fontSize="14" fontWeight="600">
                 {t("NOTICE")}
               </Text>
@@ -276,7 +299,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                   }
                 }}
               >
-                {t("SELECT")}
+                {t("SCHEDULE MESSAGE")}
               </Button>
             </Box>
           </Box>
@@ -304,19 +327,21 @@ const FormInput = ({
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text fontSize={"14px"} fontWeight="500">
+        <Text fontSize={"14px"} fontWeight="400">
           {t(item.name)}
         </Text>
         <Button
           {...(item?.buttonVariant
             ? { variant: item.buttonVariant }
-            : { _text: { color: "white" } })}
+            : { _text: { color: "black" } })}
           rounded="full"
           colorScheme="button"
           px="5"
+          bg="viewNotification.500"
+          _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName
-              color={item?.buttonVariant ? "button.500" : "white"}
+              color={item?.buttonVariant ? "button.500" : "button.500"}
               name="ArrowDownSLineIcon"
               isDisabled
             />

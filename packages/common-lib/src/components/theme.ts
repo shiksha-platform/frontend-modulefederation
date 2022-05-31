@@ -93,7 +93,8 @@ const DEFAULT_THEME = {
     viewNotification: {
       500: '#FDDFD8',
       600: '#feefeb',
-      800: '#AA948E'
+      700: '#B9FBC0',
+      800: '#FDF2EE'
     },
     calendarBtncolor: {
       500: '#BCBCBC'
