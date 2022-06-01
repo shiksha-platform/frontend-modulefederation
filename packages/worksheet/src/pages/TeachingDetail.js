@@ -10,7 +10,7 @@ import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { worksheets } from "./../config/worksheet";
 import { useNavigate, useParams } from "react-router-dom";
 import manifest from "../manifest.json";
-import WorksheetBox from "components/WorksheertBox";
+import WorksheetBox from "components/WorksheetBox";
 import { teachingMaterial } from "./../config/teachingMaterial";
 
 export default function TeachingDetail({ footerLinks, appName }) {
@@ -60,7 +60,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
             <IconByName
               p="0"
               name="CloseCircleLineIcon"
-              color="viewNotification.800"
+              color="viewNotification.900"
               onPress={(e) => setMessage(false)}
             />
           </HStack>
@@ -103,7 +103,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
         <Button
           _text={{ color: "white" }}
           p="3"

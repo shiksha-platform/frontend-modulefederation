@@ -77,7 +77,7 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
             {..._addIconButton}
           />
         </HStack>
-        <Text fontWeight="500" fontSize="12px" color="worksheetBoxText.500">
+        <Text fontWeight="400" fontSize="12px" color="worksheetBoxText.500">
           {item.description}
         </Text>
         <HStack space="2">
@@ -90,8 +90,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
               <Text
-                fontWeight="600"
-                fontSize="10px"
+                fontWeight="400"
+                fontSize="12px"
                 color="worksheetBoxText.400"
               >
                 {"Subject: " + item.subject}
@@ -105,8 +105,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
               <Text
-                fontWeight="600"
-                fontSize="10px"
+                fontWeight="400"
+                fontSize="12px"
                 color="worksheetBoxText.400"
               >
                 {"Level: " + item.level}
@@ -120,8 +120,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
               <Text
-                fontWeight="600"
-                fontSize="10px"
+                fontWeight="400"
+                fontSize="12px"
                 color="worksheetBoxText.400"
               >
                 {"Questions: " + item.questions}
@@ -137,8 +137,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
               <Text
-                fontWeight="600"
-                fontSize="10px"
+                fontWeight="400"
+                fontSize="12px"
                 color="worksheetBoxText.400"
               >
                 {"Grade: " + item.grade}
@@ -152,8 +152,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
               <Text
-                fontWeight="600"
-                fontSize="10px"
+                fontWeight="400"
+                fontSize="12px"
                 color="worksheetBoxText.400"
               >
                 {t("TOPIC") + ": " + item.chapter}
@@ -167,8 +167,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
               <Text
-                fontWeight="600"
-                fontSize="10px"
+                fontWeight="400"
+                fontSize="12px"
                 color="worksheetBoxText.400"
               >
                 {"Downloads: " + item.downloads}

@@ -7,7 +7,7 @@ import {
   useWindowSize,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
-import WorksheetBox from "components/WorksheertBox";
+import WorksheetBox from "components/WorksheetBox";
 import {
   HStack,
   Stack,
@@ -289,10 +289,13 @@ const FormInput = ({
           </Text>
           <Button
             {...(formObject[attributeName]
-              ? { _text: { color: "white" } }
+              ? { _text: { color: "white", textTransform: "inherit" } }
               : item?.buttonVariant
               ? { variant: item.buttonVariant }
-              : { variant: "outline", _text: { color: "button.500" } })}
+              : {
+                  variant: "outline",
+                  _text: { color: "button.500", textTransform: "inherit" },
+                })}
             rounded="full"
             colorScheme="button"
             px="5"
@@ -850,7 +853,7 @@ const ListOfWorksheet = ({
                 p={"10px"}
                 placeholder={t("ENTER") + " " + t("NAME")}
                 onChange={handelInput}
-                value={inputData}
+                value={inputData ? inputData : ""}
               />
             </FormControl>
             <Button.Group>

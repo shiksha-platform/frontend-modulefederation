@@ -14,7 +14,7 @@ import {
 import { worksheetsList } from "./../config/worksheet";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
-import WorksheetBox from "components/WorksheertBox";
+import WorksheetBox from "components/WorksheetBox";
 
 export default function Worksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
