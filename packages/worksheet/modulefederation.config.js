@@ -7,6 +7,7 @@ module.exports = {
     "./TeachingDetail": "./src/pages/TeachingDetail",
     "./QuestionBank": "./src/pages/QuestionBank",
     "./Worksheet": "./src/pages/Worksheet",
+    "./WorksheetShare": "./src/pages/WorksheetShare",
     "./WorksheetQuestionBank": "./src/pages/WorksheetQuestionBank",
     "./CreateWorksheet": "./src/pages/CreateWorksheet",
     "./WorksheetTemplate": "./src/pages/WorksheetTemplate",
@@ -14,6 +15,7 @@ module.exports = {
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
+    students: `students@[window.appModules.students.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

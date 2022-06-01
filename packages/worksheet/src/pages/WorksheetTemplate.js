@@ -73,7 +73,7 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
           ))}
         </Carousel>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
         <Button.Group>
           <Button
             flex="1"

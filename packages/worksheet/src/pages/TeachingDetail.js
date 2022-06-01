@@ -13,6 +13,10 @@ import manifest from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
 import { teachingMaterial } from "./../config/teachingMaterial";
 
+const styles = {
+  stickyButton: { boxShadow: "rgb(0 0 0 / 22%) 0px -2px 10px" },
+};
+
 export default function TeachingDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
