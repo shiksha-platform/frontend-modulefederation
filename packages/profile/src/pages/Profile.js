@@ -16,6 +16,7 @@ import {
   calendar,
   capture,
   IconByName,
+  IconByNameCopy,
   Layout,
   Menu,
   telemetryFactory,
@@ -138,8 +139,8 @@ export default function Profile({ footerLinks, appName }) {
                   </Text>
                 </VStack>
                 <HStack>
-                  <IconByName color="white" name="CameraLineIcon" />
-                  <IconByName color="white" name="ShareLineIcon" />
+                  <IconByNameCopy color="white" name="CameraLineIcon" />
+                  <IconByNameCopy color="white" name="ShareLineIcon" />
                 </HStack>
               </HStack>
             </Box>

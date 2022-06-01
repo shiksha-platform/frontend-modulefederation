@@ -14,6 +14,7 @@ import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Layout from './components/layout/Layout'
 import IconByName from './components/IconByName'
+import IconByNameCopy from './components/IconByNameCopy'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
 import Menu, { SubMenu } from './components/Menu'
@@ -44,6 +45,7 @@ export {
   Footer,
   Layout,
   IconByName,
+  IconByNameCopy,
   FilterButton,
   Widget,
   Collapsible,
