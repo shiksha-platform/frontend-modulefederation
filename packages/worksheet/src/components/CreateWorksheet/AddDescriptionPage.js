@@ -33,7 +33,13 @@ export default function AddDescriptionPage({ setPageName }) {
                   {item.label}
                 </Text>
               </FormControl.Label>
-              <Input variant="filled" p={2} {...item} key={index + item.name} />
+              <Input
+                bg={"gray.100"}
+                variant="filled"
+                p={2}
+                {...item}
+                key={index + item.name}
+              />
             </FormControl>
           </Box>
         );

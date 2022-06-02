@@ -99,7 +99,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           }}
         />
       ) : pageName === "WorksheetTemplate" ? (
-        <WorksheetTemplate onPress={(e) => setPageName("success")} />
+        <WorksheetTemplate onPress={(e) => setPageName("AddDescriptionPage")} />
       ) : pageName === "AddDescriptionPage" ? (
         <AddDescriptionPage {...{ questions, setQuestions, setPageName }} />
       ) : (
