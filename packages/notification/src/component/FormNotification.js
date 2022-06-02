@@ -30,7 +30,12 @@ export const FormNotification = ({ setPageName }) => {
               {"Notification title"}
             </Text>
           </FormControl.Label>
-          <Input variant="filled" bg="gray.100" p={2} placeholder="Enter name" />
+          <Input
+            variant="filled"
+            bg="gray.100"
+            p={2}
+            placeholder="Enter name"
+          />
         </FormControl>
       </Box>
       <HStack

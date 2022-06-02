@@ -13,9 +13,13 @@ export default function RecipientList({
   const Card = React.lazy(() => import("students/Card"));
 
   React.useEffect((e) => {
-    setStudents(students.map((item) => {return {...item,isSelected:false}}));
+    setStudents(
+      students.map((item) => {
+        return { ...item, isSelected: false };
+      })
+    );
   }, []);
-  
+
   return (
     <Stack>
       <VStack bg="white" p="5" space="2">
@@ -24,59 +28,65 @@ export default function RecipientList({
             {"Recipient List"}
           </Text>
         </Box>
-    {students.map((item, index) => {
-      return <Box
-            key={index}
-            borderWidth="1"
-            borderColor="button.500"
-            bg="absentCardBg.500"
-            p="10px"
-            rounded="lg"
-          >
-            <Suspense fallback="logding">
-              <Card
-                attendanceProp={[]}
-                item={item}
-                type="rollFather"
-                textTitle={
-                  <VStack alignItems="center">
-                    <Text fontSize="14" fontWeight="500">
-                      <Text>{item.fullName}</Text>
-                      <Text color="gray.300"> • </Text>
-                      <Text color="absentCardText.500">
-                        {item.days} {t("DAYS")}
+        {students.map((item, index) => {
+          return (
+            <Box
+              key={index}
+              borderWidth="1"
+              borderColor="button.500"
+              bg="absentCardBg.500"
+              p="10px"
+              rounded="lg"
+            >
+              <Suspense fallback="logding">
+                <Card
+                  attendanceProp={[]}
+                  item={item}
+                  type="rollFather"
+                  textTitle={
+                    <VStack alignItems="center">
+                      <Text fontSize="14" fontWeight="500">
+                        <Text>{item.fullName}</Text>
+                        <Text color="gray.300"> • </Text>
+                        <Text color="absentCardText.500">
+                          {item.days} {t("DAYS")}
+                        </Text>
                       </Text>
-                    </Text>
-                  </VStack>
-                }
-                rightComponent={
-                  <IconByName
-                  color={item?.isSelected ? "button.500" : "gray.300"}
-                  name={
-                    item?.isSelected
-                      ? "CheckboxLineIcon"
-                      : "CheckboxBlankLineIcon"
+                    </VStack>
                   }
-                  onPress={(event) => {
-                    if(item?.isSelected) {
-                      const newData = students.map(
-                        (subE) => subE.admissionNo === item?.admissionNo ? {...subE,isSelected:false} :subE
-                      );
-                      setStudents(newData);
-                    } else {
-                      const newData = students.map(
-                        (subE) => subE.admissionNo === item?.admissionNo ? {...subE,isSelected:true} :subE
-                      );
-                      setStudents(newData);
-                    }
-                  }}
+                  rightComponent={
+                    <IconByName
+                      color={item?.isSelected ? "button.500" : "gray.300"}
+                      name={
+                        item?.isSelected
+                          ? "CheckboxLineIcon"
+                          : "CheckboxBlankLineIcon"
+                      }
+                      onPress={(event) => {
+                        if (item?.isSelected) {
+                          const newData = students.map((subE) =>
+                            subE.admissionNo === item?.admissionNo
+                              ? { ...subE, isSelected: false }
+                              : subE
+                          );
+                          setStudents(newData);
+                        } else {
+                          const newData = students.map((subE) =>
+                            subE.admissionNo === item?.admissionNo
+                              ? { ...subE, isSelected: true }
+                              : subE
+                          );
+                          setStudents(newData);
+                        }
+                      }}
+                    />
+                  }
+                  hidePopUpButton
                 />
-                }
-                hidePopUpButton
-              />
-            </Suspense>
-          </Box>
-})}
+              </Suspense>
+            </Box>
+          );
+        })}
       </VStack>
       <Box bg="white" p="5" pt="0" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
@@ -164,62 +174,65 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
             {"Recipient List"}
           </Text>
         </Box>
-        {newStudents.map((item, index) => { 
-          let isStudentSelected = students.filter((e) => e.admissionNo === item.admissionNo)
-          .length > 0
-          return  <Box
-            key={index}
-            borderBottomWidth="1"
-            borderColor="gray.100"
-            p="10px"
-          >
-            <Suspense fallback="logding">
-              <Card
-                attendanceProp={[]}
-                item={item}
-                type="rollFather"
-                textTitle={
-                  <VStack alignItems="center">
-                    <Text fontSize="14" fontWeight="500">
-                      <Text>{item.admissionNo}</Text>
-                      <Text color="gray.300"> • </Text>
-                      <Text>{item.fullName}</Text>
-                    </Text>
-                  </VStack>
-                }
-                textSubTitle={
-                  <VStack alignItems="center">
-                    <Text fontSize="10" fontWeight="400" color="gray.400">
-                      <Text>{item.fathersName}</Text>
-                    </Text>
-                  </VStack>
-                }
-                rightComponent={
-                  <IconByName
-                  color={isStudentSelected ? "button.500" : "gray.300"}
-                  name={
-                    isStudentSelected
-                      ? "CheckboxLineIcon"
-                      : "CheckboxBlankLineIcon"
+        {newStudents.map((item, index) => {
+          let isStudentSelected =
+            students.filter((e) => e.admissionNo === item.admissionNo).length >
+            0;
+          return (
+            <Box
+              key={index}
+              borderBottomWidth="1"
+              borderColor="gray.100"
+              p="10px"
+            >
+              <Suspense fallback="logding">
+                <Card
+                  attendanceProp={[]}
+                  item={item}
+                  type="rollFather"
+                  textTitle={
+                    <VStack alignItems="center">
+                      <Text fontSize="14" fontWeight="500">
+                        <Text>{item.admissionNo}</Text>
+                        <Text color="gray.300"> • </Text>
+                        <Text>{item.fullName}</Text>
+                      </Text>
+                    </VStack>
                   }
-                  onPress={(event) => {
-                    console.log(event);
-                    if (isStudentSelected) {
-                      const newData = students.filter(
-                        (subE) => subE.admissionNo !== item.admissionNo
-                      );
-                      setStudents(newData);
-                    } else {
-                      setStudents([...students, item]);
-                    }
-                  }}
+                  textSubTitle={
+                    <VStack alignItems="center">
+                      <Text fontSize="10" fontWeight="400" color="gray.400">
+                        <Text>{item.fathersName}</Text>
+                      </Text>
+                    </VStack>
+                  }
+                  rightComponent={
+                    <IconByName
+                      color={isStudentSelected ? "button.500" : "gray.300"}
+                      name={
+                        isStudentSelected
+                          ? "CheckboxLineIcon"
+                          : "CheckboxBlankLineIcon"
+                      }
+                      onPress={(event) => {
+                        console.log(event);
+                        if (isStudentSelected) {
+                          const newData = students.filter(
+                            (subE) => subE.admissionNo !== item.admissionNo
+                          );
+                          setStudents(newData);
+                        } else {
+                          setStudents([...students, item]);
+                        }
+                      }}
+                    />
+                  }
+                  hidePopUpButton
                 />
-                }
-                hidePopUpButton
-              />
-            </Suspense>
-          </Box>
-})}
+              </Suspense>
+            </Box>
+          );
+        })}
       </VStack>
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
