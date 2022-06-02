@@ -3,7 +3,7 @@ import { Box, Button, HStack, Skeleton, Stack, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
 export default function WorksheetTemplate({ footerLinks, appName }) {
