@@ -28,6 +28,7 @@ function App() {
     import("worksheet/WorksheetQuestionBank")
   );
   const CreateWorksheet = React.lazy(() => import("worksheet/CreateWorksheet"));
+  const EditWorksheet = React.lazy(() => import("worksheet/EditWorksheet"));
   const Teaching = React.lazy(() => import("worksheet/Teaching"));
   const Student = React.lazy(() => import("students/Student"));
   const StudentDetails = React.lazy(() => import("students/StudentDetails"));
@@ -55,6 +56,10 @@ function App() {
     {
       path: "/:id",
       component: WorksheetQuestionBank,
+    },
+    {
+      path: "/worksheet/:id/edit",
+      component: EditWorksheet,
     },
     {
       path: "/worksheet/create",

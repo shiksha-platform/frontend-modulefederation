@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getAllQuestions = async (filter) => {
+export const getAllQuestions = async (filter, request) => {
   const questionList = await axios.post(
     "https://vdn.diksha.gov.in/action/composite/v3/search",
     {
@@ -10,6 +10,7 @@ export const getAllQuestions = async (filter) => {
           status: ["Live"],
           ...filter,
         },
+        ...request,
       },
     }
   );

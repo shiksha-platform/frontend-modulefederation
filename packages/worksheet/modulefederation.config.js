@@ -8,6 +8,7 @@ module.exports = {
     "./QuestionBank": "./src/pages/QuestionBank",
     "./WorksheetQuestionBank": "./src/pages/WorksheetQuestionBank",
     "./CreateWorksheet": "./src/pages/CreateWorksheet",
+    "./EditWorksheet": "./src/pages/EditWorksheet",
     "./Teaching": "./src/pages/Teaching",
   },
   remotes: {
