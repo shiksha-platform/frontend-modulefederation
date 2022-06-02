@@ -41,6 +41,7 @@ const TimeTableRoute = () => {
   const [activeDate, setActiveDate] = React.useState();
   const [compare, setCompare] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
+  const [isCompare, setIsCompare] = React.useState(false);
   const [showModalMessages, setShowModalMessages] = React.useState(false);
   const [showModalClash, setShowModalClash] = React.useState(false);
   const [timeTables, setTimeTables] = React.useState([]);
@@ -60,21 +61,25 @@ const TimeTableRoute = () => {
       ? moment(Math.max(...datesMax)).format(momentDateFormats.hh_mm_ss)
       : "23:59:59",
   };
-  const [timeTableCardOrange, emerald, gray] = useToken("colors", [
-    "timeTableCardOrange.500",
-    "emerald.400",
-    "gray.200",
-  ]);
+  const [timeTableCardOrange, emerald, gray, timeTableBorderColor] = useToken(
+    "colors",
+    [
+      "timeTableCardOrange.500",
+      "emerald.400",
+      "gray.200",
+      "timeTablecellborder.500",
+    ]
+  );
   let events = timeTables.map((e, index) => {
     return {
       ...e,
       title: t(e.title),
-      backgroundColor: e.activeMenu
-        ? emerald
-        : index < 4
-        ? timeTableCardOrange
-        : gray,
-      borderColor: e.activeMenu ? emerald : timeTableCardOrange,
+      backgroundColor: e.backgroundColor
+        ? e.backgroundColor
+        : timeTableCardOrange,
+      borderColor: e.borderColor ? e.borderColor : timeTableBorderColor,
+      borderWidth: "1",
+      borderRadius: "5px",
     };
   });
 
@@ -105,7 +110,11 @@ const TimeTableRoute = () => {
           <Button
             rounded={"full"}
             variant={compare ? "solid" : "outline"}
-            _text={{ color: compare ? "white" : "button.500" }}
+            py={1}
+            _text={{
+              color: compare ? "white" : "button.500",
+              textTransform: "capitelize",
+            }}
             colorScheme="button"
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModal(true)}
@@ -133,14 +142,14 @@ const TimeTableRoute = () => {
                 >
                   <VStack alignItems="center" space="2">
                     <Text
-                      color={isToday ? "white" : "#BCC1CD"}
+                      color={isToday ? "white" : "calendarDatecolor.500"}
                       fontWeight="500"
                       fontSize="14px"
                     >
                       {date.format("ddd")}
                     </Text>
                     <Text
-                      color={isToday ? "white" : "#BCC1CD"}
+                      color={isToday ? "white" : "calendarDatecolor.500"}
                       fontWeight="500"
                       fontSize="14px"
                     >
@@ -155,7 +164,17 @@ const TimeTableRoute = () => {
       </Box>
       <Sheet
         customFunction={(e) => {
-          setTimeTables([...timeTable, ...timeTable]);
+          setIsCompare(true);
+          setTimeTables([
+            ...timeTable,
+            ...timeTable.map((e) => {
+              return {
+                ...e,
+                backgroundColor: "#D7F2DD",
+                borderColor: "#A9E3AE",
+              };
+            }),
+          ]);
           if (e) {
             setCompare(e);
           }
@@ -221,10 +240,11 @@ const TimeTableRoute = () => {
         slotDuration="00:15"
         slotLabelInterval="01:00"
         events={events}
-        viewDidMount={(view) => {
-          view.el.querySelector(".fc-timegrid-axis-frame").innerHTML =
-            t("TIME");
-        }}
+        columnHeader={false}
+        // viewDidMount={(view) => {
+        //   view.el.querySelector(".fc-timegrid-axis-frame").innerHTML =
+        //     t("TIME");
+        // }}
         eventContent={(event) => {
           let item = {
             ...event?.event?._def,
@@ -244,6 +264,7 @@ const TimeTableRoute = () => {
               setShowModalClash(true);
               setSelectedEvent(item);
             },
+            isCompare: isCompare,
           });
         }}
         dayHeaderFormat={{ weekday: "long" }}
@@ -253,33 +274,50 @@ const TimeTableRoute = () => {
         isOpen={showModalMessages}
         onClose={() => setShowModalMessages(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
+        <Actionsheet.Content bg="white">
+          <HStack justifyContent={"space-between"} w="100%">
+            <Stack p={5} pt={1} pb="2px" flex="1">
+              <Text
+                fontSize="14px"
+                textAlign="center"
+                fontWeight="400"
+                color="gray.500"
+              >
                 {"Period Details"}
               </Text>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
+              color="classCard.900"
               onPress={(e) => setShowModalMessages(false)}
+              _icon={{ alignItems: "center" }}
             />
           </HStack>
         </Actionsheet.Content>
         <Box bg="white" p="5" width="100%">
           <VStack space="30px">
-            <VStack space="10px">
+            <VStack space="10px" alignItems="center">
               <Text fontSize="16px" fontWeight="600">
                 {selectedEvent?.title}
               </Text>
-              <Text fontSize="14px" fontWeight="400" color="gray.500">
+              <Text
+                fontSize="14px"
+                textAlign="center"
+                fontWeight="400"
+                color="gray.500"
+              >
                 The classses will be seated as per their roll numbers, and
                 teachers are to follow the exam timing strictly.
               </Text>
             </VStack>
             <Stack space={4}>
               <HStack space="2">
-                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <IconByName
+                  name="MapPinLineIcon"
+                  color="gray.500"
+                  isDisabled
+                  _icon={{ size: "16px" }}
+                />
                 <Text fontSize="14px" fontWeight="500">
                   {t("LOCATION")}
                 </Text>
@@ -288,7 +326,12 @@ const TimeTableRoute = () => {
                 </Text>
               </HStack>
               <HStack space="2">
-                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <IconByName
+                  name="TimeLineIcon"
+                  color="gray.500"
+                  isDisabled
+                  _icon={{ size: "16" }}
+                />
                 <Text fontSize="14px" fontWeight="500">
                   {t("Time")}
                 </Text>
@@ -297,7 +340,12 @@ const TimeTableRoute = () => {
                 </Text>
               </HStack>
               <HStack space="2">
-                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <IconByName
+                  name="CalendarEventLineIcon"
+                  color="gray.700"
+                  isDisabled
+                  _icon={{ size: "16" }}
+                />
                 <Text fontSize="14px" fontWeight="500">
                   {t("Date")}
                 </Text>
@@ -306,7 +354,12 @@ const TimeTableRoute = () => {
                 </Text>
               </HStack>
               <HStack space="2">
-                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <IconByName
+                  name="UserLineIcon"
+                  color="gray.700"
+                  isDisabled
+                  _icon={{ size: "16" }}
+                />
                 <Text fontSize="14px" fontWeight="500">
                   {t("ORGANIZER")}
                 </Text>
@@ -315,7 +368,12 @@ const TimeTableRoute = () => {
                 </Text>
               </HStack>
               <HStack space="2">
-                <IconByName name="CloseCircleLineIcon" isDisabled />
+                <IconByName
+                  name="TeamLineIcon"
+                  color="gray.700"
+                  isDisabled
+                  _icon={{ size: "16" }}
+                />
                 <Text fontSize="14px" fontWeight="500">
                   {t("ATTENDANCE")}
                 </Text>
@@ -332,13 +390,14 @@ const TimeTableRoute = () => {
         onClose={() => setShowModalClash(false)}
         hideDragIndicator
       >
-        <Actionsheet.Content alignItems={"left"} p="0">
+        <Actionsheet.Content alignItems={"left"} p="0" bg="white">
           <IconByName
             position="absolute"
             zIndex="10"
             top="2"
             right="2"
             name="CloseCircleLineIcon"
+            color="classCard.900"
             onPress={(e) => setShowModalClash(false)}
           />
           {["Mathematics", "Middle school term exams", "Sports day"].map(
@@ -349,7 +408,9 @@ const TimeTableRoute = () => {
                     <IconByName
                       size="sm"
                       name="FlashlightLineIcon"
-                      colorScheme="timeTableFlashIcon"
+                      colorScheme={
+                        index === 1 ? "timeTableFlashIcon" : "timeTablemiddle"
+                      }
                       variant="solid"
                       rounded="full"
                       _icon={{
@@ -371,40 +432,49 @@ const TimeTableRoute = () => {
                       p="0"
                       name="CheckboxBlankFillIcon"
                       isDisabledinlineEllipsisStyle
-                      color="timeTableFlashIcon.500"
+                      color={
+                        index === 0
+                          ? "timeTablecellborder.500"
+                          : index === 1
+                          ? "timeTableFlashIcon.500"
+                          : "timeTablemiddle.500"
+                      }
                     />
                     <Text fontSize="16px" fontWeight="600">
                       {index ? name : selectedEvent?.title}
                     </Text>
                   </HStack>
-                  <HStack space="2" alignItems="center">
+                  <HStack space="8" alignItems="center">
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="MapPinLineIcon"
+                        color="gray.700"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
-                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                      <Text fontSize="14px" fontWeight="400" color="gray.700">
                         {selectedEvent?.subTitle}
                       </Text>
                     </HStack>
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="TimeLineIcon"
+                        color="gray.700"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
-                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                      <Text fontSize="14px" fontWeight="400" color="gray.700">
                         {selectedEvent?.timeText}
                       </Text>
                     </HStack>
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="CalendarEventLineIcon"
+                        color="gray.700"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
-                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                      <Text fontSize="14px" fontWeight="400" color="gray.700">
                         {moment(selectedEvent?.start).format("DD, MMM Y")}
                       </Text>
                     </HStack>
@@ -414,6 +484,15 @@ const TimeTableRoute = () => {
             )
           )}
         </Actionsheet.Content>
+        <Box bg="white" p="5" w="100%">
+          <Button
+            colorScheme="button"
+            variant="outline"
+            _text={{ textTransform: "capitalize" }}
+          >
+            {t("VIEW CALENDAR")}
+          </Button>
+        </Box>
       </Actionsheet>
     </Box>
   );
@@ -501,7 +580,7 @@ const Display = ({
               previousDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
+                  : "gray.500"
                 : "gray.400"
             }
             name="ArrowLeftSLineIcon"
@@ -529,7 +608,7 @@ const Display = ({
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
+                  : "gray.500"
                 : "gray.400"
             }
             name="ArrowRightSLineIcon"
@@ -569,13 +648,14 @@ const Sheet = ({
     <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
       <Actionsheet.Content alignItems={"left"} bg="classCard.500">
         <HStack justifyContent={"space-between"}>
-          <Stack p={5} pt={2} pb="25px">
+          <Stack p={5} pt={1} pb="2px">
             <Text fontSize="16px" fontWeight={"600"}>
               {title}
             </Text>
           </Stack>
           <IconByName
             name="CloseCircleLineIcon"
+            color="classCard.900"
             onPress={(e) => setShowModal(false)}
           />
         </HStack>
@@ -596,7 +676,7 @@ const Sheet = ({
               {subData?.data?.map((item, index) => (
                 <Pressable
                   key={index}
-                  p={5}
+                  px={5}
                   onPress={(e) => {
                     setSelectedData({
                       ...selectedData,
@@ -626,10 +706,13 @@ const Sheet = ({
                   }
                 >
                   <HStack
+                    py={5}
                     alignItems="center"
                     space={2}
                     width="100%"
                     justifyContent={"space-between"}
+                    borderBottomWidth="1"
+                    borderBottomColor="gray.200"
                   >
                     <HStack alignItems="center" space={2}>
                       {item.leftIcon ? (
@@ -653,7 +736,7 @@ const Sheet = ({
                               ? "white"
                               : "gray.500"
                           }
-                          _icon={{ size: "18" }}
+                          _icon={{ size: "18", color: "gray.700" }}
                         />
                       ) : (
                         ""
