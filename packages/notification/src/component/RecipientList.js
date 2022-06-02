@@ -1,4 +1,4 @@
-import { capture, telemetryFactory } from "@shiksha/common-lib";
+import { capture, IconByName, telemetryFactory } from "@shiksha/common-lib";
 import { Box, Button, Stack, Text, VStack } from "native-base";
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,12 +11,11 @@ export default function RecipientList({
 }) {
   const { t } = useTranslation();
   const Card = React.lazy(() => import("students/Card"));
-  const [checkStudents, setCheckStudents] = React.useState([]);
 
   React.useEffect((e) => {
-    setCheckStudents(students.map((e) => e.admissionNo));
+    setStudents(students.map((item) => {return {...item,isSelected:false}}));
   }, []);
-
+  
   return (
     <Stack>
       <VStack bg="white" p="5" space="2">
@@ -25,8 +24,8 @@ export default function RecipientList({
             {"Recipient List"}
           </Text>
         </Box>
-        {students.map((item, index) => (
-          <Box
+    {students.map((item, index) => {
+      return <Box
             key={index}
             borderWidth="1"
             borderColor="button.500"
@@ -51,30 +50,33 @@ export default function RecipientList({
                   </VStack>
                 }
                 rightComponent={
-                  <input
-                    type={"checkbox"}
-                    value={item.admissionNo}
-                    checked={
-                      students.filter((e) => e.admissionNo === item.admissionNo)
-                        .length > 0
+                  <IconByName
+                  color={item?.isSelected ? "button.500" : "gray.300"}
+                  name={
+                    item?.isSelected
+                      ? "CheckboxLineIcon"
+                      : "CheckboxBlankLineIcon"
+                  }
+                  onPress={(event) => {
+                    if(item?.isSelected) {
+                      const newData = students.map(
+                        (subE) => subE.admissionNo === item?.admissionNo ? {...subE,isSelected:false} :subE
+                      );
+                      setStudents(newData);
+                    } else {
+                      const newData = students.map(
+                        (subE) => subE.admissionNo === item?.admissionNo ? {...subE,isSelected:true} :subE
+                      );
+                      setStudents(newData);
                     }
-                    onChange={(event) => {
-                      if (!event.currentTarget.checked) {
-                        const newData = students.filter(
-                          (subE) => subE.admissionNo !== item.admissionNo
-                        );
-                        setStudents(newData);
-                      } else {
-                        setStudents([...students, item]);
-                      }
-                    }}
-                  />
+                  }}
+                />
                 }
                 hidePopUpButton
               />
             </Suspense>
           </Box>
-        ))}
+})}
       </VStack>
       <Box bg="white" p="5" pt="0" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
@@ -90,9 +92,6 @@ export default function RecipientList({
                 type: "Attendance-Notification-Add-Another-Student",
               });
               capture("INTERACT", telemetryData);
-              setStudents(
-                students.filter((e) => checkStudents.includes(e.admissionNo))
-              );
               setPageName("StudentList");
             }}
           >
@@ -165,8 +164,10 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
             {"Recipient List"}
           </Text>
         </Box>
-        {newStudents.map((item, index) => (
-          <Box
+        {newStudents.map((item, index) => { 
+          let isStudentSelected = students.filter((e) => e.admissionNo === item.admissionNo)
+          .length > 0
+          return  <Box
             key={index}
             borderBottomWidth="1"
             borderColor="gray.100"
@@ -194,30 +195,31 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
                   </VStack>
                 }
                 rightComponent={
-                  <input
-                    type={"checkbox"}
-                    value={item.admissionNo}
-                    checked={
-                      students.filter((e) => e.admissionNo === item.admissionNo)
-                        .length > 0
+                  <IconByName
+                  color={isStudentSelected ? "button.500" : "gray.300"}
+                  name={
+                    isStudentSelected
+                      ? "CheckboxLineIcon"
+                      : "CheckboxBlankLineIcon"
+                  }
+                  onPress={(event) => {
+                    console.log(event);
+                    if (isStudentSelected) {
+                      const newData = students.filter(
+                        (subE) => subE.admissionNo !== item.admissionNo
+                      );
+                      setStudents(newData);
+                    } else {
+                      setStudents([...students, item]);
                     }
-                    onChange={(event) => {
-                      if (!event.currentTarget.checked) {
-                        const newData = students.filter(
-                          (subE) => subE.admissionNo !== item.admissionNo
-                        );
-                        setStudents(newData);
-                      } else {
-                        setStudents([...students, item]);
-                      }
-                    }}
-                  />
+                  }}
+                />
                 }
                 hidePopUpButton
               />
             </Suspense>
           </Box>
-        ))}
+})}
       </VStack>
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>

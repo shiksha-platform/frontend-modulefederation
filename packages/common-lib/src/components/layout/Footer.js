@@ -14,7 +14,16 @@ export default function Footer({ menues, routeDynamics, ...props }) {
   const footerMenus = menues //TODO: manifest.menus.footer;
 
   useEffect(() => {
-    if (['/'].includes(window?.location?.pathname)) {
+    if (
+      [
+        '/notification',
+        '/notification/create',
+        '/notification/schedule',
+        '/notification/outbox',
+        '/profile',
+        '/profile/attendance'
+      ].includes(window?.location?.pathname)
+    ) {
       setSelected(0)
     } else if (
       [

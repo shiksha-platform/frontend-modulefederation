@@ -13,7 +13,7 @@ import {
   ScrollView,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import { capture, H2, IconByName, Layout, Tab } from "@shiksha/common-lib";
+import { capture, H2, IconByName, Layout } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
 
