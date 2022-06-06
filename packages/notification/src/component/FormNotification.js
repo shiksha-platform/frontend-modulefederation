@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 export const FormNotification = ({ setPageName }) => {
   const { t } = useTranslation();
   const [showModalTemplate, setShowModalTemplate] = React.useState(false);
+  const [selectTemplate, setSelectTemplate] = React.useState("");
   const navigate = useNavigate();
 
   return (
@@ -188,23 +189,21 @@ export const FormNotification = ({ setPageName }) => {
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" fontSize="14px" width={"100%"}>
+        <Box bg="white" width={"100%"}>
           {[
-            "Absent Notice",
-            "Holiday Announcement",
-            "Attendace Report",
-            "Timetable Update",
+            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
+            "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
+            "Learners should be able to use strategies that will support their understanding during their own reading",
+            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking..",
           ].map((value, index) => {
             return (
-              <Box p="5" key={index}>
-                <Checkbox
-                  colorScheme="button"
-                  borderColor="button.500"
-                  borderRadius="0"
-                >
-                  {value}
-                </Checkbox>
-              </Box>
+              <Pressable onPress={(e) => setSelectTemplate(value)}>
+                <Box p="4" key={index}>
+                  <Text color={selectTemplate === value ? "" : "gray.300"}>
+                    {value}
+                  </Text>
+                </Box>
+              </Pressable>
             );
           })}
           <Box p="5">
