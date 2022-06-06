@@ -13,7 +13,7 @@ import {
   ScrollView,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import { capture, IconByName, Layout, Tab } from "@shiksha/common-lib";
+import { capture, H2, IconByName, Layout, Tab } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
 
@@ -72,9 +72,9 @@ const Notification = ({ footerLinks, appName }) => {
             rounded="full"
             colorScheme="button"
             variant="outline"
-            bg="rgba(254, 239, 235, 1)"
+            bg="viewNotification.600"
             px="5"
-            py="7px"
+            py="4px"
             _text={{ textTransform: "capitalize", fontSize: "14px" }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalInbox(true)}
@@ -90,7 +90,7 @@ const Notification = ({ footerLinks, appName }) => {
         py: "22px",
         _text: {
           fontSize: "16px",
-          fontWeight: "600",
+          fontWeight: "00",
           textTransform: "inherit",
         },
       }}
@@ -105,7 +105,7 @@ const Notification = ({ footerLinks, appName }) => {
                 colorScheme="button"
                 borderColor="button.500"
                 borderRadius="0"
-                _text={{ color: "button.500" }}
+                _text={{ color: "button.500", fontSize: "14px" }}
               >
                 {t("MARK_ALL_READ")}
               </Checkbox>
@@ -125,8 +125,8 @@ const Notification = ({ footerLinks, appName }) => {
                   {t("FILTER")}
                 </Button>
               ) : (
-                <ScrollView horizontal={true}>
-                  <HStack justifyContent="end" alignItems="center" py="5">
+                <ScrollView horizontal={true} display={"hidden"}>
+                  <HStack justifyContent="end" alignItems="center" py="4">
                     {filters.map((value, index) => {
                       const isSelect = groupValue.filter((e) =>
                         value?.data.includes(e)
@@ -136,6 +136,7 @@ const Notification = ({ footerLinks, appName }) => {
                           key={index}
                           mr="1"
                           rounded="full"
+                          bg="viewNotification.800"
                           colorScheme="button"
                           {...(isSelect < 1 ? { variant: "outline" } : {})}
                           px="5"
@@ -167,7 +168,13 @@ const Notification = ({ footerLinks, appName }) => {
                       rounded="full"
                       colorScheme="button"
                       variant="outline"
+                      bg="viewNotification.800"
                       px="5"
+                      _text={{
+                        textTransform: "capitelize",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                      }}
                       rightIcon={
                         <IconByName
                           color="button.500"
@@ -212,9 +219,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t("NOTIFCATION_ACTION")}
-                </Text>
+                <H2 fontWeight="500">{t("NOTIFCATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -248,9 +253,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t("NOTIFCATION_ACTION")}
-                </Text>
+                <H2 fontWeight="600">{t("NOTIFCATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -264,7 +267,7 @@ const Notification = ({ footerLinks, appName }) => {
               <Box p="5">{t("INBOX")}</Box>
             </Link>
             <Link href={"/notification/outbox"}>
-              <Box p="5">{t("Outbox")}</Box>
+              <Box p="5">{t("OUTBOX")}</Box>
             </Link>
             <Box p="5">
               <Button
@@ -278,12 +281,10 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg="viewNotification.500">
+          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="2px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t("VIEW_NOTIFCATION")}
-                </Text>
+                <H2 fontWeight="500">{t("VIEW_NOTIFCATION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -334,10 +335,8 @@ const Notification = ({ footerLinks, appName }) => {
         <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
           <Actionsheet.Content alignItems={"left"} bg="classCard.500">
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t("SELECT_MODULE")}
-                </Text>
+              <Stack p={5} pt={1} pb="2px">
+                <H2 fontWeight="500">{t("SELECT_MODULE")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -348,12 +347,24 @@ const Notification = ({ footerLinks, appName }) => {
           </Actionsheet.Content>
           <Box bg="white" width={"100%"}>
             <Box p="5">
-              <Checkbox colorScheme="button">{t("Select All")}</Checkbox>
+              <Checkbox
+                colorScheme="button"
+                borderColor="button.500"
+                borderRadius="0"
+              >
+                {t("Select All")}
+              </Checkbox>
             </Box>
             {filterData &&
               filterData.map((value, index) => (
                 <Box p="5" key={index}>
-                  <Checkbox colorScheme="button">{value}</Checkbox>
+                  <Checkbox
+                    colorScheme="button"
+                    borderColor="button.500"
+                    borderRadius="0"
+                  >
+                    {value}
+                  </Checkbox>
                 </Box>
               ))}
             <Box p="5">

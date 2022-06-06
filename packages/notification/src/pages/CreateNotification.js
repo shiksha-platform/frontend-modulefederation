@@ -105,13 +105,13 @@ const CreateNotification = ({ footerLinks, appName }) => {
               <Text fontSize="14" fontWeight="400" color="gray.500">
                 {`Attendance Notification has been sent to ${students.length} parents`}
               </Text>
-              <Button
+              {/* <Button
                 colorScheme="button"
                 variant="outline"
                 onPress={(e) => setPageName()}
               >
                 {"Done"}
-              </Button>
+              </Button> */}
             </Center>
           }
         />
@@ -150,18 +150,18 @@ const CreateNotification = ({ footerLinks, appName }) => {
         <FormNotification {...{ setPageName, students, setStudents }} />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
-        <Actionsheet.Content alignItems={"left"} bg="viewNotification.500">
+        <Actionsheet.Content alignItems={"left"} bg="viewNotification.700">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <Text fontSize="16px" fontWeight={"600"}>
                 {t("VIEW_NOTIFCATION")}
               </Text>
             </Stack>
-            <IconByName
+            {/* <IconByName
               name="CloseCircleLineIcon"
               color="classCard.900"
               onPress={(e) => setPageName()}
-            />
+            /> */}
           </HStack>
         </Actionsheet.Content>
         <Box bg="white" width={"100%"}>

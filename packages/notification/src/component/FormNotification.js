@@ -1,4 +1,4 @@
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, H2 } from "@shiksha/common-lib";
 import {
   Box,
   FormControl,
@@ -49,7 +49,7 @@ export const FormNotification = ({ setPageName }) => {
           _text={{ color: "black", textTransform: "capitalize" }}
           px="5"
           py="1"
-          bg="viewNotification.600"
+          bg="viewNotification.500"
           rightIcon={
             <IconByName
               color={"button.500"}
@@ -78,7 +78,7 @@ export const FormNotification = ({ setPageName }) => {
           _text={{ color: "black", textTransform: "capitalize" }}
           px="5"
           py="1"
-          bg="viewNotification.600"
+          bg="viewNotification.500"
           rightIcon={
             <IconByName
               color={"button.500"}
@@ -106,6 +106,7 @@ export const FormNotification = ({ setPageName }) => {
           variant="outline"
           px="5"
           py="1"
+          _text={{ textTransform: "capitalize" }}
           rightIcon={
             <IconByName
               color={"button.500"}
@@ -172,18 +173,17 @@ export const FormNotification = ({ setPageName }) => {
       >
         <Actionsheet.Content alignItems={"left"} bg="classCard.500">
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Select Template")}
-              </Text>
+            <Stack p={5} pt={1} pb="2px">
+              <H2 fontWeight="500">{t("Select Template")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
+              color="classCard.900"
               onPress={(e) => setShowModalTemplate(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg="white" fontSize="14px" width={"100%"}>
           {[
             "Absent Notice",
             "Holiday Announcement",
@@ -192,7 +192,13 @@ export const FormNotification = ({ setPageName }) => {
           ].map((value, index) => {
             return (
               <Box p="5" key={index}>
-                <Checkbox colorScheme="button">{value}</Checkbox>
+                <Checkbox
+                  colorScheme="button"
+                  borderColor="button.500"
+                  borderRadius="0"
+                >
+                  {value}
+                </Checkbox>
               </Box>
             );
           })}
