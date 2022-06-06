@@ -157,8 +157,8 @@ export default function Attendance({ footerLinks, appName }) {
     <Layout
       _header={{
         title: classObject?.title ? classObject?.title : "",
-        isEnableSearchBtn: true,
-        setSearch: setSearch,
+        // isEnableSearchBtn: true,
+        // setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
           <Button
@@ -175,7 +175,7 @@ export default function Attendance({ footerLinks, appName }) {
           </Button>
         ),
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{ languages: manifest.languages, isEnableSearchBtn: true , setSearch: setSearch }}
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>

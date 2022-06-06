@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import TopMenu from '../TopMenu'
 import {
   HStack,
   Box,
@@ -68,7 +69,7 @@ export default function AppBar({
                   size='sm'
                   color='coolGray.500'
                   w='1/8'
-                  name='times'
+                  name='SearchLineIcon'
                   pl='0'
                   onPress={(e) => setSearchInput(false)}
                 />
@@ -85,7 +86,7 @@ export default function AppBar({
             <IconByName
               color={color ? color : ''}
               size='sm'
-              name='search'
+              name='SearchLineIcon'
               onPress={(e) => setSearchInput(true)}
             />
           ) : (
@@ -96,7 +97,7 @@ export default function AppBar({
             color={color ? color : ''}
             onPress={(e) => navigate('/notification')}
           />
-          <Stack px='3'>
+          <Box px='3' alignItems={"flex-end"}>
             <Menu
               w='190'
               placement='bottom right'
@@ -116,21 +117,21 @@ export default function AppBar({
                 )
               }}
             >
-              {languages?.map((e, index) => (
+               {languages?.map((e, index) => (
                 <Menu.Item
                   key={index}
                   label={e.title}
                   textValue={e.code}
-                  onPress={(item) => setLang(e.code)}
+                  onPress={(item) => setLang(e.code)}                 
                 >
                   {e.title}
                 </Menu.Item>
               ))}
               <Menu.Item onPress={(item) => setLang('logout')}>
                 Logout
-              </Menu.Item>
+              </Menu.Item> 
             </Menu>
-          </Stack>
+          </Box>
         </HStack>
       </HStack>
     </Box>

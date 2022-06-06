@@ -43,7 +43,7 @@ export default function Profile({ footerLinks, appName }) {
 
     const getData = async () => {
       if (!ignore) {
-        const resultTeacher = await teacherServiceRegistry.getOne();
+        const resultTeacher = await teacherRegistryService.getOne();
         setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),
@@ -173,6 +173,7 @@ export default function Profile({ footerLinks, appName }) {
           showModal,
           setShowModal,
           appName,
+          setAttendance
         }}
       />
       <Stack space={1}>

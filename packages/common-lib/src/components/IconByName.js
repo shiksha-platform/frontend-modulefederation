@@ -47,8 +47,9 @@ import EmotionSadLineIcon from 'remixicon-react/EmotionSadLineIcon'
 import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
 import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
-import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
+import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
+import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 import MailFillIcon from 'remixicon-react/MailFillIcon'
@@ -67,6 +68,7 @@ import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 import SpamLineIcon from 'remixicon-react/SpamLineIcon'
+import GitRepositoryLineIcon from 'remixicon-react/GitRepositoryLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -464,6 +466,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'SearchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'StarLineIcon':
       icon = (
         <IconButton
@@ -605,6 +615,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<SpamLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'GitRepositoryLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<GitRepositoryLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

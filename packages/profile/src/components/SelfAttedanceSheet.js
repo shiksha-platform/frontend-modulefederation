@@ -24,24 +24,28 @@ import { useNavigate } from "react-router-dom";
 import Camera from "./Camera";
 import moment from "moment";
 
+const PRESENT = "Present";
+const ABSENT = "Absent";
+const UNMARKED = "Unmarked";
+
 const newMarkList = [
   {
     icon: "CheckboxCircleLineIcon",
     name: "MARK_PRESENT",
-    attendance: "Present",
+    attendance: PRESENT,
     color: "present",
   },
   {
     icon: "AwardLineIcon",
     name: "MARK_SPECIAL_DUTY",
-    attendance: "Present",
+    attendance: PRESENT,
     rightIcon: "ArrowRightSLineIcon",
     color: "special_duty",
   },
   {
     icon: "CloseCircleLineIcon",
     name: "MARK_ABSENT",
-    attendance: "Absent",
+    attendance: ABSENT,
     color: "absent",
   },
 ];
@@ -50,37 +54,37 @@ const newSpecialDutyList = [
     icon: "UserStarLineIcon",
     name: "ELECTION",
     color: "special_duty",
-    attendance: "Present",
+    attendance: PRESENT,
   },
   {
     icon: "BookMarkLineIcon",
     name: "EVALUATION",
     color: "special_duty",
-    attendance: "Present",
+    attendance: PRESENT,
   },
   {
     icon: "SearchEyeLineIcon",
     name: "INTERVIEW",
     color: "special_duty",
-    attendance: "Present",
+    attendance: PRESENT,
   },
   {
     icon: "StarLineIcon",
     name: "INVIGILITION",
     color: "special_duty",
-    attendance: "Present",
+    attendance: PRESENT,
   },
   {
     icon: "SpyLineIcon",
     name: "INSPECTION",
     color: "special_duty",
-    attendance: "Present",
+    attendance: PRESENT,
   },
   {
     icon: "StarLineIcon",
     name: "TRAINING",
     color: "special_duty",
-    attendance: "Present",
+    attendance: PRESENT,
   },
 ];
 
@@ -103,8 +107,8 @@ export default function SelfAttedanceSheet({
   const [loding, setLoding] = React.useState(false);
   const [selfAttendance, setSelfAttendance] = React.useState({});
   const navigate = useNavigate();
-
-  const handleTelemetry = () => {
+  
+  const handleTelemetry = (newAttedance) => {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Self-Attendance-End-Mark",
@@ -113,14 +117,22 @@ export default function SelfAttedanceSheet({
       duration: 10,
     });
     capture("END", telemetryData);
-    setDone(true);
+    if(newAttedance.attendance == UNMARKED)
+    {
+    setDone(false);
+    setShowModal(false);
+    }
+    else{
+      setDone(true);
+    }
   };
 
-  const handleResetToUnmarkTelemetry = () => {
+  const handleResetToUnmarkTelemetry = (item) => {
     const newAttedance = {
       ...selfAttendance,
-      attendance: "Unmarked",
+      attendance: UNMARKED,
       remark: "",
+      name: t(item.name)
     };
     setSelfAttendance(newAttedance);
     const telemetryData = telemetryFactory.interact({
@@ -177,8 +189,8 @@ export default function SelfAttedanceSheet({
         )
         .then((e) => {
           setLoding(false);
-          handleTelemetry();
-          setAttendance(newAttedance);
+          handleTelemetry(newAttedance);
+          if(setAttendance)  setAttendance(newAttedance);
         });
     } else {
       attendanceRegistryService
@@ -189,8 +201,8 @@ export default function SelfAttedanceSheet({
         })
         .then((e) => {
           setLoding(false);
-          handleTelemetry();
-          setAttendance(newAttedance);
+          handleTelemetry(newAttedance);
+          if(setAttendance)  setAttendance(newAttedance);
         });
     }
   };
@@ -206,43 +218,43 @@ export default function SelfAttedanceSheet({
         userId: localStorage.getItem("id"),
       });
       const todayAttendance = todayAttendanceResult.find((e) =>
-        ["Present", "Absent", "Unmarked"].includes(e.attendance)
+        [PRESENT, ABSENT, UNMARKED].includes(e.attendance)
       );
       if (todayAttendance?.attendance) {
         let newAttedance = {
           ...todayAttendance,
           name:
-            todayAttendance.attendance === "Present" && todayAttendance.remark
+            todayAttendance.attendance === PRESENT && todayAttendance.remark
               ? todayAttendance.remark
-              : todayAttendance.attendance === "Present"
+              : todayAttendance.attendance === PRESENT
               ? t("MARK_PRESENT")
-              : todayAttendance.attendance === "Absent"
+              : todayAttendance.attendance === ABSENT
               ? t("MARK_ABSENT")
               : "",
         };
         setSelfAttendance(newAttedance);
-        setAttendance(newAttedance);
+        if(setAttendance)  setAttendance(newAttedance);
 
-        if (todayAttendance?.attendance !== "Unmarked") {
-          setMarkList([
-            ...newMarkList,
-            {
-              icon: "RefreshLineIcon",
-              name: "RESET_TO_UNMARK",
-              attendance: "Unmarked",
-              color: "gray",
-            },
-          ]);
-          setSpecialDutyList([
-            ...newSpecialDutyList,
-            {
-              icon: "RefreshLineIcon",
-              name: "RESET_TO_UNMARK",
-              attendance: "Unmarked",
-              color: "gray",
-            },
-          ]);
-        }
+        // if (todayAttendance?.attendance == (PRESENT || ABSENT)) {
+        //   setMarkList([
+        //     ...newMarkList,
+        //     {
+        //       icon: "RefreshLineIcon",
+        //       name: "RESET_TO_UNMARK",
+        //       attendance: UNMARKED,
+        //       color: "gray",
+        //     },
+        //   ]);
+        //   setSpecialDutyList([
+        //     ...newSpecialDutyList,
+        //     {
+        //       icon: "RefreshLineIcon",
+        //       name: "RESET_TO_UNMARK",
+        //       attendance: UNMARKED,
+        //       color: "gray",
+        //     },
+        //   ]);
+        //  }
       }
     }
     getData();
@@ -250,6 +262,25 @@ export default function SelfAttedanceSheet({
       ignore = true;
     };
   }, []);
+
+  const setAttendanceMark = (e) =>{
+    if (selfAttendance.attendance == ABSENT)
+    { 
+      setLocationModal(false); 
+      setShowModal(true); 
+      setDone(true); 
+      setCameraModal(false) 
+    } 
+    else if(selfAttendance.attendance == PRESENT && (selfAttendance.name === selfAttendance.remark))
+     {
+      setLocationModal(false); 
+      setShowModal(true); 
+      setDone(true); 
+      setCameraModal(false)
+    }
+    setLocationModal(true);
+    setShowModal(false);
+  }
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -296,7 +327,7 @@ export default function SelfAttedanceSheet({
               uri: cameraUrl,
             }}
             rounded="full"
-            alt="Profile"
+            alt=""
             size="250px"
           />
           <VStack space="3" alignItems="center">
@@ -311,11 +342,18 @@ export default function SelfAttedanceSheet({
               {t("ATTENDANCE_MARKED")}
             </Text>
             <Text fontSize="14" fontWeight="400" textAlign="center">
-              {t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")}
+              {(selfAttendance.attendance === PRESENT && (selfAttendance.name !== selfAttendance.remark)) ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE") : ""}
             </Text>
           </VStack>
-          <Button _text={{ color: "white" }} onPress={(e) => navigate("/")}>
-            {t("BACK_TO_HOME")}
+          <Button _text={{ color: "white" }} onPress={(e) => {
+            navigate("/")
+            setDone(false)
+            setCameraModal(false)
+            setLocationModal(false)
+            setShowModal(false)
+          }
+          }>
+            {t("GO_BACK")}
           </Button>
         </VStack>
       </Box>
@@ -409,7 +447,7 @@ export default function SelfAttedanceSheet({
                 bg={selfAttendance?.name === t(item.name) ? "gray.100" : ""}
                 onPress={(e) => {
                   if (item.name === "RESET_TO_UNMARK") {
-                    handleResetToUnmarkTelemetry();
+                    handleResetToUnmarkTelemetry(item);
                   } else if (item.name === "MARK_SPECIAL_DUTY") {
                     setSpecialDutyModal(true);
                   } else {
@@ -479,8 +517,7 @@ export default function SelfAttedanceSheet({
                 color: selfAttendance?.attendance ? "white" : "",
               }}
               onPress={(e) => {
-                setLocationModal(true);
-                setShowModal(false);
+                setAttendanceMark(e)
               }}
             >
               {t("MARK")}
@@ -523,7 +560,7 @@ export default function SelfAttedanceSheet({
                 } else {
                   setSelfAttendance({
                     ...selfAttendance,
-                    attendance: "Present",
+                    attendance: PRESENT,
                     remark: t(item.name),
                     name: t(item.name),
                   });

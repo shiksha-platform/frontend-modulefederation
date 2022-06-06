@@ -423,9 +423,9 @@ export const MultipalAttendance = ({
                     <Text fontSize="14px" fontWeight="500">
                       {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
                     </Text>
-                    <Text fontSize="10px" fontWeight="300">
+                    {/* <Text fontSize="10px" fontWeight="300">
                       {t("STUDENTS_ABSENT")}
-                    </Text>
+                    </Text> */}
 
                     <Button.Group>
                       <Button
@@ -445,7 +445,7 @@ export const MultipalAttendance = ({
                           );
                         }}
                       >
-                        {t("VIEW_MESSAGE")}
+                        {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
                       </Button>
                       <Button
                         _text={{ color: "white" }}
@@ -499,7 +499,7 @@ export const MultipalAttendance = ({
                         )}
                       </HStack>
                       {presentStudents?.length <= 0 ? (
-                        <Text fontWeight="500" fontSize="12px">
+                        <Text fontWeight="500" fontSize="12px" textAlign={"center"}>
                           No Student Has Achieved 100% Attendance This Week
                         </Text>
                       ) : (
@@ -976,7 +976,8 @@ const CalendarComponent = ({
             </Text>
             <TouchableHighlight
               onPress={(e) => {
-                if (!isEditDisabled && !isFutureDay && !isHoliday) {
+                // if (!isEditDisabled && !isFutureDay && !isHoliday) {
+                  if (!isEditDisabled && isToday) {
                   markAttendance({
                     attendanceId: attendanceItem?.id ? attendanceItem.id : null,
                     date: dateValue,
