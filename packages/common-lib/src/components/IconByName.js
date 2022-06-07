@@ -50,6 +50,7 @@ import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
+import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 import MailFillIcon from 'remixicon-react/MailFillIcon'
@@ -477,6 +478,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<SearchEyeLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'SearchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SearchLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

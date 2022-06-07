@@ -97,6 +97,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [formObject, setFormObject] = React.useState({});
   const [width, height] = useWindowSize();
   const [worksheetName, setWorksheetName] = React.useState("Untitled");
+  const [search, setSearch] = React.useState();
 
   React.useEffect(async () => {
     if (pageName === "ListOfWorksheet") {
@@ -222,6 +223,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       _appBar={{
         languages: manifest.languages,
         onPressBackButton: handleBackButton,
+        setSearch,
+        isEnableSearchBtn: pageName === "ListOfWorksheet",
       }}
       subHeader={
         pageName === "ListOfWorksheet"
@@ -522,6 +525,10 @@ const ListOfWorksheet = ({
     setIsSuccess(false);
   };
 
+  const callBackFilterObject = React.useCallback((e) => {
+    setFilterObject();
+  }, []);
+
   return (
     <Stack>
       {pageName === "filterData" && isSuccess ? (
@@ -544,7 +551,7 @@ const ListOfWorksheet = ({
       {pageName === "ListOfWorksheet" ? (
         <Box>
           <FilterButton
-            getObject={setFilterObject}
+            getObject={callBackFilterObject}
             object={filterObject}
             _actionSheet={{ bg: "worksheetCard.500" }}
             _box={{ pt: 5, px: 5 }}

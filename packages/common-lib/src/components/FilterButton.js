@@ -13,7 +13,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconByName from './IconByName'
 
-export default function FilterButton({
+const FilterButton = ({
   filters = [],
   object,
   getObject,
@@ -26,7 +26,7 @@ export default function FilterButton({
   _optionButton,
   _actionSheet,
   _button
-}) {
+}) => {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
   const [groupValue, setGroupValue] = React.useState({})
@@ -260,3 +260,5 @@ export default function FilterButton({
     </Box>
   )
 }
+
+export default React.memo(FilterButton)
