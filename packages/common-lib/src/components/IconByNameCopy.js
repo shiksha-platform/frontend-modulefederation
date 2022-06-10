@@ -10,14 +10,11 @@ function IconButton({ icon, isDisabled, prefix, ...props }) {
 }
 
 const loadComponent = (name) => {
-  const Component = React.lazy(() =>
-    import(`remixicon-react/${name}`)
-  );
-  return Component;
+  const Component = React.lazy(() => import(`remixicon-react/${name}`))
+  return Component
 }
 
-
 export default function IconByNameCopy({ _icon, ...props }) {
-  const Icon = loadComponent(componentNumber);
-  return (<IconButton {...props} icon={<Icon {...(_icon ? _icon : {})} />} />);
+  const Icon = loadComponent(componentNumber)
+  return <IconButton {...props} icon={<Icon {...(_icon ? _icon : {})} />} />
 }
