@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AppShell, DEFAULT_THEME } from "@shiksha/common-lib";
 
 import { initializeI18n } from "@shiksha/common-lib";
-
 initializeI18n(["translation", "core"]);
 
 const theme = extendTheme(DEFAULT_THEME);
