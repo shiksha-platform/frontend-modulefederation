@@ -15,72 +15,102 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { defaultInputs } from "config/createWorksheet";
+import { defaultInputs } from "config/worksheetConfig";
+import AlertValidationModal from "components/AlertValidationModal";
 
 export default function ListOfWorksheet({
   questions,
   setQuestions,
   pageName,
   setPageName,
-  filterObject,
-  setFilterObject,
-  worksheetName,
-  setWorksheetName,
+  formObject,
+  setFormObject,
 }) {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
   const [selectData, setSelectData] = React.useState([]);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [showQuestions, setShowQuestions] = React.useState([]);
   const [showModule, setShowModule] = React.useState(false);
   const [questionObject, setQuestionObject] = React.useState({});
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
   const [inputData, setInputData] = React.useState();
+  const [alertMessage, setAlertMessage] = React.useState();
 
   React.useEffect(() => {
-    setInputData(worksheetName);
-  }, [worksheetName, pageName]);
+    if (!isSuccess) {
+      setPageName("ListOfWorksheet");
+      setShowQuestions(questions);
+    }
+    setInputData(formObject?.name ? formObject.name : "Untitled");
+  }, [formObject]);
 
   const handleWorksheetSubmit = () => {
-    setQuestions(selectData);
+    setShowQuestions(selectData);
     setPageName("filterData");
-    setIsSuccess(true);
-    setWorksheetName(inputData);
+    setIsSuccess("message");
+    setFormObject({ ...formObject, name: inputData });
     setShowModule(false);
   };
 
   const handelInput = (event) => {
-    if (event.target.value) setInputData(event.target.value);
+    setInputData(event.target.value);
   };
 
   const handelAddQuestionButton = () => {
-    setPageName("ListOfWorksheet");
+    setShowQuestions(questions);
     setIsSuccess(false);
+  };
+
+  const handelToggleQuestion = (item) => {
+    if (selectData.filter((e) => e.questionId === item?.questionId).length) {
+      handelUnSelectQuestion(item);
+    } else {
+      setSelectData([...selectData, item]);
+    }
+  };
+
+  const handelUnSelectQuestion = (item) => {
+    setSelectData(selectData.filter((e) => e.questionId !== item.questionId));
+  };
+
+  const handelSaveAndDraft = () => {
+    setQuestions(selectData);
+    setPageName("AddDescriptionPage");
+    setFormObject({ ...formObject, state: "Draft" });
+  };
+
+  const handelPublish = () => {
+    setQuestions(selectData);
+    setPageName("AddDescriptionPage");
+    setFormObject({ ...formObject, state: "Publish" });
   };
 
   return (
     <Stack>
-      {pageName === "filterData" && isSuccess ? (
+      <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
+      {isSuccess === "message" ? (
         <Box bg="successAlert.500" p="5">
           <HStack justifyContent="space-between">
             <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
-              ({questions.length}) New Questions Added
+              ({selectData.length}) New Questions Added
             </Text>
             <IconByName
               name="CloseCircleLineIcon"
               color="successAlertText.500"
               p="0"
-              onPress={(e) => setIsSuccess(false)}
+              onPress={(e) => setIsSuccess("filterData")}
             />
           </HStack>
         </Box>
       ) : (
         <></>
       )}
-      {pageName === "ListOfWorksheet" ? (
+      {!isSuccess ? (
         <Box>
           <FilterButton
-            getObject={setFilterObject}
-            object={filterObject}
+            getObject={setFormObject}
+            object={formObject}
             _actionSheet={{ bg: "worksheetCard.500" }}
             _box={{ pt: 5, px: 5 }}
             _button={{ bg: "button.50", px: "15px", py: "2" }}
@@ -125,13 +155,7 @@ export default function ListOfWorksheet({
                     p="0"
                     color="button.500"
                     _icon={{ size: 24 }}
-                    onPress={(e) =>
-                      setSelectData(
-                        selectData.filter(
-                          (e) => e.questionId !== item.questionId
-                        )
-                      )
-                    }
+                    onPress={(e) => handelUnSelectQuestion(item)}
                   />
                 </Box>
               ))}
@@ -153,51 +177,48 @@ export default function ListOfWorksheet({
       <Box bg="white" p="5">
         <ScrollView maxH={Height}>
           <VStack space="5">
-            {questions.map((question, index) => (
-              <QuestionBox
-                isAnswerHide={!isAnswerFilter}
-                _box={{ py: "12px", px: "16px" }}
-                key={index}
-                questionObject={question}
-                {...(pageName !== "ListOfWorksheet"
-                  ? {}
-                  : { selectData, setSelectData })}
-                infoIcon={
-                  <IconByName
-                    name="InformationLineIcon"
-                    _icon={{ size: 15 }}
-                    color="button.500"
-                    onPress={(e) => setQuestionObject(question)}
-                  />
-                }
-              />
-            ))}
+            {showQuestions.map((item, index) => {
+              const isExist = selectData.filter(
+                (e) => e.questionId === item?.questionId
+              ).length;
+              return (
+                <QuestionBox
+                  isAnswerHide={!isAnswerFilter}
+                  _box={{ py: "12px", px: "16px" }}
+                  key={index}
+                  questionObject={item}
+                  infoIcon={
+                    <HStack space={1} alignItems="center">
+                      <IconByName
+                        name="InformationFillIcon"
+                        p="1"
+                        color="button.500"
+                        onPress={(e) => setQuestionObject(item)}
+                      />
+                      {!isSuccess ? (
+                        <IconByName
+                          p="1"
+                          color={isExist ? "button.500" : "gray.300"}
+                          name={
+                            isExist
+                              ? "CheckboxLineIcon"
+                              : "CheckboxBlankLineIcon"
+                          }
+                          onPress={(e) => handelToggleQuestion(item)}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </HStack>
+                  }
+                />
+              );
+            })}
           </VStack>
         </ScrollView>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
-        {pageName === "filterData" ? (
-          <Button.Group>
-            <Button
-              colorScheme="button"
-              px="5"
-              flex="1"
-              variant="outline"
-              onPress={(e) => setPageName("FormPage")}
-            >
-              {t("Save As Draft")}
-            </Button>
-            <Button
-              colorScheme="button"
-              _text={{ color: "white" }}
-              px="5"
-              flex="1"
-              onPress={(e) => setPageName("AddDescriptionPage")}
-            >
-              {t("Publish")}
-            </Button>
-          </Button.Group>
-        ) : (
+      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+        {!isSuccess ? (
           <>
             <Text fontSize="10px" py="4" pb="1">
               <Text fontWeight="700">Attention:</Text>
@@ -236,13 +257,38 @@ export default function ListOfWorksheet({
                 px="5"
                 flex="1"
                 onPress={(e) => {
-                  setShowModule(true);
+                  if (selectData.length <= 0) {
+                    setAlertMessage("Please select atlist one question");
+                  } else {
+                    setShowModule(true);
+                  }
                 }}
               >
                 {t("ADD_TO_WORKSHEET")}
               </Button>
             </Button.Group>
           </>
+        ) : (
+          <Button.Group>
+            <Button
+              colorScheme="button"
+              px="5"
+              flex="1"
+              variant="outline"
+              onPress={handelSaveAndDraft}
+            >
+              {t("Save As Draft")}
+            </Button>
+            <Button
+              colorScheme="button"
+              _text={{ color: "white" }}
+              px="5"
+              flex="1"
+              onPress={handelPublish}
+            >
+              {t("Publish")}
+            </Button>
+          </Button.Group>
         )}
         <Actionsheet
           isOpen={questionObject?.questionId}

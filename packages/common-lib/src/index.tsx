@@ -37,6 +37,7 @@ import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
+import * as worksheetRegistryService from './services/worksheetRegistryService'
 
 export {
   AppBar,
@@ -64,7 +65,8 @@ export {
   teacherRegistryService,
   classRegistryService,
   attendanceRegistryService,
-  studentRegistryService
+  studentRegistryService,
+  worksheetRegistryService
 }
 
 export * from './services/Auth'

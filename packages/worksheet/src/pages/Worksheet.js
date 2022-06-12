@@ -1,5 +1,12 @@
 import React from "react";
-import { FilterButton, H3, IconByName, Layout } from "@shiksha/common-lib";
+import {
+  FilterButton,
+  H3,
+  IconByName,
+  Layout,
+  Loading,
+  worksheetRegistryService,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
   Actionsheet,
@@ -12,16 +19,36 @@ import {
   VStack,
 } from "native-base";
 import { worksheetsList } from "./../config/worksheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
+import { defaultInputs } from "config/worksheetConfig";
 
 export default function Worksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [filterObject, setFilterObject] = React.useState({});
+  const [worksheets, setWorksheets] = React.useState([]);
   const [showModalSort, setShowModalSort] = React.useState(false);
   const [sortData, setSortData] = React.useState();
+  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
+  const { state } = useParams();
+
+  React.useState(async () => {
+    const params = state
+      ? {
+          state: { eq: state },
+        }
+      : {};
+    const data = await worksheetRegistryService.getAll(params);
+    const filterData = data.filter((e) => e.name);
+    setWorksheets(filterData);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Layout
@@ -62,69 +89,53 @@ export default function Worksheet({ footerLinks, appName }) {
           bg: "white",
         }}
         resetButtonText={t("COLLAPSE")}
-        filters={[
-          {
-            name: "Subject",
-            attributeName: "subject",
-            data: [
-              "Social Science",
-              "Science",
-              "Mathematics",
-              "Hindi",
-              "English",
-              "History",
-              "Geography",
-            ],
-          },
-          {
-            name: "Class",
-            attributeName: "gradeLevel",
-            data: [
-              "Class 1",
-              "Class 2",
-              "Class 3",
-              "Class 4",
-              "Class 5",
-              "Class 6",
-              "Class 7",
-              "Class 8",
-              "Class 9",
-              "Class 10",
-            ],
-          },
-          {
-            name: "Topic",
-            attributeName: "topic",
-            data: [
-              "भोजन के घटक",
-              "भोजन: यह कहाँ से आता है?",
-              "तंतु से वस्त्र तक",
-              "संसाधन",
-              "समानता",
-              "संश्लेशित रेशे  और प्लास्टिक",
-              "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
-            ],
-          },
-        ]}
+        filters={defaultInputs}
       />
       <VStack>
         <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Stack>
             <VStack space={3}>
-              {worksheetsList.map((item, index) => {
-                return (
-                  <WorksheetBox
-                    canShare={true}
-                    key={index}
-                    {...{ item, url: `/worksheet/${item.id}` }}
-                  />
-                );
-              })}
+              {worksheets.length > 0 ? (
+                worksheets.map((item, index) => {
+                  return (
+                    <WorksheetBox
+                      canShare={true}
+                      key={index}
+                      {...{ item, url: `/worksheet/${item.id}` }}
+                      {...(state === "Draft"
+                        ? {
+                            canShowButtonArray: ["Like"],
+                            _addIconButton: {
+                              name: "EditBoxLineIcon",
+                              color: "gray.500",
+                              rounded: "full",
+                              bg: "white",
+                              p: "2",
+                              shadow: 2,
+                              _icon: { size: 17 },
+                              onPress: (e) => navigate(`/worksheet/1/edit`),
+                            },
+                          }
+                        : {})}
+                    />
+                  );
+                })
+              ) : (
+                <Box
+                  p="10"
+                  my="5"
+                  alignItems={"center"}
+                  rounded="lg"
+                  bg="viewNotification.600"
+                >
+                  Worksheet Not Found
+                </Box>
+              )}
             </VStack>
           </Stack>
         </Box>
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         <Button
           _text={{ color: "white" }}
           p="3"

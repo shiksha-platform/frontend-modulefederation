@@ -12,11 +12,22 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
+export default function WorksheetBox({
+  item,
+  url,
+  canShare,
+  canShowButtonArray,
+  _addIconButton,
+}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const colors = ["lightBlue.800", "indigo.900", "fuchsia.700", "rose.600"];
-  const random = Math.floor(Math.random() * (4 - 1) + 1) - 1;
+  const [like, setLike] = React.useState(false);
+  const [random, setRandom] = React.useState();
+
+  React.useEffect((e) => {
+    setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
+  }, []);
 
   return (
     <Box p="5" borderWidth="1" borderColor="gray.300" rounded="lg">
@@ -26,25 +37,15 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
             <HStack space={2} alignItems="center">
               <Avatar bg={colors[random]} size="57" rounded="md">
                 <Text fontWeight="600" fontSize="16px" color="white">
-                  {item.heading?.toUpperCase().substr(0, 1)}
+                  {item.name?.toUpperCase().substr(0, 1)}
                 </Text>
               </Avatar>
               <Stack space="1">
                 <VStack space="1px">
                   <Text fontWeight="600" fontSize="16px">
-                    {item.heading}
+                    {item.name}
                   </Text>
-                  {/*<HStack space={1} alignItems="center">
-                     <Text fontWeight="400" fontSize="10px">
-                      {item.subHeading} {"•"}
-                    </Text> 
-                    <Text fontWeight="400" fontSize="10px">
-                      {t("CLASS") + " " + item.class}
-                    </Text>
-                    
-                  </HStack>*/}
                 </VStack>
-
                 <HStack space={1} alignItems="center">
                   <IconByName
                     name="Heart3FillIcon"
@@ -53,11 +54,12 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                     isDisabled
                   />
                   <Text fontWeight="600" fontSize="10px">
-                    {item.likes + " likes"}
+                    {((item?.likes ? item?.likes : 0) + like ? 1 : 0) +
+                      " likes"}
                   </Text>
 
                   <Text fontWeight="600" fontSize="10px">
-                    ({item.comments + " comments"})
+                    ({item?.comments ? item?.comments : 0 + " comments"})
                   </Text>
                 </HStack>
               </Stack>
@@ -71,7 +73,18 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
             {..._addIconButton}
           />
         </HStack>
-        <Text fontWeight="400" fontSize="12px" color="worksheetBoxText.500">
+        <Text
+          fontWeight="400"
+          fontSize="12px"
+          color="worksheetBoxText.500"
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "3",
+            WebkitBoxOrient: "vertical",
+          }}
+        >
           {item.description}
         </Text>
         <HStack space="2">
@@ -118,7 +131,10 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 fontSize="12px"
                 color="worksheetBoxText.400"
               >
-                {"Questions: " + item.questions}
+                {"Questions: " +
+                  (Array.isArray(item.questions)
+                    ? item.questions.length
+                    : item.questions)}
               </Text>
             </HStack>
           </VStack>
@@ -150,7 +166,7 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 fontSize="12px"
                 color="worksheetBoxText.400"
               >
-                {t("TOPIC") + ": " + item.chapter}
+                {t("TOPIC") + ": " + item.topic}
               </Text>
             </HStack>
             <HStack space="1" alignItems="center">
@@ -172,31 +188,44 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
         </HStack>
         {canShare ? (
           <HStack space="5">
-            <Box shadow="2" p="2" rounded="full">
-              <IconByName
-                name="Heart3LineIcon"
-                _icon={{ size: 15 }}
-                color="button.500"
-                p="0"
-              />
-            </Box>
-            <Box shadow="2" p="2" rounded="full">
-              <IconByName
-                name="ShareLineIcon"
-                _icon={{ size: 15 }}
-                p="0"
-                onPress={(e) => navigate(`/worksheet/${item.id}/share`)}
-              />
-            </Box>
-            <Box shadow="2" p="2" rounded="full">
-              <IconByName
-                onPress={(e) => navigate("/worksheet/template")}
-                name="DownloadLineIcon"
-                _icon={{ size: 15 }}
-                color="button.500"
-                p="0"
-              />
-            </Box>
+            {!canShowButtonArray || canShowButtonArray.includes("Like") ? (
+              <Box shadow="2" p="2" rounded="full">
+                <IconByName
+                  name={like ? "Heart3FillIcon" : "Heart3LineIcon"}
+                  _icon={{ size: 15 }}
+                  color="button.500"
+                  p="0"
+                  onPress={(e) => setLike(!like)}
+                />
+              </Box>
+            ) : (
+              ""
+            )}
+            {!canShowButtonArray || canShowButtonArray.includes("Share") ? (
+              <Box shadow="2" p="2" rounded="full">
+                <IconByName
+                  name="ShareLineIcon"
+                  _icon={{ size: 15 }}
+                  p="0"
+                  onPress={(e) => navigate(`/worksheet/${item.id}/share`)}
+                />
+              </Box>
+            ) : (
+              ""
+            )}
+            {!canShowButtonArray || canShowButtonArray.includes("download") ? (
+              <Box shadow="2" p="2" rounded="full">
+                <IconByName
+                  onPress={(e) => navigate("/worksheet/template")}
+                  name="DownloadLineIcon"
+                  _icon={{ size: 15 }}
+                  color="button.500"
+                  p="0"
+                />
+              </Box>
+            ) : (
+              ""
+            )}
           </HStack>
         ) : (
           ""

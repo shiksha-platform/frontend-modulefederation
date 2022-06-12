@@ -71,6 +71,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const [width, Height] = useWindowSize();
   const [showModule, setShowModule] = useState(false);
   const [showModuleComments, setShowModuleComments] = useState(false);
+  const [like, setLike] = useState(false);
   const navigate = useNavigate();
 
   const translationCheck = (name, title) => {
@@ -105,7 +106,11 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         languages: manifest.languages,
         rightIcon: (
           <HStack>
-            <IconByName name="Heart3LineIcon" />
+            <IconByName
+              name={like ? "Heart3FillIcon" : "Heart3LineIcon"}
+              color={like ? "button.500" : "black.500"}
+              onPress={(e) => setLike(!like)}
+            />
             <IconByName name="ShareLineIcon" />
             <IconByName
               onPress={(e) => navigate("/worksheet/template")}
@@ -130,7 +135,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </VStack>
         </Box>
       </ScrollView>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         <Button.Group>
           <Button
             flex="1"

@@ -51,12 +51,14 @@ export const defaultInputs = [
 export const autoGenerateInputs = [
   {
     name: "Number of Questions",
+    type: "string",
     attributeName: "number_of_questions",
     data: ["10", "20", "30", "40", "50"],
   },
   {
     name: "Add Question type",
-    attributeName: "add_question_type",
+    type: "string",
+    attributeName: "qType",
     data: ["MCQ", "SA"],
   },
 ];

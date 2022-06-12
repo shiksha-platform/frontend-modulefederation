@@ -65,6 +65,7 @@ import DownloadLineIcon from 'remixicon-react/DownloadLineIcon'
 import CheckboxLineIcon from 'remixicon-react/CheckboxLineIcon'
 import CheckboxBlankLineIcon from 'remixicon-react/CheckboxBlankLineIcon'
 import InformationLineIcon from 'remixicon-react/InformationLineIcon'
+import InformationFillIcon from 'remixicon-react/InformationFillIcon'
 import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
@@ -605,6 +606,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<InformationLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'InformationFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<InformationFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

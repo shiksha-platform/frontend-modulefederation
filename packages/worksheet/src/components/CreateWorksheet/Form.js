@@ -10,51 +10,86 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { defaultInputs, autoGenerateInputs } from "config/createWorksheet";
+import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
+import AlertValidationModal from "components/AlertValidationModal";
+
+const getValueByType = (value, type = "array") => {
+  return value ? value : type !== "array" ? "" : [];
+};
+
+const getAttribute = (value) => {
+  return value.attributeName ? value.attributeName : value?.name;
+};
+
+const getType = (object) => {
+  return object?.type ? object?.type : "array";
+};
+
+const newDefaultInputs = defaultInputs.map((e) => {
+  return {
+    ...e,
+    ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
+      ? "grade"
+      : e.attributeName,
+    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+      ? "stingValueArray"
+      : "array",
+  };
+});
 
 export default function Form({
+  createType,
+  setCreateType,
   formObject,
   setFormObject,
   setPageName,
-  setLoading,
+  setLimit,
+  alertMessage,
+  setAlertMessage,
 }) {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
-  const [inputs, setInputs] = React.useState(defaultInputs);
+  const [inputs, setInputs] = React.useState(newDefaultInputs);
+  const attributeName = getAttribute(formData);
+  const type = getType(formData);
+  const valueArr = getValueByType(formObject[attributeName], type);
 
-  const attributeName = formData.attributeName
-    ? formData.attributeName
-    : formData?.name;
-  const valueArr = formObject[attributeName] ? formObject[attributeName] : [];
+  React.useEffect((e) => {
+    if (createType === "auto") {
+      setInputs([...newDefaultInputs, ...autoGenerateInputs]);
+    }
+  }, []);
 
   const handelAddQuestion = () => {
-    const isAutoGenerate = inputs.filter(
-      (e) => e.attributeName === "number_of_questions"
-    ).length;
-    if (isAutoGenerate) {
+    if (createType === "auto") {
+      setLimit({
+        limit: formObject.number_of_questions
+          ? formObject.number_of_questions
+          : null,
+      });
       setPageName("WorksheetTemplate");
     } else {
-      setLoading(true);
       setPageName("ListOfWorksheet");
     }
   };
 
   return (
     <Stack space={1} mb="2">
+      <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
       <FormInput
         {...{ formObject, setFormObject, formData, setFormData }}
         data={inputs}
       />
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         <Button.Group>
-          {!inputs.filter((e) => e.attributeName === "number_of_questions")
-            .length ? (
+          {createType === "create" ? (
             <Button
               flex="1"
               variant="outline"
-              onPress={(e) =>
-                setInputs([...defaultInputs, ...autoGenerateInputs])
-              }
+              onPress={(e) => {
+                setCreateType("auto");
+                setInputs([...newDefaultInputs, ...autoGenerateInputs]);
+              }}
             >
               {t("Auto Generate")}
             </Button>
@@ -87,81 +122,109 @@ export default function Form({
           </HStack>
         </Actionsheet.Content>
         <Box bg="white" width={"100%"}>
-          <Pressable
-            px="5"
-            pt="5"
-            onPress={(e) => {
-              if (
-                formData?.data &&
-                valueArr &&
-                formData?.data?.length === valueArr?.length
-              ) {
-                setFormObject({ ...formObject, [formData?.attributeName]: [] });
-              } else {
-                setFormObject({
-                  ...formObject,
-                  [formData?.attributeName]: formData.data,
-                });
-              }
-            }}
-          >
-            <HStack space="2" colorScheme="button" alignItems="center">
-              <IconByName
-                isDisabled
-                color={
+          {type === "array" ? (
+            <Pressable
+              p="3"
+              onPress={(e) => {
+                if (
                   formData?.data &&
                   valueArr &&
                   formData?.data?.length === valueArr?.length
-                    ? "button.500"
-                    : "gray.300"
+                ) {
+                  setFormObject({
+                    ...formObject,
+                    [formData?.attributeName]: null,
+                  });
+                } else {
+                  setFormObject({
+                    ...formObject,
+                    [formData?.attributeName]: formData.data,
+                  });
                 }
-                name={
-                  formData?.data &&
-                  valueArr &&
-                  formData?.data?.length === valueArr?.length
-                    ? "CheckboxLineIcon"
-                    : "CheckboxBlankLineIcon"
-                }
-              />
-              <Text>{t("Select All")}</Text>
-            </HStack>
-          </Pressable>
+              }}
+            >
+              <HStack space="2" colorScheme="button" alignItems="center">
+                <IconByName
+                  isDisabled
+                  color={
+                    formData?.data &&
+                    valueArr &&
+                    formData?.data?.length === valueArr?.length
+                      ? "button.500"
+                      : "gray.300"
+                  }
+                  name={
+                    formData?.data &&
+                    valueArr &&
+                    formData?.data?.length === valueArr?.length
+                      ? "CheckboxLineIcon"
+                      : "CheckboxBlankLineIcon"
+                  }
+                />
+                <Text>{t("Select All")}</Text>
+              </HStack>
+            </Pressable>
+          ) : (
+            ""
+          )}
           {formData?.data &&
             formData?.data.map((value, index) => {
               return (
                 <Pressable
-                  px="5"
-                  pt="5"
+                  p="3"
                   key={index}
                   onPress={(e) => {
-                    if (valueArr.includes(value)) {
-                      const newData = formObject[attributeName].filter(
-                        (e) => value !== e
-                      );
+                    if (type === "array") {
+                      if (valueArr.includes(value)) {
+                        const newData = formObject[attributeName].filter(
+                          (e) => value !== e
+                        );
+                        setFormObject({
+                          ...formObject,
+                          [attributeName]: newData.length > 0 ? newData : null,
+                        });
+                      } else {
+                        setFormObject({
+                          ...formObject,
+                          [attributeName]: [...valueArr, value],
+                        });
+                      }
+                    } else if (valueArr === value) {
                       setFormObject({
                         ...formObject,
-                        [attributeName]: newData,
+                        [attributeName]: type === "stingValueArray" ? [] : "",
                       });
                     } else {
                       setFormObject({
                         ...formObject,
-                        [attributeName]: [...valueArr, value],
+                        [attributeName]:
+                          type === "stingValueArray" ? [value] : value,
                       });
                     }
                   }}
+                  bg={
+                    (type !== "array" && valueArr === value) ||
+                    (type === "stingValueArray" && valueArr.includes(value))
+                      ? "gray.200"
+                      : "white"
+                  }
                 >
                   <HStack space="2" colorScheme="button" alignItems="center">
-                    <IconByName
-                      isDisabled
-                      color={
-                        valueArr.includes(value) ? "button.500" : "gray.300"
-                      }
-                      name={
-                        valueArr.includes(value)
-                          ? "CheckboxLineIcon"
-                          : "CheckboxBlankLineIcon"
-                      }
-                    />
+                    {type === "array" ? (
+                      <IconByName
+                        isDisabled
+                        color={
+                          valueArr.includes(value) ? "button.500" : "gray.300"
+                        }
+                        name={
+                          valueArr.includes(value)
+                            ? "CheckboxLineIcon"
+                            : "CheckboxBlankLineIcon"
+                        }
+                      />
+                    ) : (
+                      ""
+                    )}
                     <Text>{value}</Text>
                   </HStack>
                 </Pressable>
@@ -232,8 +295,11 @@ const FormInput = ({
             }
             onPress={(e) => setFormData(item)}
           >
-            {formObject[attributeName]
+            {formObject[attributeName] &&
+            Array.isArray(formObject[attributeName])
               ? formObject[attributeName][0]
+              : formObject[attributeName]
+              ? formObject[attributeName]
               : `Select ${t(item.name)}`}
           </Button>
         </HStack>

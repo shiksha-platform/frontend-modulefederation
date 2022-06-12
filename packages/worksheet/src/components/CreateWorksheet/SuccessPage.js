@@ -11,7 +11,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 
-export default function SuccessPage({ handleBackButton }) {
+export default function SuccessPage({ handleBackButton, formObject }) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
 
@@ -54,7 +54,6 @@ export default function SuccessPage({ handleBackButton }) {
                   item: {
                     id: 1,
                     image: "",
-                    heading: "Maps of the World",
                     subHeading: "NCERT Workbook",
                     class: "V",
                     likes: "4",
@@ -64,9 +63,13 @@ export default function SuccessPage({ handleBackButton }) {
                     subject: "Math",
                     level: "Beginner",
                     grade: "VI",
-                    questions: "30",
                     chapter: "3",
                     downloads: "3",
+                    ...{
+                      ...formObject,
+                      ["heading"]: formObject?.name,
+                      ["description"]: formObject?.description,
+                    },
                   },
                 }}
               />
