@@ -22,7 +22,17 @@ import "./../../assets/css/fullCalendar.css";
 import { timeTables as timeTable } from "../parts/assets";
 import renderEventContent from "./molecule/renderEventContent";
 import { localLanguage, momentDateFormats } from "assets/constants";
-import { IconByName } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  BodyMedium,
+  Caption,
+  H2,
+  IconByName,
+  Subtitle,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const weekDates = (currentDate = moment()) => {
   let weekStart = currentDate.clone().startOf("isoWeek");
@@ -61,9 +71,9 @@ const TimeTableRoute = () => {
       : "23:59:59",
   };
   const [timeTableCardOrange, emerald, gray] = useToken("colors", [
-    "timeTableCardOrange.500",
-    "emerald.400",
-    "gray.200",
+    colors.timeTableCardBg,
+    colors.timeTablebatch,
+    colors.lightGray,
   ]);
   let events = timeTables.map((e, index) => {
     return {
@@ -95,7 +105,7 @@ const TimeTableRoute = () => {
   };
 
   return (
-    <Box py="5" bg="white">
+    <Box py="5" bg={colors.white}>
       <Box p="5">
         <HStack justifyContent="space-between" alignItems="center">
           <DayWiesBar
@@ -105,7 +115,7 @@ const TimeTableRoute = () => {
           <Button
             rounded={"full"}
             variant={compare ? "solid" : "outline"}
-            _text={{ color: compare ? "white" : "button.500" }}
+            _text={{ color: compare ? colors.white : colors.button }}
             colorScheme="button"
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModal(true)}
@@ -126,26 +136,22 @@ const TimeTableRoute = () => {
                 key={key}
               >
                 <Box
-                  bg={isToday ? "button.500" : ""}
+                  bg={isToday ? colors.button : ""}
                   px="3"
                   py="10px"
                   rounded="8px"
                 >
                   <VStack alignItems="center" space="2">
-                    <Text
-                      color={isToday ? "white" : "#BCC1CD"}
-                      fontWeight="500"
-                      fontSize="14px"
+                    <BodyLarge
+                      color={isToday ? colors.white : colors.dateCardBg}
                     >
                       {date.format("ddd")}
-                    </Text>
-                    <Text
-                      color={isToday ? "white" : "#BCC1CD"}
-                      fontWeight="500"
-                      fontSize="14px"
+                    </BodyLarge>
+                    <BodyLarge
+                      color={isToday ? colors.white : colors.dateCardBg}
                     >
                       {date.format("DD")}
-                    </Text>
+                    </BodyLarge>
                   </VStack>
                 </Box>
               </Pressable>
@@ -256,9 +262,7 @@ const TimeTableRoute = () => {
         <Actionsheet.Content alignItems={"left"} bg="classCard.500">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {"Period Details"}
-              </Text>
+              <H2>{"Period Details"}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
@@ -269,59 +273,47 @@ const TimeTableRoute = () => {
         <Box bg="white" p="5" width="100%">
           <VStack space="30px">
             <VStack space="10px">
-              <Text fontSize="16px" fontWeight="600">
-                {selectedEvent?.title}
-              </Text>
-              <Text fontSize="14px" fontWeight="400" color="gray.500">
+              <H2>{selectedEvent?.title}</H2>
+              <BodyMedium color="gray.500">
                 The classses will be seated as per their roll numbers, and
                 teachers are to follow the exam timing strictly.
-              </Text>
+              </BodyMedium>
             </VStack>
             <Stack space={4}>
               <HStack space="2">
                 <IconByName name="CloseCircleLineIcon" isDisabled />
-                <Text fontSize="14px" fontWeight="500">
-                  {t("LOCATION")}
-                </Text>
-                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                <BodyLarge>{t("LOCATION")}</BodyLarge>
+                <BodyMedium color="gray.500">
                   {selectedEvent?.subTitle}
-                </Text>
+                </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="CloseCircleLineIcon" isDisabled />
-                <Text fontSize="14px" fontWeight="500">
-                  {t("Time")}
-                </Text>
-                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                <BodyLarge>{t("Time")}</BodyLarge>
+                <BodyMedium color="gray.500">
                   {selectedEvent?.timeText}
-                </Text>
+                </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="CloseCircleLineIcon" isDisabled />
-                <Text fontSize="14px" fontWeight="500">
-                  {t("Date")}
-                </Text>
-                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                <BodyLarge>{t("Date")}</BodyLarge>
+                <BodyMedium color="gray.500">
                   {moment(selectedEvent?.start).format("DD, MMM Y")}
-                </Text>
+                </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="CloseCircleLineIcon" isDisabled />
-                <Text fontSize="14px" fontWeight="500">
-                  {t("ORGANIZER")}
-                </Text>
-                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                <BodyLarge>{t("ORGANIZER")}</BodyLarge>
+                <BodyMedium color="gray.500">
                   {selectedEvent?.organizer}
-                </Text>
+                </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="CloseCircleLineIcon" isDisabled />
-                <Text fontSize="14px" fontWeight="500">
-                  {t("ATTENDANCE")}
-                </Text>
-                <Text fontSize="14px" fontWeight="400" color="gray.500">
+                <BodyLarge>{t("ATTENDANCE")}</BodyLarge>
+                <BodyMedium color="gray.500">
                   {selectedEvent?.subTitle}
-                </Text>
+                </BodyMedium>
               </HStack>
             </Stack>
           </VStack>
@@ -373,9 +365,7 @@ const TimeTableRoute = () => {
                       isDisabledinlineEllipsisStyle
                       color="timeTableFlashIcon.500"
                     />
-                    <Text fontSize="16px" fontWeight="600">
-                      {index ? name : selectedEvent?.title}
-                    </Text>
+                    <H2>{index ? name : selectedEvent?.title}</H2>
                   </HStack>
                   <HStack space="2" alignItems="center">
                     <HStack space="1" alignItems="center">
@@ -384,9 +374,9 @@ const TimeTableRoute = () => {
                         isDisabled
                         _icon={{ size: "14" }}
                       />
-                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                      <BodyMedium color="gray.500">
                         {selectedEvent?.subTitle}
-                      </Text>
+                      </BodyMedium>
                     </HStack>
                     <HStack space="1" alignItems="center">
                       <IconByName
@@ -394,9 +384,9 @@ const TimeTableRoute = () => {
                         isDisabled
                         _icon={{ size: "14" }}
                       />
-                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                      <BodyMedium color="gray.500">
                         {selectedEvent?.timeText}
-                      </Text>
+                      </BodyMedium>
                     </HStack>
                     <HStack space="1" alignItems="center">
                       <IconByName
@@ -404,9 +394,9 @@ const TimeTableRoute = () => {
                         isDisabled
                         _icon={{ size: "14" }}
                       />
-                      <Text fontSize="14px" fontWeight="400" color="gray.500">
+                      <BodyMedium color="gray.500">
                         {moment(selectedEvent?.start).format("DD, MMM Y")}
-                      </Text>
+                      </BodyMedium>
                     </HStack>
                   </HStack>
                 </VStack>
@@ -441,7 +431,7 @@ const DayWiesBar = ({ activeColor, setActiveColor, page, setPage, _box }) => {
       }}
     >
       <VStack>
-        <Text fontWeight={600} fontSize="16px">
+        <H2>
           {page === 0
             ? t("TODAY")
             : page === 1
@@ -449,10 +439,10 @@ const DayWiesBar = ({ activeColor, setActiveColor, page, setPage, _box }) => {
             : page === -1
             ? t("YESTERDAY")
             : moment(date).format("dddd")}
-        </Text>
-        <Text fontWeight={300} fontSize="10px">
+        </H2>
+        <Caption>
           <FormatDate date={date} />
-        </Text>
+        </Caption>
       </VStack>
     </Display>
   );
@@ -570,9 +560,7 @@ const Sheet = ({
       <Actionsheet.Content alignItems={"left"} bg="classCard.500">
         <HStack justifyContent={"space-between"}>
           <Stack p={5} pt={2} pb="25px">
-            <Text fontSize="16px" fontWeight={"600"}>
-              {title}
-            </Text>
+            <H2>{title}</H2>
           </Stack>
           <IconByName
             name="CloseCircleLineIcon"
@@ -586,9 +574,7 @@ const Sheet = ({
             <Box key={index}>
               {subData?.title ? (
                 <Box py={"14px"} px={"20px"}>
-                  <Text fontSize={"12px"} fontWeight={500} color="gray.500">
-                    {subData?.title}
-                  </Text>
+                  <Subtitle color="gray.500">{subData?.title}</Subtitle>
                 </Box>
               ) : (
                 ""
@@ -658,9 +644,7 @@ const Sheet = ({
                       ) : (
                         ""
                       )}
-                      <Text fontSize="14px" fontWeight={500}>
-                        {t(item.name)}
-                      </Text>
+                      <BodyLarge>{t(item.name)}</BodyLarge>
                     </HStack>
 
                     {item.rightIcon ? (

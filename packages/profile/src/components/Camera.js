@@ -1,8 +1,16 @@
-import { IconByName, useWindowSize } from "@shiksha/common-lib";
+import {
+  IconByName,
+  Subtitle,
+  useWindowSize,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { Box, HStack, Image, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Webcam from "react-webcam";
+import colorTheme from "../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 export default function Camera({
   cameraModal,
@@ -47,7 +55,7 @@ export default function Camera({
             {!cameraUrl ? (
               <IconByName
                 name="Settings4LineIcon"
-                color="white"
+                color={colors.white}
                 _icon={{
                   size: "30px",
                 }}
@@ -57,7 +65,7 @@ export default function Camera({
             )}
             <IconByName
               name="CloseCircleLineIcon"
-              color="white"
+              color={colors.white}
               _icon={{
                 size: "30px",
               }}
@@ -101,7 +109,7 @@ export default function Camera({
             {!cameraUrl ? (
               <IconByName
                 name="FlashlightLineIcon"
-                color="white"
+                color={colors.white}
                 _icon={{
                   size: "30px",
                 }}
@@ -116,21 +124,19 @@ export default function Camera({
                     ? "CheckboxBlankCircleLineIcon"
                     : "CheckboxCircleLineIcon"
                 }
-                color="white"
+                color={colors.white}
                 _icon={{
                   size: "60px",
                 }}
                 onPress={(e) => capture()}
               />
 
-              <Text color="white" fontSize="12" fontWeight="600">
-                {t("CAPTURE")}
-              </Text>
+              <Subtitle color={colors.white}>{t("CAPTURE")}</Subtitle>
             </VStack>
             {!cameraUrl ? (
               <IconByName
                 name="CameraSwitchLineIcon"
-                color="white"
+                color={colors.white}
                 _icon={{
                   size: "30px",
                 }}

@@ -1,7 +1,15 @@
-import { capture, telemetryFactory } from "@shiksha/common-lib";
+import {
+  capture,
+  telemetryFactory,
+  overrideColorTheme,
+  BodyLarge,
+  Caption,
+} from "@shiksha/common-lib";
 import { Box, Button, Stack, Text, VStack } from "native-base";
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function RecipientList({
   setPageName,
@@ -19,18 +27,16 @@ export default function RecipientList({
 
   return (
     <Stack>
-      <VStack bg="white" p="5" space="2">
+      <VStack bg={colors.white} p="5" space="2">
         <Box pb="2">
-          <Text fontSize="14px" fontWeight="500">
-            {"Recipient List"}
-          </Text>
+          <BodyLarge>{"Recipient List"}</BodyLarge>
         </Box>
         {students.map((item, index) => (
           <Box
             key={index}
             borderWidth="1"
-            borderColor="button.500"
-            bg="absentCardBg.500"
+            borderColor={colors.primary}
+            bg={colors.absentCardBg}
             p="10px"
             rounded="lg"
           >
@@ -41,13 +47,13 @@ export default function RecipientList({
                 type="rollFather"
                 textTitle={
                   <VStack alignItems="center">
-                    <Text fontSize="14" fontWeight="500">
+                    <BodyLarge>
                       <Text>{item.fullName}</Text>
-                      <Text color="gray.300"> • </Text>
-                      <Text color="absentCardText.500">
+                      <Text color={colors.grayInLight}> • </Text>
+                      <Text color={colors.absentCardText}>
                         {item.days} {t("DAYS")}
                       </Text>
-                    </Text>
+                    </BodyLarge>
                   </VStack>
                 }
                 rightComponent={
@@ -76,7 +82,14 @@ export default function RecipientList({
           </Box>
         ))}
       </VStack>
-      <Box bg="white" p="5" pt="0" position="sticky" bottom="0" shadow={2}>
+      <Box
+        bg={colors.white}
+        p="5"
+        pt="0"
+        position="sticky"
+        bottom="0"
+        shadow={2}
+      >
         <Button.Group>
           <Button
             flex="1"
@@ -159,17 +172,15 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
 
   return (
     <Stack>
-      <VStack bg="white" p="5" space="2">
+      <VStack bg={colors.white} p="5" space="2">
         <Box pb="2">
-          <Text fontSize="14px" fontWeight="500">
-            {"Recipient List"}
-          </Text>
+          <BodyLarge>{"Recipient List"}</BodyLarge>
         </Box>
         {newStudents.map((item, index) => (
           <Box
             key={index}
             borderBottomWidth="1"
-            borderColor="gray.100"
+            borderColor={colors.coolGray}
             p="10px"
           >
             <Suspense fallback="logding">
@@ -179,18 +190,18 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
                 type="rollFather"
                 textTitle={
                   <VStack alignItems="center">
-                    <Text fontSize="14" fontWeight="500">
+                    <BodyLarge>
                       <Text>{item.admissionNo}</Text>
-                      <Text color="gray.300"> • </Text>
+                      <Text color={colors.grayInLight}> • </Text>
                       <Text>{item.fullName}</Text>
-                    </Text>
+                    </BodyLarge>
                   </VStack>
                 }
                 textSubTitle={
                   <VStack alignItems="center">
-                    <Text fontSize="10" fontWeight="400" color="gray.400">
+                    <Caption color={colors.gray}>
                       <Text>{item.fathersName}</Text>
-                    </Text>
+                    </Caption>
                   </VStack>
                 }
                 rightComponent={
@@ -219,7 +230,7 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
           </Box>
         ))}
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
           <Button
             flex="1"

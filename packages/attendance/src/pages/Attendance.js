@@ -8,6 +8,8 @@ import {
   H3,
   classRegistryService,
   studentRegistryService,
+  overrideColorTheme,
+  BodySmall,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -22,6 +24,9 @@ import AttendanceComponent, {
 import moment from "moment";
 import Loader from "atoms/Loader";
 import FourOFour from "atoms/FourOFour";
+import colorTheme from "../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 const PRESENT = "Present";
 const ABSENT = "Absent";
 
@@ -166,12 +171,13 @@ export default function Attendance({ footerLinks, appName }) {
             rounded="full"
             px={5}
             py={1}
-            bg="viewNotification.600"
+            bg={colors.reportbtnBg}
+            textTransform="capitalize"
             alignItems="center"
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => navigate("/attendance/report")}
           >
-            {t("REPORT")}
+            {t("Report")}
           </Button>
         ),
       }}
@@ -179,12 +185,10 @@ export default function Attendance({ footerLinks, appName }) {
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
-            <H1 fontSize="16" fontWeight="600">
-              {classObject?.title ? classObject?.title : ""}
-            </H1>
-            <H3 fontSize="12" fontWeight="400">
+            <H1>{classObject?.title ? classObject?.title : ""}</H1>
+            <BodySmall>
               {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
-            </H3>
+            </BodySmall>
           </VStack>
           <IconByName
             size="sm"
@@ -194,11 +198,11 @@ export default function Attendance({ footerLinks, appName }) {
           />
         </HStack>
       }
-      _subHeader={{ bg: "attendanceCard.500" }}
+      _subHeader={{ bg: colors.attendanceCardBg }}
       _footer={footerLinks}
     >
       <Stack space={1}>
-        <Box bg="white" px="4" py="30">
+        <Box bg={colors.white} px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <WeekWiesBar
               setPage={setWeekPage}
@@ -257,7 +261,7 @@ export default function Attendance({ footerLinks, appName }) {
           </HStack>
         </Box>
       </Stack>
-      <Box bg="white" py="10px" px="5">
+      <Box bg={colors.white} py="10px" px="5">
         <FlatList
           data={searchStudents}
           renderItem={({ item, index }) => (
