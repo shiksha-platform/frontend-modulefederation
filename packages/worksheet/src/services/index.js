@@ -16,13 +16,18 @@ export const getAllQuestions = async (filter, request) => {
   );
 
   if (questionList.data && questionList?.data?.result.count > 0) {
-    const data = questionList?.data?.result?.Question.map(
-      async (question) => await readQuestion(question.identifier)
-    );
-    return Promise.all(data).then((values) => values);
+    return getQuestionByIds(questionList?.data?.result?.Question, "identifier");
   } else {
     return [];
   }
+};
+
+export const getQuestionByIds = (questions, subParam) => {
+  const data = questions.map(
+    async (question) =>
+      await readQuestion(subParam ? question[subParam] : question)
+  );
+  return Promise.all(data).then((values) => values);
 };
 
 const readQuestion = async (questionId) => {
