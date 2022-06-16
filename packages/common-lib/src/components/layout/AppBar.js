@@ -16,6 +16,7 @@ export default function AppBar({
   isEnableLanguageMenu,
   isEnableSearchBtn,
   setSearch,
+  setSearchState,
   color,
   languages,
   onPressBackButton,
@@ -33,6 +34,11 @@ export default function AppBar({
       localStorage.setItem('lang', e)
     }
     window.location.reload()
+  }
+
+  const handleSeachState = (boolean) => {
+    if (setSearchState) setSearchState(boolean)
+    setSearchInput(boolean)
   }
 
   return (
@@ -72,7 +78,7 @@ export default function AppBar({
                   w='1/8'
                   name='times'
                   pl='0'
-                  onPress={(e) => setSearchInput(false)}
+                  onPress={(e) => handleSeachState(false)}
                 />
               }
               placeholder='search'
@@ -87,8 +93,8 @@ export default function AppBar({
             <IconByName
               color={color ? color : ''}
               size='sm'
-              name='search'
-              onPress={(e) => setSearchInput(true)}
+              name='SearchLineIcon'
+              onPress={(e) => handleSeachState(true)}
             />
           ) : (
             <React.Fragment />

@@ -76,6 +76,9 @@ import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
 import EditBoxLineIcon from 'remixicon-react/EditBoxLineIcon'
 import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
 import AddFillIcon from 'remixicon-react/AddFillIcon'
+import MicLineIcon from 'remixicon-react/MicLineIcon'
+import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
+import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -481,6 +484,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'SearchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'StarLineIcon':
       icon = (
         <IconButton
@@ -686,6 +697,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<ArrowRightSFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MicLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MicLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'FileSearchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
