@@ -3,17 +3,17 @@ import { Box, HStack, Text, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
 import { IconByName } from "@shiksha/common-lib";
+import { useTranslation } from "react-i18next";
 
-const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
+const styles = { questionDiv: { display: "flex" } };
+
+const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
+  const { t } = useTranslation();
+
   const createMarkup = (markup) => {
     return { __html: markup };
   };
   const alphabet = ["a", "b", "c", "d", "e", "f"];
-
-  const isExist = () =>
-    selectData &&
-    selectData.filter((e) => e.questionId === questionObject?.questionId)
-      .length;
 
   return (
     <Box shadow={2} rounded="xl">
@@ -25,28 +25,17 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
           : { rounded: "xl" })}
         {..._box}
       >
-        <HStack justifyContent="space-between">
-          <div
-            dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
-          />
-          {selectData ? (
-            <IconByName
-              color={isExist() ? "button.500" : "gray.300"}
-              name={isExist() ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"}
-              onPress={(e) => {
-                if (isExist()) {
-                  const newData = selectData.filter(
-                    (e) => e.questionId !== questionObject?.questionId
-                  );
-                  setSelectData(newData);
-                } else {
-                  setSelectData([...selectData, questionObject]);
-                }
-              }}
+        <HStack
+          justifyContent="space-between"
+          space={1}
+          alignItems="flex-start"
+        >
+          <div style={styles.questionDiv}>
+            <div
+              dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
             />
-          ) : (
-            ""
-          )}
+          </div>
+          {infoIcon}
         </HStack>
       </Box>
       {questionObject?.options ? (
@@ -59,14 +48,18 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
                     fontSize="14"
                     fontWeight="400"
                     textTransform="inherit"
-                    color={item.answer ? "successAlertText.500" : ""}
+                    color={
+                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
+                    }
                   >
                     {alphabet[index] + ". "}
                   </Text>
                   <Text
                     fontSize="14"
                     fontWeight="400"
-                    color={item.answer ? "successAlertText.500" : ""}
+                    color={
+                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
+                    }
                   >
                     <div
                       dangerouslySetInnerHTML={createMarkup(item?.value?.body)}

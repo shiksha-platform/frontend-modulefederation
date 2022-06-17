@@ -13,18 +13,66 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconByName from './IconByName'
 
+const getValueByType = (value, type = 'array') => {
+  return value ? value : type !== 'array' ? '' : []
+}
+
+const getAttribute = (value) => {
+  return value.attributeName ? value.attributeName : value?.name
+}
+
+const getType = (object) => {
+  return object?.type ? object?.type : 'array'
+}
+
 export default function FilterButton({
   filters = [],
+  object,
   getObject,
+  filterButtonText,
+  resetButtonText,
+  isResettableFilter,
   _box,
-  _button,
-  _actionSheet
+  _filterButton,
+  _resetButton,
+  _optionButton,
+  _actionSheet,
+  _button
 }) {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
-  const [groupValue, setGroupValue] = React.useState({})
-  const [filterData, setFilterData] = React.useState(false)
-  const [selectData, setSelectData] = React.useState([])
+  const [groupValue, setGroupValue] = React.useState(object ? object : {})
+  const [formData, setFormData] = React.useState({})
+  const attributeName = getAttribute(formData)
+  const type = getType(formData)
+  const valueArr = getValueByType(groupValue?.[attributeName], type)
+
+  const handleSelectVlaue = (value) => {
+    if (type === 'array') {
+      if (valueArr.includes(value)) {
+        const newData = object[attributeName].filter((e) => value !== e)
+        setGroupValue({
+          ...groupValue,
+          [attributeName]: newData.length > 0 ? newData : null
+        })
+      } else {
+        setGroupValue({
+          ...groupValue,
+          [attributeName]: [...valueArr, value]
+        })
+      }
+    } else if (valueArr === value) {
+      setGroupValue({
+        ...groupValue,
+        [attributeName]: type === 'stingValueArray' ? [] : ''
+      })
+    } else {
+      setGroupValue({
+        ...groupValue,
+        [attributeName]: type === 'stingValueArray' ? [value] : value
+      })
+    }
+  }
 
   return (
     <Box bg='white' roundedBottom={'xl'} {..._box}>
@@ -35,11 +83,17 @@ export default function FilterButton({
             colorScheme='button'
             variant='outline'
             px='5'
+            _text={{
+              textTransform: 'inherit',
+              fontWeight: '500',
+              fontSize: '14px'
+            }}
             onPress={(e) => setFiltered(true)}
             rightIcon={<IconByName name='ArrowDownSLineIcon' isDisabled />}
             {..._button}
+            {..._filterButton}
           >
-            {t('FILTER')}
+            {filterButtonText ? filterButtonText : t('FILTER')}
           </Button>
         ) : (
           <ScrollView horizontal={true}>
@@ -48,49 +102,49 @@ export default function FilterButton({
                 const attributeName = value.attributeName
                   ? value.attributeName
                   : value.name
-                const isSelect =
-                  groupValue?.[attributeName] &&
-                  groupValue?.[attributeName].filter((e) =>
-                    value?.data.includes(e)
-                  ).length
+                const isSelect = Array.isArray(groupValue?.[attributeName])
+                  ? groupValue?.[attributeName].filter((e) =>
+                      value?.data.includes(e)
+                    ).length
+                  : value?.data.includes(groupValue?.[attributeName])
                 return (
                   <Button
                     key={index}
                     mr='1'
                     rounded='full'
                     colorScheme='button'
-                    {...(isSelect > 0 ? {} : { variant: 'outline' })}
+                    {...(isSelect ? {} : { variant: 'outline' })}
                     px='5'
                     rightIcon={
                       <IconByName
-                        color={isSelect > 0 ? 'white' : 'button.500'}
+                        color={isSelect ? 'white' : 'button.500'}
                         name='ArrowDownSLineIcon'
                         isDisabled
                       />
                     }
                     onPress={(e) => {
                       if (value?.data && value?.data.length > 0) {
-                        setFilterData(value)
-                        setSelectData(
-                          groupValue?.[attributeName]
-                            ? groupValue?.[attributeName]
-                            : []
-                        )
+                        setFormData(value)
                       }
                     }}
-                    {..._button}
+                    {...(isSelect ? { ..._button, bg: 'button.500' } : _button)}
+                    {...(isSelect
+                      ? { ..._optionButton, bg: 'button.500' }
+                      : _optionButton)}
                   >
-                    <Text color={isSelect > 0 ? 'white' : 'button.500'}>
-                      {isSelect > 0 ? '' : value.name}
-                      {isSelect > 0 && groupValue?.[attributeName][0] ? (
+                    <Text color={isSelect ? 'white' : 'button.500'}>
+                      {isSelect ? '' : value.name}
+                      {isSelect ? (
                         <Tooltip
                           label={groupValue?.[attributeName].toString()}
                           openDelay={50}
                         >
-                          {groupValue?.[attributeName][0]}
+                          {Array.isArray(groupValue?.[attributeName])
+                            ? groupValue?.[attributeName][0]
+                            : groupValue?.[attributeName]}
                         </Tooltip>
                       ) : (
-                        ''
+                        <React.Fragment />
                       )}
                     </Text>
                   </Button>
@@ -102,26 +156,35 @@ export default function FilterButton({
                 colorScheme='button'
                 variant='outline'
                 px='5'
+                _text={{
+                  textTransform: 'inherit',
+                  fontWeight: '500',
+                  fontSize: '14px'
+                }}
                 rightIcon={
                   <IconByName
                     color='button.500'
-                    name='ArrowDownSLineIcon'
+                    name='ArrowRightSFillIcon'
                     isDisabled
                   />
                 }
                 onPress={(e) => {
                   setFiltered(false)
-                  setGroupValue({})
-                  if (getObject) getObject({})
+                  if (isResettableFilter) {
+                    setGroupValue({})
+                    if (getObject) getObject({})
+                  }
                 }}
+                {..._button}
+                {..._resetButton}
               >
-                {t('RESET_FILTER')}
+                {resetButtonText ? resetButtonText : t('RESET_FILTER')}
               </Button>
             </HStack>
           </ScrollView>
         )}
       </HStack>
-      <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
+      <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
         <Actionsheet.Content
           alignItems={'left'}
           bg='classCard.500'
@@ -130,98 +193,108 @@ export default function FilterButton({
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>
-                {t('SELECT_MODULE')}
+                {`${t('SELECT')} ${formData?.name ? formData?.name : ''}`}
               </Text>
             </Stack>
             <IconByName
               name='CloseCircleLineIcon'
-              onPress={(e) => setFilterData()}
+              onPress={(e) => setFormData({})}
             />
           </HStack>
         </Actionsheet.Content>
         <Box bg='white' width={'100%'}>
-          <Pressable
-            px='5'
-            pt='5'
-            onPress={(e) => {
-              if (
-                filterData?.data &&
-                selectData &&
-                filterData?.data?.length === selectData?.length
-              ) {
-                setSelectData([])
-              } else {
-                setSelectData(filterData.data)
-              }
-            }}
-          >
-            <HStack space='2' colorScheme='button' alignItems='center'>
-              <IconByName
-                isDisabled
-                color={
-                  filterData?.data &&
-                  selectData &&
-                  filterData?.data?.length === selectData?.length
-                    ? 'button.500'
-                    : 'gray.300'
+          {type === 'array' ? (
+            <Pressable
+              p='3'
+              onPress={(e) => {
+                if (
+                  formData?.data &&
+                  valueArr &&
+                  formData?.data?.length === valueArr?.length
+                ) {
+                  setGroupValue({
+                    ...groupValue,
+                    [formData?.attributeName]: null
+                  })
+                } else {
+                  setGroupValue({
+                    ...groupValue,
+                    [formData?.attributeName]: formData.data
+                  })
                 }
-                name={
-                  filterData?.data &&
-                  selectData &&
-                  filterData?.data?.length === selectData?.length
-                    ? 'CheckboxLineIcon'
-                    : 'CheckboxBlankLineIcon'
-                }
-              />
-              <Text>{t('Select All')}</Text>
-            </HStack>
-          </Pressable>
-          {filterData?.data &&
-            filterData?.data.map((value, index) => (
-              <Pressable
-                px='5'
-                pt='5'
-                key={index}
-                onPress={(e) => {
-                  if (selectData.includes(value)) {
-                    setSelectData(selectData.filter((e) => value !== e))
-                  } else {
-                    setSelectData([...selectData, value])
+              }}
+            >
+              <HStack space='2' colorScheme='button' alignItems='center'>
+                <IconByName
+                  isDisabled
+                  color={
+                    formData?.data &&
+                    valueArr &&
+                    formData?.data?.length === valueArr?.length
+                      ? 'button.500'
+                      : 'gray.300'
                   }
-                }}
-              >
-                <HStack space='2' colorScheme='button' alignItems='center'>
-                  <IconByName
-                    isDisabled
-                    color={
-                      selectData.includes(value) ? 'button.500' : 'gray.300'
-                    }
-                    name={
-                      selectData.includes(value)
-                        ? 'CheckboxLineIcon'
-                        : 'CheckboxBlankLineIcon'
-                    }
-                  />
-                  <Text>{value}</Text>
-                </HStack>
-              </Pressable>
-            ))}
+                  name={
+                    formData?.data &&
+                    valueArr &&
+                    formData?.data?.length === valueArr?.length
+                      ? 'CheckboxLineIcon'
+                      : 'CheckboxBlankLineIcon'
+                  }
+                />
+                <Text>{t('Select All')}</Text>
+              </HStack>
+            </Pressable>
+          ) : (
+            ''
+          )}
+          {formData?.data &&
+            formData?.data.map((value, index) => {
+              return (
+                <Pressable
+                  p='3'
+                  key={index}
+                  onPress={(e) => handleSelectVlaue(value)}
+                  bg={
+                    (type !== 'array' && valueArr === value) ||
+                    (type === 'stingValueArray' && valueArr.includes(value))
+                      ? 'gray.200'
+                      : 'white'
+                  }
+                >
+                  <HStack space='2' colorScheme='button' alignItems='center'>
+                    {type === 'array' ? (
+                      <IconByName
+                        isDisabled
+                        color={
+                          valueArr.includes(value) ? 'button.500' : 'gray.300'
+                        }
+                        name={
+                          valueArr.includes(value)
+                            ? 'CheckboxLineIcon'
+                            : 'CheckboxBlankLineIcon'
+                        }
+                      />
+                    ) : (
+                      ''
+                    )}
+                    <Text>{value}</Text>
+                  </HStack>
+                </Pressable>
+              )
+            })}
           <Box p='5'>
             <Button
               colorScheme='button'
               _text={{ color: 'white' }}
               onPress={(e) => {
-                const attributeName = filterData.attributeName
-                  ? filterData.attributeName
-                  : filterData.name
-                setGroupValue({ ...groupValue, [attributeName]: selectData })
-                if (getObject)
-                  getObject({ ...groupValue, [attributeName]: selectData })
-                setFilterData({})
-                setSelectData([])
+                if (getObject) {
+                  getObject(groupValue)
+                }
+                setFormData({})
               }}
             >
-              {t('CONTINUE')}
+              {t('SELECT')}
             </Button>
           </Box>
         </Box>

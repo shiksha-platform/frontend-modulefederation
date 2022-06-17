@@ -1,143 +1,106 @@
-import { IconByName, Layout } from "@shiksha/common-lib";
+import {
+  FilterButton,
+  IconByName,
+  Layout,
+  useWindowSize,
+} from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
-  Actionsheet,
-  Avatar,
-  Box,
-  Button,
   HStack,
-  Pressable,
   Stack,
+  Button,
   Text,
+  Actionsheet,
+  Box,
+  Pressable,
   VStack,
+  FormControl,
+  Input,
+  ScrollView,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { defaultInputs } from "config/worksheetConfig";
 import manifest from "../../manifest.json";
+import { getAllQuestions } from "services";
 
-const styles = {
-  addQuestionsBox: {
-    bg: "white",
-    p: "5",
-    position: "sticky",
-    bottom: "85",
-    styles: {
-      boxShadow:
-        "0px -4px 25px rgba(0, 0, 0, 0.05), inset 0px 1px 0px #F2F2F2;",
-    },
-  },
-};
+const newDefaultInputs = defaultInputs.map((e) => {
+  return {
+    ...e,
+    ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
+      ? "grade"
+      : e.attributeName,
+    ["type"]: "sting",
+  };
+});
 
-const students = [
-  {
-    name: "AJ",
-    size: "xs",
-    bg: "green.500",
-    source: {
-      uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    },
-  },
-  {
-    name: "TE",
-    size: "xs",
-    bg: "cyan.500",
-    source: {
-      uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-    },
-  },
-  {
-    name: "JB",
-    size: "xs",
-    bg: "indigo.500",
-    source: {
-      uri: "https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    },
-  },
-  {
-    name: "TS",
-    size: "xs",
-    bg: "amber.500",
-    source: {
-      uri: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-    },
-  },
-  {
-    name: "AJ",
-    size: "xs",
-    bg: "green.500",
-    source: {
-      uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-    },
-  },
-  {
-    name: "TS",
-    size: "xs",
-    bg: "amber.500",
-    source: {
-      uri: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-    },
-  },
-];
-
-const ListOfWorksheet = ({
-  questions,
+export default function ListOfWorksheet({
+  setQuestions,
   selectData,
   setSelectData,
-  handleSubmit,
-  pageName,
+  setQuestionObject,
   setPageName,
-  formObject,
-  setFormObject,
+  worksheet,
+  handleSubmit,
   footerLinks,
-  appName,
-}) => {
+}) {
   const { t } = useTranslation();
-  const [isDataFilter, setIsDataFilter] = React.useState(false);
-  const [showModule, setShowModule] = React.useState(false);
-  const [showQuestions, setShowQuestions] = React.useState([]);
+  const [width, Height] = useWindowSize();
 
-  const handleEditDescription = () => {
-    setFormObject({
-      ...formObject,
-      questions: selectData.map((e) => e.questionId),
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [showQuestions, setShowQuestions] = React.useState([]);
+  const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
+  const [formObject, setFormObject] = React.useState(worksheet);
+
+  React.useEffect(async () => {
+    let data = {};
+    newDefaultInputs.forEach((item, index) => {
+      if (formObject[item]) data = { ...data, [item]: formObject[item] };
     });
-    setPageName("AddDescriptionPage");
+    console.log(data);
+    const newQuestions = await getAllQuestions(data, { limit: 20 });
+    setShowQuestions(newQuestions);
+  }, [formObject]);
+
+  const handelToggleQuestion = (item) => {
+    if (selectData.filter((e) => e.questionId === item?.questionId).length) {
+      handelUnSelectQuestion(item);
+    } else {
+      setSelectData([...selectData, item]);
+    }
   };
 
-  React.useEffect(() => {
-    setShowQuestions(questions);
-  }, [formObject]);
+  const handelUnSelectQuestion = (item) => {
+    setSelectData(selectData.filter((e) => e.questionId !== item.questionId));
+  };
+
+  const handelSaveAndDraft = () => {
+    setQuestions(selectData);
+    setPageName("AddDescriptionPage");
+    setFormObject({ ...formObject, state: "Draft" });
+  };
+
+  const handelPublish = () => {
+    setQuestions(selectData);
+    setPageName("AddDescriptionPage");
+    setFormObject({ ...formObject, state: "Publish" });
+  };
+
+  const handelAddQuestion = () => {
+    setPageName("QuestionAdded");
+    setShowQuestions(selectData);
+    setQuestions(selectData);
+  };
 
   return (
     <Layout
       _header={{
-        title: formObject.name,
+        title: t("Add Questions"),
+
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-        iconComponent: (
-          <Button
-            _text={{ color: "white" }}
-            px="15px"
-            py="10px"
-            fontSize="12px"
-            fontWeight="600"
-            onPress={handleSubmit}
-          >
-            {t("SAVE")}
-          </Button>
-        ),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={
-        <HStack alignItems="center" justifyContent="space-between">
-          <Text fontSize="16px" fontWeight={"600"}>
-            {t("Edit your draft worksheet")}
-          </Text>
-          <IconByName
-            name="InformationLineIcon"
-            onPress={(e) => console.log(true)}
-          />
-        </HStack>
-      }
+      subHeader={formObject.name}
       _subHeader={{
         bg: "worksheetCard.500",
         _text: {
@@ -148,245 +111,177 @@ const ListOfWorksheet = ({
       }}
       _footer={footerLinks}
     >
-      <Box>
-        {selectData.length < showQuestions.length ||
-        ["success", "descriptionUpdated"].includes(pageName) ? (
-          <Box
-            bg={
-              pageName === "success" ? "successAlert.500" : "warningAlert.500"
-            }
-            p="5"
-          >
-            <HStack justifyContent="space-between">
-              <Text
-                fontSize="14px"
-                fontWeight="500"
-                color={
-                  pageName === "success"
-                    ? "successAlertText"
-                    : "warningAlertText.500"
-                }
-              >
-                {pageName === "success"
-                  ? "Changes Saved"
-                  : pageName === "descriptionUpdated"
-                  ? "Description Updated"
-                  : `(${
-                      showQuestions.length - selectData.length
-                    }) Questions Removed`}
-              </Text>
-              <IconByName
-                name="CloseCircleLineIcon"
-                color={
-                  pageName === "success"
-                    ? "successAlertText"
-                    : "warningAlertText.500"
-                }
-                p="0"
-                onPress={(e) => setIsDataFilter(false)}
-              />
-            </HStack>
+      {!isSuccess ? (
+        <Box>
+          <FilterButton
+            getObject={setFormObject}
+            object={formObject}
+            _actionSheet={{ bg: "worksheetCard.500" }}
+            _box={{ pt: 5, px: 5 }}
+            _button={{ bg: "button.50", px: "15px", py: "2" }}
+            _filterButton={{
+              rightIcon: "",
+              bg: "white",
+            }}
+            resetButtonText={t("COLLAPSE")}
+            filters={newDefaultInputs}
+          />
+          <Box bg="white" px="5">
+            <ScrollView horizontal={true}>
+              {selectData.map((item, index) => (
+                <Box key={index}>
+                  <Box
+                    bg="viewNotification.600"
+                    w="192px"
+                    h="87px"
+                    m="2"
+                    p="3"
+                    borderWidth="1"
+                    borderColor="viewNotification.500"
+                    rounded="lg"
+                    overflow="hidden"
+                  >
+                    <div
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: "3",
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      dangerouslySetInnerHTML={{ __html: item.question }}
+                    />
+                  </Box>
+                  <IconByName
+                    name="CloseCircleFillIcon"
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    p="0"
+                    color="button.500"
+                    _icon={{ size: 24 }}
+                    onPress={(e) => handelUnSelectQuestion(item)}
+                  />
+                </Box>
+              ))}
+            </ScrollView>
           </Box>
-        ) : (
-          ""
-        )}
-        <Box bg="white" p="5">
-          <VStack space="5">
-            {showQuestions.map((question, index) => (
-              <QuestionBox
-                _box={{ py: "12px", px: "16px" }}
-                key={index}
-                questionObject={question}
-                {...(isDataFilter ? {} : { selectData, setSelectData })}
-              />
-            ))}
-          </VStack>
         </Box>
-        <Box {...styles.addQuestionsBox}>
+      ) : (
+        <></>
+      )}
+
+      <Box bg="white" p="5">
+        <ScrollView maxH={Height}>
           <VStack space="5">
-            <Text fontWeight="400" fontSize="10px">
-              <Text fontWeight="700">Note:</Text> You can add new questions to
-              the worksheet.
-            </Text>
+            {showQuestions.map((item, index) => {
+              const isExist = selectData.filter(
+                (e) => e.questionId === item?.questionId
+              ).length;
+              return (
+                <QuestionBox
+                  isAnswerHide={!isAnswerFilter}
+                  _box={{ py: "12px", px: "16px" }}
+                  key={index}
+                  questionObject={item}
+                  infoIcon={
+                    <HStack space={1} alignItems="center">
+                      <IconByName
+                        name="InformationFillIcon"
+                        p="1"
+                        color="button.500"
+                        onPress={(e) => setQuestionObject(item)}
+                      />
+                      {!isSuccess ? (
+                        <IconByName
+                          p="1"
+                          color={isExist ? "button.500" : "gray.300"}
+                          name={
+                            isExist
+                              ? "CheckboxLineIcon"
+                              : "CheckboxBlankLineIcon"
+                          }
+                          onPress={(e) => handelToggleQuestion(item)}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </HStack>
+                  }
+                />
+              );
+            })}
+          </VStack>
+        </ScrollView>
+      </Box>
+      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+        {!isSuccess ? (
+          <>
+            {/* <Text fontSize="10px" py="4" pb="1">
+              <Text fontWeight="700">Attention:</Text>
+              You have selected {selectData.length} questions to add to the
+              worksheet.
+            </Text> */}
+            <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
+              <HStack alignItems="center" space="1" pt="1" py="4">
+                <IconByName
+                  isDisabled
+                  color={isAnswerFilter ? "button.500" : "gray.300"}
+                  name={
+                    isAnswerFilter
+                      ? "CheckboxLineIcon"
+                      : "CheckboxBlankLineIcon"
+                  }
+                />
+                <Text fontSize="12px" fontWeight="600">
+                  Include answer key in worksheet
+                </Text>
+              </HStack>
+            </Pressable>
             <Button.Group>
               <Button
+                colorScheme="button"
+                px="5"
                 flex="1"
+                variant="outline"
+                onPress={(e) => setPageName()}
+              >
+                {t("Cancel")}
+              </Button>
+              <Button
                 colorScheme="button"
                 _text={{ color: "white" }}
                 px="5"
-                onPress={(e) => setShowModule(true)}
+                flex="1"
+                onPress={handelAddQuestion}
               >
-                {t("Add Questions")}
+                {t("ADD_TO_WORKSHEET")}
               </Button>
             </Button.Group>
-          </VStack>
-        </Box>
-
-        <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
-          <Actionsheet.Content alignItems={"left"}>
-            <Stack p={5} pt={0} pb="4" textAlign="center">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {formObject?.name}
-              </Text>
-            </Stack>
-            <IconByName
-              color="gray.300"
-              position="absolute"
-              top="10px"
-              right="10px"
-              name="CloseCircleLineIcon"
-              onPress={(e) => setShowModule(false)}
-            />
-          </Actionsheet.Content>
-          <Box bg="white" width={"100%"} p="5">
-            <VStack space="30px">
-              <Text
-                fontSize="14px"
-                fontWeight={"400"}
-                color="gray.400"
-                textAlign="center"
-              >
-                {formObject?.description}
-              </Text>
-              <HStack space="2">
-                <VStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="SurveyLineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Subject: " + formObject?.subject}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="BarChart2LineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Level: " + formObject?.level}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="QuestionLineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Questions: " +
-                        (Array.isArray(formObject?.questions)
-                          ? formObject?.questions.length
-                          : formObject?.questions)}
-                    </Text>
-                  </HStack>
-                </VStack>
-                <VStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="AccountBoxFillIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Grade: " + formObject?.grade}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="ArticleLineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {t("TOPIC") + ": " + formObject?.topic}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="Download2LineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Downloads: " + formObject?.downloads}
-                    </Text>
-                  </HStack>
-                </VStack>
-              </HStack>
-              <HStack space="5" alignItems="center" justifyContent={"center"}>
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="Heart3FillIcon"
-                    color="red.500"
-                    _icon={{ size: 18 }}
-                    isDisabled
-                  />
-                  <Text fontWeight="600" fontSize="12px">
-                    {"10 Teachers like this"}
-                  </Text>
-                </HStack>
-                <Pressable onPress={(e) => handleCommentModuleOpen()}>
-                  <HStack alignItems="center">
-                    <Avatar.Group
-                      _avatar={{
-                        size: "md",
-                      }}
-                    >
-                      {students.map((e, index) => (
-                        <Avatar key={index} {...e}>
-                          {e.name}
-                        </Avatar>
-                      ))}
-                    </Avatar.Group>
-                    <Text fontWeight="600" fontSize="10px" color="button.500">
-                      {"6 comments"}
-                    </Text>
-                  </HStack>
-                </Pressable>
-              </HStack>
-              <Button variant="outline" onPress={handleEditDescription}>
-                Edit Description
-              </Button>
-            </VStack>
-          </Box>
-        </Actionsheet>
+          </>
+        ) : (
+          <Button.Group>
+            <Button
+              colorScheme="button"
+              px="5"
+              flex="1"
+              variant="outline"
+              onPress={handelSaveAndDraft}
+            >
+              {t("Save As Draft")}
+            </Button>
+            <Button
+              colorScheme="button"
+              _text={{ color: "white" }}
+              px="5"
+              flex="1"
+              onPress={handelPublish}
+            >
+              {t("Publish")}
+            </Button>
+          </Button.Group>
+        )}
       </Box>
     </Layout>
   );
-};
-
-export default ListOfWorksheet;
+}

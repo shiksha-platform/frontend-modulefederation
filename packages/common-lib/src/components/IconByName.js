@@ -67,6 +67,8 @@ import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 import SpamLineIcon from 'remixicon-react/SpamLineIcon'
+import InformationFillIcon from 'remixicon-react/InformationFillIcon'
+import CloseCircleFillIcon from 'remixicon-react/CloseCircleFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -605,6 +607,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<SpamLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'InformationFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<InformationFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CloseCircleFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CloseCircleFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

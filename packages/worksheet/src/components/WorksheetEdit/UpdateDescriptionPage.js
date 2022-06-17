@@ -91,33 +91,11 @@ export default function UpdateDescriptionPage({
   return (
     <Layout
       _header={{
-        title: formObject.name,
+        title: t("Edit Description"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
-        iconComponent: (
-          <Button
-            _text={{ color: "white" }}
-            px="15px"
-            py="10px"
-            fontSize="12px"
-            fontWeight="600"
-            onPress={handleSubmit}
-          >
-            {t("SAVE")}
-          </Button>
-        ),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={
-        <HStack alignItems="center" justifyContent="space-between">
-          <Text fontSize="16px" fontWeight={"600"}>
-            {t("Edit your draft worksheet")}
-          </Text>
-          <IconByName
-            name="InformationLineIcon"
-            onPress={(e) => console.log(true)}
-          />
-        </HStack>
-      }
+      subHeader={t("Enter Worksheet Details")}
       _subHeader={{
         bg: "worksheetCard.500",
         _text: {
