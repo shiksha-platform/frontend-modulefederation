@@ -70,17 +70,23 @@ const FilterButton = ({
                   groupValue?.[attributeName].filter((e) =>
                     value?.data.includes(e)
                   ).length
+                const overrideBtnProp =
+                  isSelect > 0 ? { ..._button, bg: 'button.500' } : _button
+                const overrideOptionBtnProp =
+                  isSelect > 0
+                    ? { ..._optionButton, bg: 'button.500' }
+                    : _optionButton
                 return (
                   <Button
                     key={index}
                     mr='1'
                     rounded='full'
                     colorScheme='button'
-                    {...(isSelect > 0 ? {} : { variant: 'outline' })}
+                    {...(isSelect ? {} : { variant: 'outline' })}
                     px='5'
                     rightIcon={
                       <IconByName
-                        color={isSelect > 0 ? 'white' : 'button.500'}
+                        color={isSelect ? 'white' : 'button.500'}
                         name='ArrowDownSLineIcon'
                         isDisabled
                       />
@@ -95,12 +101,8 @@ const FilterButton = ({
                         )
                       }
                     }}
-                    {...(isSelect > 0
-                      ? { ..._button, bg: 'button.500' }
-                      : _button)}
-                    {...(isSelect > 0
-                      ? { ..._optionButton, bg: 'button.500' }
-                      : _optionButton)}
+                    {...overrideBtnProp}
+                    {...overrideOptionBtnProp}
                   >
                     <Text color={isSelect > 0 ? 'white' : 'button.500'}>
                       {isSelect > 0 ? '' : value.name}
