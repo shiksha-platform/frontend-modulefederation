@@ -138,7 +138,7 @@ export default function AddDescriptionPage({
           flex="1"
           onPress={handleSubmit}
         >
-          {t("Save and Publish")}
+          {t("SAVE")}
         </Button>
       </Box>
     </Box>

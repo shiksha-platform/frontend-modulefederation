@@ -411,9 +411,9 @@ export default function ListOfWorksheet({
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
-          <Actionsheet.Content alignItems={"left"}>
-            <Stack p={5} pt={2} pb="25px" textAlign="center">
-              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+          <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
+            <Stack p={5} pt={1} pb="17px">
+              <Text fontSize="16px" fontWeight={"600"}>
                 {t("Enter Worksheet Details")}
               </Text>
             </Stack>

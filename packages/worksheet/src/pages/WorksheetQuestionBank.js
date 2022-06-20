@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Layout, useWindowSize, IconByName } from "@shiksha/common-lib";
+import {
+  Layout,
+  useWindowSize,
+  IconByName,
+  worksheetRegistryService,
+  Loading,
+} from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   Actionsheet,
@@ -10,73 +16,41 @@ import {
   HStack,
   Input,
   Pressable,
-  ScrollView,
   Stack,
   Text,
   VStack,
 } from "native-base";
 import manifest from "../manifest.json";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const questions = [
-  {
-    question: `Q1. Choose the correct option to fill in the blank. 7g = ____ dag`,
-    options: [
-      { value: { body: "70" } },
-      { value: { body: "0.7" }, answer: true },
-      { value: { body: "7000" } },
-      { value: { body: "700" } },
-    ],
-  },
-  {
-    question: `Q2. A courtyard 50m long and 198m broad is to be paved with bricks of length 10m and breadth 18cm. Find the number of bricks required.`,
-    options: [
-      { value: { body: "550000" }, answer: true },
-      { value: { body: "1100000" } },
-      { value: { body: "99000000" } },
-      { value: { body: "180" } },
-    ],
-  },
-  {
-    question: `Q3. A wire of length 20m is to be folded in the form of a square. If each side of a square has to be an integer (measured in meters), what is the maximum number of squares that can be formed by folding the wire.`,
-    options: [
-      { value: { body: "4" } },
-      { value: { body: "2" } },
-      { value: { body: "5" }, answer: true },
-      { value: { body: "6" } },
-    ],
-  },
-  {
-    question: `Q4. A factory produces 9643243 toys every month. It sends 1438228 toys to the town market, 1657539
-  toys to markets in other states and 1413931 to the markets in other countries. ________ toys are left in the factory.`,
-  },
-  {
-    question: `Q5. The place value of the underlined digit in 65872546 is _______ .`,
-  },
-  {
-    question: `Q6. Alisha celebrated her birthday with 14 of her friends. If she and each of her friend ordered 2 muffins and 5 toffees, they ordered _______ items in total.`,
-  },
-  {
-    question: `Q7. Convert 3l into dal.`,
-  },
-  {
-    question: `Q8. The place value of the underlined digit in 65872546 is _______ .`,
-  },
-  {
-    question: `Q9. Convert 4kg, 9 hg, 7dag, 2g into grams.`,
-  },
-];
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
+  const [questions, setQuestions] = React.useState([]);
+  const [worksheet, setWorksheet] = React.useState({});
   const [showModule, setShowModule] = useState(false);
   const [showModuleComments, setShowModuleComments] = useState(false);
   const [like, setLike] = useState(false);
+  const [state, setState] = useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [questionObject, setQuestionObject] = React.useState({});
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const translationCheck = (name, title) => {
-    return (t(name) !== name && t(name)) || title;
-  };
+  React.useEffect(async () => {
+    const worksheetData = await worksheetRegistryService.getOne({ id });
+    const questionIds =
+      worksheetData && Array.isArray(worksheetData.questions)
+        ? worksheetData.questions
+        : [];
+    const newQuestions = await worksheetRegistryService.getQuestionByIds(
+      questionIds
+    );
+    setWorksheet(worksheetData);
+    setState(worksheetData?.state && worksheetData.state === "Publish");
+    setQuestions(newQuestions);
+    setLoading(false);
+  }, []);
 
   const handleCommentModuleClose = () => {
     setShowModuleComments(false);
@@ -88,23 +62,35 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     setShowModule(false);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <Layout
       _header={{
-        title: translationCheck("Maps of the World", "Maps of the World"),
+        title: worksheet?.name,
         iconComponent: (
           <HStack>
             <IconByName
               name="InformationLineIcon"
               onPress={(e) => setShowModule(true)}
             />
+            {!state ? (
+              <IconByName
+                name="EditBoxLineIcon"
+                onPress={(e) => navigate(`/worksheet/${worksheet?.id}/edit`)}
+              />
+            ) : (
+              <React.Fragment />
+            )}
           </HStack>
         ),
       }}
       bg="white"
       _appBar={{
         languages: manifest.languages,
-        rightIcon: (
+        rightIcon: state ? (
           <HStack>
             <IconByName
               name={like ? "Heart3FillIcon" : "Heart3LineIcon"}
@@ -117,56 +103,67 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               name="DownloadLineIcon"
             />
           </HStack>
+        ) : (
+          <React.Fragment />
         ),
       }}
       _footer={footerLinks}
     >
-      <ScrollView maxH={Height}>
-        <Box bg="white" p="5">
-          <VStack space="5">
-            {questions &&
-              questions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                />
-              ))}
-          </VStack>
-        </Box>
-      </ScrollView>
-      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
-        <Button.Group>
-          <Button
-            flex="1"
-            colorScheme="button"
-            variant="outline"
-            px="5"
-            onPress={(e) => {
-              console.log(e);
-            }}
-          >
-            {t("Save As Draft")}
-          </Button>
-          <Button
-            flex="1"
-            colorScheme="button"
-            _text={{ color: "white" }}
-            px="5"
-            onPress={(e) => console.log(e)}
-          >
-            {t("Publish")}
-          </Button>
-        </Button.Group>
+      <Box bg="white" p="5">
+        <VStack space="5">
+          {questions && questions.length > 0 ? (
+            questions.map((question, index) => (
+              <QuestionBox
+                _box={{ py: "12px", px: "16px" }}
+                key={index}
+                questionObject={question}
+                infoIcon={
+                  <HStack space={1} alignItems="center">
+                    <IconByName
+                      name="InformationFillIcon"
+                      p="1"
+                      color="button.500"
+                      onPress={(e) => setQuestionObject(question)}
+                    />
+                  </HStack>
+                }
+              />
+            ))
+          ) : (
+            <Box
+              p="10"
+              my="5"
+              alignItems={"center"}
+              rounded="lg"
+              bg="viewNotification.600"
+            >
+              Question Not Found
+            </Box>
+          )}
+        </VStack>
       </Box>
+      {!state ? (
+        <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+          <Button.Group>
+            <Button
+              flex="1"
+              colorScheme="button"
+              _text={{ color: "white" }}
+              px="5"
+              onPress={(e) => console.log(e)}
+            >
+              {t("Publish")}
+            </Button>
+          </Button.Group>
+        </Box>
+      ) : (
+        <React.Fragment />
+      )}
       <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
         <Actionsheet.Content alignItems={"left"}>
           <Stack p={5} pt={2} pb="25px" textAlign="center">
-            <Text fontSize="12px" fontWeight={"500"} color="gray.400">
-              {t("Chapter 01")}
-            </Text>
             <Text fontSize="16px" fontWeight={"600"}>
-              {t("Learning Made Easy")}
+              {worksheet?.name}
             </Text>
           </Stack>
           <IconByName
@@ -186,96 +183,104 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               color="gray.400"
               textTransform="inherit"
             >
-              He is an entrepreneur, educator, and investor who believes that
-              each of us has the power to makes.
+              {worksheet?.description}
             </Text>
-            <HStack space="50px">
-              <VStack space="4">
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="AccountBoxFillIcon"
-                    _icon={{ size: 12 }}
-                    p="0"
-                  />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Grade: VI"}
-                  </Text>
-                </HStack>
 
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="ArticleLineIcon"
-                    _icon={{ size: 12 }}
-                    p="0"
-                  />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Chapter: 01"}
-                  </Text>
-                </HStack>
-
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="QuestionLineIcon"
-                    _icon={{ size: 12 }}
-                    p="0"
-                  />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Questions: 30"}
-                  </Text>
-                </HStack>
-
+            <HStack space="2">
+              <VStack space="3">
                 <HStack space="1" alignItems="center">
                   <IconByName
                     name="SurveyLineIcon"
                     _icon={{ size: 12 }}
+                    color="worksheetBoxText.400"
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Skills: Reasoning"}
+                  <Text
+                    fontWeight="400"
+                    fontSize="14px"
+                    color="worksheetBoxText.400"
+                  >
+                    {"Subject: " + worksheet?.subject}
                   </Text>
                 </HStack>
-              </VStack>
-              <VStack space="4">
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="SurveyLineIcon"
-                    _icon={{ size: 12 }}
-                    p="0"
-                  />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Subject: Math"}
-                  </Text>
-                </HStack>
-
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="FileInfoLineIcon"
-                    _icon={{ size: 12 }}
-                    p="0"
-                  />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Topics: Algebra"}
-                  </Text>
-                </HStack>
-
                 <HStack space="1" alignItems="center">
                   <IconByName
                     name="BarChart2LineIcon"
                     _icon={{ size: 12 }}
+                    color="worksheetBoxText.400"
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Level: Intermediate"}
+                  <Text
+                    fontWeight="400"
+                    fontSize="14px"
+                    color="worksheetBoxText.400"
+                  >
+                    {"Level: " + worksheet?.level}
                   </Text>
                 </HStack>
                 <HStack space="1" alignItems="center">
                   <IconByName
-                    name="LightbulbFlashLineIcon"
+                    name="QuestionLineIcon"
                     _icon={{ size: 12 }}
+                    color="worksheetBoxText.400"
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Outcome: Improve IQ"}
+                  <Text
+                    fontWeight="400"
+                    fontSize="14px"
+                    color="worksheetBoxText.400"
+                  >
+                    {"Questions: " +
+                      (Array.isArray(worksheet?.questions)
+                        ? worksheet?.questions.length
+                        : worksheet?.questions)}
+                  </Text>
+                </HStack>
+              </VStack>
+              <VStack space="3">
+                <HStack space="1" alignItems="center">
+                  <IconByName
+                    name="AccountBoxFillIcon"
+                    _icon={{ size: 12 }}
+                    color="worksheetBoxText.400"
+                    p="0"
+                  />
+                  <Text
+                    fontWeight="400"
+                    fontSize="14px"
+                    color="worksheetBoxText.400"
+                  >
+                    {"Grade: " + worksheet?.grade}
+                  </Text>
+                </HStack>
+                <HStack space="1" alignItems="center">
+                  <IconByName
+                    name="ArticleLineIcon"
+                    _icon={{ size: 12 }}
+                    color="worksheetBoxText.400"
+                    p="0"
+                  />
+                  <Text
+                    fontWeight="400"
+                    fontSize="14px"
+                    color="worksheetBoxText.400"
+                  >
+                    {t("TOPIC") + ": " + worksheet?.topic}
+                  </Text>
+                </HStack>
+                <HStack space="1" alignItems="center">
+                  <IconByName
+                    name="Download2LineIcon"
+                    _icon={{ size: 12 }}
+                    color="worksheetBoxText.400"
+                    p="0"
+                  />
+                  <Text
+                    fontWeight="400"
+                    fontSize="14px"
+                    color="worksheetBoxText.400"
+                  >
+                    {"Downloads: " + worksheet?.downloads}
                   </Text>
                 </HStack>
               </VStack>
@@ -450,6 +455,123 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
             </HStack>
           </Box>
         </VStack>
+      </Actionsheet>
+      <Actionsheet
+        isOpen={questionObject?.questionId}
+        onClose={() => setQuestionObject({})}
+      >
+        <Actionsheet.Content alignItems={"left"}>
+          <Stack p={5} pt={2} pb="25px" textAlign="center">
+            <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+              {t("Question")}
+            </Text>
+          </Stack>
+          <IconByName
+            color="gray.300"
+            position="absolute"
+            top="10px"
+            right="10px"
+            name="CloseCircleLineIcon"
+            onPress={(e) => setQuestionObject({})}
+          />
+        </Actionsheet.Content>
+        <Box bg="white" width={"100%"} p="5">
+          <VStack space="5">
+            <Text
+              fontSize="14px"
+              fontWeight={"400"}
+              color="gray.400"
+              textTransform="inherit"
+            >
+              <div
+                dangerouslySetInnerHTML={{ __html: questionObject?.question }}
+              />
+            </Text>
+            <VStack space="4">
+              <HStack space="50px">
+                <VStack space="4">
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="AccountBoxFillIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Class: ${questionObject?.class}`}
+                    </Text>
+                  </HStack>
+
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="FileInfoLineIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Topics: ${questionObject?.topic}`}
+                    </Text>
+                  </HStack>
+
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="SurveyLineIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Source: ${questionObject?.source}`}
+                    </Text>
+                  </HStack>
+
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="SurveyLineIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Language: ${questionObject?.languageCode}`}
+                    </Text>
+                  </HStack>
+                </VStack>
+                <VStack space="4">
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="SurveyLineIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Subject: ${questionObject?.subject}`}
+                    </Text>
+                  </HStack>
+
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="BarChart2LineIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Level: ${questionObject?.level}`}
+                    </Text>
+                  </HStack>
+
+                  <HStack space="1" alignItems="center">
+                    <IconByName
+                      name="BarChart2LineIcon"
+                      _icon={{ size: 12 }}
+                      p="0"
+                    />
+                    <Text fontWeight="600" fontSize="10px">
+                      {`Outcome: ${questionObject?.outcome}`}
+                    </Text>
+                  </HStack>
+                </VStack>
+              </HStack>
+            </VStack>
+          </VStack>
+        </Box>
       </Actionsheet>
     </Layout>
   );
