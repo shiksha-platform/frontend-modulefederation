@@ -2,7 +2,15 @@ import moment from "moment";
 import { Box, HStack, Text, useToast, VStack } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IconByName, calendar } from "@shiksha/common-lib";
+import {
+  IconByName,
+  calendar,
+  H2,
+  Caption,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const FormatDate = ({ date, type }) => {
   if (type === "Month") {
@@ -54,7 +62,7 @@ export function DayWiesBar({
   useEffect(() => {
     setDate(moment().add(page, "days"));
     if (setActiveColor) {
-      setActiveColor(page === 0 ? "button.500" : "coolGray.500");
+      setActiveColor(page === 0 ? colors.primary : colors.gray);
     }
   }, [page, setActiveColor]);
 
@@ -69,7 +77,7 @@ export function DayWiesBar({
       }}
     >
       <VStack>
-        <Text fontWeight={600} fontSize="16px">
+        <H2>
           {page === 0
             ? t("TODAY")
             : page === 1
@@ -77,10 +85,10 @@ export function DayWiesBar({
             : page === -1
             ? t("YESTERDAY")
             : moment(date).format("dddd")}
-        </Text>
-        <Text fontWeight={300} fontSize="10px">
+        </H2>
+        <Caption>
           <FormatDate date={date} />
-        </Text>
+        </Caption>
       </VStack>
     </Display>
   );
@@ -99,11 +107,12 @@ export function WeekWiesBar({
 }) {
   const [weekDays, setWeekDays] = useState([]);
   const { t } = useTranslation();
+  const colors = overrideColorTheme(colorTheme);
 
   useEffect(() => {
     setWeekDays(calendar(page, "week"));
     if (setActiveColor) {
-      setActiveColor(page === 0 ? "button.500" : "coolGray.500");
+      setActiveColor(page === 0 ? colors.primary : colors.gray);
     }
   }, [page, setActiveColor]);
 
@@ -123,9 +132,7 @@ export function WeekWiesBar({
     >
       <VStack>
         <FormatDate date={weekDays} type="Week" />
-        <Text fontSize="10" fontWeight="300">
-          {t("THIS_WEEK")}
-        </Text>
+        <Caption>{t("THIS_WEEK")}</Caption>
       </VStack>
     </Display>
   );
@@ -147,7 +154,7 @@ export function MonthWiesBar({
   useEffect(() => {
     setMonthDays(calendar(page, "monthInDays"));
     if (setActiveColor) {
-      setActiveColor(page === 0 ? "button.500" : "coolGray.500");
+      setActiveColor(page === 0 ? colors.primary : colors.gray);
     }
   }, [page, setActiveColor]);
 
@@ -198,8 +205,8 @@ const Display = ({
               previousDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
-                : "gray.400"
+                  : colors.primary
+                : colors.grayInLight
             }
             name="ArrowLeftSLineIcon"
             onPress={(e) => {
@@ -226,8 +233,8 @@ const Display = ({
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "coolGray.500"
-                : "gray.900"
+                  : colors.gray
+                : colors.garyIndark
             }
             name="ArrowRightSLineIcon"
             onPress={(e) => {

@@ -5,8 +5,13 @@ import {
   H2,
   IconByName,
   classRegistryService,
+  overrideColorTheme,
+  H1,
 } from "@shiksha/common-lib";
 import { Stack, Box, VStack, Heading, HStack } from "native-base";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 export const routes = () => {
   const { t } = useTranslation();
@@ -42,9 +47,9 @@ const SubjectRoute = () => {
       <Box
         borderBottomWidth="1"
         _dark={{
-          borderColor: "gray.600",
+          borderColor: colors.coolGraydark,
         }}
-        borderColor="coolGray.200"
+        borderColor={colors.lightGrayBg}
         pr="1"
       >
         <Stack space={2}>
@@ -55,10 +60,10 @@ const SubjectRoute = () => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   px="6px"
                   _text={{
-                    color: "button.500",
+                    color: colors.primary,
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -73,9 +78,9 @@ const SubjectRoute = () => {
       <Box
         borderBottomWidth="1"
         _dark={{
-          borderColor: "gray.600",
+          borderColor: colors.coolGraydark,
         }}
-        borderColor="coolGray.200"
+        borderColor={colors.lightGrayBg}
         pr="1"
       >
         <Stack space={2}>
@@ -86,10 +91,10 @@ const SubjectRoute = () => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   px="6px"
                   _text={{
-                    color: "button.500",
+                    color: colors.primary,
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -110,10 +115,10 @@ const SubjectRoute = () => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   px="6px"
                   _text={{
-                    color: "button.500",
+                    color: colors.primary,
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -155,13 +160,9 @@ export const _header = (data) => {
         >
           <HStack alignItems="center" justifyContent="space-between">
             <VStack>
-              <H2 color="gray.100" fontWeight="700">
-                {data?.name}
-              </H2>
+              <H2 color={colors.white}>{data?.name}</H2>
 
-              <Heading color="gray.100" fontWeight="700" fontSize="2xl">
-                {t("CLASS_DETAILS")}
-              </Heading>
+              <H1 color={colors.white}>{t("CLASS_DETAILS")}</H1>
             </VStack>
             <HStack alignItems="center">
               <Stack>
@@ -179,12 +180,12 @@ export const _header = (data) => {
                   onChange={onFileUpload}
                 />
                 <IconByName
-                  color="white"
+                  color={colors.white}
                   name="CameraLineIcon"
                   // onPress={onFileUpload}
                 />
               </Stack>
-              <IconByName color="white" name="ShareLineIcon" />
+              <IconByName color={colors.white} name="ShareLineIcon" />
             </HStack>
           </HStack>
         </Box>

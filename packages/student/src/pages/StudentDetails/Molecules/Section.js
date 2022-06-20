@@ -1,11 +1,13 @@
 import React from "react";
 import { Box, HStack } from "native-base";
-import { H2 } from "@shiksha/common-lib";
+import { H3, overrideColorTheme } from "@shiksha/common-lib";
+import colorTheme from "../../../colorTheme";
 
+const colors = overrideColorTheme(colorTheme);
 const Section = ({ title, button, children, _box }) => (
-  <Box bg={"white"} p="5" {..._box}>
+  <Box bg={colors.white} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <H2 fontWeight="500">{title}</H2>
+      <H3>{title}</H3>
       {button}
     </HStack>
     {children}

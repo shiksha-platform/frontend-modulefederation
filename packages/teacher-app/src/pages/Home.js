@@ -10,7 +10,14 @@ import {
   Stack,
   VStack,
 } from "native-base";
-import { capture, IconByName, Layout, Widget } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  capture,
+  H1,
+  IconByName,
+  Layout,
+  Widget,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import moment from "moment";
@@ -194,12 +201,7 @@ function Home({ footerLinks, appName }) {
         _appBar={{ languages: manifest.languages }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
         _subHeader={{
-          bg: "classCard.500",
-          _text: {
-            fontSize: "16px",
-            fontWeight: "600",
-            textTransform: "inherit",
-          },
+          bg: "white",
         }}
         _footer={footerLinks}
       >
@@ -232,13 +234,11 @@ function Home({ footerLinks, appName }) {
             mb="30px"
           >
             <VStack space={5} p="5">
-              <Text fontWeight="700" fontSize="22px">
-                How to mark your own attendance?
-              </Text>
-              <Text fontWeight={500} fontSize="14px">
+              <H1>How to mark your own attendance?</H1>
+              <BodyLarge>
                 To mark your own attendance, tap on your profile picture, select
                 an option according to your choice and mark attendance.
-              </Text>
+              </BodyLarge>
               <Button.Group>
                 <Button
                   flex="1"
@@ -246,6 +246,7 @@ function Home({ footerLinks, appName }) {
                   fontSize="12px"
                   fontWeight="600"
                   colorScheme="button"
+                  _text={{ textTransform: "capitalize" }}
                   onPress={(e) => setPopupModal(false)}
                 >
                   {t("SKIP")}
@@ -255,7 +256,7 @@ function Home({ footerLinks, appName }) {
                   fontSize="12px"
                   fontWeight="600"
                   colorScheme="button"
-                  _text={{ color: "white" }}
+                  _text={{ color: "white", textTransform: "capitalize" }}
                   onPress={(e) => setPopupModal(false)}
                 >
                   {t("NEXT")}

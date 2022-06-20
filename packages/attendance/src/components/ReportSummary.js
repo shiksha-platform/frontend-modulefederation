@@ -2,8 +2,19 @@ import { Box, FlatList, HStack, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import { IconByName, ProgressBar, calendar } from "@shiksha/common-lib";
+import {
+  IconByName,
+  ProgressBar,
+  calendar,
+  BodySmall,
+  Subtitle,
+  Caption,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import moment from "moment";
+import colorTheme from "../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
@@ -83,20 +94,20 @@ export default function Report({
             (presentAttendanceCount * 100) / daysWithoutHolidays.length;
           if (percentage && percentage >= 100) {
             setDesign({
-              bg: "attendanceSuccessCardCompareBg.500",
+              bg: colors.success,
               iconName: "EmotionHappyLineIcon",
               titleHeading:
                 t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
             });
           } else if (percentage && percentage < 100 && percentage >= 50) {
             setDesign({
-              bg: "attendanceWarningCardCompareBg.500",
+              bg: colors.warning,
               iconName: "EmotionNormalLineIcon",
               titleHeading: t("AGERAGE_CAN_BE_IMPROVED"),
             });
           } else {
             setDesign({
-              bg: "attendanceDangerCardCompareBg.500",
+              bg: colors.danger,
               iconName: "EmotionSadLineIcon",
               titleHeading:
                 t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
@@ -195,7 +206,7 @@ export default function Report({
           </Text> */}
         </HStack>
       </Box>
-      <Box bg={"reportBoxBg.400"}>
+      <Box bg={colors.reportBoxBg}>
         {attendance && attendance.length ? (
           <FlatList
             data={genderList}
@@ -204,34 +215,21 @@ export default function Report({
                 p="5"
                 space={3}
                 borderBottomWidth="1"
-                borderBottomColor={"reportBoxBg.600"}
+                borderBottomColor={colors.reportBorder}
               >
-                {attendance.length > 1 ? (
-                  <Text fontSize="12px" fontWeight="600">
-                    {item}
-                  </Text>
-                ) : (
-                  ""
-                )}
+                {attendance.length > 1 ? <Subtitle>{item}</Subtitle> : ""}
                 <VStack space={3}>
                   {attendance.map((itemAttendance, index) => (
                     <HStack key={index} alignItems={"center"} space={3}>
                       <VStack alignItems={"center"}>
                         {title && title.length && title[index] ? (
                           title[index].name.split(" ").map((item, subIndex) => (
-                            <Text
-                              key={subIndex}
-                              fontSize="10px"
-                              fontWeight="400"
-                              {...title[index]?._text}
-                            >
+                            <Caption key={subIndex} {...title[index]?._text}>
                               {item}
-                            </Text>
+                            </Caption>
                           ))
                         ) : (
-                          <Text fontSize="12px" fontWeight="400">
-                            {item}
-                          </Text>
+                          <BodySmall>{item}</BodySmall>
                         )}
                       </VStack>
                       <VStack flex="auto" alignContent={"center"}>
@@ -248,12 +246,12 @@ export default function Report({
                               name: subItem,
                               color:
                                 subItem === PRESENT
-                                  ? "attendancePresent.500"
+                                  ? colors.attendancePresent
                                   : subItem === ABSENT
-                                  ? "attendanceAbsent.500"
+                                  ? colors.attendanceAbsent
                                   : subItem === UNMARKED
-                                  ? "attendanceUnmarked.500"
-                                  : "coolGray.500",
+                                  ? colors.attendanceUnmarked
+                                  : colors.gray,
                               value: statusCount,
                             };
                           })}
@@ -270,7 +268,7 @@ export default function Report({
           ""
         )}
       </Box>
-      <Box roundedBottom={"xl"} p="5" bg={"reportBoxBg.500"}>
+      <Box roundedBottom={"xl"} p="5" bg={colors.reportBoxBg}>
         {footer ? (
           footer
         ) : (

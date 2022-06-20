@@ -41,11 +41,15 @@ export default function Layout({
         {subHeader ? (
           <Box
             {...{
-              p: 4,
+              p: '4',
               position: 'relative',
-              bg: 'purple.400',
+              bg: 'white',
               roundedTop: '20',
-              _text: { textTransform: 'inherit' }
+              _text: {
+                textTransform: 'inherit',
+                fontSize: '12px',
+                fontWeight: '400'
+              }
             }}
             {..._subHeader}
           >

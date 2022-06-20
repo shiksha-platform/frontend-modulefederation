@@ -1,13 +1,20 @@
 import React from "react";
-import { Collapsible, IconByName } from "@shiksha/common-lib";
+import {
+  Collapsible,
+  IconByName,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { HStack, Text, VStack, Box, Progress, useToken } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 Chart.register(ArcElement, Tooltip, Legend);
+import colorTheme from "../../../colorTheme";
 
-const MALECOLOR = "#BB6BD9";
-const FEMALECOLOR = "#3498DB";
+const colors = overrideColorTheme(colorTheme);
+
+const MALECOLOR = colors.maleColor;
+const FEMALECOLOR = colors.femaleColor;
 
 const ClassDetailsPanel = ({ students }) => {
   const { t } = useTranslation();
@@ -19,7 +26,7 @@ const ClassDetailsPanel = ({ students }) => {
     <Collapsible defaultCollapse={true} header={t("CLASS_DETAILS")}>
       <Collapsible defaultCollapse={true} header={t("SUMMARY")}>
         <VStack p="2" space={4}>
-          <Box bg={"gray.100"} rounded={"md"} p="4">
+          <Box bg={colors.lightGrayBg} rounded={"md"} p="4">
             <VStack space={2}>
               <HStack justifyContent={"space-between"} alignItems="center">
                 <Text bold>{t("CLASS_TEACHER")}</Text>
@@ -31,7 +38,7 @@ const ClassDetailsPanel = ({ students }) => {
               </Text>
             </VStack>
           </Box>
-          <Box bg={"gray.100"} rounded={"md"} p="4">
+          <Box bg={colors.lightGrayBg} rounded={"md"} p="4">
             <VStack space={2}>
               <HStack justifyContent={"space-between"} alignItems="center">
                 <Text bold>{t("CLASS_STRENGTH")}</Text>
@@ -40,14 +47,14 @@ const ClassDetailsPanel = ({ students }) => {
               <HStack space={6} alignItems="center">
                 <VStack>
                   <HStack alignItems={"center"} space={1}>
-                    <Box bg={"info.500"} p="2" rounded={"full"} />
+                    <Box bg={colors.classGirls} p="2" rounded={"full"} />
                     <Text bold>{t("GIRLS")}:</Text>
                     <Text>
                       {students.filter((e) => e.gender === "Female").length}
                     </Text>
                   </HStack>
                   <HStack alignItems={"center"} space={1}>
-                    <Box bg={"purple.500"} p="2" rounded={"full"} />
+                    <Box bg={colors.classBoys} p="2" rounded={"full"} />
                     <Text bold>{t("BOYS")}:</Text>
                     <Text>
                       {students.filter((e) => e.gender === "Male").length}
@@ -78,7 +85,7 @@ const ClassDetailsPanel = ({ students }) => {
       </Collapsible>
       <Collapsible defaultCollapse={true} header={t("CONTACTS_TEACHERS")}>
         <VStack p="2" space={4}>
-          <Box bg={"gray.100"} rounded={"md"} p="4">
+          <Box bg={colors.lightGrayBg} rounded={"md"} p="4">
             <VStack space={2}>
               <HStack justifyContent={"space-between"} alignItems="center">
                 <Text bold>{t("DETAILS")}</Text>
@@ -92,10 +99,10 @@ const ClassDetailsPanel = ({ students }) => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   px="6px"
                   _text={{
-                    color: "button.500",
+                    color: colors.primary,
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -111,10 +118,10 @@ const ClassDetailsPanel = ({ students }) => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   px="6px"
                   _text={{
-                    color: "button.500",
+                    color: colors.primary,
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -130,10 +137,10 @@ const ClassDetailsPanel = ({ students }) => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   px="6px"
                   _text={{
-                    color: "button.500",
+                    color: colors.primary,
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -152,10 +159,10 @@ const ClassDetailsPanel = ({ students }) => {
             <Box
               rounded="full"
               borderWidth="1"
-              borderColor="button.500"
+              borderColor={colors.primary}
               px="6px"
               _text={{
-                color: "button.500",
+                color: colors.primary,
                 fontSize: "10px",
                 fontWeight: "600",
               }}
@@ -172,10 +179,10 @@ const ClassDetailsPanel = ({ students }) => {
             <Box
               rounded="full"
               borderWidth="1"
-              borderColor="button.500"
+              borderColor={colors.primary}
               px="6px"
               _text={{
-                color: "button.500",
+                color: colors.primary,
                 fontSize: "10px",
                 fontWeight: "600",
               }}
