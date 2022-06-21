@@ -6,6 +6,8 @@ import {
   classRegistryService,
   worksheetRegistryService,
   Loading,
+  telemetryFactory,
+  capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
@@ -53,6 +55,16 @@ export default function TeachingDetail({ footerLinks, appName }) {
     setLoading(false);
   }, []);
 
+  const handleExploreAllWorksheets = (state) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Explore",
+      state,
+    });
+    capture("INTERACT", telemetryData);
+    navigate(`/worksheet/list/${state}`);
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -98,20 +110,22 @@ export default function TeachingDetail({ footerLinks, appName }) {
                 component: (
                   <VStack>
                     <Worksheets
+                      appName={appName}
                       data={worksheets}
                       leftTitle="My Worksheets"
                       rightTitle="Explore All Worksheets"
                       seeButtonText={t("SEE_ALL_WORKSHEETS")}
                       _seeButton={{
-                        onPress: (e) => navigate(`/worksheet/list/Publish`),
+                        onPress: (e) => handleExploreAllWorksheets("Publish"),
                       }}
                     />
                     <Worksheets
+                      appName={appName}
                       data={worksheetDrafts}
                       leftTitle="Drafts"
                       seeButtonText={t("SEE_ALL_DRAFTS")}
                       _seeButton={{
-                        onPress: (e) => navigate(`/worksheet/list/Draft`),
+                        onPress: (e) => handleExploreAllWorksheets("Draft"),
                       }}
                       _woksheetBox={{
                         canShowButtonArray: ["Like"],
@@ -156,6 +170,7 @@ const Worksheets = ({
   seeButtonText,
   _seeButton,
   _woksheetBox,
+  appName,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -185,6 +200,7 @@ const Worksheets = ({
             {data.map((item, index) => {
               return (
                 <WorksheetBox
+                  appName={appName}
                   canShare={true}
                   key={index}
                   {...{ item, url: `/worksheet/${item.id}` }}

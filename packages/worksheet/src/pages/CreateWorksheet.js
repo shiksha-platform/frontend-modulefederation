@@ -79,6 +79,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   if (pageName === "success") {
     return (
       <SuccessPage
+        appName={appName}
         handleBackButton={handleBackButton}
         formObject={formObject}
       />

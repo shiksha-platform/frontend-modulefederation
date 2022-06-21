@@ -1,10 +1,12 @@
 import React from "react";
 import {
+  capture,
   FilterButton,
   H3,
   IconByName,
   Layout,
   Loading,
+  telemetryFactory,
   worksheetRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
@@ -24,12 +26,49 @@ import manifest from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
 import { defaultInputs } from "config/worksheetConfig";
 
+const sortArray = [
+  {
+    title: "By Difficulty",
+    data: [
+      {
+        attribute: "difficulty",
+        value: "low_high",
+        name: "Low to High",
+        icon: "ArrowRightUpLineIcon",
+      },
+      {
+        attribute: "difficulty",
+        value: "high_low",
+        name: "High To Low",
+        icon: "ArrowRightDownLineIcon",
+      },
+    ],
+  },
+  {
+    title: "By Popularity",
+    data: [
+      {
+        attribute: "popularity",
+        value: "low_high",
+        name: "Low to High",
+        icon: "ArrowRightUpLineIcon",
+      },
+      {
+        attribute: "popularity",
+        value: "high_low",
+        name: "High To Low",
+        icon: "ArrowRightDownLineIcon",
+      },
+    ],
+  },
+];
+
 export default function Worksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [filterObject, setFilterObject] = React.useState({});
   const [worksheets, setWorksheets] = React.useState([]);
   const [showModalSort, setShowModalSort] = React.useState(false);
-  const [sortData, setSortData] = React.useState();
+  const [sortData, setSortData] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
   const { state } = useParams();
@@ -45,6 +84,17 @@ export default function Worksheet({ footerLinks, appName }) {
     setWorksheets(filterData);
     setLoading(false);
   }, []);
+
+  const handleSort = (obejct) => {
+    const newSort = { [obejct.attribute]: obejct.value };
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Sort",
+      sortType: newSort,
+    });
+    capture("INTERACT", telemetryData);
+    setSortData(newSort);
+  };
 
   if (loading) {
     return <Loading />;
@@ -99,6 +149,7 @@ export default function Worksheet({ footerLinks, appName }) {
                 worksheets.map((item, index) => {
                   return (
                     <WorksheetBox
+                      appName={appName}
                       canShare={true}
                       key={index}
                       {...{ item, url: `/worksheet/${item.id}` }}
@@ -163,62 +214,36 @@ export default function Worksheet({ footerLinks, appName }) {
           </HStack>
         </Actionsheet.Content>
         <VStack bg="white" width={"100%"} space="1">
-          {[
-            {
-              title: "By Difficulty",
-              data: [
-                {
-                  value: "difficulty_low_high",
-                  name: "Low to High",
-                  icon: "ArrowRightUpLineIcon",
-                },
-                {
-                  value: "difficulty_high_low",
-                  name: "High To Low",
-                  icon: "ArrowRightDownLineIcon",
-                },
-              ],
-            },
-            {
-              title: "By Popularity",
-              data: [
-                {
-                  value: "popularity_low_high",
-                  name: "Low to High",
-                  icon: "ArrowRightUpLineIcon",
-                },
-                {
-                  value: "popularity_high_low",
-                  name: "High To Low",
-                  icon: "ArrowRightDownLineIcon",
-                },
-              ],
-            },
-          ].map((value, index) => (
+          {sortArray.map((value, index) => (
             <Box key={index}>
               <Box px="5" py="4">
                 <H3 color="gray.400">{value?.title}</H3>
               </Box>
               {value?.data &&
-                value.data.map((item, subIndex) => (
-                  <Pressable
-                    key={subIndex}
-                    p="5"
-                    bg={sortData === item.value ? "gray.100" : ""}
-                    onPress={(e) => {
-                      setSortData(item.value);
-                    }}
-                  >
-                    <HStack space="2" colorScheme="button" alignItems="center">
-                      <IconByName
-                        isDisabled
-                        color={sortData === item.value ? "button.500" : ""}
-                        name={item.icon}
-                      />
-                      <Text>{item.name}</Text>
-                    </HStack>
-                  </Pressable>
-                ))}
+                value.data.map((item, subIndex) => {
+                  const isSelected = sortData[item.attribute] === item.value;
+                  return (
+                    <Pressable
+                      key={subIndex}
+                      p="5"
+                      bg={isSelected ? "gray.100" : ""}
+                      onPress={(e) => handleSort(item)}
+                    >
+                      <HStack
+                        space="2"
+                        colorScheme="button"
+                        alignItems="center"
+                      >
+                        <IconByName
+                          isDisabled
+                          color={isSelected ? "button.500" : ""}
+                          name={item.icon}
+                        />
+                        <Text>{item.name}</Text>
+                      </HStack>
+                    </Pressable>
+                  );
+                })}
             </Box>
           ))}
           <Box p="5">

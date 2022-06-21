@@ -1,4 +1,4 @@
-import { IconByName } from "@shiksha/common-lib";
+import { capture, IconByName, telemetryFactory } from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -18,6 +18,7 @@ export default function WorksheetBox({
   canShare,
   canShowButtonArray,
   _addIconButton,
+  appName,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -28,6 +29,57 @@ export default function WorksheetBox({
   React.useEffect((e) => {
     setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
   }, []);
+
+  const handleLike = (item) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Like",
+      worksheetId: item?.id,
+      subject: item?.subject,
+      grade: item?.grade,
+      topic: item?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    setLike(!like);
+  };
+
+  const handleDownload = (item) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Download",
+      worksheetId: item?.id,
+      subject: item?.subject,
+      grade: item?.grade,
+      topic: item?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    navigate("/worksheet/template");
+  };
+
+  const handleShare = (item) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Share",
+      worksheetId: item?.id,
+      subject: item?.subject,
+      grade: item?.grade,
+      topic: item?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    navigate(`/worksheet/${item.id}/share`);
+  };
+
+  const handleAddToTimeline = (item) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Add-To-Timeline",
+      worksheetId: item?.id,
+      subject: item?.subject,
+      grade: item?.grade,
+      topic: item?.topic,
+    });
+    capture("INTERACT", telemetryData);
+  };
 
   return (
     <Box p="5" borderWidth="1" borderColor="gray.300" rounded="lg">
@@ -70,6 +122,7 @@ export default function WorksheetBox({
             _icon={{ size: 30 }}
             color="button.500"
             p="0"
+            onPress={(e) => handleAddToTimeline(item)}
             {..._addIconButton}
           />
         </HStack>
@@ -195,7 +248,7 @@ export default function WorksheetBox({
                   _icon={{ size: 15 }}
                   color="button.500"
                   p="0"
-                  onPress={(e) => setLike(!like)}
+                  onPress={(e) => handleLike(item)}
                 />
               </Box>
             ) : (
@@ -207,7 +260,7 @@ export default function WorksheetBox({
                   name="ShareLineIcon"
                   _icon={{ size: 15 }}
                   p="0"
-                  onPress={(e) => navigate(`/worksheet/${item.id}/share`)}
+                  onPress={(e) => handleShare(item)}
                 />
               </Box>
             ) : (
@@ -216,7 +269,7 @@ export default function WorksheetBox({
             {!canShowButtonArray || canShowButtonArray.includes("download") ? (
               <Box shadow="2" p="2" rounded="full">
                 <IconByName
-                  onPress={(e) => navigate("/worksheet/template")}
+                  onPress={(e) => handleDownload(item)}
                   name="DownloadLineIcon"
                   _icon={{ size: 15 }}
                   color="button.500"

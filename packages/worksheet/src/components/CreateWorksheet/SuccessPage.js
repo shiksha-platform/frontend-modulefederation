@@ -11,7 +11,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 
-export default function SuccessPage({ handleBackButton, formObject }) {
+export default function SuccessPage({ handleBackButton, formObject, appName }) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
 
@@ -50,6 +50,7 @@ export default function SuccessPage({ handleBackButton, formObject }) {
             </VStack>
             <Box p="5">
               <WorksheetBox
+                appName={appName}
                 {...{
                   item: {
                     id: 1,
