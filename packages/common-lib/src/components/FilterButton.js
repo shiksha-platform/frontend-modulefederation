@@ -43,20 +43,16 @@ const FilterButton = ({
         {!filtered ? (
           <Button
             rounded='full'
-            colorScheme='button'
             variant='outline'
             px='5'
-            _text={{
-              textTransform: 'inherit',
-              fontWeight: '500',
-              fontSize: '14px'
-            }}
             onPress={(e) => setFiltered(true)}
             rightIcon={<IconByName name='ArrowDownSLineIcon' isDisabled />}
             {..._button}
             {..._filterButton}
           >
-            {filterButtonText ? filterButtonText : t('FILTER')}
+            <BodyLarge textTransform='inherit'>
+              {filterButtonText ? filterButtonText : t('FILTER')}
+            </BodyLarge>
           </Button>
         ) : (
           <ScrollView horizontal={true}>
@@ -81,7 +77,6 @@ const FilterButton = ({
                     key={index}
                     mr='1'
                     rounded='full'
-                    colorScheme='button'
                     {...(isSelect ? {} : { variant: 'outline' })}
                     px='5'
                     rightIcon={
@@ -123,14 +118,8 @@ const FilterButton = ({
               <Button
                 mr='1'
                 rounded='full'
-                colorScheme='button'
                 variant='outline'
                 px='5'
-                _text={{
-                  textTransform: 'inherit',
-                  fontWeight: '500',
-                  fontSize: '14px'
-                }}
                 rightIcon={
                   <IconByName
                     color='button.500'
@@ -148,7 +137,9 @@ const FilterButton = ({
                 {..._button}
                 {..._resetButton}
               >
-                {resetButtonText ? resetButtonText : t('RESET_FILTER')}
+                <BodyLarge textTransform='inherit'>
+                  {resetButtonText ? resetButtonText : t('RESET_FILTER')}
+                </BodyLarge>
               </Button>
             </HStack>
           </ScrollView>
