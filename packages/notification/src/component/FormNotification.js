@@ -181,7 +181,7 @@ export const FormNotification = ({ setPageName }) => {
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg={colors.white} fontSize="14px" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           {[
             "Absent Notice",
             "Holiday Announcement",

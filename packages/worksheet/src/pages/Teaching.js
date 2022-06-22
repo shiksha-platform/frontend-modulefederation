@@ -4,12 +4,15 @@ import {
   SubMenu,
   Tab,
   classRegistryService,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Actionsheet, Box, Button } from "native-base";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -46,7 +49,7 @@ export default function Teaching({ footerLinks, appName }) {
       subHeader={t(
         "Access and plan your teaching material like worksheets and lesson plans"
       )}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>

@@ -5,6 +5,12 @@ import {
   Layout,
   Loading,
   useWindowSize,
+  BodyLarge,
+  BodyMedium,
+  H2,
+  Caption,
+  Subtitle,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import WorksheetBox from "components/WorksheetBox";
@@ -25,6 +31,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { getAllQuestions } from "services";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const defaultInputs = [
   {
@@ -133,8 +141,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         _appBar={{
           onPressBackButton: handleBackButton,
           languages: manifest.languages,
-          color: "successAlertText.500",
-          _box: { bg: "successAlert.500" },
+          color: colors.successAlertText,
+          _box: { bg: colors.successAlert },
         }}
       >
         <Loading
@@ -142,21 +150,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           height={height - 230}
           customComponent={
             <VStack space="2" flex="1" width={width}>
-              <VStack bg="successAlert.500" pb="100px" pt="32px">
+              <VStack bg={colors.successAlert} pb="100px" pt="32px">
                 <IconByName
                   alignSelf="center"
                   name="CheckboxCircleLineIcon"
-                  color="successAlertText.500"
+                  color={colors.successAlertText}
                   _icon={{ size: 100 }}
                 />
                 <Box alignSelf="center">
-                  <H1
-                    fontSize="22px"
-                    fontWeight="600"
-                    color="successAlertText.500"
-                  >
-                    Worksheet Published
-                  </H1>
+                  <H1 color={colors.successAlertText}>Worksheet Published</H1>
                 </Box>
               </VStack>
               <Box p="5">
@@ -236,7 +238,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           : t("Show questions based on")
       }
       _subHeader={{
-        bg: "worksheetCard.500",
+        bg: colors.cardBg,
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -287,9 +289,7 @@ const FormInput = ({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Text fontSize={"14px"} fontWeight="500">
-            {t(item.name)}
-          </Text>
+          <BodyLarge>{t(item.name)}</BodyLarge>
           <Button
             {...(formObject[attributeName]
               ? { _text: { color: "white", textTransform: "inherit" } }
@@ -297,7 +297,7 @@ const FormInput = ({
               ? { variant: item.buttonVariant }
               : {
                   variant: "outline",
-                  _text: { color: "button.500", textTransform: "inherit" },
+                  _text: { color: colors.primary, textTransform: "inherit" },
                 })}
             rounded="full"
             colorScheme="button"
@@ -308,8 +308,8 @@ const FormInput = ({
                   formObject[attributeName]
                     ? "white"
                     : item?.buttonVariant
-                    ? "button.500"
-                    : "button.500"
+                    ? colors.primary
+                    : colors.primary
                 }
                 name="ArrowDownSLineIcon"
                 isDisabled
@@ -376,12 +376,10 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t(`Select ${formData?.name}`)}
-              </Text>
+              <H2>{t(`Select ${formData?.name}`)}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
@@ -415,8 +413,8 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
                   formData?.data &&
                   valueArr &&
                   formData?.data?.length === valueArr?.length
-                    ? "button.500"
-                    : "gray.300"
+                    ? colors.primary
+                    : colors.grayLight
                 }
                 name={
                   formData?.data &&
@@ -457,7 +455,9 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
                     <IconByName
                       isDisabled
                       color={
-                        valueArr.includes(value) ? "button.500" : "gray.300"
+                        valueArr.includes(value)
+                          ? colors.primary
+                          : colors.grayLight
                       }
                       name={
                         valueArr.includes(value)
@@ -532,14 +532,14 @@ const ListOfWorksheet = ({
   return (
     <Stack>
       {pageName === "filterData" && isSuccess ? (
-        <Box bg="successAlert.500" p="5">
+        <Box bg={colors.successAlert} p="5">
           <HStack justifyContent="space-between">
-            <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
+            <BodyLarge color={colors.successAlertText}>
               ({questions.length}) New Questions Added
-            </Text>
+            </BodyLarge>
             <IconByName
               name="CloseCircleLineIcon"
-              color="successAlertText.500"
+              color={colors.successAlertText}
               p="0"
               onPress={(e) => setIsSuccess(false)}
             />
@@ -553,9 +553,9 @@ const ListOfWorksheet = ({
           <FilterButton
             getObject={callBackFilterObject}
             object={filterObject}
-            _actionSheet={{ bg: "worksheetCard.500" }}
+            _actionSheet={{ bg: colors.cardBg }}
             _box={{ pt: 5, px: 5 }}
-            _button={{ bg: "button.50", px: "15px", py: "2" }}
+            _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}
             _filterButton={{
               rightIcon: "",
               bg: "white",
@@ -568,13 +568,13 @@ const ListOfWorksheet = ({
               {selectData.map((item, index) => (
                 <Box key={index}>
                   <Box
-                    bg="viewNotification.600"
+                    bg={colors.viewNotificationDark}
                     w="192px"
                     h="87px"
                     m="2"
                     p="3"
                     borderWidth="1"
-                    borderColor="viewNotification.500"
+                    borderColor={colors.viewNotificationNormal}
                     rounded="lg"
                     overflow="hidden"
                   >
@@ -595,7 +595,7 @@ const ListOfWorksheet = ({
                     top="0"
                     right="0"
                     p="0"
-                    color="button.500"
+                    color={colors.primary}
                     _icon={{ size: 24 }}
                     onPress={(e) =>
                       setSelectData(
@@ -638,7 +638,7 @@ const ListOfWorksheet = ({
                   <IconByName
                     name="InformationLineIcon"
                     _icon={{ size: 15 }}
-                    color="button.500"
+                    color={colors.primary}
                     onPress={(e) => setQuestionObject(question)}
                   />
                 }
@@ -671,25 +671,23 @@ const ListOfWorksheet = ({
           </Button.Group>
         ) : (
           <>
-            <Text fontSize="10px" py="4" pb="1">
+            <Caption py="4" pb="1">
               <Text fontWeight="700">Attention:</Text>
               You have selected {selectData.length} questions to add to the
               worksheet.
-            </Text>
+            </Caption>
             <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
               <HStack alignItems="center" space="1" pt="1" py="4">
                 <IconByName
                   isDisabled
-                  color={isAnswerFilter ? "button.500" : "gray.300"}
+                  color={isAnswerFilter ? colors.primary : colors.grayLight}
                   name={
                     isAnswerFilter
                       ? "CheckboxLineIcon"
                       : "CheckboxBlankLineIcon"
                   }
                 />
-                <Text fontSize="12px" fontWeight="600">
-                  Include answer key in worksheet
-                </Text>
+                <Subtitle>Include answer key in worksheet</Subtitle>
               </HStack>
             </Pressable>
             <Button.Group>
@@ -722,15 +720,15 @@ const ListOfWorksheet = ({
         >
           <Actionsheet.Content alignItems={"left"}>
             <Stack p={5} pt={2} pb="25px" textAlign="center">
-              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+              <Subtitle color={colors.grayLight}>
                 {t("Maps of the world")}
-              </Text>
-              {/* <Text fontSize="16px" fontWeight={"600"}>
+              </Subtitle>
+              {/* <H2>
               {t("Learning Made Easy")}
-            </Text> */}
+            </H2> */}
             </Stack>
             <IconByName
-              color="gray.300"
+              color={colors.grayLight}
               position="absolute"
               top="10px"
               right="10px"
@@ -740,16 +738,11 @@ const ListOfWorksheet = ({
           </Actionsheet.Content>
           <Box bg="white" width={"100%"} p="5">
             <VStack space="5">
-              <Text
-                fontSize="14px"
-                fontWeight={"400"}
-                color="gray.400"
-                textTransform="inherit"
-              >
+              <BodyMedium color={colors.grayLight} textTransform="inherit">
                 <div
                   dangerouslySetInnerHTML={{ __html: questionObject?.question }}
                 />
-              </Text>
+              </BodyMedium>
               <VStack space="4">
                 <HStack space="50px">
                   <VStack space="4">
@@ -759,9 +752,7 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {`Class: ${questionObject?.class}`}
-                      </Text>
+                      <Caption>{`Class: ${questionObject?.class}`}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
@@ -770,9 +761,7 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {`Topics: ${questionObject?.topic}`}
-                      </Text>
+                      <Caption>{`Topics: ${questionObject?.topic}`}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
@@ -781,9 +770,7 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {"Source: Reasoning"}
-                      </Text>
+                      <Caption>{"Source: Reasoning"}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
@@ -792,9 +779,9 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
+                      <Caption>
                         {`Language: ${questionObject?.languageCode}`}
-                      </Text>
+                      </Caption>
                     </HStack>
                   </VStack>
                   <VStack space="4">
@@ -804,9 +791,7 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {`Subject: ${questionObject?.subject}`}
-                      </Text>
+                      <Caption>{`Subject: ${questionObject?.subject}`}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
@@ -815,9 +800,7 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {"Level: Intermediate"}
-                      </Text>
+                      <Caption>{"Level: Intermediate"}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
@@ -826,9 +809,7 @@ const ListOfWorksheet = ({
                         _icon={{ size: 12 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {"Outcome: Intermediate"}
-                      </Text>
+                      <Caption>{"Outcome: Intermediate"}</Caption>
                     </HStack>
                   </VStack>
                 </HStack>
@@ -839,18 +820,15 @@ const ListOfWorksheet = ({
         <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
           <Actionsheet.Content alignItems={"left"}>
             <Stack p={5} pt={2} pb="25px" textAlign="center">
-              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+              <Subtitle color={colors.grayLight}>
                 {t("Enter Worksheet Details")}
-              </Text>
+              </Subtitle>
             </Stack>
           </Actionsheet.Content>
           <Box bg="white" width={"100%"} p="5">
             <FormControl isRequired>
-              <FormControl.Label
-                _text={{ fontSize: "14px", fontWeight: "400" }}
-                mb="10px"
-              >
-                {t("NAME")}
+              <FormControl.Label mb="10px">
+                <BodyMedium>{t("NAME")}</BodyMedium>
               </FormControl.Label>
               <Input
                 rounded="lg"
@@ -917,9 +895,7 @@ const AddDescriptionPage = ({ setPageName }) => {
           <Box key={index + item.name} p="5" bg="white">
             <FormControl>
               <FormControl.Label>
-                <Text fontSize={"14px"} fontWeight="500">
-                  {item.label}
-                </Text>
+                <BodyLarge>{item.label}</BodyLarge>
               </FormControl.Label>
               <Input variant="filled" p={2} {...item} key={index + item.name} />
             </FormControl>

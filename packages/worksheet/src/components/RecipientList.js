@@ -1,4 +1,9 @@
-import { capture, telemetryFactory } from "@shiksha/common-lib";
+import {
+  capture,
+  telemetryFactory,
+  BodyLarge,
+  Caption,
+} from "@shiksha/common-lib";
 import { Box, Button, Stack, Text, VStack } from "native-base";
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,9 +26,7 @@ export default function RecipientList({
     <Stack>
       <VStack bg="white" p="5" space="2">
         <Box pb="2">
-          <Text fontSize="14px" fontWeight="500">
-            {"Recipient List"}
-          </Text>
+          <BodyLarge>{"Recipient List"}</BodyLarge>
         </Box>
         {students.map((item, index) => (
           <Box
@@ -41,13 +44,13 @@ export default function RecipientList({
                 type="rollFather"
                 textTitle={
                   <VStack alignItems="center">
-                    <Text fontSize="14" fontWeight="500">
+                    <BodyLarge>
                       <Text>{item.fullName}</Text>
                       <Text color="gray.300"> • </Text>
                       <Text color="absentCardText.500">
                         {item.days} {t("DAYS")}
                       </Text>
-                    </Text>
+                    </BodyLarge>
                   </VStack>
                 }
                 rightComponent={
@@ -161,9 +164,7 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
     <Stack>
       <VStack bg="white" p="5" space="2">
         <Box pb="2">
-          <Text fontSize="14px" fontWeight="500">
-            {"Recipient List"}
-          </Text>
+          <BodyLarge>{"Recipient List"}</BodyLarge>
         </Box>
         {newStudents.map((item, index) => (
           <Box
@@ -179,18 +180,18 @@ export const StudentList = ({ setPageName, students, setStudents }) => {
                 type="rollFather"
                 textTitle={
                   <VStack alignItems="center">
-                    <Text fontSize="14" fontWeight="500">
+                    <BodyLarge>
                       <Text>{item.admissionNo}</Text>
                       <Text color="gray.300"> • </Text>
                       <Text>{item.fullName}</Text>
-                    </Text>
+                    </BodyLarge>
                   </VStack>
                 }
                 textSubTitle={
                   <VStack alignItems="center">
-                    <Text fontSize="10" fontWeight="400" color="gray.400">
+                    <Caption color="gray.400">
                       <Text>{item.fathersName}</Text>
-                    </Text>
+                    </Caption>
                   </VStack>
                 }
                 rightComponent={
