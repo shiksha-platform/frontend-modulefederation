@@ -6,6 +6,7 @@ import {
   Layout,
   H2,
   overrideColorTheme,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
@@ -45,15 +46,10 @@ export default function Worksheet({ footerLinks, appName }) {
             bg={colors.primaryLight}
             px={5}
             py={1}
-            _text={{
-              textTransform: "capitalize",
-              fontSize: "14px",
-              fontWeight: "500",
-            }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalSort(true)}
           >
-            {t("SORT")}
+            <BodyLarge textTransform="capitalize">{t("SORT")}</BodyLarge>
           </Button>
         ),
       }}

@@ -6,6 +6,7 @@ import {
   useWindowSize,
   Loading,
   overrideColorTheme,
+  H2,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
@@ -42,14 +43,9 @@ export default function QuestionBank({ footerLinks, appName }) {
       }}
       bg="white"
       _appBar={{ languages: ["en"] }}
-      subHeader={t("THE_CLASSES_YOU_TAKE")}
+      subHeader={<H2 textTransform="inherit">{t("THE_CLASSES_YOU_TAKE")}</H2>}
       _subHeader={{
         bg: colors.cardBg,
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
       }}
       _footer={footerLinks}
     >

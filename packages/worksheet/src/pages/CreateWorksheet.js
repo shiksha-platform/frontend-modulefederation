@@ -229,21 +229,18 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         isEnableSearchBtn: pageName === "ListOfWorksheet",
       }}
       subHeader={
-        pageName === "ListOfWorksheet"
-          ? worksheetName
-            ? t("Your worksheet has been created.")
-            : t("You can see all questions here")
-          : pageName === "AddDescriptionPage"
-          ? t("Enter Worksheet Details")
-          : t("Show questions based on")
+        <H2 textTransform="inherit">
+          {pageName === "ListOfWorksheet"
+            ? worksheetName
+              ? t("Your worksheet has been created.")
+              : t("You can see all questions here")
+            : pageName === "AddDescriptionPage"
+            ? t("Enter Worksheet Details")
+            : t("Show questions based on")}
+        </H2>
       }
       _subHeader={{
         bg: colors.cardBg,
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
       }}
       _footer={footerLinks}
     >
