@@ -3,13 +3,10 @@ import { Box, Text, HStack, Center, Stack } from 'native-base'
 import IconByName from '../IconByName'
 import { useTranslation } from 'react-i18next'
 import { Link, generatePath } from 'react-router-dom'
-import { useWindowSize } from '../helper'
 
 export default function Footer({ menues, routeDynamics, ...props }) {
   const [selected, setSelected] = React.useState(0)
   const { t } = useTranslation()
-  const [refFoot, serRefFoot] = React.useState({})
-  const [width, Height] = useWindowSize()
 
   const footerMenus = menues //TODO: manifest.menus.footer;
 
@@ -52,15 +49,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
 
   return (
     <Stack>
-      <Box minH={refFoot?.clientHeight ? refFoot?.clientHeight : 85}></Box>
-      <Box
-        flex={1}
-        safeAreaTop
-        position='fixed'
-        w={width}
-        bottom='0'
-        ref={(e) => serRefFoot(e)}
-      >
+      <Box width='100%' flex={1} safeAreaTop position='fixed' bottom='0'>
         <Center flex={1}></Center>
         <HStack bg='white' alignItems='center' safeAreaBottom shadow={6}>
           {footerMenus?.map((item, index) => (
