@@ -10,7 +10,6 @@ import {
   Button,
   Badge,
 } from "native-base";
-import manifest from "../manifest.json";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
 import moment from "moment";
@@ -32,6 +31,7 @@ import {
   Caption,
   BodyMedium,
   overrideColorTheme,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import { useNavigate } from "react-router-dom";
@@ -116,6 +116,7 @@ export const MultipalAttendance = ({
   setIsEditDisabled,
   isWithEditButton,
   appName,
+  manifest,
 }) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
@@ -309,15 +310,21 @@ export const MultipalAttendance = ({
               </VStack>
               {!isEditDisabled ? (
                 <Button.Group>
-                  <Button
-                    flex={1}
-                    variant="outline"
-                    colorScheme="button"
-                    onPress={markAllAttendance}
-                    _text={{ fontSize: "12px", fontWeight: "600" }}
-                  >
-                    {t("MARK_ALL_PRESENT")}
-                  </Button>
+                  {manifest?.[
+                    "class_attendance.mark_all_attendance_at_once"
+                  ] === "true" ? (
+                    <Button
+                      flex={1}
+                      variant="outline"
+                      colorScheme="button"
+                      onPress={markAllAttendance}
+                      _text={{ fontSize: "12px", fontWeight: "600" }}
+                    >
+                      {t("MARK_ALL_PRESENT")}
+                    </Button>
+                  ) : (
+                    <React.Fragment />
+                  )}
                   <Button
                     flex={1}
                     colorScheme="button"
@@ -560,22 +567,43 @@ export default function AttendanceComponent({
   isEditDisabled,
   _weekBox,
   appName,
+  manifest,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
-  const [attendance, setAttendance] = useState([]);
-  const [attendanceObject, setAttendanceObject] = useState([]);
-  const [days, setDays] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [smsShowModal, setSmsShowModal] = useState(false);
-  const [loading, setLoading] = useState({});
-  const status = manifest?.status ? manifest?.status : [];
+  const [attendance, setAttendance] = React.useState([]);
+  const [attendanceObject, setAttendanceObject] = React.useState([]);
+  const [days, setDays] = React.useState([]);
+  const [showModal, setShowModal] = React.useState(false);
+  const [smsShowModal, setSmsShowModal] = React.useState(false);
+  const [loading, setLoading] = React.useState({});
+  const status = Array.isArray(
+    manifest?.["attendance.default_attendance_states"]
+  )
+    ? manifest?.["attendance.default_attendance_states"]
+    : [];
 
   useEffect(() => {
     if (typeof page === "object") {
-      setDays(page.map((e) => calendar(e, type)));
+      setDays(
+        page.map((e) =>
+          calendar(
+            e,
+            type,
+            manifest?.[
+              "class_attendance.no_of_day_display_on_attendance_screen"
+            ]
+          )
+        )
+      );
     } else {
-      setDays([calendar(page, type)]);
+      setDays([
+        calendar(
+          page,
+          type,
+          manifest?.["class_attendance.no_of_day_display_on_attendance_screen"]
+        ),
+      ]);
     }
     async function getData() {
       if (attendanceProp) {
@@ -606,9 +634,15 @@ export default function AttendanceComponent({
           }
         )
         .then((e) => {
-          if (getAttendance) {
-            setTimeout(getAttendance, 900);
-          }
+          const newData = attendance.filter(
+            (e) =>
+              !(
+                e.date === dataObject.date &&
+                e.studentId === dataObject.studentId
+              )
+          );
+          setAttendance([...newData, dataObject]);
+          setLoading({});
           setShowModal(false);
         });
     } else {
@@ -630,9 +664,8 @@ export default function AttendanceComponent({
           }
         )
         .then((e) => {
-          if (getAttendance) {
-            setTimeout(getAttendance, 900);
-          }
+          setAttendance([...attendance, dataObject]);
+          setLoading({});
           setShowModal(false);
         });
     }
@@ -657,6 +690,7 @@ export default function AttendanceComponent({
                 type === "day"
                   ? days.map((day, index) => (
                       <CalendarComponent
+                        manifest={manifest}
                         key={index}
                         monthDays={[[day]]}
                         isIconSizeSmall={true}
@@ -685,6 +719,7 @@ export default function AttendanceComponent({
           <Box borderWidth={1} borderColor={colors.coolGray} rounded="xl">
             {days.map((day, index) => (
               <CalendarComponent
+                manifest={manifest}
                 key={index}
                 monthDays={day}
                 isEditDisabled={isEditDisabled}
@@ -796,14 +831,26 @@ const CalendarComponent = ({
   setShowModal,
   setSmsShowModal,
   loading,
+  manifest,
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
   const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const status = Array.isArray(
+    manifest?.["attendance.default_attendance_states"]
+  )
+    ? manifest?.["attendance.default_attendance_states"]
+    : [];
 
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
-    let isFutureDay = day.format("YYYY-MM-DD") > moment().format("YYYY-MM-DD");
+    let isAllowDay = false;
+    if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
+      isAllowDay = day.format("YYYY-MM-DD") <= moment().format("YYYY-MM-DD");
+    } else {
+      isAllowDay = day.format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
+    }
+
     let isHoliday =
       day.day() === 0 || holidays.includes(day.format("YYYY-MM-DD"));
     let dateValue = day.format("YYYY-MM-DD");
@@ -821,23 +868,17 @@ const CalendarComponent = ({
         }
       : {};
     let attendanceType = PRESENT;
-    if (attendanceItem?.attendance && attendanceItem?.attendance === PRESENT) {
+    if (attendanceItem?.attendance === PRESENT) {
       attendanceIconProp = {
         ...attendanceIconProp,
         status: attendanceItem?.attendance,
       };
-    } else if (
-      attendanceItem?.attendance &&
-      attendanceItem?.attendance === ABSENT
-    ) {
+    } else if (attendanceItem?.attendance === ABSENT) {
       attendanceIconProp = {
         ...attendanceIconProp,
         status: attendanceItem?.attendance,
       };
-    } else if (
-      attendanceItem?.attendance &&
-      attendanceItem?.attendance === "Late"
-    ) {
+    } else if (attendanceItem?.attendance === "Late") {
       attendanceIconProp = {
         ...attendanceIconProp,
         status: attendanceItem?.attendance,
@@ -850,8 +891,8 @@ const CalendarComponent = ({
       attendanceIconProp = { ...attendanceIconProp, status: UNMARKED };
     }
 
-    if (manifest.status) {
-      const arr = manifest.status;
+    if (status) {
+      const arr = status;
       const i = arr.indexOf(attendanceItem?.attendance);
       if (i === -1) {
         attendanceType = arr[0];
@@ -862,7 +903,7 @@ const CalendarComponent = ({
 
     return [
       isToday,
-      isFutureDay,
+      isAllowDay,
       isHoliday,
       dateValue,
       smsDay,
@@ -887,7 +928,7 @@ const CalendarComponent = ({
       {week.map((day, subIndex) => {
         const [
           isToday,
-          isFutureDay,
+          isAllowDay,
           isHoliday,
           dateValue,
           smsDay,
@@ -956,13 +997,14 @@ const CalendarComponent = ({
             </Text>
             <TouchableHighlight
               onPress={(e) => {
-                if (!isEditDisabled && !isFutureDay && !isHoliday) {
-                  markAttendance({
+                if (!isEditDisabled && isAllowDay && !isHoliday) {
+                  const newAttendanceData = {
                     attendanceId: attendanceItem?.id ? attendanceItem.id : null,
                     date: dateValue,
                     attendance: attendanceType,
-                    id: student.id,
-                  });
+                    studentId: student.id,
+                  };
+                  markAttendance(newAttendanceData);
                 }
               }}
               onLongPress={(event) => {

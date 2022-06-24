@@ -5,15 +5,14 @@ import {
   Layout,
   calendar,
   H1,
-  H3,
   classRegistryService,
   studentRegistryService,
   overrideColorTheme,
   BodySmall,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import manifest from "../manifest.json";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
 import { WeekWiesBar } from "components/CalendarBar";
@@ -48,6 +47,7 @@ export default function Attendance({ footerLinks, appName }) {
   const [attendanceStartTime, setAttendanceStartTime] = useState();
   const [unmarkStudents, setUnmarkStudents] = useState([]);
   const navigate = useNavigate();
+  const [manifest, setManifest] = React.useState();
 
   useEffect(() => {
     let studentIds = attendance
@@ -77,9 +77,29 @@ export default function Attendance({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     async function getData() {
+      const newManifest = await getApiConfig();
+      setManifest(newManifest);
       const studentData = await studentRegistryService.getAll({ classId });
-
-      setStudents(studentData);
+      if (
+        newManifest?.["attendance_card.order_of_attendance_card"] ===
+        '"Alphabetically"'
+      ) {
+        setStudents(
+          studentData.sort(function (oldItem, newItem) {
+            return oldItem.firstName === newItem.firstName
+              ? 0
+              : oldItem.firstName < newItem.firstName
+              ? -1
+              : 1;
+          })
+        );
+      } else {
+        setStudents(
+          studentData.sort(function (a, b) {
+            return a.admissionNo - b.admissionNo;
+          })
+        );
+      }
       setSearchStudents(studentData);
       if (!ignore)
         setClassObject(await classRegistryService.getOne({ id: classId }));
@@ -181,7 +201,7 @@ export default function Attendance({ footerLinks, appName }) {
           </Button>
         ),
       }}
-      _appBar={{ languages: manifest.languages }}
+      // _appBar={}
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
@@ -208,9 +228,17 @@ export default function Attendance({ footerLinks, appName }) {
               setPage={setWeekPage}
               page={weekPage}
               previousDisabled={
-                parseInt(
-                  -manifest.attendancePastDays / manifest.weekDays?.length
-                ) > parseInt(weekPage - 1)
+                Math.abs(weekPage) >=
+                moment()
+                  .startOf("week")
+                  .diff(
+                    moment(
+                      manifest?.[
+                        "class_attendance.date_till_previous_attendance_allow"
+                      ]
+                    ).startOf("week"),
+                    "week"
+                  )
               }
               nextDisabled={weekPage >= 0}
               leftErrorText={
@@ -266,6 +294,7 @@ export default function Attendance({ footerLinks, appName }) {
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
+              manifest={manifest}
               hidePopUpButton={false}
               page={weekPage}
               student={item}
@@ -283,6 +312,7 @@ export default function Attendance({ footerLinks, appName }) {
       <MultipalAttendance
         isWithEditButton={false}
         {...{
+          manifest,
           students,
           attendance,
           getAttendance,

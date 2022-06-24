@@ -28,6 +28,7 @@ import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
+import { getApiConfig } from './services/configApiRegistryService'
 
 export {
   AppBar,
@@ -49,7 +50,8 @@ export {
   teacherRegistryService,
   classRegistryService,
   attendanceRegistryService,
-  studentRegistryService
+  studentRegistryService,
+  getApiConfig
 }
 
 export * from './services/Auth'
