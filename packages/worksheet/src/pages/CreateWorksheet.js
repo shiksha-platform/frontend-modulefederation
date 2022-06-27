@@ -21,7 +21,6 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [alertMessage, setAlertMessage] = React.useState();
   const [createType, setCreateType] = React.useState("create");
   const navigate = useNavigate();
-
   React.useEffect(async () => {
     if (pageName === "ListOfWorksheet" || pageName === "WorksheetTemplate") {
       setLoading(true);

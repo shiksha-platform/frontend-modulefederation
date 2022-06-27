@@ -12,7 +12,6 @@ import {
 } from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
 import {
   IconByName,
   Layout,
@@ -25,13 +24,21 @@ import {
   calendar,
   classRegistryService,
   studentRegistryService,
+  overrideColorTheme,
+  H2,
+  Caption,
+  Subtitle,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
+import colorTheme from "../../colorTheme";
 import { useNavigate, useParams } from "react-router-dom";
+
+const colors = overrideColorTheme(colorTheme);
 
 export default function ClassReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -143,12 +150,14 @@ export default function ClassReportDetail({ footerLinks, appName }) {
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500 },
         iconComponent: (
-          <Box rounded={"full"} px="5" py="2" bg="button.500">
+          <Box rounded={"full"} px="5" py="2" bg={colors.primary}>
             <HStack space="2">
-              <Text color="white" fontSize="14" fontWeight="500">
-                {lastTitle}
-              </Text>
-              <IconByName color="white" name="ArrowDownSLineIcon" isDisabled />
+              <BodyLarge color={colors.white}>{lastTitle}</BodyLarge>
+              <IconByName
+                color={colors.white}
+                name="ArrowDownSLineIcon"
+                isDisabled
+              />
             </HStack>
           </Box>
         ),
@@ -156,20 +165,18 @@ export default function ClassReportDetail({ footerLinks, appName }) {
       _appBar={{ languages: manifest.languages }}
       subHeader={
         <Stack>
-          <Text fontSize="16" fontWeight="600">
-            {classObject.name}
-          </Text>
-          <Text fontSize="10" fontWeight="300">
+          <H2>{classObject.name}</H2>
+          <Caption>
             {t("TOTAL")}: {students.length} {t("PRESENT")}:{presentCount}
-          </Text>
+          </Caption>
         </Stack>
       }
-      _subHeader={{ bg: "reportCard.500", mb: 1 }}
+      _subHeader={{ bg: colors.bgReportCard, mb: 1 }}
       _footer={footerLinks}
     >
       {compare ? (
         <VStack space="1">
-          <Box bg="white" p="5">
+          <Box bg={colors.white} p="5">
             <HStack
               space="4"
               justifyContent="space-between"
@@ -183,19 +190,17 @@ export default function ClassReportDetail({ footerLinks, appName }) {
               <IconByName name={"ListUnorderedIcon"} isDisabled />
             </HStack>
           </Box>
-          <Box bg="white" p="5">
+          <Box bg={colors.white} p="5">
             <Box>
               <Collapsible
                 defaultCollapse={true}
                 header={
                   <VStack>
-                    <Text fontSize="16" fontWeight="600">
-                      {t("SUMMARY")}
-                    </Text>
-                    <Text fontSize="10" fontWeight="300">
+                    <H2>{t("SUMMARY")}</H2>
+                    <Caption>
                       {t("TOTAL")}: {students.length} {t("PRESENT")}:
                       {presentCount}
-                    </Text>
+                    </Caption>
                   </VStack>
                 }
               >
@@ -215,13 +220,13 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                       calendarView: compare,
                     }}
                   />
-                  <Text py="5" px="10px" fontSize={12} color={"gray.400"}>
-                    <Text bold color={"gray.700"}>
+                  <Subtitle py="5" px="10px" color={colors.grayInLight}>
+                    <Text bold color={colors.darkGray}>
                       {t("NOTES")}
                       {": "}
                     </Text>
                     {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
-                  </Text>
+                  </Subtitle>
                 </VStack>
               </Collapsible>
             </Box>
@@ -251,8 +256,8 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                       renderItem={({ item }) => (
                         <Box
                           borderWidth="1"
-                          borderColor="presentCardCompareBg.600"
-                          bg="presentCardCompareBg.500"
+                          borderColor={colors.presentCardCompareBorder}
+                          bg={colors.presentCardCompareBg}
                           p="10px"
                           rounded="lg"
                           my="10px"
@@ -266,37 +271,25 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                               rightComponent={
                                 <HStack space="2">
                                   <VStack alignItems="center">
-                                    <Text
-                                      fontSize="14"
-                                      fontWeight="500"
-                                      color="presentCardText.500"
-                                    >
+                                    <BodyLarge color={colors.presentCardText}>
                                       {getPercentage(attendance, item) + "%"}
-                                    </Text>
-                                    <Text
-                                      fontSize="10"
-                                      fontWeight="400"
-                                      color="presentCardText.500"
-                                    >
+                                    </BodyLarge>
+                                    <Caption color={colors.presentCardText}>
                                       {thisTitle}
-                                    </Text>
+                                    </Caption>
                                   </VStack>
                                   <VStack alignItems="center">
-                                    <Text
-                                      fontSize="14"
-                                      fontWeight="500"
-                                      color="presentCardCompareText.500"
+                                    <BodyLarge
+                                      color={colors.presentCardCompareText}
                                     >
                                       {getPercentage(compareAttendance, item) +
                                         "%"}
-                                    </Text>
-                                    <Text
-                                      fontSize="10"
-                                      fontWeight="400"
-                                      color="presentCardCompareText.500"
+                                    </BodyLarge>
+                                    <Caption
+                                      color={colors.presentCardCompareText}
                                     >
                                       {lastTitle}
-                                    </Text>
+                                    </Caption>
                                   </VStack>
                                 </HStack>
                               }
@@ -345,8 +338,8 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                       renderItem={({ item }) => (
                         <Box
                           borderWidth="1"
-                          borderColor="absentCardCompareBg.600"
-                          bg="absentCardCompareBg.500"
+                          borderColor={colors.absentCardCompareBorder}
+                          bg={colors.absentCardCompareBg}
                           p="10px"
                           rounded="lg"
                           my="10px"
@@ -360,11 +353,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                               rightComponent={
                                 <HStack space="2">
                                   <VStack alignItems="center">
-                                    <Text
-                                      fontSize="14"
-                                      fontWeight="500"
-                                      color="absentCardText.500"
-                                    >
+                                    <BodyLarge color={colors.absentCardText}>
                                       {getPercentage(
                                         attendance,
                                         item,
@@ -374,20 +363,14 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                                       ) +
                                         " " +
                                         t("DAYS")}
-                                    </Text>
-                                    <Text
-                                      fontSize="10"
-                                      fontWeight="400"
-                                      color="absentCardText.500"
-                                    >
+                                    </BodyLarge>
+                                    <Caption color={colors.absentCardText}>
                                       {thisTitle}
-                                    </Text>
+                                    </Caption>
                                   </VStack>
                                   <VStack alignItems="center">
-                                    <Text
-                                      fontSize="14"
-                                      fontWeight="500"
-                                      color="absentCardCompareText.500"
+                                    <BodyLarge
+                                      color={colors.absentCardCompareText}
                                     >
                                       {getPercentage(
                                         compareAttendance,
@@ -398,14 +381,12 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                                       ) +
                                         " " +
                                         t("DAYS")}
-                                    </Text>
-                                    <Text
-                                      fontSize="10"
-                                      fontWeight="400"
-                                      color="absentCardCompareText.500"
+                                    </BodyLarge>
+                                    <Caption
+                                      color={colors.absentCardCompareText}
                                     >
                                       {lastTitle}
-                                    </Text>
+                                    </Caption>
                                   </VStack>
                                 </HStack>
                               }
@@ -453,7 +434,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                     <AttendanceComponent
                       isEditDisabled
                       type={compare === "monthInDays" ? "month" : "weeks"}
-                      _weekBox={[{}, { bg: "weekCardCompareBg.500" }]}
+                      _weekBox={[{}, { bg: colors.weekCardCompareBg }]}
                       page={[page, page - 1]}
                       student={item}
                       withDate={1}
@@ -473,22 +454,26 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           isOpen={showModal}
           _backdrop={{ opacity: "0.9", bg: "gray.500" }}
         >
-          <Actionsheet.Content p="0" alignItems={"left"} bg="reportCard.500">
+          <Actionsheet.Content
+            p="0"
+            alignItems={"left"}
+            bg={colors.reportCardBackg}
+          >
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
-                <Text color={"black"} fontSize="16px" fontWeight={"600"}>
+                <H2 color={colors.black}>
                   {t("SELECT_CLASS_MARK_ATTENDANCE")}
-                </Text>
+                </H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color="reportCard.800"
+                color={colors.reportCardCloseIcon}
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>
           </Actionsheet.Content>
 
-          <Box w="100%" bg="white">
+          <Box w="100%" bg={colors.white}>
             {[
               { name: t("PREVIOUS_WEEK"), value: "week" },
               { name: t("PREVIOUS_MONTH"), value: "monthInDays" },
@@ -503,7 +488,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                 <Pressable
                   p="5"
                   borderBottomWidth={1}
-                  borderBottomColor="coolGray.100"
+                  borderBottomColor={colors.coolGray}
                   key={index}
                   onPress={(e) => {
                     if (item?.value === "dont-show-comparison") {

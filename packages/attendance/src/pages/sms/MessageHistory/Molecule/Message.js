@@ -8,12 +8,15 @@ import {
   H4,
   capture,
   telemetryFactory,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
+import colorTheme from "../../../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const Message = ({ item, isDisableRetry }) => {
   const { t } = useTranslation();
   return (
-    <Box p="5" borderBottomWidth="1" borderBottomColor="gray.100">
+    <Box p="5" borderBottomWidth="1" borderBottomColor={colors.coolGray}>
       <VStack space="2">
         <HStack space="1" justifyContent="space-between">
           <HStack space="1" alignItems="center">
@@ -22,7 +25,7 @@ const Message = ({ item, isDisableRetry }) => {
               name={
                 item.status === "Send" ? "CheckDoubleLineIcon" : "SpamLineIcon"
               }
-              color={item.status === "Send" ? "present.500" : "absent.500"}
+              color={item.status === "Send" ? colors.present : colors.absent}
             />
             <H3 fontWeight="500">
               {item.status === "Send" ? t("SENT") : t("FAILED")}
@@ -49,10 +52,10 @@ const Message = ({ item, isDisableRetry }) => {
             ""
           )}
         </HStack>
-        <H4 fontWeight="500" color="blueGray.400">
+        <H4 color={colors.grayInLight}>
           {moment(item.date).format("Do MMM, hh:ssa")}
         </H4>
-        <H3 fontWeight="400">{item.message}</H3>
+        <H3>{item.message}</H3>
       </VStack>
     </Box>
   );

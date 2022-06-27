@@ -5,6 +5,7 @@ import {
   attendanceRegistryService,
   ProgressBar,
   getUniqAttendance,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -18,6 +19,9 @@ import {
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -65,7 +69,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
       fontSize="2px"
     >
       <VStack p="2" space={4}>
-        <Box bg={"gray.100"} rounded={"md"} p="4">
+        <Box bg={colors.lightGrayBg} rounded={"md"} p="4">
           <VStack space={2}>
             <HStack justifyContent={"space-between"} alignItems="center">
               <Text bold>{t("STATUS")}</Text>
