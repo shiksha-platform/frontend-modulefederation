@@ -29,7 +29,15 @@ import {
   calendar,
   classRegistryService,
   studentRegistryService,
+  overrideColorTheme,
+  BodyLarge,
+  H2,
+  Caption,
+  Subtitle,
 } from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 export default function ReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -180,15 +188,13 @@ export default function ReportDetail({ footerLinks, appName }) {
               rounded={"full"}
               px="4"
               py="1"
-              borderColor="button.500"
+              borderColor={colors.primary}
               borderWidth={1}
             >
               <HStack space="2">
-                <Text color="button.500" fontSize="14" fontWeight="500">
-                  {t("COMPARE")}
-                </Text>
+                <BodyLarge color={colors.primary}>{t("COMPARE")}</BodyLarge>
                 <IconByName
-                  color="button.500"
+                  color={colors.primary}
                   name="ArrowDownSLineIcon"
                   isDisabled
                 />
@@ -199,19 +205,17 @@ export default function ReportDetail({ footerLinks, appName }) {
       }}
       subHeader={
         <Stack>
-          <Text fontSize="16" fontWeight="600">
-            {classObject.name}
-          </Text>
-          <Text fontSize="10" fontWeight="300">
+          <H2>{classObject.name}</H2>
+          <Caption>
             {t("TOTAL")}: {students.length} {t("PRESENT")}:
             {
               attendanceForReport.filter((e) => e.attendance === "Present")
                 .length
             }
-          </Text>
+          </Caption>
         </Stack>
       }
-      _subHeader={{ bg: "reportCard.500", mb: 1 }}
+      _subHeader={{ bg: colors.reportCardBackg, mb: 1 }}
       _footer={footerLinks}
     >
       <VStack space="1">
@@ -226,15 +230,13 @@ export default function ReportDetail({ footerLinks, appName }) {
           </HStack>
         </Box>
         <Box bg="white" p="5">
-          <Box borderBottomWidth={1} borderBottomColor="coolGray.200">
+          <Box borderBottomWidth={1} borderBottomColor={colors.coolGray}>
             <Collapsible
               defaultCollapse={true}
               header={
                 <VStack>
-                  <Text fontSize="16" fontWeight="600">
-                    {t("SUMMARY")}
-                  </Text>
-                  <Text fontSize="10" fontWeight="300">
+                  <H2>{t("SUMMARY")}</H2>
+                  <Caption>
                     {t("TOTAL")}: {students.length} {t("PRESENT")}:
                     {
                       getUniqAttendance(
@@ -243,7 +245,7 @@ export default function ReportDetail({ footerLinks, appName }) {
                         students
                       ).length
                     }
-                  </Text>
+                  </Caption>
                 </VStack>
               }
               body={
@@ -255,19 +257,19 @@ export default function ReportDetail({ footerLinks, appName }) {
                       calendarView,
                     }}
                   />
-                  <Text py="5" px="10px" fontSize={12} color={"gray.400"}>
-                    <Text bold color={"gray.700"}>
+                  <Subtitle py="5" px="10px" color={colors.grayInLight}>
+                    <Text bold color={colors.darkGray}>
                       {t("NOTES")}
                       {": "}
                     </Text>
                     {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
-                  </Text>
+                  </Subtitle>
                 </VStack>
               }
             />
           </Box>
         </Box>
-        <Box bg="white" p={4}>
+        <Box bg={colors.white} p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -295,8 +297,8 @@ export default function ReportDetail({ footerLinks, appName }) {
                       renderItem={({ item }) => (
                         <Box
                           borderWidth="1"
-                          borderColor="presentCardBg.600"
-                          bg="presentCardBg.500"
+                          borderColor={colors.presentCardBorder}
+                          bg={colors.presentCardBg}
                           p="10px"
                           rounded="lg"
                           my="10px"
@@ -308,13 +310,13 @@ export default function ReportDetail({ footerLinks, appName }) {
                               type="rollFather"
                               textTitle={
                                 <VStack alignItems="center">
-                                  <Text fontSize="14" fontWeight="500">
+                                  <BodyLarge>
                                     <Text>{item.fullName}</Text>
-                                    <Text color="gray.300"> • </Text>
-                                    <Text color="presentCardText.500">
+                                    <Text color={colors.lightGray}> • </Text>
+                                    <Text color={colors.presentCardText}>
                                       100%
                                     </Text>
-                                  </Text>
+                                  </BodyLarge>
                                 </VStack>
                               }
                               href={"/students/" + item.id}
@@ -340,7 +342,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </Stack>
         </Box>
 
-        <Box bg="white" p={4}>
+        <Box bg={colors.white} p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -365,8 +367,8 @@ export default function ReportDetail({ footerLinks, appName }) {
                       renderItem={({ item }) => (
                         <Box
                           borderWidth="1"
-                          borderColor="absentCardBg.600"
-                          bg="absentCardBg.500"
+                          borderColor={colors.absentCardBorder}
+                          bg={colors.absentCardBg}
                           p="10px"
                           rounded="lg"
                           my="10px"
@@ -378,13 +380,13 @@ export default function ReportDetail({ footerLinks, appName }) {
                               type="rollFather"
                               textTitle={
                                 <VStack alignItems="center">
-                                  <Text fontSize="14" fontWeight="500">
+                                  <BodyLarge>
                                     <Text>{item.fullName}</Text>
-                                    <Text color="gray.300"> • </Text>
-                                    <Text color="absentCardText.500">
+                                    <Text color={colors.lightGray}> • </Text>
+                                    <Text color={colors.absentCardText}>
                                       3 {t("DAYS")}
                                     </Text>
-                                  </Text>
+                                  </BodyLarge>
                                 </VStack>
                               }
                               href={"/students/" + item.id}
@@ -410,7 +412,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </Stack>
         </Box>
 
-        <Box bg="white" p={4}>
+        <Box bg={colors.white} p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -487,7 +489,7 @@ const Collapsible = ({
             <IconByName
               size="sm"
               isDisabled={true}
-              color={!collaps ? "coolGray.400" : "coolGray.600"}
+              color={!collaps ? colors.grayInLight : colors.coolGraylight}
               name={!collaps ? "ArrowDownSLineIcon" : "ArrowUpSLineIcon"}
             />
           </HStack>

@@ -9,10 +9,14 @@ import {
   Collapsible,
   studentRegistryService,
   classRegistryService,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useParams } from "react-router-dom";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 // Start editing here, save and see your changes.
 const Student = ({ footerLinks }) => {
@@ -45,11 +49,11 @@ const Student = ({ footerLinks }) => {
         avatar: true,
       }}
       subHeader={<H2 fontWeight="400">{t("VIEW_ALL_STUDENTS")}</H2>}
-      _subHeader={{ bg: "studentCard.500" }}
+      _subHeader={{ bg: colors.studentBg }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
-      <Box bg="white" p={4}>
+      <Box bg={colors.white} p={4}>
         <Stack space={2}>
           <Collapsible
             defaultCollapse={true}
@@ -57,9 +61,7 @@ const Student = ({ footerLinks }) => {
             header={
               <>
                 <VStack>
-                  <H2 fontWeight="600" color="gray.800">
-                    {t("STUDENTS_LIST")}
-                  </H2>
+                  <H2 color={colors.darkGray}>{t("STUDENTS_LIST")}</H2>
                   <H4 fontSize={"xs"}>
                     {t("TOTAL") + ": " + students?.length}
                   </H4>
@@ -75,9 +77,9 @@ const Student = ({ footerLinks }) => {
                     <Box
                       borderBottomWidth="1"
                       _dark={{
-                        borderColor: "gray.600",
+                        borderColor: colors.darkGraylight,
                       }}
-                      borderColor="coolGray.200"
+                      borderColor={colors.coolGraylight}
                       pr="1"
                       py="4"
                     >

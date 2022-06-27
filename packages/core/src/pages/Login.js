@@ -19,6 +19,9 @@ import {
   eventBus,
   useWindowSize,
   teacherRegistryService,
+  BodyMedium,
+  Heading,
+  Subtitle,
 } from "@shiksha/common-lib";
 
 const styles = {
@@ -117,12 +120,10 @@ export default function Login() {
         <Center width={width}>
           <VStack space="50px" w="300px">
             <Box>
-              <Text fontSize="30px" fontWeight="400">
-                {t("SIGN_IN")}
-              </Text>
-              <Text fontSize="14px" fontWeight="400" textTransform="inherit">
+              <Heading>{t("SIGN_IN")}</Heading>
+              <BodyMedium textTransform="inherit">
                 Hello, welcome back to our your account !
-              </Text>
+              </BodyMedium>
             </Box>
             <VStack space={2}>
               {"alert" in errors ? (
@@ -135,9 +136,7 @@ export default function Login() {
                     >
                       <HStack space={2} flexShrink={1}>
                         <Alert.Icon mt="1" />
-                        <Text fontSize="md" color="coolGray.800">
-                          {errors.alert}
-                        </Text>
+                        <Subtitle color="coolGray.800">{errors.alert}</Subtitle>
                       </HStack>
                       <IconButton
                         variant="unstyled"
@@ -229,25 +228,14 @@ export default function Login() {
                 >
                   {t("SUBMIT")}
                 </Button>
-                <Text
-                  color="button.500"
-                  fontSize="14px"
-                  fontWeight="400"
-                  textAlign="center"
-                >
+                <BodyMedium color="button.500" textAlign="center">
                   Forgot Password?
-                </Text>
+                </BodyMedium>
                 <HStack alignItems="center" space="2">
-                  <Text
-                    fontSize="14px"
-                    fontWeight="400"
-                    textTransform="inherit"
-                  >
+                  <BodyMedium textTransform="inherit">
                     Dont have an account?
-                  </Text>
-                  <Text color="button.500" fontSize="14px" fontWeight="400">
-                    {t("SIGN_UP")}
-                  </Text>
+                  </BodyMedium>
+                  <BodyMedium color="button.500">{t("SIGN_UP")}</BodyMedium>
                 </HStack>
               </VStack>
             </VStack>

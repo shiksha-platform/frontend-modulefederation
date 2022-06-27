@@ -11,7 +11,11 @@ import {
   studentRegistryService,
   attendanceRegistryService,
   classRegistryService,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 import { useNavigate, useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
@@ -83,14 +87,14 @@ export default function StudentDetails({ footerLinks, appName }) {
             bold: false,
             fontWeight: "400",
             fontSize: "12px",
-            color: "coolGray.800",
+            color: colors.studentNametext,
           }}
           type="card"
           item={studentObject}
           hidePopUpButton={true}
         />
       }
-      _subHeader={{ bg: "studentCard.500" }}
+      _subHeader={{ bg: colors.studentBg }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
@@ -109,7 +113,7 @@ export default function StudentDetails({ footerLinks, appName }) {
               },
             ]}
           />
-          <Box bg="white" py="5">
+          <Box bg={colors.white} py="5">
             <Collapsible
               defaultCollapse
               isDisableCollapse
@@ -201,11 +205,11 @@ export default function StudentDetails({ footerLinks, appName }) {
               key={index}
               p="5"
               borderBottomWidth="1"
-              borderColor={"coolGray.200"}
+              borderColor={colors.coolGraylight}
             >
               <Collapsible defaultCollapse header={item.title}>
                 <Box pt="18px">
-                  <H3 fontWeight="500">{item.value}</H3>
+                  <H3>{item.value}</H3>
                 </Box>
               </Collapsible>
             </Box>
@@ -231,9 +235,7 @@ export default function StudentDetails({ footerLinks, appName }) {
           <Box p="5">
             <Collapsible defaultCollapse header={t("NOTES")}>
               <Box pt="18px">
-                <H3 fontWeight="500" pb="30">
-                  {"2 " + t("NOTES")}
-                </H3>
+                <H3 pb="30">{"2 " + t("NOTES")}</H3>
               </Box>
             </Collapsible>
           </Box>

@@ -11,14 +11,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install Dependency
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: install # will run `yarn install` command
-      - name:  Build
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build # will run `yarn build` command
+      - name: Build
+        run: |
+          yarn install
+          yarn workspace @shiksha/common-lib build
+          yarn install
+          yarn build
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
