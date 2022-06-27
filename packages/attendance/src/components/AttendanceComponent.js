@@ -182,80 +182,28 @@ export const MultipalAttendance = ({
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
-    if (typeof students === "object") {
-      let ctr = 0;
-      let attendanceAll = getStudentsAttendance();
-      students.forEach((item, index) => {
-        let attendanceObject = attendanceAll.find(
-          (e) => item.id === e.studentId
-        );
-        let result = null;
-        if (attendanceObject?.id) {
-          if (attendanceObject.attendance !== PRESENT) {
-            result = attendanceRegistryService
-              .update(
-                {
-                  id: attendanceObject.id,
-                  attendance: PRESENT,
-                },
-                {
-                  headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                  },
-                }
-              )
-              .then((e) => {
-                if (getAttendance) {
-                  getAttendance();
-                }
-              });
-          } else {
-            result = "alreadyPresent";
-          }
-        } else {
-          result = attendanceRegistryService.create(
-            {
-              studentId: item.id,
-              date: moment().format("YYYY-MM-DD"),
-              attendance: PRESENT,
-              attendanceNote: "Test",
-              classId: item.currentClassID,
-              subjectId: "History",
-              teacherId: teacherId,
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + localStorage.getItem("token"),
-              },
-            }
-          );
-        }
+    if (typeof students === "object" && students.length > 0) {
+      let student = students.find((e, index) => !index);
 
-        setTimeout(async (e) => {
-          if (result && result === "alreadyPresent") {
-            setAllAttendanceStatus({
-              ...allAttendanceStatus,
-              success: parseInt(index + 1) + " Already Present",
-            });
-          } else if (result) {
-            setAllAttendanceStatus({
-              ...allAttendanceStatus,
-              success: parseInt(index + 1) + " success",
-            });
-          } else {
-            setAllAttendanceStatus({
-              ...allAttendanceStatus,
-              fail: parseInt(index + 1) + " fail",
-            });
-          }
-          ctr++;
-          if (ctr === students.length) {
-            setAllAttendanceStatus({});
-            setLoading(false);
-            await getAttendance();
-          }
-        }, index * 900);
+      const attendanceData = students.map((item, index) => {
+        return {
+          attendance: PRESENT,
+          userId: item.id,
+        };
       });
+      let allData = {
+        schoolId: student?.schoolId,
+        userType: "Student",
+        groupId: student?.currentClassID,
+        attendanceDate: moment().format("YYYY-MM-DD"),
+        attendanceData,
+      };
+
+      const result = await attendanceRegistryService.multipal(allData);
+      if (getAttendance) {
+        getAttendance();
+      }
+
       if (groupExists(classObject)) {
         const telemetryData = telemetryFactory.interact({
           appName,
@@ -264,6 +212,9 @@ export const MultipalAttendance = ({
         });
         capture("INTERACT", telemetryData);
       }
+      setLoading(false);
+    } else {
+      setLoading(false);
     }
   };
 

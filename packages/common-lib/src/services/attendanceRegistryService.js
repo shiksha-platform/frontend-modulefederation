@@ -81,3 +81,20 @@ export const update = async (data = {}, headers = {}) => {
     return {}
   }
 }
+
+export const multipal = async (data = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    manifest.api_url + '/attendance/multipleAttendance',
+    data,
+    { headers }
+  )
+  if (result.data) {
+    return result
+  } else {
+    return {}
+  }
+}

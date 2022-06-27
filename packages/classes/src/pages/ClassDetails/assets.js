@@ -7,8 +7,17 @@ import {
   classRegistryService,
   overrideColorTheme,
   H1,
+  BodySmall,
 } from "@shiksha/common-lib";
-import { Stack, Box, VStack, Heading, HStack } from "native-base";
+import {
+  Stack,
+  Box,
+  VStack,
+  Heading,
+  HStack,
+  Menu,
+  Pressable,
+} from "native-base";
 import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
@@ -138,8 +147,12 @@ export const _header = (data) => {
   const { t } = useTranslation();
   const onFileUpload = async (event) => {
     const formData = new FormData();
-    const file = event.target.files[0];
-    formData.append("image", file, file.name);
+    if (event.target.files) {
+      const file = event.target.files[0];
+      formData.append("image", file, file.name);
+    } else {
+      formData.image = " ";
+    }
     formData.id = data?.classId;
     await classRegistryService.updateImage(formData);
     if (data?.getClass) {
@@ -161,30 +174,46 @@ export const _header = (data) => {
           <HStack alignItems="center" justifyContent="space-between">
             <VStack>
               <H2 color={colors.white}>{data?.name}</H2>
-
               <H1 color={colors.white}>{t("CLASS_DETAILS")}</H1>
             </VStack>
             <HStack alignItems="center">
-              <Stack>
-                <input
-                  type="file"
-                  style={{
-                    opacity: 0,
-                    width: "24px",
-                    position: "absolute",
-                    padding: "5px",
-                    zIndex: "10",
-                    top: "5px",
-                    left: "0",
+              <Box px="3">
+                <Menu
+                  trigger={(triggerProps) => {
+                    return (
+                      <Pressable {...triggerProps}>
+                        <IconByName
+                          isDisabled
+                          color={colors.white}
+                          name="CameraLineIcon"
+                        />
+                      </Pressable>
+                    );
                   }}
-                  onChange={onFileUpload}
-                />
-                <IconByName
-                  color={colors.white}
-                  name="CameraLineIcon"
-                  // onPress={onFileUpload}
-                />
-              </Stack>
+                >
+                  <Menu.Item>
+                    <Pressable onPress={onFileUpload}>
+                      <BodySmall>Remove Photo</BodySmall>
+                    </Pressable>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <BodySmall>Upload Photo</BodySmall>
+                    <input
+                      type="file"
+                      style={{
+                        opacity: 0,
+                        width: "24px",
+                        position: "absolute",
+                        padding: "5px",
+                        zIndex: "10",
+                        top: "5px",
+                        left: "0",
+                      }}
+                      onChange={onFileUpload}
+                    />
+                  </Menu.Item>
+                </Menu>
+              </Box>
               <IconByName color={colors.white} name="ShareLineIcon" />
             </HStack>
           </HStack>
