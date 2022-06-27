@@ -1,7 +1,10 @@
 import React from "react";
 import { Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { H3 } from "@shiksha/common-lib";
+import { BodySmall, H3, overrideColorTheme } from "@shiksha/common-lib";
+import colorTheme from "../../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 const InfoSection = ({ items, isLastBorderEnable }) => {
   const { t } = useTranslation();
@@ -12,16 +15,14 @@ const InfoSection = ({ items, isLastBorderEnable }) => {
       borderBottomWidth={
         items.length - 1 !== index || isLastBorderEnable ? "1" : "0"
       }
-      borderColor={"coolGray.200"}
+      borderColor={colors.coolGraylight}
       key={index}
     >
-      <H3 fontWeight="500" color="coolGray.400">
-        {item.title}
-      </H3>
+      <H3 color={colors.labelColor}>{item.title}</H3>
       {item.value ? (
-        <Text>{item.value}</Text>
+        <BodySmall>{item.value}</BodySmall>
       ) : (
-        <Text italic>{t("NOT_ENTERED")}</Text>
+        <BodySmall italic>{t("NOT_ENTERED")}</BodySmall>
       )}
     </VStack>
   ));

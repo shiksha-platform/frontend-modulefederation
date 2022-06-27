@@ -6,6 +6,11 @@ import {
   H1,
   telemetryFactory,
   useWindowSize,
+  H2,
+  BodyLarge,
+  BodyMedium,
+  H3,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import {
@@ -23,6 +28,8 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function ScheduleNotification({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -73,14 +80,9 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           message={
             <Center mx="5">
               <H1 color="gray.500">{"Notification Scheduled"}</H1>
-              <Text
-                fontSize="14"
-                fontWeight="400"
-                textAlign="center"
-                color="gray.500"
-              >
+              <BodyMedium textAlign="center" color="gray.500">
                 {`Attendance Notification has been scheduled for Thursdays 2:00pm`}
-              </Text>
+              </BodyMedium>
               {/* <Button
                 colorScheme="button"
                 variant="outline"
@@ -109,7 +111,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
       _appBar={{ languages: manifest.languages }}
       subHeader={t("PICK_DATE_AND_TIME")}
       _subHeader={{
-        bg: "classCard.500",
+        bg: colors.cardBg,
         _text: {
           fontSize: "16px",
           fontWeight: "500",
@@ -131,11 +133,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             },
           ]}
         />
-        <Box bg="white" p="5">
+        <Box bg={colors.white} p="5">
           <Checkbox
             isChecked={recurring}
             colorScheme="button"
-            borderColor="button.500"
+            borderColor={colors.primary}
             borderRadius="0"
             onChange={(e) => setRecurring(!recurring)}
           >
@@ -150,7 +152,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         ) : (
           ""
         )}
-        <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
           <Button.Group>
             <Button
               colorScheme="button"
@@ -180,21 +182,19 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           isOpen={dateTimeData?.name}
           onClose={() => setDateTimeData({})}
         >
-          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={1} pb="2px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t(`Select ${dateTimeData?.name}`)}
-                </Text>
+              <Stack p={5} pt={1} pb="15px">
+                <H2>{t(`Select ${dateTimeData?.name}`)}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color="classCard.900"
+                color={colors.cardCloseIcon}
                 onPress={(e) => setDateTimeData({})}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg="white" width={"100%"}>
+          <Box bg={colors.white} width={"100%"}>
             {dateTimeData?.data &&
               dateTimeData.data.map((value, index) => {
                 return (
@@ -204,7 +204,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                     onPress={(e) =>
                       setDateTime({ ...dateTime, [dateTimeData.name]: value })
                     }
-                    bg={dateTime[dateTimeData.name] === value ? "gray.100" : ""}
+                    bg={
+                      dateTime[dateTimeData.name] === value
+                        ? colors.coolGray
+                        : ""
+                    }
                   >
                     <Text colorScheme="button">{value}</Text>
                   </Pressable>
@@ -225,32 +229,33 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           isOpen={showSummaryModal?.name}
           onClose={() => setShowSummaryModal({})}
         >
-          <Actionsheet.Content alignItems={"left"} bg="viewNotification.700">
+          <Actionsheet.Content
+            alignItems={"left"}
+            bg={colors.scheduleNotificationBg}
+          >
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={1} pb="2px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {showSummaryModal?.name}
-                </Text>
+              <Stack p={5} pt={1} pb="15px">
+                <H2>{showSummaryModal?.name}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color="classCard.900"
+                color={colors.cardCloseIcon}
                 onPress={(e) => setShowSummaryModal({})}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg="white" width={"100%"}>
+          <Box bg={colors.white} width={"100%"}>
             <Box px="5" pt="5">
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="CheckDoubleLineIcon"
-                  color="classCard.900"
+                  color={colors.cardCloseIcon}
                   isDisabled
                 />
-                <Text fontSize="14" fontWeight="500">
+                <BodyLarge>
                   {t(`Sending to ${students.length} parents`)}
-                </Text>
+                </BodyLarge>
               </HStack>
             </Box>
             <Box
@@ -258,28 +263,26 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               pt="5"
               pb="5"
               borderBottomWidth="1"
-              borderColor="gray.200"
+              borderColor={colors.lightGray}
             >
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="TimeLineIcon"
-                  color="classCard.900"
+                  color={colors.cardCloseIcon}
                   isDisabled
                 />
-                <Text fontSize="14" fontWeight="500">
+                <BodyLarge>
                   {t("Scheduled weekly on Thursday, 2:00 pm")}
-                </Text>
+                </BodyLarge>
               </HStack>
             </Box>
             <VStack p="5" space={6}>
-              <Text fontSize="14" fontWeight="600">
-                {t("NOTICE")}
-              </Text>
-              <Text fontSize="14" fontWeight="400" textTransform={"inherit"}>
+              <H3>{t("NOTICE")}</H3>
+              <BodyMedium textTransform={"inherit"}>
                 Worksheets help the kids in exploring multiple concepts They
                 develop fine motor skills, logical thinking
-              </Text>
+              </BodyMedium>
             </VStack>
             <Box p="5">
               <Button
@@ -323,14 +326,12 @@ const FormInput = ({
     data.map((item, index) => (
       <HStack
         key={index}
-        bg="white"
+        bg={colors.white}
         p="5"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text fontSize={"14px"} fontWeight="400">
-          {t(item.name)}
-        </Text>
+        <BodyMedium>{t(item.name)}</BodyMedium>
         <Button
           {...(item?.buttonVariant
             ? { variant: item.buttonVariant }
@@ -338,11 +339,11 @@ const FormInput = ({
           rounded="full"
           colorScheme="button"
           px="5"
-          bg="viewNotification.500"
+          bg={colors.notificationCardBg}
           _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName
-              color={item?.buttonVariant ? "button.500" : "button.500"}
+              color={item?.buttonVariant ? colors.primary : colors.primary}
               name="ArrowDownSLineIcon"
               isDisabled
             />

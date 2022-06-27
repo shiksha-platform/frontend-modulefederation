@@ -21,11 +21,17 @@ import {
   telemetryFactory,
   teacherRegistryService,
   attendanceRegistryService,
+  H4,
+  H1,
+  H3,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "components/SelfAttedanceSheet";
 import moment from "moment";
+import colorTheme from "../colorTheme";
 
+const colors = overrideColorTheme(colorTheme);
 // Start editing here, save and see your changes.
 export default function Profile({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -121,7 +127,7 @@ export default function Profile({ footerLinks, appName }) {
           <Box minH={"150px"}>
             <Box
               position={"absolute"}
-              bg="attendanceCard.600"
+              bg={colors.cardBgTransparent}
               bottom={0}
               p={5}
               pb={8}
@@ -129,17 +135,15 @@ export default function Profile({ footerLinks, appName }) {
             >
               <HStack alignItems="center" justifyContent="space-between">
                 <VStack>
-                  <Text color="gray.100" fontWeight="700" fontSize="14px">
-                    {t("MY_PROFILE")}
-                  </Text>
+                  <H4 color={colors.white}>{t("MY_PROFILE")}</H4>
 
-                  <Text color="gray.100" fontWeight="700" fontSize="2xl">
+                  <H1 color={colors.white}>
                     {teacherObject?.firstName + " " + teacherObject?.lastName}
-                  </Text>
+                  </H1>
                 </VStack>
                 <HStack>
-                  <IconByName color="white" name="CameraLineIcon" />
-                  <IconByName color="white" name="ShareLineIcon" />
+                  <IconByName color={colors.white} name="CameraLineIcon" />
+                  <IconByName color={colors.white} name="ShareLineIcon" />
                 </HStack>
               </HStack>
             </Box>
@@ -164,7 +168,7 @@ export default function Profile({ footerLinks, appName }) {
       }
       _subHeader={{
         bottom: "15px",
-        bg: "classCard.500",
+        bg: colors.cardBg,
       }}
       _footer={footerLinks}
     >
@@ -201,7 +205,7 @@ export default function Profile({ footerLinks, appName }) {
           title={t("CAREER")}
           _title={{
             borderBottomWidth: "1",
-            borderBottomColor: "coolGray.200",
+            borderBottomColor: colors.coolGray,
             py: "5",
           }}
           _box={{ mb: "4", roundedBottom: "xl", shadow: 2 }}
@@ -210,31 +214,31 @@ export default function Profile({ footerLinks, appName }) {
             py="5"
             space={2}
             borderBottomWidth="1"
-            borderBottomColor={"coolGray.200"}
+            borderBottomColor={colors.coolGray}
           >
             <Collapsible
               header={t("MY_CLASS_RESULT")}
-              _icon={{ color: "gray.700", name: "ArrowRightSLineIcon" }}
-              _text={{ color: "gray.700" }}
+              _icon={{ color: colors.gray, name: "ArrowRightSLineIcon" }}
+              _text={{ color: colors.gray }}
             />
           </Stack>
           <Stack
             py="5"
             space={2}
             borderBottomWidth="1"
-            borderBottomColor={"coolGray.200"}
+            borderBottomColor={colors.coolGray}
           >
             <Collapsible
               header={t("COMPETENCY")}
-              _icon={{ color: "gray.700", name: "ArrowRightSLineIcon" }}
-              _text={{ color: "gray.700" }}
+              _icon={{ color: colors.gray, name: "ArrowRightSLineIcon" }}
+              _text={{ color: colors.gray }}
             />
           </Stack>
           <Stack py="5" space={2}>
             <Collapsible
               header={t("AWARDS")}
-              _icon={{ color: "gray.700", name: "ArrowRightSLineIcon" }}
-              _text={{ color: "gray.700" }}
+              _icon={{ color: colors.gray, name: "ArrowRightSLineIcon" }}
+              _text={{ color: colors.gray }}
             />
           </Stack>
         </Section>
@@ -244,11 +248,9 @@ export default function Profile({ footerLinks, appName }) {
 }
 
 const Section = ({ title, button, children, _box, _title }) => (
-  <Box bg={"white"} p="5" {..._box}>
+  <Box bg={colors.white} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"} {..._title}>
-      <Text fontSize="16px" fontWeight="500">
-        {title}
-      </Text>
+      <H3>{title}</H3>
       {button}
     </HStack>
     {children}
@@ -285,7 +287,7 @@ const Collapsible = ({
           <HStack alignItems={"center"} justifyContent={"space-between"}>
             <Text
               fontSize={typeof isHeaderBold === "undefined" ? "14px" : ""}
-              color="coolGray.400"
+              color={colors.gray}
               fontWeight="500"
               {..._text}
             >
@@ -295,7 +297,9 @@ const Collapsible = ({
               size="sm"
               isDisabled={true}
               color={
-                !collaps || collapsButton ? "coolGray.400" : "coolGray.600"
+                !collaps || collapsButton
+                  ? colors.grayInLight
+                  : colors.grayInDark
               }
               name={
                 !collaps || collapsButton

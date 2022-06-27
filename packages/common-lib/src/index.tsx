@@ -24,19 +24,11 @@ import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
 import FilterButton from './components/FilterButton'
-import {
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Heading1
-} from './components/layout/HeaderTags/index'
-
 import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
+import { getApiConfig } from './services/configApiRegistryService'
 
 export {
   AppBar,
@@ -55,16 +47,11 @@ export {
   ProgressBar,
   Tab,
   Loading,
-  H1,
-  H2,
-  H3,
-  H4,
-  H5,
-  Heading1,
   teacherRegistryService,
   classRegistryService,
   attendanceRegistryService,
-  studentRegistryService
+  studentRegistryService,
+  getApiConfig
 }
 
 export * from './services/Auth'
@@ -73,3 +60,4 @@ export * from './services/EventBus'
 export * from './components/helper'
 export * from './services/Telemetry'
 export * from './components/calender'
+export * from './components/layout/HeaderTags/index'

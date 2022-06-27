@@ -1,8 +1,11 @@
 import React, { Suspense } from "react";
-import { Collapsible } from "@shiksha/common-lib";
+import { Collapsible, overrideColorTheme } from "@shiksha/common-lib";
 import { VStack, Box, FlatList, Button, useNativeBase } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 const ClassStudentsPanel = ({ classObject, students }) => {
   const { t } = useTranslation();
@@ -18,9 +21,9 @@ const ClassStudentsPanel = ({ classObject, students }) => {
               <Box
                 borderBottomWidth="1"
                 _dark={{
-                  borderColor: "gray.600",
+                  borderColor: colors.coolGraydark,
                 }}
-                borderColor="coolGray.200"
+                borderColor={colors.coolGray}
                 pr="1"
                 py="4"
               >
