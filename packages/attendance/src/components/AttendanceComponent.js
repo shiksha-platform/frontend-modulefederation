@@ -9,6 +9,7 @@ import {
   Stack,
   Button,
   Badge,
+  ScrollView,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
@@ -352,7 +353,7 @@ export const MultipalAttendance = ({
             </VStack>
           </Box>
           <Actionsheet isOpen={showModal} onClose={() => modalClose()}>
-            <Stack width={"100%"} height={Height} overflowY={"scroll"}>
+            <Stack width={"100%"} maxH={"100%"}>
               <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
                 <HStack justifyContent={"space-between"}>
                   <Stack p={5} pt={2} pb="25px">
@@ -370,7 +371,7 @@ export const MultipalAttendance = ({
                   />
                 </HStack>
               </Actionsheet.Content>
-              <Stack width={"100%"} space="1" bg={colors.coolGray}>
+              <ScrollView width={"100%"} space="1" bg={colors.coolGray}>
                 <Box bg={colors.bgSuccessAlert} px={5} py={10}>
                   <VStack alignItems="center" space="2">
                     <IconByName
@@ -544,7 +545,7 @@ export const MultipalAttendance = ({
                     </Button.Group>
                   </VStack>
                 </Box>
-              </Stack>
+              </ScrollView>
             </Stack>
           </Actionsheet>
         </Stack>

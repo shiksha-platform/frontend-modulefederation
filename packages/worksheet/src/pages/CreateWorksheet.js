@@ -35,7 +35,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(false);
   const [formObject, setFormObject] = React.useState({});
   const [width, height] = useWindowSize();
-
+  console.log("hello create");
   React.useEffect(async () => {
     if (pageName === "ListOfWorksheet") {
       const questions = await getAllQuestions(formObject);
@@ -265,6 +265,14 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
               "Class 8",
               "Class 9",
               "Class 10",
+              "Class 3",
+              "Class 4",
+              "Class 5",
+              "Class 6",
+              "Class 7",
+              "Class 8",
+              "Class 9",
+              "Class 10",
             ],
           },
           {
@@ -299,53 +307,57 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t(`Select ${formData?.name}`)}
-              </Text>
-            </Stack>
-            <IconByName
-              name="CloseCircleLineIcon"
-              onPress={(e) => setFormData({})}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
-          {formData?.data &&
-            formData.data.map((value, index) => {
-              let attributeName = formData.attributeName
-                ? formData.attributeName
-                : formData.name;
-              return (
-                <Pressable
-                  key={index}
-                  p="5"
-                  onPress={(e) =>
-                    setFormObject({
-                      ...formObject,
-                      [attributeName]: [value],
-                    })
-                  }
-                  bg={
-                    formObject[attributeName]?.includes(value) ? "gray.100" : ""
-                  }
-                >
-                  <Text colorScheme="button">{value}</Text>
-                </Pressable>
-              );
-            })}
-          <Box p="5">
-            <Button
-              colorScheme="button"
-              _text={{ color: "white" }}
-              onPress={(e) => setFormData({})}
-            >
-              {t("SELECT")}
-            </Button>
-          </Box>
-        </Box>
+        <Stack width={"100%"} maxH="100%">
+          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+            <HStack justifyContent={"space-between"}>
+              <Stack p={5} pt={2} pb="25px">
+                <Text fontSize="16px" fontWeight={"600"}>
+                  {t(`Select ${formData?.name}`)}
+                </Text>
+              </Stack>
+              <IconByName
+                name="CloseCircleLineIcon"
+                onPress={(e) => setFormData({})}
+              />
+            </HStack>
+          </Actionsheet.Content>
+          <ScrollView bg="white" width={"100%"}>
+            {formData?.data &&
+              formData.data.map((value, index) => {
+                let attributeName = formData.attributeName
+                  ? formData.attributeName
+                  : formData.name;
+                return (
+                  <Pressable
+                    key={index}
+                    p="5"
+                    onPress={(e) =>
+                      setFormObject({
+                        ...formObject,
+                        [attributeName]: [value],
+                      })
+                    }
+                    bg={
+                      formObject[attributeName]?.includes(value)
+                        ? "gray.100"
+                        : ""
+                    }
+                  >
+                    <Text colorScheme="button">{value}</Text>
+                  </Pressable>
+                );
+              })}
+            <Box p="5">
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                onPress={(e) => setFormData({})}
+              >
+                {t("SELECT")}
+              </Button>
+            </Box>
+          </ScrollView>
+        </Stack>
       </Actionsheet>
     </Stack>
   );

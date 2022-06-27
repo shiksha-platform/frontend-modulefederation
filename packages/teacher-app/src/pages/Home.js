@@ -202,6 +202,8 @@ function Home({ footerLinks, appName }) {
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
         _subHeader={{
           bg: "white",
+          pt: "30px",
+          pb: "0px",
         }}
         _footer={footerLinks}
       >
@@ -231,7 +233,8 @@ function Home({ footerLinks, appName }) {
             maxWidth="1024px"
             position="fixed"
             bottom="0"
-            mb="30px"
+            w="92%"
+            mb="69px"
           >
             <VStack space={5} p="5">
               <H1>How to mark your own attendance?</H1>
