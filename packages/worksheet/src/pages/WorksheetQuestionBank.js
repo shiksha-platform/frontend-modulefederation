@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import jwt_decode from "jwt-decode";
 import {
   Layout,
   useWindowSize,
   IconByName,
   worksheetRegistryService,
   Loading,
+  likeRegistryService,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
@@ -30,12 +32,13 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const [worksheet, setWorksheet] = React.useState({});
   const [showModule, setShowModule] = useState(false);
   const [showModuleComments, setShowModuleComments] = useState(false);
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState({});
   const [state, setState] = useState(false);
   const [loading, setLoading] = React.useState(true);
   const [questionObject, setQuestionObject] = React.useState({});
   const { id } = useParams();
   const navigate = useNavigate();
+  const { sub } = jwt_decode(localStorage.getItem("token"));
 
   React.useEffect(async () => {
     const worksheetData = await worksheetRegistryService.getOne({ id });
@@ -49,6 +52,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     setWorksheet(worksheetData);
     setState(worksheetData?.state && worksheetData.state === "Publish");
     setQuestions(newQuestions);
+    getLikes();
     setLoading(false);
   }, []);
 
@@ -60,6 +64,38 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const handleCommentModuleOpen = () => {
     setShowModuleComments(true);
     setShowModule(false);
+  };
+
+  const getLikes = async () => {
+    const result = await likeRegistryService.getAll({
+      contextId: { eq: id },
+      context: { eq: "Worksheet" },
+      userId: { eq: sub },
+      type: { eq: "like" },
+    });
+    const newData = result.find((e, index) => e);
+    setLike(newData ? newData : {});
+  };
+
+  const handleLike = async () => {
+    if (like.id) {
+      const result = await likeRegistryService.update(
+        {
+          id: like.id,
+          type: "unlike",
+        },
+        ["type"]
+      );
+      setLike({});
+    } else {
+      let newData = {
+        contextId: id,
+        context: "Worksheet",
+        type: "like",
+      };
+      const { osid } = await likeRegistryService.create(newData);
+      setLike({ ...newData, id: osid });
+    }
   };
 
   if (loading) {
@@ -93,9 +129,9 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         rightIcon: state ? (
           <HStack>
             <IconByName
-              name={like ? "Heart3FillIcon" : "Heart3LineIcon"}
-              color={like ? "button.500" : "black.500"}
-              onPress={(e) => setLike(!like)}
+              name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+              color={like.id ? "button.500" : "black.500"}
+              onPress={handleLike}
             />
             <IconByName name="ShareLineIcon" />
             <IconByName

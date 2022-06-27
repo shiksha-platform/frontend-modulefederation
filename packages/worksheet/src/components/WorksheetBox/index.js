@@ -1,4 +1,9 @@
-import { capture, IconByName, telemetryFactory } from "@shiksha/common-lib";
+import {
+  capture,
+  IconByName,
+  likeRegistryService,
+  telemetryFactory,
+} from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -11,6 +16,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 export default function WorksheetBox({
   item,
@@ -23,24 +29,60 @@ export default function WorksheetBox({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const colors = ["lightBlue.800", "indigo.900", "fuchsia.700", "rose.600"];
-  const [like, setLike] = React.useState(false);
+  const [like, setLike] = React.useState({});
+  const [likes, setLikes] = React.useState([]);
   const [random, setRandom] = React.useState();
+  const { sub } = jwt_decode(localStorage.getItem("token"));
 
-  React.useEffect((e) => {
+  React.useEffect(async (e) => {
     setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
+    await getLikes();
   }, []);
 
-  const handleLike = (item) => {
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Worksheet-Like",
-      worksheetId: item?.id,
-      subject: item?.subject,
-      grade: item?.grade,
-      topic: item?.topic,
+  const getLikes = async () => {
+    const result = await likeRegistryService.getAll({
+      contextId: { eq: item?.id },
+      context: { eq: "Worksheet" },
+      type: { eq: "like" },
     });
-    capture("INTERACT", telemetryData);
-    setLike(!like);
+    const newData = result.find((e, index) => e.userId === sub);
+    console.log({ result, newData });
+    setLikes(result ? result : []);
+    setLike(newData ? newData : {});
+  };
+
+  const handleLike = async () => {
+    if (like.id) {
+      const result = await likeRegistryService.update(
+        {
+          id: like.id,
+          type: "unlike",
+        },
+        ["type"]
+      );
+      setLike({});
+      const newData = likes.filter((e) => e.id !== like.id);
+      setLikes(newData);
+    } else {
+      let newData = {
+        contextId: item?.id,
+        context: "Worksheet",
+        type: "like",
+      };
+      const { osid } = await likeRegistryService.create(newData);
+      const telemetryData = telemetryFactory.interact({
+        appName,
+        type: "Worksheet-Like",
+        worksheetId: item?.id,
+        subject: item?.subject,
+        grade: item?.grade,
+        topic: item?.topic,
+      });
+      capture("INTERACT", telemetryData);
+      const newObject = { ...newData, id: osid };
+      setLike(newObject);
+      setLikes([...likes, newObject]);
+    }
   };
 
   const handleDownload = (item) => {
@@ -106,8 +148,8 @@ export default function WorksheetBox({
                     isDisabled
                   />
                   <Text fontWeight="600" fontSize="10px">
-                    {((item?.likes ? item?.likes : 0) + like ? 1 : 0) +
-                      " likes"}
+                    {console.log({ likes })}
+                    {(likes ? likes.length : 0) + " likes"}
                   </Text>
 
                   <Text fontWeight="600" fontSize="10px">
@@ -244,7 +286,7 @@ export default function WorksheetBox({
             {!canShowButtonArray || canShowButtonArray.includes("Like") ? (
               <Box shadow="2" p="2" rounded="full">
                 <IconByName
-                  name={like ? "Heart3FillIcon" : "Heart3LineIcon"}
+                  name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
                   _icon={{ size: 15 }}
                   color="button.500"
                   p="0"
