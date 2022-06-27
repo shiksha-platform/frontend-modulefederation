@@ -373,110 +373,55 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <H2>{t(`Select ${formData?.name}`)}</H2>
-            </Stack>
-            <IconByName
-              name="CloseCircleLineIcon"
-              onPress={(e) => setFormData({})}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
-          <Pressable
-            px="5"
-            pt="5"
-            onPress={(e) => {
-              if (
-                formData?.data &&
-                valueArr &&
-                formData?.data?.length === valueArr?.length
-              ) {
-                setFormObject({ ...formObject, [formData?.attributeName]: [] });
-              } else {
-                setFormObject({
-                  ...formObject,
-                  [formData?.attributeName]: formData.data,
-                });
-              }
-            }}
-          >
-            <HStack space="2" colorScheme="button" alignItems="center">
+        <Stack width={"100%"} maxH="100%">
+          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+            <HStack justifyContent={"space-between"}>
+              <Stack p={5} pt={2} pb="25px">
+                <H2>{t(`Select ${formData?.name}`)}</H2>
+              </Stack>
               <IconByName
-                isDisabled
-                color={
-                  formData?.data &&
-                  valueArr &&
-                  formData?.data?.length === valueArr?.length
-                    ? colors.primary
-                    : colors.grayLight
-                }
-                name={
-                  formData?.data &&
-                  valueArr &&
-                  formData?.data?.length === valueArr?.length
-                    ? "CheckboxLineIcon"
-                    : "CheckboxBlankLineIcon"
-                }
+                name="CloseCircleLineIcon"
+                onPress={(e) => setFormData({})}
               />
-              <Text>{t("Select All")}</Text>
             </HStack>
-          </Pressable>
-          {formData?.data &&
-            formData?.data.map((value, index) => {
-              return (
-                <Pressable
-                  px="5"
-                  pt="5"
-                  key={index}
-                  onPress={(e) => {
-                    if (valueArr.includes(value)) {
-                      const newData = formObject[attributeName].filter(
-                        (e) => value !== e
-                      );
+          </Actionsheet.Content>
+          <ScrollView bg="white" width={"100%"}>
+            {formData?.data &&
+              formData.data.map((value, index) => {
+                let attributeName = formData.attributeName
+                  ? formData.attributeName
+                  : formData.name;
+                return (
+                  <Pressable
+                    key={index}
+                    p="5"
+                    onPress={(e) =>
                       setFormObject({
                         ...formObject,
-                        [attributeName]: newData,
-                      });
-                    } else {
-                      setFormObject({
-                        ...formObject,
-                        [attributeName]: [...valueArr, value],
-                      });
+                        [attributeName]: [value],
+                      })
                     }
-                  }}
-                >
-                  <HStack space="2" colorScheme="button" alignItems="center">
-                    <IconByName
-                      isDisabled
-                      color={
-                        valueArr.includes(value)
-                          ? colors.primary
-                          : colors.grayLight
-                      }
-                      name={
-                        valueArr.includes(value)
-                          ? "CheckboxLineIcon"
-                          : "CheckboxBlankLineIcon"
-                      }
-                    />
-                    <Text>{value}</Text>
-                  </HStack>
-                </Pressable>
-              );
-            })}
-          <Box p="5">
-            <Button
-              colorScheme="button"
-              _text={{ color: "white" }}
-              onPress={(e) => setFormData({})}
-            >
-              {t("SELECT")}
-            </Button>
-          </Box>
-        </Box>
+                    bg={
+                      formObject[attributeName]?.includes(value)
+                        ? "gray.100"
+                        : ""
+                    }
+                  >
+                    <Text colorScheme="button">{value}</Text>
+                  </Pressable>
+                );
+              })}
+            <Box p="5">
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                onPress={(e) => setFormData({})}
+              >
+                {t("SELECT")}
+              </Button>
+            </Box>
+          </ScrollView>
+        </Stack>
       </Actionsheet>
     </Stack>
   );

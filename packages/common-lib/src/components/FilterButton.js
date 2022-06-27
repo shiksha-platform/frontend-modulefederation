@@ -12,6 +12,7 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconByName from './IconByName'
+import { BodyLarge } from './layout/HeaderTags'
 
 const FilterButton = ({
   filters = [],
