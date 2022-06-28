@@ -20,16 +20,15 @@ export default function Assessment() {
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
   const [pageName, setPageName] = useState();
-  const [headerDetails, setHeaderDetails] = useState();
 
   if(pageName === 'assessmentStudentList') {
     return (
       <Layout
         _header={{
-          title: headerDetails && headerDetails.title ? headerDetails.title : "Class VI A",
+          title: "Class VI A",
           isEnableSearchBtn: true,
           // setSearch: setSearch,
-          subHeading: headerDetails && headerDetails.subHeading ? headerDetails.subHeading : t("Class Details"),
+          subHeading: t("Class Details"),
           iconComponent: (
             <Avatar size="48px" borderRadius="md" source={{
               uri: 'https://via.placeholder.com/50x50.png'
@@ -39,7 +38,7 @@ export default function Assessment() {
         _appBar={{ languages: ["en"] }}
         subHeader={
           <Text fontSize={"lg"}>
-            {headerDetails && headerDetails.student ? headerDetails.student.name : "View All Students"}
+            "View All Students"
           </Text>
         }
         _subHeader={{ bg: "attendanceCard.500" }}
@@ -84,7 +83,7 @@ export default function Assessment() {
         }}
       >
         <Stack space={1} mb="2" shadow={2}>
-          <StudentListCard setHeaderDetails={setHeaderDetails} />
+          <StudentListCard />
         </Stack>
       </Layout>
     )

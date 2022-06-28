@@ -6,6 +6,7 @@ import Assessment from "pages";
 import ExamScores from "./pages/ExamScores";
 import SuccessPublicationReport from "./components/SpotAssessment/successPublicationReport";
 import ReportDetails from "./components/SpotAssessment/ReportDetails";
+import SpotAssessmentResult from "./components/SpotAssessment/SpotAssessmentResult";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -19,11 +20,15 @@ function App() {
       component: ExamScores,
     },
     {
+      path: "/assessment-result",
+      component: SpotAssessmentResult,
+    },
+    {
       path: "/assessment-success",
       component: SuccessPublicationReport,
     },
     {
-      path: "/detailed-report",
+      path: "/assessment-detailed-report",
       component: ReportDetails,
     },
     {

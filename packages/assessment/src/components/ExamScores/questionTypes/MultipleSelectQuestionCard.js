@@ -15,7 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-const MultipleSelectQuestionCard = ({ questionNumber}) => {
+const MultipleSelectQuestionCard = ({ questionNumber, question}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
@@ -38,24 +38,32 @@ const MultipleSelectQuestionCard = ({ questionNumber}) => {
         <VStack>
           <Box px="4" py={2} bg={"#FEF1EE"} roundedTop="6">
             <HStack>
-              <Text color={"#373839"} textAlign="justify" whiteSpace="initial" mr={2}>
-                <Text bold>Q{questionNumber}. </Text>
-                <Text>A factory produces 9643243 toys every month. It sends 1438228 toys to the town market, 1657539 toys to markets in other states and 1413931 to the markets in other countries. 15 toys are left in the factory.</Text>
-              </Text>
-              <Text><IconByName name="InformationFillIcon" p={0} color={'#F87558'} /></Text>
+              <Text bold mt={4} mr={2}>Q{questionNumber}. </Text>
+              <div dangerouslySetInnerHTML={{__html: question?.question}}></div>
+              <IconByName name="InformationFillIcon" p={0} color={'#F87558'} mt={3} />
             </HStack>
           </Box>
           <Box p="4" bg={"#FFF8F7"} borderBottomRadius={6}>
             <VStack space={4}>
-              <HStack alignItems={'center'} justifyContent={'space-between'}>
-                <Text flexGrow={1} flexBasis={'50px'}>a. 70</Text>
-                <Text flexGrow={1} flexBasis={'50px'}>b. 0.7</Text>
+              <HStack alignItems={'center'} justifyContent={'space-between'} flexWrap={'wrap'}>
+                {
+                  question && question.options && question.options.length && question.options.map((option, optionIndex)=> {
+                    return <div style={{flex: '0 0 50%', maxWidth: '50%'}} key={`option-${optionIndex}`}>
+                      <HStack>
+                        <Text bold mt={4}>{optionIndex+1}. </Text>
+                        <div dangerouslySetInnerHTML={{__html: option.value.body}}></div>
+                      </HStack>
+                    </div>
+                  })
+                }
+                {/*<Text flexGrow={1} flexBasis={'50px'}>a. 70</Text>
+                <Text flexGrow={1} flexBasis={'50px'}>b. 0.7</Text>*/}
               </HStack>
 
-              <HStack alignItems={'center'} justifyContent={'space-between'}>
+              {/*<HStack alignItems={'center'} justifyContent={'space-between'}>
                 <Text flexGrow={1} flexBasis={'50px'}>c. 7000</Text>
                 <Text flexGrow={1} flexBasis={'50px'}>d. 0.75</Text>
-              </HStack>
+              </HStack>*/}
               <Divider />
               <Box>
                 <VStack space={3}>

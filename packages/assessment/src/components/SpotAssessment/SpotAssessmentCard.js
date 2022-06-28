@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import {
+  capture,
   IconByName,
   ProgressBar,
+  telemetryFactory
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -15,7 +17,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-const SpotAssessmentCard = ({ setPageName }) => {
+const SpotAssessmentCard = ({ setPageName, appName, }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
@@ -32,6 +34,16 @@ const SpotAssessmentCard = ({ setPageName }) => {
       value: 6,
     }
   ]);
+
+  const _handleSpotAssessmentStart = () => {
+    setChooseSubjectModal(true);
+
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Spot-Assessment-Start",
+    });
+    capture("START", telemetryData);
+  }
 
   /*React.useEffect(() => {
     const getData = async () => {
@@ -114,7 +126,7 @@ const SpotAssessmentCard = ({ setPageName }) => {
                   py={3}
                   // colorScheme="button"
                   _text={{color: "#fff"}}
-                  onPress={() => setChooseSubjectModal(true)}
+                  onPress={_handleSpotAssessmentStart}
                 >
                   {t("Continue")}
                 </Button>

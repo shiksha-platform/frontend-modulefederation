@@ -15,7 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-const SimpleQuestionCard = ({ questionNumber}) => {
+const SimpleQuestionCard = ({ questionNumber, question}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
@@ -38,11 +38,9 @@ const SimpleQuestionCard = ({ questionNumber}) => {
         <VStack>
           <Box px="4" py={2} bg={"#FEF1EE"} roundedTop="6">
             <HStack>
-              <Text color={"#373839"} textAlign="justify" whiteSpace="initial" mr={2}>
-                <Text bold>Q{questionNumber}. </Text>
-                <Text>The place value of the underlined digit in what 65872546 is 550.</Text>
-              </Text>
-              <Text><IconByName name="InformationFillIcon" p={0} color={'#F87558'} /></Text>
+              <Text bold mt={4} mr={2}>Q{questionNumber}. </Text>
+              <div dangerouslySetInnerHTML={{__html: question?.question}}></div>
+              <IconByName name="InformationFillIcon" p={0} color={'#F87558'} mt={3} />
             </HStack>
           </Box>
           <Box p="4" bg={"#FFF8F7"} borderBottomRadius={6}>

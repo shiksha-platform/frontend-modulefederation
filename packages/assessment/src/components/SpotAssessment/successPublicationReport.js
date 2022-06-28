@@ -4,16 +4,17 @@ import {
   Layout,
   Loading,
   useWindowSize,
-  H2, H3, ProgressBar
+  H2, H3, ProgressBar, telemetryFactory, capture
 } from "@shiksha/common-lib";
 import { Button, Box, VStack, Text, HStack, Divider, Avatar } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
-
+import { useNavigate } from "react-router-dom";
 export default function SuccessPublicationReport({ handleBackButton, formObject }) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
@@ -26,6 +27,14 @@ export default function SuccessPublicationReport({ handleBackButton, formObject 
       value: 6,
     }
   ]);
+
+  const _handleSpotAssessmentNotificationSend = () => {
+    /*const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Spot-Assessment-Notification-Send",
+    });
+    capture("INTERACT", telemetryData);*/
+  }
 
   return (
     <Layout
@@ -122,10 +131,6 @@ export default function SuccessPublicationReport({ handleBackButton, formObject 
                       <Button
                         colorScheme="button"
                         variant="outline"
-                        _text={{
-                          fontSize: '14px',
-                          p:'1'
-                        }}
                         // onPress={()=> setSelectedStudent()}
                       >
                         {t("View Message")}
@@ -134,10 +139,9 @@ export default function SuccessPublicationReport({ handleBackButton, formObject 
                       <Button
                         colorScheme="button"
                         _text={{
-                          color: '#fff',
-                          fontSize: '14px',
-                          p:'1'
+                          color: '#fff'
                         }}
+                        onPress={()=> {_handleSpotAssessmentNotificationSend()}}
                       >
                         {t("Send Another message")}
                       </Button>
@@ -183,24 +187,19 @@ export default function SuccessPublicationReport({ handleBackButton, formObject 
                       <Button
                         colorScheme="button"
                         variant="outline"
-                        _text={{
-                          fontSize: '14px',
-                          p:'1'
-                        }}
                         // onPress={()=> setSelectedStudent()}
                       >
-                        {t("View Message")}
+                        {t("Close")}
                       </Button>
 
                       <Button
                         colorScheme="button"
                         _text={{
-                          color: '#fff',
-                          fontSize: '14px',
-                          p:'1'
+                          color: '#fff'
                         }}
+                        onPress={()=> navigate('/assessment-detailed-report')}
                       >
-                        {t("Send Another message")}
+                        {t("See full report")}
                       </Button>
                     </HStack>
                   </Box>

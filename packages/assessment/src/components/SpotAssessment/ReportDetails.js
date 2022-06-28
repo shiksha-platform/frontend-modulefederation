@@ -1,13 +1,13 @@
-import { Collapsible, IconByName, Layout, ProgressBar, H2, H3 } from "@shiksha/common-lib";
+import { Collapsible, IconByName, Layout, ProgressBar, H2, H3, telemetryFactory, capture } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar, Button } from "native-base";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from 'react-chartjs-2';
 Chart.register(ArcElement, Tooltip, Legend);
 
-export default function ReportDetails() {
+export default function ReportDetails({appName}) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
@@ -35,6 +35,44 @@ export default function ReportDetails() {
       value: 6,
     }
   ]);
+
+  const _handleSpotAssessmentFullReportStart = () => {
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Spot-Assessment-End",
+    });
+    capture("START", telemetryData);
+  }
+
+  const _handleSpotAssessmentFullReportEnd = () => {
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Spot-Assessment-End",
+    });
+    capture("END", telemetryData);
+  }
+
+  const _handleSpotAssessmentFullReportShare = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Spot-Assessment-Full-Report-Share",
+    });
+    capture("INTERACT", telemetryData);
+  }
+
+  const _handleSpotAssessmentFullReportDownload = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Spot-Assessment-Full-Report-Download",
+    });
+    capture("INTERACT", telemetryData);
+  }
+  /*useEffect(() => {
+
+    return () => {
+      console.log('page leaved');
+    }
+  }, []);*/
 
   return (
     <Layout
@@ -215,7 +253,7 @@ export default function ReportDetails() {
                         </Box>
                         <Box>
                           <VStack>
-                            {/*<Box position="relative">
+                            <Box position="relative">
                               <Doughnut width={'25px'} height={'25px'} data={{
                                 datasets: [
                                   {
@@ -231,9 +269,8 @@ export default function ReportDetails() {
                                   }
                                 ],
                               }} />
-                              <Text position="absolute" top="50%" left="50%">14</Text>
-                            </Box>*/}
-                            <Text>14</Text>
+                              <Text position="absolute" top="50%" left="50%" style={{transform: 'translate(-50%, -25%)'}}>14</Text>
+                            </Box>
                             <Text>Total Score</Text>
                           </VStack>
                         </Box>
