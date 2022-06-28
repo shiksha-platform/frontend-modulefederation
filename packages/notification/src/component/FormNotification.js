@@ -27,6 +27,7 @@ const colors = overrideColorTheme(colorTheme);
 export const FormNotification = ({ setPageName }) => {
   const { t } = useTranslation();
   const [showModalTemplate, setShowModalTemplate] = React.useState(false);
+  const [selectTemplate, setSelectTemplate] = React.useState("");
   const navigate = useNavigate();
 
   return (
@@ -36,7 +37,12 @@ export const FormNotification = ({ setPageName }) => {
           <FormControl.Label>
             <BodyLarge>{"Notification title"}</BodyLarge>
           </FormControl.Label>
-          <Input variant="filled" p={2} placeholder="Enter name" />
+          <Input
+            variant="filled"
+            bg="gray.100"
+            p={2}
+            placeholder="Enter name"
+          />
         </FormControl>
       </Box>
       <HStack
@@ -183,10 +189,10 @@ export const FormNotification = ({ setPageName }) => {
         </Actionsheet.Content>
         <Box bg={colors.white} fontSize="14px" width={"100%"}>
           {[
-            "Absent Notice",
-            "Holiday Announcement",
-            "Attendace Report",
-            "Timetable Update",
+            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
+            "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
+            "Learners should be able to use strategies that will support their understanding during their own reading",
+            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking..",
           ].map((value, index) => {
             return (
               <Box p="5" key={index}>
