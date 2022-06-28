@@ -11,6 +11,7 @@ export default function ProgressBar({
   _bar,
   _labelCount,
   _textInBar,
+  legendType,
   ...props
 }) {
   let total = data.reduce((a, b) => a + b['value'], 0)
@@ -90,13 +91,43 @@ export default function ProgressBar({
         if (item.value > 0) {
           return (
             <Text key={i} color={item.color}>
-              <Text fontSize='25px'>●</Text>
+              {!legendType && <Text fontSize='25px'>●</Text>}
               <Text>{item.name}</Text>
             </Text>
           )
         }
         return undefined
       })
+  }
+
+  const getLegendPattern = () => {
+    if (legendType === 'separated') {
+      return (
+        <HStack
+          alignSelf='space-between'
+          space={1}
+          justifyContent='space-between'
+        >
+          {legends === '' ? '' : legends}
+        </HStack>
+      )
+    }
+    if (legendType === 'linear') {
+      return (
+        <HStack
+          alignSelf='space-between'
+          space={1}
+          justifyContent='space-between'
+        >
+          {legends === '' ? '' : legends}
+        </HStack>
+      )
+    }
+    return (
+      <HStack alignSelf='center' space={1} justifyContent='center'>
+        {legends === '' ? '' : legends}
+      </HStack>
+    )
   }
 
   return (
@@ -110,13 +141,7 @@ export default function ProgressBar({
         <HStack overflow='hidden' rounded='xl' {..._bar}>
           {bars === '' ? '' : bars}
         </HStack>
-        {!isTextInBar && isTextShow ? (
-          <HStack alignSelf='center' space={1}>
-            {legends === '' ? '' : legends}
-          </HStack>
-        ) : (
-          ''
-        )}
+        {!isTextInBar && isTextShow ? getLegendPattern() : ''}
       </VStack>
     </Stack>
   )
