@@ -51,6 +51,7 @@ const TimeTableRoute = () => {
   const [activeDate, setActiveDate] = React.useState();
   const [compare, setCompare] = React.useState();
   const [showModal, setShowModal] = React.useState(false);
+  const [isCompare, setIsCompare] = React.useState(false);
   const [showModalMessages, setShowModalMessages] = React.useState(false);
   const [showModalClash, setShowModalClash] = React.useState(false);
   const [timeTables, setTimeTables] = React.useState([]);
@@ -79,12 +80,12 @@ const TimeTableRoute = () => {
     return {
       ...e,
       title: t(e.title),
-      backgroundColor: e.activeMenu
-        ? emerald
-        : index < 4
-        ? timeTableCardOrange
-        : gray,
-      borderColor: e.activeMenu ? emerald : timeTableCardOrange,
+      backgroundColor: e.backgroundColor
+        ? e.backgroundColor
+        : timeTableCardOrange,
+      borderColor: e.borderColor ? e.borderColor : timeTableBorderColor,
+      borderWidth: "1",
+      borderRadius: "5px",
     };
   });
 
@@ -161,7 +162,17 @@ const TimeTableRoute = () => {
       </Box>
       <Sheet
         customFunction={(e) => {
-          setTimeTables([...timeTable, ...timeTable]);
+          setIsCompare(true);
+          setTimeTables([
+            ...timeTable,
+            ...timeTable.map((e) => {
+              return {
+                ...e,
+                backgroundColor: "#D7F2DD",
+                borderColor: "#A9E3AE",
+              };
+            }),
+          ]);
           if (e) {
             setCompare(e);
           }
@@ -227,10 +238,11 @@ const TimeTableRoute = () => {
         slotDuration="00:15"
         slotLabelInterval="01:00"
         events={events}
-        viewDidMount={(view) => {
-          view.el.querySelector(".fc-timegrid-axis-frame").innerHTML =
-            t("TIME");
-        }}
+        columnHeader={false}
+        // viewDidMount={(view) => {
+        //   view.el.querySelector(".fc-timegrid-axis-frame").innerHTML =
+        //     t("TIME");
+        // }}
         eventContent={(event) => {
           let item = {
             ...event?.event?._def,
@@ -250,6 +262,7 @@ const TimeTableRoute = () => {
               setShowModalClash(true);
               setSelectedEvent(item);
             },
+            isCompare: isCompare,
           });
         }}
         dayHeaderFormat={{ weekday: "long" }}
@@ -266,7 +279,9 @@ const TimeTableRoute = () => {
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
+              color="classCard.900"
               onPress={(e) => setShowModalMessages(false)}
+              _icon={{ alignItems: "center" }}
             />
           </HStack>
         </Actionsheet.Content>
@@ -324,13 +339,14 @@ const TimeTableRoute = () => {
         onClose={() => setShowModalClash(false)}
         hideDragIndicator
       >
-        <Actionsheet.Content alignItems={"left"} p="0">
+        <Actionsheet.Content alignItems={"left"} p="0" bg="white">
           <IconByName
             position="absolute"
             zIndex="10"
             top="2"
             right="2"
             name="CloseCircleLineIcon"
+            color="classCard.900"
             onPress={(e) => setShowModalClash(false)}
           />
           {["Mathematics", "Middle school term exams", "Sports day"].map(
@@ -341,7 +357,9 @@ const TimeTableRoute = () => {
                     <IconByName
                       size="sm"
                       name="FlashlightLineIcon"
-                      colorScheme="timeTableFlashIcon"
+                      colorScheme={
+                        index === 1 ? "timeTableFlashIcon" : "timeTablemiddle"
+                      }
                       variant="solid"
                       rounded="full"
                       _icon={{
@@ -363,14 +381,21 @@ const TimeTableRoute = () => {
                       p="0"
                       name="CheckboxBlankFillIcon"
                       isDisabledinlineEllipsisStyle
-                      color="timeTableFlashIcon.500"
+                      color={
+                        index === 0
+                          ? "timeTablecellborder.500"
+                          : index === 1
+                          ? "timeTableFlashIcon.500"
+                          : "timeTablemiddle.500"
+                      }
                     />
                     <H2>{index ? name : selectedEvent?.title}</H2>
                   </HStack>
-                  <HStack space="2" alignItems="center">
+                  <HStack space="8" alignItems="center">
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="MapPinLineIcon"
+                        color="gray.700"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
@@ -381,6 +406,7 @@ const TimeTableRoute = () => {
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="TimeLineIcon"
+                        color="gray.700"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
@@ -391,6 +417,7 @@ const TimeTableRoute = () => {
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="CalendarEventLineIcon"
+                        color="gray.700"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
@@ -404,6 +431,15 @@ const TimeTableRoute = () => {
             )
           )}
         </Actionsheet.Content>
+        <Box bg="white" p="5" w="100%">
+          <Button
+            colorScheme="button"
+            variant="outline"
+            _text={{ textTransform: "capitalize" }}
+          >
+            {t("VIEW CALENDAR")}
+          </Button>
+        </Box>
       </Actionsheet>
     </Box>
   );
@@ -491,7 +527,7 @@ const Display = ({
               previousDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
+                  : "gray.500"
                 : "gray.400"
             }
             name="ArrowLeftSLineIcon"
@@ -519,7 +555,7 @@ const Display = ({
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor
                   ? activeColor
-                  : "button.500"
+                  : "gray.500"
                 : "gray.400"
             }
             name="ArrowRightSLineIcon"
@@ -564,6 +600,7 @@ const Sheet = ({
           </Stack>
           <IconByName
             name="CloseCircleLineIcon"
+            color="classCard.900"
             onPress={(e) => setShowModal(false)}
           />
         </HStack>
@@ -582,7 +619,7 @@ const Sheet = ({
               {subData?.data?.map((item, index) => (
                 <Pressable
                   key={index}
-                  p={5}
+                  px={5}
                   onPress={(e) => {
                     setSelectedData({
                       ...selectedData,
@@ -612,10 +649,13 @@ const Sheet = ({
                   }
                 >
                   <HStack
+                    py={5}
                     alignItems="center"
                     space={2}
                     width="100%"
                     justifyContent={"space-between"}
+                    borderBottomWidth="1"
+                    borderBottomColor="gray.200"
                   >
                     <HStack alignItems="center" space={2}>
                       {item.leftIcon ? (
@@ -639,7 +679,7 @@ const Sheet = ({
                               ? "white"
                               : "gray.500"
                           }
-                          _icon={{ size: "18" }}
+                          _icon={{ size: "18", color: "gray.700" }}
                         />
                       ) : (
                         ""

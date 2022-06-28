@@ -85,3 +85,11 @@
     margin-left: 3px !important;
   }
 }
+.fc th {
+  display: none;
+}
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-right: none;
+  border-left: none;
+}

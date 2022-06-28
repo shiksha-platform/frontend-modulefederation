@@ -4,14 +4,14 @@ export const timeTables = [
     id: "1",
     start: moment().format("Y-MM-DD") + " 08:30",
     end: moment().format("Y-MM-DD") + " 09:25",
-    title: "MATHS",
+    title: "MATHEMATICS",
     subTitle: "Class V, Sec B",
   },
   {
     id: "2",
     start: moment().format("Y-MM-DD") + " 09:30",
     end: moment().format("Y-MM-DD") + " 10:25",
-    title: "MATHS",
+    title: "MATHEMATICS",
     subTitle: "Class V, Sec C",
   },
   {
@@ -37,7 +37,6 @@ export const timeTables = [
     title: "SCIENCE",
     subTitle: "Class VI, Sec A",
     activeMenu: true,
-    _text: { color: "white" },
   },
   {
     id: "6",

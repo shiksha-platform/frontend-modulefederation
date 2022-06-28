@@ -100,6 +100,9 @@ const DEFAULT_THEME = {
     calendarBtncolor: {
       500: '#BCBCBC'
     },
+    calendarDatecolor: {
+      500: '#BCC1CD'
+    },
     selfAicon: {
       500: '#545454'
     },
@@ -124,6 +127,15 @@ const DEFAULT_THEME = {
     classCard: {
       500: '#D9F0FC',
       900: '#7F9DAC'
+    },
+    timeTablecellbg: {
+      500: '#FFEFEB'
+    },
+    timeTablecellborder: {
+      500: '#FFDFD6'
+    },
+    timeTablemiddle: {
+      500: '#A1D6B6'
     },
     attendanceCard: {
       500: '#C9AFF4',

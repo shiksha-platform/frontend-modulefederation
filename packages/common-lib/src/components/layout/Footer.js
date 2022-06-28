@@ -8,7 +8,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
   const [selected, setSelected] = React.useState(0)
   const { t } = useTranslation()
 
-  const footerMenus = menues //TODO: manifest.menus.footer;
+  const footerMenus = menues
 
   useEffect(() => {
     let path = window?.location?.pathname.toString()
