@@ -78,13 +78,9 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
 
   const handleLike = async () => {
     if (like.id) {
-      const result = await likeRegistryService.update(
-        {
-          id: like.id,
-          type: "unlike",
-        },
-        ["type"]
-      );
+      const result = await likeRegistryService.distory({
+        id: like.id,
+      });
       setLike({});
     } else {
       let newData = {
