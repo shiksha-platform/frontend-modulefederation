@@ -37,7 +37,7 @@ export default function Attendance({ footerLinks, appName }) {
   const [searchStudents, setSearchStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   let { classId } = useParams();
-  if (!classId) classId = "dee531ae-9db0-4989-b6a1-da60080679df";
+  if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
   const [loading, setLoading] = useState(false);
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
