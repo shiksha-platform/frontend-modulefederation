@@ -622,7 +622,6 @@ export default function AttendanceComponent({
         });
     }
   };
-
   return (
     <Stack space={type !== "day" ? "15px" : ""}>
       <VStack space={type !== "day" ? "15px" : "2"}>

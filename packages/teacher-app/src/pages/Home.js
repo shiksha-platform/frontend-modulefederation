@@ -198,7 +198,10 @@ function Home({ footerLinks, appName }) {
             </Pressable>
           ),
         }}
-        _appBar={{ languages: manifest.languages }}
+        _appBar={{
+          languages: manifest.languages,
+          isShowNotificationButton: true,
+        }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
         _subHeader={{
           bg: "white",

@@ -28,6 +28,7 @@ import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
+import * as assessmentRegistryService from './services/assessmentRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 
 export {
@@ -51,6 +52,7 @@ export {
   classRegistryService,
   attendanceRegistryService,
   studentRegistryService,
+  assessmentRegistryService,
   getApiConfig
 }
 

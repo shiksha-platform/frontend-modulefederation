@@ -1,13 +1,19 @@
 import {
-  Collapsible,
+  FilterButton,
   H1,
   IconByName,
   Layout,
   Loading,
   useWindowSize,
+  BodyLarge,
+  BodyMedium,
+  H2,
+  Caption,
+  Subtitle,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
-import WorksheetBox from "components/WorksheertBox";
+import WorksheetBox from "components/WorksheetBox";
 import {
   HStack,
   Stack,
@@ -16,17 +22,80 @@ import {
   Actionsheet,
   Box,
   Pressable,
-  Checkbox,
   VStack,
-  Center,
-  ScrollView,
   FormControl,
   Input,
+  ScrollView,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getAllQuestions } from "services";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
+
+const defaultInputs = [
+  {
+    name: "Subject",
+    attributeName: "subject",
+    data: [
+      "Social Science",
+      "Science",
+      "Mathematics",
+      "Hindi",
+      "English",
+      "History",
+      "Geography",
+    ],
+  },
+  {
+    name: "Class",
+    attributeName: "gradeLevel",
+    data: [
+      "Class 1",
+      "Class 2",
+      "Class 3",
+      "Class 4",
+      "Class 5",
+      "Class 6",
+      "Class 7",
+      "Class 8",
+      "Class 9",
+      "Class 10",
+    ],
+  },
+  {
+    name: "Topic",
+    attributeName: "topic",
+    data: [
+      "भोजन के घटक",
+      "भोजन: यह कहाँ से आता है?",
+      "तंतु से वस्त्र तक",
+      "संसाधन",
+      "समानता",
+      "संश्लेशित रेशे  और प्लास्टिक",
+      "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
+    ],
+  },
+  {
+    name: "Source",
+    attributeName: "source",
+    data: ["source 1", "source 2"],
+  },
+];
+
+const autoGenerateInputs = [
+  {
+    name: "Number of Questions",
+    attributeName: "number_of_questions",
+    data: ["10", "20", "30", "40", "50"],
+  },
+  {
+    name: "Add Question type",
+    attributeName: "add_question_type",
+    data: ["MCQ", "SA"],
+  },
+];
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -35,7 +104,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(false);
   const [formObject, setFormObject] = React.useState({});
   const [width, height] = useWindowSize();
-  console.log("hello create");
+  const [worksheetName, setWorksheetName] = React.useState("Untitled");
+  const [search, setSearch] = React.useState();
+
   React.useEffect(async () => {
     if (pageName === "ListOfWorksheet") {
       const questions = await getAllQuestions(formObject);
@@ -48,35 +119,46 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     return <Loading />;
   }
 
+  const handleBackButton = () => {
+    if (pageName === "success") {
+      setFormObject({});
+      setPageName();
+      setWorksheetName("Untitled");
+    } else if (pageName === "AddDescriptionPage") {
+      setPageName("filterData");
+    } else if (pageName === "filterData") {
+      setPageName("ListOfWorksheet");
+    } else if (pageName === "ListOfWorksheet") {
+      setPageName("");
+    } else {
+      navigate(-1);
+    }
+  };
+
   if (pageName === "success") {
     return (
       <Layout
         _appBar={{
+          onPressBackButton: handleBackButton,
           languages: manifest.languages,
-          color: "successAlertText.500",
-          _box: { bg: "successAlert.500" },
+          color: colors.successAlertText,
+          _box: { bg: colors.successAlert },
         }}
       >
         <Loading
           width={width}
           height={height - 230}
           customComponent={
-            <VStack space="2" flex="1">
-              <VStack bg="successAlert.500" pb="100px" pt="32px">
+            <VStack space="2" flex="1" width={width}>
+              <VStack bg={colors.successAlert} pb="100px" pt="32px">
                 <IconByName
                   alignSelf="center"
                   name="CheckboxCircleLineIcon"
-                  color="successAlertText.500"
+                  color={colors.successAlertText}
                   _icon={{ size: 100 }}
                 />
                 <Box alignSelf="center">
-                  <H1
-                    fontSize="22px"
-                    fontWeight="600"
-                    color="successAlertText.500"
-                  >
-                    Worksheet Published
-                  </H1>
+                  <H1 color={colors.successAlertText}>Worksheet Published</H1>
                 </Box>
               </VStack>
               <Box p="5">
@@ -109,18 +191,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           bg="white"
           p="5"
           position="fixed"
-          width="100%"
           bottom="0"
           shadow={2}
+          width={width}
         >
           <Button
             colorScheme="button"
             _text={{ color: "white" }}
             px="5"
             flex="1"
-            onPress={(e) => {
-              setPageName();
-            }}
+            onPress={handleBackButton}
           >
             {t("Back to Worksheets")}
           </Button>
@@ -135,31 +215,48 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         title:
           pageName === "ListOfWorksheet"
             ? t("Add Questions")
+            : pageName === "filterData"
+            ? worksheetName
             : pageName === "AddDescriptionPage"
             ? t("Add Description")
-            : t("New Worksheet"),
+            : t("CREATE_NEW_WORKSHEET"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{
+        languages: manifest.languages,
+        onPressBackButton: handleBackButton,
+        setSearch,
+        isEnableSearchBtn: pageName === "ListOfWorksheet",
+      }}
       subHeader={
-        pageName === "ListOfWorksheet"
-          ? t("Chapter 1: The Fish Tail")
-          : pageName === "AddDescriptionPage"
-          ? t("Enter Worksheet Details")
-          : t("Show questions based on")
+        <H2 textTransform="inherit">
+          {pageName === "ListOfWorksheet"
+            ? worksheetName
+              ? t("Your worksheet has been created.")
+              : t("You can see all questions here")
+            : pageName === "AddDescriptionPage"
+            ? t("Enter Worksheet Details")
+            : t("Show questions based on")}
+        </H2>
       }
       _subHeader={{
-        bg: "worksheetCard.500",
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
+        bg: colors.cardBg,
       }}
       _footer={footerLinks}
     >
-      {pageName === "ListOfWorksheet" ? (
-        <ListOfWorksheet {...{ questions, setQuestions, setPageName }} />
+      {["ListOfWorksheet", "filterData"].includes(pageName) ? (
+        <ListOfWorksheet
+          {...{
+            questions,
+            setQuestions,
+            pageName,
+            setPageName,
+            filterObject: formObject,
+            setFilterObject: setFormObject,
+            worksheetName,
+            setWorksheetName,
+          }}
+        />
       ) : pageName === "AddDescriptionPage" ? (
         <AddDescriptionPage {...{ questions, setQuestions, setPageName }} />
       ) : (
@@ -189,15 +286,16 @@ const FormInput = ({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Text fontSize={"14px"} fontWeight="500">
-            {t(item.name)}
-          </Text>
+          <BodyLarge>{t(item.name)}</BodyLarge>
           <Button
             {...(formObject[attributeName]
-              ? { _text: { color: "white" } }
+              ? { _text: { color: "white", textTransform: "inherit" } }
               : item?.buttonVariant
               ? { variant: item.buttonVariant }
-              : { variant: "outline", _text: { color: "button.500" } })}
+              : {
+                  variant: "outline",
+                  _text: { color: colors.primary, textTransform: "inherit" },
+                })}
             rounded="full"
             colorScheme="button"
             px="5"
@@ -207,8 +305,8 @@ const FormInput = ({
                   formObject[attributeName]
                     ? "white"
                     : item?.buttonVariant
-                    ? "button.500"
-                    : "button.500"
+                    ? colors.primary
+                    : colors.primary
                 }
                 name="ArrowDownSLineIcon"
                 isDisabled
@@ -217,8 +315,8 @@ const FormInput = ({
             onPress={(e) => setFormData(item)}
           >
             {formObject[attributeName]
-              ? formObject[attributeName]
-              : `Select ${t(attributeName)}`}
+              ? formObject[attributeName][0]
+              : `Select ${t(item.name)}`}
           </Button>
         </HStack>
       );
@@ -229,72 +327,40 @@ const FormInput = ({
 const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
+  const [inputs, setInputs] = React.useState(defaultInputs);
+
+  const attributeName = formData.attributeName
+    ? formData.attributeName
+    : formData?.name;
+  const valueArr = formObject[attributeName] ? formObject[attributeName] : [];
+
   const handelAddQuestion = () => {
     setLoading(true);
     setPageName("ListOfWorksheet");
   };
+
   return (
     <Stack space={1} mb="2">
       <FormInput
         {...{ formObject, setFormObject, formData, setFormData }}
-        data={[
-          {
-            name: "Subject",
-            attributeName: "subject",
-            data: [
-              "Social Science",
-              "Science",
-              "Mathematics",
-              "Hindi",
-              "English",
-              "History",
-              "Geography",
-            ],
-          },
-          {
-            name: "Class",
-            attributeName: "gradeLevel",
-            data: [
-              "Class 1",
-              "Class 2",
-              "Class 3",
-              "Class 4",
-              "Class 5",
-              "Class 6",
-              "Class 7",
-              "Class 8",
-              "Class 9",
-              "Class 10",
-              "Class 3",
-              "Class 4",
-              "Class 5",
-              "Class 6",
-              "Class 7",
-              "Class 8",
-              "Class 9",
-              "Class 10",
-            ],
-          },
-          {
-            name: "Topic",
-            attributeName: "topic",
-            data: [
-              "भोजन के घटक",
-              "भोजन: यह कहाँ से आता है?",
-              "तंतु से वस्त्र तक",
-              "संसाधन",
-              "समानता",
-              "संश्लेशित रेशे  और प्लास्टिक",
-              "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
-            ],
-          },
-        ]}
+        data={inputs}
       />
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
-          <Button colorScheme="button" px="5" flex="1" variant="outline">
-            {t("Auto Generate")}
-          </Button>
+          {!inputs.filter((e) => e.attributeName === "number_of_questions")
+            .length ? (
+            <Button
+              flex="1"
+              variant="outline"
+              onPress={(e) =>
+                setInputs([...defaultInputs, ...autoGenerateInputs])
+              }
+            >
+              {t("Auto Generate")}
+            </Button>
+          ) : (
+            <></>
+          )}
           <Button
             colorScheme="button"
             _text={{ color: "white" }}
@@ -302,18 +368,16 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
             flex="1"
             onPress={handelAddQuestion}
           >
-            {t("Add Questions")}
+            {t("Search Questions")}
           </Button>
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
         <Stack width={"100%"} maxH="100%">
-          <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t(`Select ${formData?.name}`)}
-                </Text>
+                <H2>{t(`Select ${formData?.name}`)}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -363,87 +427,170 @@ const FormPage = ({ formObject, setFormObject, setPageName, setLoading }) => {
   );
 };
 
-const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
+const ListOfWorksheet = ({
+  questions,
+  setQuestions,
+  pageName,
+  setPageName,
+  filterObject,
+  setFilterObject,
+  worksheetName,
+  setWorksheetName,
+}) => {
   const { t } = useTranslation();
   const [width, Height] = useWindowSize();
-  let fillInTheBlankQuestions = questions.filter((e) => e.qType === "SA");
-  let mcqQuestions = questions.filter((e) => e.qType === "MCQ");
-  let aqQuestions = questions.filter((e) => e.qType === "AQ");
   const [selectData, setSelectData] = React.useState([]);
-  const [isDataFilter, setIsDataFilter] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
+  const [showModule, setShowModule] = React.useState(false);
+  const [questionObject, setQuestionObject] = React.useState({});
+  const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
+  const [inputData, setInputData] = React.useState();
+
+  React.useEffect(() => {
+    setInputData(worksheetName);
+  }, [worksheetName, pageName]);
+
+  const handleWorksheetSubmit = () => {
+    setQuestions(selectData);
+    setPageName("filterData");
+    setIsSuccess(true);
+    setWorksheetName(inputData);
+    setShowModule(false);
+  };
+
+  const handelInput = (event) => {
+    if (event.target.value) setInputData(event.target.value);
+  };
+
+  const handelAddQuestionButton = () => {
+    setPageName("ListOfWorksheet");
+    setIsSuccess(false);
+  };
+
+  const callBackFilterObject = React.useCallback((e) => {
+    setFilterObject();
+  }, []);
 
   return (
     <Stack>
-      {isDataFilter ? (
-        <Box bg="successAlert.500" p="5">
+      {pageName === "filterData" && isSuccess ? (
+        <Box bg={colors.successAlert} p="5">
           <HStack justifyContent="space-between">
-            <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
+            <BodyLarge color={colors.successAlertText}>
               ({questions.length}) New Questions Added
-            </Text>
+            </BodyLarge>
             <IconByName
               name="CloseCircleLineIcon"
-              color="successAlertText.500"
+              color={colors.successAlertText}
               p="0"
-              onPress={(e) => setIsDataFilter(false)}
+              onPress={(e) => setIsSuccess(false)}
             />
           </HStack>
         </Box>
       ) : (
-        ""
+        <></>
       )}
-      <Collapsible
-        header="Choose correct answer(s) from the given choices"
-        _header={{ py: 5 }}
-      >
-        <ScrollView maxH={Height}>
-          <Box bg="white">
-            <VStack space="5">
-              {mcqQuestions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                  {...(isDataFilter ? {} : { selectData, setSelectData })}
-                />
+      {pageName === "ListOfWorksheet" ? (
+        <Box>
+          <FilterButton
+            getObject={callBackFilterObject}
+            object={filterObject}
+            _actionSheet={{ bg: colors.cardBg }}
+            _box={{ pt: 5, px: 5 }}
+            _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}
+            _filterButton={{
+              rightIcon: "",
+              bg: "white",
+            }}
+            resetButtonText={t("COLLAPSE")}
+            filters={defaultInputs}
+          />
+          <Box bg="white" px="5">
+            <ScrollView horizontal={true}>
+              {selectData.map((item, index) => (
+                <Box key={index}>
+                  <Box
+                    bg={colors.viewNotificationDark}
+                    w="192px"
+                    h="87px"
+                    m="2"
+                    p="3"
+                    borderWidth="1"
+                    borderColor={colors.viewNotificationNormal}
+                    rounded="lg"
+                    overflow="hidden"
+                  >
+                    <div
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: "3",
+                        WebkitBoxOrient: "vertical",
+                      }}
+                      dangerouslySetInnerHTML={{ __html: item.question }}
+                    />
+                  </Box>
+                  <IconByName
+                    name="CloseCircleFillIcon"
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    p="0"
+                    color={colors.primary}
+                    _icon={{ size: 24 }}
+                    onPress={(e) =>
+                      setSelectData(
+                        selectData.filter(
+                          (e) => e.questionId !== item.questionId
+                        )
+                      )
+                    }
+                  />
+                </Box>
               ))}
-            </VStack>
+            </ScrollView>
           </Box>
-        </ScrollView>
-      </Collapsible>
-      <Collapsible header="Fill in the blanks" _header={{ py: 5 }}>
+        </Box>
+      ) : (
+        <Button
+          flex="1"
+          variant="ghost"
+          leftIcon={<IconByName name="AddFillIcon" isDisabled />}
+          bg="white"
+          onPress={handelAddQuestionButton}
+        >
+          {t("Add more questions")}
+        </Button>
+      )}
+
+      <Box bg="white" p="5">
         <ScrollView maxH={Height}>
-          <Box bg="white">
-            <VStack space="5">
-              {fillInTheBlankQuestions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                  {...(isDataFilter ? {} : { selectData, setSelectData })}
-                />
-              ))}
-            </VStack>
-          </Box>
+          <VStack space="5">
+            {questions.map((question, index) => (
+              <QuestionBox
+                isAnswerHide={!isAnswerFilter}
+                _box={{ py: "12px", px: "16px" }}
+                key={index}
+                questionObject={question}
+                {...(pageName !== "ListOfWorksheet"
+                  ? {}
+                  : { selectData, setSelectData })}
+                infoIcon={
+                  <IconByName
+                    name="InformationLineIcon"
+                    _icon={{ size: 15 }}
+                    color={colors.primary}
+                    onPress={(e) => setQuestionObject(question)}
+                  />
+                }
+              />
+            ))}
+          </VStack>
         </ScrollView>
-      </Collapsible>
-      <Collapsible header="Answer the questions" _header={{ py: 5 }}>
-        <ScrollView maxH={Height}>
-          <Box bg="white">
-            <VStack space="5">
-              {aqQuestions.map((question, index) => (
-                <QuestionBox
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={question}
-                  {...(isDataFilter ? {} : { selectData, setSelectData })}
-                />
-              ))}
-            </VStack>
-          </Box>
-        </ScrollView>
-      </Collapsible>
+      </Box>
       <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
-        {isDataFilter ? (
+        {pageName === "filterData" ? (
           <Button.Group>
             <Button
               colorScheme="button"
@@ -466,9 +613,25 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
           </Button.Group>
         ) : (
           <>
-            <Text fontSize="10px" fontWeight="700" py="4">
-              Attention: You have selected 20 questions to add to the worksheet.
-            </Text>
+            <Caption py="4" pb="1">
+              <Text fontWeight="700">Attention:</Text>
+              You have selected {selectData.length} questions to add to the
+              worksheet.
+            </Caption>
+            <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
+              <HStack alignItems="center" space="1" pt="1" py="4">
+                <IconByName
+                  isDisabled
+                  color={isAnswerFilter ? colors.primary : colors.grayLight}
+                  name={
+                    isAnswerFilter
+                      ? "CheckboxLineIcon"
+                      : "CheckboxBlankLineIcon"
+                  }
+                />
+                <Subtitle>Include answer key in worksheet</Subtitle>
+              </HStack>
+            </Pressable>
             <Button.Group>
               <Button
                 colorScheme="button"
@@ -485,15 +648,163 @@ const ListOfWorksheet = ({ questions, setQuestions, setPageName }) => {
                 px="5"
                 flex="1"
                 onPress={(e) => {
-                  setQuestions(selectData);
-                  setIsDataFilter(true);
+                  setShowModule(true);
                 }}
               >
-                {t("Add Questions")}
+                {t("ADD_TO_WORKSHEET")}
               </Button>
             </Button.Group>
           </>
         )}
+        <Actionsheet
+          isOpen={questionObject?.questionId}
+          onClose={() => setQuestionObject({})}
+        >
+          <Actionsheet.Content alignItems={"left"}>
+            <Stack p={5} pt={2} pb="25px" textAlign="center">
+              <Subtitle color={colors.grayLight}>
+                {t("Maps of the world")}
+              </Subtitle>
+              {/* <H2>
+              {t("Learning Made Easy")}
+            </H2> */}
+            </Stack>
+            <IconByName
+              color={colors.grayLight}
+              position="absolute"
+              top="10px"
+              right="10px"
+              name="CloseCircleLineIcon"
+              onPress={(e) => setQuestionObject({})}
+            />
+          </Actionsheet.Content>
+          <Box bg="white" width={"100%"} p="5">
+            <VStack space="5">
+              <BodyMedium color={colors.grayLight} textTransform="inherit">
+                <div
+                  dangerouslySetInnerHTML={{ __html: questionObject?.question }}
+                />
+              </BodyMedium>
+              <VStack space="4">
+                <HStack space="50px">
+                  <VStack space="4">
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="AccountBoxFillIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>{`Class: ${questionObject?.class}`}</Caption>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="FileInfoLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>{`Topics: ${questionObject?.topic}`}</Caption>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="SurveyLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>{"Source: Reasoning"}</Caption>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="SurveyLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>
+                        {`Language: ${questionObject?.languageCode}`}
+                      </Caption>
+                    </HStack>
+                  </VStack>
+                  <VStack space="4">
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="SurveyLineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>{`Subject: ${questionObject?.subject}`}</Caption>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="BarChart2LineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>{"Level: Intermediate"}</Caption>
+                    </HStack>
+
+                    <HStack space="1" alignItems="center">
+                      <IconByName
+                        name="BarChart2LineIcon"
+                        _icon={{ size: 12 }}
+                        p="0"
+                      />
+                      <Caption>{"Outcome: Intermediate"}</Caption>
+                    </HStack>
+                  </VStack>
+                </HStack>
+              </VStack>
+            </VStack>
+          </Box>
+        </Actionsheet>
+        <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
+          <Actionsheet.Content alignItems={"left"}>
+            <Stack p={5} pt={2} pb="25px" textAlign="center">
+              <Subtitle color={colors.grayLight}>
+                {t("Enter Worksheet Details")}
+              </Subtitle>
+            </Stack>
+          </Actionsheet.Content>
+          <Box bg="white" width={"100%"} p="5">
+            <FormControl isRequired>
+              <FormControl.Label mb="10px">
+                <BodyMedium>{t("NAME")}</BodyMedium>
+              </FormControl.Label>
+              <Input
+                rounded="lg"
+                height="48px"
+                bg="white"
+                variant="unstyled"
+                p={"10px"}
+                placeholder={t("ENTER") + " " + t("NAME")}
+                onChange={handelInput}
+                value={inputData ? inputData : ""}
+              />
+            </FormControl>
+            <Button.Group>
+              <Button
+                colorScheme="button"
+                px="5"
+                flex="1"
+                variant="outline"
+                onPress={handleWorksheetSubmit}
+              >
+                {t("Skip")}
+              </Button>
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                px="5"
+                flex="1"
+                onPress={handleWorksheetSubmit}
+              >
+                {t("Save")}
+              </Button>
+            </Button.Group>
+          </Box>
+        </Actionsheet>
       </Box>
     </Stack>
   );
@@ -526,9 +837,7 @@ const AddDescriptionPage = ({ setPageName }) => {
           <Box key={index + item.name} p="5" bg="white">
             <FormControl>
               <FormControl.Label>
-                <Text fontSize={"14px"} fontWeight="500">
-                  {item.label}
-                </Text>
+                <BodyLarge>{item.label}</BodyLarge>
               </FormControl.Label>
               <Input variant="filled" p={2} {...item} key={index + item.name} />
             </FormControl>

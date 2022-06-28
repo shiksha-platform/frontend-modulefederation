@@ -22,6 +22,7 @@ import PencilLineIcon from 'remixicon-react/PencilLineIcon'
 import CheckboxCircleLineIcon from 'remixicon-react/CheckboxCircleLineIcon'
 import CheckboxCircleFillIcon from 'remixicon-react/CheckboxCircleFillIcon'
 import CloseCircleLineIcon from 'remixicon-react/CloseCircleLineIcon'
+import CloseCircleFillIcon from 'remixicon-react/CloseCircleFillIcon'
 import CheckboxBlankCircleLineIcon from 'remixicon-react/CheckboxBlankCircleLineIcon'
 import CheckLineIcon from 'remixicon-react/CheckLineIcon'
 import Loader4LineIcon from 'remixicon-react/Loader4LineIcon'
@@ -49,6 +50,7 @@ import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
+import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 import MailFillIcon from 'remixicon-react/MailFillIcon'
@@ -60,6 +62,7 @@ import BarChart2LineIcon from 'remixicon-react/BarChart2LineIcon'
 import ArticleLineIcon from 'remixicon-react/ArticleLineIcon'
 import QuestionLineIcon from 'remixicon-react/QuestionLineIcon'
 import Download2LineIcon from 'remixicon-react/Download2LineIcon'
+import DownloadLineIcon from 'remixicon-react/DownloadLineIcon'
 import CheckboxLineIcon from 'remixicon-react/CheckboxLineIcon'
 import CheckboxBlankLineIcon from 'remixicon-react/CheckboxBlankLineIcon'
 import InformationLineIcon from 'remixicon-react/InformationLineIcon'
@@ -67,6 +70,13 @@ import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 import SpamLineIcon from 'remixicon-react/SpamLineIcon'
+import InformationFillIcon from 'remixicon-react/InformationFillIcon'
+import RecordCircleFillIcon from 'remixicon-react/RecordCircleFillIcon'
+import ArrowRightUpLineIcon from 'remixicon-react/ArrowRightUpLineIcon'
+import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
+import EditBoxLineIcon from 'remixicon-react/EditBoxLineIcon'
+import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
+import AddFillIcon from 'remixicon-react/AddFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -253,6 +263,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<CloseCircleLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CloseCircleFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CloseCircleFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -464,6 +482,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'SearchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<SearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'StarLineIcon':
       icon = (
         <IconButton
@@ -493,6 +519,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<AddCircleFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AddFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AddFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -552,6 +586,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'DownloadLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<DownloadLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'CheckboxLineIcon':
       icon = (
         <IconButton
@@ -605,6 +647,54 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<SpamLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'InformationFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<InformationFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'RecordCircleFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<RecordCircleFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ArrowRightUpLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ArrowRightUpLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ArrowRightDownLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ArrowRightDownLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'EditBoxLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<EditBoxLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ArrowRightSFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ArrowRightSFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
