@@ -1,10 +1,22 @@
 import React from "react";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Actionsheet, Box, HStack, Stack, Text, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, BodyMedium } from "@shiksha/common-lib";
+import { useTranslation } from "react-i18next";
 
-const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
+const styles = { questionDiv: { display: "flex" } };
+
+const QuestionBox = ({
+  questionObject,
+  selectData,
+  setSelectData,
+  isAnswerHide,
+  infoIcon,
+  _box,
+}) => {
+  const { t } = useTranslation();
+
   const createMarkup = (markup) => {
     return { __html: markup };
   };
@@ -26,9 +38,12 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
         {..._box}
       >
         <HStack justifyContent="space-between">
-          <div
-            dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
-          />
+          <div style={styles.questionDiv}>
+            <div
+              dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
+            />
+            {infoIcon}
+          </div>
           {selectData ? (
             <IconByName
               color={isExist() ? "button.500" : "gray.300"}
@@ -55,23 +70,23 @@ const QuestionBox = ({ questionObject, selectData, setSelectData, _box }) => {
             {questionObject.options?.map((item, index) => {
               return (
                 <HStack key={index} space="1" alignItems="baseline">
-                  <Text
-                    fontSize="14"
-                    fontWeight="400"
+                  <BodyMedium
                     textTransform="inherit"
-                    color={item.answer ? "successAlertText.500" : ""}
+                    color={
+                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
+                    }
                   >
                     {alphabet[index] + ". "}
-                  </Text>
-                  <Text
-                    fontSize="14"
-                    fontWeight="400"
-                    color={item.answer ? "successAlertText.500" : ""}
+                  </BodyMedium>
+                  <BodyMedium
+                    color={
+                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
+                    }
                   >
                     <div
                       dangerouslySetInnerHTML={createMarkup(item?.value?.body)}
                     />
-                  </Text>
+                  </BodyMedium>
                 </HStack>
               );
             })}

@@ -1,24 +1,43 @@
 import React from "react";
-import { IconByName, Layout, SubMenu, Tab } from "@shiksha/common-lib";
-import { useTranslation } from "react-i18next";
 import {
-  Avatar,
-  Box,
-  Button,
-  HStack,
-  Pressable,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+  IconByName,
+  Layout,
+  Tab,
+  classRegistryService,
+  BodyLarge,
+  H2,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
+import { useTranslation } from "react-i18next";
+import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { worksheets } from "./../config/worksheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import manifest from "../manifest.json";
-import WorksheetBox from "components/WorksheertBox";
+import WorksheetBox from "components/WorksheetBox";
+import { teachingMaterial } from "./../config/teachingMaterial";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function TeachingDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [message, setMessage] = React.useState(true);
+  const [classObject, setClassObject] = React.useState({});
+  const { classId } = useParams();
+
+  const getClass = async () => {
+    const data = teachingMaterial.find((e) => e.id === classId);
+    if (data) {
+      setClassObject(data ? data : {});
+    } else {
+      let classObj = await classRegistryService.getOne({ id: classId });
+      setClassObject(classObj);
+    }
+  };
+
+  React.useState(() => {
+    getClass();
+  }, []);
 
   return (
     <Layout
@@ -26,11 +45,33 @@ export default function TeachingDetail({ footerLinks, appName }) {
         title: t("MY_TEACHING"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL")}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      subHeader={`${classObject?.name ? classObject?.name : ""} ${
+        classObject?.subjectName ? classObject?.subjectName : ""
+      }`}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <VStack>
+        {message ? (
+          <HStack
+            bg="viewNotification.600"
+            p="5"
+            justifyContent="space-between"
+          >
+            <Text textTransform="inherit">
+              Choose Worksheets or Lesson Plans for the class. You can also
+              create your own worksheets.
+            </Text>
+            <IconByName
+              p="0"
+              name="CloseCircleLineIcon"
+              color="viewNotification.900"
+              onPress={(e) => setMessage(false)}
+            />
+          </HStack>
+        ) : (
+          ""
+        )}
         <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Tab
             routes={[
@@ -40,15 +81,25 @@ export default function TeachingDetail({ footerLinks, appName }) {
                   <VStack>
                     <Worksheets
                       data={worksheets}
-                      leftTitle="Popular This Week"
-                      rightTitle="Explore Questions"
+                      leftTitle="My Worksheets"
+                      rightTitle="Explore All Worksheets"
+                      seeButtonText={t("SEE_ALL_WORKSHEETS")}
                     />
                     <Worksheets
                       data={worksheets}
-                      leftTitle="My Worksheets"
-                      rightTitle="Explore Worksheets"
+                      leftTitle="Drafts"
+                      seeButtonText={t("SEE_ALL_DRAFTS")}
+                      _woksheetBox={{
+                        _addIconButton: {
+                          name: "EditBoxLineIcon",
+                          color: "white",
+                          rounded: "full",
+                          bg: colors.primary,
+                          p: "1",
+                          _icon: { size: 17 },
+                        },
+                      }}
                     />
-                    <Worksheets data={worksheets} leftTitle="Drafts" />
                   </VStack>
                 ),
               },
@@ -57,37 +108,36 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
         <Button
           _text={{ color: "white" }}
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
-          {t("Create new")}
+          {t("CREATE_NEW_WORKSHEET")}
         </Button>
       </Box>
     </Layout>
   );
 }
 
-const Worksheets = ({ data, leftTitle, rightTitle }) => {
+const Worksheets = ({
+  data,
+  leftTitle,
+  rightTitle,
+  seeButton,
+  seeButtonText,
+  _woksheetBox,
+}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <Stack>
-      <HStack justifyContent="space-between" py="5">
-        {leftTitle ? (
-          <Text fontWeight="600" fontSize="16px">
-            {leftTitle}
-          </Text>
-        ) : (
-          ""
-        )}
+      <HStack justifyContent="space-between" py="5" alignItems="center">
+        {leftTitle ? <H2>{leftTitle}</H2> : ""}
         {rightTitle ? (
-          <Button variant="ghost" onPress={(e) => navigate("/questionBank")}>
-            <Text fontWeight="500" fontSize="14px" color={"button.500"}>
-              {rightTitle}
-            </Text>
+          <Button variant="ghost" onPress={(e) => navigate("/worksheet/list")}>
+            <BodyLarge color={colors.primary}>{rightTitle}</BodyLarge>
           </Button>
         ) : (
           ""
@@ -99,11 +149,25 @@ const Worksheets = ({ data, leftTitle, rightTitle }) => {
             <WorksheetBox
               canShare={true}
               key={index}
-              {...{ item, url: `/${item.id}` }}
+              {...{ item, url: `/worksheet/${item.id}` }}
+              {..._woksheetBox}
             />
           );
         })}
       </VStack>
+      {seeButton ? (
+        seeButton
+      ) : (
+        <Button
+          mt="2"
+          variant="outline"
+          colorScheme="button"
+          rounded="lg"
+          onPress={(e) => navigate("/worksheet/list")}
+        >
+          {seeButtonText}
+        </Button>
+      )}
     </Stack>
   );
 };

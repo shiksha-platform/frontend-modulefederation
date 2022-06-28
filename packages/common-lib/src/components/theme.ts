@@ -94,7 +94,8 @@ const DEFAULT_THEME = {
       500: '#FDDFD8',
       600: '#feefeb',
       700: '#B9FBC0',
-      800: '#FDF2EE'
+      800: '#FDF2EE',
+      900: '#AA948E'
     },
     calendarBtncolor: {
       500: '#BCBCBC'
@@ -192,8 +193,14 @@ const DEFAULT_THEME = {
       500: '#FFF8F7'
     },
     worksheetCard: {
+      200: '#FEF1F9',
       500: '#F9CCE4',
+      800: '#C79AB2',
       900: '#C08FA9'
+    },
+    worksheetBoxText: {
+      400: '#333333',
+      500: '#373839'
     },
     reportBoxBg: {
       400: '#FFF8F7',

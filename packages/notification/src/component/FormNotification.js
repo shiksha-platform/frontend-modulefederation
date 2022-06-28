@@ -187,7 +187,7 @@ export const FormNotification = ({ setPageName }) => {
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg={colors.white} fontSize="14px" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           {[
             "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
             "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
