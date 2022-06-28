@@ -30,6 +30,7 @@ import * as attendanceRegistryService from './services/attendanceRegistryService
 import * as studentRegistryService from './services/studentRegistryService'
 import * as worksheetRegistryService from './services/worksheetRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
+import * as commentRegistryService from './services/commentRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 
 export {
@@ -55,6 +56,7 @@ export {
   studentRegistryService,
   worksheetRegistryService,
   likeRegistryService,
+  commentRegistryService,
   getApiConfig
 }
 
