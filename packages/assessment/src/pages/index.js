@@ -21,7 +21,7 @@ export default function Assessment() {
   const [search, setSearch] = useState();
   const [pageName, setPageName] = useState();
 
-  if(pageName === 'assessmentStudentList') {
+  if (pageName === "assessmentStudentList") {
     return (
       <Layout
         _header={{
@@ -30,17 +30,17 @@ export default function Assessment() {
           // setSearch: setSearch,
           subHeading: t("Class Details"),
           iconComponent: (
-            <Avatar size="48px" borderRadius="md" source={{
-              uri: 'https://via.placeholder.com/50x50.png'
-            }} />
+            <Avatar
+              size="48px"
+              borderRadius="md"
+              source={{
+                uri: "https://via.placeholder.com/50x50.png",
+              }}
+            />
           ),
         }}
         _appBar={{ languages: ["en"] }}
-        subHeader={
-          <Text fontSize={"lg"}>
-            "View All Students"
-          </Text>
-        }
+        subHeader={<Text fontSize={"lg"}>"View All Students"</Text>}
         _subHeader={{ bg: "attendanceCard.500" }}
         _footer={{
           menues: [
@@ -86,7 +86,7 @@ export default function Assessment() {
           <StudentListCard />
         </Stack>
       </Layout>
-    )
+    );
   }
 
   return (
@@ -105,9 +105,7 @@ export default function Assessment() {
         >
           <HStack space="4" justifyContent="space-between">
             <VStack>
-              <Text fontSize={"lg"}>
-                {"Assessment"}
-              </Text>
+              <Text fontSize={"lg"}>{"Assessment"}</Text>
             </VStack>
             <IconByName size="sm" name="ArrowRightSLineIcon" />
           </HStack>
@@ -162,7 +160,7 @@ export default function Assessment() {
         >
           <VStack p="2" space={4}>
             <SpotAssessmentCard setPageName={setPageName} />
-            <ExamScoresCard setPageName={setPageName}/>
+            <ExamScoresCard setPageName={setPageName} />
           </VStack>
         </Collapsible>
       </Stack>

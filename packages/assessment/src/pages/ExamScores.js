@@ -23,28 +23,41 @@ export default function ExamScores() {
   return (
     <Layout
       _header={{
-        title: headerDetails && headerDetails.title ? headerDetails.title : "Class VI A",
+        title:
+          headerDetails && headerDetails.title
+            ? headerDetails.title
+            : "Class VI A",
         isEnableSearchBtn: true,
         // setSearch: setSearch,
-        subHeading: headerDetails && headerDetails.subHeading ? headerDetails.subHeading : t("Fill Scores"),
+        subHeading:
+          headerDetails && headerDetails.subHeading
+            ? headerDetails.subHeading
+            : t("Fill Scores"),
         iconComponent: (
-          <Avatar size="48px" borderRadius="md" source={{
-            uri: 'https://via.placeholder.com/50x50.png'
-          }} />
+          <Avatar
+            size="48px"
+            borderRadius="md"
+            source={{
+              uri: "https://via.placeholder.com/50x50.png",
+            }}
+          />
         ),
       }}
       _appBar={{ languages: ["en"] }}
       subHeader={
         <VStack>
           <Text fontSize={"lg"}>
-            {headerDetails && headerDetails.student ? headerDetails.student.name : "View All Students"}
+            {headerDetails && headerDetails.student
+              ? headerDetails.student.name
+              : "View All Students"}
           </Text>
-          {headerDetails && headerDetails.student && headerDetails.student.fathersName &&
-            <Text fontSize={"xs"} color={'muted.600'}>
-             Mr. {headerDetails.student.fathersName}
-            </Text>
-          }
-
+          {headerDetails &&
+            headerDetails.student &&
+            headerDetails.student.fathersName && (
+              <Text fontSize={"xs"} color={"muted.600"}>
+                Mr. {headerDetails.student.fathersName}
+              </Text>
+            )}
         </VStack>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
@@ -92,6 +105,5 @@ export default function ExamScores() {
         <StudentsList setHeaderDetails={setHeaderDetails} />
       </Stack>
     </Layout>
-  )
-
-  }
+  );
+}

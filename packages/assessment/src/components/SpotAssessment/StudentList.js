@@ -13,7 +13,13 @@ import {
   Stack,
   Box,
   Progress,
-  Button, Divider, Actionsheet, Checkbox, Avatar, Spacer, Pressable
+  Button,
+  Divider,
+  Actionsheet,
+  Checkbox,
+  Avatar,
+  Spacer,
+  Pressable,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -30,26 +36,25 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
   const { t } = useTranslation();
   const [studentlist, setStudentlist] = useState([]);
 
-  React.useEffect(()=> {
+  React.useEffect(() => {
     setStudentlist([
       {
         id: 1,
-        name: 'Rahul',
-        fathersName: "Father's Name"
+        name: "Rahul",
+        fathersName: "Father's Name",
       },
       {
         id: 2,
-        name: 'Rahul',
-        fathersName: "Father's Name"
+        name: "Rahul",
+        fathersName: "Father's Name",
       },
       {
         id: 3,
-        name: 'Rahul',
-        fathersName: "Father's Name"
-      }
-    ])
-  }, [])
-
+        name: "Rahul",
+        fathersName: "Father's Name",
+      },
+    ]);
+  }, []);
 
   return (
     <Collapsible
@@ -68,38 +73,46 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
       }
       fontSize="2px"
     >
-      {
-        studentlist && studentlist.length && studentlist.map((student, index) => {
-          return <React.Fragment key={`student${index}`}>
-            <Box py="2">
-              <Pressable onPress={()=> navigate('/assessment-result')}>
-                <HStack alignItems="center" space={3}>
-                  <Avatar size="48px" borderRadius="md" source={{
-                    uri: 'https://via.placeholder.com/50x50.png'
-                  }} />
-                  <VStack>
-                    <Text color="coolGray.800" _dark={{
-                      color: "warmGray.50"
-                    }} bold>
-                      {index+1} . {student.name}
-                    </Text>
-                    <Text color="gray.400" fontSize={"xs"}>
-                      Mr. {student.fathersName}
-                    </Text>
-                  </VStack>
-                  <Spacer />
-                </HStack>
-              </Pressable>
-            </Box>
+      {studentlist &&
+        studentlist.length &&
+        studentlist.map((student, index) => {
+          return (
+            <React.Fragment key={`student${index}`}>
+              <Box py="2">
+                <Pressable onPress={() => navigate("/assessment-result")}>
+                  <HStack alignItems="center" space={3}>
+                    <Avatar
+                      size="48px"
+                      borderRadius="md"
+                      source={{
+                        uri: "https://via.placeholder.com/50x50.png",
+                      }}
+                    />
+                    <VStack>
+                      <Text
+                        color="coolGray.800"
+                        _dark={{
+                          color: "warmGray.50",
+                        }}
+                        bold
+                      >
+                        {index + 1} . {student.name}
+                      </Text>
+                      <Text color="gray.400" fontSize={"xs"}>
+                        Mr. {student.fathersName}
+                      </Text>
+                    </VStack>
+                    <Spacer />
+                  </HStack>
+                </Pressable>
+              </Box>
 
-            {
-              studentlist.length-1 != index && <Divider></Divider>
-            }
-          </React.Fragment>
-        })
-      }
+              {studentlist.length - 1 != index && <Divider></Divider>}
+            </React.Fragment>
+          );
+        })}
     </Collapsible>
-  )
+  );
 };
 
 export default StudentListCard;

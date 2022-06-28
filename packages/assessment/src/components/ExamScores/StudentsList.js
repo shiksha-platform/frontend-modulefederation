@@ -13,7 +13,13 @@ import {
   Stack,
   Box,
   Progress,
-  Button, Divider, Actionsheet, Checkbox, Avatar, Spacer, Input
+  Button,
+  Divider,
+  Actionsheet,
+  Checkbox,
+  Avatar,
+  Spacer,
+  Input,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -36,41 +42,41 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
   const [selectedStudent, setSelectedStudent] = useState();
   const [activeStage, setActiveStage] = useState();
 
-  React.useEffect(()=> {
+  React.useEffect(() => {
     setStudentlist([
       {
         id: 1,
-        name: 'Rahul',
-        fathersName: "Father's Name"
+        name: "Rahul",
+        fathersName: "Father's Name",
       },
       {
         id: 2,
-        name: 'Rahul',
-        fathersName: "Father's Name"
+        name: "Rahul",
+        fathersName: "Father's Name",
       },
       {
         id: 3,
-        name: 'Rahul',
-        fathersName: "Father's Name"
-      }
-    ])
-  }, [])
+        name: "Rahul",
+        fathersName: "Father's Name",
+      },
+    ]);
+  }, []);
 
-  React.useEffect(()=> {
-    if(selectedStudent){
+  React.useEffect(() => {
+    if (selectedStudent) {
       setHeaderDetails({
         title: "Summative Assessment 1",
         subHeading: "State Examinations",
         student: {
           name: selectedStudent.name,
-          fathersName: selectedStudent.fathersName
-        }
+          fathersName: selectedStudent.fathersName,
+        },
       });
     }
-  }, [selectedStudent])
+  }, [selectedStudent]);
 
-  if(selectedStudent){
-    if (activeStage === 2){
+  if (selectedStudent) {
+    if (activeStage === 2) {
       return (
         <Box p={4}>
           <Box shadow={2} rounded={6} p={4} pb={0}>
@@ -78,7 +84,9 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <VStack space={8}>
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>Practical</Text>
+                    <Text fontSize="lg" bold>
+                      Practical
+                    </Text>
                     <Input placeholder="Enter Marks" />
                   </VStack>
                 </Box>
@@ -87,7 +95,9 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
 
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>Theory</Text>
+                    <Text fontSize="lg" bold>
+                      Theory
+                    </Text>
                     <Input placeholder="Enter Marks" />
                   </VStack>
                 </Box>
@@ -98,17 +108,16 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <Button
                 colorScheme="button"
                 py={3}
-                _text={{color: "#fff"}}
-                onPress={()=> setActiveStage(3)}
+                _text={{ color: "#fff" }}
+                onPress={() => setActiveStage(3)}
               >
                 {t("Save")}
               </Button>
             </Box>
           </Box>
         </Box>
-      )
-    }
-    else if (activeStage === 3){
+      );
+    } else if (activeStage === 3) {
       return (
         <Box p={4}>
           <Box shadow={2} rounded={6} p={4} pb={0}>
@@ -116,21 +125,58 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <VStack space={8}>
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>Practical</Text>
-                    <HStack alignItems={'center'} justifyContent={'space-between'}>
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                    <Text fontSize="lg" bold>
+                      Practical
+                    </Text>
+                    <HStack
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>A</Text>
                       </Box>
 
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>B</Text>
                       </Box>
 
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>C</Text>
                       </Box>
 
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>D</Text>
                       </Box>
                     </HStack>
@@ -141,21 +187,58 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
 
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>Theory</Text>
-                    <HStack alignItems={'center'} justifyContent={'space-between'}>
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                    <Text fontSize="lg" bold>
+                      Theory
+                    </Text>
+                    <HStack
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                    >
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>A</Text>
                       </Box>
 
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>B</Text>
                       </Box>
 
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>C</Text>
                       </Box>
 
-                      <Box borderWidth={2} borderColor={'#F87558'} borderRadius={'full'} w="30px" h="30px" alignItems={'center'} justifyContent="center">
+                      <Box
+                        borderWidth={2}
+                        borderColor={"#F87558"}
+                        borderRadius={"full"}
+                        w="30px"
+                        h="30px"
+                        alignItems={"center"}
+                        justifyContent="center"
+                      >
                         <Text color={"#F87558"}>D</Text>
                       </Box>
                     </HStack>
@@ -168,18 +251,16 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <Button
                 colorScheme="button"
                 py={3}
-                _text={{color: "#fff"}}
-                onPress={()=> setActiveStage(3)}
+                _text={{ color: "#fff" }}
+                onPress={() => setActiveStage(3)}
               >
                 {t("Save")}
               </Button>
             </Box>
           </Box>
         </Box>
-      )
-    }
-
-    else {
+      );
+    } else {
       return (
         <Box p={4}>
           <VStack space={4}>
@@ -188,17 +269,17 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <Button
                 colorScheme="button"
                 py={3}
-                _text={{color: "#fff"}}
-                onPress={()=> setActiveStage(2)}
+                _text={{ color: "#fff" }}
+                onPress={() => setActiveStage(2)}
               >
                 {t("Save")}
               </Button>
             </Box>
           </VStack>
         </Box>
-      )
+      );
     }
-  }else {
+  } else {
     return (
       <Box p={4}>
         <VStack space={4}>
@@ -207,77 +288,96 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <H2 fontWeight="600" color="gray.800">
                 {t("Students List")}
               </H2>
-              <HStack alignItems={'center'}>
-                <Text color="gray.400" fontSize={"xs"}>{t("Total ") + 24}</Text> <Text fontSize='5px' color="gray.400"> ●</Text> <Text color="gray.400" fontSize={"xs"}> {t("Present ") + 19}</Text>
+              <HStack alignItems={"center"}>
+                <Text color="gray.400" fontSize={"xs"}>
+                  {t("Total ") + 24}
+                </Text>{" "}
+                <Text fontSize="5px" color="gray.400">
+                  {" "}
+                  ●
+                </Text>{" "}
+                <Text color="gray.400" fontSize={"xs"}>
+                  {" "}
+                  {t("Present ") + 19}
+                </Text>
               </HStack>
             </VStack>
           </Box>
 
           <Box>
             <VStack space={4}>
-              {
-                studentlist && studentlist.length && studentlist.map((student, index) => {
-                  return <React.Fragment key={`studentslist${index}`}>
-                    <Box>
-                      <VStack space={2}>
-                        <HStack alignItems="center" space={3}>
-                          <Avatar size="48px" borderRadius="md" source={{
-                            uri: 'https://via.placeholder.com/50x50.png'
-                          }} />
-                          <VStack>
-                            <Text color="coolGray.800" _dark={{
-                              color: "warmGray.50"
-                            }} bold>
-                              {index+1} . {student.name}
-                            </Text>
-                            <Text color="gray.400" fontSize={"xs"}>
-                              Mr. {student.fathersName}
-                            </Text>
-                          </VStack>
-                        </HStack>
-                        <HStack alignItems="center" justifyContent={'space-between'}>
-                          <Checkbox colorScheme="orange">{t('Absent')}</Checkbox>
-                          {
-                            index === 0 && <Button
-                              colorScheme="button"
-                              _text={{color: "#fff"}}
-                              size="xs"
-                              px={3}
-                              onPress={()=> setSelectedStudent(student)}
-                            >
-                              {t("Mark")}
-                            </Button>
-                          }
+              {studentlist &&
+                studentlist.length &&
+                studentlist.map((student, index) => {
+                  return (
+                    <React.Fragment key={`studentslist${index}`}>
+                      <Box>
+                        <VStack space={2}>
+                          <HStack alignItems="center" space={3}>
+                            <Avatar
+                              size="48px"
+                              borderRadius="md"
+                              source={{
+                                uri: "https://via.placeholder.com/50x50.png",
+                              }}
+                            />
+                            <VStack>
+                              <Text
+                                color="coolGray.800"
+                                _dark={{
+                                  color: "warmGray.50",
+                                }}
+                                bold
+                              >
+                                {index + 1} . {student.name}
+                              </Text>
+                              <Text color="gray.400" fontSize={"xs"}>
+                                Mr. {student.fathersName}
+                              </Text>
+                            </VStack>
+                          </HStack>
+                          <HStack
+                            alignItems="center"
+                            justifyContent={"space-between"}
+                          >
+                            <Checkbox colorScheme="orange">
+                              {t("Absent")}
+                            </Checkbox>
+                            {index === 0 && (
+                              <Button
+                                colorScheme="button"
+                                _text={{ color: "#fff" }}
+                                size="xs"
+                                px={3}
+                                onPress={() => setSelectedStudent(student)}
+                              >
+                                {t("Mark")}
+                              </Button>
+                            )}
 
-                          {
-                            index === 1 && <Button
-                              isDisabled={true}
-                              size="xs"
-                              px={3}
-                            >
-                              {t("Mark")}
-                            </Button>
-                          }
+                            {index === 1 && (
+                              <Button isDisabled={true} size="xs" px={3}>
+                                {t("Mark")}
+                              </Button>
+                            )}
 
-                          {
-                            index === 2 && <Button
-                              colorScheme="button"
-                              _text={{color: "#fff"}}
-                              size="xs"
-                              px={3}
-                            >
-                              {t("Mark")}
-                            </Button>
-                          }
-                        </HStack>
-                      </VStack>
-                    </Box>
-                    {
-                      studentlist.length-1 != index && <Divider></Divider>
-                    }
-                  </React.Fragment>
-                })
-              }
+                            {index === 2 && (
+                              <Button
+                                colorScheme="button"
+                                _text={{ color: "#fff" }}
+                                size="xs"
+                                px={3}
+                              >
+                                {t("Mark")}
+                              </Button>
+                            )}
+                          </HStack>
+                        </VStack>
+                      </Box>
+                      {studentlist.length - 1 != index && <Divider></Divider>}
+                    </React.Fragment>
+                  );
+                })}
             </VStack>
           </Box>
 
@@ -285,15 +385,15 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
             <Button
               colorScheme="button"
               py={3}
-              _text={{color: "#fff"}}
-              onPress={()=> navigate('/examscores')}
+              _text={{ color: "#fff" }}
+              onPress={() => navigate("/examscores")}
             >
               {t("Save")}
             </Button>
           </Box>
         </VStack>
       </Box>
-    )
+    );
   }
 };
 

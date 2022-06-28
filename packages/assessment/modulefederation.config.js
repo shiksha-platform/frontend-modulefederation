@@ -9,7 +9,7 @@ module.exports = {
     // "./AssessmentComponent": "./src/components/AssessmentComponent",
   },
   remotes: {
-    core: `core@[window.appModules.core.url]/moduleEntry.js`
+    core: `core@[window.appModules.core.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

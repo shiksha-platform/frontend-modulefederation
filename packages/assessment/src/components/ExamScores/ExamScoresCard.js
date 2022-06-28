@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-  IconByName,
-  ProgressBar,
-} from "@shiksha/common-lib";
+import { IconByName, ProgressBar } from "@shiksha/common-lib";
 import {
   HStack,
   Text,
@@ -10,7 +7,10 @@ import {
   Stack,
   Box,
   Progress,
-  Button, Divider, Actionsheet, Checkbox
+  Button,
+  Divider,
+  Actionsheet,
+  Checkbox,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ const ExamScoresCard = ({ setPageName }) => {
       name: "6 pending",
       color: "#DDDDDD",
       value: 6,
-    }
+    },
   ]);
 
   /*React.useEffect(() => {
@@ -69,12 +69,19 @@ const ExamScoresCard = ({ setPageName }) => {
             <Box px="4" py={2} bg={"#F57B7B"} roundedTop="6">
               <HStack justifyContent={"center"} alignItems="center">
                 <IconByName name="TimeLineIcon" pr="0" color="white" />
-                <Text color="white" bold fontSize="xs"> 4 Days left! Submit assessment scores now.</Text>
+                <Text color="white" bold fontSize="xs">
+                  {" "}
+                  4 Days left! Submit assessment scores now.
+                </Text>
               </HStack>
             </Box>
             <Box px="4" bg={"#FFF8F7"}>
-              <Text bold mb="3">Summative Assessment 1</Text>
-              <Text mb="5" fontSize={"xs"} color={'muted.600'}>Due Date - 27, May 2022</Text>
+              <Text bold mb="3">
+                Summative Assessment 1
+              </Text>
+              <Text mb="5" fontSize={"xs"} color={"muted.600"}>
+                Due Date - 27, May 2022
+              </Text>
               <VStack flex="auto" alignContent={"center"}>
                 <ProgressBar
                   isTextShow
@@ -90,8 +97,8 @@ const ExamScoresCard = ({ setPageName }) => {
               <Button
                 py={3}
                 colorScheme="button"
-                _text={{color: "#fff"}}
-                onPress={()=> navigate('/examscores')}
+                _text={{ color: "#fff" }}
+                onPress={() => navigate("/examscores")}
               >
                 {t("continue")}
               </Button>
@@ -99,7 +106,16 @@ const ExamScoresCard = ({ setPageName }) => {
           </VStack>
         </Box>
       </VStack>
-      <Text my={2} textAlign={"center"} color={"#F87558"} fontSize={12} bold cursor={"pointer"}>{t('VIEW PAST ASSESSMENTS')}</Text>
+      <Text
+        my={2}
+        textAlign={"center"}
+        color={"#F87558"}
+        fontSize={12}
+        bold
+        cursor={"pointer"}
+      >
+        {t("VIEW PAST ASSESSMENTS")}
+      </Text>
     </>
   );
 };

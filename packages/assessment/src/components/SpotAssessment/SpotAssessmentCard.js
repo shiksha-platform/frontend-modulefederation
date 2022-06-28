@@ -3,7 +3,7 @@ import {
   capture,
   IconByName,
   ProgressBar,
-  telemetryFactory
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -12,12 +12,15 @@ import {
   Stack,
   Box,
   Progress,
-  Button, Divider, Actionsheet, Checkbox
+  Button,
+  Divider,
+  Actionsheet,
+  Checkbox,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-const SpotAssessmentCard = ({ setPageName, appName, }) => {
+const SpotAssessmentCard = ({ setPageName, appName }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
@@ -32,7 +35,7 @@ const SpotAssessmentCard = ({ setPageName, appName, }) => {
       name: "6 pending",
       color: "#DDDDDD",
       value: 6,
-    }
+    },
   ]);
 
   const _handleSpotAssessmentStart = () => {
@@ -43,7 +46,7 @@ const SpotAssessmentCard = ({ setPageName, appName, }) => {
       type: "Spot-Assessment-Start",
     });
     capture("START", telemetryData);
-  }
+  };
 
   /*React.useEffect(() => {
     const getData = async () => {
@@ -76,32 +79,34 @@ const SpotAssessmentCard = ({ setPageName, appName, }) => {
 
   return (
     <>
-        {/*========= box1 =============*/}
-        <VStack space={2}>
-          <Text>Spot Assessment</Text>
-          <Box borderWidth="1" borderColor={'#E2E2E2'} borderRadius="md">
-            <VStack space="4">
-              <Box p="4" roundedTop="6">
-                <VStack space={8}>
-                  <Box>
-                    <Text bold fontSize="lg">{t("Spot Assessment 1")}</Text>
-                    <Text color="muted.600">27, May 2022</Text>
-                  </Box>
+      {/*========= box1 =============*/}
+      <VStack space={2}>
+        <Text>Spot Assessment</Text>
+        <Box borderWidth="1" borderColor={"#E2E2E2"} borderRadius="md">
+          <VStack space="4">
+            <Box p="4" roundedTop="6">
+              <VStack space={8}>
+                <Box>
+                  <Text bold fontSize="lg">
+                    {t("Spot Assessment 1")}
+                  </Text>
+                  <Text color="muted.600">27, May 2022</Text>
+                </Box>
 
-                  <ProgressBar
-                    isTextShow
-                    legendType="separated"
-                    h="35px"
-                    _bar={{ rounded: "md" }}
-                    isLabelCountHide
-                    data={progressAssessment}
-                  />
-                  {/*<HStack justifyContent={"space-between"} alignItems="center">
+                <ProgressBar
+                  isTextShow
+                  legendType="separated"
+                  h="35px"
+                  _bar={{ rounded: "md" }}
+                  isLabelCountHide
+                  data={progressAssessment}
+                />
+                {/*<HStack justifyContent={"space-between"} alignItems="center">
                   <IconByName name="More2LineIcon" pr="0" />
                 </HStack>*/}
-                </VStack>
-              </Box>
-              {/*<Box px="4">
+              </VStack>
+            </Box>
+            {/*<Box px="4">
                 <Text bold mb="3">Assessment 1</Text>
                 <HStack justifyContent={"space-between"} alignItems="center" py={3}>
                   <Text flexGrow={1} flexBasis={'100px'} color="muted.600" fontSize={'xs'}>{t("students Assessed")}</Text>
@@ -120,121 +125,131 @@ const SpotAssessmentCard = ({ setPageName, appName, }) => {
                   />
                 </HStack>
               </Box>*/}
-              <Divider></Divider>
-              <Box p="4" pt="0">
-                <Button
-                  py={3}
-                  // colorScheme="button"
-                  _text={{color: "#fff"}}
-                  onPress={_handleSpotAssessmentStart}
-                >
-                  {t("Continue")}
-                </Button>
-              </Box>
-            </VStack>
-          </Box>
-          <Text my={2} textAlign={"center"} color={"#F87558"} fontSize={12} bold cursor={"pointer"}>{t('VIEW PAST ASSESSMENTS')}</Text>
-        </VStack>
-
-        {/*========= drawer1 =============*/}
-        <Actionsheet isOpen={chooseSubjectModal} onClose={() => setChooseSubjectModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
-            <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t("Choose the subject")}
-                </Text>
-              </Stack>
-              <IconByName
-                name="CloseCircleLineIcon"
-                color={"white"}
-                onPress={() => setChooseSubjectModal(false)}
-              />
-            </HStack>
-          </Actionsheet.Content>
-          <Box w="100%" p={4} justifyContent="center" bg="white">
-            <Actionsheet.Item>Mathematics</Actionsheet.Item>
-            <Actionsheet.Item>Science</Actionsheet.Item>
-            <Actionsheet.Item>English</Actionsheet.Item>
-            <Actionsheet.Item>History</Actionsheet.Item>
-            <Actionsheet.Item>Geography</Actionsheet.Item>
-
-            <Divider my={4}></Divider>
-
+            <Divider></Divider>
             <Box p="4" pt="0">
               <Button
-                colorScheme="button"
-                _text={{
-                  color: 'white'
-                }}
-                onPress={() => {setChooseSubjectModal(false); setChooseCompetenciesModal(true)}}
+                py={3}
+                // colorScheme="button"
+                _text={{ color: "#fff" }}
+                onPress={_handleSpotAssessmentStart}
               >
-                {t("Next")}
+                {t("Continue")}
               </Button>
             </Box>
+          </VStack>
+        </Box>
+        <Text
+          my={2}
+          textAlign={"center"}
+          color={"#F87558"}
+          fontSize={12}
+          bold
+          cursor={"pointer"}
+        >
+          {t("VIEW PAST ASSESSMENTS")}
+        </Text>
+      </VStack>
+
+      {/*========= drawer1 =============*/}
+      <Actionsheet
+        isOpen={chooseSubjectModal}
+        onClose={() => setChooseSubjectModal(false)}
+      >
+        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+          <HStack justifyContent={"space-between"}>
+            <Stack p={5} pt={2} pb="25px">
+              <Text fontSize="16px" fontWeight={"600"}>
+                {t("Choose the subject")}
+              </Text>
+            </Stack>
+            <IconByName
+              name="CloseCircleLineIcon"
+              color={"white"}
+              onPress={() => setChooseSubjectModal(false)}
+            />
+          </HStack>
+        </Actionsheet.Content>
+        <Box w="100%" p={4} justifyContent="center" bg="white">
+          <Actionsheet.Item>Mathematics</Actionsheet.Item>
+          <Actionsheet.Item>Science</Actionsheet.Item>
+          <Actionsheet.Item>English</Actionsheet.Item>
+          <Actionsheet.Item>History</Actionsheet.Item>
+          <Actionsheet.Item>Geography</Actionsheet.Item>
+
+          <Divider my={4}></Divider>
+
+          <Box p="4" pt="0">
+            <Button
+              colorScheme="button"
+              _text={{
+                color: "white",
+              }}
+              onPress={() => {
+                setChooseSubjectModal(false);
+                setChooseCompetenciesModal(true);
+              }}
+            >
+              {t("Next")}
+            </Button>
           </Box>
-        </Actionsheet>
+        </Box>
+      </Actionsheet>
 
-        {/*========= drawer2 =============*/}
-        <Actionsheet isOpen={chooseCompetenciesModal} onClose={() => setChooseCompetenciesModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
-            <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
-                <Text fontSize="16px" fontWeight={"600"}>
-                  {t("Select the competencies")}
-                </Text>
-              </Stack>
-              <IconByName
-                name="CloseCircleLineIcon"
-                color={"white"}
-                onPress={(e) => setChooseCompetenciesModal(false)}
-              />
-            </HStack>
-          </Actionsheet.Content>
-          <Box w="100%" p={4} justifyContent="center" bg="white">
-            <HStack justifyContent={"space-between"} p={4}>
-              <Text fontSize={16}>
-                {t("Reasoning")}
+      {/*========= drawer2 =============*/}
+      <Actionsheet
+        isOpen={chooseCompetenciesModal}
+        onClose={() => setChooseCompetenciesModal(false)}
+      >
+        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+          <HStack justifyContent={"space-between"}>
+            <Stack p={5} pt={2} pb="25px">
+              <Text fontSize="16px" fontWeight={"600"}>
+                {t("Select the competencies")}
               </Text>
-              <Checkbox colorScheme="orange" />
-            </HStack>
+            </Stack>
+            <IconByName
+              name="CloseCircleLineIcon"
+              color={"white"}
+              onPress={(e) => setChooseCompetenciesModal(false)}
+            />
+          </HStack>
+        </Actionsheet.Content>
+        <Box w="100%" p={4} justifyContent="center" bg="white">
+          <HStack justifyContent={"space-between"} p={4}>
+            <Text fontSize={16}>{t("Reasoning")}</Text>
+            <Checkbox colorScheme="orange" />
+          </HStack>
 
-            <HStack justifyContent={"space-between"} p={4}>
-              <Text fontSize={16}>
-                {t("Cognitive")}
-              </Text>
-              <Checkbox colorScheme="orange" />
-            </HStack>
+          <HStack justifyContent={"space-between"} p={4}>
+            <Text fontSize={16}>{t("Cognitive")}</Text>
+            <Checkbox colorScheme="orange" />
+          </HStack>
 
-            <HStack justifyContent={"space-between"} p={4}>
-              <Text fontSize={16}>
-                {t("Critical Thinking")}
-              </Text>
-              <Checkbox colorScheme="orange" />
-            </HStack>
+          <HStack justifyContent={"space-between"} p={4}>
+            <Text fontSize={16}>{t("Critical Thinking")}</Text>
+            <Checkbox colorScheme="orange" />
+          </HStack>
 
-            <HStack justifyContent={"space-between"} p={4}>
-              <Text fontSize={16}>
-                {t("Enterprenurial")}
-              </Text>
-              <Checkbox colorScheme="orange" />
-            </HStack>
+          <HStack justifyContent={"space-between"} p={4}>
+            <Text fontSize={16}>{t("Enterprenurial")}</Text>
+            <Checkbox colorScheme="orange" />
+          </HStack>
 
-            <Divider my={4}></Divider>
+          <Divider my={4}></Divider>
 
-            <Box p="4" pt="0">
-              <Button
-                colorScheme="button"
-                _text={{
-                  color: 'white'
-                }}
-                onPress={() => setPageName('assessmentStudentList')}
-              >
-                {t("Next")}
-              </Button>
-            </Box>
+          <Box p="4" pt="0">
+            <Button
+              colorScheme="button"
+              _text={{
+                color: "white",
+              }}
+              onPress={() => setPageName("assessmentStudentList")}
+            >
+              {t("Next")}
+            </Button>
           </Box>
-        </Actionsheet>
+        </Box>
+      </Actionsheet>
     </>
   );
 };

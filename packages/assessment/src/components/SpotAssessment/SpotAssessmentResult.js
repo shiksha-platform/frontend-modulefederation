@@ -4,7 +4,14 @@ import {
   IconByName,
   attendanceRegistryService,
   ProgressBar,
-  getUniqAttendance, Loading, H1, H3, Layout, useWindowSize, telemetryFactory, capture
+  getUniqAttendance,
+  Loading,
+  H1,
+  H3,
+  Layout,
+  useWindowSize,
+  telemetryFactory,
+  capture,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -13,7 +20,12 @@ import {
   Stack,
   Box,
   Progress,
-  Button, Divider, Actionsheet, Checkbox, Avatar, Spacer
+  Button,
+  Divider,
+  Actionsheet,
+  Checkbox,
+  Avatar,
+  Spacer,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
@@ -34,24 +46,21 @@ const SpotAssessmentResult = ({ appName }) => {
   const [similarTestModal, setSimilarTestModal] = useState(false);
   const [nextOption, setNextOption] = useState();
 
-
   const handleNextOption = () => {
-    if(nextOption === 'similar'){
+    if (nextOption === "similar") {
       setToDoNextModal(false);
       setSimilarTestModal(true);
-    }
-    else if(nextOption === 'repeat'){
+    } else if (nextOption === "repeat") {
       _handleSpotAssessmentRepeatTest();
       // setSimilarTestModal(true);
-    }
-    else if(nextOption === 'end'){
+    } else if (nextOption === "end") {
       // setSimilarTestModal(true);
     }
-  }
+  };
 
   const handleContinueWithSimilarQuestion = () => {
     _handleSpotAssessmentSimilarTest();
-  }
+  };
 
   const _handleSpotAssessmentRepeatTest = () => {
     const telemetryData = telemetryFactory.interact({
@@ -59,7 +68,7 @@ const SpotAssessmentResult = ({ appName }) => {
       type: "Spot-Assessment-Repeating-Test",
     });
     capture("INTERACT", telemetryData);
-  }
+  };
 
   const _handleSpotAssessmentSimilarTest = () => {
     const telemetryData = telemetryFactory.interact({
@@ -67,7 +76,7 @@ const SpotAssessmentResult = ({ appName }) => {
       type: "Spot-Assessment-Similar-Test",
     });
     capture("INTERACT", telemetryData);
-  }
+  };
 
   const _handleSpotAssessmentEnd = () => {
     const telemetryData = telemetryFactory.end({
@@ -75,17 +84,14 @@ const SpotAssessmentResult = ({ appName }) => {
       type: "Spot-Assessment-End",
     });
     capture("END", telemetryData);
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     _handleSpotAssessmentEnd();
-  }, [])
-
+  }, []);
 
   return (
-    <Layout
-      isDisabledAppBar={true}
-    >
+    <Layout isDisabledAppBar={true}>
       <Loading
         width={width}
         height={height}
@@ -106,7 +112,9 @@ const SpotAssessmentResult = ({ appName }) => {
                 >
                   YAY!
                 </H1>
-                <Text color="successAlertText.500">You got most of the answers right.</Text>
+                <Text color="successAlertText.500">
+                  You got most of the answers right.
+                </Text>
               </Box>
             </VStack>
             <VStack space={50} bg="white">
@@ -114,12 +122,18 @@ const SpotAssessmentResult = ({ appName }) => {
                 <Box textAlign="center" marginTop="-40px">
                   <VStack space={3}>
                     <Box mx="auto">
-                      <Avatar size="80px" borderRadius="md" source={{
-                        uri: 'https://via.placeholder.com/80x80.png'
-                      }} />
+                      <Avatar
+                        size="80px"
+                        borderRadius="md"
+                        source={{
+                          uri: "https://via.placeholder.com/80x80.png",
+                        }}
+                      />
                     </Box>
                     <Box>
-                      <Text fontSize="18" fontWeight="600">Shah Rukh Khan</Text>
+                      <Text fontSize="18" fontWeight="600">
+                        Shah Rukh Khan
+                      </Text>
                       <Text color={"#757588"}>Mr. Father’s Name</Text>
                     </Box>
                   </VStack>
@@ -129,19 +143,39 @@ const SpotAssessmentResult = ({ appName }) => {
                 <VStack>
                   <Box p="4" alignItems="center">
                     <RoundedProgressBar
-                      values={[72,28]}
-                      colors={['#0D921B','#F7F7FD',]}
-                      title={{text: '72%', fontSize: '21px'}}
-                      legend={{text: 'Total Score', fontSize: '14px'}}
-                      cutout={'85%'}
+                      values={[72, 28]}
+                      colors={["#0D921B", "#F7F7FD"]}
+                      title={{ text: "72%", fontSize: "21px" }}
+                      legend={{ text: "Total Score", fontSize: "14px" }}
+                      cutout={"85%"}
                       size="80px"
                     />
                     <HStack justifyContent={"center"} alignItems="center">
-                      <IconByName name="StarSFillIcon" p="0"  color="green.600" />
-                      <IconByName name="StarSFillIcon" p="0"  color="green.600" />
-                      <IconByName name="StarSFillIcon" p="0"  color="green.600" />
-                      <IconByName name="StarSFillIcon" p="0"  color="green.600" />
-                      <IconByName name="StarSFillIcon" p="0"  color="green.600" />
+                      <IconByName
+                        name="StarSFillIcon"
+                        p="0"
+                        color="green.600"
+                      />
+                      <IconByName
+                        name="StarSFillIcon"
+                        p="0"
+                        color="green.600"
+                      />
+                      <IconByName
+                        name="StarSFillIcon"
+                        p="0"
+                        color="green.600"
+                      />
+                      <IconByName
+                        name="StarSFillIcon"
+                        p="0"
+                        color="green.600"
+                      />
+                      <IconByName
+                        name="StarSFillIcon"
+                        p="0"
+                        color="green.600"
+                      />
                     </HStack>
                   </Box>
                 </VStack>
@@ -150,7 +184,7 @@ const SpotAssessmentResult = ({ appName }) => {
                 <Button
                   colorScheme="button"
                   _text={{
-                    color: 'white'
+                    color: "white",
                   }}
                   onPress={() => setToDoNextModal(true)}
                 >
@@ -161,7 +195,10 @@ const SpotAssessmentResult = ({ appName }) => {
           </VStack>
         }
       />
-      <Actionsheet isOpen={toDoNextModal} onClose={() => setToDoNextModal(false)}>
+      <Actionsheet
+        isOpen={toDoNextModal}
+        onClose={() => setToDoNextModal(false)}
+      >
         <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
@@ -177,19 +214,25 @@ const SpotAssessmentResult = ({ appName }) => {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg="white">
-          <Actionsheet.Item onPress={()=> setNextOption('repeat')}>Repeat test with another student</Actionsheet.Item>
-          <Actionsheet.Item onPress={()=> setNextOption('similar')}>Give similar test to another student</Actionsheet.Item>
-          <Actionsheet.Item onPress={()=> setNextOption('end')}>End Assessment</Actionsheet.Item>
+          <Actionsheet.Item onPress={() => setNextOption("repeat")}>
+            Repeat test with another student
+          </Actionsheet.Item>
+          <Actionsheet.Item onPress={() => setNextOption("similar")}>
+            Give similar test to another student
+          </Actionsheet.Item>
+          <Actionsheet.Item onPress={() => setNextOption("end")}>
+            End Assessment
+          </Actionsheet.Item>
           <Divider my={4}></Divider>
 
           <Box p="4" pt="0">
             <Button
               colorScheme="button"
               _text={{
-                color: 'white'
+                color: "white",
               }}
               // onPress={()=> setSelectedStudent()}
-              onPress={()=> handleNextOption()}
+              onPress={() => handleNextOption()}
             >
               {t("Continue")}
             </Button>
@@ -197,7 +240,10 @@ const SpotAssessmentResult = ({ appName }) => {
         </Box>
       </Actionsheet>
 
-      <Actionsheet isOpen={similarTestModal} onClose={() => setSimilarTestModal(false)}>
+      <Actionsheet
+        isOpen={similarTestModal}
+        onClose={() => setSimilarTestModal(false)}
+      >
         <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
@@ -213,16 +259,19 @@ const SpotAssessmentResult = ({ appName }) => {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg="white">
-          <Text my={3}>A similar test will consist of the same competencies with a different set of questions.</Text>
+          <Text my={3}>
+            A similar test will consist of the same competencies with a
+            different set of questions.
+          </Text>
           <Text my={3}>Are you sure you want to continue?</Text>
           <Divider my={4}></Divider>
 
           <Box>
-            <HStack justifyContent={'space-between'}>
+            <HStack justifyContent={"space-between"}>
               <Button
                 colorScheme="button"
                 _text={{
-                  color: '#fff'
+                  color: "#fff",
                 }}
                 // onPress={()=> setSelectedStudent()}
               >
@@ -232,9 +281,9 @@ const SpotAssessmentResult = ({ appName }) => {
               <Button
                 colorScheme="button"
                 _text={{
-                  color: '#fff'
+                  color: "#fff",
                 }}
-                onPress={()=> handleContinueWithSimilarQuestion()}
+                onPress={() => handleContinueWithSimilarQuestion()}
               >
                 {t("Yes, Continue")}
               </Button>

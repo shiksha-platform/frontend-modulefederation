@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
