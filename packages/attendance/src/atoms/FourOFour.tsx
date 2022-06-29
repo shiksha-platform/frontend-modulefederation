@@ -1,6 +1,9 @@
 import React from "react";
 import { Center } from "native-base";
 
+export interface IFourOFour {
+  children?: React.ReactNode;
+}
 const FourOFour = () => {
   return (
     <Center flex={1} px="3">

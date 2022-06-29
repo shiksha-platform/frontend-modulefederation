@@ -85,11 +85,12 @@
     "@storybook/manager-webpack5": "^6.4.19",
     "@storybook/node-logger": "^6.4.19",
     "@storybook/preset-create-react-app": "^4.0.1",
-    "@storybook/react": "^6.4.19",
+    "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.9",
     "craco-module-federation": "^1.1.0",
     "external-remotes-plugin": "^1.0.0",
     "prettier": "^2.5.1",
+    "typescript": "^4.7.4",
     "webpack": "^5.69.1"
   }
 }
