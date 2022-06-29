@@ -1,13 +1,20 @@
 import React from "react";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Box, HStack, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, BodyMedium } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 
 const styles = { questionDiv: { display: "flex" } };
 
-const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
+const QuestionBox = ({
+  questionObject,
+  selectData,
+  setSelectData,
+  isAnswerHide,
+  infoIcon,
+  _box,
+}) => {
   const { t } = useTranslation();
 
   const createMarkup = (markup) => {
@@ -34,8 +41,26 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
             <div
               dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
             />
+            {infoIcon}
           </div>
-          {infoIcon}
+          {selectData ? (
+            <IconByName
+              color={isExist() ? "button.500" : "gray.300"}
+              name={isExist() ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"}
+              onPress={(e) => {
+                if (isExist()) {
+                  const newData = selectData.filter(
+                    (e) => e.questionId !== questionObject?.questionId
+                  );
+                  setSelectData(newData);
+                } else {
+                  setSelectData([...selectData, questionObject]);
+                }
+              }}
+            />
+          ) : (
+            <React.Fragment />
+          )}
         </HStack>
       </Box>
       {questionObject?.options ? (
@@ -44,19 +69,15 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
             {questionObject.options?.map((item, index) => {
               return (
                 <HStack key={index} space="1" alignItems="baseline">
-                  <Text
-                    fontSize="14"
-                    fontWeight="400"
+                  <BodyMedium
                     textTransform="inherit"
                     color={
                       item.answer && !isAnswerHide ? "successAlertText.500" : ""
                     }
                   >
                     {alphabet[index] + ". "}
-                  </Text>
-                  <Text
-                    fontSize="14"
-                    fontWeight="400"
+                  </BodyMedium>
+                  <BodyMedium
                     color={
                       item.answer && !isAnswerHide ? "successAlertText.500" : ""
                     }
@@ -64,7 +85,7 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
                     <div
                       dangerouslySetInnerHTML={createMarkup(item?.value?.body)}
                     />
-                  </Text>
+                  </BodyMedium>
                 </HStack>
               );
             })}

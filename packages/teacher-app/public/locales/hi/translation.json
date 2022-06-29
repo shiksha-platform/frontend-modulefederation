@@ -114,7 +114,7 @@
   "REPORT_DETAILS": "रिपोर्ट का विवरण",
   "SMS_REPORTS": "एस.एम.एस रिपोर्ट",
   "SCIENCE": "विज्ञान",
-  "MATHS": "गणित",
+  "MATHEMATICS": "गणित",
   "ENGLISH": "अंग्रेज़ी",
   "HISTORY": "इतिहास",
   "GEOGRAPHY": "भूगोल",
@@ -241,6 +241,14 @@
   "ABSENT_TODAY_POOR_THAN_LAST_WEEK": "अनुपस्थित है आज! पिछले सप्ताह की तुलना में खराब",
   "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "पिछले महीने की तुलना में उम्र। सुधारा जा सकता है",
   "MY_TEACHING": "मेरी शिक्षा",
+  "TEACHING": "शिक्षा",
   "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "अपनी शिक्षण सामग्री तक पहुंचें और योजना बनाएं",
-  "NAME": "नाम"
+  "NAME": "नाम",
+  "SORT": "क्रम से लगाना",
+  "TOPIC": "विषय",
+  "SEE_ALL_WORKSHEETS": "सभी वर्कशीट देखें",
+  "SEE_ALL_DRAFTS": "सभी ड्राफ़्ट देखें",
+  "CREATE_NEW_WORKSHEET": "नई वर्कशीट बनाएं",
+  "COLLAPSE": "गिर जाना",
+  "ADD_TO_WORKSHEET": "कार्यपत्रक में जोड़ें"
 }

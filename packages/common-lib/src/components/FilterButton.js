@@ -12,6 +12,7 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconByName from './IconByName'
+import { BodyLarge } from './layout/HeaderTags'
 
 const getValueByType = (value, type = 'array') => {
   return value ? value : type !== 'array' ? '' : []
@@ -74,26 +75,26 @@ export default function FilterButton({
     }
   }
 
+  React.useState(() => {
+    if (object) setGroupValue(object)
+  }, [object])
+
   return (
     <Box bg='white' roundedBottom={'xl'} {..._box}>
       <HStack justifyContent='end' alignItems='center'>
         {!filtered ? (
           <Button
             rounded='full'
-            colorScheme='button'
             variant='outline'
             px='5'
-            _text={{
-              textTransform: 'inherit',
-              fontWeight: '500',
-              fontSize: '14px'
-            }}
             onPress={(e) => setFiltered(true)}
             rightIcon={<IconByName name='ArrowDownSLineIcon' isDisabled />}
             {..._button}
             {..._filterButton}
           >
-            {filterButtonText ? filterButtonText : t('FILTER')}
+            <BodyLarge textTransform='inherit'>
+              {filterButtonText ? filterButtonText : t('FILTER')}
+            </BodyLarge>
           </Button>
         ) : (
           <ScrollView horizontal={true}>
@@ -102,17 +103,22 @@ export default function FilterButton({
                 const attributeName = value.attributeName
                   ? value.attributeName
                   : value.name
-                const isSelect = Array.isArray(groupValue?.[attributeName])
-                  ? groupValue?.[attributeName].filter((e) =>
-                      value?.data.includes(e)
-                    ).length
-                  : value?.data.includes(groupValue?.[attributeName])
+                const isSelect =
+                  groupValue?.[attributeName] &&
+                  groupValue?.[attributeName].filter((e) =>
+                    value?.data.includes(e)
+                  ).length
+                const overrideBtnProp =
+                  isSelect > 0 ? { ..._button, bg: 'button.500' } : _button
+                const overrideOptionBtnProp =
+                  isSelect > 0
+                    ? { ..._optionButton, bg: 'button.500' }
+                    : _optionButton
                 return (
                   <Button
                     key={index}
                     mr='1'
                     rounded='full'
-                    colorScheme='button'
                     {...(isSelect ? {} : { variant: 'outline' })}
                     px='5'
                     rightIcon={
@@ -127,10 +133,8 @@ export default function FilterButton({
                         setFormData(value)
                       }
                     }}
-                    {...(isSelect ? { ..._button, bg: 'button.500' } : _button)}
-                    {...(isSelect
-                      ? { ..._optionButton, bg: 'button.500' }
-                      : _optionButton)}
+                    {...overrideBtnProp}
+                    {...overrideOptionBtnProp}
                   >
                     <Text color={isSelect ? 'white' : 'button.500'}>
                       {isSelect ? '' : value.name}
@@ -153,7 +157,6 @@ export default function FilterButton({
               <Button
                 mr='1'
                 rounded='full'
-                colorScheme='button'
                 variant='outline'
                 px='5'
                 _text={{
@@ -178,7 +181,9 @@ export default function FilterButton({
                 {..._button}
                 {..._resetButton}
               >
-                {resetButtonText ? resetButtonText : t('RESET_FILTER')}
+                <BodyLarge textTransform='inherit'>
+                  {resetButtonText ? resetButtonText : t('RESET_FILTER')}
+                </BodyLarge>
               </Button>
             </HStack>
           </ScrollView>
@@ -193,7 +198,7 @@ export default function FilterButton({
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>
-                {`${t('SELECT')} ${formData?.name ? formData?.name : ''}`}
+                {`${t('SELECT')} ${filterData?.name ? filterData?.name : ''}`}
               </Text>
             </Stack>
             <IconByName

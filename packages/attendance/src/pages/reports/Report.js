@@ -10,11 +10,19 @@ import {
   calendar,
   classRegistryService,
   studentRegistryService,
+  overrideColorTheme,
+  H1,
+  H2,
+  Caption,
+  Subtitle,
 } from "@shiksha/common-lib";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
 import { useNavigate } from "react-router-dom";
 import manifest from "../../manifest.json";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 export default function Report({ footerLinks }) {
   const { t } = useTranslation();
@@ -81,9 +89,7 @@ export default function Report({ footerLinks }) {
         title: (
           <VStack>
             {titleName.split(" ").map((item, subIndex) => (
-              <Text key={subIndex} bold fontSize="24px">
-                {item}
-              </Text>
+              <H1 key={subIndex}>{item}</H1>
             ))}
           </VStack>
         ),
@@ -99,7 +105,7 @@ export default function Report({ footerLinks }) {
                   px={5}
                   py="7px"
                   _text={{
-                    color: "white",
+                    color: colors.white,
                     fontSize: "14px",
                     lineHeight: "18px",
                     fontWeight: "500",
@@ -107,7 +113,7 @@ export default function Report({ footerLinks }) {
                   }}
                   rightIcon={
                     <IconByName
-                      color="white"
+                      color={colors.white}
                       name="ArrowDownSLineIcon"
                       isDisabled
                       p="0"
@@ -139,32 +145,30 @@ export default function Report({ footerLinks }) {
       subHeader={
         <CalendarBar
           view={calendarView}
-          activeColor="gray.900"
+          activeColor={colors.grayIndark}
           _box={{ p: 0, bg: "transparent" }}
           {...{ page, setPage }}
         />
       }
-      _subHeader={{ bg: "reportCard.500" }}
+      _subHeader={{ bg: colors.reportCardBackg }}
       _footer={footerLinks}
     >
-      <Box bg="white" mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg={colors.white} mb="4" roundedBottom={"xl"} shadow={2}>
         {calsses.map((item, index) => (
           <Box
             key={index}
             borderBottomWidth={1}
-            borderBottomColor="coolGray.200"
+            borderBottomColor={colors.coolGray}
           >
             <Collapsible
               defaultCollapse={!index ? true : makeDefaultCollapse}
               onPressFuction={(e) => getAttendance(item.id)}
               header={
                 <VStack>
-                  <Text fontSize="16" fontWeight="600">
-                    {item.name}
-                  </Text>
-                  <Text fontSize="10" fontWeight="400">
+                  <H2>{item.name}</H2>
+                  <Caption>
                     {index % 2 === 0 ? t("MORNING") : t("MID_DAY_MEAL")}
-                  </Text>
+                  </Caption>
                 </VStack>
               }
             >
@@ -179,13 +183,13 @@ export default function Report({ footerLinks }) {
                       : [],
                   }}
                 />
-                <Text py="5" px="10px" fontSize={12} color={"gray.400"}>
-                  <Text bold color={"gray.700"}>
+                <Subtitle py="5" px="10px" color={colors.grayInLight}>
+                  <Text bold color={colors.darkGray}>
                     {t("NOTES")}
                     {": "}
                   </Text>
                   {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
-                </Text>
+                </Subtitle>
                 <Button
                   variant="outline"
                   colorScheme={"button"}

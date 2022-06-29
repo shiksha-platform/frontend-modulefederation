@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-export function calendar(page, type = 'weeks') {
+export function calendar(page, type = 'weeks', no_of_day_week = 6) {
   let date = moment()
   if (type === 'month') {
     let startDate = moment().add(page, 'months').startOf('month')
@@ -25,7 +25,7 @@ export function calendar(page, type = 'weeks') {
     if (type === 'week') {
       return weekDates(date)
     }
-    return [weekDates(date)]
+    return [weekDates(date, no_of_day_week)]
   } else {
     if (type === 'days') {
       return [date.add(page * 1, 'days')]
@@ -34,10 +34,10 @@ export function calendar(page, type = 'weeks') {
   }
 }
 
-export const weekDates = (currentDate = moment()) => {
+export const weekDates = (currentDate = moment(), no_of_day_week = 6) => {
   let weekStart = currentDate.clone().startOf('isoWeek')
   let days = []
-  for (let i = 0; i <= 6; i++) {
+  for (let i = 0; i <= no_of_day_week - 1; i++) {
     days.push(moment(weekStart).add(i, 'days'))
   }
   return days

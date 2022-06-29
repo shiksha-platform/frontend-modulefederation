@@ -1,13 +1,44 @@
 import React from "react";
-import { Layout, SubMenu, Tab } from "@shiksha/common-lib";
+import {
+  Layout,
+  SubMenu,
+  Tab,
+  classRegistryService,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import { Box, Button } from "native-base";
+import { Actionsheet, Box, Button } from "native-base";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
+  const [clasess, setClasses] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const teacherId = localStorage.getItem("id");
+  const schoolId = localStorage.getItem("schoolId");
+
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    let ignore = false;
+    async function getData() {
+      setClasses(
+        await classRegistryService.getAllData({
+          filters: {
+            schoolId: { eq: schoolId },
+            teacherId: { neq: teacherId },
+          },
+        })
+      );
+    }
+    getData();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
     <Layout
@@ -15,8 +46,10 @@ export default function Teaching({ footerLinks, appName }) {
         title: t("MY_TEACHING"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL")}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      subHeader={t(
+        "Access and plan your teaching material like worksheets and lesson plans"
+      )}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
@@ -29,10 +62,23 @@ export default function Teaching({ footerLinks, appName }) {
             { title: t("Schedule"), component: <Schedule /> },
           ]}
         />
-
-        <Button _text={{ color: "white" }} p="3">
-          {t("Choose another Class")}
-        </Button>
+        <Actionsheet isOpen={isOpen} onClose={(e) => setIsOpen(false)}>
+          <Actionsheet.Content>
+            {clasess.map((item, index) => (
+              <Actionsheet.Item
+                key={index}
+                onPress={(e) => navigate(`/worksheet/${item?.id}/view`)}
+              >
+                {item?.name}
+              </Actionsheet.Item>
+            ))}
+          </Actionsheet.Content>
+        </Actionsheet>
+        <Box p="5">
+          <Button variant="outline" onPress={(e) => setIsOpen(true)}>
+            {t("CHOOSE_ANOTHER_CLASS")}
+          </Button>
+        </Box>
       </Box>
     </Layout>
   );
@@ -47,7 +93,7 @@ const MyTeaching = ({ data }) => {
         key={index}
         item={{
           title: `${item.name} • ${item.subjectName}`,
-          onPress: (e) => navigate("/view"),
+          onPress: (e) => navigate(`/worksheet/${item.id}/view`),
         }}
       />
     );

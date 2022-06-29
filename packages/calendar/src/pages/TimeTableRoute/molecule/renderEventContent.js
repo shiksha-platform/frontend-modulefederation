@@ -7,6 +7,7 @@ const renderEventContent = ({
   showModal,
   setShowModal,
   setShowModalClash,
+  isCompare,
   ...eventInfo
 }) => {
   let item = {
@@ -22,7 +23,7 @@ const renderEventContent = ({
   };
 
   return (
-    <Box p="4" {...inlineEllipsisStyle}>
+    <Box p="10px" {...inlineEllipsisStyle}>
       <Pressable onPress={(e) => setShowModal()}>
         <VStack space={"8px"}>
           <HStack
@@ -30,7 +31,7 @@ const renderEventContent = ({
             space="2"
             alignItems={"center"}
           >
-            <H2
+            <Text
               fontWeight="600"
               {...inlineEllipsisStyle}
               {...{
@@ -40,8 +41,8 @@ const renderEventContent = ({
               color={item._text?.color}
             >
               {item.title}
-            </H2>
-            <H3
+            </Text>
+            <Text
               fontWeight="600"
               {...inlineEllipsisStyle}
               {...{
@@ -50,10 +51,10 @@ const renderEventContent = ({
               }}
             >
               {item.subTitle}
-            </H3>
+            </Text>
           </HStack>
-          <H4
-            fontWeight="500"
+          <Text
+            fontWeight="400"
             {...inlineEllipsisStyle}
             {...{
               ...item._text,
@@ -61,25 +62,29 @@ const renderEventContent = ({
             }}
           >
             {item?.timeText}
-          </H4>
+          </Text>
         </VStack>
       </Pressable>
-      <IconByName
-        size="sm"
-        name="FlashlightLineIcon"
-        colorScheme="timeTableFlashIcon"
-        variant="solid"
-        rounded="full"
-        _icon={{
-          style: {
-            fill: "white",
-          },
-        }}
-        right="0"
-        bottom="0"
-        position="absolute"
-        onPress={(e) => setShowModalClash()}
-      />
+      {!isCompare ? (
+        <IconByName
+          size="sm"
+          name="FlashlightLineIcon"
+          colorScheme={item.activeMenu ? "emerald" : "timeTableFlashIcon"}
+          variant="solid"
+          rounded="full"
+          _icon={{
+            style: {
+              fill: "white",
+            },
+          }}
+          right="0"
+          bottom="0"
+          position="absolute"
+          onPress={(e) => setShowModalClash()}
+        />
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };

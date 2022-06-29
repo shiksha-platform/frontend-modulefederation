@@ -6,9 +6,11 @@ module.exports = {
     "./App": "./src/App",
     "./TeachingDetail": "./src/pages/TeachingDetail",
     "./QuestionBank": "./src/pages/QuestionBank",
+    "./Worksheet": "./src/pages/Worksheet",
     "./WorksheetQuestionBank": "./src/pages/WorksheetQuestionBank",
     "./CreateWorksheet": "./src/pages/CreateWorksheet",
     "./EditWorksheet": "./src/pages/EditWorksheet",
+    "./WorksheetTemplate": "./src/pages/WorksheetTemplate",
     "./Teaching": "./src/pages/Teaching",
   },
   remotes: {
