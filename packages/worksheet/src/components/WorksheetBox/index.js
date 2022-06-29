@@ -1,4 +1,4 @@
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, H2, Caption, Subtitle } from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -36,15 +36,11 @@ export default function WorksheetBox({
           <Pressable onPress={() => (url ? navigate(url) : "")}>
             <HStack space={2} alignItems="center">
               <Avatar bg={colors[random]} size="57" rounded="md">
-                <Text fontWeight="600" fontSize="16px" color="white">
-                  {item.name?.toUpperCase().substr(0, 1)}
-                </Text>
+                <H2 color="white">{item.name?.toUpperCase().substr(0, 1)}</H2>
               </Avatar>
               <Stack space="1">
                 <VStack space="1px">
-                  <Text fontWeight="600" fontSize="16px">
-                    {item.name}
-                  </Text>
+                  <H2>{item.name}</H2>
                 </VStack>
                 <HStack space={1} alignItems="center">
                   <IconByName
@@ -53,14 +49,8 @@ export default function WorksheetBox({
                     _icon={{ size: 12 }}
                     isDisabled
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {((item?.likes ? item?.likes : 0) + like ? 1 : 0) +
-                      " likes"}
-                  </Text>
-
-                  <Text fontWeight="600" fontSize="10px">
-                    ({item?.comments ? item?.comments : 0 + " comments"})
-                  </Text>
+                  <Caption>{item.likes + " likes"}</Caption>
+                  <Caption>({item.comments + " comments"})</Caption>
                 </HStack>
               </Stack>
             </HStack>
@@ -73,20 +63,7 @@ export default function WorksheetBox({
             {..._addIconButton}
           />
         </HStack>
-        <Text
-          fontWeight="400"
-          fontSize="12px"
-          color="worksheetBoxText.500"
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "3",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {item.description}
-        </Text>
+        <Subtitle color="worksheetBoxText.500">{item.description}</Subtitle>
         <HStack space="2">
           <VStack>
             <HStack space="1" alignItems="center">
@@ -96,13 +73,9 @@ export default function WorksheetBox({
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Subject: " + item.subject}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -111,13 +84,9 @@ export default function WorksheetBox({
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Level: " + item.level}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -126,16 +95,9 @@ export default function WorksheetBox({
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
-                {"Questions: " +
-                  (Array.isArray(item.questions)
-                    ? item.questions.length
-                    : item.questions)}
-              </Text>
+              <Subtitle color="worksheetBoxText.400">
+                {"Questions: " + item.questions}
+              </Subtitle>
             </HStack>
           </VStack>
           <VStack>
@@ -146,13 +108,9 @@ export default function WorksheetBox({
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Grade: " + item.grade}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -161,13 +119,9 @@ export default function WorksheetBox({
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
-                {t("TOPIC") + ": " + item.topic}
-              </Text>
+              <Subtitle color="worksheetBoxText.400">
+                {t("TOPIC") + ": " + item.chapter}
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -176,13 +130,9 @@ export default function WorksheetBox({
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Downloads: " + item.downloads}
-              </Text>
+              </Subtitle>
             </HStack>
           </VStack>
         </HStack>

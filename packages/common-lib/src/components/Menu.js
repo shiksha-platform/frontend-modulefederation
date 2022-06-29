@@ -168,7 +168,7 @@ export const SubMenu = ({
           <IconByName
             name={item.rightIcon ? item.rightIcon : 'ArrowRightSLineIcon'}
             p='0'
-            color='#C1C1DE'
+            color='gray.900'
             {..._icon}
           />
         </HStack>

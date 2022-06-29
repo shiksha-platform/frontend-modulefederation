@@ -1,4 +1,10 @@
-import { IconByName, H2 } from "@shiksha/common-lib";
+import {
+  IconByName,
+  H2,
+  overrideColorTheme,
+  BodyLarge,
+  BodySmall,
+} from "@shiksha/common-lib";
 import {
   Box,
   FormControl,
@@ -15,44 +21,48 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export const FormNotification = ({ setPageName }) => {
   const { t } = useTranslation();
   const [showModalTemplate, setShowModalTemplate] = React.useState(false);
+  const [selectTemplate, setSelectTemplate] = React.useState("");
   const navigate = useNavigate();
 
   return (
     <Stack space={1} mb="2">
-      <Box bg="white" p="5">
+      <Box bg={colors.white} p="5">
         <FormControl>
           <FormControl.Label>
-            <Text fontSize={"14px"} fontWeight="500">
-              {"Notification title"}
-            </Text>
+            <BodyLarge>{"Notification title"}</BodyLarge>
           </FormControl.Label>
-          <Input variant="filled" p={2} placeholder="Enter name" />
+          <Input
+            variant="filled"
+            bg="gray.100"
+            p={2}
+            placeholder="Enter name"
+          />
         </FormControl>
       </Box>
       <HStack
-        bg="white"
+        bg={colors.white}
         p="5"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text fontSize={"14px"} fontWeight="500">
-          {"Choose Module"}
-        </Text>
+        <BodyLarge>{"Choose Module"}</BodyLarge>
         <Button
           rounded="full"
           colorScheme="button"
           variant="outline"
-          _text={{ color: "black", textTransform: "capitalize" }}
+          _text={{ color: colors.black, textTransform: "capitalize" }}
           px="5"
           py="1"
-          bg="viewNotification.500"
+          bg={colors.notificationCardBg}
           rightIcon={
             <IconByName
-              color={"button.500"}
+              color={colors.primary}
               name="ArrowDownSLineIcon"
               isDisabled
             />
@@ -63,25 +73,23 @@ export const FormNotification = ({ setPageName }) => {
         </Button>
       </HStack>
       <HStack
-        bg="white"
+        bg={colors.white}
         p="5"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text fontSize={"14px"} fontWeight="500">
-          {"Choose event trigger"}
-        </Text>
+        <BodyLarge>{"Choose event trigger"}</BodyLarge>
         <Button
           rounded="full"
           variant="outline"
           colorScheme="button"
-          _text={{ color: "black", textTransform: "capitalize" }}
+          _text={{ color: colors.black, textTransform: "capitalize" }}
           px="5"
           py="1"
-          bg="viewNotification.500"
+          bg={colors.notificationCardBg}
           rightIcon={
             <IconByName
-              color={"button.500"}
+              color={colors.primaryBorder}
               name="ArrowDownSLineIcon"
               isDisabled
             />
@@ -92,14 +100,12 @@ export const FormNotification = ({ setPageName }) => {
         </Button>
       </HStack>
       <HStack
-        bg="white"
+        bg={colors.white}
         p="5"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text fontSize={"14px"} fontWeight="500">
-          {"Choose channel"}
-        </Text>
+        <BodyLarge>{"Choose channel"}</BodyLarge>
         <Button
           rounded="full"
           colorScheme="button"
@@ -109,7 +115,7 @@ export const FormNotification = ({ setPageName }) => {
           _text={{ textTransform: "capitalize" }}
           rightIcon={
             <IconByName
-              color={"button.500"}
+              color={colors.primary}
               name="ArrowDownSLineIcon"
               isDisabled
             />
@@ -119,25 +125,23 @@ export const FormNotification = ({ setPageName }) => {
           {t("Select channel")}
         </Button>
       </HStack>
-      <Box bg="white" p="5">
+      <Box bg={colors.white} p="5">
         <VStack space="2">
           <HStack justifyContent="space-between">
-            <Text fontSize="16" fontWeight="600">
-              {"Message"}
-            </Text>
+            <H2>{"Message"}</H2>
             <Button variant="ghost" onPress={(e) => setShowModalTemplate(true)}>
-              <Text fontSize="14" fontWeight="500" color="button.500">
+              <BodyLarge color={colors.primary}>
                 {"Use Another Template"}
-              </Text>
+              </BodyLarge>
             </Button>
           </HStack>
-          <Text fontSize="12" fontWeight="400">
+          <BodySmall>
             Worksheets help the kids in exploring multiple concepts They develop
             fine motor skills, logical thinking
-          </Text>
+          </BodySmall>
         </VStack>
       </Box>
-      <Box bg="white" p="5">
+      <Box bg={colors.white} p="5">
         <Pressable onPress={(e) => setPageName("RecipientList")}>
           <HStack justifyContent="space-between" alignItems="center">
             <Text>{"View recipient list"}</Text>
@@ -145,7 +149,7 @@ export const FormNotification = ({ setPageName }) => {
           </HStack>
         </Pressable>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
         <Button.Group>
           <Button
             flex="1"
@@ -159,7 +163,7 @@ export const FormNotification = ({ setPageName }) => {
           <Button
             flex="1"
             colorScheme="button"
-            _text={{ color: "white" }}
+            _text={{ color: colors.white }}
             px="5"
             onPress={(e) => setPageName("Popup")}
           >
@@ -171,30 +175,30 @@ export const FormNotification = ({ setPageName }) => {
         isOpen={showModalTemplate}
         onClose={() => setShowModalTemplate(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <H2 fontWeight="500">{t("Select Template")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color={colors.cardCloseIcon}
               onPress={(e) => setShowModalTemplate(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" fontSize="14px" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           {[
-            "Absent Notice",
-            "Holiday Announcement",
-            "Attendace Report",
-            "Timetable Update",
+            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
+            "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
+            "Learners should be able to use strategies that will support their understanding during their own reading",
+            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking..",
           ].map((value, index) => {
             return (
               <Box p="5" key={index}>
                 <Checkbox
                   colorScheme="button"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   borderRadius="0"
                 >
                   {value}

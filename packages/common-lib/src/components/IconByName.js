@@ -50,6 +50,7 @@ import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
+import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 import MailFillIcon from 'remixicon-react/MailFillIcon'
@@ -70,6 +71,7 @@ import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 import SpamLineIcon from 'remixicon-react/SpamLineIcon'
+import InformationFillIcon from 'remixicon-react/InformationFillIcon'
 import RecordCircleFillIcon from 'remixicon-react/RecordCircleFillIcon'
 import ArrowRightUpLineIcon from 'remixicon-react/ArrowRightUpLineIcon'
 import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
@@ -657,6 +659,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<SpamLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'InformationFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<InformationFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

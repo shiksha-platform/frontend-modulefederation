@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Layout, useWindowSize, IconByName } from "@shiksha/common-lib";
+import {
+  Layout,
+  useWindowSize,
+  IconByName,
+  H2,
+  Caption,
+  BodyMedium,
+  BodyLarge,
+  Subtitle,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   Actionsheet,
@@ -12,11 +22,12 @@ import {
   Pressable,
   ScrollView,
   Stack,
-  Text,
   VStack,
 } from "native-base";
 import manifest from "../manifest.json";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const questions = [
   {
@@ -162,15 +173,11 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
         <Actionsheet.Content alignItems={"left"}>
           <Stack p={5} pt={2} pb="25px" textAlign="center">
-            <Text fontSize="12px" fontWeight={"500"} color="gray.400">
-              {t("Chapter 01")}
-            </Text>
-            <Text fontSize="16px" fontWeight={"600"}>
-              {t("Learning Made Easy")}
-            </Text>
+            <Subtitle color={colors.grayLight}>{t("Chapter 01")}</Subtitle>
+            <H2>{t("Learning Made Easy")}</H2>
           </Stack>
           <IconByName
-            color="gray.300"
+            color={colors.grayLight}
             position="absolute"
             top="10px"
             right="10px"
@@ -180,15 +187,10 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         </Actionsheet.Content>
         <Box bg="white" width={"100%"} p="5">
           <VStack space="4">
-            <Text
-              fontSize="14px"
-              fontWeight={"400"}
-              color="gray.400"
-              textTransform="inherit"
-            >
+            <BodyMedium color={colors.grayLight} textTransform="inherit">
               He is an entrepreneur, educator, and investor who believes that
               each of us has the power to makes.
-            </Text>
+            </BodyMedium>
             <HStack space="50px">
               <VStack space="4">
                 <HStack space="1" alignItems="center">
@@ -197,9 +199,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Grade: VI"}
-                  </Text>
+                  <Caption>{"Grade: VI"}</Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -208,9 +208,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Chapter: 01"}
-                  </Text>
+                  <Caption>{"Chapter: 01"}</Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -219,9 +217,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Questions: 30"}
-                  </Text>
+                  <Caption>{"Questions: 30"}</Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -230,9 +226,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Skills: Reasoning"}
-                  </Text>
+                  <Caption>{"Skills: Reasoning"}</Caption>
                 </HStack>
               </VStack>
               <VStack space="4">
@@ -242,9 +236,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Subject: Math"}
-                  </Text>
+                  <Caption>{"Subject: Math"}</Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -253,9 +245,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Topics: Algebra"}
-                  </Text>
+                  <Caption>{"Topics: Algebra"}</Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -264,9 +254,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Level: Intermediate"}
-                  </Text>
+                  <Caption>{"Level: Intermediate"}</Caption>
                 </HStack>
                 <HStack space="1" alignItems="center">
                   <IconByName
@@ -274,9 +262,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {"Outcome: Improve IQ"}
-                  </Text>
+                  <Caption>{"Outcome: Improve IQ"}</Caption>
                 </HStack>
               </VStack>
             </HStack>
@@ -288,9 +274,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   _icon={{ size: 12 }}
                   isDisabled
                 />
-                <Text fontWeight="600" fontSize="10px">
-                  {"10 Teachers like this"}
-                </Text>
+                <Caption>{"10 Teachers like this"}</Caption>
               </HStack>
               <Pressable onPress={(e) => handleCommentModuleOpen()}>
                 <HStack alignItems="center">
@@ -354,9 +338,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                       TE
                     </Avatar>
                   </Avatar.Group>
-                  <Text fontWeight="600" fontSize="10px" color="button.500">
-                    {"6 comments"}
-                  </Text>
+                  <Caption color={colors.primary}>{"6 comments"}</Caption>
                 </HStack>
               </Pressable>
             </HStack>
@@ -367,16 +349,14 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         isOpen={showModuleComments}
         onClose={() => handleCommentModuleClose()}
       >
-        <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="20px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Comments")}
-              </Text>
+              <H2>{t("Comments")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="worksheetCard.900"
+              color={colors.primaryDark}
               onPress={(e) => handleCommentModuleClose()}
             />
           </HStack>
@@ -394,18 +374,16 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                 AJ
               </Avatar>
               <VStack>
-                <Text fontSize="14px" fontWeight={"500"}>
-                  {t("Mrs. Jina Jain")}
-                </Text>
-                <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+                <BodyLarge>{t("Mrs. Jina Jain")}</BodyLarge>
+                <Subtitle color={colors.grayLight}>
                   {t("12 January, 4:00PM")}
-                </Text>
+                </Subtitle>
               </VStack>
             </HStack>
-            <Text p="5" fontSize="12px" fontWeight={"500"}>
+            <Subtitle p="5">
               A courtyard 50m long and 198m broad is to be paved with bricks of
               length 10m and breadth 18cm. Find the number of bricks required.
-            </Text>
+            </Subtitle>
           </Box>
           <Box bg="white" p="5">
             <HStack space="2" alignItems="center">
@@ -419,27 +397,25 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                 AJ
               </Avatar>
               <VStack>
-                <Text fontSize="14px" fontWeight={"500"}>
-                  {t("Mrs. Jina Jain")}
-                </Text>
-                <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+                <BodyLarge>{t("Mrs. Jina Jain")}</BodyLarge>
+                <Subtitle color={colors.grayLight}>
                   {t("12 January, 4:00PM")}
-                </Text>
+                </Subtitle>
               </VStack>
             </HStack>
-            <Text p="5" fontSize="12px" fontWeight={"500"}>
+            <Subtitle p="5">
               A courtyard 50m long and 198m broad is to be paved with bricks of
               length 10m and breadth 18cm. Find the number of bricks required.
-            </Text>
+            </Subtitle>
           </Box>
           <Box bg="white" p="5">
             <HStack space="2" alignItems="center">
               <Input
-                bg={"coolGray.100"}
+                bg={colors.grayLight}
                 size={"full"}
                 placeholder="Write a comment..."
               />
-              <Box rounded="full" bg="button.500" p="1">
+              <Box rounded="full" bg={colors.cardBg} p="1">
                 <IconByName
                   size="sm"
                   color="white"

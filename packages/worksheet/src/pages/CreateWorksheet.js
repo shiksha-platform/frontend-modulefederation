@@ -1,4 +1,4 @@
-import { Layout, Loading } from "@shiksha/common-lib";
+import { Layout, Loading, H2, overrideColorTheme } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getAllQuestions } from "services";
@@ -10,6 +10,8 @@ import WorksheetTemplate from "components/CreateWorksheet/WorksheetTemplate";
 import ListOfWorksheet from "components/CreateWorksheet/ListOfWorksheet";
 import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -17,6 +19,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [questions, setQuestions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [formObject, setFormObject] = React.useState({});
+  const [search, setSearch] = React.useState();
   const [limit, setLimit] = React.useState({});
   const [alertMessage, setAlertMessage] = React.useState();
   const [createType, setCreateType] = React.useState("create");
@@ -101,23 +104,22 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       _appBar={{
         languages: manifest.languages,
         onPressBackButton: handleBackButton,
+        setSearch,
+        isEnableSearchBtn: pageName === "ListOfWorksheet",
       }}
       subHeader={
-        pageName === "ListOfWorksheet"
-          ? formObject.name
-            ? t("Your worksheet has been created.")
-            : t("You can see all questions here")
-          : pageName === "AddDescriptionPage"
-          ? t("Enter Worksheet Details")
-          : t("Show questions based on")
+        <H2 textTransform="inherit">
+          {pageName === "ListOfWorksheet"
+            ? formObject.name
+              ? t("Your worksheet has been created.")
+              : t("You can see all questions here")
+            : pageName === "AddDescriptionPage"
+            ? t("Enter Worksheet Details")
+            : t("Show questions based on")}
+        </H2>
       }
       _subHeader={{
-        bg: "worksheetCard.500",
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
+        bg: colors.cardBg,
       }}
       _footer={footerLinks}
     >

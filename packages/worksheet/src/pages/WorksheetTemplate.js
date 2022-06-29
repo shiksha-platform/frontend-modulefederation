@@ -1,10 +1,18 @@
-import { H1, H3, IconByName, Layout } from "@shiksha/common-lib";
+import {
+  H1,
+  H3,
+  IconByName,
+  Layout,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { Box, Button, HStack, Skeleton, Stack, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function WorksheetTemplate({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -15,10 +23,10 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={t("Select Template")}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
-      <Box bg="worksheetCard.200" p="5">
+      <Box bg={colors.cardBgLight} p="5">
         <Carousel
           showArrows={false}
           showThumbs={false}
@@ -31,7 +39,7 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
                 name={
                   value ? "RecordCircleFillIcon" : "CheckboxBlankCircleLineIcon"
                 }
-                color="button.500"
+                color={colors.primary}
                 p="1"
               />
             );
@@ -42,24 +50,24 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
               <Box bg="white" p="5" alignItems="center">
                 <VStack w="100%" space="5">
                   <HStack w="100%" space="5">
-                    <Box bg={"gray.200"} w="44px" h="44px" />
+                    <Box bg={colors.grayLight} w="44px" h="44px" />
                     <Stack space="2" flex="1">
-                      <Box bg={"gray.200"} h="13px" />
-                      <Box bg={"gray.200"} h="22px" />
+                      <Box bg={colors.grayLight} h="13px" />
+                      <Box bg={colors.grayLight} h="22px" />
                     </Stack>
                   </HStack>
                   {["", "", ""].map((subItem, index) => (
                     <VStack key={index} w="100%" space="2">
-                      <Box bg={"gray.200"} w="18px" h="10px" />
-                      <Box bg={"gray.200"} h="32px" />
+                      <Box bg={colors.grayLight} w="18px" h="10px" />
+                      <Box bg={colors.grayLight} h="32px" />
                     </VStack>
                   ))}
                   <VStack w="100%" space="2">
-                    <Box bg={"gray.200"} h="10px" w="25%" />
+                    <Box bg={colors.grayLight} h="10px" w="25%" />
                     {["", "", ""].map((subItem, index) => (
                       <HStack key={index} space="4">
-                        <Box bg={"gray.200"} h="10px" flex="1" />
-                        <Box bg={"gray.200"} h="10px" flex="1" />
+                        <Box bg={colors.grayLight} h="10px" flex="1" />
+                        <Box bg={colors.grayLight} h="10px" flex="1" />
                       </HStack>
                     ))}
                   </VStack>
