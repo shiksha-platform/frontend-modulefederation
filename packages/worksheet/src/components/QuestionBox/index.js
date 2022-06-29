@@ -7,14 +7,7 @@ import { useTranslation } from "react-i18next";
 
 const styles = { questionDiv: { display: "flex" } };
 
-const QuestionBox = ({
-  questionObject,
-  selectData,
-  setSelectData,
-  isAnswerHide,
-  infoIcon,
-  _box,
-}) => {
+const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
   const { t } = useTranslation();
 
   const createMarkup = (markup) => {
