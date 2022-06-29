@@ -1,7 +1,7 @@
 import { Box, Menu, Button, Text, VStack } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
+import { CalendarBar } from "../../components/composite/CalendarBar";
 import {
   IconByName,
   Layout,
@@ -17,8 +17,8 @@ import {
   Subtitle,
   getApiConfig,
 } from "@shiksha/common-lib";
-import { GetAttendance } from "../../components/AttendanceComponent";
-import ReportSummary from "../../components/ReportSummary";
+import { GetAttendance } from "../../services/calls/registryCalls";
+import { ReportSummary } from "../../components/simple/ReportSummary";
 import { useNavigate } from "react-router-dom";
 import manifestLocal from "../../manifest.json";
 import colorTheme from "../../colorTheme";

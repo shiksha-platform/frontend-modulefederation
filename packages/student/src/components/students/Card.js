@@ -297,7 +297,7 @@ export default function Card({
         <Box>
           <IconByName
             onPress={(e) => handalOpenPoup(item)}
-            size="sm"
+            size="50"
             color={colors.downIconColor}
             name="ArrowDownSLineIcon"
             {..._arrow}
@@ -320,6 +320,7 @@ export default function Card({
                   />
                 </Box>
                 <IconByName
+                  size="50"
                   name="CloseCircleLineIcon"
                   onPress={(e) => setOpen(false)}
                 />

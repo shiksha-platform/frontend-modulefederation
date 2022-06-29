@@ -107,7 +107,7 @@ export default function Assessment() {
             <VStack>
               <Text fontSize={"lg"}>{"Assessment"}</Text>
             </VStack>
-            <IconByName size="sm" name="ArrowRightSLineIcon" />
+            <IconByName size="50" name="ArrowRightSLineIcon" />
           </HStack>
         </Link>
       }

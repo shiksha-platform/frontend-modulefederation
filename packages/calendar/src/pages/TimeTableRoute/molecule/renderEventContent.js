@@ -67,7 +67,7 @@ const renderEventContent = ({
       </Pressable>
       {!isCompare ? (
         <IconByName
-          size="sm"
+          size="50"
           name="FlashlightLineIcon"
           colorScheme={item.activeMenu ? "emerald" : "timeTableFlashIcon"}
           variant="solid"

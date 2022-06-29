@@ -30,11 +30,24 @@ import {
   Subtitle,
   BodyLarge,
 } from "@shiksha/common-lib";
+<<<<<<< HEAD
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
 import CalendarBar from "components/CalendarBar";
+=======
+import { GetAttendance } from "../../services/calls/registryCalls";
+<<<<<<< HEAD
+import AttendanceComponent from "../../components/AttendanceComponent";
+>>>>>>> 009ef33 (Added custom hook for attendance componenet)
+=======
+import AttendanceComponent from "../../components/composite/AttendanceComponent";
+<<<<<<< HEAD
+>>>>>>> f727083 (Added some more utilities)
 import ReportSummary from "../../components/ReportSummary";
+=======
+import { ReportSummary } from "../../components/simple/ReportSummary";
+>>>>>>> 218fc62 (Added some custom hooks)
 import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";
 import { useNavigate, useParams } from "react-router-dom";
