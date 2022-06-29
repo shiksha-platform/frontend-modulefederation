@@ -45,7 +45,7 @@ const SubCard = ({
   const { t } = useTranslation("student");
   const [attendance, setAttendance] = React.useState([]);
   const [workingDaysCount, setWorkingDaysCount] = React.useState();
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const holidays = [];
 
   React.useEffect(() => {
     const getData = async () => {
