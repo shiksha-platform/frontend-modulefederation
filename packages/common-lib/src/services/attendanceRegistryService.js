@@ -41,6 +41,10 @@ export const getAll = async (params = {}, header = {}) => {
 }
 
 export const create = async (data, headers = {}) => {
+  let header = {
+    ...headers,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
   let newInterfaceData = interfaceData
   newInterfaceData = {
     ...interfaceData,
@@ -49,17 +53,21 @@ export const create = async (data, headers = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await post(manifest.api_url + '/attendance', newData, {
-    headers: headers?.headers ? headers?.headers : {}
+    headers: header
   })
   if (result.data) {
-    return true
-    // return result.data.map((e) => mapInterfaceData(e, interfaceData));
+    let { Attendance } = result.data?.data?.result
+    return Attendance
   } else {
     return false
   }
 }
 
 export const update = async (data = {}, headers = {}) => {
+  let header = {
+    ...headers,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
   let newInterfaceData = interfaceData
   newInterfaceData = {
     ...interfaceData,
@@ -72,8 +80,25 @@ export const update = async (data = {}, headers = {}) => {
     manifest.api_url + '/attendance/' + data.id,
     newData,
     {
-      headers: headers?.headers ? headers?.headers : {}
+      headers: header
     }
+  )
+  if (result.data) {
+    return result
+  } else {
+    return {}
+  }
+}
+
+export const multipal = async (data = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    manifest.api_url + '/attendance/multipleAttendance',
+    data,
+    { headers }
   )
   if (result.data) {
     return result

@@ -115,7 +115,7 @@
   "REPORTS": "Attendance Reports",
   "SMS_REPORTS": "SMS Status Reports",
   "SCIENCE": "Science",
-  "MATHS": "Maths",
+  "MATHEMATICS": "Mathematics",
   "ENGLISH": "English",
   "HISTORY": "History",
   "GEOGRAPHY": "Geography",
@@ -247,8 +247,16 @@
   "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "Agerage than last month. Can be improved",
   "AGERAGE_CAN_BE_IMPROVED": "Agerage. can be improved",
   "MY_TEACHING": "My Teaching",
+  "TEACHING": "Teaching",
   "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "Access and plan your teaching material",
   "NAME": "Name",
   "SIGN_IN": "Sign In",
-  "SIGN_UP": "Sign up"
+  "SIGN_UP": "Sign up",
+  "TOPIC": "Topic",
+  "SORT": "sort",
+  "SEE_ALL_WORKSHEETS": "See all worksheets",
+  "SEE_ALL_DRAFTS": "See all drafts",
+  "CREATE_NEW_WORKSHEET": "Create new worksheet",
+  "COLLAPSE": "Collapse",
+  "ADD_TO_WORKSHEET": "Add to worksheet"
 }

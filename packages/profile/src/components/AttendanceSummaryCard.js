@@ -1,8 +1,16 @@
-import { IconByName } from "@shiksha/common-lib";
+import {
+  BodySmall,
+  H1,
+  IconByName,
+  Subtitle,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { Box, HStack, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import colorTheme from "../colorTheme";
 
+const colors = overrideColorTheme(colorTheme);
 export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
   const { t } = useTranslation();
 
@@ -31,38 +39,21 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
     <VStack>
       <Box bg={bg} roundedTop={"xl"} py="10px" px="15px">
         <HStack alignItems={"center"}>
-          <IconByName name={iconName} color={"white"} />
-          <Text
-            textTransform="ingerit"
-            fontSize="12px"
-            fontWeight="500"
-            color={"white"}
-          >
+          <IconByName name={iconName} color={colors.white} />
+          <Subtitle textTransform="ingerit" color={colors.white}>
             {title}
-          </Text>
+          </Subtitle>
         </HStack>
       </Box>
-      <Box bg="weekCardCompareBg.500" p="5">
+      <Box bg={colors.weekCardCompareBg} p="5">
         <HStack alignItems={"center"} justifyContent="space-around">
           <VStack alignItems="center">
-            <Text fontSize="24px" fontWeight="600" color="present.500">
-              {thisMonth}%
-            </Text>
-            <Text fontSize="14px" fontWeight="400" color="gray.500">
-              {t("THIS_MONTH")}
-            </Text>
+            <H1 color={colors.present}>{thisMonth}%</H1>
+            <BodySmall color={colors.gray}>{t("THIS_MONTH")}</BodySmall>
           </VStack>
           <VStack alignItems="center">
-            <Text
-              fontSize="24px"
-              fontWeight="600"
-              color="presentCardCompareText.500"
-            >
-              {lastMonth}%
-            </Text>
-            <Text fontSize="14px" fontWeight="400" color="gray.500">
-              {t("LAST_MONTH")}
-            </Text>
+            <H1 color={colors.presentCardCompareText}>{lastMonth}%</H1>
+            <BodySmall color={colors.gray}>{t("LAST_MONTH")}</BodySmall>
           </VStack>
         </HStack>
       </Box>
