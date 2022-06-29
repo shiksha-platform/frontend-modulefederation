@@ -528,10 +528,14 @@ export default function AttendanceComponent({
   const [showModal, setShowModal] = React.useState(false);
   const [smsShowModal, setSmsShowModal] = React.useState(false);
   const [loading, setLoading] = React.useState({});
-  const status = manifest?.["attendance.default_attendance_states"]
+  const status = Array.isArray(
+    manifest?.["attendance.default_attendance_states"]
+  )
+    ? manifest?.["attendance.default_attendance_states"]
+    : manifest?.["attendance.default_attendance_states"]
     ? JSON.parse(manifest?.["attendance.default_attendance_states"])
     : [];
-
+  console.log(status);
   useEffect(() => {
     if (typeof page === "object") {
       setDays(
@@ -777,8 +781,12 @@ const CalendarComponent = ({
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
-  const status = manifest?.["attendance.default_attendance_states"]
+  const holidays = [];
+  const status = Array.isArray(
+    manifest?.["attendance.default_attendance_states"]
+  )
+    ? manifest?.["attendance.default_attendance_states"]
+    : manifest?.["attendance.default_attendance_states"]
     ? JSON.parse(manifest?.["attendance.default_attendance_states"])
     : [];
 

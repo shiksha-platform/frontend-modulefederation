@@ -50,7 +50,7 @@ export default function SendSMS({ footerLinks, appName }) {
   const [presentStudents, setPresentStudents] = useState([]);
   const [absentStudents, setAbsentStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const holidays = [];
 
   useEffect(() => {
     let ignore = false;
