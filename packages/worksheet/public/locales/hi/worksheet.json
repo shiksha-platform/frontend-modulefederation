@@ -5,5 +5,15 @@
   "PASSWORD": "पासवर्ड",
   "SUBMIT": "प्रस्तुत करना",
   "MY_TEACHING": "मेरी शिक्षा",
-  "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "अपनी शिक्षण सामग्री तक पहुंचें और योजना बनाएं"
+  "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "अपनी शिक्षण सामग्री तक पहुंचें और योजना बनाएं",
+  "CHOOSE_ANOTHER_CLASS": "दूसरी कक्षा चुनें",
+  "TEACHING": "शिक्षा",
+  "TOPIC": "विषय",
+  "SORT": "क्रम से लगाना",
+  "SEE_ALL_WORKSHEETS": "सभी वर्कशीट देखें",
+  "SEE_ALL_DRAFTS": "सभी ड्राफ़्ट देखें",
+  "CREATE_NEW_WORKSHEET": "नई वर्कशीट बनाएं",
+  "COLLAPSE": "गिर जाना",
+  "SELECT": "चुनें",
+  "ADD_TO_WORKSHEET": "कार्यपत्रक में जोड़ें"
 }

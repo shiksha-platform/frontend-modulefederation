@@ -5,10 +5,14 @@ import {
   FilterButton,
   useWindowSize,
   Loading,
+  overrideColorTheme,
+  H2,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { getAllQuestions } from "services";
 import { Box, ScrollView, VStack } from "native-base";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function QuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -39,21 +43,16 @@ export default function QuestionBank({ footerLinks, appName }) {
       }}
       bg="white"
       _appBar={{ languages: ["en"] }}
-      subHeader={t("THE_CLASSES_YOU_TAKE")}
+      subHeader={<H2 textTransform="inherit">{t("THE_CLASSES_YOU_TAKE")}</H2>}
       _subHeader={{
-        bg: "worksheetCard.500",
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
+        bg: colors.cardBg,
       }}
       _footer={footerLinks}
     >
       <FilterButton
         getObject={setFilterObject}
         _box={{ p: 5 }}
-        _actionSheet={{ bg: "worksheetCard.500" }}
+        _actionSheet={{ bg: colors.cardBg }}
         filters={[
           {
             name: "Subject",

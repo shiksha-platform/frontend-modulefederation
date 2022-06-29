@@ -41,8 +41,15 @@ const readQuestion = async (questionId) => {
     }
   );
   if (question.data) {
-    const { editorState, subject, topic, gradeLevel, qType, identifier } =
-      question.data.result.question;
+    const {
+      editorState,
+      subject,
+      topic,
+      gradeLevel,
+      qType,
+      identifier,
+      languageCode,
+    } = question.data.result.question;
     return {
       ...editorState,
       subject,
@@ -50,6 +57,7 @@ const readQuestion = async (questionId) => {
       class: gradeLevel,
       qType,
       questionId: identifier,
+      languageCode,
     };
   } else {
     return [];

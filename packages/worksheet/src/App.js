@@ -8,6 +8,8 @@ import TeachingDetail from "pages/TeachingDetail";
 import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
 import CreateWorksheet from "pages/CreateWorksheet";
 import EditWorksheet from "pages/EditWorksheet";
+import WorksheetTemplate from "pages/WorksheetTemplate";
+import Worksheet from "./pages/Worksheet";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -17,15 +19,19 @@ function App() {
   );
   const routes = [
     {
-      path: "/view",
+      path: "/worksheet/list",
+      component: Worksheet,
+    },
+    {
+      path: "/worksheet/:classId/view",
       component: TeachingDetail,
     },
     {
-      path: "/questionBank",
+      path: "/worksheet/questionBank",
       component: QuestionBank,
     },
     {
-      path: "/:id",
+      path: "/worksheet/:id",
       component: WorksheetQuestionBank,
     },
     {
@@ -35,6 +41,10 @@ function App() {
     {
       path: "/worksheet/create",
       component: CreateWorksheet,
+    },
+    {
+      path: "/worksheet/template",
+      component: WorksheetTemplate,
     },
     {
       path: "*",

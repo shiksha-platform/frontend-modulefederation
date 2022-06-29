@@ -15,11 +15,14 @@ import { useTranslation } from "react-i18next";
 import {
   IconByName,
   H1,
-  H2,
   H3,
   teacherRegistryService,
   studentRegistryService,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 // Start editing here, save and see your changes.
 export default function StudentEdit({
@@ -38,18 +41,18 @@ export default function StudentEdit({
     onlyParameterProp?.length > "0"
       ? onlyParameterProp
       : [
+          "address",
           "firstName",
           "lastName",
-          "address",
           "fathersName",
           "phoneNumber",
           "email",
           "gender",
         ];
   const parameter = {
+    address: { placeholder: t("ADDRESS") },
     firstName: { placeholder: t("FIRST_NAME"), required: true },
     lastName: { placeholder: t("LAST_NAME") },
-    address: { placeholder: t("ADDRESS") },
     fathersName: { placeholder: t("FATHERS_NAME") },
     phoneNumber: { placeholder: t("PHONE_NUMBER") },
     email: { placeholder: t("EMAIL"), type: "email" },
@@ -137,8 +140,14 @@ export default function StudentEdit({
           toast.show({
             render: () => {
               return (
-                <Box bg="emerald.500" px="3" py="2" rounded="sm" mb={5}>
-                  <H1 color="coolGray.100">
+                <Box
+                  bg={colors.studentHeadingBg}
+                  px="3"
+                  py="2"
+                  rounded="sm"
+                  mb={5}
+                >
+                  <H1 color={colors.coolGray}>
                     {result.data?.params?.status
                       ? result.data?.params?.status
                       : "successful"}
@@ -206,17 +215,13 @@ export default function StudentEdit({
             <Stack
               p="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
-              borderColor={"coolGray.200"}
+              borderColor={colors.coolGraylight}
               key={index}
             >
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3
-                      fontWeight="500"
-                      color={"coolGray.400"}
-                      textTransform={"uppercase"}
-                    >
+                    <H3 color={colors.labelColor} textTransform={"uppercase"}>
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
@@ -245,7 +250,7 @@ export default function StudentEdit({
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: "error.500",
+                        color: colors.error,
                         fontWeight: 500,
                       }}
                     >
@@ -259,7 +264,7 @@ export default function StudentEdit({
                 <>
                   <H3
                     fontWeight="500"
-                    color={"coolGray.400"}
+                    color={colors.labelColor}
                     textTransform={"uppercase"}
                     pb="2"
                   >
@@ -285,9 +290,9 @@ export default function StudentEdit({
 }
 
 const Section = ({ title, button, children, _box }) => (
-  <Box bg={"white"} p="5" {..._box}>
+  <Box bg={colors.white} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <H2 fontWeight="500">{title}</H2>
+      <H3>{title}</H3>
       {button}
     </HStack>
     {children}

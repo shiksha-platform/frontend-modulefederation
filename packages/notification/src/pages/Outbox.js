@@ -20,9 +20,18 @@ import {
   Tab,
   H2,
   Collapsible,
+  BodyLarge,
+  BodyMedium,
+  Subtitle,
+  BodySmall,
+  H3,
+  overrideColorTheme,
+  H1,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const notificationData = [
   {
@@ -65,7 +74,7 @@ const Outbox = ({ footerLinks }) => {
             rounded="full"
             colorScheme="button"
             variant="outline"
-            bg="viewNotification.600"
+            bg={colors.notificationbtnBg}
             px="5"
             py="4px"
             _text={{ textTransform: "capitalize", fontSize: "14px" }}
@@ -79,7 +88,7 @@ const Outbox = ({ footerLinks }) => {
       _appBar={{ languages: manifest.languages }}
       subHeader={t("VIEW_YOUR_OUTGOMING_NOTIFICATIONS")}
       _subHeader={{
-        bg: "classCard.500",
+        bg: colors.cardBg,
         py: "22px",
         _text: {
           fontSize: "16px",
@@ -90,7 +99,7 @@ const Outbox = ({ footerLinks }) => {
       _footer={footerLinks}
     >
       <Tab
-        _box={{ bg: "white", p: 5 }}
+        _box={{ bg: colors.white, p: 5 }}
         routes={[
           { title: t("Scheduled"), component: <Schedule /> },
           { title: t("Sent"), component: <Send /> },
@@ -100,19 +109,19 @@ const Outbox = ({ footerLinks }) => {
         isOpen={showModalOutbox}
         onClose={() => setShowModalOutbox(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight={"500"}>{t("NOTIFCATION_ACTION")}</H2>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("NOTIFCATION_ACTION")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color={colors.cardCloseIcon}
               onPress={(e) => setShowModalOutbox(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           <Link href={"/notification"}>
             <Box p="5">{t("INBOX")}</Box>
           </Link>
@@ -149,20 +158,20 @@ const Schedule = () => {
   return (
     <Stack space={1} mb="2">
       <VStack space="1">
-        <Box bg="white" p="5">
+        <Box bg={colors.white} p="5">
           <HStack justifyContent="space-between" alignItems="center">
             <CalendarBar {...{ page, setPage }} />
             <Checkbox
               colorScheme="button"
-              borderColor="button.500"
+              borderColor={colors.primary}
               borderRadius="0"
-              _text={{ color: "button.500", fontSize: "14px" }}
+              _text={{ color: colors.primary, fontSize: "14px" }}
             >
               {t("MARK_ALL_READ")}
             </Checkbox>
           </HStack>
         </Box>
-        <Box bg="white" p="5" roundedBottom={"xl"}>
+        <Box bg={colors.white} p="5" roundedBottom={"xl"}>
           <HStack justifyContent="end" alignItems="center" pb="5">
             {!filtered ? (
               <Button
@@ -187,13 +196,13 @@ const Schedule = () => {
                         key={index}
                         mr="1"
                         rounded="full"
-                        bg="viewNotification.800"
+                        bg={colors.scrollViewbtnBg}
                         colorScheme="button"
                         {...(isSelect < 1 ? { variant: "outline" } : {})}
                         px="5"
                         rightIcon={
                           <IconByName
-                            color={isSelect < 1 ? "button.500" : "white"}
+                            color={isSelect < 1 ? colors.primary : colors.white}
                             name="ArrowDownSLineIcon"
                             isDisabled
                           />
@@ -204,7 +213,9 @@ const Schedule = () => {
                           }
                         }}
                       >
-                        <Text color={isSelect > 0 ? "white" : "button.500"}>
+                        <Text
+                          color={isSelect > 0 ? colors.white : colors.primary}
+                        >
                           {value.name}{" "}
                           {groupValue.filter((e) => value?.data.includes(e))
                             .length > 0 && groupValue[0]
@@ -220,7 +231,7 @@ const Schedule = () => {
                     colorScheme="button"
                     variant="outline"
                     px="5"
-                    bg="viewNotification.800"
+                    bg={colors.scrollViewbtnBg}
                     _text={{
                       textTransform: "capitelize",
                       fontWeight: "400",
@@ -228,7 +239,7 @@ const Schedule = () => {
                     }}
                     rightIcon={
                       <IconByName
-                        color="button.500"
+                        color={colors.primary}
                         name="ArrowDownSLineIcon"
                         isDisabled
                       />
@@ -271,19 +282,19 @@ const Schedule = () => {
         isOpen={showModalMore}
         onClose={() => setShowModalMore(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight={"500"}>{t("NOTIFCATION_ACTION")}</H2>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("NOTIFCATION_ACTION")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color={colors.cardCloseIcon}
               onPress={(e) => setShowModalMore(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           {selectOptions.map((value, index) => (
             <Text p="5" key={index}>
               {value}
@@ -301,53 +312,49 @@ const Schedule = () => {
         </Box>
       </Actionsheet>
       <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="15px">
-              <H2 fontWeight={"500"}>{t("VIEW_NOTIFCATION")}</H2>
+              <H2>{t("VIEW_NOTIFCATION")}</H2>
             </Stack>
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           <Box px="5" pt="5">
             <VStack space="4">
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="CheckDoubleLineIcon"
-                  color="classCard.900"
+                  color={colors.cardCloseIcon}
                   isDisabled
                 />
-                <Text fontSize="14" fontWeight="500">
-                  {t("RECEIVED_FROM_ADMIN")}
-                </Text>
+                <BodyLarge>{t("RECEIVED_FROM_ADMIN")}</BodyLarge>
               </HStack>
               <HStack
                 pb="5"
                 borderBottomWidth="1"
-                borderColor="gray.200"
+                borderColor={colors.lightGray}
                 alignItems="center"
                 space="1"
               >
                 <IconByName
                   _icon={{ size: "16" }}
                   name="TimeLineIcon"
-                  color="classCard.900"
+                  color={colors.cardCloseIcon}
                   isDisabled
                 />
-                <Text fontSize="14" fontWeight="500">
+                <BodyLarge>
                   {t("Scheduled weekly on Thursday, 2:00 pm")}
-                </Text>
+                </BodyLarge>
               </HStack>
             </VStack>
           </Box>
           <VStack p="5" space={6}>
-            <Text fontSize="14" fontWeight="600">
-              {t("NOTICE")}
-            </Text>
-            <Text fontSize="14" fontWeight="400" textTransform={"inherit"}>
+            <H3>{t("NOTICE")}</H3>
+            <BodyMedium textTransform={"inherit"}>
               {notification?.text}
-            </Text>
+            </BodyMedium>
           </VStack>
           <Box p="5">
             <Button
@@ -361,23 +368,23 @@ const Schedule = () => {
         </Box>
       </Actionsheet>
       <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight={"500"}>{t("SELECT_MODULE")}</H2>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("SELECT_MODULE")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color={colors.cardCloseIcon}
               onPress={(e) => setFilterData()}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"} justifyContent="space-between">
+        <Box bg={colors.white} width={"100%"} justifyContent="space-between">
           <Box p="5">
             <Checkbox
               colorScheme="button"
-              borderColor="button.500"
+              borderColor={colors.primary}
               borderRadius="0"
             >
               {t("Select All")}
@@ -388,7 +395,7 @@ const Schedule = () => {
               <Box p="5" key={index}>
                 <Checkbox
                   colorScheme="button"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   borderRadius="0"
                 >
                   {value}
@@ -430,20 +437,20 @@ const Send = () => {
   return (
     <Stack space={1} mb="2">
       <VStack space="1">
-        <Box bg="white" p="5">
+        <Box bg={colors.white} p="5">
           <HStack justifyContent="space-between" alignItems="center">
             <CalendarBar {...{ page, setPage }} />
             <Checkbox
               colorScheme="button"
-              borderColor="button.500"
+              borderColor={colors.primary}
               borderRadius="0"
-              _text={{ color: "button.500", fontSize: "14px" }}
+              _text={{ color: colors.primary, fontSize: "14px" }}
             >
               {t("MARK_ALL_READ")}
             </Checkbox>
           </HStack>
         </Box>
-        <Box bg="white" p="5" roundedBottom={"xl"}>
+        <Box bg={colors.white} p="5" roundedBottom={"xl"}>
           <HStack justifyContent="end" alignItems="center" pb="5">
             {!filtered ? (
               <Button
@@ -468,13 +475,13 @@ const Send = () => {
                         key={index}
                         mr="1"
                         rounded="full"
-                        bg="viewNotification.800"
+                        bg={colors.scrollViewbtnBg}
                         colorScheme="button"
                         {...(isSelect < 1 ? { variant: "outline" } : {})}
                         px="5"
                         rightIcon={
                           <IconByName
-                            color={isSelect < 1 ? "button.500" : "white"}
+                            color={isSelect < 1 ? colors.primary : colors.white}
                             name="ArrowDownSLineIcon"
                             isDisabled
                           />
@@ -485,7 +492,9 @@ const Send = () => {
                           }
                         }}
                       >
-                        <Text color={isSelect > 0 ? "white" : "button.500"}>
+                        <Text
+                          color={isSelect > 0 ? colors.white : colors.primary}
+                        >
                           {value.name}{" "}
                           {groupValue.filter((e) => value?.data.includes(e))
                             .length > 0 && groupValue[0]
@@ -501,7 +510,7 @@ const Send = () => {
                     colorScheme="button"
                     variant="outline"
                     px="5"
-                    bg="viewNotification.800"
+                    bg={colors.scrollViewbtnBg}
                     _text={{
                       textTransform: "capitelize",
                       fontWeight: "500",
@@ -509,7 +518,7 @@ const Send = () => {
                     }}
                     rightIcon={
                       <IconByName
-                        color="button.500"
+                        color={colors.primary}
                         name="ArrowDownSLineIcon"
                         isDisabled
                       />
@@ -553,16 +562,14 @@ const Send = () => {
         isOpen={showModalMore}
         onClose={() => setShowModalMore(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("NOTIFCATION_ACTION")}
-              </Text>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("NOTIFCATION_ACTION")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color={colors.cardCloseIcon}
               onPress={(e) => setShowModalMore(false)}
             />
           </HStack>
@@ -585,14 +592,14 @@ const Send = () => {
         </Box>
       </Actionsheet>
       <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight={"500"}>{t("VIEW_NOTIFCATION")}</H2>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("VIEW_NOTIFCATION")}</H2>
             </Stack>
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           {sendBy === "admin" ? (
             <Box px="5" pt="5">
               <VStack space="4">
@@ -600,23 +607,21 @@ const Send = () => {
                   <IconByName
                     _icon={{ size: "16" }}
                     name="CheckDoubleLineIcon"
-                    color="classCard.900"
+                    color={colors.cardCloseIcon}
                     isDisabled
                   />
-                  <Text fontSize="14" fontWeight="500">
-                    {t("RECEIVED_FROM_ADMIN")}
-                  </Text>
+                  <BodyLarge>{t("RECEIVED_FROM_ADMIN")}</BodyLarge>
                 </HStack>
                 <HStack alignItems="center" space="1">
                   <IconByName
                     _icon={{ size: "16" }}
                     name="TimeLineIcon"
-                    color="classCard.900"
+                    color={colors.cardCloseIcon}
                     isDisabled
                   />
-                  <Text fontSize="14" fontWeight="500">
+                  <BodyLarge>
                     {t("Scheduled weekly on Thursday, 2:00 pm")}
-                  </Text>
+                  </BodyLarge>
                 </HStack>
               </VStack>
             </Box>
@@ -624,86 +629,78 @@ const Send = () => {
             ""
           )}
           <VStack p="5" space={6}>
-            <Text fontSize="14" fontWeight="600">
-              {t("NOTICE")}
-            </Text>
-            <Text fontSize="14" fontWeight="400" textTransform={"inherit"}>
+            <H3>{t("NOTICE")}</H3>
+            <BodyMedium textTransform={"inherit"}>
               {notification?.text}
-            </Text>
+            </BodyMedium>
           </VStack>
           {sendBy === "teacher" ? (
             <VStack>
-              <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+              <Box p="5" borderBottomWidth="1" borderColor={colors.lightGray}>
                 <HStack alignItems="center" justifyContent="space-between">
                   <HStack alignItems="center" space="1">
                     <IconByName
                       _icon={{ size: "16" }}
                       name="CheckDoubleLineIcon"
-                      color="classCard.900"
+                      color={colors.cardCloseIcon}
                       isDisabled
                     />
-                    <Text fontSize="14" fontWeight="500">
-                      {t("19 parents received")}
-                    </Text>
+                    <BodyLarge>{t("19 parents received")}</BodyLarge>
                   </HStack>
                   <IconByName
                     _icon={{ size: "16" }}
                     name="ArrowRightSLineIcon"
-                    color="classCard.900"
+                    color={colors.cardCloseIcon}
                     isDisabled
                   />
                 </HStack>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+              <Box p="5" borderBottomWidth="1" borderColor={colors.lightGray}>
                 <HStack alignItems="center" justifyContent="space-between">
                   <HStack alignItems="center" space="1">
                     <IconByName
                       _icon={{ size: "16" }}
                       name="TimeLineIcon"
-                      color="classCard.900"
+                      color={colors.cardCloseIcon}
                       isDisabled
                     />
-                    <Text fontSize="14" fontWeight="500">
-                      {t("14 parents didnt receive")}
-                    </Text>
+                    <BodyLarge>{t("14 parents didnt receive")}</BodyLarge>
                   </HStack>
                   <IconByName
                     _icon={{ size: "16" }}
                     name="ArrowRightSLineIcon"
-                    color="classCard.900"
+                    color={colors.cardCloseIcon}
                     isDisabled
                   />
                 </HStack>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+              <Box p="5" borderBottomWidth="1" borderColor={colors.lightGray}>
                 <Button colorScheme="button" variant="outline">
                   resend
                 </Button>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+              <Box p="5" borderBottomWidth="1" borderColor={colors.lightGray}>
                 <HStack alignItems="center" space="1">
                   <IconByName
                     _icon={{ size: "16" }}
                     name="CheckDoubleLineIcon"
-                    color="classCard.900"
+                    color={colors.cardCloseIcon}
                     isDisabled
                   />
-                  <Text fontSize="14" fontWeight="500">
-                    {t("Sent - 23rd April, 2022.")}
-                  </Text>
+                  <BodyLarge>{t("Sent - 23rd April, 2022.")}</BodyLarge>
                 </HStack>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor="gray.200">
+              <Box p="5" borderBottomWidth="1" borderColor={colors.lightGray}>
                 <HStack alignItems="center" space="1">
                   <IconByName
                     _icon={{ size: "16" }}
                     name="TimeLineIcon"
-                    color="classCard.900"
+                    color={colors.cardCloseIcon}
                     isDisabled
                   />
-                  <Text fontSize="14" fontWeight="500">
+                  <BodyLarge>
                     {t("Scheduled - weekly on Thursday, 2:00 pm")}
-                  </Text>
+                  </BodyLarge>
                 </HStack>
               </Box>
             </VStack>
@@ -722,23 +719,23 @@ const Send = () => {
         </Box>
       </Actionsheet>
       <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight={"500"}>{t("SELECT_MODULE")}</H2>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("SELECT_MODULE")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color={colors.cardBg}
               onPress={(e) => setFilterData()}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           <Box p="5">
             <Checkbox
               colorScheme="button"
-              borderColor="button.500"
+              borderColor={colors.primary}
               borderRadius="0"
             >
               {t("Select All")}
@@ -749,7 +746,7 @@ const Send = () => {
               <Box p="5" key={index}>
                 <Checkbox
                   colorScheme="button"
-                  borderColor="button.500"
+                  borderColor={colors.primary}
                   borderRadius="0"
                 >
                   {value}
@@ -785,7 +782,7 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
       <Box
         key={index}
         borderWidth="1"
-        borderColor="button.500"
+        borderColor={colors.primary}
         my="2"
         p="5"
         rounded="10"
@@ -803,12 +800,8 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
                   name="UserLineIcon"
                   isDisabled
                 />
-                <Text fontSize="16px" fontWeight="600">
-                  {value.name}
-                </Text>
-                <Text fontSize="25px" color="button.500">
-                  •
-                </Text>
+                <H2>{value.name}</H2>
+                <H1 color={colors.primary}>•</H1>
               </HStack>
               <IconByName
                 _icon={{ size: "18" }}
@@ -819,9 +812,7 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
                 }}
               />
             </HStack>
-            <Text {...line2style} fontSize="12px" fontWeight="500">
-              {value.text}
-            </Text>
+            <Subtitle {...line2style}>{value.text}</Subtitle>
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -829,9 +820,7 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                <Text fontSize="12px" fontWeight="400">
-                  {value.type}
-                </Text>
+                <BodySmall>{value.type}</BodySmall>
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -839,9 +828,7 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <Text fontSize="12px" fontWeight="400">
-                  {value.dateTime}
-                </Text>
+                <BodySmall>{value.dateTime}</BodySmall>
               </HStack>
             </HStack>
           </VStack>

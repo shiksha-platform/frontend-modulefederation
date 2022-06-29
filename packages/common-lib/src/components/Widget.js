@@ -2,6 +2,7 @@ import { Box, HStack, Pressable, Stack, Badge, Text, VStack } from 'native-base'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import IconByName from './IconByName'
+import { BodySmall, H3, H4 } from './layout/HeaderTags'
 
 const chunk = (array, chunk) => {
   return [].concat.apply(
@@ -30,8 +31,8 @@ const PressableNew = ({ route, children, ...prop }) => {
 function Widget({ data, title }) {
   const newData = chunk(data ? data : [], 2)
   const rotate = {
-    bottom: '-20px',
-    right: '-20px',
+    bottom: '-25px',
+    right: '-25px',
     minW: '50px',
     minH: '50px',
     alignItems: 'center',
@@ -41,7 +42,7 @@ function Widget({ data, title }) {
   }
   return (
     <Stack space={2}>
-      <Text fontSize={'lg'}>{title}</Text>
+      <H3 pb='4px'>{title}</H3>
       <VStack space={3}>
         {newData.map((subData, index) => (
           <HStack
@@ -55,7 +56,7 @@ function Widget({ data, title }) {
                 key={subIndex}
                 rounded='xl'
                 shadow={3}
-                p={4}
+                p={5}
                 width='48%'
                 overflow={'hidden'}
                 {...item?._box}
@@ -86,8 +87,8 @@ function Widget({ data, title }) {
                     {...item?._text}
                   >
                     <VStack>
-                      <Text bold>{item?.title}</Text>
-                      <Text fontSize={'xs'}>{item?.subTitle}</Text>
+                      <H4>{item?.title}</H4>
+                      <BodySmall>{item?.subTitle}</BodySmall>
                     </VStack>
                   </Text>
                   {item.icon ? (

@@ -1,52 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Text } from 'native-base'
 
-const H1 = ({
-  fontSize,
-  children,
-  color,
-  fontWeight,
-  bold,
-  textAlign,
-  textTransform,
-  pb
-}) => {
+const H1 = ({ children, ...props }) => {
   return (
-    <Text
-      fontSize={fontSize}
-      color={color}
-      fontWeight={fontWeight}
-      bold={bold}
-      textAlign={textAlign}
-      textTransform={textTransform}
-      pb={pb}
-    >
+    <Text {...props} fontSize='24px' fontWeight='700'>
       {children}
     </Text>
   )
 }
-
-H1.defaultProps = {
-  fontSize: 'lg',
-  children: 'unknown',
-  color: '',
-  fontWeight: '',
-  bold: false,
-  textAlign: '',
-  textTransform: '',
-  pb: ''
-}
-
-H1.propTypes = {
-  fontSize: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  color: PropTypes.string,
-  fontWeight: PropTypes.string,
-  bold: PropTypes.bool,
-  textAlign: PropTypes.string,
-  textTransform: PropTypes.string,
-  pb: PropTypes.string
-}
-
-export default H1
+export default React.memo(H1)

@@ -6,5 +6,17 @@
   "SUBMIT": "Submit",
   "MY_TEACHING": "My Teaching",
   "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "Access and plan your teaching material",
-  "CLASS": "Class"
+  "CLASS": "Class",
+  "CHOOSE_ANOTHER_CLASS": "Choose another class",
+  "TEACHING": "Teaching",
+  "TOPIC": "Topic",
+  "SORT": "sort",
+  "SEE_ALL_WORKSHEETS": "See all worksheets",
+  "SEE_ALL_DRAFTS": "See all drafts",
+  "CREATE_NEW_WORKSHEET": "Create new worksheet",
+  "FILTER": "Filter",
+  "RESET_FILTER": "Reset Filter",
+  "COLLAPSE": "Collapse",
+  "SELECT": "Select",
+  "ADD_TO_WORKSHEET": "Add to worksheet"
 }

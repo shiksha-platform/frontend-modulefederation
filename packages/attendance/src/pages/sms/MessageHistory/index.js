@@ -20,12 +20,16 @@ import {
   H4,
   calendar,
   studentRegistryService,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import CalendarBar from "../../../components/CalendarBar";
 import manifest from "../../../manifest.json";
 import { sms } from "./assets";
 import CalendarComponent from "./Molecule/CalendarComponent";
 import Message from "./Molecule/Message";
+import colorTheme from "../../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 export default function MessageHistory({ footerLinks }) {
   const { t } = useTranslation();
@@ -92,14 +96,14 @@ export default function MessageHistory({ footerLinks }) {
               bg="button.100"
               rightIcon={
                 <IconByName
-                  color="button.500"
+                  color={colors.primary}
                   name="ArrowDownSLineIcon"
                   isDisabled
                 />
               }
               onPress={(e) => setShowModal(true)}
             >
-              <H3 color="button.500" fontWeight="500">
+              <H3 color={colors.primary}>
                 {calendarView === "month"
                   ? t("MONTH_VIEW")
                   : calendarView === "week"
@@ -109,16 +113,16 @@ export default function MessageHistory({ footerLinks }) {
             </Button>
             <Actionsheet
               isOpen={showModal}
-              _backdrop={{ opacity: "0.9", bg: "gray.500" }}
+              _backdrop={{ opacity: "0.9", bg: colors.gray }}
             >
               <Actionsheet.Content
                 p="0"
                 alignItems={"left"}
-                bg="studentCard.500"
+                bg={colors.studentCardBg}
               >
                 <HStack justifyContent={"space-between"}>
                   <Stack p={5} pt={2} pb="25px">
-                    <H2 fontWeight={"600"}>{t("SELECT_VIEW")}</H2>
+                    <H2>{t("SELECT_VIEW")}</H2>
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
@@ -127,7 +131,7 @@ export default function MessageHistory({ footerLinks }) {
                 </HStack>
               </Actionsheet.Content>
 
-              <Box w="100%" bg="white">
+              <Box w="100%" bg={colors.white}>
                 {[
                   { name: t("TODAY_VIEW"), value: "day" },
                   { name: t("WEEK_VIEW"), value: "week" },
@@ -139,7 +143,7 @@ export default function MessageHistory({ footerLinks }) {
                       key={index}
                       p="5"
                       borderBottomWidth={1}
-                      borderBottomColor="coolGray.100"
+                      borderBottomColor={colors.coolGray}
                       onPress={(e) => {
                         setCalendarView(item.value);
                         setShowModal(false);
@@ -154,19 +158,19 @@ export default function MessageHistory({ footerLinks }) {
           </Stack>
         </HStack>
       }
-      _subHeader={{ bg: "studentCard.500" }}
+      _subHeader={{ bg: colors.studentCardBg }}
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg="white" p="5" py="30">
+        <Box bg={colors.white} p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <H2 fontWeight="600">{studentObject.fullName}</H2>
+            <H2>{studentObject.fullName}</H2>
           </HStack>
         </Box>
-        <Box bg="white">
+        <Box bg={colors.white}>
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box p="5">
-              <H2 fontWeight="600">{t("SEND_MESSAGE")}</H2>
+              <H2>{t("SEND_MESSAGE")}</H2>
             </Box>
           </HStack>
           <VStack>
@@ -180,28 +184,30 @@ export default function MessageHistory({ footerLinks }) {
           </VStack>
           <Actionsheet
             isOpen={smsObject?.status}
-            _backdrop={{ opacity: "0.9", bg: "gray.500" }}
+            _backdrop={{ opacity: "0.9", bg: colors.gray }}
           >
-            <Actionsheet.Content p="0" alignItems={"left"} bg="studentCard.500">
+            <Actionsheet.Content
+              p="0"
+              alignItems={"left"}
+              bg={colors.studentCardBg}
+            >
               <HStack justifyContent={"space-between"}>
                 <Stack p={5} pt={2} pb="25px">
-                  <H2 fontWeight={"600"}>
+                  <H2>
                     {smsObject?.status === "Send"
                       ? t("MESSAGE_SENT")
                       : t("MESSAGE_FAILED")}
                   </H2>
-                  <H4 fontWeight="500" color="studentCard.800">
-                    {smsObject?.date}
-                  </H4>
+                  <H4 color={colors.studentCardText}>{smsObject?.date}</H4>
                 </Stack>
                 <IconByName
                   name="CloseCircleLineIcon"
-                  color="studentCard.800"
+                  color={colors.studentCardText}
                   onPress={(e) => setSmsObject({})}
                 />
               </HStack>
             </Actionsheet.Content>
-            <Box bg="white" w="100%">
+            <Box bg={colors.white} w="100%">
               <Message item={smsObject} isDisableRetry />
               <Button.Group p="5">
                 <Button
@@ -218,7 +224,7 @@ export default function MessageHistory({ footerLinks }) {
                   onPress={(e) => {
                     console.log(e);
                   }}
-                  _text={{ color: "white" }}
+                  _text={{ color: colors.white }}
                 >
                   {t("DONE")}
                 </Button>

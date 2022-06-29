@@ -4,6 +4,9 @@ import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import { TouchableHighlight } from "react-native-web";
 import GetIcon from "atoms/GetIcon";
 import Message from "./Message";
+import { overrideColorTheme } from "@shiksha/common-lib";
+import colorTheme from "../../../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const CalendarComponent = ({
   monthDays,
@@ -24,7 +27,7 @@ const CalendarComponent = ({
         borderBottomWidth={
           monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
         }
-        borderBottomColor={"coolGray.300"}
+        borderBottomColor={colors.lightGray}
         p={"2"}
         {...(_weekBox?.[index] ? _weekBox[index] : {})}
       >
@@ -66,7 +69,7 @@ const CalendarComponent = ({
               key={subIndex}
               alignItems="center"
               borderWidth={isToday ? "1" : ""}
-              borderColor={isToday ? "button.500" : ""}
+              borderColor={isToday ? colors.primary : ""}
               rounded="lg"
               opacity={
                 type !== "month" && day.day() !== 0
@@ -88,15 +91,13 @@ const CalendarComponent = ({
                 {!isIconSizeSmall ? (
                   <VStack alignItems={"center"}>
                     {index === 0 ? (
-                      <Text pb="1" color={"attendanceCardText.400"}>
+                      <Text pb="1" color={colors.cardText}>
                         {day.format("ddd")}
                       </Text>
                     ) : (
                       ""
                     )}
-                    <Text color={"attendanceCardText.500"}>
-                      {day.format("DD")}
-                    </Text>
+                    <Text color={colors.cardText}>{day.format("DD")}</Text>
                   </VStack>
                 ) : (
                   <HStack alignItems={"center"} space={1}>
@@ -116,7 +117,7 @@ const CalendarComponent = ({
                     <GetIcon
                       {...smsIconProp}
                       status="Loader4LineIcon"
-                      color={"button.500"}
+                      color={colors.primary}
                       isDisabled
                       _icon={{ _fontawesome: { spin: true } }}
                     />

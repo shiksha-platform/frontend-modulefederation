@@ -18,9 +18,16 @@ import {
   calendar,
   classRegistryService,
   attendanceRegistryService,
+  overrideColorTheme,
+  BodySmall,
+  Caption,
+  H2,
 } from "@shiksha/common-lib";
 import StudentEdit from "./StudentEdit";
 import moment from "moment";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 const PRESENT = "Present";
 const STUDNET = "Student";
@@ -38,7 +45,7 @@ const SubCard = ({
   const { t } = useTranslation("student");
   const [attendance, setAttendance] = React.useState([]);
   const [workingDaysCount, setWorkingDaysCount] = React.useState();
-  const holidays = [moment().add(1, "days").format("YYYY-MM-DD")];
+  const holidays = [];
 
   React.useEffect(() => {
     const getData = async () => {
@@ -72,7 +79,7 @@ const SubCard = ({
       {typeof img === "undefined" || img === true ? (
         <Avatar
           size="40px"
-          bg={item?.avatarUrl ? "" : "amber.500"}
+          bg={item?.avatarUrl ? "" : colors.studentCardBg}
           {...(item?.avatarUrl ? { source: { uri: item.avatarUrl } } : {})}
           rounded="lg"
         >
@@ -82,7 +89,11 @@ const SubCard = ({
         <></>
       )}
       <VStack alignItems={"center"}>
-        <Text fontSize={"12px"} color="coolGray.800" {..._textTitle}>
+        <BodySmall
+          fontSize={"12px"}
+          color={colors.studentNametext}
+          {..._textTitle}
+        >
           {textTitle ? (
             textTitle
           ) : item?.fullName ? (
@@ -90,8 +101,8 @@ const SubCard = ({
           ) : (
             <Text italic>{t("NOT_ENTERED")}</Text>
           )}
-        </Text>
-        <Text color="coolGray.400" fontSize={"10px"} {..._textSubTitle}>
+        </BodySmall>
+        <Caption color={colors.labelColor} {..._textSubTitle}>
           <HStack space={1}>
             <Text>{t("ROLL_NUMBER")}:</Text>
             {item.admissionNo ? (
@@ -100,7 +111,7 @@ const SubCard = ({
               <Text italic>{t("NOT_ENTERED")}</Text>
             )}
           </HStack>
-        </Text>
+        </Caption>
       </VStack>
     </VStack>
   ) : (
@@ -119,7 +130,7 @@ const SubCard = ({
       )}
       <VStack>
         <HStack alignItems="center" space="2">
-          <Text color="coolGray.800" bold {..._textTitle}>
+          <Text color={colors.studentNametext} bold {..._textTitle}>
             {textTitle ? (
               textTitle
             ) : item?.fullName ? (
@@ -131,7 +142,7 @@ const SubCard = ({
                     ) : (
                       <Text italic>{t("NOT_ENTERED")}</Text>
                     )}
-                    <Text color={"coolGray.300"}>{" • "}</Text>
+                    <Text color={colors.studentCardsubText}>{" • "}</Text>
                   </HStack>
                 ) : (
                   <></>
@@ -145,12 +156,12 @@ const SubCard = ({
           {attendance &&
           workingDaysCount &&
           attendance.length >= workingDaysCount ? (
-            <Box bg={"startIconColor.500"} rounded="full">
+            <Box bg={colors.starIconBg} rounded="full">
               <IconByName
                 p="1px"
                 name="StarSFillIcon"
                 _icon={{ size: 16 }}
-                color="startIconColor.700"
+                color={colors.starIconColor}
               />
             </Box>
           ) : (
@@ -164,7 +175,7 @@ const SubCard = ({
             ) : (
               <Text italic>{t("NOT_ENTERED")}</Text>
             )}
-            <Text color={"coolGray.400"}>{" • "}</Text>
+            <Text color={colors.labelColor}>{" • "}</Text>
             <Text>{t("ROLL_NUMBER") + "."} </Text>
             {item.admissionNo ? (
               <Text>{item.admissionNo.toString().padStart(2, "0")}</Text>
@@ -173,7 +184,7 @@ const SubCard = ({
             )}
           </HStack>
         ) : type === "rollFather" ? (
-          <Text color="coolGray.400" fontSize={"xs"} {..._textSubTitle}>
+          <Text color={colors.labelColor} fontSize={"xs"} {..._textSubTitle}>
             {textSubTitle ? (
               textSubTitle
             ) : (
@@ -194,7 +205,7 @@ const SubCard = ({
             )}
           </Text>
         ) : (
-          <Text color="coolGray.400" fontSize={"xs"} {..._textSubTitle}>
+          <Text color={colors.labelColor} fontSize={"xs"} {..._textSubTitle}>
             {textSubTitle ? (
               textSubTitle
             ) : (
@@ -287,12 +298,12 @@ export default function Card({
           <IconByName
             onPress={(e) => handalOpenPoup(item)}
             size="sm"
-            color="gray.900"
+            color={colors.downIconColor}
             name="ArrowDownSLineIcon"
             {..._arrow}
           />
           <Actionsheet isOpen={open} onClose={(e) => setOpen(false)}>
-            <Actionsheet.Content bg="studentCard.500" alignItems="inherit">
+            <Actionsheet.Content bg={colors.studentBg} alignItems="inherit">
               <HStack justifyContent={"space-between"}>
                 <Box px="3" py="4" pt="0">
                   <SubCard
@@ -314,7 +325,7 @@ export default function Card({
                 />
               </HStack>
             </Actionsheet.Content>
-            <Box bg="white" width={"100%"}>
+            <Box bg={colors.white} width={"100%"}>
               <Stack space={5}>
                 <StudentEdit
                   {...{
@@ -329,9 +340,7 @@ export default function Card({
                       alignItems={"center"}
                       justifyContent={"space-between"}
                     >
-                      <Text fontSize="16px" fontWeight="500">
-                        {t("NOTES")}
-                      </Text>
+                      <H2>{t("NOTES")}</H2>
                       <Button
                         variant="ghost"
                         colorScheme="button"
@@ -343,7 +352,7 @@ export default function Card({
                         {t("EDIT")}
                       </Button>
                     </HStack>
-                    <Box bg={"gray.100"} rounded={"md"} p="4">
+                    <Box bg={colors.lightGray} rounded={"md"} p="4">
                       <HStack
                         justifyContent={"space-between"}
                         alignItems="center"
@@ -357,9 +366,9 @@ export default function Card({
                   <Link href={"/students/" + item.id}>
                     <Box
                       rounded="lg"
-                      borderColor="button.500"
+                      borderColor={colors.primary}
                       borderWidth="1"
-                      _text={{ color: "button.500" }}
+                      _text={{ color: colors.primary }}
                       px={6}
                       py={2}
                     >
