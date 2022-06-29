@@ -43,24 +43,6 @@ const QuestionBox = ({
             />
             {infoIcon}
           </div>
-          {selectData ? (
-            <IconByName
-              color={isExist() ? "button.500" : "gray.300"}
-              name={isExist() ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"}
-              onPress={(e) => {
-                if (isExist()) {
-                  const newData = selectData.filter(
-                    (e) => e.questionId !== questionObject?.questionId
-                  );
-                  setSelectData(newData);
-                } else {
-                  setSelectData([...selectData, questionObject]);
-                }
-              }}
-            />
-          ) : (
-            <React.Fragment />
-          )}
         </HStack>
       </Box>
       {questionObject?.options ? (
