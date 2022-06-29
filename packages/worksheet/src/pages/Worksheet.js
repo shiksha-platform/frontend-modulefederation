@@ -8,6 +8,9 @@ import {
   Loading,
   telemetryFactory,
   worksheetRegistryService,
+  H2,
+  overrideColorTheme,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
@@ -62,6 +65,9 @@ const sortArray = [
     ],
   },
 ];
+import colorTheme from "../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 export default function Worksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -109,31 +115,26 @@ export default function Worksheet({ footerLinks, appName }) {
             rounded="full"
             colorScheme="button"
             variant="outline"
-            bg="button.50"
+            bg={colors.primaryLight}
             px={5}
             py={1}
-            _text={{
-              textTransform: "capitalize",
-              fontSize: "14px",
-              fontWeight: "500",
-            }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalSort(true)}
           >
-            {t("SORT")}
+            <BodyLarge textTransform="capitalize">{t("SORT")}</BodyLarge>
           </Button>
         ),
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={t("See all worksheets here")}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <FilterButton
         getObject={setFilterObject}
         _box={{ pt: 5, px: 5 }}
-        _actionSheet={{ bg: "worksheetCard.500" }}
-        _button={{ bg: "button.50", px: "15px", py: "2" }}
+        _actionSheet={{ bg: colors.cardBg }}
+        _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}
         _filterButton={{
           rightIcon: "",
           bg: "white",
@@ -199,16 +200,14 @@ export default function Worksheet({ footerLinks, appName }) {
         isOpen={showModalSort}
         onClose={() => setShowModalSort(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("SORT")}
-              </Text>
+              <H2>{t("SORT")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="worksheetCard.800"
+              color={colors.primaryDark}
               onPress={(e) => setShowModalSort(false)}
             />
           </HStack>
@@ -217,7 +216,7 @@ export default function Worksheet({ footerLinks, appName }) {
           {sortArray.map((value, index) => (
             <Box key={index}>
               <Box px="5" py="4">
-                <H3 color="gray.400">{value?.title}</H3>
+                <H3 color={colors.grayLight}>{value?.title}</H3>
               </Box>
               {value?.data &&
                 value.data.map((item, subIndex) => {
@@ -226,7 +225,7 @@ export default function Worksheet({ footerLinks, appName }) {
                     <Pressable
                       key={subIndex}
                       p="5"
-                      bg={isSelected ? "gray.100" : ""}
+                      bg={isSelected ? colors.grayLight : ""}
                       onPress={(e) => handleSort(item)}
                     >
                       <HStack
@@ -236,7 +235,7 @@ export default function Worksheet({ footerLinks, appName }) {
                       >
                         <IconByName
                           isDisabled
-                          color={isSelected ? "button.500" : ""}
+                          color={isSelected ? colors.primary : ""}
                           name={item.icon}
                         />
                         <Text>{item.name}</Text>

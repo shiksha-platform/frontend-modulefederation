@@ -4,6 +4,9 @@ import {
   Layout,
   Tab,
   classRegistryService,
+  BodyLarge,
+  H2,
+  overrideColorTheme,
   worksheetRegistryService,
   Loading,
   telemetryFactory,
@@ -15,6 +18,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
 import { teachingMaterial } from "./../config/teachingMaterial";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const styles = {
   stickyButton: { boxShadow: "rgb(0 0 0 / 22%) 0px -2px 10px" },
@@ -78,7 +83,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
       subHeader={`${classObject?.name ? classObject?.name : ""} ${
         classObject?.subjectName ? classObject?.subjectName : ""
       }`}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <VStack>
@@ -133,9 +138,8 @@ export default function TeachingDetail({ footerLinks, appName }) {
                           name: "EditBoxLineIcon",
                           color: "gray.500",
                           rounded: "full",
-                          bg: "white",
-                          p: "2",
-                          shadow: 2,
+                          bg: colors.primary,
+                          p: "1",
                           _icon: { size: 17 },
                           onPress: (e) => navigate(`/worksheet/1/edit`),
                         },
@@ -177,18 +181,10 @@ const Worksheets = ({
   return (
     <Stack>
       <HStack justifyContent="space-between" py="5" alignItems="center">
-        {leftTitle ? (
-          <Text fontWeight="600" fontSize="16px">
-            {leftTitle}
-          </Text>
-        ) : (
-          ""
-        )}
+        {leftTitle ? <H2>{leftTitle}</H2> : ""}
         {rightTitle ? (
           <Button variant="ghost" onPress={(e) => navigate("/worksheet/list")}>
-            <Text fontWeight="500" fontSize="14px" color={"button.500"}>
-              {rightTitle}
-            </Text>
+            <BodyLarge color={colors.primary}>{rightTitle}</BodyLarge>
           </Button>
         ) : (
           ""

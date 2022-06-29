@@ -1,4 +1,4 @@
-import { Layout, Loading } from "@shiksha/common-lib";
+import { Loading, Layout } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getAllQuestions } from "services";
@@ -101,6 +101,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       _appBar={{
         languages: manifest.languages,
         onPressBackButton: handleBackButton,
+        setSearch,
+        isEnableSearchBtn: pageName === "ListOfWorksheet",
       }}
       subHeader={
         pageName === "ListOfWorksheet"
@@ -112,12 +114,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           : t("Show questions based on")
       }
       _subHeader={{
-        bg: "worksheetCard.500",
-        _text: {
-          fontSize: "16px",
-          fontWeight: "600",
-          textTransform: "inherit",
-        },
+        bg: colors.cardBg,
       }}
       _footer={footerLinks}
     >

@@ -19,10 +19,13 @@ export default function RecipientList({
 }) {
   const { t } = useTranslation();
   const Card = React.lazy(() => import("students/Card"));
-  const [checkStudents, setCheckStudents] = React.useState([]);
 
   React.useEffect((e) => {
-    setCheckStudents(students.map((e) => e.admissionNo));
+    setStudents(
+      students.map((item) => {
+        return { ...item, isSelected: false };
+      })
+    );
   }, []);
 
   return (
@@ -103,9 +106,6 @@ export default function RecipientList({
                 type: "Attendance-Notification-Add-Another-Student",
               });
               capture("INTERACT", telemetryData);
-              setStudents(
-                students.filter((e) => checkStudents.includes(e.admissionNo))
-              );
               setPageName("StudentList");
             }}
           >
