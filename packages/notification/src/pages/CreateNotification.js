@@ -11,18 +11,26 @@ import {
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
+  BodyLarge,
+  BodyMedium,
   capture,
+  H1,
+  H2,
+  H3,
   IconByName,
   Layout,
   Loading,
   telemetryFactory,
   useWindowSize,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
-import { FormNotification } from "component/FormNotification";
-import RecipientList, { StudentList } from "component/RecipientList";
+import { FormNotification } from "../component/FormNotification";
+import RecipientList, { StudentList } from "../component/RecipientList";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 const newStudents = [
   {
     fullName: "Shah Rukh Khan",
@@ -99,12 +107,10 @@ const CreateNotification = ({ footerLinks, appName }) => {
           icon={<IconByName name="MailSendLineIcon" _icon={{ size: 100 }} />}
           message={
             <Center>
-              <Text fontSize="24" fontWeight="600" color="gray.500">
-                {"Notification Sent"}
-              </Text>
-              <Text fontSize="14" fontWeight="400" color="gray.500">
+              <H1 color={colors.coolGraylight}>{"Notification Sent"}</H1>
+              <BodyMedium color={colors.coolGraylight}>
                 {`Attendance Notification has been sent to ${students.length} parents`}
-              </Text>
+              </BodyMedium>
               {/* <Button
                 colorScheme="button"
                 variant="outline"
@@ -132,7 +138,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
       }}
       subHeader={t("ADD_NEW_NOTIFICATION")}
       _subHeader={{
-        bg: "classCard.500",
+        bg: colors.cardBg,
         _text: {
           fontSize: "16px",
           fontWeight: "500",
@@ -150,12 +156,13 @@ const CreateNotification = ({ footerLinks, appName }) => {
         <FormNotification {...{ setPageName, students, setStudents }} />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
-        <Actionsheet.Content alignItems={"left"} bg="viewNotification.700">
+        <Actionsheet.Content
+          alignItems={"left"}
+          bg={colors.createNotificationCardBg}
+        >
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={1} pb="2px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("VIEW_NOTIFCATION")}
-              </Text>
+            <Stack p={5} pt={1} pb="15px">
+              <H2>{t("VIEW_NOTIFCATION")}</H2>
             </Stack>
             {/* <IconByName
               name="CloseCircleLineIcon"
@@ -164,34 +171,32 @@ const CreateNotification = ({ footerLinks, appName }) => {
             /> */}
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           <Box px="5">
             <HStack
               py="5"
               borderBottomWidth="1"
-              borderColor="gray.200"
+              borderColor={colors.lightGray}
               alignItems="center"
               space="1"
             >
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
-                color="classCard.900"
+                color={colors.cardCloseIcon}
                 isDisabled
               />
-              <Text fontSize="14" fontWeight="500">
+              <BodyLarge>
                 {t(`Sending to ${students.length} parents`)}
-              </Text>
+              </BodyLarge>
             </HStack>
           </Box>
           <VStack p="5" space={6}>
-            <Text fontSize="14" fontWeight="600">
-              {t("NOTICE")}
-            </Text>
-            <Text fontSize="14" fontWeight="400" textTransform={"inherit"}>
+            <H3>{t("NOTICE")}</H3>
+            <BodyMedium textTransform={"inherit"}>
               Worksheets help the kids in exploring multiple concepts They
               develop fine motor skills, logical thinking
-            </Text>
+            </BodyMedium>
           </VStack>
           <Box p="5">
             <Button.Group>

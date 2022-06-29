@@ -20,8 +20,15 @@ import {
   ProgressBar,
   calendar,
   teacherRegistryService,
+  overrideColorTheme,
+  H2,
+  BodyLarge,
+  Subtitle,
+  BodySmall,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function AttendanceReport({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -119,16 +126,14 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </Suspense>
         </HStack>
       }
-      _subHeader={{ bg: "classCard.500" }}
+      _subHeader={{ bg: colors.cardBg }}
       _appBar={{ onPressBackButton: handleBackButton }}
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg="white" p="5" py="30">
+        <Box bg={colors.white} p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <Text fontSize="16" fontWeight="600">
-              {t("MY_ATTENDANCE")}
-            </Text>
+            <H2>{t("MY_ATTENDANCE")}</H2>
             <Stack>
               <Button
                 rounded={"full"}
@@ -137,40 +142,38 @@ export default function AttendanceReport({ footerLinks, appName }) {
                 bg="button.100"
                 rightIcon={
                   <IconByName
-                    color="button.500"
+                    color={colors.primary}
                     name="ArrowDownSLineIcon"
                     isDisabled
                   />
                 }
                 onPress={(e) => setShowModal(true)}
               >
-                <Text color="button.500" fontSize="14" fontWeight="500">
+                <BodyLarge color={colors.primary}>
                   {t(attendanceType)}
-                </Text>
+                </BodyLarge>
               </Button>
               <Actionsheet
                 isOpen={showModal}
-                _backdrop={{ opacity: "0.9", bg: "gray.500" }}
+                _backdrop={{ opacity: "0.9", bg: colors.gray }}
               >
                 <Actionsheet.Content
                   p="0"
                   alignItems={"left"}
-                  bg="classCard.500"
+                  bg={colors.cardBg}
                 >
                   <HStack justifyContent={"space-between"}>
                     <Stack p={5} pt={2} pb="25px">
-                      <Text fontSize="16px" fontWeight={"600"}>
-                        {t("SELECT_VIEW")}
-                      </Text>
+                      <H2>{t("SELECT_VIEW")}</H2>
                     </Stack>
                     <IconByName
                       name="CloseCircleLineIcon"
-                      color="classCard.900"
+                      color={colors.cardCloseIcon}
                       onPress={(e) => setShowModal(false)}
                     />
                   </HStack>
                 </Actionsheet.Content>
-                <Box w="100%" bg="white">
+                <Box w="100%" bg={colors.white}>
                   {[
                     { name: t("MORNING_SCHOOL"), value: "MORNING_SCHOOL" },
                     { name: t("EVENING_SCHOOL"), value: "EVENING_SCHOOL" },
@@ -186,15 +189,13 @@ export default function AttendanceReport({ footerLinks, appName }) {
                           setAttendanceType(item.value);
                         }}
                       >
-                        <Text
-                          fontSize="14px"
-                          fontWeight="500"
+                        <BodyLarge
                           color={
-                            attendanceType === item.value ? "button.500" : ""
+                            attendanceType === item.value ? colors.primary : ""
                           }
                         >
                           {item.name}
-                        </Text>
+                        </BodyLarge>
                       </Pressable>
                     );
                   })}
@@ -211,12 +212,10 @@ export default function AttendanceReport({ footerLinks, appName }) {
             </Stack>
           </HStack>
         </Box>
-        <Box bg="white">
+        <Box bg={colors.white}>
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box p="5">
-              <Text fontSize="16" fontWeight="600">
-                {t("SEND_MESSAGE")}
-              </Text>
+              <H2>{t("SEND_MESSAGE")}</H2>
             </Box>
           </HStack>
           <VStack>
@@ -229,24 +228,22 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </VStack>
           <Actionsheet
             isOpen={attendanceObject?.status}
-            _backdrop={{ opacity: "0.9", bg: "gray.500" }}
+            _backdrop={{ opacity: "0.9", bg: colors.gray }}
           >
             <Actionsheet.Content
               p="0"
               alignItems={"left"}
-              bg="white"
+              bg={colors.white}
             ></Actionsheet.Content>
             <Box bg="white" w="100%" p="5">
               <VStack space="5" textAlign="center">
-                <Text fontSize="12px" fontWeight="500" color="gray.400">
+                <Subtitle color={colors.gray}>
                   {t("ATTENDANCE_DETAILS")}
-                </Text>
-                <Text fontWeight="600" fontSize="16px">
-                  {attendanceObject?.type}
-                </Text>
-                <Text fontWeight="600" fontSize="14px" color="gray.500">
-                  {attendanceObject.message}
-                </Text>
+                </Subtitle>
+                <H2>{attendanceObject?.type}</H2>
+                <BodyLarge color={colors.gray}>
+                  {attendanceObject.mess2age}
+                </BodyLarge>
                 <Button
                   variant="outline"
                   flex={1}
@@ -258,15 +255,13 @@ export default function AttendanceReport({ footerLinks, appName }) {
             </Box>
           </Actionsheet>
         </Box>
-        <VStack space={5} bg="white" p="5">
+        <VStack space={5} bg={colors.white} p="5">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
-              <Text fontSize="16" fontWeight="600">
-                {t("MY_MONTHLY_ATTENDANCE")}
-              </Text>
+              <H2>{t("MY_MONTHLY_ATTENDANCE")}</H2>
             </Box>
           </HStack>
-          <Box bg={"reportBoxBg.400"} rounded="10px">
+          <Box bg={colors.reportBoxBg} rounded="10px">
             <VStack p="5" space={3}>
               <VStack space={"30px"}>
                 {[
@@ -276,9 +271,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
                 ].map((month, index) => (
                   <HStack key={index} alignItems={"center"} space={3}>
                     <VStack alignItems={"center"}>
-                      <Text fontSize="12px" fontWeight="400">
-                        {month.format("Y MMM")}
-                      </Text>
+                      <BodySmall>{month.format("Y MMM")}</BodySmall>
                     </VStack>
                     <VStack flex="auto" alignContent={"center"}>
                       <ProgressBar
@@ -292,11 +285,11 @@ export default function AttendanceReport({ footerLinks, appName }) {
                             name: month.format("Y MMM"),
                             color:
                               status === "Present"
-                                ? "attendancePresent.500"
+                                ? colors.attendancePresent
                                 : status === "Absent"
-                                ? "attendanceAbsent.500"
+                                ? colors.attendanceAbsent
                                 : status === "Unmarked"
-                                ? "attendanceUnmarked.300"
+                                ? colors.attendanceUnmarked
                                 : "special_duty.500",
                             value: attendance.filter((e) => e.type === status)
                               .length,
@@ -399,15 +392,13 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <Text pb="1" color={"attendanceCardText.400"}>
+                    <Text pb="1" color={colors.dateLight}>
                       {day.format("ddd")}
                     </Text>
                   ) : (
                     ""
                   )}
-                  <Text color={"attendanceCardText.500"}>
-                    {day.format("DD")}
-                  </Text>
+                  <Text color={colors.date}>{day.format("DD")}</Text>
                 </VStack>
               ) : (
                 <HStack alignItems={"center"} space={1}>
@@ -427,7 +418,7 @@ const CalendarComponent = ({
                   <GetIcon
                     {...smsIconProp}
                     status="Loader4LineIcon"
-                    color={"button.500"}
+                    color={colors.primary}
                     isDisabled
                     _icon={{ _fontawesome: { spin: true } }}
                   />
@@ -449,49 +440,49 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
   switch (status) {
     case "Present":
       icon = (
-        <Box {..._box} color={color ? color : "attendancePresent.500"}>
+        <Box {..._box} color={color ? color : colors.attendancePresent}>
           <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Absent":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceAbsent.500"}>
+        <Box {..._box} color={color ? color : colors.attendanceAbsent}>
           <IconByName name="CloseCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "SpecialDuty":
       icon = (
-        <Box {..._box} color={color ? color : "special_duty.500"}>
+        <Box {..._box} color={color ? color : colors.specialDuty}>
           <IconByName name="AwardLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.100"}>
+        <Box {..._box} color={color ? color : colors.holiDay}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Unmarked":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.500"}>
+        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Today":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.500"}>
+        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     default:
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.400"}>
+        <Box {..._box} color={color ? color : colors.attendancedefault}>
           <IconByName name={status} {...iconProps} />
         </Box>
       );

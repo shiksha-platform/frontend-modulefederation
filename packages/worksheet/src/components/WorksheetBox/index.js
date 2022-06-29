@@ -1,4 +1,4 @@
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, H2, Caption, Subtitle } from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -25,22 +25,20 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
           <Pressable onPress={() => (url ? navigate(url) : "")}>
             <HStack space={2} alignItems="center">
               <Avatar bg={colors[random]} size="57" rounded="md">
-                <Text fontWeight="600" fontSize="16px" color="white">
+                <H2 color="white">
                   {item.heading?.toUpperCase().substr(0, 1)}
-                </Text>
+                </H2>
               </Avatar>
               <Stack space="1">
                 <VStack space="1px">
-                  <Text fontWeight="600" fontSize="16px">
-                    {item.heading}
-                  </Text>
+                  <H2>{item.heading}</H2>
                   {/*<HStack space={1} alignItems="center">
-                     <Text fontWeight="400" fontSize="10px">
+                     <Caption>
                       {item.subHeading} {"•"}
-                    </Text> 
-                    <Text fontWeight="400" fontSize="10px">
+                    </Caption> 
+                    <Caption>
                       {t("CLASS") + " " + item.class}
-                    </Text>
+                    </Caption>
                     
                   </HStack>*/}
                 </VStack>
@@ -52,13 +50,8 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                     _icon={{ size: 12 }}
                     isDisabled
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {item.likes + " likes"}
-                  </Text>
-
-                  <Text fontWeight="600" fontSize="10px">
-                    ({item.comments + " comments"})
-                  </Text>
+                  <Caption>{item.likes + " likes"}</Caption>
+                  <Caption>({item.comments + " comments"})</Caption>
                 </HStack>
               </Stack>
             </HStack>
@@ -71,9 +64,7 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
             {..._addIconButton}
           />
         </HStack>
-        <Text fontWeight="400" fontSize="12px" color="worksheetBoxText.500">
-          {item.description}
-        </Text>
+        <Subtitle color="worksheetBoxText.500">{item.description}</Subtitle>
         <HStack space="2">
           <VStack>
             <HStack space="1" alignItems="center">
@@ -83,13 +74,9 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Subject: " + item.subject}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -98,13 +85,9 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Level: " + item.level}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -113,13 +96,9 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Questions: " + item.questions}
-              </Text>
+              </Subtitle>
             </HStack>
           </VStack>
           <VStack>
@@ -130,13 +109,9 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Grade: " + item.grade}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -145,13 +120,9 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {t("TOPIC") + ": " + item.chapter}
-              </Text>
+              </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
               <IconByName
@@ -160,13 +131,9 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 color="worksheetBoxText.400"
                 p="0"
               />
-              <Text
-                fontWeight="400"
-                fontSize="12px"
-                color="worksheetBoxText.400"
-              >
+              <Subtitle color="worksheetBoxText.400">
                 {"Downloads: " + item.downloads}
-              </Text>
+              </Subtitle>
             </HStack>
           </VStack>
         </HStack>
