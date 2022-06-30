@@ -96,7 +96,7 @@ const Children: React.FC<{
 }> = ({ type, date, page }) => {
   const { t } = useTranslation();
   switch (true) {
-    case type === "month":
+    case type === "monthInDays":
       return (
         <VStack>
           <FormatDate date={date} type="Month" />
@@ -136,7 +136,6 @@ export const TimeBar: React.FC<any> = (props) => {
   // Type decides if array or not
   // etc
   const [date, setDate] = useState<MomentUnionType>();
-  console.log(props.page);
   useEffect(() => {
     if (props.type === "days") setDate(moment().add(props.page, "days"));
     else setDate(calendar(props.page, props.type));

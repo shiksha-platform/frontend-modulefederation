@@ -7,7 +7,7 @@ export default function CalendarBar({ view, ...props }) {
   switch (view) {
     case "month":
     case "monthInDays":
-      props.type = "month";
+      props.type = "monthInDays";
       break;
     case "week":
       props.type = "week";
