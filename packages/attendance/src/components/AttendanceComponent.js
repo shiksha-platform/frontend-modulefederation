@@ -535,7 +535,6 @@ export default function AttendanceComponent({
     : manifest?.["attendance.default_attendance_states"]
     ? JSON.parse(manifest?.["attendance.default_attendance_states"])
     : [];
-  console.log(status);
   useEffect(() => {
     if (typeof page === "object") {
       setDays(

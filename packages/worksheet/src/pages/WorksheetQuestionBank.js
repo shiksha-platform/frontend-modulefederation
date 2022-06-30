@@ -412,7 +412,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               />
               <Box rounded="full" bg={colors.cardBg} p="1">
                 <IconByName
-                  size="sm"
+                  size="50"
                   color="white"
                   name="SendPlane2LineIcon"
                   onPress={(e) => console.log("false")}

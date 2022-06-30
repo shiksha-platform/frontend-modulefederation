@@ -11,7 +11,7 @@ module.exports = {
     "./CompareReport": "./src/pages/reports/CompareReport",
     "./SendSMS": "./src/pages/sms/SendSMS",
     "./MessageHistory": "./src/pages/sms/MessageHistory",
-    "./CalendarBar": "./src/components/CalendarBar",
+    "./CalendarBar": "./src/components/composite/CalendarBar",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

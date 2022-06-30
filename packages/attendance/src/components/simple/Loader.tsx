@@ -31,7 +31,7 @@ const Loader: FC<LoaderType> = ({ success, fail }) => {
             <Spinner
               color={"button.500"}
               accessibilityLabel="Loading posts"
-              size="sm"
+              size="50"
             />
             <VStack alignItems="center" space={2}>
               <Text fontSize="22px" color="button.500">

@@ -55,10 +55,10 @@ const SingleSelectQuestionCard = ({ questionNumber, question }) => {
           <Box p="4" bg={"#FFF8F7"} borderBottomRadius={6}>
             <Radio.Group name="exampleGroup" defaultValue="1">
               <HStack alignItems={"center"} space={4}>
-                <Radio value="1" colorScheme="green" size="sm">
+                <Radio value="1" colorScheme="green" size="50">
                   Yes
                 </Radio>
-                <Radio value="0" colorScheme="green" size="sm">
+                <Radio value="0" colorScheme="green" size="50">
                   No
                 </Radio>
               </HStack>

@@ -27,7 +27,7 @@ const colorTheme = {
   reportBoxBg: "#FFF8F7",
   reportBorder: "#ede7e6",
   bgMarkAttendance: "#9C27B0",
-  darkGray: "#1f2937",
+  // darkGray: "#1f2937",
   messageSent: "#B1B1BF",
   messageAlert: "#373839",
   messageInfo: "#7C7E82",

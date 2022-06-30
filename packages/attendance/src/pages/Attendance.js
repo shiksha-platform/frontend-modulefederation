@@ -15,13 +15,13 @@ import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
-import { WeekWiesBar } from "components/CalendarBar";
+import { TimeBar } from "components/simple/TimeBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
 } from "components/AttendanceComponent";
 import moment from "moment";
-import Loader from "../components/simple/Loader"
+import Loader from "../components/simple/Loader";
 import FourOFour from "../components/simple/FourOFour";
 import colorTheme from "../colorTheme";
 
@@ -211,7 +211,7 @@ export default function Attendance({ footerLinks, appName }) {
             </BodySmall>
           </VStack>
           <IconByName
-            size="sm"
+            size="50"
             mt="8px"
             name="ArrowRightSLineIcon"
             onPress={(e) => navigate(`/students/class/${classId}`)}
@@ -224,7 +224,7 @@ export default function Attendance({ footerLinks, appName }) {
       <Stack space={1}>
         <Box bg={colors.white} px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <WeekWiesBar
+            <TimeBar
               setPage={setWeekPage}
               page={weekPage}
               previousDisabled={
@@ -261,6 +261,7 @@ export default function Attendance({ footerLinks, appName }) {
                     }
                   : false
               }
+              type="week"
             />
 
             <Button

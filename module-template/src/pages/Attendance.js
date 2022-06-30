@@ -57,7 +57,7 @@ export default function Attendance() {
                 {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
               </Text>
             </VStack>
-            <IconByName size="sm" name="ArrowRightSLineIcon" />
+            <IconByName size="50" name="ArrowRightSLineIcon" />
           </HStack>
         </Link>
       }

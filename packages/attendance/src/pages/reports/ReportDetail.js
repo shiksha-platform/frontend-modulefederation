@@ -12,7 +12,7 @@ import {
 } from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
+import CalendarBar from "components/composite/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
@@ -487,7 +487,7 @@ const Collapsible = ({
               {header}
             </Text>
             <IconByName
-              size="sm"
+              size="50"
               isDisabled={true}
               color={!collaps ? colors.grayInLight : colors.coolGraylight}
               name={!collaps ? "ArrowDownSLineIcon" : "ArrowUpSLineIcon"}

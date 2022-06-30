@@ -294,7 +294,7 @@ const Collapsible = ({
               {header}
             </Text>
             <IconByName
-              size="sm"
+              size="50"
               isDisabled={true}
               color={
                 !collaps || collapsButton
