@@ -58,13 +58,9 @@ export default function WorksheetBox({
 
   const handleLike = async () => {
     if (like.id) {
-      const result = await likeRegistryService.update(
-        {
-          id: like.id,
-          type: "unlike",
-        },
-        ["type"]
-      );
+      const result = await likeRegistryService.distory({
+        id: like.id,
+      });
       setLike({});
       const newData = likes.filter((e) => e.id !== like.id);
       setLikes(newData);
