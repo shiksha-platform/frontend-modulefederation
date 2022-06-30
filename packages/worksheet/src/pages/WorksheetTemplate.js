@@ -19,10 +19,10 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("Worksheet Template"),
+        title: t("WORKSHEET_TEMPLATE"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("Select Template")}
+      subHeader={t("SELECT_TEMPLATE")}
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >

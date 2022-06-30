@@ -1,4 +1,4 @@
-import { FilterButton, IconByName, useWindowSize } from "@shiksha/common-lib";
+import { FilterButton, IconByName } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   HStack,
@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
 import AlertValidationModal from "components/AlertValidationModal";
 
-export default function ListOfWorksheet({
+export default function ListOfQuestions({
   questions,
   setQuestions,
   pageName,
@@ -27,7 +27,6 @@ export default function ListOfWorksheet({
   setFormObject,
 }) {
   const { t } = useTranslation();
-  const [width, Height] = useWindowSize();
   const [selectData, setSelectData] = React.useState([]);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [showQuestions, setShowQuestions] = React.useState([]);
@@ -39,7 +38,7 @@ export default function ListOfWorksheet({
 
   React.useEffect(() => {
     if (!isSuccess) {
-      setPageName("ListOfWorksheet");
+      setPageName("ListOfQuestions");
       setShowQuestions(questions);
     }
     setInputData(formObject?.name ? formObject.name : "Untitled");
@@ -175,47 +174,43 @@ export default function ListOfWorksheet({
       )}
 
       <Box bg="white" p="5">
-        <ScrollView maxH={Height}>
-          <VStack space="5">
-            {showQuestions.map((item, index) => {
-              const isExist = selectData.filter(
-                (e) => e.questionId === item?.questionId
-              ).length;
-              return (
-                <QuestionBox
-                  isAnswerHide={!isAnswerFilter}
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={item}
-                  infoIcon={
-                    <HStack space={1} alignItems="center">
+        <VStack space="5">
+          {showQuestions.map((item, index) => {
+            const isExist = selectData.filter(
+              (e) => e.questionId === item?.questionId
+            ).length;
+            return (
+              <QuestionBox
+                isAnswerHide={!isAnswerFilter}
+                _box={{ py: "12px", px: "16px" }}
+                key={index}
+                questionObject={item}
+                infoIcon={
+                  <HStack space={1} alignItems="center">
+                    <IconByName
+                      name="InformationFillIcon"
+                      p="1"
+                      color="button.500"
+                      onPress={(e) => setQuestionObject(item)}
+                    />
+                    {!isSuccess ? (
                       <IconByName
-                        name="InformationFillIcon"
                         p="1"
-                        color="button.500"
-                        onPress={(e) => setQuestionObject(item)}
+                        color={isExist ? "button.500" : "gray.300"}
+                        name={
+                          isExist ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"
+                        }
+                        onPress={(e) => handelToggleQuestion(item)}
                       />
-                      {!isSuccess ? (
-                        <IconByName
-                          p="1"
-                          color={isExist ? "button.500" : "gray.300"}
-                          name={
-                            isExist
-                              ? "CheckboxLineIcon"
-                              : "CheckboxBlankLineIcon"
-                          }
-                          onPress={(e) => handelToggleQuestion(item)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </HStack>
-                  }
-                />
-              );
-            })}
-          </VStack>
-        </ScrollView>
+                    ) : (
+                      ""
+                    )}
+                  </HStack>
+                }
+              />
+            );
+          })}
+        </VStack>
       </Box>
       <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         {!isSuccess ? (

@@ -1,12 +1,12 @@
 import {
   capture,
   IconByName,
-  likeRegistryService,
+  worksheetRegistryService,
   telemetryFactory,
   H2,
   Caption,
   Subtitle,
-  commentRegistryService,
+  likeRegistryService,
 } from "@shiksha/common-lib";
 import { Avatar, Box, HStack, Pressable, Stack, VStack } from "native-base";
 import React from "react";
@@ -38,21 +38,14 @@ export default function WorksheetBox({
   }, []);
 
   const getLikes = async () => {
-    const result = await likeRegistryService.getAll({
-      contextId: { eq: item?.id },
-      context: { eq: "Worksheet" },
-      type: { eq: "like" },
-    });
+    const result = await worksheetRegistryService.getWorksheetLikes(item.id);
     const newData = result.find((e, index) => e.userId === sub);
     setLikes(result ? result : []);
     setLike(newData ? newData : {});
   };
 
   const getComments = async () => {
-    const result = await commentRegistryService.getAll({
-      contextId: { eq: item?.id },
-      context: { eq: "Worksheet" },
-    });
+    const result = await worksheetRegistryService.getWorksheetComments(item.id);
     setComments(result ? result : []);
   };
 

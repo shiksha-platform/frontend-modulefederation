@@ -3,12 +3,11 @@ import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
 import {
   Layout,
-  useWindowSize,
   IconByName,
   worksheetRegistryService,
+  questionRegistryService,
   Loading,
   likeRegistryService,
-  commentRegistryService,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { Button, Box, HStack, VStack } from "native-base";
@@ -20,7 +19,6 @@ import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
 
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
-  const [width, Height] = useWindowSize();
   const [questions, setQuestions] = React.useState([]);
   const [worksheet, setWorksheet] = React.useState({});
   const [showModuleWorksheet, setShowModuleWorksheet] = useState(false);
@@ -41,7 +39,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       worksheetData && Array.isArray(worksheetData.questions)
         ? worksheetData.questions
         : [];
-    const newQuestions = await worksheetRegistryService.getQuestionByIds(
+    const newQuestions = await questionRegistryService.getQuestionByIds(
       questionIds
     );
     setWorksheet(worksheetData);
@@ -49,7 +47,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     setQuestions(newQuestions);
     getLikes();
     setLoading(false);
-    const data = await commentRegistryService.getAll({
+    const data = await worksheetRegistryService.getWorksheetComments(id, {
       status: { eq: "Publish" },
     });
     setCommets(data);
@@ -66,11 +64,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   };
 
   const getLikes = async () => {
-    const result = await likeRegistryService.getAll({
-      contextId: { eq: id },
-      context: { eq: "Worksheet" },
-      type: { eq: "like" },
-    });
+    const result = await worksheetRegistryService.getWorksheetLikes(id);
     const newData = result.find((e, index) => e.userId === sub);
     setLike(newData ? newData : {});
     setLikes(result);
@@ -199,15 +193,17 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           setCommets,
         }}
       />
-      <QuestionActionsheet {...{ questionObject, comments }} />
+      <QuestionActionsheet
+        {...{ questionObject, setQuestionObject, comments }}
+      />
       <WorksheetActionsheet
         {...{
           worksheet,
           showModuleWorksheet,
           setShowModuleWorksheet,
           handleCommentModuleOpen,
-          comments,
-          likes,
+          commentCount: comments?.length,
+          likeCount: likes?.length,
         }}
       />
     </Layout>

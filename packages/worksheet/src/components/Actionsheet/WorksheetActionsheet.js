@@ -1,4 +1,4 @@
-import { IconByName } from "@shiksha/common-lib";
+import { BodyMedium, Caption, H2, IconByName } from "@shiksha/common-lib";
 import {
   Actionsheet,
   Avatar,
@@ -17,8 +17,8 @@ export default function Worksheet({
   showModuleWorksheet,
   setShowModuleWorksheet,
   handleCommentModuleOpen,
-  likes,
-  comments,
+  likeCount,
+  commentCount,
 }) {
   const { t } = useTranslation();
   return (
@@ -28,9 +28,7 @@ export default function Worksheet({
     >
       <Actionsheet.Content alignItems={"left"}>
         <Stack p={5} pt={2} pb="25px" textAlign="center">
-          <Text fontSize="16px" fontWeight={"600"}>
-            {worksheet?.name}
-          </Text>
+          <H2>{worksheet?.name}</H2>
         </Stack>
         <IconByName
           color="gray.300"
@@ -43,14 +41,9 @@ export default function Worksheet({
       </Actionsheet.Content>
       <Box bg="white" width={"100%"} p="5">
         <VStack space="4">
-          <Text
-            fontSize="14px"
-            fontWeight={"400"}
-            color="gray.400"
-            textTransform="inherit"
-          >
+          <BodyMedium color="gray.400" textTransform="inherit">
             {worksheet?.description}
-          </Text>
+          </BodyMedium>
 
           <HStack space="2">
             <VStack space="3">
@@ -61,13 +54,9 @@ export default function Worksheet({
                   color="worksheetBoxText.400"
                   p="0"
                 />
-                <Text
-                  fontWeight="400"
-                  fontSize="14px"
-                  color="worksheetBoxText.400"
-                >
-                  {"Subject: " + worksheet?.subject}
-                </Text>
+                <BodyMedium color="worksheetBoxText.400">
+                  {t("SUBJECT")}: {worksheet?.subject}
+                </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
@@ -76,13 +65,9 @@ export default function Worksheet({
                   color="worksheetBoxText.400"
                   p="0"
                 />
-                <Text
-                  fontWeight="400"
-                  fontSize="14px"
-                  color="worksheetBoxText.400"
-                >
-                  {"Level: " + worksheet?.level}
-                </Text>
+                <BodyMedium color="worksheetBoxText.400">
+                  {t("LEVEL")}: {worksheet?.level}
+                </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
@@ -91,16 +76,12 @@ export default function Worksheet({
                   color="worksheetBoxText.400"
                   p="0"
                 />
-                <Text
-                  fontWeight="400"
-                  fontSize="14px"
-                  color="worksheetBoxText.400"
-                >
-                  {"Questions: " +
-                    (Array.isArray(worksheet?.questions)
-                      ? worksheet?.questions.length
-                      : worksheet?.questions)}
-                </Text>
+                <BodyMedium color="worksheetBoxText.400">
+                  {t("QUESTIONS")}:
+                  {Array.isArray(worksheet?.questions)
+                    ? worksheet?.questions.length
+                    : worksheet?.questions}
+                </BodyMedium>
               </HStack>
             </VStack>
             <VStack space="3">
@@ -111,13 +92,9 @@ export default function Worksheet({
                   color="worksheetBoxText.400"
                   p="0"
                 />
-                <Text
-                  fontWeight="400"
-                  fontSize="14px"
-                  color="worksheetBoxText.400"
-                >
-                  {"Grade: " + worksheet?.grade}
-                </Text>
+                <BodyMedium color="worksheetBoxText.400">
+                  {t("GRADE")}: {worksheet?.grade}
+                </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
@@ -126,13 +103,9 @@ export default function Worksheet({
                   color="worksheetBoxText.400"
                   p="0"
                 />
-                <Text
-                  fontWeight="400"
-                  fontSize="14px"
-                  color="worksheetBoxText.400"
-                >
-                  {t("TOPIC") + ": " + worksheet?.topic}
-                </Text>
+                <BodyMedium color="worksheetBoxText.400">
+                  {t("TOPIC")}: {worksheet?.topic}
+                </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
@@ -141,13 +114,9 @@ export default function Worksheet({
                   color="worksheetBoxText.400"
                   p="0"
                 />
-                <Text
-                  fontWeight="400"
-                  fontSize="14px"
-                  color="worksheetBoxText.400"
-                >
-                  {"Downloads: " + worksheet?.downloads}
-                </Text>
+                <BodyMedium color="worksheetBoxText.400">
+                  {t("DOWNLOADS")}: {worksheet?.downloads}
+                </BodyMedium>
               </HStack>
             </VStack>
           </HStack>
@@ -159,9 +128,9 @@ export default function Worksheet({
                 _icon={{ size: 12 }}
                 isDisabled
               />
-              <Text fontWeight="600" fontSize="10px">
-                {`${likes.length} Teachers like this`}
-              </Text>
+              <Caption>
+                {likeCount} {t("TEACHERS_LIKE_THIS")}
+              </Caption>
             </HStack>
             <Pressable onPress={(e) => handleCommentModuleOpen()}>
               <HStack alignItems="center">
@@ -189,9 +158,9 @@ export default function Worksheet({
                     TE
                   </Avatar>
                 </Avatar.Group>
-                <Text fontWeight="600" fontSize="10px" color="button.500">
-                  {`${comments.length} comments`}
-                </Text>
+                <Caption color="button.500">
+                  {commentCount} {t("COMMENTS")}
+                </Caption>
               </HStack>
             </Pressable>
           </HStack>

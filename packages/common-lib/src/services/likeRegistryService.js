@@ -1,8 +1,8 @@
 import {
   get,
   post,
-  update as coreUpdate,
-  distory as coreDistory
+  update as updateRequest,
+  distory as distoryRequest
 } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
@@ -75,7 +75,7 @@ export const update = async (data = {}, headers = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
-  const result = await coreUpdate(
+  const result = await updateRequest(
     manifest.api_url + '/like/' + data.id,
     newData,
     {
@@ -94,7 +94,7 @@ export const distory = async (data = {}, headers = {}) => {
     ...headers,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await coreDistory(
+  const result = await distoryRequest(
     manifest.api_url + '/like/' + data.id,
     data,
     {

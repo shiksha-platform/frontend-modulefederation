@@ -1,17 +1,28 @@
-import { IconByName, commentRegistryService } from "@shiksha/common-lib";
+import {
+  IconByName,
+  commentRegistryService,
+  overrideColorTheme,
+  BodySmall,
+  BodyLarge,
+  Subtitle,
+  H2,
+} from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
 import {
   Actionsheet,
   HStack,
   Stack,
-  Text,
   Avatar,
   Box,
   VStack,
   Input,
   FormControl,
+  InputGroup,
+  InputRightAddon,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+const colors = overrideColorTheme(colorTheme);
 
 export default function Comment({
   setShowModuleComments,
@@ -27,6 +38,11 @@ export default function Comment({
   const handleInput = (event) => {
     const value = event.target.value;
     setCommet(value);
+    if (!value) {
+      setError(t("ENTER_COMMENT"));
+    } else {
+      setError();
+    }
   };
   const handleSubmit = async () => {
     if (comment && comment !== "") {
@@ -40,7 +56,7 @@ export default function Comment({
       setCommets([...comments, { ...newData, id: osid }]);
       setCommet("");
     } else {
-      setError("Enter comment");
+      setError(t("ENTER_COMMENT"));
     }
   };
 
@@ -52,9 +68,7 @@ export default function Comment({
       <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
         <HStack justifyContent={"space-between"}>
           <Stack p={5} pt={1} pb="20px">
-            <Text fontSize="16px" fontWeight={"600"}>
-              {t("Comments")}
-            </Text>
+            <H2>{t("Comments")}</H2>
           </Stack>
           <IconByName
             name="CloseCircleLineIcon"
@@ -77,51 +91,46 @@ export default function Comment({
                 AJ
               </Avatar>
               <VStack>
-                <Text fontSize="14px" fontWeight={"500"}>
-                  {t("Mrs. Jina Jain")}
-                </Text>
-                <Text fontSize="12px" fontWeight={"500"} color="gray.400">
-                  {t("12 January, 4:00PM")}
-                </Text>
+                <BodyLarge>{t("Mrs. Jina Jain")}</BodyLarge>
+                <Subtitle color="gray.400">{t("12 January, 4:00PM")}</Subtitle>
               </VStack>
             </HStack>
-            <Text p="5" fontSize="12px" fontWeight={"500"}>
-              {item.comment}
-            </Text>
+            <Subtitle p="5">{item.comment}</Subtitle>
           </Box>
         ))}
         <Box bg="white" p="5">
           <HStack space="2" alignItems="center" w={"100%"}>
             <FormControl isInvalid={error}>
-              <Input
-                bg={"coolGray.100"}
-                size={"full"}
-                placeholder="Write a comment..."
-                value={comment}
-                onChange={handleInput}
-              />
+              <InputGroup>
+                <Input
+                  h="48px"
+                  bg={"coolGray.100"}
+                  size={"full"}
+                  placeholder={t("WRITE_COMMENT")}
+                  value={comment}
+                  onChange={handleInput}
+                />
+                <InputRightAddon
+                  children={
+                    <Box rounded="full" bg="button.500">
+                      <IconByName
+                        _icon={{ size: "15" }}
+                        color="white"
+                        name="SendPlane2LineIcon"
+                        onPress={handleSubmit}
+                      />
+                    </Box>
+                  }
+                />
+              </InputGroup>
               {error ? (
-                <FormControl.ErrorMessage
-                  _text={{
-                    fontSize: "xs",
-                    color: "#D91414",
-                    fontWeight: 500,
-                  }}
-                >
-                  {error}
+                <FormControl.ErrorMessage>
+                  <BodySmall color={colors.eventError}>{error}</BodySmall>
                 </FormControl.ErrorMessage>
               ) : (
                 <></>
               )}
             </FormControl>
-            <Box rounded="full" bg="button.500" p="1">
-              <IconByName
-                size="sm"
-                color="white"
-                name="SendPlane2LineIcon"
-                onPress={handleSubmit}
-              />
-            </Box>
           </HStack>
         </Box>
       </VStack>

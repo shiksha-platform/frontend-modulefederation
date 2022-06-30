@@ -29,6 +29,7 @@ import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
 import * as worksheetRegistryService from './services/worksheetRegistryService'
+import * as questionRegistryService from './services/questionRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
@@ -56,6 +57,7 @@ export {
   attendanceRegistryService,
   studentRegistryService,
   worksheetRegistryService,
+  questionRegistryService,
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,

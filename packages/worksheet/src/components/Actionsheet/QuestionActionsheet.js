@@ -1,9 +1,9 @@
-import { IconByName } from "@shiksha/common-lib";
+import { BodyMedium, Caption, IconByName, Subtitle } from "@shiksha/common-lib";
 import { Actionsheet, Box, HStack, Stack, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function Question({ questionObject }) {
+export default function Question({ questionObject, setQuestionObject }) {
   const { t } = useTranslation();
   return (
     <Actionsheet
@@ -12,9 +12,7 @@ export default function Question({ questionObject }) {
     >
       <Actionsheet.Content alignItems={"left"}>
         <Stack p={5} pt={2} pb="25px" textAlign="center">
-          <Text fontSize="12px" fontWeight={"500"} color="gray.400">
-            {t("Question")}
-          </Text>
+          <Subtitle color="gray.400">{t("Question")}</Subtitle>
         </Stack>
         <IconByName
           color="gray.300"
@@ -27,16 +25,11 @@ export default function Question({ questionObject }) {
       </Actionsheet.Content>
       <Box bg="white" width={"100%"} p="5">
         <VStack space="5">
-          <Text
-            fontSize="14px"
-            fontWeight={"400"}
-            color="gray.400"
-            textTransform="inherit"
-          >
+          <BodyMedium color="gray.400" textTransform="inherit">
             <div
               dangerouslySetInnerHTML={{ __html: questionObject?.question }}
             />
-          </Text>
+          </BodyMedium>
           <VStack space="4">
             <HStack space="50px">
               <VStack space="4">
@@ -46,9 +39,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Class: ${questionObject?.class}`}
-                  </Text>
+                  <Caption>
+                    {t("CLASS")}: {questionObject?.class}
+                  </Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -57,9 +50,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Topics: ${questionObject?.topic}`}
-                  </Text>
+                  <Caption>
+                    {t("TOPICS")}: {questionObject?.topic}
+                  </Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -68,9 +61,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Source: ${questionObject?.source}`}
-                  </Text>
+                  <Caption>
+                    {t("SOURCE")}: {questionObject?.source}
+                  </Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -79,9 +72,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Language: ${questionObject?.languageCode}`}
-                  </Text>
+                  <Caption>
+                    {t("LANGUAGE")}:{questionObject?.languageCode}
+                  </Caption>
                 </HStack>
               </VStack>
               <VStack space="4">
@@ -91,9 +84,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Subject: ${questionObject?.subject}`}
-                  </Text>
+                  <Caption>
+                    {t("SUBJECT")}: {questionObject?.subject}
+                  </Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -102,9 +95,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Level: ${questionObject?.level}`}
-                  </Text>
+                  <Caption>
+                    {t("LEVEL")}: {questionObject?.level}
+                  </Caption>
                 </HStack>
 
                 <HStack space="1" alignItems="center">
@@ -113,9 +106,9 @@ export default function Question({ questionObject }) {
                     _icon={{ size: 12 }}
                     p="0"
                   />
-                  <Text fontWeight="600" fontSize="10px">
-                    {`Outcome: ${questionObject?.outcome}`}
-                  </Text>
+                  <Caption>
+                    {t("OUTCOME")}: {questionObject?.outcome}
+                  </Caption>
                 </HStack>
               </VStack>
             </HStack>

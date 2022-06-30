@@ -228,7 +228,7 @@ const Worksheets = ({
           rounded="lg"
           bg="viewNotification.600"
         >
-          Worksheet Not Found
+          {t("WORKSHEET_NOT_FOUND")}
         </Box>
       )}
     </Stack>

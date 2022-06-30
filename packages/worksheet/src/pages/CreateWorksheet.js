@@ -1,15 +1,22 @@
-import { Loading, Layout } from "@shiksha/common-lib";
+import {
+  Loading,
+  Layout,
+  worksheetRegistryService,
+  questionRegistryService,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { getAllQuestions } from "services";
 import manifest from "../manifest.json";
 import SuccessPage from "components/CreateWorksheet/SuccessPage";
 import FormPage from "components/CreateWorksheet/Form";
 import AddDescriptionPage from "components/CreateWorksheet/AddDescriptionPage";
 import WorksheetTemplate from "components/CreateWorksheet/WorksheetTemplate";
-import ListOfWorksheet from "components/CreateWorksheet/ListOfWorksheet";
+import ListOfQuestions from "components/CreateWorksheet/ListOfQuestions";
 import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -21,8 +28,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [alertMessage, setAlertMessage] = React.useState();
   const [createType, setCreateType] = React.useState("create");
   const navigate = useNavigate();
+  console.log({ pageName });
   React.useEffect(async () => {
-    if (pageName === "ListOfWorksheet" || pageName === "WorksheetTemplate") {
+    if (pageName === "ListOfQuestions" || pageName === "WorksheetTemplate") {
       setLoading(true);
       const newAttribute = [...defaultInputs, ...autoGenerateInputs];
       const attribute = newAttribute.map((e) =>
@@ -38,7 +46,11 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         attribute.forEach((item, index) => {
           if (formObject[item]) data = { ...data, [item]: formObject[item] };
         });
-        const newQuestions = await getAllQuestions(data, limit);
+
+        const newQuestions = await questionRegistryService.getAllQuestions(
+          data,
+          limit.limit ? limit : { limit: 10 }
+        );
         setQuestions(newQuestions);
         if (newQuestions.length <= 0) {
           setAlertMessage("No question found for this filter");
@@ -49,7 +61,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }
       setLoading(false);
     }
-  }, [formObject, ["ListOfWorksheet", "WorksheetTemplate"].includes(pageName)]);
+  }, [formObject, ["ListOfQuestions", "WorksheetTemplate"].includes(pageName)]);
 
   if (loading) {
     return <Loading />;
@@ -65,15 +77,13 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     } else if (pageName === "AddDescriptionPage") {
       setPageName("filterData");
     } else if (pageName === "filterData") {
-      setPageName("ListOfWorksheet");
-    } else if (["ListOfWorksheet", "WorksheetTemplate"].includes(pageName)) {
+      setPageName("ListOfQuestions");
+    } else if (["ListOfQuestions", "WorksheetTemplate"].includes(pageName)) {
       setPageName("");
     } else {
       navigate(-1);
     }
   };
-
-  console.log({ formObject });
 
   if (pageName === "success") {
     return (
@@ -89,7 +99,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     <Layout
       _header={{
         title:
-          pageName === "ListOfWorksheet"
+          pageName === "ListOfQuestions"
             ? t("Add Questions")
             : pageName === "filterData"
             ? formObject.name
@@ -101,11 +111,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       _appBar={{
         languages: manifest.languages,
         onPressBackButton: handleBackButton,
-        setSearch,
-        isEnableSearchBtn: pageName === "ListOfWorksheet",
       }}
       subHeader={
-        pageName === "ListOfWorksheet"
+        pageName === "ListOfQuestions"
           ? formObject.name
             ? t("Your worksheet has been created.")
             : t("You can see all questions here")
@@ -118,8 +126,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      {["ListOfWorksheet", "filterData"].includes(pageName) && !alertMessage ? (
-        <ListOfWorksheet
+      {["ListOfQuestions", "filterData"].includes(pageName) && !alertMessage ? (
+        <ListOfQuestions
           {...{
             questions,
             setQuestions,

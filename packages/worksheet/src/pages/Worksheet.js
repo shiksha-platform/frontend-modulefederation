@@ -180,7 +180,7 @@ export default function Worksheet({ footerLinks, appName }) {
                   rounded="lg"
                   bg="viewNotification.600"
                 >
-                  Worksheet Not Found
+                  {t("WORKSHEET_NOT_FOUND")}
                 </Box>
               )}
             </VStack>

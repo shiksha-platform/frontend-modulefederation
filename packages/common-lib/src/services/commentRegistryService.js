@@ -1,4 +1,4 @@
-import { get, post, update as coreUpdate } from './RestClient'
+import { get, post, update as updateRequest } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
 
@@ -73,7 +73,7 @@ export const update = async (data = {}, headers = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
-  const result = await coreUpdate(
+  const result = await updateRequest(
     manifest.api_url + '/comment/' + data.id,
     newData,
     {
