@@ -11,12 +11,6 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-// import {
-//   LinkedinShareButton,
-//   LinkedinIcon,
-//   WhatsappIcon,
-//   WhatsappShareButton,
-// } from "react-share";
 
 export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
   const { t } = useTranslation();
@@ -154,7 +148,12 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
               />
             </Box>
             <Box shadow="2" p="2" rounded="full">
-              <IconByName name="ShareLineIcon" _icon={{ size: 15 }} p="0" />
+              <IconByName
+                name="ShareLineIcon"
+                _icon={{ size: 15 }}
+                p="0"
+                onPress={(e) => navigate(`/worksheet/${item.id}/share`)}
+              />
             </Box>
             <Box shadow="2" p="2" rounded="full">
               <IconByName
@@ -165,20 +164,6 @@ export default function WorksheetBox({ item, url, canShare, _addIconButton }) {
                 p="0"
               />
             </Box>
-            {/* <Box shadow="2" p="2" rounded="full">
-                <WhatsappShareButton
-                  url="https://sandbox.shikshaplatform.io/modules/worksheet/"
-                  title="Worksheet"
-                  separator=":: "
-                >
-                  <WhatsappIcon size={15} round />
-                </WhatsappShareButton>
-              </Box>
-              <Box shadow="2" p="2" rounded="full">
-                <LinkedinShareButton url="https://sandbox.shikshaplatform.io/modules/worksheet/">
-                  <LinkedinIcon size={15} round />
-                </LinkedinShareButton>
-              </Box> */}
           </HStack>
         ) : (
           ""

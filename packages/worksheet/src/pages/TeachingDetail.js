@@ -18,6 +18,10 @@ import { teachingMaterial } from "./../config/teachingMaterial";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
+const styles = {
+  stickyButton: { boxShadow: "rgb(0 0 0 / 22%) 0px -2px 10px" },
+};
+
 export default function TeachingDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const navigate = useNavigate();

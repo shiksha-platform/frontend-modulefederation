@@ -9,6 +9,7 @@ import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
 import CreateWorksheet from "pages/CreateWorksheet";
 import WorksheetTemplate from "pages/WorksheetTemplate";
 import Worksheet from "./pages/Worksheet";
+import WorksheetShare from "./pages/WorksheetShare";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -24,6 +25,10 @@ function App() {
     {
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
+    },
+    {
+      path: "/worksheet/:worksheetId/share",
+      component: WorksheetShare,
     },
     {
       path: "/worksheet/questionBank",
