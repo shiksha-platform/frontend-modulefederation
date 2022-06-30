@@ -21,7 +21,7 @@ const Loader = ({ success, fail }) => {
             <Spinner
               color={"button.500"}
               accessibilityLabel="Loading posts"
-              size="50"
+              size="lg"
             />
             <VStack alignItems="center" space={2}>
               <Text fontSize="22px" color="button.500">
@@ -31,7 +31,7 @@ const Loader = ({ success, fail }) => {
                 {fail ? fail : ""}
               </Text>
               <Heading color="button.500" fontSize="22px">
-                {t("MARKING_ALL_STUDENTS_PRESENT")}
+                {t("MARKING_ALL_STUDENTS_PRESENT") as string}
               </Heading>
             </VStack>
           </VStack>

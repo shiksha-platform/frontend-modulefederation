@@ -4049,6 +4049,11 @@
     regenerator-runtime "^0.13.7"
     ts-dedent "^2.0.0"
 
+"@storybook/addon-react-native-web@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-react-native-web/-/addon-react-native-web-0.0.18.tgz#920278a3a5d7e3cc03314d52429936cf231354da"
+  integrity sha512-tMZumiF+Dgk7sngMWFrbDdBN3h5C001traYM46CqNQvtJoZvwYe2MPGEeWy3wk+5D8vOv8TFw2i96f3wwfralg==
+
 "@storybook/addon-toolbars@6.4.19":
   version "6.4.19"
   resolved "https://registry.npmjs.org/@storybook/addon-toolbars/-/addon-toolbars-6.4.19.tgz"
@@ -4441,7 +4446,7 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/client-api@6.5.9":
+"@storybook/client-api@6.5.9", "@storybook/client-api@^6.5.9":
   version "6.5.9"
   resolved "https://registry.yarnpkg.com/@storybook/client-api/-/client-api-6.5.9.tgz#3e4a8ec1d277fd81325c5d959c553161a85fa182"
   integrity sha512-pc7JKJoWLesixUKvG2nV36HukUuYoGRyAgD3PpIV7qSBS4JixqZ3VAHFUtqV1UzfOSQTovLSl4a0rIRnpie6gA==
@@ -12461,6 +12466,11 @@ ip@^1.1.0, ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.npmjs.org/ip/-/ip-1.1.5.tgz"
   integrity sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=
+
+ip@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.8.tgz#ae05948f6b075435ed3307acce04629da8cdbf48"
+  integrity sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==
 
 ip@^2.0.0:
   version "2.0.0"

@@ -21,8 +21,8 @@ import AttendanceComponent, {
   MultipalAttendance,
 } from "components/AttendanceComponent";
 import moment from "moment";
-import Loader from "atoms/Loader";
-import FourOFour from "atoms/FourOFour";
+import Loader from "../components/simple/Loader"
+import FourOFour from "../components/simple/FourOFour";
 import colorTheme from "../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);

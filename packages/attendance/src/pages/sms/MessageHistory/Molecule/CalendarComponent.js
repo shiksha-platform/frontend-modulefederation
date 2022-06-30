@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
 import { TouchableHighlight } from "react-native-web";
-import GetIcon from "atoms/GetIcon";
+import GetIcon from "components/simple/GetIcon";
 import Message from "./Message";
 import { overrideColorTheme } from "@shiksha/common-lib";
 import colorTheme from "../../../../colorTheme";
