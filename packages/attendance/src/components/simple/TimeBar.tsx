@@ -8,7 +8,7 @@ import { IconByName } from "@shiksha/common-lib";
 import moment from "moment";
 
 // Utilities
-import { MomentType, MomentUnionType } from "utils/types/types";
+import { MomentUnionType } from "utils/types/types";
 import { FormatDate } from "utils/functions/FormatDate";
 
 // Misc
@@ -135,8 +135,8 @@ const Children: React.FC<{
 export const TimeBar: React.FC<any> = (props) => {
   // Type decides if array or not
   // etc
-  const [date, setDate] =
-    props.type === "days" ? useState<MomentType>() : useState<MomentUnionType>();
+  const [date, setDate] = useState<MomentUnionType>();
+  console.log(props.page);
   useEffect(() => {
     if (props.type === "days") setDate(moment().add(props.page, "days"));
     else setDate(calendar(props.page, props.type));
@@ -149,7 +149,7 @@ export const TimeBar: React.FC<any> = (props) => {
 
   return (
     <Display {...props}>
-      <Children type={props.type} date={date} />
+      <Children type={props.type} date={date} page={props.page} />
     </Display>
   );
 };

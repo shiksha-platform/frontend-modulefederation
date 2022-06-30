@@ -3,6 +3,7 @@ import React from "react";
 import { TimeBar } from "components/simple/TimeBar";
 
 export default function CalendarBar({ view, ...props }) {
+  let CalendarBar = <></>;
   switch (view) {
     case "month":
     case "monthInDays":
@@ -15,5 +16,6 @@ export default function CalendarBar({ view, ...props }) {
       props.type = "days";
       break;
   }
-  return <TimeBar {...props} />;
+  CalendarBar = <TimeBar {...props} />;
+  return CalendarBar;
 }
