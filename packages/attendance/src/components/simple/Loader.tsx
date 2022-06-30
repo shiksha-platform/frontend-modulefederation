@@ -1,9 +1,19 @@
-import React from "react";
+import React, { FC } from "react";
 import { Center, Heading, Spinner, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useWindowSize } from "@shiksha/common-lib";
 
-const Loader = ({ success, fail }) => {
+export interface IFourOFour {
+  children?: React.ReactNode;
+}
+
+// Types
+type LoaderType = {
+  success: string;
+  fail: string;
+};
+
+const Loader: FC<LoaderType> = ({ success, fail }) => {
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
   return (
@@ -21,7 +31,7 @@ const Loader = ({ success, fail }) => {
             <Spinner
               color={"button.500"}
               accessibilityLabel="Loading posts"
-              size="lg"
+              size="sm"
             />
             <VStack alignItems="center" space={2}>
               <Text fontSize="22px" color="button.500">

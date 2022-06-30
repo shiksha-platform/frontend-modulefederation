@@ -50,7 +50,7 @@ export const GetAttendance = async (params) => {
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
   let icon = <></>;
-  let iconProps = { fontSize: "xl", isDisabled: true, ..._icon };
+  let iconProps = { fontSize: "lg", isDisabled: true, ..._icon };
   switch (status) {
     case "Present":
       icon = (
