@@ -13,21 +13,17 @@ const interfaceData = {
   privacy: 'privacy'
 }
 
-let only = Object.keys(interfaceData)
+let commentEntityAttributes = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
-  let headers = {
-    ...header,
-    headers: {
-      ...header.header,
-      Authorization: 'Bearer ' + localStorage.getItem('token')
-    }
-  }
   const result = await post(
     manifest.api_url + '/comment/search',
     { filters: params, limit: limit },
     {
-      headers: headers?.headers ? headers?.headers : {}
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+        ...header
+      }
     }
   )
   if (result.data.data) {
@@ -37,20 +33,22 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   }
 }
 
-export const create = async (data, headers = {}) => {
+export const create = async (
+  data,
+  { removeParameter, onlyParameter, ...headers } = {}
+) => {
   let newInterfaceData = interfaceData
-  let header = {
-    ...headers,
-    Authorization: 'Bearer ' + localStorage.getItem('token')
-  }
   newInterfaceData = {
     ...interfaceData,
-    removeParameter: headers?.removeParameter ? headers?.removeParameter : [],
-    onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
+    removeParameter: removeParameter ? removeParameter : [],
+    onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await post(manifest.api_url + '/comment', newData, {
-    headers: header
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+      ...headers
+    }
   })
   if (result.data) {
     let { Comment } = result.data?.data?.result
@@ -60,7 +58,10 @@ export const create = async (data, headers = {}) => {
   }
 }
 
-export const update = async (data = {}, headers = {}) => {
+export const update = async (
+  data = {},
+  { removeParameter, onlyParameter, ...headers } = {}
+) => {
   let newInterfaceData = interfaceData
   let header = {
     ...headers,
@@ -68,8 +69,8 @@ export const update = async (data = {}, headers = {}) => {
   }
   newInterfaceData = {
     ...interfaceData,
-    removeParameter: headers?.removeParameter ? headers?.removeParameter : [],
-    onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
+    removeParameter: removeParameter ? removeParameter : [],
+    onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
