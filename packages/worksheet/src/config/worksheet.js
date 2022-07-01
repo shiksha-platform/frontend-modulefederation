@@ -2,8 +2,7 @@ export const worksheets = [
   {
     id: 1,
     image: "",
-    heading: "Addition",
-    subHeading: "NCERT Workbook",
+    name: "Addition",
     class: "V",
     likes: "4",
     comments: "0",
@@ -19,8 +18,7 @@ export const worksheets = [
   {
     id: 2,
     image: "",
-    heading: "Subtraction",
-    subHeading: "NCERT Workbook",
+    name: "Subtraction",
     class: "V",
     likes: "6",
     comments: "0",
@@ -39,8 +37,7 @@ export const worksheetsList = [
   {
     id: 1,
     image: "",
-    heading: "Addition",
-    subHeading: "NCERT Workbook",
+    name: "Addition",
     class: "V",
     likes: "4",
     comments: "0",
@@ -56,8 +53,7 @@ export const worksheetsList = [
   {
     id: 2,
     image: "",
-    heading: "Subtraction",
-    subHeading: "NCERT Workbook",
+    name: "Subtraction",
     class: "V",
     likes: "6",
     comments: "0",
@@ -73,8 +69,7 @@ export const worksheetsList = [
   {
     id: 3,
     image: "",
-    heading: "Subtraction",
-    subHeading: "NCERT Workbook",
+    name: "Subtraction",
     class: "V",
     likes: "4",
     comments: "0",
@@ -90,8 +85,7 @@ export const worksheetsList = [
   {
     id: 2,
     image: "",
-    heading: "Addition",
-    subHeading: "NCERT Workbook",
+    name: "Addition",
     class: "V",
     likes: "6",
     comments: "0",
@@ -107,8 +101,7 @@ export const worksheetsList = [
   {
     id: 5,
     image: "",
-    heading: "Addition",
-    subHeading: "NCERT Workbook",
+    name: "Addition",
     class: "V",
     likes: "4",
     comments: "0",
@@ -124,8 +117,7 @@ export const worksheetsList = [
   {
     id: 6,
     image: "",
-    heading: "Subtraction",
-    subHeading: "NCERT Workbook",
+    name: "Subtraction",
     class: "V",
     likes: "6",
     comments: "0",

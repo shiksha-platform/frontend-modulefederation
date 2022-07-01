@@ -1,9 +1,13 @@
 import React from "react";
 import {
+  capture,
   FilterButton,
   H3,
   IconByName,
   Layout,
+  Loading,
+  telemetryFactory,
+  worksheetRegistryService,
   H2,
   overrideColorTheme,
   BodyLarge,
@@ -20,9 +24,47 @@ import {
   VStack,
 } from "native-base";
 import { worksheetsList } from "./../config/worksheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
+import { defaultInputs } from "config/worksheetConfig";
+
+const sortArray = [
+  {
+    title: "By Difficulty",
+    data: [
+      {
+        attribute: "difficulty",
+        value: "low_high",
+        name: "Low to High",
+        icon: "ArrowRightUpLineIcon",
+      },
+      {
+        attribute: "difficulty",
+        value: "high_low",
+        name: "High To Low",
+        icon: "ArrowRightDownLineIcon",
+      },
+    ],
+  },
+  {
+    title: "By Popularity",
+    data: [
+      {
+        attribute: "popularity",
+        value: "low_high",
+        name: "Low to High",
+        icon: "ArrowRightUpLineIcon",
+      },
+      {
+        attribute: "popularity",
+        value: "high_low",
+        name: "High To Low",
+        icon: "ArrowRightDownLineIcon",
+      },
+    ],
+  },
+];
 import colorTheme from "../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
@@ -30,9 +72,39 @@ const colors = overrideColorTheme(colorTheme);
 export default function Worksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [filterObject, setFilterObject] = React.useState({});
+  const [worksheets, setWorksheets] = React.useState([]);
   const [showModalSort, setShowModalSort] = React.useState(false);
-  const [sortData, setSortData] = React.useState();
+  const [sortData, setSortData] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
+  const { state } = useParams();
+
+  React.useState(async () => {
+    const params = state
+      ? {
+          state: { eq: state },
+        }
+      : {};
+    const data = await worksheetRegistryService.getAll(params);
+    const filterData = data.filter((e) => e.name);
+    setWorksheets(filterData);
+    setLoading(false);
+  }, []);
+
+  const handleSort = (obejct) => {
+    const newSort = { [obejct.attribute]: obejct.value };
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Sort",
+      sortType: newSort,
+    });
+    capture("INTERACT", telemetryData);
+    setSortData(newSort);
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Layout
@@ -68,69 +140,54 @@ export default function Worksheet({ footerLinks, appName }) {
           bg: "white",
         }}
         resetButtonText={t("COLLAPSE")}
-        filters={[
-          {
-            name: "Subject",
-            attributeName: "subject",
-            data: [
-              "Social Science",
-              "Science",
-              "Mathematics",
-              "Hindi",
-              "English",
-              "History",
-              "Geography",
-            ],
-          },
-          {
-            name: "Class",
-            attributeName: "gradeLevel",
-            data: [
-              "Class 1",
-              "Class 2",
-              "Class 3",
-              "Class 4",
-              "Class 5",
-              "Class 6",
-              "Class 7",
-              "Class 8",
-              "Class 9",
-              "Class 10",
-            ],
-          },
-          {
-            name: "Topic",
-            attributeName: "topic",
-            data: [
-              "भोजन के घटक",
-              "भोजन: यह कहाँ से आता है?",
-              "तंतु से वस्त्र तक",
-              "संसाधन",
-              "समानता",
-              "संश्लेशित रेशे  और प्लास्टिक",
-              "आखेट-खाद्य संग्राहक से भोजन उत्पादन तक",
-            ],
-          },
-        ]}
+        filters={defaultInputs}
       />
       <VStack>
         <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Stack>
             <VStack space={3}>
-              {worksheetsList.map((item, index) => {
-                return (
-                  <WorksheetBox
-                    canShare={true}
-                    key={index}
-                    {...{ item, url: `/worksheet/${item.id}` }}
-                  />
-                );
-              })}
+              {worksheets.length > 0 ? (
+                worksheets.map((item, index) => {
+                  return (
+                    <WorksheetBox
+                      appName={appName}
+                      canShare={true}
+                      key={index}
+                      {...{ item, url: `/worksheet/${item.id}` }}
+                      {...(state === "Draft"
+                        ? {
+                            canShowButtonArray: ["Like"],
+                            _addIconButton: {
+                              name: "EditBoxLineIcon",
+                              color: "gray.500",
+                              rounded: "full",
+                              bg: "white",
+                              p: "2",
+                              shadow: 2,
+                              _icon: { size: 17 },
+                              onPress: (e) => navigate(`/worksheet/1/edit`),
+                            },
+                          }
+                        : {})}
+                    />
+                  );
+                })
+              ) : (
+                <Box
+                  p="10"
+                  my="5"
+                  alignItems={"center"}
+                  rounded="lg"
+                  bg="viewNotification.600"
+                >
+                  {t("WORKSHEET_NOT_FOUND")}
+                </Box>
+              )}
             </VStack>
           </Stack>
         </Box>
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         <Button
           _text={{ color: "white" }}
           p="3"
@@ -156,62 +213,36 @@ export default function Worksheet({ footerLinks, appName }) {
           </HStack>
         </Actionsheet.Content>
         <VStack bg="white" width={"100%"} space="1">
-          {[
-            {
-              title: "By Difficulty",
-              data: [
-                {
-                  value: "difficulty_low_high",
-                  name: "Low to High",
-                  icon: "ArrowRightUpLineIcon",
-                },
-                {
-                  value: "difficulty_high_low",
-                  name: "High To Low",
-                  icon: "ArrowRightDownLineIcon",
-                },
-              ],
-            },
-            {
-              title: "By Popularity",
-              data: [
-                {
-                  value: "popularity_low_high",
-                  name: "Low to High",
-                  icon: "ArrowRightUpLineIcon",
-                },
-                {
-                  value: "popularity_high_low",
-                  name: "High To Low",
-                  icon: "ArrowRightDownLineIcon",
-                },
-              ],
-            },
-          ].map((value, index) => (
+          {sortArray.map((value, index) => (
             <Box key={index}>
               <Box px="5" py="4">
                 <H3 color={colors.grayLight}>{value?.title}</H3>
               </Box>
               {value?.data &&
-                value.data.map((item, subIndex) => (
-                  <Pressable
-                    key={subIndex}
-                    p="5"
-                    bg={sortData === item.value ? colors.grayLight : ""}
-                    onPress={(e) => {
-                      setSortData(item.value);
-                    }}
-                  >
-                    <HStack space="2" colorScheme="button" alignItems="center">
-                      <IconByName
-                        isDisabled
-                        color={sortData === item.value ? colors.primary : ""}
-                        name={item.icon}
-                      />
-                      <Text>{item.name}</Text>
-                    </HStack>
-                  </Pressable>
-                ))}
+                value.data.map((item, subIndex) => {
+                  const isSelected = sortData[item.attribute] === item.value;
+                  return (
+                    <Pressable
+                      key={subIndex}
+                      p="5"
+                      bg={isSelected ? colors.grayLight : ""}
+                      onPress={(e) => handleSort(item)}
+                    >
+                      <HStack
+                        space="2"
+                        colorScheme="button"
+                        alignItems="center"
+                      >
+                        <IconByName
+                          isDisabled
+                          color={isSelected ? colors.primary : ""}
+                          name={item.icon}
+                        />
+                        <Text>{item.name}</Text>
+                      </HStack>
+                    </Pressable>
+                  );
+                })}
             </Box>
           ))}
           <Box p="5">

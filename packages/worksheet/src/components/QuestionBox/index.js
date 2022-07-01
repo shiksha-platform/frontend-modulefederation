@@ -1,5 +1,5 @@
 import React from "react";
-import { Actionsheet, Box, HStack, Stack, Text, VStack } from "native-base";
+import { Box, HStack, Text, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
 import { IconByName, BodyMedium } from "@shiksha/common-lib";
@@ -7,25 +7,13 @@ import { useTranslation } from "react-i18next";
 
 const styles = { questionDiv: { display: "flex" } };
 
-const QuestionBox = ({
-  questionObject,
-  selectData,
-  setSelectData,
-  isAnswerHide,
-  infoIcon,
-  _box,
-}) => {
+const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
   const { t } = useTranslation();
 
   const createMarkup = (markup) => {
     return { __html: markup };
   };
   const alphabet = ["a", "b", "c", "d", "e", "f"];
-
-  const isExist = () =>
-    selectData &&
-    selectData.filter((e) => e.questionId === questionObject?.questionId)
-      .length;
 
   return (
     <Box shadow={2} rounded="xl">
@@ -37,31 +25,17 @@ const QuestionBox = ({
           : { rounded: "xl" })}
         {..._box}
       >
-        <HStack justifyContent="space-between">
+        <HStack
+          justifyContent="space-between"
+          space={1}
+          alignItems="flex-start"
+        >
           <div style={styles.questionDiv}>
             <div
               dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
             />
-            {infoIcon}
           </div>
-          {selectData ? (
-            <IconByName
-              color={isExist() ? "button.500" : "gray.300"}
-              name={isExist() ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"}
-              onPress={(e) => {
-                if (isExist()) {
-                  const newData = selectData.filter(
-                    (e) => e.questionId !== questionObject?.questionId
-                  );
-                  setSelectData(newData);
-                } else {
-                  setSelectData([...selectData, questionObject]);
-                }
-              }}
-            />
-          ) : (
-            ""
-          )}
+          {infoIcon}
         </HStack>
       </Box>
       {questionObject?.options ? (
