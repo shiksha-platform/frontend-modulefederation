@@ -1,6 +1,10 @@
 // Lib
 import React from "react";
-import { TimeBar } from "components/simple/TimeBar";
+import { TimeBar } from "components/simple/TimeBar/TimeBar";
+
+export interface ICalendarBar {
+  (children: React.ReactNode, view: string): React.ReactNode;
+}
 
 export default function CalendarBar({ view, ...props }) {
   let CalendarBar = <></>;
@@ -19,3 +23,7 @@ export default function CalendarBar({ view, ...props }) {
   CalendarBar = <TimeBar {...props} />;
   return CalendarBar;
 }
+
+CalendarBar.defaultProps = {
+  view: "days",
+};

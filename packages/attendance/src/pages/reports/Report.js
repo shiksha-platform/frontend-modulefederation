@@ -16,7 +16,7 @@ import {
   Caption,
   Subtitle,
 } from "@shiksha/common-lib";
-import { GetAttendance } from "../../components/AttendanceComponent";
+import { GetAttendance } from "../../services/calls/registryCalls";
 import ReportSummary from "../../components/ReportSummary";
 import { useNavigate } from "react-router-dom";
 import manifest from "../../manifest.json";

@@ -30,9 +30,8 @@ import {
   Subtitle,
   BodyLarge,
 } from "@shiksha/common-lib";
-import AttendanceComponent, {
-  GetAttendance,
-} from "../../components/AttendanceComponent";
+import { GetAttendance } from "../../services/calls/registryCalls";
+import AttendanceComponent from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";

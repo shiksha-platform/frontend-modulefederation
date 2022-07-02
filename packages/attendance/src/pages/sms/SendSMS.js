@@ -10,7 +10,7 @@ import {
   Text,
   VStack,
 } from "native-base";
-import { GetAttendance } from "../../components/AttendanceComponent";
+import { GetAttendance } from "../../services/calls/registryCalls";
 import DayWiseBar from "components/composite/CalendarBar";
 import {
   IconByName,

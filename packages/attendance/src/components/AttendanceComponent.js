@@ -16,14 +16,11 @@ import { TouchableHighlight } from "react-native-web";
 import moment from "moment";
 import {
   IconByName,
-  getStudentsPresentAbsent,
   useWindowSize,
   capture,
   telemetryFactory,
   calendar,
   attendanceRegistryService,
-  studentRegistryService,
-  H4,
   H2,
   BodySmall,
   Subtitle,
@@ -36,17 +33,17 @@ import {
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import { useNavigate } from "react-router-dom";
+
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+
+// Custom Hooks
+import { usePresentStudents } from "../utils/customhooks/usePresentStudents";
 
 const Card = React.lazy(() => import("students/Card"));
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
-
-export const GetAttendance = async (params) => {
-  return await attendanceRegistryService.getAll(params);
-};
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
   let icon = <></>;
@@ -105,7 +102,7 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
   return icon;
 };
 
-export const MultipalAttendance = ({
+export const MultipleAttendance = ({
   students,
   attendance,
   getAttendance,
@@ -121,57 +118,14 @@ export const MultipalAttendance = ({
 }) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
-  const [presentStudents, setPresentStudents] = useState([]);
   const teacherId = localStorage.getItem("id");
-  const [width, Height] = useWindowSize();
+  const [presentStudents] = usePresentStudents({ students, attendance });
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
-  const holidays = [];
   const fullName = localStorage.getItem("fullName");
   useEffect(() => {
     if (showModal) setStartTime(moment());
   }, [showModal]);
-
-  useEffect(() => {
-    const getPresentStudents = async ({ students }) => {
-      let weekdays = calendar(-1, "week");
-      let workingDaysCount = weekdays.filter(
-        (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
-      )?.length;
-      let params = {
-        fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
-        toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
-      };
-      let attendanceData = await GetAttendance(params);
-      const present = getStudentsPresentAbsent(
-        attendanceData,
-        students,
-        workingDaysCount
-      );
-      let presentNew = students.filter((e) =>
-        present.map((e) => e.id).includes(e.id)
-      );
-      setPresentStudents(
-        await studentRegistryService.setDefaultValue(presentNew)
-      );
-    };
-    getPresentStudents({ students });
-  }, [students, attendance]);
-
-  const getStudentsAttendance = (e) => {
-    return students
-      .map((item) => {
-        return attendance
-          .slice()
-          .reverse()
-          .find(
-            (e) =>
-              e.date === moment().format("YYYY-MM-DD") &&
-              e.studentId === item.id
-          );
-      })
-      .filter((e) => e);
-  };
 
   const getLastAttedance = () => {
     let dates = attendance.map((d) => moment(d.updatedAt));
@@ -198,7 +152,7 @@ export const MultipalAttendance = ({
         attendanceData,
       };
 
-      const result = await attendanceRegistryService.multipal(allData);
+      const result = await attendanceRegistryService.Multiple(allData);
       if (getAttendance) {
         getAttendance();
       }

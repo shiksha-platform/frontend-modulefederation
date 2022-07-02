@@ -15,10 +15,10 @@ import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
-import { TimeBar } from "components/simple/TimeBar";
+import { TimeBar } from "components/simple/TimeBar/TimeBar";
+import { GetAttendance } from "../services/calls/registryCalls";
 import AttendanceComponent, {
-  GetAttendance,
-  MultipalAttendance,
+  MultipleAttendance,
 } from "components/AttendanceComponent";
 import moment from "moment";
 import Loader from "../components/simple/Loader";
@@ -310,7 +310,7 @@ export default function Attendance({ footerLinks, appName }) {
           keyExtractor={(item, index) => (item?.id ? item?.id : index)}
         />
       </Box>
-      <MultipalAttendance
+      <MultipleAttendance
         isWithEditButton={false}
         {...{
           manifest,

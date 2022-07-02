@@ -13,9 +13,8 @@ import {
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import CalendarBar from "components/composite/CalendarBar";
-import AttendanceComponent, {
-  GetAttendance,
-} from "../../components/AttendanceComponent";
+import { GetAttendance } from "../../services/calls/registryCalls";
+import AttendanceComponent from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
