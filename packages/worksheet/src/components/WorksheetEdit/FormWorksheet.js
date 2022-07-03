@@ -1,20 +1,10 @@
-import { IconByName, Layout, useWindowSize } from "@shiksha/common-lib";
+import { IconByName, Layout } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
-import {
-  Actionsheet,
-  Avatar,
-  Box,
-  Button,
-  HStack,
-  Pressable,
-  ScrollView,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, Button, HStack, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
+import WorksheetActionsheet from "../Actionsheet/WorksheetActionsheet";
 
 const styles = {
   addQuestionsBox: {
@@ -94,9 +84,8 @@ const FormWorksheet = ({
   appName,
 }) => {
   const { t } = useTranslation();
-  const [width, Height] = useWindowSize();
   const [isDataFilter, setIsDataFilter] = React.useState(false);
-  const [showModule, setShowModule] = React.useState(false);
+  const [showModuleWorksheet, setShowModuleWorksheet] = React.useState(false);
   const [showQuestions, setShowQuestions] = React.useState([]);
   const [isSuccess, setIsSuccess] = React.useState(false);
 
@@ -105,7 +94,7 @@ const FormWorksheet = ({
       ...formObject,
       questions: selectData.map((e) => e.questionId),
     });
-    setPageName("AddDescriptionPage");
+    setPageName("UpdateDescriptionPage");
   };
 
   const handleAddQuestions = () => {
@@ -124,7 +113,7 @@ const FormWorksheet = ({
     setSelectData(selectData.filter((e) => e.questionId !== item.questionId));
   };
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
     setShowQuestions(questions);
   }, [formObject, questions]);
 
@@ -157,7 +146,7 @@ const FormWorksheet = ({
           </Text>
           <IconByName
             name="InformationLineIcon"
-            onPress={(e) => setShowModule(true)}
+            onPress={(e) => setShowModuleWorksheet(true)}
           />
         </HStack>
       }
@@ -218,47 +207,45 @@ const FormWorksheet = ({
           ""
         )}
         <Box bg="white" p="5">
-          <ScrollView maxH={Height}>
-            <VStack space="5">
-              {showQuestions.map((question, index) => {
-                const isExist = selectData.filter(
-                  (e) => e.questionId === question?.questionId
-                ).length;
-                return (
-                  <QuestionBox
-                    infoIcon={
-                      <HStack space={1} alignItems="center">
+          <VStack space="5">
+            {showQuestions.map((question, index) => {
+              const isExist = selectData.filter(
+                (e) => e.questionId === question?.questionId
+              ).length;
+              return (
+                <QuestionBox
+                  infoIcon={
+                    <HStack space={1} alignItems="center">
+                      <IconByName
+                        name="InformationFillIcon"
+                        p="1"
+                        color="button.500"
+                        onPress={(e) => setQuestionObject(question)}
+                      />
+                      {!isSuccess ? (
                         <IconByName
-                          name="InformationFillIcon"
                           p="1"
-                          color="button.500"
-                          onPress={(e) => setQuestionObject(question)}
+                          color={isExist ? "button.500" : "gray.300"}
+                          name={
+                            isExist
+                              ? "CheckboxLineIcon"
+                              : "CheckboxBlankLineIcon"
+                          }
+                          onPress={(e) => handelToggleQuestion(question)}
                         />
-                        {!isSuccess ? (
-                          <IconByName
-                            p="1"
-                            color={isExist ? "button.500" : "gray.300"}
-                            name={
-                              isExist
-                                ? "CheckboxLineIcon"
-                                : "CheckboxBlankLineIcon"
-                            }
-                            onPress={(e) => handelToggleQuestion(question)}
-                          />
-                        ) : (
-                          ""
-                        )}
-                      </HStack>
-                    }
-                    _box={{ py: "12px", px: "16px" }}
-                    key={index}
-                    questionObject={question}
-                    {...(isDataFilter ? {} : { selectData, setSelectData })}
-                  />
-                );
-              })}
-            </VStack>
-          </ScrollView>
+                      ) : (
+                        ""
+                      )}
+                    </HStack>
+                  }
+                  _box={{ py: "12px", px: "16px" }}
+                  key={index}
+                  questionObject={question}
+                  {...(isDataFilter ? {} : { selectData, setSelectData })}
+                />
+              );
+            })}
+          </VStack>
         </Box>
         <Box {...styles.addQuestionsBox}>
           <VStack space="5">
@@ -279,170 +266,19 @@ const FormWorksheet = ({
             </Button.Group>
           </VStack>
         </Box>
-
-        <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
-          <Actionsheet.Content alignItems={"left"}>
-            <Stack p={5} pt={0} pb="4" textAlign="center">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {formObject?.name}
-              </Text>
-            </Stack>
-            <IconByName
-              color="gray.300"
-              position="absolute"
-              top="10px"
-              right="10px"
-              name="CloseCircleLineIcon"
-              onPress={(e) => setShowModule(false)}
-            />
-          </Actionsheet.Content>
-          <Box bg="white" width={"100%"} p="5">
-            <VStack space="30px">
-              <Text
-                fontSize="14px"
-                fontWeight={"400"}
-                color="gray.400"
-                textAlign="center"
-              >
-                {formObject?.description}
-              </Text>
-              <HStack space="2">
-                <VStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="SurveyLineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Subject: " + formObject?.subject}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="BarChart2LineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Level: " + formObject?.level}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="QuestionLineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Questions: " +
-                        (Array.isArray(formObject?.questions)
-                          ? formObject?.questions.length
-                          : formObject?.questions)}
-                    </Text>
-                  </HStack>
-                </VStack>
-                <VStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="AccountBoxFillIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Grade: " + formObject?.grade}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="ArticleLineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {t("TOPIC") + ": " + formObject?.topic}
-                    </Text>
-                  </HStack>
-                  <HStack space="1" alignItems="center">
-                    <IconByName
-                      name="Download2LineIcon"
-                      _icon={{ size: 12 }}
-                      color="worksheetBoxText.400"
-                      p="0"
-                    />
-                    <Text
-                      fontWeight="400"
-                      fontSize="12px"
-                      color="worksheetBoxText.400"
-                    >
-                      {"Downloads: " + formObject?.downloads}
-                    </Text>
-                  </HStack>
-                </VStack>
-              </HStack>
-              <HStack space="5" alignItems="center" justifyContent={"center"}>
-                <HStack space="1" alignItems="center">
-                  <IconByName
-                    name="Heart3FillIcon"
-                    color="red.500"
-                    _icon={{ size: 18 }}
-                    isDisabled
-                  />
-                  <Text fontWeight="600" fontSize="12px">
-                    {"10 Teachers like this"}
-                  </Text>
-                </HStack>
-                <Pressable onPress={(e) => handleCommentModuleOpen()}>
-                  <HStack alignItems="center">
-                    <Avatar.Group
-                      _avatar={{
-                        size: "md",
-                      }}
-                    >
-                      {students.map((e, index) => (
-                        <Avatar key={index} {...e}>
-                          {e.name}
-                        </Avatar>
-                      ))}
-                    </Avatar.Group>
-                    <Text fontWeight="600" fontSize="10px" color="button.500">
-                      {"6 comments"}
-                    </Text>
-                  </HStack>
-                </Pressable>
-              </HStack>
-              <Button variant="outline" onPress={handleEditDescription}>
-                Edit Description
-              </Button>
-            </VStack>
-          </Box>
-        </Actionsheet>
       </Box>
+      <WorksheetActionsheet
+        {...{
+          worksheet: formObject,
+          showModuleWorksheet,
+          setShowModuleWorksheet,
+          footer: (
+            <Button variant="outline" onPress={handleEditDescription}>
+              Edit Description
+            </Button>
+          ),
+        }}
+      />
     </Layout>
   );
 };

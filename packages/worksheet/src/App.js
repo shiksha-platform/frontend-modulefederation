@@ -10,6 +10,7 @@ import CreateWorksheet from "pages/CreateWorksheet";
 import EditWorksheet from "pages/EditWorksheet";
 import WorksheetTemplate from "pages/WorksheetTemplate";
 import Worksheet from "./pages/Worksheet";
+import WorksheetShare from "./pages/WorksheetShare";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -19,12 +20,20 @@ function App() {
   );
   const routes = [
     {
+      path: "/worksheet/list/:state",
+      component: Worksheet,
+    },
+    {
       path: "/worksheet/list",
       component: Worksheet,
     },
     {
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
+    },
+    {
+      path: "/worksheet/:worksheetId/share",
+      component: WorksheetShare,
     },
     {
       path: "/worksheet/questionBank",

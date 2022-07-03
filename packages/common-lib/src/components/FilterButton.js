@@ -103,11 +103,11 @@ export default function FilterButton({
                 const attributeName = value.attributeName
                   ? value.attributeName
                   : value.name
-                const isSelect =
-                  groupValue?.[attributeName] &&
-                  groupValue?.[attributeName].filter((e) =>
-                    value?.data.includes(e)
-                  ).length
+                const isSelect = Array.isArray(groupValue?.[attributeName])
+                  ? groupValue?.[attributeName].filter((e) =>
+                      value?.data.includes(e)
+                    ).length
+                  : value?.data.includes(groupValue?.[attributeName])
                 const overrideBtnProp =
                   isSelect > 0 ? { ..._button, bg: 'button.500' } : _button
                 const overrideOptionBtnProp =
@@ -198,7 +198,7 @@ export default function FilterButton({
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='25px'>
               <Text fontSize='16px' fontWeight={'600'}>
-                {`${t('SELECT')} ${filterData?.name ? filterData?.name : ''}`}
+                {`${t('SELECT')} ${formData?.name ? formData?.name : ''}`}
               </Text>
             </Stack>
             <IconByName

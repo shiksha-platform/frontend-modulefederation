@@ -23,6 +23,7 @@ function App() {
   const SendSMS = React.lazy(() => import("attendance/SendSMS"));
   const MessageHistory = React.lazy(() => import("attendance/MessageHistory"));
   const TeachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
+  const WorksheetShare = React.lazy(() => import("worksheet/WorksheetShare"));
   const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
   const Worksheet = React.lazy(() => import("worksheet/Worksheet"));
   const WorksheetQuestionBank = React.lazy(() =>
@@ -50,12 +51,20 @@ function App() {
 
   const routes = [
     {
+      path: "/worksheet/list/:state",
+      component: Worksheet,
+    },
+    {
       path: "/worksheet/list",
       component: Worksheet,
     },
     {
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
+    },
+    {
+      path: "/worksheet/:worksheetId/share",
+      component: WorksheetShare,
     },
     {
       path: "/worksheet/questionBank",

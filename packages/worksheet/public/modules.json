@@ -1,5 +1,26 @@
 {
   "core": {
     "url": "http://localhost:3001/modules/core"
+  },
+  "attendance": {
+    "url": "http://localhost:3002/modules/attendance"
+  },
+  "classes": {
+    "url": "http://localhost:3003/modules/classes"
+  },
+  "calendar": {
+    "url": "http://localhost:3004/modules/calendar"
+  },
+  "worksheet": {
+    "url": "http://localhost:3005/modules/worksheet"
+  },
+  "students": {
+    "url": "http://localhost:3006/modules/student"
+  },
+  "notification": {
+    "url": "http://localhost:3007/modules/notification"
+  },
+  "profile": {
+    "url": "http://localhost:3008/modules/profile"
   }
 }

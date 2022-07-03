@@ -2,7 +2,7 @@ import React from "react";
 import { Box, HStack, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
-import { IconByName, BodyMedium } from "@shiksha/common-lib";
+import { BodyMedium } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 
 const styles = { questionDiv: { display: "flex" } };
@@ -34,8 +34,8 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
             <div
               dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
             />
-            {infoIcon}
           </div>
+          {infoIcon}
         </HStack>
       </Box>
       {questionObject?.options ? (

@@ -2,27 +2,22 @@ import {
   FilterButton,
   IconByName,
   Layout,
-  useWindowSize,
+  questionRegistryService,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   HStack,
-  Stack,
   Button,
   Text,
-  Actionsheet,
   Box,
   Pressable,
   VStack,
-  FormControl,
-  Input,
   ScrollView,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
 import manifest from "../../manifest.json";
-import { getAllQuestions } from "services";
 
 const newDefaultInputs = defaultInputs.map((e) => {
   return {
@@ -41,12 +36,9 @@ export default function ListOfWorksheet({
   setQuestionObject,
   setPageName,
   worksheet,
-  handleSubmit,
   footerLinks,
 }) {
   const { t } = useTranslation();
-  const [width, Height] = useWindowSize();
-
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [showQuestions, setShowQuestions] = React.useState([]);
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
@@ -54,11 +46,31 @@ export default function ListOfWorksheet({
 
   React.useEffect(async () => {
     let data = {};
-    newDefaultInputs.forEach((item, index) => {
-      if (formObject[item]) data = { ...data, [item]: formObject[item] };
+    const attribute = defaultInputs
+      .map((e) =>
+        !["source"].includes(e.attributeName) ? e.attributeName : null
+      )
+      .filter((e) => e);
+    attribute.forEach((item, index) => {
+      if (formObject[item]) {
+        data = {
+          ...data,
+          [item]: Array.isArray(formObject[item])
+            ? formObject[item]
+            : [formObject[item]],
+        };
+      } else if (item === "gradeLevel") {
+        data = {
+          ...data,
+          ["gradeLevel"]: Array.isArray(formObject["grade"])
+            ? formObject["grade"]
+            : [formObject["grade"]],
+        };
+      }
     });
-    console.log(data);
-    const newQuestions = await getAllQuestions(data, { limit: 20 });
+    const newQuestions = await questionRegistryService.getAllQuestions(data, {
+      limit: 20,
+    });
     setShowQuestions(newQuestions);
   }, [formObject]);
 
@@ -76,13 +88,13 @@ export default function ListOfWorksheet({
 
   const handelSaveAndDraft = () => {
     setQuestions(selectData);
-    setPageName("AddDescriptionPage");
+    setPageName("UpdateDescriptionPage");
     setFormObject({ ...formObject, state: "Draft" });
   };
 
   const handelPublish = () => {
     setQuestions(selectData);
-    setPageName("AddDescriptionPage");
+    setPageName("UpdateDescriptionPage");
     setFormObject({ ...formObject, state: "Publish" });
   };
 
@@ -96,7 +108,6 @@ export default function ListOfWorksheet({
     <Layout
       _header={{
         title: t("Add Questions"),
-
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
       _appBar={{ languages: manifest.languages }}
@@ -172,56 +183,47 @@ export default function ListOfWorksheet({
       )}
 
       <Box bg="white" p="5">
-        <ScrollView maxH={Height}>
-          <VStack space="5">
-            {showQuestions.map((item, index) => {
-              const isExist = selectData.filter(
-                (e) => e.questionId === item?.questionId
-              ).length;
-              return (
-                <QuestionBox
-                  isAnswerHide={!isAnswerFilter}
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={item}
-                  infoIcon={
-                    <HStack space={1} alignItems="center">
+        <VStack space="5">
+          {showQuestions.map((item, index) => {
+            const isExist = selectData.filter(
+              (e) => e.questionId === item?.questionId
+            ).length;
+            return (
+              <QuestionBox
+                isAnswerHide={!isAnswerFilter}
+                _box={{ py: "12px", px: "16px" }}
+                key={index}
+                questionObject={item}
+                infoIcon={
+                  <HStack space={1} alignItems="center">
+                    <IconByName
+                      name="InformationFillIcon"
+                      p="1"
+                      color="button.500"
+                      onPress={(e) => setQuestionObject(item)}
+                    />
+                    {!isSuccess ? (
                       <IconByName
-                        name="InformationFillIcon"
                         p="1"
-                        color="button.500"
-                        onPress={(e) => setQuestionObject(item)}
+                        color={isExist ? "button.500" : "gray.300"}
+                        name={
+                          isExist ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"
+                        }
+                        onPress={(e) => handelToggleQuestion(item)}
                       />
-                      {!isSuccess ? (
-                        <IconByName
-                          p="1"
-                          color={isExist ? "button.500" : "gray.300"}
-                          name={
-                            isExist
-                              ? "CheckboxLineIcon"
-                              : "CheckboxBlankLineIcon"
-                          }
-                          onPress={(e) => handelToggleQuestion(item)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </HStack>
-                  }
-                />
-              );
-            })}
-          </VStack>
-        </ScrollView>
+                    ) : (
+                      ""
+                    )}
+                  </HStack>
+                }
+              />
+            );
+          })}
+        </VStack>
       </Box>
       <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         {!isSuccess ? (
           <>
-            {/* <Text fontSize="10px" py="4" pb="1">
-              <Text fontWeight="700">Attention:</Text>
-              You have selected {selectData.length} questions to add to the
-              worksheet.
-            </Text> */}
             <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
               <HStack alignItems="center" space="1" pt="1" py="4">
                 <IconByName

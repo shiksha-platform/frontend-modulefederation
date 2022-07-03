@@ -21,4 +21,9 @@ export async function update(url: string, body: any, headers: any = {}) {
   })
 }
 
-//export async function distory(url:string, body:any) {}
+export async function distory(url: string, body: any, headers: any = {}) {
+  return await axios.delete(url, {
+    headers: { ...headers?.headers, 'Access-Control-Allow-Origin': '*' },
+    data: body
+  })
+}

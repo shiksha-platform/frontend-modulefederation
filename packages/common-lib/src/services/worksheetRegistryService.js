@@ -1,6 +1,8 @@
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
 import { get, post, update as coreUpdate } from './RestClient'
+import * as likeRegistryService from './likeRegistryService'
+import * as commentRegistryService from './commentRegistryService'
 
 const interfaceData = {
   id: 'worksheetId',
@@ -123,4 +125,20 @@ export const update = async (data = {}, headers = {}) => {
   } else {
     return {}
   }
+}
+
+export const getWorksheetLikes = async (id) => {
+  return await likeRegistryService.getAll({
+    contextId: { eq: id },
+    context: { eq: 'Worksheet' },
+    type: { eq: 'like' }
+  })
+}
+
+export const getWorksheetComments = async (id, filter = {}) => {
+  return await commentRegistryService.getAll({
+    contextId: { eq: id },
+    context: { eq: 'Worksheet' },
+    ...filter
+  })
 }

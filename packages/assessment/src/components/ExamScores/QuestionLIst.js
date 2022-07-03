@@ -19,11 +19,9 @@ import MultipleSelectQuestionCard from "./questionTypes/MultipleSelectQuestionCa
 import SimpleQuestionCard from "./questionTypes/SimpleQuestionCard";
 import {
   assessmentRegistryService,
-  attendanceRegistryService,
   Loading,
   useWindowSize,
 } from "@shiksha/common-lib";
-import { getAllQuestions } from "@shiksha/common-lib/src/services/assessmentRegistryService";
 
 const QuestionList = ({ questionNumber }) => {
   const { t } = useTranslation();
