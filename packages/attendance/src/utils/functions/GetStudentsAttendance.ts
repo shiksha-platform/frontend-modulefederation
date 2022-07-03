@@ -1,5 +1,9 @@
 import moment from "moment";
 
+export interface IGetStudentsAttendance{
+  students: Array<any>;
+  
+}
 export const GetStudentsAttendance = ({ students, attendance }) => {
   return students
     .map((item) => {

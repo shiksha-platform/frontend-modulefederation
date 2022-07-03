@@ -17,9 +17,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
 import { TimeBar } from "components/simple/TimeBar/TimeBar";
 import { GetAttendance } from "../services/calls/registryCalls";
-import AttendanceComponent, {
-  MultipleAttendance,
-} from "components/AttendanceComponent";
+
+
+import AttendanceComponent from "components/composite/AttendanceComponent";
 import moment from "moment";
 import Loader from "../components/simple/Loader";
 import FourOFour from "../components/simple/FourOFour";

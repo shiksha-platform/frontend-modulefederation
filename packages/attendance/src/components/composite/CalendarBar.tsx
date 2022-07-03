@@ -1,12 +1,13 @@
 // Lib
-import React from "react";
+import React, { FC } from "react";
 import { TimeBar } from "components/simple/TimeBar/TimeBar";
 
 export interface ICalendarBar {
-  (children: React.ReactNode, view: string): React.ReactNode;
+  view?: string;
+  type?: string;
 }
 
-export default function CalendarBar({ view, ...props }) {
+const CalendarBar: FC<ICalendarBar> = ({ view, ...props }) => {
   let CalendarBar = <></>;
   switch (view) {
     case "month":
@@ -20,9 +21,10 @@ export default function CalendarBar({ view, ...props }) {
       props.type = "days";
       break;
   }
+  // @ts-ignore
   CalendarBar = <TimeBar {...props} />;
   return CalendarBar;
-}
+};
 
 CalendarBar.defaultProps = {
   view: "days",

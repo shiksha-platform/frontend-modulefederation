@@ -3,6 +3,7 @@
   "exclude": ["node_modules", "*/**/*.json"],
   "compilerOptions": {
     "jsx": "react",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "baseUrl": "src"

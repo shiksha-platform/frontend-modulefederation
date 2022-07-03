@@ -5,7 +5,7 @@ module.exports = {
   exposes: {
     "./App": "./src/App",
     "./Attendance": "./src/pages/Attendance",
-    "./AttendanceComponent": "./src/components/AttendanceComponent",
+    "./AttendanceComponent": "./src/components/composite/AttendanceComponent",
     "./Report": "./src/pages/reports/Report",
     "./ReportDetail": "./src/pages/reports/ReportDetail",
     "./CompareReport": "./src/pages/reports/CompareReport",

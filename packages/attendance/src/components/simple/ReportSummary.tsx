@@ -1,34 +1,49 @@
-import { Box, FlatList, HStack, Text, VStack } from "native-base";
+// Libs
 import React from "react";
+import { Box, FlatList, HStack, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import manifest from "../manifest.json";
+
+// @ts-ignore
+import manifest from "./manifest.json";
 import {
-  IconByName,
   ProgressBar,
   calendar,
   BodySmall,
   Subtitle,
   Caption,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
-import moment from "moment";
-import colorTheme from "../colorTheme";
 
-const colors = overrideColorTheme(colorTheme);
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
-const MALE = "Male";
-const FEMALE = "Female";
+// Utilities
+import { colors, colorTheme } from "utils/functions/ColorTheme";
+import {
+  PRESENT,
+  ABSENT,
+  UNMARKED,
+  MALE,
+  FEMALE,
+} from "utils/functions/Constants";
+import { isMoment } from "moment";
+import { isMoment2DArray } from "utils/types/typeGuards";
 
-export default function Report({
+export interface IReport {
+  students: Array<any>;
+  attendance?: Array<any>;
+  title?: Array<{
+    name: string;
+    _text?: Object;
+  }>;
+  page?: number;
+  calendarView?: string;
+  footer?: React.ReactNode;
+}
+const Report: React.FC<IReport> = ({
   students,
   attendance,
   title,
   page,
   calendarView,
   footer,
-}) {
+}) => {
   const { t } = useTranslation();
   const [studentIds, setStudentIds] = React.useState([]);
   const [design, setDesign] = React.useState({});
@@ -61,19 +76,24 @@ export default function Report({
         setStudentIds(students.map((e) => e.id));
         handleGenderList();
         if (typeof page === "object") {
-          daysWithoutHolidays = page.map(
-            (e) =>
-              calendar(e, calendarView ? calendarView : "days").filter(
-                (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
-              ).length
-          );
+          // add a type guard here
+          daysWithoutHolidays = page.map((e) => {
+            const dat = calendar(e, calendarView ? calendarView : "days");
+            if (isMoment(dat) || isMoment2DArray(dat)) return;
+
+            return dat.filter(
+              (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
+            ).length;
+          });
           setWithoutHolidays(daysWithoutHolidays);
         } else {
+          const dat = calendar(
+            page ? page : 0,
+            calendarView ? calendarView : "days"
+          );
+          if (isMoment(dat) || isMoment2DArray(dat)) return;
           daysWithoutHolidays = [
-            calendar(
-              page ? page : 0,
-              calendarView ? calendarView : "days"
-            ).filter(
+            dat.filter(
               (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
             ).length,
           ];
@@ -135,66 +155,6 @@ export default function Report({
       .filter((e) => e);
   };
 
-  const countReport = ({
-    gender,
-    attendance,
-    attendanceType,
-    type,
-    studentIds,
-    withoutHolidays,
-  }) => {
-    let attendanceAll = getStudentsAttendance(attendance);
-    if (gender && [t("BOYS"), t("GIRLS")].includes(gender)) {
-      studentIds = students
-        .filter(
-          (e) =>
-            e.gender ===
-            (gender === t("BOYS") ? MALE : gender === t("GIRLS") ? FEMALE : "")
-        )
-        .map((e) => e.id);
-    }
-
-    if (attendanceType === "Unmarked" && gender === t("TOTAL")) {
-      let studentIds1 = attendanceAll.filter(
-        (e) =>
-          studentIds.includes(e.studentId) && e.attendance !== attendanceType
-      );
-      let val = studentIds.length * withoutHolidays - studentIds1.length;
-      if (isAvrage) {
-        return Math.round(val ? val / studentIds.length : 0);
-      } else {
-        return Math.round(val);
-      }
-    } else if (type === "Unmarked" || attendanceType === "Unmarked") {
-      let studentIds1 = attendanceAll.filter((e) =>
-        studentIds.includes(e.studentId)
-      );
-
-      if (attendanceType === "Unmarked") {
-        studentIds1 = attendanceAll.filter(
-          (e) =>
-            studentIds.includes(e?.studentId) && e.attendance !== attendanceType
-        );
-      }
-      let val = studentIds.length * withoutHolidays - studentIds1.length;
-      if (isAvrage) {
-        return Math.round(val ? val / studentIds.length : 0);
-      } else {
-        return Math.round(val);
-      }
-    } else {
-      let val = attendanceAll.filter(
-        (e) =>
-          studentIds.includes(e?.studentId) && e.attendance === attendanceType
-      ).length;
-
-      if (isAvrage) {
-        return Math.round(val ? val / studentIds.length : 0);
-      } else {
-        return Math.round(val);
-      }
-    }
-  };
 
   return (
     <Box rounded={"xl"}>
@@ -206,7 +166,7 @@ export default function Report({
           </Text> */}
         </HStack>
       </Box>
-      <Box bg={colors.reportBoxBg}>
+      <Box bg={colorTheme.reportBoxBg}>
         {attendance && attendance.length ? (
           <FlatList
             data={genderList}
@@ -215,7 +175,7 @@ export default function Report({
                 p="5"
                 space={3}
                 borderBottomWidth="1"
-                borderBottomColor={colors.reportBorder}
+                borderBottomColor={colorTheme.reportBorder}
               >
                 {attendance.length > 1 ? <Subtitle>{item}</Subtitle> : ""}
                 <VStack space={3}>
@@ -233,29 +193,33 @@ export default function Report({
                         )}
                       </VStack>
                       <VStack flex="auto" alignContent={"center"}>
-                        <ProgressBar
-                          data={status.map((subItem, subIndex) => {
-                            let statusCount = countReport({
-                              gender: item,
-                              attendanceType: subItem,
-                              attendance: itemAttendance,
-                              studentIds,
-                              withoutHolidays: withoutHolidays[index],
-                            });
-                            return {
-                              name: subItem,
-                              color:
-                                subItem === PRESENT
-                                  ? colors.attendancePresent
-                                  : subItem === ABSENT
-                                  ? colors.attendanceAbsent
-                                  : subItem === UNMARKED
-                                  ? colors.attendanceUnmarked
-                                  : colors.gray,
-                              value: statusCount,
-                            };
-                          })}
-                        />
+                        {
+                          // @ts-ignore
+                          <ProgressBar
+                            data={status.map((subItem, subIndex) => {
+                              let statusCount = countReport({
+                                gender: item,
+                                attendanceType: subItem,
+                                attendance: itemAttendance,
+                                studentIds,
+                                withoutHolidays: withoutHolidays[index],
+                                students
+                              });
+                              return {
+                                name: subItem,
+                                color:
+                                  subItem === PRESENT
+                                    ? colorTheme.attendancePresent
+                                    : subItem === ABSENT
+                                    ? colorTheme.attendanceAbsent
+                                    : subItem === UNMARKED
+                                    ? colorTheme.attendanceUnmarked
+                                    : colorTheme.gray,
+                                value: statusCount,
+                              };
+                            })}
+                          />
+                        }
                       </VStack>
                     </HStack>
                   ))}
@@ -268,7 +232,7 @@ export default function Report({
           ""
         )}
       </Box>
-      <Box roundedBottom={"xl"} p="5" bg={colors.reportBoxBg}>
+      <Box roundedBottom={"xl"} p="5" bg={colorTheme.reportBoxBg}>
         {footer ? (
           footer
         ) : (
@@ -280,4 +244,4 @@ export default function Report({
       </Box>
     </Box>
   );
-}
+};
