@@ -96,7 +96,7 @@ export const multipal = async (data = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    manifest.api_url + '/attendance/multipleAttendance',
+    manifest.api_url + '/attendance/bulkAttendance',
     data,
     { headers }
   )

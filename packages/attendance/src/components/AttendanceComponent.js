@@ -110,8 +110,6 @@ export const MultipalAttendance = ({
   attendance,
   getAttendance,
   setLoading,
-  setAllAttendanceStatus,
-  allAttendanceStatus,
   classObject,
   isEditDisabled,
   setIsEditDisabled,
@@ -122,8 +120,6 @@ export const MultipalAttendance = ({
   const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [presentStudents, setPresentStudents] = useState([]);
-  const teacherId = localStorage.getItem("id");
-  const [width, Height] = useWindowSize();
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
   const holidays = [];
@@ -158,25 +154,10 @@ export const MultipalAttendance = ({
     getPresentStudents({ students });
   }, [students, attendance]);
 
-  const getStudentsAttendance = (e) => {
-    return students
-      .map((item) => {
-        return attendance
-          .slice()
-          .reverse()
-          .find(
-            (e) =>
-              e.date === moment().format("YYYY-MM-DD") &&
-              e.studentId === item.id
-          );
-      })
-      .filter((e) => e);
-  };
-
   const getLastAttedance = () => {
     let dates = attendance.map((d) => moment(d.updatedAt));
     let date = moment.max(dates);
-    return dates.length ? date.format("hh:mmA") : "N/A";
+    return dates.length ? date.format("HH:MMA") : "N/A";
   };
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
@@ -268,6 +249,12 @@ export const MultipalAttendance = ({
                       flex={1}
                       variant="outline"
                       colorScheme="button"
+                      isDisabled={
+                        !(
+                          moment().format("HH:MM") <=
+                          manifest?.["class_attendance.submit_by"]
+                        )
+                      }
                       onPress={markAllAttendance}
                       _text={{ fontSize: "12px", fontWeight: "600" }}
                     >
@@ -512,7 +499,6 @@ export default function AttendanceComponent({
   student,
   attendanceProp,
   hidePopUpButton,
-  getAttendance,
   sms,
   _card,
   isEditDisabled,
@@ -535,7 +521,7 @@ export default function AttendanceComponent({
     : manifest?.["attendance.default_attendance_states"]
     ? JSON.parse(manifest?.["attendance.default_attendance_states"])
     : [];
-  console.log(status);
+
   useEffect(() => {
     if (typeof page === "object") {
       setDays(
@@ -568,7 +554,6 @@ export default function AttendanceComponent({
   }, [page, attendanceProp, type]);
 
   const markAttendance = async (dataObject) => {
-    console.log({ dataObject });
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
@@ -793,14 +778,17 @@ const CalendarComponent = ({
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
     let isAllowDay = false;
-    if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
+    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
+      isAllowDay = true;
+    } else if (
+      manifest?.["class_attendance.previous_attendance_edit"] === "true"
+    ) {
       isAllowDay = day.format("YYYY-MM-DD") <= moment().format("YYYY-MM-DD");
     } else {
       isAllowDay = day.format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
     }
 
-    let isHoliday =
-      day.day() === 0 || holidays.includes(day.format("YYYY-MM-DD"));
+    let isHoliday = holidays.includes(day.format("YYYY-MM-DD"));
     let dateValue = day.format("YYYY-MM-DD");
     let smsDay = sms?.find(
       (e) => e.date === day.format("YYYY-MM-DD") && e.studentId === student.id
@@ -957,11 +945,7 @@ const CalendarComponent = ({
                 }
               }}
               onLongPress={(event) => {
-                if (
-                  !isEditDisabled &&
-                  day.format("M") === moment().format("M") &&
-                  day.day() !== 0
-                ) {
+                if (!isEditDisabled && isAllowDay && !isHoliday) {
                   setAttendanceObject({
                     attendanceId: attendanceItem?.id ? attendanceItem.id : null,
                     date: dateValue,
