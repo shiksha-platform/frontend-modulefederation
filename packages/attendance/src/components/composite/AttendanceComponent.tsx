@@ -22,7 +22,6 @@ import {
   BodySmall,
   Subtitle,
   BodyMedium,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 
 import { colors, colorTheme } from "utils/functions/ColorTheme";

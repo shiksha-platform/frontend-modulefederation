@@ -23,7 +23,6 @@ import {
   H1,
   BodyLarge,
   Caption,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 

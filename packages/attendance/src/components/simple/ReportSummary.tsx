@@ -4,7 +4,7 @@ import { Box, FlatList, HStack, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
 
 // @ts-ignore
-import manifest from "./manifest.json";
+import manifest from "../../manifest.json"
 import {
   ProgressBar,
   calendar,
@@ -14,16 +14,14 @@ import {
 } from "@shiksha/common-lib";
 
 // Utilities
-import { colors, colorTheme } from "utils/functions/ColorTheme";
-import {
-  PRESENT,
-  ABSENT,
-  UNMARKED,
-  MALE,
-  FEMALE,
-} from "utils/functions/Constants";
-import { isMoment } from "moment";
-import { isMoment2DArray } from "utils/types/typeGuards";
+import { colorTheme } from "utils/functions/ColorTheme";
+import { PRESENT, ABSENT, UNMARKED } from "utils/functions/Constants";
+import { useStudentIds } from "utils/customhooks/useStudentIds";
+import { useDesignHook } from "utils/customhooks/useDesignHook";
+import { useWithoutHolidays } from "utils/customhooks/useWithoutHolidays";
+import { useGenderList } from "utils/customhooks/useGenderList";
+import { useAverage } from "utils/customhooks/useAverage";
+import { CountReport } from "utils/functions/CountReport";
 
 export interface IReport {
   students: Array<any>;
@@ -32,11 +30,11 @@ export interface IReport {
     name: string;
     _text?: Object;
   }>;
-  page?: number;
+  page?: object;
   calendarView?: string;
   footer?: React.ReactNode;
 }
-const Report: React.FC<IReport> = ({
+export const ReportSummary: React.FC<IReport> = ({
   students,
   attendance,
   title,
@@ -45,116 +43,13 @@ const Report: React.FC<IReport> = ({
   footer,
 }) => {
   const { t } = useTranslation();
-  const [studentIds, setStudentIds] = React.useState([]);
-  const [design, setDesign] = React.useState({});
-  const [withoutHolidays, setWithoutHolidays] = React.useState([]);
-  const [genderList, setGenderList] = React.useState([]);
-  const [isAvrage, setIsAvrage] = React.useState(false);
+  const { studentIds } = useStudentIds({ students });
+  const { design } = useDesignHook({ attendance, page, calendarView, t });
+  const { withoutHolidays } = useWithoutHolidays({ page, calendarView });
+  const { genderList } = useGenderList({ students, t });
+  const { isAverage } = useAverage({ calendarView });
   const fullName = localStorage.getItem("fullName");
   const status = manifest?.status ? manifest?.status : [];
-  const holidays = [];
-
-  const handleGenderList = () => {
-    let genderList = [];
-    genderList = [t("BOYS"), t("GIRLS")].filter((gender) => {
-      return (
-        (gender === t("BOYS") &&
-          students.filter((e) => e.gender === MALE).length) ||
-        (gender === t("GIRLS") &&
-          students.filter((e) => e.gender === FEMALE).length)
-      );
-    });
-
-    setGenderList([...genderList, t("TOTAL")]);
-  };
-
-  React.useEffect(() => {
-    let ignore = false;
-    async function getData() {
-      if (!ignore) {
-        let daysWithoutHolidays = [];
-        setStudentIds(students.map((e) => e.id));
-        handleGenderList();
-        if (typeof page === "object") {
-          // add a type guard here
-          daysWithoutHolidays = page.map((e) => {
-            const dat = calendar(e, calendarView ? calendarView : "days");
-            if (isMoment(dat) || isMoment2DArray(dat)) return;
-
-            return dat.filter(
-              (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
-            ).length;
-          });
-          setWithoutHolidays(daysWithoutHolidays);
-        } else {
-          const dat = calendar(
-            page ? page : 0,
-            calendarView ? calendarView : "days"
-          );
-          if (isMoment(dat) || isMoment2DArray(dat)) return;
-          daysWithoutHolidays = [
-            dat.filter(
-              (e) => !(!e.day() || holidays.includes(e.format("YYYY-MM-DD")))
-            ).length,
-          ];
-          setWithoutHolidays(daysWithoutHolidays);
-        }
-        setIsAvrage(
-          ["week", "weeks", "month", "months", "monthInDays"].includes(
-            calendarView
-          )
-        );
-        if (attendance[0]) {
-          let percentage = 0;
-          let attendanceAll = getStudentsAttendance(attendance[0]);
-          let presentAttendanceCount = attendanceAll.filter(
-            (e) => e.attendance && e.attendance !== PRESENT
-          ).length;
-          percentage =
-            (presentAttendanceCount * 100) / daysWithoutHolidays.length;
-          if (percentage && percentage >= 100) {
-            setDesign({
-              bg: colors.success,
-              iconName: "EmotionHappyLineIcon",
-              titleHeading:
-                t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
-            });
-          } else if (percentage && percentage < 100 && percentage >= 50) {
-            setDesign({
-              bg: colors.warning,
-              iconName: "EmotionNormalLineIcon",
-              titleHeading: t("AGERAGE_CAN_BE_IMPROVED"),
-            });
-          } else {
-            setDesign({
-              bg: colors.danger,
-              iconName: "EmotionSadLineIcon",
-              titleHeading:
-                t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
-            });
-          }
-        }
-      }
-    }
-    getData();
-    return () => {
-      ignore = true;
-    };
-  }, [calendarView, page, students]);
-
-  const getStudentsAttendance = (attendance) => {
-    return attendance
-      .slice()
-      .reverse()
-      .filter(
-        (value, index, self) =>
-          self.findIndex(
-            (m) => value?.studentId === m?.studentId && value?.date === m?.date
-          ) === index
-      )
-      .filter((e) => e);
-  };
-
 
   return (
     <Box rounded={"xl"}>
@@ -169,6 +64,7 @@ const Report: React.FC<IReport> = ({
       <Box bg={colorTheme.reportBoxBg}>
         {attendance && attendance.length ? (
           <FlatList
+            // @ts-ignore
             data={genderList}
             renderItem={({ item, index }) => (
               <VStack
@@ -197,13 +93,14 @@ const Report: React.FC<IReport> = ({
                           // @ts-ignore
                           <ProgressBar
                             data={status.map((subItem, subIndex) => {
-                              let statusCount = countReport({
+                              let statusCount = CountReport({
+                                isAverage,
                                 gender: item,
                                 attendanceType: subItem,
                                 attendance: itemAttendance,
                                 studentIds,
                                 withoutHolidays: withoutHolidays[index],
-                                students
+                                students,
                               });
                               return {
                                 name: subItem,

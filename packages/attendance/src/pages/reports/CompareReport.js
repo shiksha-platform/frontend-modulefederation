@@ -32,7 +32,7 @@ import {
 } from "@shiksha/common-lib";
 import { GetAttendance } from "../../services/calls/registryCalls";
 import AttendanceComponent from "../../components/composite/AttendanceComponent";
-import ReportSummary from "../../components/ReportSummary";
+import { ReportSummary } from "../../components/simple/ReportSummary";
 import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";
 import { useNavigate, useParams } from "react-router-dom";

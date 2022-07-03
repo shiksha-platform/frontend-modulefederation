@@ -7,7 +7,7 @@ export interface ICalendarBar {
   type?: string;
 }
 
-const CalendarBar: FC<ICalendarBar> = ({ view, ...props }) => {
+export const CalendarBar: FC<ICalendarBar> = ({ view, ...props }) => {
   let CalendarBar = <></>;
   switch (view) {
     case "month":

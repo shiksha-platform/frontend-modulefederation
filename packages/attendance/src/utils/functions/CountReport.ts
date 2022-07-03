@@ -1,16 +1,30 @@
 // Constants
+import { useTranslation } from "react-i18next";
 import { MALE, FEMALE } from "./Constants";
+import { GetStudentsAttendance } from "./GetStudentsAttendance";
 
-export const countReport = ({
+export interface ICountReport {
+  gender?: any;
+  isAverage?: any;
+  attendance?: any;
+  attendanceType?: any;
+  type?: string;
+  studentIds?: any;
+  withoutHolidays?: any;
+  students?: any;
+}
+export const CountReport = ({
   gender,
+  isAverage,
   attendance,
   attendanceType,
   type,
   studentIds,
   withoutHolidays,
-  students
-}) => {
-  let attendanceAll = getStudentsAttendance(attendance);
+  students,
+}: ICountReport) => {
+  const { t } = useTranslation();
+  let attendanceAll = GetStudentsAttendance({ attendance, type: "id" });
   if (gender && [t("BOYS"), t("GIRLS")].includes(gender)) {
     studentIds = students
       .filter(
@@ -26,7 +40,7 @@ export const countReport = ({
       (e) => studentIds.includes(e.studentId) && e.attendance !== attendanceType
     );
     let val = studentIds.length * withoutHolidays - studentIds1.length;
-    if (isAvrage) {
+    if (isAverage) {
       return Math.round(val ? val / studentIds.length : 0);
     } else {
       return Math.round(val);
@@ -43,7 +57,7 @@ export const countReport = ({
       );
     }
     let val = studentIds.length * withoutHolidays - studentIds1.length;
-    if (isAvrage) {
+    if (isAverage) {
       return Math.round(val ? val / studentIds.length : 0);
     } else {
       return Math.round(val);
@@ -54,7 +68,7 @@ export const countReport = ({
         studentIds.includes(e?.studentId) && e.attendance === attendanceType
     ).length;
 
-    if (isAvrage) {
+    if (isAverage) {
       return Math.round(val ? val / studentIds.length : 0);
     } else {
       return Math.round(val);
