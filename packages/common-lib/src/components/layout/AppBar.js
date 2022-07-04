@@ -87,7 +87,7 @@ export default function AppBar({
                   color='coolGray.500'
                   name='CloseCircleLineIcon'
                   p='0'
-                  onPress={(e) => setSearchInput(false)}
+                  onPress={(e) => handleSeachState(false)}
                 />
               }
             />
@@ -125,7 +125,7 @@ export default function AppBar({
                   color={color ? color : ''}
                   size='sm'
                   name='SearchLineIcon'
-                  onPress={(e) => setSearchInput(true)}
+                  onPress={(e) => handleSeachState(true)}
                 />
               ) : (
                 <React.Fragment />

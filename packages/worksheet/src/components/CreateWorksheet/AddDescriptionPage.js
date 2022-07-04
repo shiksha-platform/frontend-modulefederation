@@ -14,11 +14,11 @@ export default function AddDescriptionPage({
   const [formData, setFormData] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const formInput = [
-    { name: "name", placeholder: "Enter Title", label: "Title" },
+    { name: "name", placeholder: t("ENTER_TITLE"), label: t("TITLE") },
     {
       name: "description",
-      placeholder: "Enter Description",
-      label: "Description",
+      placeholder: t("ENTER_DESCRIPTION"),
+      label: t("DESCRIPTION"),
     },
     ...defaultInputs.map((e) => {
       return {
@@ -138,7 +138,7 @@ export default function AddDescriptionPage({
           flex="1"
           onPress={handleSubmit}
         >
-          {t("Save and Publish")}
+          {t("SAVE")}
         </Button>
       </Box>
     </Box>

@@ -1,9 +1,11 @@
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
-import { get, post } from './RestClient'
+import { get, post, update as coreUpdate } from './RestClient'
+import * as likeRegistryService from './likeRegistryService'
+import * as commentRegistryService from './commentRegistryService'
 
 const interfaceData = {
-  worksheetId: 'worksheetId',
+  id: 'worksheetId',
   name: 'name',
   state: 'state',
   subject: 'subject',
@@ -53,6 +55,29 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   }
 }
 
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  try {
+    const result = await get(manifest.api_url + '/worksheet/' + filters.id, {
+      headers
+    })
+    if (result?.data?.data) {
+      let mapResult = mapInterfaceData(result.data.data, interfaceData)
+      mapResult.id = mapResult.id?.startsWith('1-')
+        ? mapResult.id?.replace('1-', '')
+        : mapResult.id
+      return mapResult
+    } else {
+      return {}
+    }
+  } catch {
+    return {}
+  }
+}
+
 export const create = async (data, header = {}) => {
   let headers = {
     ...header,
@@ -89,7 +114,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    manifest.api_url + '/attendance/' + data.id,
+    manifest.api_url + '/worksheet/' + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}
@@ -100,4 +125,20 @@ export const update = async (data = {}, headers = {}) => {
   } else {
     return {}
   }
+}
+
+export const getWorksheetLikes = async (id) => {
+  return await likeRegistryService.getAll({
+    contextId: { eq: id },
+    context: { eq: 'Worksheet' },
+    type: { eq: 'like' }
+  })
+}
+
+export const getWorksheetComments = async (id, filter = {}) => {
+  return await commentRegistryService.getAll({
+    contextId: { eq: id },
+    context: { eq: 'Worksheet' },
+    ...filter
+  })
 }

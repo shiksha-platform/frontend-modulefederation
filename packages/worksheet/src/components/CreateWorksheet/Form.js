@@ -69,7 +69,7 @@ export default function Form({
       });
       setPageName("WorksheetTemplate");
     } else {
-      setPageName("ListOfWorksheet");
+      setPageName("ListOfQuestions");
     }
   };
 

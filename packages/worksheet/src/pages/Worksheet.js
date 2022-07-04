@@ -1,15 +1,17 @@
 import React from "react";
 import {
+  capture,
   FilterButton,
   H3,
   IconByName,
   Layout,
+  Loading,
+  telemetryFactory,
+  worksheetRegistryService,
   H2,
   overrideColorTheme,
   BodyLarge,
-  Loading,
   SearchLayout,
-  worksheetRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
@@ -26,6 +28,43 @@ import { useNavigate, useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
 import { defaultInputs } from "config/worksheetConfig";
+
+const sortArray = [
+  {
+    title: "By Difficulty",
+    data: [
+      {
+        attribute: "difficulty",
+        value: "low_high",
+        name: "Low to High",
+        icon: "ArrowRightUpLineIcon",
+      },
+      {
+        attribute: "difficulty",
+        value: "high_low",
+        name: "High To Low",
+        icon: "ArrowRightDownLineIcon",
+      },
+    ],
+  },
+  {
+    title: "By Popularity",
+    data: [
+      {
+        attribute: "popularity",
+        value: "low_high",
+        name: "Low to High",
+        icon: "ArrowRightUpLineIcon",
+      },
+      {
+        attribute: "popularity",
+        value: "high_low",
+        name: "High To Low",
+        icon: "ArrowRightDownLineIcon",
+      },
+    ],
+  },
+];
 import colorTheme from "../colorTheme";
 
 const newDefaultInputs = defaultInputs.map((e) => {
@@ -130,7 +169,13 @@ export default function Worksheet({ footerLinks, appName }) {
       _footer={footerLinks}
     >
       <ChildrenWorksheet
-        {...{ worksheets, setFilterObject, showModalSort, setShowModalSort }}
+        {...{
+          worksheets,
+          setFilterObject,
+          showModalSort,
+          setShowModalSort,
+          appName,
+        }}
       />
     </Layout>
   );
@@ -142,12 +187,24 @@ const ChildrenWorksheet = ({
   setFilterObject,
   showModalSort,
   setShowModalSort,
+  appName,
 }) => {
   const { t } = useTranslation();
 
   const [sortData, setSortData] = React.useState();
   const navigate = useNavigate();
   const { state } = useParams();
+
+  const handleSort = (obejct) => {
+    const newSort = { [obejct.attribute]: obejct.value };
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Sort",
+      sortType: newSort,
+    });
+    capture("INTERACT", telemetryData);
+    setSortData(newSort);
+  };
 
   return (
     <Stack>
@@ -164,31 +221,17 @@ const ChildrenWorksheet = ({
         filters={newDefaultInputs}
       />
       <VStack>
-        <Box bg="white" p="5" mb="4" roundedBottom={"xl"}>
+        <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Stack>
             <VStack space={3}>
               {worksheets.length > 0 ? (
                 worksheets.map((item, index) => {
                   return (
                     <WorksheetBox
+                      appName={appName}
                       canShare={true}
                       key={index}
                       {...{ item, url: `/worksheet/${item.id}` }}
-                      {...(state === "Draft"
-                        ? {
-                            canShowButtonArray: ["Like"],
-                            _addIconButton: {
-                              name: "EditBoxLineIcon",
-                              color: "gray.500",
-                              rounded: "full",
-                              bg: "white",
-                              p: "2",
-                              shadow: 2,
-                              _icon: { size: 17 },
-                              onPress: (e) => navigate(`/worksheet/1/edit`),
-                            },
-                          }
-                        : {})}
                     />
                   );
                 })
@@ -200,7 +243,7 @@ const ChildrenWorksheet = ({
                   rounded="lg"
                   bg="viewNotification.600"
                 >
-                  Worksheet Not Found
+                  {t("WORKSHEET_NOT_FOUND")}
                 </Box>
               )}
             </VStack>
@@ -233,88 +276,38 @@ const ChildrenWorksheet = ({
               </HStack>
             </Actionsheet.Content>
             <VStack bg="white" width={"100%"} space="1">
-              {[
-                {
-                  title: "By Difficulty",
-                  data: [
-                    {
-                      value: "difficulty_low_high",
-                      name: "Low to High",
-                      icon: "ArrowRightUpLineIcon",
-                    },
-                    {
-                      value: "difficulty_high_low",
-                      name: "High To Low",
-                      icon: "ArrowRightDownLineIcon",
-                    },
-                  ],
-                },
-                {
-                  title: "By Popularity",
-                  data: [
-                    {
-                      title: "By Difficulty",
-                      data: [
-                        {
-                          value: "difficulty_low_high",
-                          name: "Low to High",
-                          icon: "ArrowRightUpLineIcon",
-                        },
-                        {
-                          value: "difficulty_high_low",
-                          name: "High To Low",
-                          icon: "ArrowRightDownLineIcon",
-                        },
-                      ],
-                    },
-                    {
-                      title: "By Popularity",
-                      data: [
-                        {
-                          value: "popularity_low_high",
-                          name: "Low to High",
-                          icon: "ArrowRightUpLineIcon",
-                        },
-                        {
-                          value: "popularity_high_low",
-                          name: "High To Low",
-                          icon: "ArrowRightDownLineIcon",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ].map((value, index) => (
+              {sortArray.map((value, index) => (
                 <Box key={index}>
                   <Box px="5" py="4">
                     <H3 color={colors.grayLight}>{value?.title}</H3>
                   </Box>
                   {value?.data &&
-                    value.data.map((item, subIndex) => (
-                      <Pressable
-                        key={subIndex}
-                        p="5"
-                        bg={sortData === item.value ? colors.grayLight : ""}
-                        onPress={(e) => {
-                          setSortData(item.value);
-                        }}
-                      >
-                        <HStack
-                          space="2"
-                          colorScheme="button"
-                          alignItems="center"
+                    value.data.map((item, subIndex) => {
+                      const isSelected =
+                        sortData?.[item.attribute] &&
+                        sortData[item.attribute] === item.value;
+                      return (
+                        <Pressable
+                          key={subIndex}
+                          p="5"
+                          bg={isSelected ? colors.grayLight : ""}
+                          onPress={(e) => handleSort(item)}
                         >
-                          <IconByName
-                            isDisabled
-                            color={
-                              sortData === item.value ? colors.primary : ""
-                            }
-                            name={item.icon}
-                          />
-                          <Text>{item.name}</Text>
-                        </HStack>
-                      </Pressable>
-                    ))}
+                          <HStack
+                            space="2"
+                            colorScheme="button"
+                            alignItems="center"
+                          >
+                            <IconByName
+                              isDisabled
+                              color={isSelected ? colors.primary : ""}
+                              name={item.icon}
+                            />
+                            <Text>{item.name}</Text>
+                          </HStack>
+                        </Pressable>
+                      );
+                    })}
                 </Box>
               ))}
               <Box p="5">

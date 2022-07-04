@@ -1,4 +1,4 @@
-import { FilterButton, IconByName, useWindowSize } from "@shiksha/common-lib";
+import { FilterButton, IconByName } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   HStack,
@@ -9,16 +9,27 @@ import {
   Box,
   Pressable,
   VStack,
-  FormControl,
-  Input,
   ScrollView,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { defaultInputs } from "config/worksheetConfig";
-import AlertValidationModal from "components/AlertValidationModal";
+import { defaultInputs } from "../../config/worksheetConfig";
+import AlertValidationModal from "../AlertValidationModal";
+import InputFormActionsheet from "../Actionsheet/CreateWorksheet/InputFormActionsheet";
 
-export default function ListOfWorksheet({
+const newDefaultInputs = defaultInputs.map((e) => {
+  return {
+    ...e,
+    ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
+      ? "grade"
+      : e.attributeName,
+    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+      ? "stingValueArray"
+      : "array",
+  };
+});
+
+export default function ListOfQuestions({
   questions,
   setQuestions,
   pageName,
@@ -27,34 +38,27 @@ export default function ListOfWorksheet({
   setFormObject,
 }) {
   const { t } = useTranslation();
-  const [width, Height] = useWindowSize();
   const [selectData, setSelectData] = React.useState([]);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [showQuestions, setShowQuestions] = React.useState([]);
   const [showModule, setShowModule] = React.useState(false);
   const [questionObject, setQuestionObject] = React.useState({});
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
-  const [inputData, setInputData] = React.useState();
   const [alertMessage, setAlertMessage] = React.useState();
 
   React.useEffect(() => {
     if (!isSuccess) {
-      setPageName("ListOfWorksheet");
+      setPageName("ListOfQuestions");
       setShowQuestions(questions);
     }
-    setInputData(formObject?.name ? formObject.name : "Untitled");
   }, [formObject]);
 
-  const handleWorksheetSubmit = () => {
+  const handleWorksheetSubmit = (inputData) => {
     setShowQuestions(selectData);
     setPageName("filterData");
     setIsSuccess("message");
     setFormObject({ ...formObject, name: inputData });
     setShowModule(false);
-  };
-
-  const handelInput = (event) => {
-    setInputData(event.target.value);
   };
 
   const handelAddQuestionButton = () => {
@@ -119,7 +123,7 @@ export default function ListOfWorksheet({
               bg: "white",
             }}
             resetButtonText={t("COLLAPSE")}
-            filters={defaultInputs}
+            filters={newDefaultInputs}
           />
           <Box bg="white" px="5">
             <ScrollView horizontal={true}>
@@ -175,47 +179,43 @@ export default function ListOfWorksheet({
       )}
 
       <Box bg="white" p="5">
-        <ScrollView maxH={Height}>
-          <VStack space="5">
-            {showQuestions.map((item, index) => {
-              const isExist = selectData.filter(
-                (e) => e.questionId === item?.questionId
-              ).length;
-              return (
-                <QuestionBox
-                  isAnswerHide={!isAnswerFilter}
-                  _box={{ py: "12px", px: "16px" }}
-                  key={index}
-                  questionObject={item}
-                  infoIcon={
-                    <HStack space={1} alignItems="center">
+        <VStack space="5">
+          {showQuestions.map((item, index) => {
+            const isExist = selectData.filter(
+              (e) => e.questionId === item?.questionId
+            ).length;
+            return (
+              <QuestionBox
+                isAnswerHide={!isAnswerFilter}
+                _box={{ py: "12px", px: "16px" }}
+                key={index}
+                questionObject={item}
+                infoIcon={
+                  <HStack space={1} alignItems="center">
+                    <IconByName
+                      name="InformationFillIcon"
+                      p="1"
+                      color="button.500"
+                      onPress={(e) => setQuestionObject(item)}
+                    />
+                    {!isSuccess ? (
                       <IconByName
-                        name="InformationFillIcon"
                         p="1"
-                        color="button.500"
-                        onPress={(e) => setQuestionObject(item)}
+                        color={isExist ? "button.500" : "gray.300"}
+                        name={
+                          isExist ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"
+                        }
+                        onPress={(e) => handelToggleQuestion(item)}
                       />
-                      {!isSuccess ? (
-                        <IconByName
-                          p="1"
-                          color={isExist ? "button.500" : "gray.300"}
-                          name={
-                            isExist
-                              ? "CheckboxLineIcon"
-                              : "CheckboxBlankLineIcon"
-                          }
-                          onPress={(e) => handelToggleQuestion(item)}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </HStack>
-                  }
-                />
-              );
-            })}
-          </VStack>
-        </ScrollView>
+                    ) : (
+                      ""
+                    )}
+                  </HStack>
+                }
+              />
+            );
+          })}
+        </VStack>
       </Box>
       <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         {!isSuccess ? (
@@ -410,55 +410,13 @@ export default function ListOfWorksheet({
             </VStack>
           </Box>
         </Actionsheet>
-        <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
-          <Actionsheet.Content alignItems={"left"}>
-            <Stack p={5} pt={2} pb="25px" textAlign="center">
-              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
-                {t("Enter Worksheet Details")}
-              </Text>
-            </Stack>
-          </Actionsheet.Content>
-          <Box bg="white" width={"100%"} p="5">
-            <FormControl isRequired>
-              <FormControl.Label
-                _text={{ fontSize: "14px", fontWeight: "400" }}
-                mb="10px"
-              >
-                {t("NAME")}
-              </FormControl.Label>
-              <Input
-                rounded="lg"
-                height="48px"
-                bg="white"
-                variant="unstyled"
-                p={"10px"}
-                placeholder={t("ENTER") + " " + t("NAME")}
-                onChange={handelInput}
-                value={inputData ? inputData : ""}
-              />
-            </FormControl>
-            <Button.Group>
-              <Button
-                colorScheme="button"
-                px="5"
-                flex="1"
-                variant="outline"
-                onPress={handleWorksheetSubmit}
-              >
-                {t("Skip")}
-              </Button>
-              <Button
-                colorScheme="button"
-                _text={{ color: "white" }}
-                px="5"
-                flex="1"
-                onPress={handleWorksheetSubmit}
-              >
-                {t("Save")}
-              </Button>
-            </Button.Group>
-          </Box>
-        </Actionsheet>
+        <InputFormActionsheet
+          {...{
+            showModule,
+            setShowModule,
+            handleWorksheetSubmit,
+          }}
+        />
       </Box>
     </Stack>
   );

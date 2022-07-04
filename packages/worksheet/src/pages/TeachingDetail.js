@@ -7,6 +7,10 @@ import {
   BodyLarge,
   H2,
   overrideColorTheme,
+  worksheetRegistryService,
+  Loading,
+  telemetryFactory,
+  capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
@@ -56,6 +60,16 @@ export default function TeachingDetail({ footerLinks, appName }) {
     setLoading(false);
   }, []);
 
+  const handleExploreAllWorksheets = (state) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Explore",
+      state,
+    });
+    capture("INTERACT", telemetryData);
+    navigate(`/worksheet/list/${state}`);
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -101,32 +115,22 @@ export default function TeachingDetail({ footerLinks, appName }) {
                 component: (
                   <VStack>
                     <Worksheets
+                      appName={appName}
                       data={worksheets}
                       leftTitle="My Worksheets"
                       rightTitle="Explore All Worksheets"
                       seeButtonText={t("SEE_ALL_WORKSHEETS")}
                       _seeButton={{
-                        onPress: (e) => navigate(`/worksheet/list/Publish`),
+                        onPress: (e) => handleExploreAllWorksheets("Publish"),
                       }}
                     />
                     <Worksheets
+                      appName={appName}
                       data={worksheetDrafts}
                       leftTitle="Drafts"
                       seeButtonText={t("SEE_ALL_DRAFTS")}
                       _seeButton={{
-                        onPress: (e) => navigate(`/worksheet/list/Draft`),
-                      }}
-                      _woksheetBox={{
-                        canShowButtonArray: ["Like"],
-                        _addIconButton: {
-                          name: "EditBoxLineIcon",
-                          color: "gray.500",
-                          rounded: "full",
-                          bg: colors.primary,
-                          p: "1",
-                          _icon: { size: 17 },
-                          onPress: (e) => navigate(`/worksheet/1/edit`),
-                        },
+                        onPress: (e) => handleExploreAllWorksheets("Draft"),
                       }}
                     />
                   </VStack>
@@ -158,6 +162,7 @@ const Worksheets = ({
   seeButtonText,
   _seeButton,
   _woksheetBox,
+  appName,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -179,6 +184,7 @@ const Worksheets = ({
             {data.map((item, index) => {
               return (
                 <WorksheetBox
+                  appName={appName}
                   canShare={true}
                   key={index}
                   {...{ item, url: `/worksheet/${item.id}` }}
@@ -210,7 +216,7 @@ const Worksheets = ({
           rounded="lg"
           bg="viewNotification.600"
         >
-          Worksheet Not Found
+          {t("WORKSHEET_NOT_FOUND")}
         </Box>
       )}
     </Stack>
