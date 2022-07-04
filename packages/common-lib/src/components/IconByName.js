@@ -78,6 +78,8 @@ import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
 import EditBoxLineIcon from 'remixicon-react/EditBoxLineIcon'
 import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
 import AddFillIcon from 'remixicon-react/AddFillIcon'
+import StarHalfFillIcon from 'remixicon-react/StarHalfFillIcon'
+import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
 
@@ -650,6 +652,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<StarSFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'StarFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<StarFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'StarHalfFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<StarHalfFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

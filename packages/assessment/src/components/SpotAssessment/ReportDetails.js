@@ -93,7 +93,13 @@ export default function ReportDetails({ appName }) {
         // setSearch: setSearch,
         subHeading: "Spot Assessment",
       }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{
+        languages: ["en"],
+        rightIcon: <HStack>
+          <IconByName name="ShareLineIcon" />
+          <IconByName name="DownloadLineIcon" />
+        </HStack>
+      }}
       subHeader={
         <VStack>
           <Text fontSize={"lg"}>Science</Text>
@@ -408,6 +414,15 @@ export default function ReportDetails({ appName }) {
                               );
                             })}
                         </HStack>
+                      </Box>
+                      <Box>
+                        <Button
+                          colorScheme="button"
+                          variant="outline"
+                          py={3}
+                        >
+                          {t("See all students")}
+                        </Button>
                       </Box>
                     </VStack>
                   </Box>
