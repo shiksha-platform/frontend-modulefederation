@@ -15,7 +15,7 @@ export default function SearchLayout({
   onCloseSearch
 }) {
   const [width, Height] = useWindowSize()
-  const [refSearchBar, serRefSearchBar] = React.useState({})
+  const [refSearchBar, setRefSearchBar] = React.useState({})
   const navigate = useNavigate()
 
   return (
@@ -32,7 +32,7 @@ export default function SearchLayout({
             backgroundSize: 'cover'
           }}
           space={5}
-          ref={(e) => serRefSearchBar(e)}
+          ref={(e) => setRefSearchBar(e)}
         >
           <HStack bg='white' space='1' alignItems='center' p='5'>
             <IconByName
