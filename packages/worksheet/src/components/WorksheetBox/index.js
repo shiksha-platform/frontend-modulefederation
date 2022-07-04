@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
+const DRAFT = "Draft";
+
 export default function WorksheetBox({
   item,
   url,
@@ -27,6 +29,7 @@ export default function WorksheetBox({
   const colors = ["lightBlue.800", "indigo.900", "fuchsia.700", "rose.600"];
   const [like, setLike] = React.useState({});
   const [likes, setLikes] = React.useState([]);
+  const [showButtonArray, setShowButtonArray] = React.useState([]);
   const [comments, setComments] = React.useState([]);
   const [random, setRandom] = React.useState();
   const { sub } = jwt_decode(localStorage.getItem("token"));
@@ -35,6 +38,11 @@ export default function WorksheetBox({
     setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
     await getLikes();
     await getComments();
+    if (item.state === DRAFT) {
+      setShowButtonArray(["Like"]);
+    } else {
+      setShowButtonArray(canShowButtonArray);
+    }
   }, []);
 
   const getLikes = async () => {
@@ -79,7 +87,7 @@ export default function WorksheetBox({
     }
   };
 
-  const handleDownload = (item) => {
+  const handleDownload = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Worksheet-Download",
@@ -92,7 +100,7 @@ export default function WorksheetBox({
     navigate("/worksheet/template");
   };
 
-  const handleShare = (item) => {
+  const handleShare = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Worksheet-Share",
@@ -105,16 +113,42 @@ export default function WorksheetBox({
     navigate(`/worksheet/${item.id}/share`);
   };
 
-  const handleAddToTimeline = (item) => {
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Worksheet-Add-To-Timeline",
-      worksheetId: item?.id,
-      subject: item?.subject,
-      grade: item?.grade,
-      topic: item?.topic,
-    });
-    capture("INTERACT", telemetryData);
+  const handleAddToTimeline = () => {
+    if (item.state === DRAFT) {
+      navigate(`/worksheet/${item.id}/edit`);
+    } else {
+      const telemetryData = telemetryFactory.interact({
+        appName,
+        type: "Worksheet-Add-To-Timeline",
+        worksheetId: item?.id,
+        subject: item?.subject,
+        grade: item?.grade,
+        topic: item?.topic,
+      });
+      capture("INTERACT", telemetryData);
+    }
+  };
+
+  const RightButton = () => {
+    let props = {
+      name: "AddCircleFillIcon",
+      _icon: { size: 30 },
+      color: "button.500",
+      p: "0",
+      onPress: handleAddToTimeline,
+      rounded: "full",
+    };
+    if (item.state === DRAFT) {
+      props = {
+        ...props,
+        name: "EditBoxLineIcon",
+        color: "gray.500",
+        bg: colors.white,
+        p: 1,
+        _icon: { size: 20 },
+      };
+    }
+    return <IconByName {...props} {..._addIconButton} />;
   };
 
   return (
@@ -145,14 +179,7 @@ export default function WorksheetBox({
               </Stack>
             </HStack>
           </Pressable>
-          <IconByName
-            name="AddCircleFillIcon"
-            _icon={{ size: 30 }}
-            color="button.500"
-            p="0"
-            onPress={(e) => handleAddToTimeline(item)}
-            {..._addIconButton}
-          />
+          <RightButton />
         </HStack>
         <Subtitle
           color="worksheetBoxText.500"
@@ -243,35 +270,35 @@ export default function WorksheetBox({
         </HStack>
         {canShare ? (
           <HStack space="5">
-            {!canShowButtonArray || canShowButtonArray.includes("Like") ? (
+            {!showButtonArray || showButtonArray.includes("Like") ? (
               <Box shadow="2" p="2" rounded="full">
                 <IconByName
                   name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
                   _icon={{ size: 15 }}
                   color="button.500"
                   p="0"
-                  onPress={(e) => handleLike(item)}
+                  onPress={handleLike}
                 />
               </Box>
             ) : (
               ""
             )}
-            {!canShowButtonArray || canShowButtonArray.includes("Share") ? (
+            {!showButtonArray || showButtonArray.includes("Share") ? (
               <Box shadow="2" p="2" rounded="full">
                 <IconByName
                   name="ShareLineIcon"
                   _icon={{ size: 15 }}
                   p="0"
-                  onPress={(e) => handleShare(item)}
+                  onPress={handleShare}
                 />
               </Box>
             ) : (
               ""
             )}
-            {!canShowButtonArray || canShowButtonArray.includes("download") ? (
+            {!showButtonArray || showButtonArray.includes("download") ? (
               <Box shadow="2" p="2" rounded="full">
                 <IconByName
-                  onPress={(e) => handleDownload(item)}
+                  onPress={handleDownload}
                   name="DownloadLineIcon"
                   _icon={{ size: 15 }}
                   color="button.500"

@@ -46,11 +46,11 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     setState(worksheetData?.state && worksheetData.state === "Publish");
     setQuestions(newQuestions);
     getLikes();
-    setLoading(false);
     const data = await worksheetRegistryService.getWorksheetComments(id, {
       status: { eq: "Publish" },
     });
     setCommets(data);
+    setLoading(false);
   }, []);
 
   const handleCommentModuleClose = () => {

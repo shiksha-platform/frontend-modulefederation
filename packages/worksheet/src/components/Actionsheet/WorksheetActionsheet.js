@@ -6,7 +6,6 @@ import {
   HStack,
   Pressable,
   Stack,
-  Text,
   VStack,
 } from "native-base";
 import React from "react";
@@ -19,6 +18,7 @@ export default function Worksheet({
   handleCommentModuleOpen,
   likeCount,
   commentCount,
+  footer,
 }) {
   const { t } = useTranslation();
   return (
@@ -28,7 +28,7 @@ export default function Worksheet({
     >
       <Actionsheet.Content alignItems={"left"}>
         <Stack p={5} pt={2} pb="25px" textAlign="center">
-          <H2>{worksheet?.name}</H2>
+          <H2>{worksheet?.name ? worksheet?.name : ""}</H2>
         </Stack>
         <IconByName
           color="gray.300"
@@ -120,50 +120,60 @@ export default function Worksheet({
               </HStack>
             </VStack>
           </HStack>
-          <HStack space={5} alignItems="center">
-            <HStack alignItems="center">
-              <IconByName
-                name="Heart3FillIcon"
-                color="red.500"
-                _icon={{ size: 12 }}
-                isDisabled
-              />
-              <Caption>
-                {likeCount} {t("TEACHERS_LIKE_THIS")}
-              </Caption>
-            </HStack>
-            <Pressable onPress={(e) => handleCommentModuleOpen()}>
+          {!footer ? (
+            <HStack space={5} alignItems="center">
               <HStack alignItems="center">
-                <Avatar.Group
-                  _avatar={{
-                    size: "md",
-                  }}
-                >
-                  <Avatar
-                    size="xs"
-                    bg="green.500"
-                    source={{
-                      uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                    }}
-                  >
-                    AJ
-                  </Avatar>
-                  <Avatar
-                    size="xs"
-                    bg="cyan.500"
-                    source={{
-                      uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-                    }}
-                  >
-                    TE
-                  </Avatar>
-                </Avatar.Group>
-                <Caption color="button.500">
-                  {commentCount} {t("COMMENTS")}
+                <IconByName
+                  name="Heart3FillIcon"
+                  color="red.500"
+                  _icon={{ size: 12 }}
+                  isDisabled
+                />
+                <Caption>
+                  {likeCount} {t("TEACHERS_LIKE_THIS")}
                 </Caption>
               </HStack>
-            </Pressable>
-          </HStack>
+              <Pressable
+                onPress={(e) =>
+                  handleCommentModuleOpen
+                    ? handleCommentModuleOpen()
+                    : console.log("not found handleCommentModuleOpen")
+                }
+              >
+                <HStack alignItems="center">
+                  <Avatar.Group
+                    _avatar={{
+                      size: "md",
+                    }}
+                  >
+                    <Avatar
+                      size="xs"
+                      bg="green.500"
+                      source={{
+                        uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                      }}
+                    >
+                      AJ
+                    </Avatar>
+                    <Avatar
+                      size="xs"
+                      bg="cyan.500"
+                      source={{
+                        uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
+                      }}
+                    >
+                      TE
+                    </Avatar>
+                  </Avatar.Group>
+                  <Caption color="button.500">
+                    {commentCount} {t("COMMENTS")}
+                  </Caption>
+                </HStack>
+              </Pressable>
+            </HStack>
+          ) : (
+            footer
+          )}
         </VStack>
       </Box>
     </Actionsheet>

@@ -7,6 +7,7 @@ import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";
 import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
 import CreateWorksheet from "pages/CreateWorksheet";
+import EditWorksheet from "pages/EditWorksheet";
 import WorksheetTemplate from "pages/WorksheetTemplate";
 import Worksheet from "./pages/Worksheet";
 import WorksheetShare from "./pages/WorksheetShare";
@@ -41,6 +42,10 @@ function App() {
     {
       path: "/worksheet/:id",
       component: WorksheetQuestionBank,
+    },
+    {
+      path: "/worksheet/:id/edit",
+      component: EditWorksheet,
     },
     {
       path: "/worksheet/create",

@@ -1,8 +1,8 @@
 import React from "react";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Box, HStack, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
-import { IconByName, BodyMedium } from "@shiksha/common-lib";
+import { BodyMedium } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 
 const styles = { questionDiv: { display: "flex" } };

@@ -154,21 +154,6 @@ export default function Worksheet({ footerLinks, appName }) {
                       canShare={true}
                       key={index}
                       {...{ item, url: `/worksheet/${item.id}` }}
-                      {...(state === "Draft"
-                        ? {
-                            canShowButtonArray: ["Like"],
-                            _addIconButton: {
-                              name: "EditBoxLineIcon",
-                              color: "gray.500",
-                              rounded: "full",
-                              bg: "white",
-                              p: "2",
-                              shadow: 2,
-                              _icon: { size: 17 },
-                              onPress: (e) => navigate(`/worksheet/1/edit`),
-                            },
-                          }
-                        : {})}
                     />
                   );
                 })

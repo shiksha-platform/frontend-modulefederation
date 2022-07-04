@@ -10,6 +10,7 @@ module.exports = {
     "./WorksheetShare": "./src/pages/WorksheetShare",
     "./WorksheetQuestionBank": "./src/pages/WorksheetQuestionBank",
     "./CreateWorksheet": "./src/pages/CreateWorksheet",
+    "./EditWorksheet": "./src/pages/EditWorksheet",
     "./WorksheetTemplate": "./src/pages/WorksheetTemplate",
     "./Teaching": "./src/pages/Teaching",
   },

@@ -1,19 +1,18 @@
 import {
   Loading,
   Layout,
-  worksheetRegistryService,
   questionRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import SuccessPage from "components/CreateWorksheet/SuccessPage";
-import FormPage from "components/CreateWorksheet/Form";
-import AddDescriptionPage from "components/CreateWorksheet/AddDescriptionPage";
-import WorksheetTemplate from "components/CreateWorksheet/WorksheetTemplate";
-import ListOfQuestions from "components/CreateWorksheet/ListOfQuestions";
-import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
+import SuccessPage from "../components/CreateWorksheet/SuccessPage";
+import FormPage from "../components/CreateWorksheet/Form";
+import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage";
+import WorksheetTemplate from "../components/CreateWorksheet/WorksheetTemplate";
+import ListOfQuestions from "../components/CreateWorksheet/ListOfQuestions";
+import { defaultInputs, autoGenerateInputs } from "../config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -28,7 +27,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [alertMessage, setAlertMessage] = React.useState();
   const [createType, setCreateType] = React.useState("create");
   const navigate = useNavigate();
-  console.log({ pageName });
+
   React.useEffect(async () => {
     if (pageName === "ListOfQuestions" || pageName === "WorksheetTemplate") {
       setLoading(true);

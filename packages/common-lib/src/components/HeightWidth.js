@@ -8,7 +8,10 @@ export default function HeghtWidth({ children }) {
     function updateSize() {
       setSize({
         width: window.innerWidth > maxWidth ? maxWidth : '100%',
-        Height: window.innerHeight
+        Height:
+          window.innerHeight > window.outerHeight
+            ? window.outerHeight
+            : window.innerHeight
       })
     }
     window.addEventListener('resize', updateSize)

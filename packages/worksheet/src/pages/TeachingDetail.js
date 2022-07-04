@@ -132,18 +132,6 @@ export default function TeachingDetail({ footerLinks, appName }) {
                       _seeButton={{
                         onPress: (e) => handleExploreAllWorksheets("Draft"),
                       }}
-                      _woksheetBox={{
-                        canShowButtonArray: ["Like"],
-                        _addIconButton: {
-                          name: "EditBoxLineIcon",
-                          color: "gray.500",
-                          rounded: "full",
-                          bg: colors.primary,
-                          p: "1",
-                          _icon: { size: 17 },
-                          onPress: (e) => navigate(`/worksheet/1/edit`),
-                        },
-                      }}
                     />
                   </VStack>
                 ),

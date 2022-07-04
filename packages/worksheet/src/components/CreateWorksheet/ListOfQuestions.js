@@ -9,14 +9,25 @@ import {
   Box,
   Pressable,
   VStack,
-  FormControl,
-  Input,
   ScrollView,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { defaultInputs } from "config/worksheetConfig";
-import AlertValidationModal from "components/AlertValidationModal";
+import { defaultInputs } from "../../config/worksheetConfig";
+import AlertValidationModal from "../AlertValidationModal";
+import InputFormActionsheet from "../Actionsheet/CreateWorksheet/InputFormActionsheet";
+
+const newDefaultInputs = defaultInputs.map((e) => {
+  return {
+    ...e,
+    ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
+      ? "grade"
+      : e.attributeName,
+    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+      ? "stingValueArray"
+      : "array",
+  };
+});
 
 export default function ListOfQuestions({
   questions,
@@ -33,7 +44,6 @@ export default function ListOfQuestions({
   const [showModule, setShowModule] = React.useState(false);
   const [questionObject, setQuestionObject] = React.useState({});
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
-  const [inputData, setInputData] = React.useState();
   const [alertMessage, setAlertMessage] = React.useState();
 
   React.useEffect(() => {
@@ -41,19 +51,14 @@ export default function ListOfQuestions({
       setPageName("ListOfQuestions");
       setShowQuestions(questions);
     }
-    setInputData(formObject?.name ? formObject.name : "Untitled");
   }, [formObject]);
 
-  const handleWorksheetSubmit = () => {
+  const handleWorksheetSubmit = (inputData) => {
     setShowQuestions(selectData);
     setPageName("filterData");
     setIsSuccess("message");
     setFormObject({ ...formObject, name: inputData });
     setShowModule(false);
-  };
-
-  const handelInput = (event) => {
-    setInputData(event.target.value);
   };
 
   const handelAddQuestionButton = () => {
@@ -118,7 +123,7 @@ export default function ListOfQuestions({
               bg: "white",
             }}
             resetButtonText={t("COLLAPSE")}
-            filters={defaultInputs}
+            filters={newDefaultInputs}
           />
           <Box bg="white" px="5">
             <ScrollView horizontal={true}>
@@ -405,55 +410,13 @@ export default function ListOfQuestions({
             </VStack>
           </Box>
         </Actionsheet>
-        <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
-          <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
-            <Stack p={5} pt={1} pb="17px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Enter Worksheet Details")}
-              </Text>
-            </Stack>
-          </Actionsheet.Content>
-          <Box bg="white" width={"100%"} p="5">
-            <FormControl isRequired>
-              <FormControl.Label
-                _text={{ fontSize: "14px", fontWeight: "400" }}
-                mb="10px"
-              >
-                {t("NAME")}
-              </FormControl.Label>
-              <Input
-                rounded="lg"
-                height="48px"
-                bg="white"
-                variant="unstyled"
-                p={"10px"}
-                placeholder={t("ENTER") + " " + t("NAME")}
-                onChange={handelInput}
-                value={inputData ? inputData : ""}
-              />
-            </FormControl>
-            <Button.Group>
-              <Button
-                colorScheme="button"
-                px="5"
-                flex="1"
-                variant="outline"
-                onPress={handleWorksheetSubmit}
-              >
-                {t("Skip")}
-              </Button>
-              <Button
-                colorScheme="button"
-                _text={{ color: "white" }}
-                px="5"
-                flex="1"
-                onPress={handleWorksheetSubmit}
-              >
-                {t("Save")}
-              </Button>
-            </Button.Group>
-          </Box>
-        </Actionsheet>
+        <InputFormActionsheet
+          {...{
+            showModule,
+            setShowModule,
+            handleWorksheetSubmit,
+          }}
+        />
       </Box>
     </Stack>
   );
