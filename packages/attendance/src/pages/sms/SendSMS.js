@@ -11,7 +11,7 @@ import {
   VStack,
 } from "native-base";
 import { GetAttendance } from "../../services/calls/registryCalls";
-import DayWiseBar from "components/composite/CalendarBar";
+import { TimeBar } from "components/simple/TimeBar/TimeBar";
 import {
   IconByName,
   Layout,
@@ -133,10 +133,11 @@ export default function SendSMS({ footerLinks, appName }) {
       }}
       subHeader={
         <HStack space="4" justifyContent="space-between" alignItems="center">
-          <DayWiseBar
+          <TimeBar
             activeColor={colors.grayIndark}
             _box={{ p: 0, bg: "transparent" }}
             {...{ page: datePage, setPage: setDatePage }}
+            type="days"
           />
           <IconByName name={"ListUnorderedIcon"} isDisabled />
         </HStack>

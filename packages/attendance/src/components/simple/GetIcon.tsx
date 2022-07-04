@@ -5,12 +5,13 @@ import { IconByName } from "@shiksha/common-lib";
 export const GetIcon = ({ status, _box, color, _icon, type }) => {
   let icon = <></>;
   let iconProps = { fontSize: "xl", isDisabled: true, ..._icon };
+
   switch (status) {
     case "Present":
       icon = (
         <Box {..._box} color={color ? color : "present.500"}>
           <IconByName
-            name={type === "Send" ? "MailFillIcon" : "MailForbidFillIcon"}
+            name={ type === "Send" ? "MailFillIcon" : "MailForbidFillIcon"}
             p="5px"
             rounded="full"
             _icon={{ size: "14" }}

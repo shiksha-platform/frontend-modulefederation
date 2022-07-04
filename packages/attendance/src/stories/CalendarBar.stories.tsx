@@ -1,5 +1,5 @@
 import * as React from "react";
-import CalendarBar from "components/composite/CalendarBar";
+import {CalendarBar} from "components/composite/CalendarBar";
 import { useState } from "@storybook/addons";
 
 const Template = (args) => {

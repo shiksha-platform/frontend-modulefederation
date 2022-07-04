@@ -4,7 +4,7 @@ import { Box, FlatList, HStack, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
 
 // @ts-ignore
-import manifest from "../../manifest.json"
+import manifest from "../../manifest.json";
 import {
   ProgressBar,
   calendar,
@@ -101,6 +101,7 @@ export const ReportSummary: React.FC<IReport> = ({
                                 studentIds,
                                 withoutHolidays: withoutHolidays[index],
                                 students,
+                                t,
                               });
                               return {
                                 name: subItem,

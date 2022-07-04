@@ -34,7 +34,7 @@ export const useWithoutHolidays = ({ page, calendarView }) => {
       ];
       setWithoutHolidays(daysWithoutHolidays);
     }
-  });
+  }, [calendarView, page]);
 
-  return {withoutHolidays}
+  return { withoutHolidays };
 };

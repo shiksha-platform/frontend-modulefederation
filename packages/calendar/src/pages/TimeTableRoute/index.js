@@ -109,9 +109,10 @@ const TimeTableRoute = () => {
     <Box py="5" bg={colors.white}>
       <Box p="5">
         <HStack justifyContent="space-between" alignItems="center">
-          <DayWiseBar
+          <TimeBar
             _box={{ p: 0, bg: "transparent" }}
             {...{ page, setPage }}
+            type="days"
           />
           <Button
             rounded={"full"}

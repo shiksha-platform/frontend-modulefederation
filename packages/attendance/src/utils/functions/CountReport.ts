@@ -12,6 +12,7 @@ export interface ICountReport {
   studentIds?: any;
   withoutHolidays?: any;
   students?: any;
+  t?: any;
 }
 export const CountReport = ({
   gender,
@@ -22,8 +23,8 @@ export const CountReport = ({
   studentIds,
   withoutHolidays,
   students,
+  t,
 }: ICountReport) => {
-  const { t } = useTranslation();
   let attendanceAll = GetStudentsAttendance({ attendance, type: "id" });
   if (gender && [t("BOYS"), t("GIRLS")].includes(gender)) {
     studentIds = students

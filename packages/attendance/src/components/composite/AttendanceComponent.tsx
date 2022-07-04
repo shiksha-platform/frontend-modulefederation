@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import {
   VStack,
   Text,
@@ -8,29 +8,24 @@ import {
   Actionsheet,
   Stack,
   Button,
-  Badge,
-  ScrollView,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import { TouchableHighlight } from "react-native-web";
-import moment from "moment";
 import {
   IconByName,
   calendar,
   attendanceRegistryService,
   H2,
-  BodySmall,
   Subtitle,
   BodyMedium,
 } from "@shiksha/common-lib";
 
 import { colors, colorTheme } from "utils/functions/ColorTheme";
 
+// Components
 // @ts-ignore
 const Card = React.lazy(() => import("students/Card"));
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
+import { CalendarComponent } from "components/simple/CalendarComponent";
+
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
   let icon = <></>;
@@ -59,7 +54,10 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : colorTheme.attendanceUnmarkedLight}>
+        <Box
+          {..._box}
+          color={color ? color : colorTheme.attendanceUnmarkedLight}
+        >
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
@@ -88,7 +86,6 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
   }
   return icon;
 };
-
 export default function AttendanceComponent({
   type,
   page,
@@ -301,7 +298,7 @@ export default function AttendanceComponent({
                 >
                   <HStack alignItems="center" space={2}>
                     <GetIcon status={item} _box={{ p: 2 }} />
-                    <Text color={colors.darkGray} bold fontSize="lg">
+                    <Text color={colorTheme.darkGray} bold fontSize="lg">
                       {t(item)}
                     </Text>
                   </HStack>
@@ -322,11 +319,11 @@ export default function AttendanceComponent({
               />
             </HStack> */}
             <VStack space={5} alignItems="center" p="5">
-              <Subtitle color={colors.messageSent}>
+              <Subtitle color={colorTheme.messageSent}>
                 Message Sent to Parent
               </Subtitle>
-              <Subtitle color={colors.messageAlert}>Absent alert</Subtitle>
-              <BodyMedium color={colors.messageInfo} textAlign="center">
+              <Subtitle color={colorTheme.messageAlert}>Absent alert</Subtitle>
+              <BodyMedium color={colorTheme.messageInfo} textAlign="center">
                 Hello Mr. B.K. Chaudhary, this is to inform you that your ward
                 Sheetal is absent in school on Wednesday, 12th of January 2022.
               </BodyMedium>
@@ -345,252 +342,3 @@ export default function AttendanceComponent({
     </Stack>
   );
 }
-
-const CalendarComponent = ({
-  monthDays,
-  type,
-  isIconSizeSmall,
-  isEditDisabled,
-  sms,
-  attendance,
-  student,
-  markAttendance,
-  setAttendanceObject,
-  setShowModal,
-  setSmsShowModal,
-  loading,
-  manifest,
-  _weekBox,
-}) => {
-  let thisMonth = monthDays?.[1]?.[0]?.format("M");
-  const holidays = [];
-  const status = Array.isArray(
-    manifest?.["attendance.default_attendance_states"]
-  )
-    ? manifest?.["attendance.default_attendance_states"]
-    : manifest?.["attendance.default_attendance_states"]
-    ? JSON.parse(manifest?.["attendance.default_attendance_states"])
-    : [];
-
-  const handleAttendaceData = (attendance, day) => {
-    let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
-    let isAllowDay = false;
-    if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
-      isAllowDay = day.format("YYYY-MM-DD") <= moment().format("YYYY-MM-DD");
-    } else {
-      isAllowDay = day.format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
-    }
-
-    let isHoliday =
-      day.day() === 0 || holidays.includes(day.format("YYYY-MM-DD"));
-    let dateValue = day.format("YYYY-MM-DD");
-    let smsDay = sms?.find(
-      (e) => e.date === day.format("YYYY-MM-DD") && e.studentId === student.id
-    );
-    let attendanceItem = attendance
-      .slice()
-      .reverse()
-      .find((e) => e.date === dateValue && e.studentId === student.id);
-    let attendanceIconProp = !isIconSizeSmall
-      ? {
-          _box: { py: 2, minW: "46px", alignItems: "center" },
-          status: "CheckboxBlankCircleLineIcon",
-        }
-      : {};
-    let attendanceType = PRESENT;
-    if (attendanceItem?.attendance === PRESENT) {
-      attendanceIconProp = {
-        ...attendanceIconProp,
-        status: attendanceItem?.attendance,
-      };
-    } else if (attendanceItem?.attendance === ABSENT) {
-      attendanceIconProp = {
-        ...attendanceIconProp,
-        status: attendanceItem?.attendance,
-      };
-    } else if (attendanceItem?.attendance === "Late") {
-      attendanceIconProp = {
-        ...attendanceIconProp,
-        status: attendanceItem?.attendance,
-      };
-    } else if (day.day() === 0) {
-      attendanceIconProp = { ...attendanceIconProp, status: "Holiday" };
-    } else if (isToday) {
-      attendanceIconProp = { ...attendanceIconProp, status: "Today" };
-    } else if (moment().diff(day, "days") > 0) {
-      attendanceIconProp = { ...attendanceIconProp, status: UNMARKED };
-    }
-
-    if (status) {
-      const arr = status;
-      const i = arr.indexOf(attendanceItem?.attendance);
-      if (i === -1) {
-        attendanceType = arr[0];
-      } else {
-        attendanceType = arr[(i + 1) % arr.length];
-      }
-    }
-
-    return [
-      isToday,
-      isAllowDay,
-      isHoliday,
-      dateValue,
-      smsDay,
-      attendanceItem,
-      attendanceIconProp,
-      attendanceType,
-    ];
-  };
-
-  return monthDays.map((week, index) => (
-    <HStack
-      justifyContent="space-around"
-      alignItems="center"
-      key={index}
-      borderBottomWidth={
-        monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
-      }
-      borderBottomColor={colors.lightGray}
-      {...(type === "day" ? { px: "2" } : { p: "2" })}
-      {..._weekBox}
-    >
-      {week.map((day, subIndex) => {
-        const [
-          isToday,
-          isAllowDay,
-          isHoliday,
-          dateValue,
-          smsDay,
-          attendanceItem,
-          attendanceIconProp,
-          attendanceType,
-        ] = handleAttendaceData(attendance, day);
-
-        return (
-          <VStack
-            key={subIndex}
-            alignItems="center"
-            borderWidth={isToday ? "1" : ""}
-            borderColor={isToday ? colors.calendarBtn : ""}
-            p={type === "day" ? "1" : "0"}
-            rounded="lg"
-            opacity={
-              type !== "month" && thisMonth && day.format("M") !== thisMonth
-                ? 0
-                : isHoliday
-                ? 0.3
-                : 1
-            }
-            bg={
-              smsDay?.type && isEditDisabled
-                ? smsDay?.type.toLowerCase() + ".50"
-                : ""
-            }
-          >
-            {smsDay?.type && isEditDisabled ? (
-              <Badge
-                bg={smsDay?.type.toLowerCase() + ".500"}
-                rounded="full"
-                p="0"
-                w="2"
-                h="2"
-                position="absolute"
-                right="0"
-                top="0"
-              />
-            ) : (
-              ""
-            )}
-            <Text
-              key={subIndex}
-              pt={monthDays.length > 1 && index ? 0 : !isIconSizeSmall ? 2 : 0}
-              textAlign="center"
-            >
-              {!isIconSizeSmall ? (
-                <VStack alignItems={"center"}>
-                  {index === 0 ? (
-                    <BodySmall pb="1" color={colors.dateText}>
-                      {day.format("ddd")}
-                    </BodySmall>
-                  ) : (
-                    ""
-                  )}
-                  <BodySmall color={colors.date}>{day.format("DD")}</BodySmall>
-                </VStack>
-              ) : (
-                <HStack alignItems={"center"} space={1}>
-                  <Text>{day.format("dd")}</Text>
-                  <Text>{day.format("D")}</Text>
-                </HStack>
-              )}
-            </Text>
-            <TouchableHighlight
-              onPress={(e) => {
-                if (!isEditDisabled && isAllowDay && !isHoliday) {
-                  const newAttendanceData = {
-                    attendanceId: attendanceItem?.id ? attendanceItem.id : null,
-                    id: attendanceItem?.id ? attendanceItem.id : null,
-                    date: dateValue,
-                    attendance: attendanceType,
-                    studentId: student.id,
-                  };
-                  markAttendance(newAttendanceData);
-                }
-              }}
-              onLongPress={(event) => {
-                if (
-                  !isEditDisabled &&
-                  day.format("M") === moment().format("M") &&
-                  day.day() !== 0
-                ) {
-                  setAttendanceObject({
-                    attendanceId: attendanceItem?.id ? attendanceItem.id : null,
-                    date: dateValue,
-                    attendance: attendanceItem?.attendance,
-                    id: attendanceItem?.id,
-                    studentId: student.id,
-                  });
-                  setShowModal(true);
-                }
-              }}
-            >
-              <Box alignItems="center">
-                {loading[dateValue + student.id] ? (
-                  <GetIcon
-                    {...attendanceIconProp}
-                    status="Loader4LineIcon"
-                    color={colors.primary}
-                    isDisabled
-                    _icon={{ _fontawesome: { spin: true } }}
-                  />
-                ) : (
-                  <GetIcon {...attendanceIconProp} />
-                )}
-              </Box>
-            </TouchableHighlight>
-            {!isEditDisabled ? (
-              smsDay?.type ? (
-                <IconByName
-                  mt="1"
-                  p="5px"
-                  rounded="full"
-                  name="MailFillIcon"
-                  bg={smsDay?.type.toLowerCase() + ".100"}
-                  colorScheme={smsDay?.type.toLowerCase()}
-                  color={smsDay?.type.toLowerCase() + ".500"}
-                  _icon={{ size: "14" }}
-                  onPress={(e) => setSmsShowModal(true)}
-                />
-              ) : (
-                <Box p="3" mt="1"></Box>
-              )
-            ) : (
-              ""
-            )}
-          </VStack>
-        );
-      })}
-    </HStack>
-  ));
-};

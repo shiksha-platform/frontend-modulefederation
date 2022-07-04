@@ -19,6 +19,7 @@ import { TimeBar } from "components/simple/TimeBar/TimeBar";
 import { GetAttendance } from "../services/calls/registryCalls";
 
 
+import { MultipleAttendance } from "components/composite/MultipleAttendance";
 import AttendanceComponent from "components/composite/AttendanceComponent";
 import moment from "moment";
 import Loader from "../components/simple/Loader";

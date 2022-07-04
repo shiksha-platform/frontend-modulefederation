@@ -1,6 +1,6 @@
 // Lib
 import React, { FC } from "react";
-import { TimeBar } from "components/simple/TimeBar/TimeBar";
+import { TimeBar } from "components/simple/TimeBar/TimeBar"
 
 export interface ICalendarBar {
   view?: string;
