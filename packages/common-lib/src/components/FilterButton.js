@@ -26,7 +26,7 @@ const getType = (object) => {
   return object?.type ? object?.type : 'array'
 }
 
-export default function FilterButton({
+const FilterButton = ({
   filters = [],
   object,
   getObject,
@@ -39,7 +39,7 @@ export default function FilterButton({
   _optionButton,
   _actionSheet,
   _button
-}) {
+}) => {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
   const [groupValue, setGroupValue] = React.useState(object ? object : {})
@@ -75,10 +75,6 @@ export default function FilterButton({
     }
   }
 
-  React.useState(() => {
-    if (object) setGroupValue(object)
-  }, [object])
-
   return (
     <Box bg='white' roundedBottom={'xl'} {..._box}>
       <HStack justifyContent='end' alignItems='center'>
@@ -108,12 +104,12 @@ export default function FilterButton({
                       value?.data.includes(e)
                     ).length
                   : value?.data.includes(groupValue?.[attributeName])
-                const overrideBtnProp =
-                  isSelect > 0 ? { ..._button, bg: 'button.500' } : _button
-                const overrideOptionBtnProp =
-                  isSelect > 0
-                    ? { ..._optionButton, bg: 'button.500' }
-                    : _optionButton
+                const overrideBtnProp = isSelect
+                  ? { ..._button, bg: 'button.500' }
+                  : _button
+                const overrideOptionBtnProp = isSelect
+                  ? { ..._optionButton, bg: 'button.500' }
+                  : _optionButton
                 return (
                   <Button
                     key={index}
@@ -159,11 +155,6 @@ export default function FilterButton({
                 rounded='full'
                 variant='outline'
                 px='5'
-                _text={{
-                  textTransform: 'inherit',
-                  fontWeight: '500',
-                  fontSize: '14px'
-                }}
                 rightIcon={
                   <IconByName
                     color='button.500'
@@ -307,3 +298,5 @@ export default function FilterButton({
     </Box>
   )
 }
+
+export default React.memo(FilterButton)

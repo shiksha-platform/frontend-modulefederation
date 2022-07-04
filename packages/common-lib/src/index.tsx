@@ -13,6 +13,7 @@ import AppBar from './components/layout/AppBar'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Layout from './components/layout/Layout'
+import SearchLayout from './components/SearchLayout'
 import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
@@ -40,6 +41,7 @@ export {
   Header,
   Footer,
   Layout,
+  SearchLayout,
   IconByName,
   FilterButton,
   Widget,

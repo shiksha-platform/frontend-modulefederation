@@ -38,7 +38,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           : null
       );
       if (!limit?.limit && createType === "auto") {
-        setAlertMessage("Please select limit");
+        setAlertMessage(t("PLEASE_SELECT_LIMIT"));
         setPageName();
       } else {
         let data = {};
@@ -52,7 +52,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         );
         setQuestions(newQuestions);
         if (newQuestions.length <= 0) {
-          setAlertMessage("No question found for this filter");
+          setAlertMessage(t("QUESTION_NOT_FOUND"));
           setPageName();
         } else {
           setAlertMessage();
@@ -112,13 +112,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         onPressBackButton: handleBackButton,
       }}
       subHeader={
-        pageName === "ListOfQuestions"
-          ? formObject.name
-            ? t("Your worksheet has been created.")
-            : t("You can see all questions here")
-          : pageName === "AddDescriptionPage"
-          ? t("Enter Worksheet Details")
-          : t("Show questions based on")
+        <H2 textTransform="inherit">
+          {pageName === "ListOfQuestions"
+            ? formObject.name
+              ? t("YOUR_WORKSHEET_HAS_BEEN_CREATED")
+              : t("YOU_CAN_SEE_ALL_QUESTIONS_HERE")
+            : pageName === "AddDescriptionPage"
+            ? t("ENTER_WORKSHEET_DETAILS")
+            : t("SHOW_QUESTIONS_BASED_ON")}
+        </H2>
       }
       _subHeader={{
         bg: colors.cardBg,
