@@ -128,7 +128,7 @@ export default function Worksheet({ footerLinks, appName }) {
           search,
           setSearch,
           minStringLenght: 3,
-          notFoundMessage: "Type to Start Searching Worksheets",
+          notFoundMessage: t("TYPE_TO_START_SEARCHING_WORKSHEETS"),
           onCloseSearch: setSearchState,
         }}
       >
