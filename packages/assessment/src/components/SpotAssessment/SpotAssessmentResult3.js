@@ -38,7 +38,7 @@ const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const SpotAssessmentResult = ({ appName }) => {
+const SpotAssessmentResult3 = ({ appName }) => {
   const [width, height] = useWindowSize();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -97,23 +97,23 @@ const SpotAssessmentResult = ({ appName }) => {
         height={height}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg="successAlert.500" pb="100px" pt="32px">
+            <VStack bg="#FEEFEB" pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
-                name="EmotionHappyLineIcon"
-                color="successAlertText.500"
+                name="EmotionUnhappyLineIcon"
+                color="#F57B7B"
                 _icon={{ size: 100 }}
               />
               <Box alignItems="center">
                 <H1
                   fontSize="22px"
                   fontWeight="600"
-                  color="successAlertText.500"
+                  color="#F57B7B"
                 >
-                  YAY!
+                  OHH NO!
                 </H1>
-                <Text color="successAlertText.500">
-                  You got most of the answers right.
+                <Text color="#F57B7B">
+                  Better luck next time
                 </Text>
               </Box>
             </VStack>
@@ -143,9 +143,9 @@ const SpotAssessmentResult = ({ appName }) => {
                 <VStack>
                   <Box p="4" alignItems="center">
                     <RoundedProgressBar
-                      values={[72, 28]}
-                      colors={["#0D921B", "#F7F7FD"]}
-                      title={{ text: "72%", fontSize: "21px" }}
+                      values={[32, (100 - 32)]}
+                      colors={["#F57B7B", "#EAE0DF"]}
+                      title={{ text: "32%", fontSize: "21px" }}
                       legend={{ text: "Total Score", fontSize: "14px" }}
                       cutout={"85%"}
                       size="80px"
@@ -154,27 +154,27 @@ const SpotAssessmentResult = ({ appName }) => {
                       <IconByName
                         name="StarFillIcon"
                         p="0"
-                        color="green.600"
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
+                        color="#F57B7B"
                       />
                       <IconByName
                         name="StarHalfFillIcon"
                         p="0"
-                        color="green.600"
+                        color="#F57B7B"
+                      />
+                      <IconByName
+                        name="StarLineIcon"
+                        p="0"
+                        color="#F57B7B"
+                      />
+                      <IconByName
+                        name="StarLineIcon"
+                        p="0"
+                        color="#F57B7B"
+                      />
+                      <IconByName
+                        name="StarLineIcon"
+                        p="0"
+                        color="#F57B7B"
                       />
                     </HStack>
                   </Box>
@@ -295,4 +295,4 @@ const SpotAssessmentResult = ({ appName }) => {
   );
 };
 
-export default SpotAssessmentResult;
+export default SpotAssessmentResult3;

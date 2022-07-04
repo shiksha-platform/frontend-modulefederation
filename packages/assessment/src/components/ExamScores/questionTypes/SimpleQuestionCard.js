@@ -45,12 +45,15 @@ const SimpleQuestionCard = ({ questionNumber, question }) => {
               <div
                 dangerouslySetInnerHTML={{ __html: question?.question }}
               ></div>
-              <IconByName
-                name="InformationFillIcon"
-                p={0}
-                color={"#F87558"}
-                mt={3}
-              />
+              {
+                question?.question && <IconByName
+                  name="InformationFillIcon"
+                  p={0}
+                  color={"#F87558"}
+                  mt={3}
+                />
+              }
+
             </HStack>
           </Box>
           <Box p="4" bg={"#FFF8F7"} borderBottomRadius={6}>
