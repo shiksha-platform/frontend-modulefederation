@@ -23,6 +23,7 @@ export const CalendarComponent = ({
   setShowModal,
   setSmsShowModal,
   loading,
+  manifest,
   _weekBox,
 }) => {
   let thisMonth = monthDays?.[1]?.[0]?.format("M");

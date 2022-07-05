@@ -28,7 +28,7 @@ import { CalendarComponent } from "components/simple/CalendarComponent";
 
 export const GetIcon = ({ status, _box, color, _icon }) => {
   let icon = <></>;
-  let iconProps = { fontSize: "lg", isDisabled: true, ..._icon };
+  let iconProps = { fontSize: "xl", isDisabled: true, ..._icon };
   switch (status) {
     case "Present":
       icon = (
@@ -146,7 +146,6 @@ export default function AttendanceComponent({
   }, [page, attendanceProp, type]);
 
   const markAttendance = async (dataObject) => {
-    console.log({ dataObject });
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
