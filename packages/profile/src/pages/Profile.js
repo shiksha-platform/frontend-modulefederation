@@ -177,7 +177,7 @@ export default function Profile({ footerLinks, appName }) {
           showModal,
           setShowModal,
           appName,
-          setAttendance
+          setAttendance,
         }}
       />
       <Stack space={1}>

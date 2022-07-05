@@ -385,8 +385,8 @@ const TimeTableRoute = () => {
                         index === 0
                           ? "timeTablecellborder.500"
                           : index === 1
-                            ? "timeTableFlashIcon.500"
-                            : "timeTablemiddle.500"
+                          ? "timeTableFlashIcon.500"
+                          : "timeTablemiddle.500"
                       }
                     />
                     <H2>{index ? name : selectedEvent?.title}</H2>
@@ -471,10 +471,10 @@ const DayWiesBar = ({ activeColor, setActiveColor, page, setPage, _box }) => {
           {page === 0
             ? t("TODAY")
             : page === 1
-              ? t("TOMORROW")
-              : page === -1
-                ? t("YESTERDAY")
-                : moment(date).format("dddd")}
+            ? t("TOMORROW")
+            : page === -1
+            ? t("YESTERDAY")
+            : moment(date).format("dddd")}
         </H2>
         <Caption>
           <FormatDate date={date} />
@@ -524,7 +524,7 @@ const Display = ({
             size="sm"
             color={
               typeof previousDisabled === "undefined" ||
-                previousDisabled === false
+              previousDisabled === false
                 ? activeColor
                   ? activeColor
                   : "gray.500"
@@ -643,7 +643,7 @@ const Sheet = ({
                   }}
                   bg={
                     selectedData?.attendance === item.name ||
-                      item?.color === "special_duty"
+                    item?.color === "special_duty"
                       ? "gray.100"
                       : "white"
                   }
@@ -667,7 +667,7 @@ const Sheet = ({
                           rounded="full"
                           bg={
                             selectedData?.attendance === item.name ||
-                              item?.color === "special_duty"
+                            item?.color === "special_duty"
                               ? item?.color
                                 ? item?.color + ".500"
                                 : "special_duty.500"
@@ -675,7 +675,7 @@ const Sheet = ({
                           }
                           color={
                             selectedData?.attendance === item.name ||
-                              item?.color === "special_duty"
+                            item?.color === "special_duty"
                               ? "white"
                               : "gray.500"
                           }

@@ -373,9 +373,9 @@ export const MultipalAttendance = ({
                           capture("INTERACT", telemetryData);
                           navigate(
                             "/attendance/sendSms/" +
-                            (classObject?.id?.startsWith("1-")
-                              ? classObject?.id?.replace("1-", "")
-                              : classObject?.id)
+                              (classObject?.id?.startsWith("1-")
+                                ? classObject?.id?.replace("1-", "")
+                                : classObject?.id)
                           );
                         }}
                       >
@@ -433,7 +433,11 @@ export const MultipalAttendance = ({
                         )}
                       </HStack>
                       {presentStudents?.length <= 0 ? (
-                        <Text fontWeight="500" fontSize="12px" textAlign={"center"}>
+                        <Text
+                          fontWeight="500"
+                          fontSize="12px"
+                          textAlign={"center"}
+                        >
                           No Student Has Achieved 100% Attendance This Week
                         </Text>
                       ) : (
@@ -470,10 +474,10 @@ export const MultipalAttendance = ({
                         onPress={(e) =>
                           navigate(
                             "/attendance/report/" +
-                            (classObject?.id?.startsWith("1-")
-                              ? classObject?.id?.replace("1-", "")
-                              : classObject?.id) +
-                            "/days"
+                              (classObject?.id?.startsWith("1-")
+                                ? classObject?.id?.replace("1-", "")
+                                : classObject?.id) +
+                              "/days"
                           )
                         }
                       >
@@ -519,8 +523,8 @@ export default function AttendanceComponent({
   )
     ? manifest?.["attendance.default_attendance_states"]
     : manifest?.["attendance.default_attendance_states"]
-      ? JSON.parse(manifest?.["attendance.default_attendance_states"])
-      : [];
+    ? JSON.parse(manifest?.["attendance.default_attendance_states"])
+    : [];
 
   useEffect(() => {
     if (typeof page === "object") {
@@ -530,7 +534,7 @@ export default function AttendanceComponent({
             e,
             type,
             manifest?.[
-            "class_attendance.no_of_day_display_on_attendance_screen"
+              "class_attendance.no_of_day_display_on_attendance_screen"
             ]
           )
         )
@@ -620,25 +624,25 @@ export default function AttendanceComponent({
               rightComponent={
                 type === "day"
                   ? days.map((day, index) => (
-                    <CalendarComponent
-                      manifest={manifest}
-                      key={index}
-                      monthDays={[[day]]}
-                      isIconSizeSmall={true}
-                      isEditDisabled={isEditDisabled}
-                      {...{
-                        attendance,
-                        student,
-                        markAttendance,
-                        setAttendanceObject,
-                        setShowModal,
-                        setSmsShowModal,
-                        loading,
-                        type,
-                        _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
-                      }}
-                    />
-                  ))
+                      <CalendarComponent
+                        manifest={manifest}
+                        key={index}
+                        monthDays={[[day]]}
+                        isIconSizeSmall={true}
+                        isEditDisabled={isEditDisabled}
+                        {...{
+                          attendance,
+                          student,
+                          markAttendance,
+                          setAttendanceObject,
+                          setShowModal,
+                          setSmsShowModal,
+                          loading,
+                          type,
+                          _weekBox: _weekBox?.[index] ? _weekBox[index] : {},
+                        }}
+                      />
+                    ))
                   : false
               }
             />
@@ -772,8 +776,8 @@ const CalendarComponent = ({
   )
     ? manifest?.["attendance.default_attendance_states"]
     : manifest?.["attendance.default_attendance_states"]
-      ? JSON.parse(manifest?.["attendance.default_attendance_states"])
-      : [];
+    ? JSON.parse(manifest?.["attendance.default_attendance_states"])
+    : [];
 
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
@@ -799,9 +803,9 @@ const CalendarComponent = ({
       .find((e) => e.date === dateValue && e.studentId === student.id);
     let attendanceIconProp = !isIconSizeSmall
       ? {
-        _box: { py: 2, minW: "46px", alignItems: "center" },
-        status: "CheckboxBlankCircleLineIcon",
-      }
+          _box: { py: 2, minW: "46px", alignItems: "center" },
+          status: "CheckboxBlankCircleLineIcon",
+        }
       : {};
     let attendanceType = PRESENT;
     if (attendanceItem?.attendance === PRESENT) {
@@ -885,8 +889,8 @@ const CalendarComponent = ({
               type !== "month" && thisMonth && day.format("M") !== thisMonth
                 ? 0
                 : isHoliday
-                  ? 0.3
-                  : 1
+                ? 0.3
+                : 1
             }
             bg={
               smsDay?.type && isEditDisabled

@@ -127,8 +127,7 @@ export default function SelfAttedanceSheet({
     if (newAttedance.attendance == UNMARKED) {
       setDone(false);
       setShowModal(false);
-    }
-    else {
+    } else {
       setDone(true);
     }
   };
@@ -138,7 +137,7 @@ export default function SelfAttedanceSheet({
       ...selfAttendance,
       attendance: UNMARKED,
       remark: "",
-      name: t(item.name)
+      name: t(item.name),
     };
     setSelfAttendance(newAttedance);
     const telemetryData = telemetryFactory.interact({
@@ -233,10 +232,10 @@ export default function SelfAttedanceSheet({
             todayAttendance.attendance === PRESENT && todayAttendance.remark
               ? todayAttendance.remark
               : todayAttendance.attendance === PRESENT
-                ? t("MARK_PRESENT")
-                : todayAttendance.attendance === ABSENT
-                  ? t("MARK_ABSENT")
-                  : "",
+              ? t("MARK_PRESENT")
+              : todayAttendance.attendance === ABSENT
+              ? t("MARK_ABSENT")
+              : "",
         };
         setSelfAttendance(newAttedance);
         if (setAttendance) setAttendance(newAttedance);
@@ -274,17 +273,19 @@ export default function SelfAttedanceSheet({
       setLocationModal(false);
       setShowModal(true);
       setDone(true);
-      setCameraModal(false)
-    }
-    else if (selfAttendance.attendance == PRESENT && (selfAttendance.name === selfAttendance.remark)) {
+      setCameraModal(false);
+    } else if (
+      selfAttendance.attendance == PRESENT &&
+      selfAttendance.name === selfAttendance.remark
+    ) {
       setLocationModal(false);
       setShowModal(true);
       setDone(true);
-      setCameraModal(false)
+      setCameraModal(false);
     }
     setLocationModal(true);
     setShowModal(false);
-  }
+  };
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -344,17 +345,20 @@ export default function SelfAttedanceSheet({
             />
             <H1 color={colors.present}>{t("ATTENDANCE_MARKED")}</H1>
             <BodyMedium textAlign="center">
-              {(selfAttendance.attendance === PRESENT && (selfAttendance.name !== selfAttendance.remark)) ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE") : ""}
+              {selfAttendance.attendance === PRESENT &&
+              selfAttendance.name !== selfAttendance.remark
+                ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
+                : ""}
             </BodyMedium>
           </VStack>
           <Button
             _text={{ color: colors.white }}
             onPress={(e) => {
-              navigate("/")
-              setDone(false)
-              setCameraModal(false)
-              setLocationModal(false)
-              setShowModal(false)
+              navigate("/");
+              setDone(false);
+              setCameraModal(false);
+              setLocationModal(false);
+              setShowModal(false);
             }}
           >
             {t("GO_BACK")}
@@ -517,7 +521,7 @@ export default function SelfAttedanceSheet({
                 color: selfAttendance?.attendance ? colors.white : "",
               }}
               onPress={(e) => {
-                setAttendanceMark(e)
+                setAttendanceMark(e);
               }}
             >
               {t("MARK")}

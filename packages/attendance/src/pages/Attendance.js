@@ -90,8 +90,8 @@ export default function Attendance({ footerLinks, appName }) {
             return oldItem.firstName === newItem.firstName
               ? 0
               : oldItem.firstName < newItem.firstName
-                ? -1
-                : 1;
+              ? -1
+              : 1;
           })
         );
       } else {
@@ -202,7 +202,11 @@ export default function Attendance({ footerLinks, appName }) {
           </Button>
         ),
       }}
-      _appBar={{ languages: manifest1.languages, isEnableSearchBtn: true, setSearch: setSearch }}
+      _appBar={{
+        languages: manifest1.languages,
+        isEnableSearchBtn: true,
+        setSearch: setSearch,
+      }}
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
@@ -235,7 +239,7 @@ export default function Attendance({ footerLinks, appName }) {
                   .diff(
                     moment(
                       manifest?.[
-                      "class_attendance.date_till_previous_attendance_allow"
+                        "class_attendance.date_till_previous_attendance_allow"
                       ]
                     ).startOf("week"),
                     "week"
@@ -245,21 +249,21 @@ export default function Attendance({ footerLinks, appName }) {
               leftErrorText={
                 !isEditDisabled
                   ? {
-                    title:
-                      "Please click on save before moving to the previous page.",
-                    status: "error",
-                    placement: "top",
-                  }
+                      title:
+                        "Please click on save before moving to the previous page.",
+                      status: "error",
+                      placement: "top",
+                    }
                   : false
               }
               rightErrorText={
                 !isEditDisabled
                   ? {
-                    title:
-                      "Please click on save before moving to the next page.",
-                    status: "error",
-                    placement: "top",
-                  }
+                      title:
+                        "Please click on save before moving to the next page.",
+                      status: "error",
+                      placement: "top",
+                    }
                   : false
               }
             />
