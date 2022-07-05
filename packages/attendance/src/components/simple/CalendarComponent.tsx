@@ -40,7 +40,7 @@ export const CalendarComponent = ({
       {..._weekBox}
     >
       {week.map((day, subIndex) => {
-        const [
+        const {
           isToday,
           isAllowDay,
           isHoliday,
@@ -49,12 +49,13 @@ export const CalendarComponent = ({
           attendanceItem,
           attendanceIconProp,
           attendanceType,
-        ] = HandleAttendanceData(
+        } = HandleAttendanceData(
           attendance,
           day,
           sms,
           isIconSizeSmall,
-          student
+          student,
+          manifest
         );
 
         return (

@@ -4,15 +4,13 @@ import moment from "moment";
 // Utils
 import { PRESENT, ABSENT, UNMARKED } from "./Constants";
 
-// Misc
-import manifest from "manifest.json";
-
 export const HandleAttendanceData = (
   attendance,
   day,
   sms,
   isIconSizeSmall,
-  student
+  student,
+  manifest
 ) => {
   const holidays = [];
   const status = Array.isArray(
@@ -81,7 +79,7 @@ export const HandleAttendanceData = (
     }
   }
 
-  return [
+  return {
     isToday,
     isAllowDay,
     isHoliday,
@@ -90,5 +88,5 @@ export const HandleAttendanceData = (
     attendanceItem,
     attendanceIconProp,
     attendanceType,
-  ];
+  };
 };
