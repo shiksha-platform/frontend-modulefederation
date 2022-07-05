@@ -7,7 +7,7 @@ export default function Sample() {
     <Layout
       _header={{
         title: "Sample Module",
-        isEnableSearchBtn: true,        
+        isEnableSearchBtn: true,
         subHeading: "Sub Heading of Sub Module",
         iconComponent: (
           <Link
@@ -44,28 +44,28 @@ export default function Sample() {
         menues: [
           {
             title: "HOME",
-            icon: "Home4LineIcon",           
-            route: "/",            
+            icon: "Home4LineIcon",
+            route: "/",
           },
           {
             title: "CLASSES",
-            icon: "TeamLineIcon",           
-            route: "/classes",            
+            icon: "TeamLineIcon",
+            route: "/classes",
           },
           {
             title: "SCHOOL",
-            icon: "GovernmentLineIcon",           
-            route: "/",            
+            icon: "GovernmentLineIcon",
+            route: "/",
           },
           {
             title: "MATERIALS",
-            icon: "BookOpenLineIcon",           
-            route: "/",            
+            icon: "BookOpenLineIcon",
+            route: "/",
           },
           {
             title: "CAREER",
-            icon: "UserLineIcon",           
-            route: "/",            
+            icon: "UserLineIcon",
+            route: "/",
           },
         ],
       }}
