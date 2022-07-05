@@ -10,7 +10,7 @@ function App() {
   const theme = extendTheme(DEFAULT_THEME);
   const routes = [
     {
-      path: "my-attendace",
+      path: "/",
       component: Attendance,
     },
     {
