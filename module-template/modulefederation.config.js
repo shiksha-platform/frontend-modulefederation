@@ -3,10 +3,10 @@ const { dependencies } = require("./package.json");
 module.exports = {
   name: "samplemodule",
   exposes: {
-    "./SampleComponent": "./src/component/SampleComponent",
+    "./SampleComponent": "./src/components/SampleComponent",
   },
   remotes: {
-    core: `core@[window.appModules.core.url]/moduleEntry.js`
+    core: `core@[window.appModules.core.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {
