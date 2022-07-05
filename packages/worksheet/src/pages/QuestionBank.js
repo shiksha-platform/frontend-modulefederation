@@ -7,9 +7,9 @@ import {
   Loading,
   overrideColorTheme,
   H2,
+  worksheetRegistryService,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
-import { getAllQuestions } from "services";
 import { Box, ScrollView, VStack } from "native-base";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -22,7 +22,9 @@ export default function QuestionBank({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(async () => {
-    const questions = await getAllQuestions(filterObject);
+    const questions = await worksheetRegistryService.getAllQuestions(
+      filterObject
+    );
     setQuestions(questions);
     setLoading(false);
   }, [filterObject]);

@@ -13,6 +13,7 @@ import AppBar from './components/layout/AppBar'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import Layout from './components/layout/Layout'
+import SearchLayout from './components/SearchLayout'
 import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
@@ -28,6 +29,10 @@ import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
+import * as worksheetRegistryService from './services/worksheetRegistryService'
+import * as questionRegistryService from './services/questionRegistryService'
+import * as likeRegistryService from './services/likeRegistryService'
+import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 
@@ -36,6 +41,7 @@ export {
   Header,
   Footer,
   Layout,
+  SearchLayout,
   IconByName,
   FilterButton,
   Widget,
@@ -52,6 +58,10 @@ export {
   classRegistryService,
   attendanceRegistryService,
   studentRegistryService,
+  worksheetRegistryService,
+  questionRegistryService,
+  likeRegistryService,
+  commentRegistryService,
   assessmentRegistryService,
   getApiConfig
 }

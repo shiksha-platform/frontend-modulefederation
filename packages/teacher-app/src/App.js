@@ -23,12 +23,14 @@ function App() {
   const SendSMS = React.lazy(() => import("attendance/SendSMS"));
   const MessageHistory = React.lazy(() => import("attendance/MessageHistory"));
   const TeachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
+  const WorksheetShare = React.lazy(() => import("worksheet/WorksheetShare"));
   const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
   const Worksheet = React.lazy(() => import("worksheet/Worksheet"));
   const WorksheetQuestionBank = React.lazy(() =>
     import("worksheet/WorksheetQuestionBank")
   );
   const CreateWorksheet = React.lazy(() => import("worksheet/CreateWorksheet"));
+  const EditWorksheet = React.lazy(() => import("worksheet/EditWorksheet"));
   const WorksheetTemplate = React.lazy(() =>
     import("worksheet/WorksheetTemplate")
   );
@@ -49,6 +51,10 @@ function App() {
 
   const routes = [
     {
+      path: "/worksheet/list/:state",
+      component: Worksheet,
+    },
+    {
       path: "/worksheet/list",
       component: Worksheet,
     },
@@ -57,12 +63,20 @@ function App() {
       component: TeachingDetail,
     },
     {
+      path: "/worksheet/:worksheetId/share",
+      component: WorksheetShare,
+    },
+    {
       path: "/worksheet/questionBank",
       component: QuestionBank,
     },
     {
       path: "/worksheet/:id",
       component: WorksheetQuestionBank,
+    },
+    {
+      path: "/worksheet/:id/edit",
+      component: EditWorksheet,
     },
     {
       path: "/worksheet/create",

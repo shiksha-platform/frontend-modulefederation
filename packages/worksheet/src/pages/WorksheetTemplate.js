@@ -9,7 +9,7 @@ import { Box, Button, HStack, Skeleton, Stack, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -19,10 +19,10 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("Worksheet Template"),
+        title: t("WORKSHEET_TEMPLATE"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("Select Template")}
+      subHeader={t("SELECT_TEMPLATE")}
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
@@ -81,7 +81,7 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
           ))}
         </Carousel>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
         <Button.Group>
           <Button
             flex="1"

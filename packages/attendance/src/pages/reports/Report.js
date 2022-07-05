@@ -15,11 +15,12 @@ import {
   H2,
   Caption,
   Subtitle,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
 import { useNavigate } from "react-router-dom";
-import manifest from "../../manifest.json";
+import manifestLocal from "../../manifest.json";
 import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
@@ -33,7 +34,13 @@ export default function Report({ footerLinks }) {
   const [attendance, setAttendance] = useState({});
   const [calendarView, setCalendarView] = useState("days");
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
+  const [manifest, setManifest] = React.useState();
   const titleName = t("ATTENDANCE_REPORTS");
+  const reportTypes = Array.isArray(manifest?.["Attendance.report_types"])
+    ? manifest?.["Attendance.report_types"]
+    : manifest?.["Attendance.report_types"]
+    ? JSON.parse(manifest?.["Attendance.report_types"])
+    : [];
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,11 +63,13 @@ export default function Report({ footerLinks }) {
     };
   }, [teacherId]);
 
-  useEffect(() => {
+  useEffect(async () => {
     let ignore = false;
     if (!ignore) {
       if (calsses[0]?.id) getAttendance(calsses[0].id);
       setMakeDefaultCollapse(makeDefaultCollapse);
+      const newManifest = await getApiConfig();
+      setManifest(newManifest);
     }
     return () => {
       ignore = true;
@@ -129,19 +138,33 @@ export default function Report({ footerLinks }) {
               );
             }}
           >
-            <Menu.Item onPress={(item) => setCalendarView("days")}>
-              {t("TODAY_VIEW")}
-            </Menu.Item>
-            <Menu.Item onPress={(item) => setCalendarView("week")}>
-              {t("WEEK_VIEW")}
-            </Menu.Item>
-            <Menu.Item onPress={(item) => setCalendarView("monthInDays")}>
-              {t("MONTH_VIEW")}
-            </Menu.Item>
+            {reportTypes.includes("daily-report") ? (
+              <Menu.Item onPress={(item) => setCalendarView("days")}>
+                {t("TODAY_VIEW")}
+              </Menu.Item>
+            ) : (
+              <React.Fragment />
+            )}
+
+            {reportTypes.includes("weekly-eport") ? (
+              <Menu.Item onPress={(item) => setCalendarView("week")}>
+                {t("WEEK_VIEW")}
+              </Menu.Item>
+            ) : (
+              <React.Fragment />
+            )}
+
+            {reportTypes.includes("monthly-report") ? (
+              <Menu.Item onPress={(item) => setCalendarView("monthInDays")}>
+                {t("MONTH_VIEW")}
+              </Menu.Item>
+            ) : (
+              <React.Fragment />
+            )}
           </Menu>
         ),
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{ languages: manifestLocal.languages }}
       subHeader={
         <CalendarBar
           view={calendarView}

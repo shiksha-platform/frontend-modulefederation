@@ -66,6 +66,7 @@ import DownloadLineIcon from 'remixicon-react/DownloadLineIcon'
 import CheckboxLineIcon from 'remixicon-react/CheckboxLineIcon'
 import CheckboxBlankLineIcon from 'remixicon-react/CheckboxBlankLineIcon'
 import InformationLineIcon from 'remixicon-react/InformationLineIcon'
+import InformationFillIcon from 'remixicon-react/InformationFillIcon'
 import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
@@ -78,6 +79,8 @@ import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
 import EditBoxLineIcon from 'remixicon-react/EditBoxLineIcon'
 import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
 import AddFillIcon from 'remixicon-react/AddFillIcon'
+import MicLineIcon from 'remixicon-react/MicLineIcon'
+import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -619,6 +622,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'InformationFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<InformationFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'FileInfoLineIcon':
       icon = (
         <IconButton
@@ -704,6 +715,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<ArrowRightSFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MicLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MicLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'FileSearchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

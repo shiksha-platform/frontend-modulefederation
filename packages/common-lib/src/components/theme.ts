@@ -121,6 +121,12 @@ const DEFAULT_THEME = {
     successAlert: {
       500: '#B9FBC0'
     },
+    warningAlert: {
+      500: '#FFE5B3'
+    },
+    warningAlertText: {
+      500: '#373839'
+    },
     successAlertText: {
       500: '#0D921B'
     },
