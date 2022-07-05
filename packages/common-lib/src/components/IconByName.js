@@ -72,7 +72,6 @@ import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 import SpamLineIcon from 'remixicon-react/SpamLineIcon'
 import GitRepositoryLineIcon from 'remixicon-react/GitRepositoryLineIcon'
-import InformationFillIcon from 'remixicon-react/InformationFillIcon'
 import RecordCircleFillIcon from 'remixicon-react/RecordCircleFillIcon'
 import ArrowRightUpLineIcon from 'remixicon-react/ArrowRightUpLineIcon'
 import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
@@ -667,14 +666,6 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<GitRepositoryLineIcon {...(_icon ? _icon : {})} />}
-        />
-      )
-      break
-    case 'InformationFillIcon':
-      icon = (
-        <IconButton
-          {...props}
-          icon={<InformationFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
