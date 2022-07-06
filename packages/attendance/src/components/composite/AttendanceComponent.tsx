@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   VStack,
   Text,
@@ -25,66 +25,11 @@ import { colors, colorTheme } from "utils/functions/ColorTheme";
 // @ts-ignore
 const Card = React.lazy(() => import("students/Card"));
 import { CalendarComponent } from "components/simple/CalendarComponent";
+import { GetIcon } from "components/simple/GetIcon";
+import { SmsModal } from "components/simple/SmsModal";
+import { GetStatusFromManifest } from "utils/functions/GetStatusFromManifest";
+import { MarkAttendanceModal } from "components/simple/MarkAttendanceModal";
 
-export const GetIcon = ({ status, _box, color, _icon }) => {
-  let icon = <></>;
-  let iconProps = { fontSize: "xl", isDisabled: true, ..._icon };
-  switch (status) {
-    case "Present":
-      icon = (
-        <Box {..._box} color={color ? color : colorTheme.attendancePresent}>
-          <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
-        </Box>
-      );
-      break;
-    case "Absent":
-      icon = (
-        <Box {..._box} color={color ? color : colorTheme.attendanceAbsent}>
-          <IconByName name="CloseCircleLineIcon" {...iconProps} />
-        </Box>
-      );
-      break;
-    case "Late":
-      icon = (
-        <Box {..._box} color={color ? color : colorTheme.checkBlankcircle}>
-          <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
-        </Box>
-      );
-      break;
-    case "Holiday":
-      icon = (
-        <Box
-          {..._box}
-          color={color ? color : colorTheme.attendanceUnmarkedLight}
-        >
-          <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
-        </Box>
-      );
-      break;
-    case "Unmarked":
-      icon = (
-        <Box {..._box} color={color ? color : colorTheme.attendanceUnmarked}>
-          <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
-        </Box>
-      );
-      break;
-    case "Today":
-      icon = (
-        <Box {..._box} color={color ? color : colorTheme.attendanceUnmarked}>
-          <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
-        </Box>
-      );
-      break;
-    default:
-      icon = (
-        <Box {..._box} color={color ? color : colorTheme.attendancedefault}>
-          <IconByName name={status} {...iconProps} />
-        </Box>
-      );
-      break;
-  }
-  return icon;
-};
 export default function AttendanceComponent({
   type,
   page,
@@ -102,18 +47,13 @@ export default function AttendanceComponent({
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
   const [attendance, setAttendance] = React.useState([]);
-  const [attendanceObject, setAttendanceObject] = React.useState([]);
-  const [days, setDays] = React.useState([]);
+  const [attendanceObject, setAttendanceObject] = React.useState<any>({});
+  const [days, setDays] = useState([]);
+
   const [showModal, setShowModal] = React.useState(false);
   const [smsShowModal, setSmsShowModal] = React.useState(false);
   const [loading, setLoading] = React.useState({});
-  const status = Array.isArray(
-    manifest?.["attendance.default_attendance_states"]
-  )
-    ? manifest?.["attendance.default_attendance_states"]
-    : manifest?.["attendance.default_attendance_states"]
-    ? JSON.parse(manifest?.["attendance.default_attendance_states"])
-    : [];
+
   useEffect(() => {
     if (typeof page === "object") {
       setDays(
@@ -144,7 +84,6 @@ export default function AttendanceComponent({
     }
     getData();
   }, [page, attendanceProp, type]);
-
   const markAttendance = async (dataObject) => {
     setLoading({
       [dataObject.date + dataObject.id]: true,
@@ -212,6 +151,7 @@ export default function AttendanceComponent({
               rightComponent={
                 type === "day"
                   ? days.map((day, index) => (
+                      // @ts-ignore
                       <CalendarComponent
                         manifest={manifest}
                         key={index}
@@ -239,8 +179,9 @@ export default function AttendanceComponent({
           ""
         )}
         {type !== "day" ? (
-          <Box borderWidth={1} borderColor={colors.coolGray} rounded="xl">
+          <Box borderWidth={1} borderColor={colorTheme.coolGray} rounded="xl">
             {days.map((day, index) => (
+              // @ts-ignore
               <CalendarComponent
                 manifest={manifest}
                 key={index}
@@ -264,77 +205,18 @@ export default function AttendanceComponent({
         ) : (
           <></>
         )}
-        <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg={colors.bgMarkAttendance}>
-            <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="25px">
-                <H2 color={colors.white}>{t("MARK_ATTENDANCE")}</H2>
-              </Stack>
-              <IconByName
-                name="CloseCircleLineIcon"
-                color={colors.white}
-                onPress={(e) => setShowModal(false)}
-              />
-            </HStack>
-          </Actionsheet.Content>
-          <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
-            {status.map((item) => {
-              return (
-                <Pressable
-                  key={item}
-                  p={3}
-                  onPress={(e) => {
-                    if (attendanceObject.attendance !== item) {
-                      markAttendance({
-                        ...attendanceObject,
-                        attendance: item,
-                      });
-                    } else {
-                      setShowModal(false);
-                    }
-                  }}
-                >
-                  <HStack alignItems="center" space={2}>
-                    <GetIcon status={item} _box={{ p: 2 }} />
-                    <Text color={colorTheme.darkGray} bold fontSize="lg">
-                      {t(item)}
-                    </Text>
-                  </HStack>
-                </Pressable>
-              );
-            })}
-          </Box>
-        </Actionsheet>
-        <Actionsheet
-          isOpen={smsShowModal}
-          onClose={() => setSmsShowModal(false)}
-        >
-          <Actionsheet.Content alignItems={"left"}>
-            {/* <HStack justifyContent={"end"}>
-              <IconByName
-                name="CloseCircleLineIcon"
-                onPress={(e) => setSmsShowModal(false)}
-              />
-            </HStack> */}
-            <VStack space={5} alignItems="center" p="5">
-              <Subtitle color={colorTheme.messageSent}>
-                Message Sent to Parent
-              </Subtitle>
-              <Subtitle color={colorTheme.messageAlert}>Absent alert</Subtitle>
-              <BodyMedium color={colorTheme.messageInfo} textAlign="center">
-                Hello Mr. B.K. Chaudhary, this is to inform you that your ward
-                Sheetal is absent in school on Wednesday, 12th of January 2022.
-              </BodyMedium>
-              <Button
-                variant="outline"
-                colorScheme="button"
-                onPress={(e) => setSmsShowModal(false)}
-              >
-                {t("CLOSE")}
-              </Button>
-            </VStack>
-          </Actionsheet.Content>
-        </Actionsheet>
+        <MarkAttendanceModal
+          manifest={manifest}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          attendanceObject={attendanceObject}
+          markAttendance={markAttendance}
+        />
+        <SmsModal
+          smsShowModal={smsShowModal}
+          setSmsShowModal={setSmsShowModal}
+          t={t}
+        />
       </VStack>
       <></>
     </Stack>

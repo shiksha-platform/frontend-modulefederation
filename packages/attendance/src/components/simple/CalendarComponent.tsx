@@ -50,12 +50,12 @@ export const CalendarComponent = ({
           attendanceIconProp,
           attendanceType,
         } = HandleAttendanceData(
-          attendance,
+          {attendance,
           day,
           sms,
           isIconSizeSmall,
           student,
-          manifest
+          manifest}
         );
 
         return (

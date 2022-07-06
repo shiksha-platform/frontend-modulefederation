@@ -3,62 +3,72 @@ import { Box } from "native-base";
 import { IconByName } from "@shiksha/common-lib";
 import { colorTheme } from "utils/functions/ColorTheme";
 
-export const GetIcon = ({ status, _box, color, _icon, type }) => {
+export interface IGetIcon {
+  status?: string;
+  _box?: any;
+  color?: any;
+  _icon?: any;
+  type?: string;
+}
+
+export const GetIcon: React.FC<IGetIcon> = ({
+  status,
+  _box,
+  color,
+  _icon,
+  type,
+}) => {
   let icon = <></>;
   let iconProps = { fontSize: "xl", isDisabled: true, ..._icon };
   switch (status) {
     case "Present":
       icon = (
-        <Box {..._box} color={color ? color : "present.500"}>
-          <IconByName
-            name={type === "Send" ? "MailFillIcon" : "MailForbidFillIcon"}
-            p="5px"
-            rounded="full"
-            _icon={{ size: "14" }}
-            bg={status.toLowerCase() + ".100"}
-            {...iconProps}
-          />
+        <Box {..._box} color={color ? color : colorTheme.attendancePresent}>
+          <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Absent":
       icon = (
-        <Box {..._box} color={color ? color : "absent.500"}>
-          <IconByName
-            name={type === "Send" ? "MailFillIcon" : "MailForbidFillIcon"}
-            p="5px"
-            rounded="full"
-            _icon={{ size: "14" }}
-            bg={status.toLowerCase() + ".100"}
-            {...iconProps}
-          />
+        <Box {..._box} color={color ? color : colorTheme.attendanceAbsent}>
+          <IconByName name="CloseCircleLineIcon" {...iconProps} />
+        </Box>
+      );
+      break;
+    case "Late":
+      icon = (
+        <Box {..._box} color={color ? color : colorTheme.checkBlankcircle}>
+          <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.100"}>
+        <Box
+          {..._box}
+          color={color ? color : colorTheme.attendanceUnmarkedLight}
+        >
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Unmarked":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.500"}>
+        <Box {..._box} color={color ? color : colorTheme.attendanceUnmarked}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Today":
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.500"}>
+        <Box {..._box} color={color ? color : colorTheme.attendanceUnmarked}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     default:
       icon = (
-        <Box {..._box} color={color ? color : "attendanceUnmarked.400"}>
+        <Box {..._box} color={color ? color : colorTheme.attendancedefault}>
           <IconByName name={status} {...iconProps} />
         </Box>
       );

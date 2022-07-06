@@ -16,7 +16,6 @@ import {
   IconByName,
   capture,
   telemetryFactory,
-  attendanceRegistryService,
   H2,
   BodySmall,
   Subtitle,
@@ -27,7 +26,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 // Components
-import {ReportSummary} from "components/simple/ReportSummary";
+import { ReportSummary } from "components/simple/ReportSummary";
 
 // Lazy Loading
 // @ts-ignore
@@ -37,8 +36,9 @@ const Card = React.lazy(() => import("students/Card"));
 import { usePresentStudents } from "../../utils/customhooks/usePresentStudents";
 
 // Utils
-import { PRESENT, ABSENT, UNMARKED } from "utils/functions/Constants";
+import { GetLastAttendance } from "utils/functions/GetLastAttendance";
 import { colors, colorTheme } from "utils/functions/ColorTheme";
+import { MarkAllAttendance } from "utils/functions/MarkAllAttendance";
 
 export const MultipleAttendance = ({
   students,
@@ -65,44 +65,15 @@ export const MultipleAttendance = ({
     if (showModal) setStartTime(moment());
   }, [showModal]);
 
-  const getLastAttedance = () => {
-    let dates = attendance.map((d) => moment(d.updatedAt));
-    let date = moment.max(dates);
-    return dates.length ? date.format("hh:mmA") : "N/A";
-  };
-  const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
     if (typeof students === "object" && students.length > 0) {
-      let student = students.find((e, index) => !index);
-
-      const attendanceData = students.map((item, index) => {
-        return {
-          attendance: PRESENT,
-          userId: item.id,
-        };
+      await MarkAllAttendance({
+        appName,
+        students,
+        getAttendance,
+        classObject,
       });
-      let allData = {
-        schoolId: student?.schoolId,
-        userType: "Student",
-        groupId: student?.currentClassID,
-        attendanceDate: moment().format("YYYY-MM-DD"),
-        attendanceData,
-      };
-
-      const result = await attendanceRegistryService.Multiple(allData);
-      if (getAttendance) {
-        getAttendance();
-      }
-
-      if (groupExists(classObject)) {
-        const telemetryData = telemetryFactory.interact({
-          appName,
-          type: "Attendance-Mark-All-Present",
-          groupID: classObject.id,
-        });
-        capture("INTERACT", telemetryData);
-      }
       setLoading(false);
     } else {
       setLoading(false);
@@ -135,17 +106,12 @@ export const MultipleAttendance = ({
   return (
     <>
       {isWithEditButton || !isEditDisabled ? (
-        <Stack
-          position={"sticky"}
-          bottom={75}
-          width={"100%"}
-          shadow={2}
-        >
+        <Stack position={"sticky"} bottom={75} width={"100%"} shadow={2}>
           <Box p="5" bg="white">
             <VStack space={"15px"}>
               <VStack>
                 <Subtitle textTransform={"inherit"}>
-                  {t("LAST_UPDATED_AT") + " " + getLastAttedance()}
+                  {t("LAST_UPDATED_AT") + " " + GetLastAttendance(attendance)}
                 </Subtitle>
                 <BodySmall textTransform={"inherit"}>
                   {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
@@ -206,11 +172,14 @@ export const MultipleAttendance = ({
                       {classObject?.title ?? ""}
                     </BodySmall>
                   </Stack>
-                  <IconByName
-                    name="CloseCircleLineIcon"
-                    color={colors.white}
-                    onPress={(e) => modalClose()}
-                  />
+                  {
+                    // @ts-ignore
+                    <IconByName
+                      name="CloseCircleLineIcon"
+                      color={colors.white}
+                      onPress={(e) => modalClose()}
+                    />
+                  }
                 </HStack>
               </Actionsheet.Content>
               <ScrollView width={"100%"} margin="1" bg={colorTheme.coolGray}>
@@ -252,7 +221,7 @@ export const MultipleAttendance = ({
                           <Subtitle color={colorTheme.successAlertText}>
                             {fullName ? fullName : ""}
                             {" at "}
-                            {getLastAttedance()}
+                            {GetLastAttendance(attendance)}
                           </Subtitle>
                         </HStack>
                       ),
@@ -313,7 +282,10 @@ export const MultipleAttendance = ({
                         <Text bold>
                           100% {t("ATTENDANCE") + " " + t("THIS_WEEK")}
                         </Text>
-                        <IconByName name="More2LineIcon" isDisabled />
+                        {
+                          // @ts-ignore
+                          <IconByName name="More2LineIcon" isDisabled />
+                        }
                       </HStack>
                       <HStack
                         alignItems="center"

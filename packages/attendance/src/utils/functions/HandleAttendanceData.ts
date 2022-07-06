@@ -3,24 +3,18 @@ import moment from "moment";
 
 // Utils
 import { PRESENT, ABSENT, UNMARKED } from "./Constants";
+import { GetStatusFromManifest } from "./GetStatusFromManifest";
 
-export const HandleAttendanceData = (
+export const HandleAttendanceData = ({
   attendance,
   day,
   sms,
   isIconSizeSmall,
   student,
-  manifest
-) => {
+  manifest,
+}) => {
   const holidays = [];
-  const status = Array.isArray(
-    manifest?.["attendance.default_attendance_states"]
-  )
-    ? manifest?.["attendance.default_attendance_states"]
-    : manifest?.["attendance.default_attendance_states"]
-    ? JSON.parse(manifest?.["attendance.default_attendance_states"])
-    : [];
-
+  const status = GetStatusFromManifest(manifest);
   let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
   let isAllowDay = false;
   if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
@@ -49,7 +43,7 @@ export const HandleAttendanceData = (
   if (attendanceItem?.attendance === PRESENT) {
     attendanceIconProp = {
       ...attendanceIconProp,
-      status: attendanceItem?.attegndance,
+      status: attendanceItem?.attendance,
     };
   } else if (attendanceItem?.attendance === ABSENT) {
     attendanceIconProp = {
