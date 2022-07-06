@@ -22,6 +22,7 @@ import {
   H1,
   BodyLarge,
   Caption,
+  Loading,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 
@@ -39,6 +40,7 @@ import { usePresentStudents } from "../../utils/customhooks/usePresentStudents";
 import { GetLastAttendance } from "utils/functions/GetLastAttendance";
 import { colors, colorTheme } from "utils/functions/ColorTheme";
 import { MarkAllAttendance } from "utils/functions/MarkAllAttendance";
+import * as TelemetryFactoryMapper from "utils/functions/TelemetryFactoryMapper";
 
 export const MultipleAttendance = ({
   students,
@@ -83,7 +85,7 @@ export const MultipleAttendance = ({
   const modalClose = () => {
     setShowModal(false);
     setIsEditDisabled(true);
-    const telemetryData = telemetryFactory.end({
+    const telemetryData = TelemetryFactoryMapper.end({
       appName,
       type: "Attendance-Summary-End",
       groupID: classObject.id,
@@ -95,7 +97,7 @@ export const MultipleAttendance = ({
 
   const saveViewReportHandler = () => {
     setShowModal(true);
-    const telemetryData = telemetryFactory.start({
+    const telemetryData = TelemetryFactoryMapper.begin({
       appName,
       type: "Attendance-Summary-Start",
       groupID: classObject.id,
@@ -259,10 +261,12 @@ export const MultipleAttendance = ({
                         _text={{ color: colors.white }}
                         flex="1"
                         onPress={(e) => {
-                          const telemetryData = telemetryFactory.interact({
-                            appName,
-                            type: "Attendance-Notification-View-Message",
-                          });
+                          const telemetryData = TelemetryFactoryMapper.interact(
+                            {
+                              appName,
+                              type: "Attendance-Notification-View-Message",
+                            }
+                          );
                           capture("INTERACT", telemetryData);
                           navigate("/notification/create");
                         }}
@@ -364,7 +368,9 @@ export const MultipleAttendance = ({
           </Actionsheet>
         </Stack>
       ) : (
-        <></>
+        <>
+          <Loading />
+        </>
       )}
     </>
   );

@@ -302,7 +302,6 @@ export default function Attendance({ footerLinks, appName }) {
               sms={sms.filter((e) => e.studentId === item.id)}
               withDate={1}
               attendanceProp={attendance}
-              getAttendance={getAttendance}
               isEditDisabled={isEditDisabled}
               appName
             />

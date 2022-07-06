@@ -1,33 +1,15 @@
 import React, { useState, useEffect, Suspense } from "react";
-import {
-  VStack,
-  Text,
-  HStack,
-  Box,
-  Pressable,
-  Actionsheet,
-  Stack,
-  Button,
-} from "native-base";
+import { VStack, Box, Stack } from "native-base";
 import { useTranslation } from "react-i18next";
-import {
-  IconByName,
-  calendar,
-  attendanceRegistryService,
-  H2,
-  Subtitle,
-  BodyMedium,
-} from "@shiksha/common-lib";
+import { calendar, attendanceRegistryService } from "@shiksha/common-lib";
 
-import { colors, colorTheme } from "utils/functions/ColorTheme";
+import { colorTheme } from "utils/functions/ColorTheme";
 
 // Components
 // @ts-ignore
 const Card = React.lazy(() => import("students/Card"));
 import { CalendarComponent } from "components/simple/CalendarComponent";
-import { GetIcon } from "components/simple/GetIcon";
 import { SmsModal } from "components/simple/SmsModal";
-import { GetStatusFromManifest } from "utils/functions/GetStatusFromManifest";
 import { MarkAttendanceModal } from "components/simple/MarkAttendanceModal";
 
 export default function AttendanceComponent({
@@ -36,7 +18,6 @@ export default function AttendanceComponent({
   student,
   attendanceProp,
   hidePopUpButton,
-  getAttendance,
   sms,
   _card,
   isEditDisabled,
