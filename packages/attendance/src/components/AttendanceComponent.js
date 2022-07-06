@@ -162,7 +162,11 @@ export const MultipalAttendance = ({
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
-    if (typeof students === "object" && students.length > 0) {
+    if (
+      typeof students === "object" &&
+      students.length > 0 &&
+      moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]
+    ) {
       let student = students.find((e, index) => !index);
 
       const attendanceData = students.map((item, index) => {
@@ -434,7 +438,7 @@ export const MultipalAttendance = ({
                       </HStack>
                       {presentStudents?.length <= 0 ? (
                         <Caption>
-                          No Student Has Achieved 100% Attendance This Week
+                          {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
                         </Caption>
                       ) : (
                         ""
@@ -557,49 +561,53 @@ export default function AttendanceComponent({
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
-    if (dataObject.attendanceId) {
-      attendanceRegistryService
-        .update(
-          {
-            id: dataObject.attendanceId,
-            attendance: dataObject.attendance,
-          },
-          {
-            onlyParameter: ["attendance", "id", "date", "classId"],
-          }
-        )
-        .then((e) => {
-          const newData = attendance.filter(
-            (e) =>
-              !(
-                e.date === dataObject.date &&
-                e.studentId === dataObject.studentId
-              )
-          );
+    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
+      if (dataObject.attendanceId) {
+        attendanceRegistryService
+          .update(
+            {
+              id: dataObject.attendanceId,
+              attendance: dataObject.attendance,
+            },
+            {
+              onlyParameter: ["attendance", "id", "date", "classId"],
+            }
+          )
+          .then((e) => {
+            const newData = attendance.filter(
+              (e) =>
+                !(
+                  e.date === dataObject.date &&
+                  e.studentId === dataObject.studentId
+                )
+            );
 
-          setAttendance([
-            ...newData,
-            { ...dataObject, id: dataObject.attendanceId },
-          ]);
-          setLoading({});
-          setShowModal(false);
-        });
+            setAttendance([
+              ...newData,
+              { ...dataObject, id: dataObject.attendanceId },
+            ]);
+            setLoading({});
+            setShowModal(false);
+          });
+      } else {
+        attendanceRegistryService
+          .create({
+            studentId: student.id,
+            date: dataObject.date,
+            attendance: dataObject.attendance,
+            attendanceNote: "Test",
+            classId: student.currentClassID,
+            subjectId: "History",
+            teacherId: teacherId,
+          })
+          .then((e) => {
+            setAttendance([...attendance, dataObject]);
+            setLoading({});
+            setShowModal(false);
+          });
+      }
     } else {
-      attendanceRegistryService
-        .create({
-          studentId: student.id,
-          date: dataObject.date,
-          attendance: dataObject.attendance,
-          attendanceNote: "Test",
-          classId: student.currentClassID,
-          subjectId: "History",
-          teacherId: teacherId,
-        })
-        .then((e) => {
-          setAttendance([...attendance, dataObject]);
-          setLoading({});
-          setShowModal(false);
-        });
+      setLoading({});
     }
   };
   return (
@@ -778,11 +786,7 @@ const CalendarComponent = ({
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
     let isAllowDay = false;
-    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
-      isAllowDay = true;
-    } else if (
-      manifest?.["class_attendance.previous_attendance_edit"] === "true"
-    ) {
+    if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
       isAllowDay = day.format("YYYY-MM-DD") <= moment().format("YYYY-MM-DD");
     } else {
       isAllowDay = day.format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");

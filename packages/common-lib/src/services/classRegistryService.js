@@ -8,6 +8,7 @@ const interfaceData = {
   schoolId: 'schoolId',
   type: 'type',
   name: 'name',
+  section: 'section',
   status: 'status',
   image: 'image',
   mergeParameterWithValue: {
