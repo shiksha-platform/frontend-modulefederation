@@ -1,4 +1,10 @@
-import { H1, H3, IconByName } from "@shiksha/common-lib";
+import {
+  H1,
+  H3,
+  IconByName,
+  telemetryFactory,
+  capture,
+} from "@shiksha/common-lib";
 import { HStack, Stack, Button, Box, VStack, Pressable } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";

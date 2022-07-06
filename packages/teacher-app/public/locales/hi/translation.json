@@ -277,5 +277,9 @@
   "PLEASE_SELECT_LIMIT": "कृपया सीमा चुनें",
   "QUESTION_NOT_FOUND": "इस फ़िल्टर के लिए कोई प्रश्न नहीं मिला",
   "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "इस सप्ताह किसी भी छात्र ने 100% उपस्थिति हासिल नहीं की है",
-  "NO_STUDENT_HAS_BEEN_ABSENT": "कोई भी छात्र 3 दिनों से अधिक समय से अनुपस्थित नहीं है"
+  "NO_STUDENT_HAS_BEEN_ABSENT": "कोई भी छात्र 3 दिनों से अधिक समय से अनुपस्थित नहीं है",
+  "SEARCH_QUESTIONS": "प्रश्न खोजें",
+  "ENTER_TITLE": "शीर्षक दर्ज करें",
+  "NEW_QUESTIONS_ADDED": "नए प्रश्न जोड़े गए",
+  "QUESTION_SELECTED": "प्रश्न चयनित"
 }

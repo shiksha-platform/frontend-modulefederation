@@ -1,4 +1,9 @@
-import { FilterButton, IconByName } from "@shiksha/common-lib";
+import {
+  FilterButton,
+  IconByName,
+  capture,
+  telemetryFactory,
+} from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   HStack,
@@ -30,6 +35,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
 });
 
 export default function ListOfQuestions({
+  appName,
   questions,
   setQuestions,
   pageName,
@@ -62,6 +68,11 @@ export default function ListOfQuestions({
   };
 
   const handelAddQuestionButton = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Add-More-Questions",
+    });
+    capture("INTERACT", telemetryData);
     setShowQuestions(questions);
     setIsSuccess(false);
   };
@@ -90,6 +101,39 @@ export default function ListOfQuestions({
     setFormObject({ ...formObject, state: "Publish" });
   };
 
+  const handleAddToWorksheet = () => {
+    if (selectData.length <= 0) {
+      setAlertMessage("Please select atlist one question");
+    } else {
+      setShowModule(true);
+      const telemetryData = telemetryFactory.interact({
+        appName,
+        type: "Worksheet-Question-Add",
+      });
+      capture("INTERACT", telemetryData);
+    }
+  };
+
+  const handleFilter = (obejct) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Question-Filter",
+      filterObject: obejct,
+    });
+    capture("INTERACT", telemetryData);
+    setFormObject(obejct);
+  };
+
+  const handleAnswerKey = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Show-Answer",
+      answerKey: !isAnswerFilter,
+    });
+    capture("INTERACT", telemetryData);
+    setIsAnswerFilter(!isAnswerFilter);
+  };
+
   return (
     <Stack>
       <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
@@ -97,7 +141,7 @@ export default function ListOfQuestions({
         <Box bg="successAlert.500" p="5">
           <HStack justifyContent="space-between">
             <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
-              ({selectData.length}) New Questions Added
+              ({selectData.length}) {t("NEW_QUESTIONS_ADDED")}
             </Text>
             <IconByName
               name="CloseCircleLineIcon"
@@ -113,7 +157,7 @@ export default function ListOfQuestions({
       {!isSuccess ? (
         <Box>
           <FilterButton
-            getObject={setFormObject}
+            getObject={handleFilter}
             object={formObject}
             _actionSheet={{ bg: "worksheetCard.500" }}
             _box={{ pt: 5, px: 5 }}
@@ -221,11 +265,10 @@ export default function ListOfQuestions({
         {!isSuccess ? (
           <>
             <Text fontSize="10px" py="4" pb="1">
-              <Text fontWeight="700">Attention:</Text>
-              You have selected {selectData.length} questions to add to the
-              worksheet.
+              <Text fontWeight="700">Attention: </Text>
+              {selectData.length} {t("QUESTION_SELECTED")}
             </Text>
-            <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
+            <Pressable onPress={handleAnswerKey}>
               <HStack alignItems="center" space="1" pt="1" py="4">
                 <IconByName
                   isDisabled
@@ -256,13 +299,7 @@ export default function ListOfQuestions({
                 _text={{ color: "white" }}
                 px="5"
                 flex="1"
-                onPress={(e) => {
-                  if (selectData.length <= 0) {
-                    setAlertMessage("Please select atlist one question");
-                  } else {
-                    setShowModule(true);
-                  }
-                }}
+                onPress={handleAddToWorksheet}
               >
                 {t("ADD_TO_WORKSHEET")}
               </Button>

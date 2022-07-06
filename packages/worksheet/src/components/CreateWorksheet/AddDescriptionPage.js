@@ -2,13 +2,21 @@ import { Button, Text, Box, FormControl, Input, Select } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
-import { worksheetRegistryService } from "@shiksha/common-lib";
+import {
+  capture,
+  telemetryFactory,
+  worksheetRegistryService,
+} from "@shiksha/common-lib";
+import moment from "moment";
 
 export default function AddDescriptionPage({
   questions,
   setPageName,
   formObject,
   setFormObject,
+  createType,
+  worksheetStartTime,
+  appName,
 }) {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
@@ -58,14 +66,34 @@ export default function AddDescriptionPage({
     });
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validate()) {
       const data = {
         ...formData,
         questions: questions.map((e) => e.questionId),
       };
       setFormObject(data);
-      worksheetRegistryService.create(data);
+      const { osid } = await worksheetRegistryService.create(data);
+      let type = "Worksheet-Search-Questions-End";
+      let state = data?.state;
+      if (createType === "auto") {
+        type = "Worksheet-Auto-Generate-End";
+        state = "Publish";
+      }
+      const telemetryData = telemetryFactory.end({
+        appName,
+        type,
+        worksheetId: osid,
+        subject: data?.subject,
+        grade: data?.grade,
+        topic: data?.topic,
+        numberOfQuestions: data?.questions?.length,
+        state,
+        duration: worksheetStartTime
+          ? moment().diff(worksheetStartTime, "seconds")
+          : 0,
+      });
+      capture("END", telemetryData);
       setPageName("success");
     }
   };

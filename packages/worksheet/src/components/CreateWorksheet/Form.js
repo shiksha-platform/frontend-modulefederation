@@ -1,4 +1,4 @@
-import { IconByName } from "@shiksha/common-lib";
+import { IconByName, capture, telemetryFactory } from "@shiksha/common-lib";
 import {
   HStack,
   Stack,
@@ -12,6 +12,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
 import AlertValidationModal from "components/AlertValidationModal";
+import moment from "moment";
 
 const getValueByType = (value, type = "array") => {
   return value ? value : type !== "array" ? "" : [];
@@ -38,6 +39,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
 });
 
 export default function Form({
+  appName,
   createType,
   setCreateType,
   formObject,
@@ -46,6 +48,7 @@ export default function Form({
   setLimit,
   alertMessage,
   setAlertMessage,
+  setWorksheetStartTime,
 }) {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
@@ -61,6 +64,7 @@ export default function Form({
   }, []);
 
   const handelAddQuestion = () => {
+    let type = "Worksheet-Search-Questions-Start";
     if (createType === "auto") {
       setLimit({
         limit: formObject.number_of_questions
@@ -68,9 +72,18 @@ export default function Form({
           : null,
       });
       setPageName("WorksheetTemplate");
+      type = "Worksheet-Auto-Generate-Start";
     } else {
       setPageName("ListOfQuestions");
     }
+
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: type,
+      filterObject: formObject,
+    });
+    capture("START", telemetryData);
+    setWorksheetStartTime(moment());
   };
 
   return (
@@ -103,7 +116,7 @@ export default function Form({
             flex="1"
             onPress={handelAddQuestion}
           >
-            {t("Search Questions")}
+            {t("SEARCH_QUESTIONS")}
           </Button>
         </Button.Group>
       </Box>

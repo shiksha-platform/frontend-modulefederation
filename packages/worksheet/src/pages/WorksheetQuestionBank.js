@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
 import {
+  capture,
+  telemetryFactory,
   Layout,
   IconByName,
   worksheetRegistryService,
@@ -16,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CommentActionsheet from "components/Actionsheet/CommentActionsheet";
 import QuestionActionsheet from "components/Actionsheet/QuestionActionsheet";
 import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
+import moment from "moment";
 
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -32,6 +35,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const navigate = useNavigate();
   const { sub } = jwt_decode(localStorage.getItem("token"));
   const [comments, setCommets] = React.useState([]);
+  const [worksheetStartTime, setWorksheetStartTime] = useState();
 
   React.useEffect(async () => {
     const worksheetData = await worksheetRegistryService.getOne({ id });
@@ -87,6 +91,35 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     }
   };
 
+  React.useEffect(() => {
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Worksheet-View-Start",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+    });
+    capture("START", telemetryData);
+    setWorksheetStartTime(moment());
+  }, []);
+
+  const handleBackButton = () => {
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Worksheet-View-End",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+      duration: worksheetStartTime
+        ? moment().diff(worksheetStartTime, "seconds")
+        : 0,
+    });
+    capture("END", telemetryData);
+    navigate(-1);
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -114,6 +147,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       bg="white"
       _appBar={{
+        onPressBackButton: handleBackButton,
         languages: manifest.languages,
         rightIcon: state ? (
           <HStack>
