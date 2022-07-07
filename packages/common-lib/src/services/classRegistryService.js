@@ -8,6 +8,7 @@ const interfaceData = {
   schoolId: 'schoolId',
   type: 'type',
   name: 'name',
+  section: 'section',
   status: 'status',
   image: 'image',
   mergeParameterWithValue: {
@@ -33,7 +34,9 @@ export const getAll = async (params = {}, header = {}) => {
   )
   if (result.data) {
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-    return _.sortBy(data, 'name')
+    return data.sort(function (a, b) {
+      return a.name - b.name
+    })
   } else {
     return []
   }

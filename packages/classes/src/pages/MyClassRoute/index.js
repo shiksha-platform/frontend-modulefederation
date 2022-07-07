@@ -31,7 +31,9 @@ const MyClassRoute = () => {
         <Widget
           data={classes.map((item, index) => {
             return {
-              title: item.name,
+              title:
+                (item?.name ? "Class " + item?.name : "") +
+                (item?.section ? " • Sec " + item?.section : ""),
               subTitle: t("CLASS_TEACHER"),
               link: generatePath(item.id, { ...{ id: item.id } }),
               _box: {
