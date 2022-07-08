@@ -61,5 +61,7 @@
   "SENT": "Sent",
   "FAILED": "Failed",
   "RETRY": "Retry",
-  "DONE": "Done"
+  "DONE": "Done",
+  "SEND_ANOTHER_MESSAGE": "Send another message",
+  "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "View messages being sent by admin"
 }

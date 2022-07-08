@@ -12,6 +12,7 @@ import {
   getApiConfig,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import manifest1 from "../manifest.json";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
@@ -182,8 +183,8 @@ export default function Attendance({ footerLinks, appName }) {
     <Layout
       _header={{
         title: classObject?.title ? classObject?.title : "",
-        isEnableSearchBtn: true,
-        setSearch: setSearch,
+        // isEnableSearchBtn: true,
+        // setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
           <Button
@@ -201,7 +202,11 @@ export default function Attendance({ footerLinks, appName }) {
           </Button>
         ),
       }}
-      // _appBar={}
+      _appBar={{
+        languages: manifest1.languages,
+        isEnableSearchBtn: true,
+        setSearch: setSearch,
+      }}
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
