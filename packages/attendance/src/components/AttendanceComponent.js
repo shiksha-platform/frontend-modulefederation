@@ -363,7 +363,7 @@ export const MultipalAttendance = ({
                     <BodyLarge>
                       {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
                     </BodyLarge>
-                    <Caption>{t("STUDENTS_ABSENT")}</Caption>
+                    {/* <Caption>{t("STUDENTS_ABSENT")}</Caption> */}
 
                     <Button.Group>
                       <Button
@@ -383,7 +383,7 @@ export const MultipalAttendance = ({
                           );
                         }}
                       >
-                        {t("VIEW_MESSAGE")}
+                        {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
                       </Button>
                       <Button
                         _text={{ color: colors.white }}
@@ -937,7 +937,8 @@ const CalendarComponent = ({
             </Text>
             <TouchableHighlight
               onPress={(e) => {
-                if (!isEditDisabled && isAllowDay && !isHoliday) {
+                //check if isToday required or not
+                if (!isEditDisabled && isAllowDay && !isHoliday && isToday) {
                   const newAttendanceData = {
                     attendanceId: attendanceItem?.id ? attendanceItem.id : null,
                     id: attendanceItem?.id ? attendanceItem.id : null,
