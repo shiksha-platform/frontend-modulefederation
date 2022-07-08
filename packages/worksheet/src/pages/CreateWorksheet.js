@@ -3,7 +3,7 @@ import {
   Layout,
   questionRegistryService,
   overrideColorTheme,
-  H2
+  H2,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
