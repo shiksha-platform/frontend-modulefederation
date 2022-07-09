@@ -1,6 +1,7 @@
-import moment from "moment";
+// Lib
+import moment, { Moment } from "moment";
 import { Box, FlatList, HStack, Stack, Text, VStack } from "native-base";
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { CalendarBar } from "components/composite/CalendarBar";
 import { GetAttendance } from "../../services/calls/registryCalls";
@@ -29,6 +30,7 @@ import colorTheme from "../../colorTheme";
 import { GetAttendanceReport } from "utils/functions/GetAttendanceReport";
 import { ReportDetailData } from "components/composite/ReportDetailData";
 import { MomentUnionType } from "utils/types/types";
+import { CompareReportHeading } from "components/simple/CompareReportHeading";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -36,7 +38,7 @@ export default function ReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId, view } = useParams();
-  const [classObject, setClassObject] = useState({});
+  const [classObject, setClassObject] = useState<any>({});
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
   const [attendanceForReport, setAttendanceForReport] = useState([]);
@@ -52,8 +54,7 @@ export default function ReportDetail({ footerLinks, appName }) {
       : "days"
   );
   const teacherId = localStorage.getItem("id");
-  const [attendanceStartTime, setAttendanceStartTime] =
-    useState<MomentUnionType>();
+  const [attendanceStartTime, setAttendanceStartTime] = useState<Moment>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,13 +86,12 @@ export default function ReportDetail({ footerLinks, appName }) {
   }, [classId, page]);
 
   const getAttendance = async () => {
-    let weekdays = calendar(page, "week");
-    let params = {
-      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
-      fun: "getAttendance",
-    };
-    const attendanceData = await GetAttendance(params);
+    const attendanceData = await GetAttendanceReport(
+      page,
+      calendar,
+      calendarView,
+      "getAttendance"
+    );
     setAttendance(attendanceData);
   };
 
@@ -100,9 +100,11 @@ export default function ReportDetail({ footerLinks, appName }) {
       page,
       ["days", "week"].includes(calendarView) ? "week" : calendarView
     );
+    // @ts-ignore
     let workingDaysCount = weekdays.filter((e) => e.day())?.length;
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
+      // @ts-ignore
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
       fun: "getPresentStudents",
     };
@@ -124,6 +126,7 @@ export default function ReportDetail({ footerLinks, appName }) {
     let weekdays = calendar(-1, calendarView);
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
+      // @ts-ignore
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
       fun: "getAbsentStudents",
     };
@@ -223,47 +226,53 @@ export default function ReportDetail({ footerLinks, appName }) {
               {...{ page, setPage }}
               view={calendarView}
             />
-            <IconByName name={"ListUnorderedIcon"} isDisabled />
+            {
+              // @ts-ignore
+              <IconByName name={"ListUnorderedIcon"} isDisabled />
+            }
           </HStack>
         </Box>
         <Box bg="white" p="5">
-          <Box borderBottomWidth={1} borderBottomColor={colors.coolGray}>
-            <Collapsible
-              defaultCollapse={true}
-              header={
-                <VStack>
-                  <H2>{t("SUMMARY")}</H2>
-                  <Caption>
-                    {t("TOTAL")}: {students.length} {t("PRESENT")}:
-                    {
-                      getUniqAttendance(
-                        attendanceForReport,
-                        "Present",
-                        students
-                      ).length
-                    }
-                  </Caption>
-                </VStack>
-              }
-              body={
-                <VStack pt="5">
-                  <ReportSummary
-                    {...{
-                      students,
-                      attendance: [attendanceForReport],
-                      calendarView,
-                    }}
-                  />
-                  <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                    <Text bold color={colors.darkGray}>
-                      {t("NOTES")}
-                      {": "}
-                    </Text>
-                    {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
-                  </Subtitle>
-                </VStack>
-              }
-            />
+          <Box borderBottomWidth={1} borderBottomColor={colorTheme.coolGray}>
+            {
+              // @ts-ignore
+              <Collapsible
+                defaultCollapse={true}
+                header={
+                  <VStack>
+                    <H2>{t("SUMMARY")}</H2>
+                    <Caption>
+                      {t("TOTAL")}: {students.length} {t("PRESENT")}:
+                      {
+                        getUniqAttendance(
+                          attendanceForReport,
+                          "Present",
+                          students
+                        ).length
+                      }
+                    </Caption>
+                  </VStack>
+                }
+                body={
+                  <VStack pt="5">
+                    <ReportSummary
+                      {...{
+                        students,
+                        attendance: [attendanceForReport],
+                        calendarView,
+                      }}
+                    />
+                    <Subtitle py="5" px="10px" color={colorTheme.grayInLight}>
+                      <Text bold color={colorTheme.darkGray}>
+                        {t("NOTES")}
+                        {": "}
+                      </Text>
+                      {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
+                    </Subtitle>
+                  </VStack>
+                }
+              />
+            }
           </Box>
         </Box>
         <ReportDetailData
@@ -280,46 +289,45 @@ export default function ReportDetail({ footerLinks, appName }) {
         />
         <Box bg={colors.white} p={4}>
           <Stack space={2}>
-            <Collapsible
-              defaultCollapse={true}
-              isHeaderBold={false}
-              header={
-                <>
-                  <VStack>
-                    <Text bold fontSize={"md"}>
-                      {t("STUDENT_WISE_ATTENDANCE")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {students?.length + " " + t("STUDENTS")}
-                    </Text>
-                  </VStack>
-                </>
-              }
-              body={
-                <FlatList
-                  data={students}
-                  renderItem={({ item, index }) => (
-                    <AttendanceComponent
-                      isEditDisabled
-                      page={page}
-                      student={item}
-                      withDate={1}
-                      type={
-                        calendarView === "monthInDays"
-                          ? "month"
-                          : calendarView === "days"
-                          ? "weeks"
-                          : "weeks"
-                      }
-                      attendanceProp={attendance}
-                      getAttendance={getAttendance}
-                      _card={{ hidePopUpButton: true }}
-                    />
-                  )}
-                  keyExtractor={(item) => item.id}
-                />
-              }
-            />
+            {
+              // @ts-ignore
+              <Collapsible
+                defaultCollapse={true}
+                isHeaderBold={false}
+                header={
+                  <CompareReportHeading
+                    _textSmall={students?.length + " " + t("STUDENTS")}
+                    _textMed={t("STUDENT_WISE_ATTENDANCE")}
+                  />
+                }
+                body={
+                  <FlatList
+                    // @ts-ignore
+                    data={students}
+                    renderItem={({ item, index }) => (
+                      <AttendanceComponent
+                        isEditDisabled
+                        page={page}
+                        student={item}
+                        // @ts-ignore
+                        withDate={1}
+                        type={
+                          calendarView === "monthInDays"
+                            ? "month"
+                            : calendarView === "days"
+                            ? "weeks"
+                            : "weeks"
+                        }
+                        attendanceProp={attendance}
+                        getAttendance={getAttendance}
+                        _card={{ hidePopUpButton: true }}
+                      />
+                    )}
+                    keyExtractor={(item) => item.id}
+                  />
+                }
+              />
+            }
           </Stack>
         </Box>
       </VStack>

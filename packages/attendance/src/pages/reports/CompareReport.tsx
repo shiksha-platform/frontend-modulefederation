@@ -1,16 +1,6 @@
 // Lib
 import moment from "moment";
-import {
-  Actionsheet,
-  Box,
-  Button,
-  FlatList,
-  HStack,
-  Pressable,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, FlatList, HStack, Stack, Text, VStack } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,11 +9,7 @@ import {
   Collapsible,
   getStudentsPresentAbsent,
   getUniqAttendance,
-  capture,
-  telemetryFactory,
   calendar,
-  classRegistryService,
-  studentRegistryService,
   H2,
   Caption,
 } from "@shiksha/common-lib";
@@ -52,13 +38,14 @@ import { StudentCardsList } from "components/composite/StudentCardsList";
 import { CardListHolder } from "components/composite/CardListHolder";
 import { CompareAttendanceModal } from "components/simple/CompareAttendanceModal";
 import { isMoment, isMoment2DArray } from "utils/types/typeGuards";
+import { CompareReportHeading } from "components/simple/CompareReportHeading";
 
 export default function ClassReportDetail({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId } = useParams();
   const navigate = useNavigate();
-  const [classObject, setClassObject] = useState({});
+  const [classObject, setClassObject] = useState<any>({});
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
   const [compare, setCompare] = useState();
@@ -135,6 +122,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
   };
 
   return (
+    // @ts-ignore
     <Layout
       _header={{
         title: t("MY_CLASS"),
@@ -172,7 +160,10 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                 {...{ page, setPage }}
                 view={compare}
               />
-              <IconByName name={"ListUnorderedIcon"} isDisabled />
+              {
+                // @ts-ignore
+                <IconByName name={"ListUnorderedIcon"} isDisabled />
+              }
             </HStack>
           </Box>
           <PresentStudentsSummary
@@ -222,20 +213,16 @@ export default function ClassReportDetail({ footerLinks, appName }) {
               <Collapsible
                 defaultCollapse={true}
                 isHeaderBold={false}
+                // @ts-ignore
                 header={
-                  <>
-                    <VStack>
-                      <Text bold fontSize={"md"}>
-                        {t("STUDENT_WISE_ATTENDANCE")}
-                      </Text>
-                      <Text fontSize={"xs"}>
-                        {students?.length + " " + t("STUDENTS")}
-                      </Text>
-                    </VStack>
-                  </>
+                  <CompareReportHeading
+                    _textMed={t("STUDENT_WISE_ATTENDANCE")}
+                    _textSmall={students?.length + " " + t("STUDENTS")}
+                  />
                 }
               >
                 <FlatList
+                  // @ts-ignore
                   data={students}
                   renderItem={({ item, index }) => (
                     <AttendanceComponent
@@ -244,6 +231,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                       _weekBox={[{}, { bg: colorTheme.weekCardCompareBg }]}
                       page={[page, page - 1]}
                       student={item}
+                      // @ts-ignore
                       withDate={1}
                       attendanceProp={[...attendance, ...compareAttendance]}
                       getAttendance={getAttendance}

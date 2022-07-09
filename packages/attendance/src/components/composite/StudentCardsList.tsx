@@ -6,7 +6,6 @@ import {
   Box,
   FlatList,
   Button,
-  useTypeahead,
 } from "native-base";
 import { BodyLarge, Caption } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
