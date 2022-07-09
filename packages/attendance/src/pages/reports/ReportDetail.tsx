@@ -1,15 +1,5 @@
 import moment from "moment";
-import {
-  Box,
-  Button,
-  FlatList,
-  HStack,
-  PresenceTransition,
-  Pressable,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, FlatList, HStack, Stack, Text, VStack } from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { CalendarBar } from "components/composite/CalendarBar";
@@ -17,6 +7,7 @@ import { GetAttendance } from "../../services/calls/registryCalls";
 import AttendanceComponent from "../../components/composite/AttendanceComponent";
 import { ReportSummary } from "../../components/simple/ReportSummary";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Collapsible } from "components/simple/Collapsible";
 
 import {
   IconByName,
@@ -35,6 +26,9 @@ import {
   Subtitle,
 } from "@shiksha/common-lib";
 import colorTheme from "../../colorTheme";
+import { GetAttendanceReport } from "utils/functions/GetAttendanceReport";
+import { ReportDetailData } from "components/composite/ReportDetailData";
+import { MomentUnionType } from "utils/types/types";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -57,9 +51,9 @@ export default function ReportDetail({ footerLinks, appName }) {
         : "days"
       : "days"
   );
-  const Card = React.lazy(() => import("students/Card"));
   const teacherId = localStorage.getItem("id");
-  const [attendanceStartTime, setAttendanceStartTime] = useState();
+  const [attendanceStartTime, setAttendanceStartTime] =
+    useState<MomentUnionType>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,7 +84,7 @@ export default function ReportDetail({ footerLinks, appName }) {
     };
   }, [classId, page]);
 
-  const getAttendance = async (e) => {
+  const getAttendance = async () => {
     let weekdays = calendar(page, "week");
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
@@ -146,14 +140,13 @@ export default function ReportDetail({ footerLinks, appName }) {
     setAbsentStudents(await studentRegistryService.setDefaultValue(absentNew));
   };
 
-  const getAttendanceForReport = async (e) => {
-    let weekdays = calendar(page, calendarView);
-    let params = {
-      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
-      fun: "getAttendanceForReport",
-    };
-    const attendanceData = await GetAttendance(params);
+  const getAttendanceForReport = async () => {
+    const attendanceData = await GetAttendanceReport(
+      page,
+      calendar,
+      calendarView,
+      "getAttendanceForReport"
+    );
     setAttendanceForReport(attendanceData);
   };
 
@@ -171,12 +164,14 @@ export default function ReportDetail({ footerLinks, appName }) {
   };
 
   return (
+    // @ts-ignore
     <Layout
       _appBar={{
         onPressBackButton: handleBackButton,
       }}
       _header={{
         title: t("REPORT_DETAILS"),
+        // @ts-ignore
         subHeading: classObject?.name,
         iconComponent: (
           <Link
@@ -192,11 +187,14 @@ export default function ReportDetail({ footerLinks, appName }) {
             >
               <HStack space="2">
                 <BodyLarge color={colors.primary}>{t("COMPARE")}</BodyLarge>
-                <IconByName
-                  color={colors.primary}
-                  name="ArrowDownSLineIcon"
-                  isDisabled
-                />
+                {
+                  //@ts-ignore
+                  <IconByName
+                    color={colors.primary}
+                    name="ArrowDownSLineIcon"
+                    isDisabled
+                  />
+                }
               </HStack>
             </Box>
           </Link>
@@ -214,7 +212,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </Caption>
         </Stack>
       }
-      _subHeader={{ bg: colors.reportCardBackg, mb: 1 }}
+      _subHeader={{ bg: colorTheme.reportCardBackg, mb: 1 }}
       _footer={footerLinks}
     >
       <VStack space="1">
@@ -268,149 +266,18 @@ export default function ReportDetail({ footerLinks, appName }) {
             />
           </Box>
         </Box>
-        <Box bg={colors.white} p={4}>
-          <Stack space={2}>
-            <Collapsible
-              defaultCollapse={true}
-              isHeaderBold={false}
-              header={
-                <>
-                  <VStack>
-                    <Text bold fontSize={"md"}>
-                      100%
-                      {calendarView === "monthInDays"
-                        ? t("THIS_MONTH")
-                        : t("THIS_WEEK")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {presentStudents?.length + " " + t("STUDENTS")}
-                    </Text>
-                  </VStack>
-                </>
-              }
-              body={
-                <VStack space={2} pt="2">
-                  <Box>
-                    <FlatList
-                      data={presentStudents}
-                      renderItem={({ item }) => (
-                        <Box
-                          borderWidth="1"
-                          borderColor={colors.presentCardBorder}
-                          bg={colors.presentCardBg}
-                          p="10px"
-                          rounded="lg"
-                          my="10px"
-                        >
-                          <Suspense fallback="logding">
-                            <Card
-                              appName={appName}
-                              item={item}
-                              type="rollFather"
-                              textTitle={
-                                <VStack alignItems="center">
-                                  <BodyLarge>
-                                    <Text>{item.fullName}</Text>
-                                    <Text color={colors.lightGray}> • </Text>
-                                    <Text color={colors.presentCardText}>
-                                      100%
-                                    </Text>
-                                  </BodyLarge>
-                                </VStack>
-                              }
-                              href={"/students/" + item.id}
-                              hidePopUpButton
-                            />
-                          </Suspense>
-                        </Box>
-                      )}
-                      keyExtractor={(item) => item.id}
-                    />
-                  </Box>
-                  <Button
-                    mt="2"
-                    variant="outline"
-                    colorScheme="button"
-                    rounded="lg"
-                  >
-                    {t("SEE_MORE")}
-                  </Button>
-                </VStack>
-              }
-            />
-          </Stack>
-        </Box>
-
-        <Box bg={colors.white} p={4}>
-          <Stack space={2}>
-            <Collapsible
-              defaultCollapse={true}
-              isHeaderBold={false}
-              header={
-                <>
-                  <VStack>
-                    <Text bold fontSize={"md"}>
-                      {t("ABSENT_CONSECUTIVE_3_DAYS")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {absentStudents?.length + " " + t("STUDENTS")}
-                    </Text>
-                  </VStack>
-                </>
-              }
-              body={
-                <VStack space={2} pt="2">
-                  <Box>
-                    <FlatList
-                      data={absentStudents}
-                      renderItem={({ item }) => (
-                        <Box
-                          borderWidth="1"
-                          borderColor={colors.absentCardBorder}
-                          bg={colors.absentCardBg}
-                          p="10px"
-                          rounded="lg"
-                          my="10px"
-                        >
-                          <Suspense fallback="logding">
-                            <Card
-                              appName={appName}
-                              item={item}
-                              type="rollFather"
-                              textTitle={
-                                <VStack alignItems="center">
-                                  <BodyLarge>
-                                    <Text>{item.fullName}</Text>
-                                    <Text color={colors.lightGray}> • </Text>
-                                    <Text color={colors.absentCardText}>
-                                      3 {t("DAYS")}
-                                    </Text>
-                                  </BodyLarge>
-                                </VStack>
-                              }
-                              href={"/students/" + item.id}
-                              hidePopUpButton
-                            />
-                          </Suspense>
-                        </Box>
-                      )}
-                      keyExtractor={(item) => item.id}
-                    />
-                  </Box>
-                  <Button
-                    mt="2"
-                    variant="outline"
-                    colorScheme="button"
-                    rounded="lg"
-                  >
-                    {t("SEE_MORE")}
-                  </Button>
-                </VStack>
-              }
-            />
-          </Stack>
-        </Box>
-
+        <ReportDetailData
+          appName={appName}
+          data={presentStudents}
+          calendarView={calendarView}
+          type="present"
+        />
+        <ReportDetailData
+          appName={appName}
+          data={absentStudents}
+          calendarView={calendarView}
+          type="absent"
+        />
         <Box bg={colors.white} p={4}>
           <Stack space={2}>
             <Collapsible
@@ -459,42 +326,3 @@ export default function ReportDetail({ footerLinks, appName }) {
     </Layout>
   );
 }
-
-const Collapsible = ({
-  header,
-  body,
-  defaultCollapse,
-  isHeaderBold,
-  onPressFuction,
-}) => {
-  const [collaps, setCollaps] = useState(defaultCollapse);
-
-  return (
-    <>
-      <Pressable
-        onPress={() => {
-          setCollaps(!collaps);
-          onPressFuction();
-        }}
-      >
-        <Box px={2} py={1}>
-          <HStack alignItems={"center"} justifyContent={"space-between"}>
-            <Text
-              bold={typeof isHeaderBold === "undefined" ? true : isHeaderBold}
-              fontSize={typeof isHeaderBold === "undefined" ? "md" : ""}
-            >
-              {header}
-            </Text>
-            <IconByName
-              size="50"
-              isDisabled={true}
-              color={!collaps ? colors.grayInLight : colors.coolGraylight}
-              name={!collaps ? "ArrowDownSLineIcon" : "ArrowUpSLineIcon"}
-            />
-          </HStack>
-        </Box>
-      </Pressable>
-      <PresenceTransition visible={collaps}>{body}</PresenceTransition>
-    </>
-  );
-};
