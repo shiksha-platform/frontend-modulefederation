@@ -15,7 +15,6 @@ import moment from "moment";
 import {
   IconByName,
   capture,
-  telemetryFactory,
   H2,
   BodySmall,
   Subtitle,
@@ -41,6 +40,8 @@ import { GetLastAttendance } from "utils/functions/GetLastAttendance";
 import { colors, colorTheme } from "utils/functions/ColorTheme";
 import { MarkAllAttendance } from "utils/functions/MarkAllAttendance";
 import * as TelemetryFactoryMapper from "utils/functions/TelemetryFactoryMapper";
+import { AttendanceMessageComponent } from "components/simple/AttendanceMessageComponent";
+import { MultipleAttendanceFooter } from "components/simple/MultipleAttendanceFooter";
 
 export const MultipleAttendance = ({
   students,
@@ -231,50 +232,11 @@ export const MultipleAttendance = ({
                   />
                 </Box>
                 <Box bg={colors.white} p="5" textAlign={"center"}>
-                  <VStack space={2}>
-                    <BodyLarge>
-                      {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
-                    </BodyLarge>
-                    <Caption>{t("STUDENTS_ABSENT")}</Caption>
-
-                    <Button.Group>
-                      <Button
-                        variant="outline"
-                        flex="1"
-                        onPress={(e) => {
-                          const telemetryData = telemetryFactory.interact({
-                            appName,
-                            type: "Attendance-Notification-View-Message",
-                          });
-                          capture("INTERACT", telemetryData);
-                          navigate(
-                            "/attendance/sendSms/" +
-                              (classObject?.id?.startsWith("1-")
-                                ? classObject?.id?.replace("1-", "")
-                                : classObject?.id)
-                          );
-                        }}
-                      >
-                        {t("VIEW_MESSAGE")}
-                      </Button>
-                      <Button
-                        _text={{ color: colors.white }}
-                        flex="1"
-                        onPress={(e) => {
-                          const telemetryData = TelemetryFactoryMapper.interact(
-                            {
-                              appName,
-                              type: "Attendance-Notification-View-Message",
-                            }
-                          );
-                          capture("INTERACT", telemetryData);
-                          navigate("/notification/create");
-                        }}
-                      >
-                        {t("SEND_ANOTHER_MESSAGE")}
-                      </Button>
-                    </Button.Group>
-                  </VStack>
+                  <AttendanceMessageComponent
+                    navigate={navigate}
+                    appName={appName}
+                    classObject={classObject}
+                  />
                 </Box>
                 <Box bg={colors.white} p={5}>
                   <Box bg={colorTheme.bgReportCard} rounded={"md"} p="4">
@@ -331,37 +293,11 @@ export const MultipleAttendance = ({
                   </Box>
                 </Box>
                 <Box p="2" py="5" bg={colors.white}>
-                  <VStack space={"15px"} alignItems={"center"}>
-                    <Caption textAlign={"center"}>
-                      {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
-                    </Caption>
-                    <Button.Group width="100%">
-                      <Button
-                        flex={1}
-                        variant="outline"
-                        colorScheme="button"
-                        onPress={(e) => modalClose()}
-                      >
-                        {t("CLOSE")}
-                      </Button>
-                      <Button
-                        flex={1}
-                        colorScheme="button"
-                        _text={{ color: colors.white }}
-                        onPress={(e) =>
-                          navigate(
-                            "/attendance/report/" +
-                              (classObject?.id?.startsWith("1-")
-                                ? classObject?.id?.replace("1-", "")
-                                : classObject?.id) +
-                              "/days"
-                          )
-                        }
-                      >
-                        {t("SEE_FULL_REPORT")}
-                      </Button>
-                    </Button.Group>
-                  </VStack>
+                  <MultipleAttendanceFooter
+                    modalClose={modalClose}
+                    navigate={navigate}
+                    classObject={classObject}
+                  />
                 </Box>
               </ScrollView>
             </Stack>

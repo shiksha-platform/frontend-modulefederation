@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { VStack, Box, Stack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { calendar, attendanceRegistryService } from "@shiksha/common-lib";
+import { calendar } from "@shiksha/common-lib";
 
 import { colorTheme } from "utils/functions/ColorTheme";
 
@@ -11,6 +11,10 @@ const Card = React.lazy(() => import("students/Card"));
 import { CalendarComponent } from "components/simple/CalendarComponent";
 import { SmsModal } from "components/simple/SmsModal";
 import { MarkAttendanceModal } from "components/simple/MarkAttendanceModal";
+import {
+  CreateAttendance,
+  UpdateAttendance,
+} from "services/calls/registryCalls";
 
 export default function AttendanceComponent({
   type,
@@ -70,48 +74,22 @@ export default function AttendanceComponent({
       [dataObject.date + dataObject.id]: true,
     });
     if (dataObject.attendanceId) {
-      attendanceRegistryService
-        .update(
-          {
-            id: dataObject.attendanceId,
-            attendance: dataObject.attendance,
-          },
-          {
-            onlyParameter: ["attendance", "id", "date", "classId"],
-          }
-        )
-        .then((e) => {
-          const newData = attendance.filter(
-            (e) =>
-              !(
-                e.date === dataObject.date &&
-                e.studentId === dataObject.studentId
-              )
-          );
-
-          setAttendance([
-            ...newData,
-            { ...dataObject, id: dataObject.attendanceId },
-          ]);
-          setLoading({});
-          setShowModal(false);
-        });
+      await UpdateAttendance(dataObject);
+      const newData = attendance.filter(
+        (e) =>
+          !(e.date === dataObject.date && e.studentId === dataObject.studentId)
+      );
+      setAttendance([
+        ...newData,
+        { ...dataObject, id: dataObject.attendanceId },
+      ]);
+      setLoading({});
+      setShowModal(false);
     } else {
-      attendanceRegistryService
-        .create({
-          studentId: student.id,
-          date: dataObject.date,
-          attendance: dataObject.attendance,
-          attendanceNote: "Test",
-          classId: student.currentClassID,
-          subjectId: "History",
-          teacherId: teacherId,
-        })
-        .then((e) => {
-          setAttendance([...attendance, dataObject]);
-          setLoading({});
-          setShowModal(false);
-        });
+      await CreateAttendance({ dataObject, student, teacherId });
+      setAttendance([...attendance, dataObject]);
+      setLoading({});
+      setShowModal(false);
     }
   };
   return (

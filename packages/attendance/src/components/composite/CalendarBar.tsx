@@ -1,10 +1,12 @@
 // Lib
 import React, { FC } from "react";
-import { TimeBar } from "components/simple/TimeBar/TimeBar"
+import { TimeBar } from "components/simple/TimeBar/TimeBar";
 
 export interface ICalendarBar {
   view?: string;
   type?: string;
+  activeColor?: string;
+  _box?: Object;
 }
 
 export const CalendarBar: FC<ICalendarBar> = ({ view, ...props }) => {

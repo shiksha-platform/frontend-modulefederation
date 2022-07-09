@@ -19,7 +19,11 @@ export interface ITimeBar {
   type: string;
   page: number;
   setPage: UseStateFunction<number>;
-  setActiveColor: UseStateFunction<string>;
+  setActiveColor?: UseStateFunction<string>;
+  previousDisabled: boolean;
+  nextDisabled: boolean;
+  leftErrorText: any;
+  rightErrorText: any;
 }
 
 export const TimeBar: React.FC<ITimeBar> = (props) => {

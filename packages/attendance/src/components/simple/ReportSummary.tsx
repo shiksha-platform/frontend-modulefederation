@@ -30,7 +30,7 @@ export interface IReport {
     name: string;
     _text?: Object;
   }>;
-  page?: object;
+  page?: object | number;
   calendarView?: string;
   footer?: React.ReactNode;
 }

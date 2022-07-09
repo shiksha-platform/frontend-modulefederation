@@ -1,3 +1,4 @@
+// Lib
 import {
   capture,
   telemetryFactory,
@@ -15,39 +16,48 @@ import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
+import moment, { Moment } from "moment";
+
+// Components
 import { TimeBar } from "components/simple/TimeBar/TimeBar";
 import { GetAttendance } from "../services/calls/registryCalls";
-
 import { MultipleAttendance } from "components/composite/MultipleAttendance";
 import AttendanceComponent from "components/composite/AttendanceComponent";
-import moment from "moment";
 import Loader from "../components/simple/Loader";
 import FourOFour from "../components/simple/FourOFour";
-import colorTheme from "../colorTheme";
 
-const colors = overrideColorTheme(colorTheme);
-const PRESENT = "Present";
-const ABSENT = "Absent";
+// Utils
+import { sortByAdmissionNo, sortByName } from "utils/functions/StudentSorts";
+import { colors, colorTheme } from "utils/functions/ColorTheme";
+import { PRESENT, ABSENT } from "utils/functions/Constants";
+import {
+  isMoment,
+  isMoment2DArray,
+  isMomentArray,
+} from "utils/types/typeGuards";
 
 export default function Attendance({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
-  const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
+  const [allAttendanceStatus, setAllAttendanceStatus] = useState<{
+    success?: string;
+    fail?: string;
+  }>({});
   const [students, setStudents] = useState([]);
   const [searchStudents, setSearchStudents] = useState([]);
-  const [classObject, setClassObject] = useState({});
+  const [classObject, setClassObject] = useState<any>({});
   let { classId } = useParams();
   if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
   const [loading, setLoading] = useState(false);
   const [attendance, setAttendance] = useState([]);
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [sms, setSms] = useState([]);
   const teacherId = localStorage.getItem("id");
-  const [attendanceStartTime, setAttendanceStartTime] = useState();
+  const [attendanceStartTime, setAttendanceStartTime] = useState<Moment>();
   const [unmarkStudents, setUnmarkStudents] = useState([]);
   const navigate = useNavigate();
-  const [manifest, setManifest] = React.useState();
+  const [manifest, setManifest] = React.useState<any>();
 
   useEffect(() => {
     let studentIds = attendance
@@ -84,21 +94,9 @@ export default function Attendance({ footerLinks, appName }) {
         newManifest?.["attendance_card.order_of_attendance_card"] ===
         '"Alphabetically"'
       ) {
-        setStudents(
-          studentData.sort(function (oldItem, newItem) {
-            return oldItem.firstName === newItem.firstName
-              ? 0
-              : oldItem.firstName < newItem.firstName
-              ? -1
-              : 1;
-          })
-        );
+        setStudents(sortByName(studentData));
       } else {
-        setStudents(
-          studentData.sort(function (a, b) {
-            return a.admissionNo - b.admissionNo;
-          })
-        );
+        setStudents(sortByAdmissionNo(studentData));
       }
       setSearchStudents(studentData);
       if (!ignore)
@@ -129,8 +127,10 @@ export default function Attendance({ footerLinks, appName }) {
     };
   }, [weekPage]);
 
-  const getAttendance = async (e) => {
+  const getAttendance = async () => {
     let weekdays = calendar(weekPage, "week");
+    // type guard
+    if (isMoment(weekdays) || isMoment2DArray(weekdays)) return;
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
@@ -161,7 +161,7 @@ export default function Attendance({ footerLinks, appName }) {
           ((students?.length - unmarkStudents.length) / students?.length) * 100,
       });
       capture("END", telemetryData);
-      setAttendanceStartTime();
+      setAttendanceStartTime(moment());
     }
   };
 
@@ -179,6 +179,7 @@ export default function Attendance({ footerLinks, appName }) {
   }
 
   return (
+    // @ts-ignore
     <Layout
       _header={{
         title: classObject?.title ? classObject?.title : "",
@@ -191,9 +192,10 @@ export default function Attendance({ footerLinks, appName }) {
             rounded="full"
             px={5}
             py={1}
-            bg={colors.reportbtnBg}
+            bg={colorTheme.reportbtnBg}
             textTransform="capitalize"
             alignItems="center"
+            // @ts-ignore
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => navigate("/attendance/report")}
           >
@@ -210,15 +212,18 @@ export default function Attendance({ footerLinks, appName }) {
               {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
             </BodySmall>
           </VStack>
-          <IconByName
-            size="50"
-            mt="8px"
-            name="ArrowRightSLineIcon"
-            onPress={(e) => navigate(`/students/class/${classId}`)}
-          />
+          {
+            // @ts-ignore
+            <IconByName
+              size="50"
+              mt="8px"
+              name="ArrowRightSLineIcon"
+              onPress={(e) => navigate(`/students/class/${classId}`)}
+            />
+          }
         </HStack>
       }
-      _subHeader={{ bg: colors.attendanceCardBg }}
+      _subHeader={{ bg: colorTheme.attendanceCardBg }}
       _footer={footerLinks}
     >
       <Stack space={1}>
@@ -292,6 +297,7 @@ export default function Attendance({ footerLinks, appName }) {
       </Stack>
       <Box bg={colors.white} py="10px" px="5">
         <FlatList
+          // @ts-ignore
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
@@ -300,6 +306,7 @@ export default function Attendance({ footerLinks, appName }) {
               page={weekPage}
               student={item}
               sms={sms.filter((e) => e.studentId === item.id)}
+              // @ts-ignore
               withDate={1}
               attendanceProp={attendance}
               isEditDisabled={isEditDisabled}
