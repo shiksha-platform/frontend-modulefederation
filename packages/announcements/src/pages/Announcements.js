@@ -193,7 +193,15 @@ const Announcements = ({ footerLinks, appName }) => {
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <BodyMedium>{val.data}</BodyMedium>
+                  <HStack space="1" alignItems={"center"}>
+                    <IconByName
+                      _icon={{ size: "20" }}
+                      name="PushpinLineIcon"
+                      isDisabled
+                    />
+                    <BodyMedium>{val.data}</BodyMedium>
+                  </HStack>
+
                   {val.isDismissable ? (
                     <IconByName
                       _icon={{ size: "20" }}
