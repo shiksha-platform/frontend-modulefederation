@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  VStack,
   HStack,
   Box,
   StatusBar,
@@ -13,6 +14,20 @@ import {
 } from 'native-base'
 import { useNavigate } from 'react-router-dom'
 import IconByName from '../IconByName'
+import { BodyMedium } from './HeaderTags'
+
+const pinnedAnnouncementsData = [
+  {
+    data: 'Shiksha V2.0 Is Live! 🚀🎉',
+    color: 'green.100',
+    isDismissable: true
+  },
+  {
+    data: 'Students should not stand on road outside school during monsoon',
+    color: 'amber.100',
+    isDismissable: false
+  }
+]
 
 export default function AppBar({
   isEnableHamburgerMenuButton,
@@ -44,12 +59,59 @@ export default function AppBar({
     if (setSearchState) setSearchState(boolean)
     setSearchInput(boolean)
   }
+  const [pinnedAnnouncementsList, setPinnedAnnouncementsList] = React.useState(
+    pinnedAnnouncementsData
+  )
+  const pinnedData = React.useMemo(
+    () => pinnedAnnouncementsList,
+    [pinnedAnnouncementsList]
+  )
 
   return (
     <Box pt={7} px={5} {...props?._box}>
       <StatusBar bg='gray.600' barStyle='light-content' />
       <Box safeAreaTop bg='gray.600' />
+      {showPinnedAnnouncements ? (
+        <VStack space='2' mb='4'>
+          {pinnedData.map((val, index) => (
+            <Box
+              width={'100%'}
+              rounded='4'
+              bg={val.color}
+              px='5'
+              py={val.isDismissable ? '3.5' : '5'}
+              key={index}
+            >
+              <HStack
+                space='4'
+                alignItems='center'
+                justifyContent='space-between'
+              >
+                <HStack space='1' alignItems={'center'}>
+                  <IconByName
+                    _icon={{ size: '20' }}
+                    name='PushpinLineIcon'
+                    isDisabled
+                  />
+                  <BodyMedium>{val.data}</BodyMedium>
+                </HStack>
 
+                {val.isDismissable ? (
+                  <IconByName
+                    _icon={{ size: '20' }}
+                    name='CloseLineIcon'
+                    onPress={(e) => {
+                      const d = [...pinnedAnnouncementsList]
+                      d.splice(index, 1)
+                      setPinnedAnnouncementsList(d)
+                    }}
+                  />
+                ) : null}
+              </HStack>
+            </Box>
+          ))}
+        </VStack>
+      ) : null}
       {searchInput ? (
         <Stack alignItems='center'>
           <InputGroup width='100%'>
