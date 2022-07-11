@@ -4,6 +4,7 @@ import {
   H2,
   questionRegistryService,
   overrideColorTheme,
+  H2,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";

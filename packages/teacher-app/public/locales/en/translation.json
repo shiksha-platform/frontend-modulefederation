@@ -230,7 +230,7 @@
   "ADD_NEW_NOTIFICATION": "Add New Notification",
   "SEND_LATER": "Send later",
   "SEND_ANOTHER_MESSAGE": "Send another message",
-  "VIEW_MESSAGE": "View message",
+  "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "View messages being sent by admin",
   "SCHEDULE_NOTIFICATION": "Schedule Notification",
   "PICK_DATE_AND_TIME": "Pick Date and Time",
   "DATE": "Date",

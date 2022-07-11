@@ -29,6 +29,7 @@ import SingleSelectQuestionCard from "./questionTypes/SingleSelectQuestionCard";
 import SimpleQuestionCard from "./questionTypes/SimpleQuestionCard";
 import MultipleSelectQuestionCard from "./questionTypes/MultipleSelectQuestionCard";
 import QuestionList from "./QuestionLIst";
+import RoundedProgressBar from "../RoundedProgressBar";
 // import StudentDetailCard from "./StudentDetail";
 
 const PRESENT = "Present";
@@ -362,14 +363,21 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
                             )}
 
                             {index === 2 && (
-                              <Button
-                                colorScheme="button"
-                                _text={{ color: "#fff" }}
-                                size="xs"
-                                px={3}
-                              >
-                                {t("Mark")}
-                              </Button>
+                              <HStack alignItems="center">
+                                <Text mr={1} color="#666666">
+                                  Total Score
+                                </Text>
+                                <Box marginTop={"-8px"}>
+                                  <RoundedProgressBar
+                                    values={[79, 21]}
+                                    colors={["#0D921B", "#EAE0DF"]}
+                                    title={{ text: "79", fontSize: "12px" }}
+                                    // legend={{ text: "Total Score", fontSize: "14px" }}
+                                    cutout={"79%"}
+                                    size="45px"
+                                  />
+                                </Box>
+                              </HStack>
                             )}
                           </HStack>
                         </VStack>

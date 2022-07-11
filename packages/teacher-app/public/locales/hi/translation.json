@@ -226,7 +226,7 @@
   "ADD_NEW_NOTIFICATION": "नई अधिसूचना जोड़ें",
   "SEND_LATER": "बाद में भेजें",
   "SEND_ANOTHER_MESSAGE": "एक और संदेश भेजें",
-  "VIEW_MESSAGE": "संदेश देखें",
+  "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "व्यवस्थापक से भेजें जा रहे संदेश देखें",
   "SCHEDULE_NOTIFICATION": "अनुसूची अधिसूचना",
   "PICK_DATE_AND_TIME": "तिथि और समय चुनें",
   "DATE": "दिनांक",

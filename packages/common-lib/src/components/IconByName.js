@@ -48,7 +48,7 @@ import EmotionSadLineIcon from 'remixicon-react/EmotionSadLineIcon'
 import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
 import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
-import BookMarkLineIcon from 'remixicon-react/BookMarkLineIcon'
+import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
 import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
@@ -71,12 +71,15 @@ import FileInfoLineIcon from 'remixicon-react/FileInfoLineIcon'
 import SendPlane2LineIcon from 'remixicon-react/SendPlane2LineIcon'
 import StarSFillIcon from 'remixicon-react/StarSFillIcon'
 import SpamLineIcon from 'remixicon-react/SpamLineIcon'
+import GitRepositoryLineIcon from 'remixicon-react/GitRepositoryLineIcon'
 import RecordCircleFillIcon from 'remixicon-react/RecordCircleFillIcon'
 import ArrowRightUpLineIcon from 'remixicon-react/ArrowRightUpLineIcon'
 import ArrowRightDownLineIcon from 'remixicon-react/ArrowRightDownLineIcon'
 import EditBoxLineIcon from 'remixicon-react/EditBoxLineIcon'
 import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
 import AddFillIcon from 'remixicon-react/AddFillIcon'
+import StarHalfFillIcon from 'remixicon-react/StarHalfFillIcon'
+import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
 
@@ -652,11 +655,35 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'StarFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<StarFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'StarHalfFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<StarHalfFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'SpamLineIcon':
       icon = (
         <IconButton
           {...props}
           icon={<SpamLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'GitRepositoryLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<GitRepositoryLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
