@@ -10,7 +10,9 @@ import {
   Divider,
   Actionsheet,
   Checkbox,
-  Radio, Avatar, Input
+  Radio,
+  Avatar,
+  Input,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -18,68 +20,70 @@ import SingleSelectQuestionCard from "./questionTypes/SingleSelectQuestionCard";
 import MultipleSelectQuestionCard from "./questionTypes/MultipleSelectQuestionCard";
 import SimpleQuestionCard from "./questionTypes/SimpleQuestionCard";
 import {
-  assessmentRegistryService, IconByName, Layout,
+  assessmentRegistryService,
+  IconByName,
+  Layout,
   Loading,
-  useWindowSize
+  useWindowSize,
 } from "@shiksha/common-lib";
 
 const QuestionList6 = ({ questionNumber }) => {
   const { t } = useTranslation();
   const [questionList, setQuestionList] = useState([
     {
-      question: '<p>This is dummy question 1</p>',
-      qType: 'MCQ',
+      question: "<p>This is dummy question 1</p>",
+      qType: "MCQ",
       options: [
         {
-          value: {body: '<p>Option 1</p>'}
+          value: { body: "<p>Option 1</p>" },
         },
         {
-          value: {body: '<p>Option 2</p>'}
+          value: { body: "<p>Option 2</p>" },
         },
         {
-          value: {body: '<p>Option 3</p>'}
+          value: { body: "<p>Option 3</p>" },
         },
         {
-          value: {body: '<p>Option 4</p>'}
-        }
-      ]
+          value: { body: "<p>Option 4</p>" },
+        },
+      ],
     },
     {
-      question: '<p>This is dummy question 2</p>',
-      qType: 'MCQ',
+      question: "<p>This is dummy question 2</p>",
+      qType: "MCQ",
       options: [
         {
-          value: {body: '<p>Option 1</p>'}
+          value: { body: "<p>Option 1</p>" },
         },
         {
-          value: {body: '<p>Option 2</p>'}
+          value: { body: "<p>Option 2</p>" },
         },
         {
-          value: {body: '<p>Option 3</p>'}
+          value: { body: "<p>Option 3</p>" },
         },
         {
-          value: {body: '<p>Option 4</p>'}
-        }
-      ]
+          value: { body: "<p>Option 4</p>" },
+        },
+      ],
     },
     {
-      question: '<p>This is dummy question 3</p>',
-      qType: 'MCQ',
+      question: "<p>This is dummy question 3</p>",
+      qType: "MCQ",
       options: [
         {
-          value: {body: '<p>Option 1</p>'}
+          value: { body: "<p>Option 1</p>" },
         },
         {
-          value: {body: '<p>Option 2</p>'}
+          value: { body: "<p>Option 2</p>" },
         },
         {
-          value: {body: '<p>Option 3</p>'}
+          value: { body: "<p>Option 3</p>" },
         },
         {
-          value: {body: '<p>Option 4</p>'}
-        }
-      ]
-    }
+          value: { body: "<p>Option 4</p>" },
+        },
+      ],
+    },
   ]);
   const [loading, setLoading] = React.useState(false);
   const [width, height] = useWindowSize();
@@ -109,9 +113,7 @@ const QuestionList6 = ({ questionNumber }) => {
       subHeader={
         <HStack space="4" justifyContent="space-between" alignItems="center">
           <VStack>
-            <Text fontSize={"lg"}>
-              Rahul
-            </Text>
+            <Text fontSize={"lg"}>Rahul</Text>
             <Text fontSize={"xs"} color={"muted.600"}>
               Mr. Father’s Name
             </Text>
@@ -205,8 +207,6 @@ const QuestionList6 = ({ questionNumber }) => {
         </Box>
       </Box>
     </Layout>
-
-
   );
 };
 

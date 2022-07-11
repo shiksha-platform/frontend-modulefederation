@@ -95,10 +95,12 @@ export default function ReportDetails({ appName }) {
       }}
       _appBar={{
         languages: ["en"],
-        rightIcon: <HStack>
-          <IconByName name="ShareLineIcon" />
-          <IconByName name="DownloadLineIcon" />
-        </HStack>
+        rightIcon: (
+          <HStack>
+            <IconByName name="ShareLineIcon" />
+            <IconByName name="DownloadLineIcon" />
+          </HStack>
+        ),
       }}
       subHeader={
         <VStack>
@@ -416,11 +418,7 @@ export default function ReportDetails({ appName }) {
                         </HStack>
                       </Box>
                       <Box>
-                        <Button
-                          colorScheme="button"
-                          variant="outline"
-                          py={3}
-                        >
+                        <Button colorScheme="button" variant="outline" py={3}>
                           {t("See all students")}
                         </Button>
                       </Box>

@@ -151,26 +151,10 @@ const SpotAssessmentResult = ({ appName }) => {
                       size="80px"
                     />
                     <HStack justifyContent={"center"} alignItems="center">
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="green.600"
-                      />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
                       <IconByName
                         name="StarHalfFillIcon"
                         p="0"

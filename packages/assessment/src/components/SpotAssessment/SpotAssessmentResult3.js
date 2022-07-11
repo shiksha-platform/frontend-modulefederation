@@ -105,16 +105,10 @@ const SpotAssessmentResult3 = ({ appName }) => {
                 _icon={{ size: 100 }}
               />
               <Box alignItems="center">
-                <H1
-                  fontSize="22px"
-                  fontWeight="600"
-                  color="#F57B7B"
-                >
+                <H1 fontSize="22px" fontWeight="600" color="#F57B7B">
                   OHH NO!
                 </H1>
-                <Text color="#F57B7B">
-                  Better luck next time
-                </Text>
+                <Text color="#F57B7B">Better luck next time</Text>
               </Box>
             </VStack>
             <VStack space={50} bg="white">
@@ -143,7 +137,7 @@ const SpotAssessmentResult3 = ({ appName }) => {
                 <VStack>
                   <Box p="4" alignItems="center">
                     <RoundedProgressBar
-                      values={[32, (100 - 32)]}
+                      values={[32, 100 - 32]}
                       colors={["#F57B7B", "#EAE0DF"]}
                       title={{ text: "32%", fontSize: "21px" }}
                       legend={{ text: "Total Score", fontSize: "14px" }}
@@ -151,31 +145,15 @@ const SpotAssessmentResult3 = ({ appName }) => {
                       size="80px"
                     />
                     <HStack justifyContent={"center"} alignItems="center">
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color="#F57B7B"
-                      />
+                      <IconByName name="StarFillIcon" p="0" color="#F57B7B" />
                       <IconByName
                         name="StarHalfFillIcon"
                         p="0"
                         color="#F57B7B"
                       />
-                      <IconByName
-                        name="StarLineIcon"
-                        p="0"
-                        color="#F57B7B"
-                      />
-                      <IconByName
-                        name="StarLineIcon"
-                        p="0"
-                        color="#F57B7B"
-                      />
-                      <IconByName
-                        name="StarLineIcon"
-                        p="0"
-                        color="#F57B7B"
-                      />
+                      <IconByName name="StarLineIcon" p="0" color="#F57B7B" />
+                      <IconByName name="StarLineIcon" p="0" color="#F57B7B" />
+                      <IconByName name="StarLineIcon" p="0" color="#F57B7B" />
                     </HStack>
                   </Box>
                 </VStack>

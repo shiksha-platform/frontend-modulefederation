@@ -364,8 +364,10 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
 
                             {index === 2 && (
                               <HStack alignItems="center">
-                                <Text mr={1} color="#666666">Total Score</Text>
-                                <Box marginTop={'-8px'}>
+                                <Text mr={1} color="#666666">
+                                  Total Score
+                                </Text>
+                                <Box marginTop={"-8px"}>
                                   <RoundedProgressBar
                                     values={[79, 21]}
                                     colors={["#0D921B", "#EAE0DF"]}

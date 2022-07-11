@@ -25,15 +25,14 @@ export default function QumlTest() {
     });*/
 
     return () => {
-      window.removeEventListener('message', (val) => {});
+      window.removeEventListener("message", (val) => {});
     };
-
   }, []);
 
   return (
     <Layout
       _header={{
-        title:'Test',
+        title: "Test",
       }}
       _appBar={{ languages: ["en"] }}
       subHeader={
@@ -44,12 +43,12 @@ export default function QumlTest() {
               : "Attempt the questions"}
           </Text>
           {headerDetails &&
-          headerDetails.student &&
-          headerDetails.student.fathersName && (
-            <Text fontSize={"xs"} color={"muted.600"}>
-              Mr. {headerDetails.student.fathersName}
-            </Text>
-          )}
+            headerDetails.student &&
+            headerDetails.student.fathersName && (
+              <Text fontSize={"xs"} color={"muted.600"}>
+                Mr. {headerDetails.student.fathersName}
+              </Text>
+            )}
         </VStack>
       }
       _subHeader={{ bg: "attendanceCard.500" }}
@@ -95,7 +94,9 @@ export default function QumlTest() {
     >
       <iframe
         src="http://139.59.25.99:8090/?questions=do_431353902437642240011003,do_431353902009694617611001,do_431353902575100723211006"
-        frameBorder="0" style={{height: 'calc(100vh - 315px)'}} />
+        frameBorder="0"
+        style={{ height: "calc(100vh - 315px)" }}
+      />
     </Layout>
   );
 }
