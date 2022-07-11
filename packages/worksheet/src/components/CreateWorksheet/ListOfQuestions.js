@@ -1,4 +1,12 @@
-import { FilterButton, IconByName } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  BodyMedium,
+  Caption,
+  FilterButton,
+  IconByName,
+  overrideColorTheme,
+  Subtitle,
+} from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   HStack,
@@ -16,6 +24,8 @@ import { useTranslation } from "react-i18next";
 import { defaultInputs } from "../../config/worksheetConfig";
 import AlertValidationModal from "../AlertValidationModal";
 import InputFormActionsheet from "../Actionsheet/CreateWorksheet/InputFormActionsheet";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const newDefaultInputs = defaultInputs.map((e) => {
   return {
@@ -94,14 +104,14 @@ export default function ListOfQuestions({
     <Stack>
       <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
       {isSuccess === "message" ? (
-        <Box bg="successAlert.500" p="5">
+        <Box bg={colors.alertBackground} p="5">
           <HStack justifyContent="space-between">
-            <Text fontSize="14px" fontWeight="500" color="successAlertText.500">
+            <BodyLarge color={colors.green}>
               ({selectData.length}) New Questions Added
-            </Text>
+            </BodyLarge>
             <IconByName
               name="CloseCircleLineIcon"
-              color="successAlertText.500"
+              color={colors.green}
               p="0"
               onPress={(e) => setIsSuccess("filterData")}
             />
@@ -115,28 +125,28 @@ export default function ListOfQuestions({
           <FilterButton
             getObject={setFormObject}
             object={formObject}
-            _actionSheet={{ bg: "worksheetCard.500" }}
+            _actionSheet={{ bg: colors.worksheetCardBg }}
             _box={{ pt: 5, px: 5 }}
             _button={{ bg: "button.50", px: "15px", py: "2" }}
             _filterButton={{
               rightIcon: "",
-              bg: "white",
+              bg: colors.white,
             }}
             resetButtonText={t("COLLAPSE")}
             filters={newDefaultInputs}
           />
-          <Box bg="white" px="5">
+          <Box bg={colors.white} px="5">
             <ScrollView horizontal={true}>
               {selectData.map((item, index) => (
                 <Box key={index}>
                   <Box
-                    bg="viewNotification.600"
+                    bg={colors.viewNotificationDark}
                     w="192px"
                     h="87px"
                     m="2"
                     p="3"
                     borderWidth="1"
-                    borderColor="viewNotification.500"
+                    borderColor={colors.viewNotificationNormal}
                     rounded="lg"
                     overflow="hidden"
                   >
@@ -157,7 +167,7 @@ export default function ListOfQuestions({
                     top="0"
                     right="0"
                     p="0"
-                    color="button.500"
+                    color={colors.primary}
                     _icon={{ size: 24 }}
                     onPress={(e) => handelUnSelectQuestion(item)}
                   />
@@ -171,14 +181,14 @@ export default function ListOfQuestions({
           flex="1"
           variant="ghost"
           leftIcon={<IconByName name="AddFillIcon" isDisabled />}
-          bg="white"
+          bg={colors.white}
           onPress={handelAddQuestionButton}
         >
           {t("Add more questions")}
         </Button>
       )}
 
-      <Box bg="white" p="5">
+      <Box bg={colors.white} p="5">
         <VStack space="5">
           {showQuestions.map((item, index) => {
             const isExist = selectData.filter(
@@ -195,13 +205,13 @@ export default function ListOfQuestions({
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color="button.500"
+                      color={colors.primary}
                       onPress={(e) => setQuestionObject(item)}
                     />
                     {!isSuccess ? (
                       <IconByName
                         p="1"
-                        color={isExist ? "button.500" : "gray.300"}
+                        color={isExist ? colors.primary : colors.lightGray2}
                         name={
                           isExist ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"
                         }
@@ -217,28 +227,26 @@ export default function ListOfQuestions({
           })}
         </VStack>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
         {!isSuccess ? (
           <>
-            <Text fontSize="10px" py="4" pb="1">
-              <Text fontWeight="700">Attention:</Text>
+            <Caption py="4" pb="1">
+              <Caption fontWeight="700">Attention:</Caption>
               You have selected {selectData.length} questions to add to the
               worksheet.
-            </Text>
+            </Caption>
             <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
               <HStack alignItems="center" space="1" pt="1" py="4">
                 <IconByName
                   isDisabled
-                  color={isAnswerFilter ? "button.500" : "gray.300"}
+                  color={isAnswerFilter ? colors.primary : colors.lightGray2}
                   name={
                     isAnswerFilter
                       ? "CheckboxLineIcon"
                       : "CheckboxBlankLineIcon"
                   }
                 />
-                <Text fontSize="12px" fontWeight="600">
-                  Include answer key in worksheet
-                </Text>
+                <Subtitle>Include answer key in worksheet</Subtitle>
               </HStack>
             </Pressable>
             <Button.Group>
@@ -253,7 +261,7 @@ export default function ListOfQuestions({
               </Button>
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: colors.white }}
                 px="5"
                 flex="1"
                 onPress={(e) => {
@@ -281,7 +289,7 @@ export default function ListOfQuestions({
             </Button>
             <Button
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: colors.white }}
               px="5"
               flex="1"
               onPress={handelPublish}
@@ -295,16 +303,16 @@ export default function ListOfQuestions({
           onClose={() => setQuestionObject({})}
         >
           <Actionsheet.Content alignItems={"left"}>
-            <Stack p={5} pt={2} pb="25px" textAlign="center">
-              <Text fontSize="12px" fontWeight={"500"} color="gray.400">
+            <Stack p={5} pt={2} pb="15px" textAlign="center">
+              <Subtitle color={colors.lightGray1}>
                 {t("Maps of the world")}
-              </Text>
+              </Subtitle>
               {/* <Text fontSize="16px" fontWeight={"600"}>
                 {t("Learning Made Easy")}
               </Text> */}
             </Stack>
             <IconByName
-              color="gray.300"
+              color={colors.lightGray2}
               position="absolute"
               top="10px"
               right="10px"
@@ -312,97 +320,80 @@ export default function ListOfQuestions({
               onPress={(e) => setQuestionObject({})}
             />
           </Actionsheet.Content>
-          <Box bg="white" width={"100%"} p="5">
+          <Box bg={colors.white} width={"100%"} p="5">
             <VStack space="5">
-              <Text
-                fontSize="14px"
-                fontWeight={"400"}
-                color="gray.400"
-                textTransform="inherit"
-              >
+              <BodyMedium color={colors.lightGray1} textTransform="inherit">
                 <div
                   dangerouslySetInnerHTML={{ __html: questionObject?.question }}
                 />
-              </Text>
+              </BodyMedium>
               <VStack space="4">
                 <HStack space="50px">
                   <VStack space="4">
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="AccountBoxFillIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {`Class: ${questionObject?.class}`}
-                      </Text>
+                      <Caption>{`Class: ${questionObject?.class}`}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="FileInfoLineIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {`Topics: ${questionObject?.topic}`}
-                      </Text>
+                      <Caption>{`Topics: ${questionObject?.topic}`}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="SurveyLineIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {"Source: Reasoning"}
-                      </Text>
+                      <Caption>{"Source: Reasoning"}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="SurveyLineIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
+                      <Caption>
                         {`Language: ${questionObject?.languageCode}`}
-                      </Text>
+                      </Caption>
                     </HStack>
                   </VStack>
                   <VStack space="4">
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="SurveyLineIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {`Subject: ${questionObject?.subject}`}
-                      </Text>
+                      <Caption>{`Subject: ${questionObject?.subject}`}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="BarChart2LineIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {"Level: Intermediate"}
-                      </Text>
+                      <Caption>{"Level: Intermediate"}</Caption>
                     </HStack>
 
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="BarChart2LineIcon"
-                        _icon={{ size: 12 }}
+                        _icon={{ size: 14 }}
                         p="0"
                       />
-                      <Text fontWeight="600" fontSize="10px">
-                        {"Outcome: Intermediate"}
-                      </Text>
+                      <Caption>{"Outcome: Intermediate"}</Caption>
                     </HStack>
                   </VStack>
                 </HStack>

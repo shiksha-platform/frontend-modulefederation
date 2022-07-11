@@ -1,6 +1,7 @@
 import {
   Loading,
   Layout,
+  H2,
   questionRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
