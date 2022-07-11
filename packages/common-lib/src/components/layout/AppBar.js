@@ -19,6 +19,7 @@ export default function AppBar({
   isEnableLanguageMenu,
   isEnableSearchBtn,
   setSearch,
+  setSearchState,
   color,
   languages,
   onPressBackButton,
@@ -36,6 +37,11 @@ export default function AppBar({
       localStorage.setItem('lang', e)
     }
     window.location.reload()
+  }
+
+  const handleSeachState = (boolean) => {
+    if (setSearchState) setSearchState(boolean)
+    setSearchInput(boolean)
   }
 
   return (
@@ -81,7 +87,7 @@ export default function AppBar({
                   color='coolGray.500'
                   name='CloseCircleLineIcon'
                   p='0'
-                  onPress={(e) => setSearchInput(false)}
+                  onPress={(e) => handleSeachState(false)}
                 />
               }
             />
@@ -119,7 +125,7 @@ export default function AppBar({
                   color={color ? color : ''}
                   size='sm'
                   name='SearchLineIcon'
-                  onPress={(e) => setSearchInput(true)}
+                  onPress={(e) => handleSeachState(true)}
                 />
               ) : (
                 <React.Fragment />

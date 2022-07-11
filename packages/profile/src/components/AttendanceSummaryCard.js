@@ -22,19 +22,19 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
   } else if (lastMonth > 100) {
     lastMonth = 100;
   }
-  if (thisMonth >= 100) {
-    bg = colors.success;
-    iconName = "EmotionHappyLineIcon";
-    title = t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS_MONTH");
-  } else if (thisMonth < 100 && thisMonth >= 50) {
-    bg = colors.warning;
-    iconName = "EmotionNormalLineIcon";
-    title = t("AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED");
-  } else {
-    bg = colors.danger;
-    iconName = "EmotionSadLineIcon";
-    title = t("ABSENT_TODAY_POOR_THAN_LAST_WEEK");
-  }
+  // if (thisMonth >= 100) {
+  //   bg = "attendanceSuccessCardCompareBg.500";
+  //   iconName = "EmotionHappyLineIcon";
+  //   title = t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS_MONTH");
+  // } else if (thisMonth < 100 && thisMonth >= 50) {
+  //   bg = "attendanceWarningCardCompareBg.500";
+  //   iconName = "EmotionNormalLineIcon";
+  //   title = t("AVERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED");
+  // } else {
+  //   bg = "attendanceDangerCardCompareBg.500";
+  //   iconName = "EmotionSadLineIcon";
+  //   title = t("ABSENT_TODAY_POOR_THAN_LAST_WEEK");
+  // }
   return (
     <VStack>
       <Box bg={bg} roundedTop={"xl"} py="10px" px="15px">

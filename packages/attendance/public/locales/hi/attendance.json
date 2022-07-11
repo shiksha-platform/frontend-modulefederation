@@ -61,5 +61,7 @@
   "RESEND": "पुन: भेजें",
   "THIS_MONTH": "इस महीने",
   "LAST_MONTH": "पिछला महीना",
-  "CANCEL": "रद्द करना"
+  "CANCEL": "रद्द करना",
+  "SEND_ANOTHER_MESSAGE": "एक और संदेश भेजें",
+  "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "व्यवस्थापक से भेजें जा रहे संदेश देखें"
 }
