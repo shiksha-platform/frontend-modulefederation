@@ -34,19 +34,6 @@ import colorTheme from "../colorTheme";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const colors = colorTheme;
-
-const pinnedAnnouncementsData = [
-  {
-    data: "Shiksha V2.0 Is Live! 🚀🎉",
-    color: "green.100",
-    isDismissable: true,
-  },
-  {
-    data: "Students should not stand on road outside school during monsoon",
-    color: "amber.100",
-    isDismissable: false,
-  },
-];
 const announcementsData = [
   {
     name: "NTSE Result Declared!",
@@ -104,9 +91,6 @@ const Announcements = ({ footerLinks, appName }) => {
     React.useState(announcementsData);
   const [showMoreAnnouncements, setShowMoreAnnouncements] =
     React.useState(true);
-  const [pinnedAnnouncementsList, setPinnedAnnouncementsList] = React.useState(
-    pinnedAnnouncementsData
-  );
 
   React.useEffect(() => {
     capture("PAGE");
@@ -136,10 +120,6 @@ const Announcements = ({ footerLinks, appName }) => {
     }, 1000);
   };
   const data = React.useMemo(() => announcementsList, [announcementsList]);
-  const pinnedData = React.useMemo(
-    () => pinnedAnnouncementsList,
-    [pinnedAnnouncementsList]
-  );
 
   //function to modify the filters
   const modifyFilter = (idx, val, isChecked) => {
@@ -163,7 +143,7 @@ const Announcements = ({ footerLinks, appName }) => {
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{ languages: manifest.languages,showPinnedAnnouncements: true}}
       subHeader={t("VIEW_LATEST_ANNOUNCEMENTS")}
       _subHeader={{
         bg: colors?.cardBg,
@@ -178,45 +158,6 @@ const Announcements = ({ footerLinks, appName }) => {
     >
       <Stack space={1} mb="2">
         <Box bg={colors.white} p="5" roundedBottom={"xl"}>
-          <VStack space="2" mb="4">
-            {pinnedData.map((val, index) => (
-              <Box
-                width={"100%"}
-                rounded="4"
-                bg={val.color}
-                px="5"
-                py={val.isDismissable ? "3.5" : "5"}
-                key={index}
-              >
-                <HStack
-                  space="4"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <HStack space="1" alignItems={"center"}>
-                    <IconByName
-                      _icon={{ size: "20" }}
-                      name="PushpinLineIcon"
-                      isDisabled
-                    />
-                    <BodyMedium>{val.data}</BodyMedium>
-                  </HStack>
-
-                  {val.isDismissable ? (
-                    <IconByName
-                      _icon={{ size: "20" }}
-                      name="CloseLineIcon"
-                      onPress={(e) => {
-                        const d = [...pinnedAnnouncementsList];
-                        d.splice(index, 1);
-                        setPinnedAnnouncementsList(d);
-                      }}
-                    />
-                  ) : null}
-                </HStack>
-              </Box>
-            ))}
-          </VStack>
           <VStack justifyContent="center" pb="5" space="4">
             <HStack space="2" justifyContent="start" px="3">
               <Input
