@@ -11,11 +11,12 @@ import {
   Loading,
   telemetryFactory,
   capture,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { useNavigate, useParams } from "react-router-dom";
-import manifest from "../manifest.json";
+import manifestLocal from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import colorTheme from "../colorTheme";
@@ -33,6 +34,8 @@ export default function TeachingDetail({ footerLinks, appName }) {
   const [worksheetDrafts, setWorksheetDrafts] = React.useState([]);
   const [classObject, setClassObject] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+  const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
+  const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const { classId } = useParams();
 
   const getClass = async () => {
@@ -45,7 +48,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
     }
   };
 
-  React.useState(async () => {
+  React.useEffect(async () => {
     getClass();
     const data = await worksheetRegistryService.getAll({
       limit: 2,
@@ -57,6 +60,22 @@ export default function TeachingDetail({ footerLinks, appName }) {
       state: { eq: "Draft" },
     });
     setWorksheetDrafts(draftsData);
+    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    setWorksheetConfig(
+      Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
+        ? newManifest?.["worksheet.worksheetMetadata"]
+        : newManifest?.["worksheet.worksheetMetadata"]
+        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
+        : []
+    );
+    setShowButtonArray([...showButtonArray, ...buttons]);
     setLoading(false);
   }, []);
 
@@ -79,7 +98,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
       _header={{
         title: t("MY_TEACHING"),
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{ languages: manifestLocal.languages }}
       subHeader={`${classObject?.name ? classObject?.name : ""} ${
         classObject?.subjectName ? classObject?.subjectName : ""
       }`}
@@ -115,6 +134,10 @@ export default function TeachingDetail({ footerLinks, appName }) {
                 component: (
                   <VStack>
                     <Worksheets
+                      _woksheetBox={{
+                        canShowButtonArray: showButtonArray,
+                        worksheetConfig,
+                      }}
                       appName={appName}
                       data={worksheets}
                       leftTitle="My Worksheets"
@@ -125,6 +148,10 @@ export default function TeachingDetail({ footerLinks, appName }) {
                       }}
                     />
                     <Worksheets
+                      _woksheetBox={{
+                        canShowButtonArray: showButtonArray,
+                        worksheetConfig,
+                      }}
                       appName={appName}
                       data={worksheetDrafts}
                       leftTitle="Drafts"
@@ -185,7 +212,6 @@ const Worksheets = ({
               return (
                 <WorksheetBox
                   appName={appName}
-                  canShare={true}
                   key={index}
                   {...{ item, url: `/worksheet/${item.id}` }}
                   {..._woksheetBox}

@@ -283,5 +283,13 @@
   "ENTER_WORKSHEET_DETAILS": "Enter Worksheet Details",
   "SHOW_QUESTIONS_BASED_ON": "Show questions based on",
   "PLEASE_SELECT_LIMIT": "Please select limit",
-  "QUESTION_NOT_FOUND": "No question found for this filter"
+  "QUESTION_NOT_FOUND": "No question found for this filter",
+  "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "No Student Has Achieved 100% Attendance This Week",
+  "NO_STUDENT_HAS_BEEN_ABSENT": "No student has been absent for more than 3 days",
+  "SEARCH_QUESTIONS": "Search Questions",
+  "ENTER_TITLE": "Enter Title",
+  "NEW_QUESTIONS_ADDED": "New Questions Added",
+  "QUESTION_SELECTED": "Question Selected",
+  "AUTO_GENERATE": "Auto Generate",
+  "INCLUDE_ANSWER_KEY": "Include answer key in worksheet"
 }

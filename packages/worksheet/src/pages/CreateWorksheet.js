@@ -3,10 +3,12 @@ import {
   Layout,
   questionRegistryService,
   overrideColorTheme,
+  H2,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import manifest from "../manifest.json";
+import manifestLocal from "../manifest.json";
 import SuccessPage from "../components/CreateWorksheet/SuccessPage";
 import FormPage from "../components/CreateWorksheet/Form";
 import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage";
@@ -26,7 +28,28 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [limit, setLimit] = React.useState({});
   const [alertMessage, setAlertMessage] = React.useState();
   const [createType, setCreateType] = React.useState("create");
+  const [worksheetStartTime, setWorksheetStartTime] = React.useState();
+  const [manifest, setManifest] = React.useState();
+  const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const navigate = useNavigate();
+
+  React.useEffect(async () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Create",
+    });
+    capture("INTERACT", telemetryData);
+
+    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    setWorksheetConfig(
+      Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
+        ? newManifest?.["worksheet.worksheetMetadata"]
+        : newManifest?.["worksheet.worksheetMetadata"]
+        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
+        : []
+    );
+    setManifest(newManifest);
+  }, []);
 
   React.useEffect(async () => {
     if (pageName === "ListOfQuestions" || pageName === "WorksheetTemplate") {
@@ -41,14 +64,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         setAlertMessage(t("PLEASE_SELECT_LIMIT"));
         setPageName();
       } else {
-        let data = {};
+        let data = {
+          adapter: manifest["question-bank.questionResource"],
+          limit: 10,
+        };
         attribute.forEach((item, index) => {
           if (formObject[item]) data = { ...data, [item]: formObject[item] };
         });
-
         const newQuestions = await questionRegistryService.getAllQuestions(
-          data,
-          limit.limit ? limit : { limit: 10 }
+          data
         );
         setQuestions(newQuestions);
         if (newQuestions.length <= 0) {
@@ -90,6 +114,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         appName={appName}
         handleBackButton={handleBackButton}
         formObject={formObject}
+        worksheetConfig={worksheetConfig}
       />
     );
   }
@@ -108,7 +133,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
       _appBar={{
-        languages: manifest.languages,
+        languages: manifestLocal.languages,
         onPressBackButton: handleBackButton,
       }}
       subHeader={
@@ -130,6 +155,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       {["ListOfQuestions", "filterData"].includes(pageName) && !alertMessage ? (
         <ListOfQuestions
           {...{
+            manifest,
+            appName,
             questions,
             setQuestions,
             pageName,
@@ -162,6 +189,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       ) : (
         <FormPage
           {...{
+            manifest,
+            appName,
+            setWorksheetStartTime,
             createType,
             setCreateType,
             formObject,

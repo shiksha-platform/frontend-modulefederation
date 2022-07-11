@@ -17,7 +17,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
-import manifest from "../../manifest.json";
+import manifestLocal from "../../manifest.json";
 
 const newDefaultInputs = defaultInputs.map((e) => {
   return {
@@ -45,7 +45,7 @@ export default function ListOfWorksheet({
   const [formObject, setFormObject] = React.useState(worksheet);
 
   React.useEffect(async () => {
-    let data = {};
+    let data = { adapter: manifest["question-bank.questionResource"] };
     const attribute = defaultInputs
       .map((e) =>
         !["source"].includes(e.attributeName) ? e.attributeName : null
@@ -110,7 +110,7 @@ export default function ListOfWorksheet({
         title: t("Add Questions"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages }}
+      _appBar={{ languages: manifestLocal.languages }}
       subHeader={formObject.name}
       _subHeader={{
         bg: "worksheetCard.500",

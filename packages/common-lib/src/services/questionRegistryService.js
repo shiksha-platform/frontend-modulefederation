@@ -1,6 +1,35 @@
 import { get, post } from './RestClient'
+import mapInterfaceData from './mapInterfaceData'
+import manifest from '../manifest.json'
 
-export const getAllQuestions = async (filter, request) => {
+const interfaceData = {
+  questionId: 'questionId',
+  body: 'body',
+  question: 'body',
+  options: 'options',
+  type: 'type'
+}
+
+export const getAllQuestions = async (params = {}, header = {}) => {
+  let headers = {
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ContentType: 'application/json',
+    Accept: 'application/json',
+    ...header
+  }
+  const result = await get(
+    `${manifest.api_url}/question/${params?.adapter}/search?server=dev`,
+    {
+      params: params,
+      headers
+    }
+  )
+  if (result?.data?.data && result.data.data.length) {
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+  }
+  return []
+}
+export const getAll = async (filter, request) => {
   const questionList = await post(
     'https://vdn.diksha.gov.in/action/composite/v3/search',
     {

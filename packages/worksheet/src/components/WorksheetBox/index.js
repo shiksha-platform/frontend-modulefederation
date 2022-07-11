@@ -17,9 +17,9 @@ import jwt_decode from "jwt-decode";
 const DRAFT = "Draft";
 
 export default function WorksheetBox({
+  worksheetConfig,
   item,
   url,
-  canShare,
   canShowButtonArray,
   _addIconButton,
   appName,
@@ -161,9 +161,13 @@ export default function WorksheetBox({
                 <H2 color="white">{item.name?.toUpperCase().substr(0, 1)}</H2>
               </Avatar>
               <Stack space="1">
-                <VStack space="1px">
-                  <H2>{item.name}</H2>
-                </VStack>
+                {worksheetConfig?.includes("name") || true ? (
+                  <VStack space="1px">
+                    <H2>{item.name}</H2>
+                  </VStack>
+                ) : (
+                  <React.Fragment />
+                )}
                 <HStack space={1} alignItems="center">
                   <IconByName
                     name="Heart3FillIcon"
@@ -181,137 +185,162 @@ export default function WorksheetBox({
           </Pressable>
           <RightButton />
         </HStack>
-        <Subtitle
-          color="worksheetBoxText.500"
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "3",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {item.description}
-        </Subtitle>
+        {worksheetConfig?.includes("description") || true ? (
+          <Subtitle
+            color="worksheetBoxText.500"
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "3",
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {item.description}
+          </Subtitle>
+        ) : (
+          <React.Fragment />
+        )}
         <HStack space="2">
           <VStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="SurveyLineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Subject: " + item.subject}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="BarChart2LineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Level: " + item.level}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="QuestionLineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Questions: " +
-                  (Array.isArray(item.questions)
-                    ? item.questions.length
-                    : item.questions)}
-              </Subtitle>
-            </HStack>
+            {worksheetConfig?.includes("subject") ? (
+              <HStack space="1" alignItems="center">
+                <IconByName
+                  name="SurveyLineIcon"
+                  _icon={{ size: 12 }}
+                  color="worksheetBoxText.400"
+                  p="0"
+                />
+                <Subtitle color="worksheetBoxText.400">
+                  {"Subject: " + item.subject}
+                </Subtitle>
+              </HStack>
+            ) : (
+              <React.Fragment />
+            )}
+            {worksheetConfig?.includes("level") ? (
+              <HStack space="1" alignItems="center">
+                <IconByName
+                  name="BarChart2LineIcon"
+                  _icon={{ size: 12 }}
+                  color="worksheetBoxText.400"
+                  p="0"
+                />
+                <Subtitle color="worksheetBoxText.400">
+                  {"Level: " + item.level}
+                </Subtitle>
+              </HStack>
+            ) : (
+              <React.Fragment />
+            )}
+            {worksheetConfig?.includes("question") ? (
+              <HStack space="1" alignItems="center">
+                <IconByName
+                  name="QuestionLineIcon"
+                  _icon={{ size: 12 }}
+                  color="worksheetBoxText.400"
+                  p="0"
+                />
+                <Subtitle color="worksheetBoxText.400">
+                  {"Questions: " +
+                    (Array.isArray(item.questions)
+                      ? item.questions.length
+                      : item.questions)}
+                </Subtitle>
+              </HStack>
+            ) : (
+              <React.Fragment />
+            )}
           </VStack>
           <VStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="AccountBoxFillIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Grade: " + item.grade}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="ArticleLineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {t("TOPIC") + ": " + item.topic}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="Download2LineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Downloads: " + item.downloads}
-              </Subtitle>
-            </HStack>
+            {worksheetConfig?.includes("grade") ? (
+              <HStack space="1" alignItems="center">
+                <IconByName
+                  name="AccountBoxFillIcon"
+                  _icon={{ size: 12 }}
+                  color="worksheetBoxText.400"
+                  p="0"
+                />
+                <Subtitle color="worksheetBoxText.400">
+                  {"Grade: " + item.grade}
+                </Subtitle>
+              </HStack>
+            ) : (
+              <React.Fragment />
+            )}
+            {worksheetConfig?.includes("topic") ? (
+              <HStack space="1" alignItems="center">
+                <IconByName
+                  name="ArticleLineIcon"
+                  _icon={{ size: 12 }}
+                  color="worksheetBoxText.400"
+                  p="0"
+                />
+                <Subtitle color="worksheetBoxText.400">
+                  {t("TOPIC") + ": " + item.topic}
+                </Subtitle>
+              </HStack>
+            ) : (
+              <React.Fragment />
+            )}
+            {worksheetConfig?.includes("download") ? (
+              <HStack space="1" alignItems="center">
+                <IconByName
+                  name="Download2LineIcon"
+                  _icon={{ size: 12 }}
+                  color="worksheetBoxText.400"
+                  p="0"
+                />
+                <Subtitle color="worksheetBoxText.400">
+                  {"Downloads: " + item.downloads}
+                </Subtitle>
+              </HStack>
+            ) : (
+              <React.Fragment />
+            )}
           </VStack>
         </HStack>
-        {canShare ? (
-          <HStack space="5">
-            {!showButtonArray || showButtonArray.includes("Like") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-                  _icon={{ size: 15 }}
-                  color="button.500"
-                  p="0"
-                  onPress={handleLike}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-            {!showButtonArray || showButtonArray.includes("Share") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name="ShareLineIcon"
-                  _icon={{ size: 15 }}
-                  p="0"
-                  onPress={handleShare}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-            {!showButtonArray || showButtonArray.includes("download") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  onPress={handleDownload}
-                  name="DownloadLineIcon"
-                  _icon={{ size: 15 }}
-                  color="button.500"
-                  p="0"
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-          </HStack>
-        ) : (
-          ""
-        )}
+
+        <HStack space="5">
+          {!showButtonArray || showButtonArray.includes("Like") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+                _icon={{ size: 15 }}
+                color="button.500"
+                p="0"
+                onPress={handleLike}
+              />
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+          {!showButtonArray || showButtonArray.includes("Share") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name="ShareLineIcon"
+                _icon={{ size: 15 }}
+                p="0"
+                onPress={handleShare}
+              />
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+          {!showButtonArray || showButtonArray.includes("Download") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                onPress={handleDownload}
+                name="DownloadLineIcon"
+                _icon={{ size: 15 }}
+                color="button.500"
+                p="0"
+              />
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+        </HStack>
       </VStack>
     </Box>
   );

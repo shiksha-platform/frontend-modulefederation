@@ -38,6 +38,8 @@ const newDefaultInputs = defaultInputs.map((e) => {
 });
 
 export default function Form({
+  manifest,
+  appName,
   createType,
   setCreateType,
   formObject,
@@ -49,16 +51,40 @@ export default function Form({
 }) {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState({});
-  const [inputs, setInputs] = React.useState(newDefaultInputs);
+  const [inputs, setInputs] = React.useState([]);
   const attributeName = getAttribute(formData);
   const type = getType(formData);
   const valueArr = getValueByType(formObject[attributeName], type);
 
-  React.useEffect((e) => {
-    if (createType === "auto") {
-      setInputs([...newDefaultInputs, ...autoGenerateInputs]);
-    }
-  }, []);
+  React.useEffect(
+    (e) => {
+      if (createType === "auto") {
+        const filters = Array.isArray(
+          manifest?.["worksheet.configureWorksheetGetFilter"]
+        )
+          ? manifest?.["worksheet.configureWorksheetGetFilter"]
+          : manifest?.["worksheet.configureWorksheetGetFilter"]
+          ? JSON.parse(manifest?.["worksheet.configureWorksheetGetFilter"])
+          : [];
+        const autoFiters = [...newDefaultInputs, ...autoGenerateInputs];
+        setInputs(autoFiters.filter((e) => filters.includes(e.attributeName)));
+      } else {
+        const filters = Array.isArray(
+          manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
+        )
+          ? manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
+          : manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
+          ? JSON.parse(
+              manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
+            )
+          : [];
+        setInputs(
+          newDefaultInputs.filter((e) => filters.includes(e.attributeName))
+        );
+      }
+    },
+    [manifest, createType]
+  );
 
   const handelAddQuestion = () => {
     if (createType === "auto") {
@@ -82,19 +108,20 @@ export default function Form({
       />
       <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
         <Button.Group>
-          {createType === "create" ? (
+          {createType === "create" &&
+          manifest &&
+          manifest["worksheet.allow-autogenerating-worksheet"] === "true" ? (
             <Button
               flex="1"
               variant="outline"
               onPress={(e) => {
                 setCreateType("auto");
-                setInputs([...newDefaultInputs, ...autoGenerateInputs]);
               }}
             >
-              {t("Auto Generate")}
+              {t("AUTO_GENERATE")}
             </Button>
           ) : (
-            <></>
+            <React.Fragment />
           )}
           <Button
             colorScheme="button"
