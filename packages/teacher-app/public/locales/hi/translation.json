@@ -280,5 +280,12 @@
   "DATE_FO_JOINING": "शामिल होने की तिथि",
   "DATE_OF_BIRTH": "जन्म की तारीख",
   "PERSONAL_DETAILS": "व्यक्तिगत विवरण",
-  "CONTACT_DETAILS": "सम्पर्क करने का विवरण"
+  "CONTACT_DETAILS": "सम्पर्क करने का विवरण",
+  "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "इस सप्ताह किसी भी छात्र ने 100% उपस्थिति हासिल नहीं की है",
+  "NO_STUDENT_HAS_BEEN_ABSENT": "कोई भी छात्र 3 दिनों से अधिक समय से अनुपस्थित नहीं है",
+  "SEARCH_QUESTIONS": "प्रश्न खोजें",
+  "ENTER_TITLE": "शीर्षक दर्ज करें",
+  "NEW_QUESTIONS_ADDED": "नए प्रश्न जोड़े गए",
+  "QUESTION_SELECTED": "प्रश्न चयनित",
+  "PLEASE_SELECT_ATLIST_ONE_QUESTION": "कृपया एक प्रश्न को सूचीबद्ध करें चुनें"
 }

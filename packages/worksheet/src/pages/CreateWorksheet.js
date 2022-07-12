@@ -1,9 +1,11 @@
 import {
+  capture,
+  telemetryFactory,
   Loading,
   Layout,
+  H2,
   questionRegistryService,
   overrideColorTheme,
-  H2,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +29,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [limit, setLimit] = React.useState({});
   const [alertMessage, setAlertMessage] = React.useState();
   const [createType, setCreateType] = React.useState("create");
+  const [worksheetStartTime, setWorksheetStartTime] = React.useState();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Create",
+    });
+    capture("INTERACT", telemetryData);
+  }, []);
 
   React.useEffect(async () => {
     if (pageName === "ListOfQuestions" || pageName === "WorksheetTemplate") {
@@ -85,6 +96,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     }
   };
 
+  const handleWorksheetTemplateOnPress = () => {
+    setFormObject({ ...formObject, state: "Publish" });
+    setPageName("AddDescriptionPage");
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Template-Choose",
+    });
+    capture("INTERACT", telemetryData);
+  };
+
   if (pageName === "success") {
     return (
       <SuccessPage
@@ -131,6 +152,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       {["ListOfQuestions", "filterData"].includes(pageName) && !alertMessage ? (
         <ListOfQuestions
           {...{
+            appName,
             questions,
             setQuestions,
             pageName,
@@ -141,18 +163,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         />
       ) : pageName === "WorksheetTemplate" && !alertMessage ? (
         questions.length > 0 ? (
-          <WorksheetTemplate
-            onPress={(e) => {
-              setFormObject({ ...formObject, state: "Publish" });
-              setPageName("AddDescriptionPage");
-            }}
-          />
+          <WorksheetTemplate onPress={handleWorksheetTemplateOnPress} />
         ) : (
           ""
         )
       ) : pageName === "AddDescriptionPage" && !alertMessage ? (
         <AddDescriptionPage
           {...{
+            appName,
+            worksheetStartTime,
+            createType,
             formObject,
             setFormObject,
             questions,
@@ -163,6 +183,8 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       ) : (
         <FormPage
           {...{
+            appName,
+            setWorksheetStartTime,
             createType,
             setCreateType,
             formObject,

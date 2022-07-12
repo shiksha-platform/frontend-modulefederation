@@ -9,11 +9,16 @@ const colorTheme = {
   buttonBg: '#F87558',
   buttonText: '#ffffff',
   buttonBorder: '#F87558',
-  present: '#0d911c',
   white: '#FFFFFF',
   success: '#0D921B',
   warning: '#FFC369',
-  danger: '#F57B7B'
+  danger: '#F57B7B',
+  present: '#2BB639',
+  absent: '#F57B7B',
+  unmarked: '#B5B5C8',
+  holiDay: '#F0F0F4',
+  defaultMark: '#d3d3e5',
+  lateMark: '#FFEB3B'
 }
 
 export default colorTheme
