@@ -13,11 +13,7 @@ export const IconComponent = ({ lastTitle, iconName }) => {
         <BodyLarge color={colorTheme.white}>{lastTitle}</BodyLarge>
         {
           // @ts-ignore
-          <IconByName
-            color={colorTheme.white}
-            name={iconName}
-            isDisabled
-          />
+          <IconByName color={colorTheme.white} name={iconName} isDisabled />
         }
       </HStack>
     </Box>

@@ -6,7 +6,11 @@ import { Subtitle, BodyMedium } from "@shiksha/common-lib";
 // Utils
 import { colorTheme } from "utils/functions/ColorTheme";
 
-export const SmsModal: React.FC<any> = ({ smsShowModal, setSmsShowModal, t }) => {
+export const SmsModal: React.FC<any> = ({
+  smsShowModal,
+  setSmsShowModal,
+  t,
+}) => {
   return (
     <Actionsheet isOpen={smsShowModal} onClose={() => setSmsShowModal(false)}>
       <Actionsheet.Content alignItems={"left"}>

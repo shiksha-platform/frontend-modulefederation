@@ -49,14 +49,14 @@ export const CalendarComponent = ({
           attendanceItem,
           attendanceIconProp,
           attendanceType,
-        } = HandleAttendanceData(
-          {attendance,
+        } = HandleAttendanceData({
+          attendance,
           day,
           sms,
           isIconSizeSmall,
           student,
-          manifest}
-        );
+          manifest,
+        });
 
         return (
           <VStack
