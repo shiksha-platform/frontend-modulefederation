@@ -5,6 +5,8 @@ import { TimeBar } from "components/simple/TimeBar/TimeBar";
 export interface ICalendarBar {
   view?: string;
   type?: string;
+  page?: number;
+  setPage?: Function;
   activeColor?: string;
   _box?: Object;
 }

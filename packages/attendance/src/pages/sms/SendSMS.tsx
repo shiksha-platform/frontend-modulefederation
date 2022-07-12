@@ -23,7 +23,6 @@ import {
   telemetryFactory,
   H2,
   H3,
-  H4,
   capture,
   calendar,
   Caption,
@@ -39,12 +38,13 @@ const Card = React.lazy(() => import("students/Card"));
 import { colorTheme } from "utils/functions/ColorTheme";
 import { PRESENT, ABSENT } from "utils/functions/Constants";
 import { usePAStudents } from "utils/customhooks/usePAStudents";
+import { isMoment, isMoment2DArray } from "utils/types/typeGuards";
 
 export default function SendSMS({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [datePage, setDatePage] = useState(0);
   const { classId } = useParams();
-  const [classObject, setClassObject] = useState({});
+  const [classObject, setClassObject] = useState<any>({});
   const teacherId = localStorage.getItem("id");
   const [students, setStudents] = useState([]);
   const navigate = useNavigate();
@@ -78,6 +78,7 @@ export default function SendSMS({ footerLinks, appName }) {
 
   const getAttendance = async () => {
     let weekdays = calendar(datePage, "week");
+    if (isMoment(weekdays) || isMoment2DArray(weekdays)) return;
     let params = {
       fromDate: weekdays?.[0]?.format("YYYY-MM-DD"),
       toDate: weekdays?.[weekdays.length - 1]?.format("YYYY-MM-DD"),
@@ -88,6 +89,7 @@ export default function SendSMS({ footerLinks, appName }) {
   };
 
   return (
+    //@ts-ignore
     <Layout
       _header={{
         title: t("Message Sent By Admin"),
@@ -108,14 +110,17 @@ export default function SendSMS({ footerLinks, appName }) {
             {...{ page: datePage, setPage: setDatePage }}
             type="days"
           />
-          <IconByName name={"ListUnorderedIcon"} isDisabled />
+          {
+            //@ts-ignore
+            <IconByName name={"ListUnorderedIcon"} isDisabled />
+          }
         </HStack>
       }
       _subHeader={{ bg: colorTheme.attendanceCardBg, mb: 1 }}
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg={colors.white} p="5">
+        <Box bg={colorTheme.white} p="5">
           <BodyLarge>
             {(classObject?.name ? "Class " + classObject?.name : "") +
               " • " +
@@ -131,6 +136,7 @@ export default function SendSMS({ footerLinks, appName }) {
             <Collapsible
               defaultCollapse={true}
               isHeaderBold={false}
+              //@ts-ignore
               header={
                 <>
                   <VStack>
@@ -147,6 +153,7 @@ export default function SendSMS({ footerLinks, appName }) {
               <VStack space={2} pt="2">
                 <Box>
                   <FlatList
+                    //@ts-ignore
                     data={presentStudents}
                     renderItem={({ item }) => (
                       <Box
@@ -188,6 +195,7 @@ export default function SendSMS({ footerLinks, appName }) {
             <Collapsible
               defaultCollapse={true}
               isHeaderBold={false}
+              //@ts-ignore
               header={
                 <>
                   <VStack>
@@ -202,6 +210,7 @@ export default function SendSMS({ footerLinks, appName }) {
               <VStack space={2} pt="2">
                 <Box>
                   <FlatList
+                    //@ts-ignore
                     data={absentStudents}
                     renderItem={({ item }) => (
                       <Box

@@ -36,10 +36,10 @@ export default function MessageHistory({ footerLinks }) {
   const [weekPage, setWeekPage] = useState(0);
   const [calendarView, setCalendarView] = useState();
   const { studentId } = useParams();
-  const [studentObject, setStudentObject] = useState({});
+  const [studentObject, setStudentObject] = useState<any>({});
   const [search, setSearch] = useState();
   const [searchSms, setSearchSms] = useState([]);
-  const [smsObject, setSmsObject] = useState({});
+  const [smsObject, setSmsObject] = useState<any>({});
   const [showModal, setShowModal] = useState(false);
   const [weekDays, setWeekDays] = useState([]);
 
@@ -47,6 +47,7 @@ export default function MessageHistory({ footerLinks }) {
     let ignore = false;
     const getData = async () => {
       if (!ignore) {
+        //@ts-ignore
         setWeekDays(calendar(weekPage, calendarView));
       }
     };
@@ -66,10 +67,12 @@ export default function MessageHistory({ footerLinks }) {
   }, [studentId]);
 
   useEffect(() => {
+    //@ts-ignore
     capture("PAGE");
   }, []);
 
   return (
+    // @ts-ignore
     <Layout
       _appBar={{
         isEnableSearchBtn: true,
@@ -95,6 +98,7 @@ export default function MessageHistory({ footerLinks }) {
               variant="outline"
               bg="button.100"
               rightIcon={
+                //@ts-ignore
                 <IconByName
                   color={colors.primary}
                   name="ArrowDownSLineIcon"
@@ -113,17 +117,18 @@ export default function MessageHistory({ footerLinks }) {
             </Button>
             <Actionsheet
               isOpen={showModal}
-              _backdrop={{ opacity: "0.9", bg: colors.gray }}
+              _backdrop={{ opacity: "0.9", bg: colorTheme.gray }}
             >
               <Actionsheet.Content
                 p="0"
                 alignItems={"left"}
-                bg={colors.studentCardBg}
+                bg={colorTheme.studentCardBg}
               >
                 <HStack justifyContent={"space-between"}>
                   <Stack p={5} pt={2} pb="25px">
                     <H2>{t("SELECT_VIEW")}</H2>
                   </Stack>
+                  {/*@ts-ignore*/}
                   <IconByName
                     name="CloseCircleLineIcon"
                     onPress={(e) => setShowModal(false)}
@@ -143,8 +148,10 @@ export default function MessageHistory({ footerLinks }) {
                       key={index}
                       p="5"
                       borderBottomWidth={1}
-                      borderBottomColor={colors.coolGray}
+                      borderBottomColor={colorTheme.coolGray}
+                      // @ts-ignore
                       onPress={(e) => {
+                        // @ts-ignore
                         setCalendarView(item.value);
                         setShowModal(false);
                       }}
@@ -158,7 +165,7 @@ export default function MessageHistory({ footerLinks }) {
           </Stack>
         </HStack>
       }
-      _subHeader={{ bg: colors.studentCardBg }}
+      _subHeader={{ bg: colorTheme.studentCardBg }}
       _footer={footerLinks}
     >
       <VStack space="1">
@@ -174,6 +181,7 @@ export default function MessageHistory({ footerLinks }) {
             </Box>
           </HStack>
           <VStack>
+            {/*@ts-ignore*/}
             <CalendarComponent
               monthDays={weekDays}
               student={studentObject}
@@ -183,26 +191,31 @@ export default function MessageHistory({ footerLinks }) {
             />
           </VStack>
           <Actionsheet
+            //@ts-ignore
             isOpen={smsObject?.status}
-            _backdrop={{ opacity: "0.9", bg: colors.gray }}
+            _backdrop={{ opacity: "0.9", bg: colorTheme.gray }}
           >
             <Actionsheet.Content
               p="0"
               alignItems={"left"}
-              bg={colors.studentCardBg}
+              bg={colorTheme.studentCardBg}
             >
               <HStack justifyContent={"space-between"}>
                 <Stack p={5} pt={2} pb="25px">
                   <H2>
-                    {smsObject?.status === "Send"
-                      ? t("MESSAGE_SENT")
-                      : t("MESSAGE_FAILED")}
+                    {
+                      //@ts-ignore
+                      smsObject?.status === "Send"
+                        ? t("MESSAGE_SENT")
+                        : t("MESSAGE_FAILED")
+                    }
                   </H2>
-                  <H4 color={colors.studentCardText}>{smsObject?.date}</H4>
+                  <H4 color={colorTheme.studentCardText}>{smsObject?.date}</H4>
                 </Stack>
+                {/*@ts-ignore*/}
                 <IconByName
                   name="CloseCircleLineIcon"
-                  color={colors.studentCardText}
+                  color={colorTheme.studentCardText}
                   onPress={(e) => setSmsObject({})}
                 />
               </HStack>

@@ -10,10 +10,11 @@ import * as TelemetryFactory from "utils/functions/TelemetryFactoryMapper";
 const Message = ({ item, isDisableRetry }) => {
   const { t } = useTranslation();
   return (
-    <Box p="5" borderBottomWidth="1" borderBottomColor={colors.coolGray}>
+    <Box p="5" borderBottomWidth="1" borderBottomColor={colorTheme.coolGray}>
       <VStack space="2">
         <HStack space="1" justifyContent="space-between">
           <HStack space="1" alignItems="center">
+            {/*@ts-ignore*/}
             <IconByName
               isDisabled
               name={
@@ -32,6 +33,7 @@ const Message = ({ item, isDisableRetry }) => {
               py="0"
               onPress={(e) => {
                 const telemetryData = TelemetryFactory.interact({
+                  //@ts-ignore
                   appName,
                   type: "Attendance-Notification-Message-Retried",
                   sentCount: 10,

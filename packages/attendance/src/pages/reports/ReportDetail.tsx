@@ -31,6 +31,7 @@ import { GetAttendanceReport } from "utils/functions/GetAttendanceReport";
 import { ReportDetailData } from "components/composite/ReportDetailData";
 import { MomentUnionType } from "utils/types/types";
 import { CompareReportHeading } from "components/simple/CompareReportHeading";
+import { usePAStudents } from "utils/customhooks/usePAStudents";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -42,8 +43,16 @@ export default function ReportDetail({ footerLinks, appName }) {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
   const [attendanceForReport, setAttendanceForReport] = useState([]);
-  const [presentStudents, setPresentStudents] = useState([]);
-  const [absentStudents, setAbsentStudents] = useState([]);
+  const [presentStudents] = usePAStudents({
+    students,
+    attendance,
+    type: "present",
+  });
+  const [absentStudents] = useState({
+    students,
+    attendance,
+    type: "absent",
+  });
   const [calendarView] = useState(
     view
       ? ["month", "monthInDays"].includes(view)
@@ -74,8 +83,6 @@ export default function ReportDetail({ footerLinks, appName }) {
       if (!ignore) setClassObject(classObj);
       const studentData = await studentRegistryService.getAll({ classId });
       setStudents(studentData);
-      await getPresentStudents(studentData);
-      await getAbsentStudents(studentData);
       await getAttendance();
       await getAttendanceForReport();
     };
@@ -93,57 +100,6 @@ export default function ReportDetail({ footerLinks, appName }) {
       "getAttendance"
     );
     setAttendance(attendanceData);
-  };
-
-  const getPresentStudents = async (students) => {
-    let weekdays = calendar(
-      page,
-      ["days", "week"].includes(calendarView) ? "week" : calendarView
-    );
-    // @ts-ignore
-    let workingDaysCount = weekdays.filter((e) => e.day())?.length;
-    let params = {
-      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-      // @ts-ignore
-      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
-      fun: "getPresentStudents",
-    };
-    const attendanceData = await GetAttendance(params);
-    const present = getStudentsPresentAbsent(
-      attendanceData,
-      students,
-      workingDaysCount
-    );
-    let presentNew = students.filter((e) =>
-      present.map((e) => e.id).includes(e.id)
-    );
-    setPresentStudents(
-      await studentRegistryService.setDefaultValue(presentNew)
-    );
-  };
-
-  const getAbsentStudents = async (students) => {
-    let weekdays = calendar(
-      -1,
-      ["days", "week"].includes(calendarView) ? "week" : calendarView
-    );
-    let params = {
-      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-      // @ts-ignore
-      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
-      fun: "getAbsentStudents",
-    };
-    const attendanceData = await GetAttendance(params);
-    const absent = getStudentsPresentAbsent(
-      attendanceData,
-      students,
-      3,
-      "Absent"
-    );
-    let absentNew = students.filter((e) =>
-      absent.map((e) => e.id).includes(e.id)
-    );
-    setAbsentStudents(await studentRegistryService.setDefaultValue(absentNew));
   };
 
   const getAttendanceForReport = async () => {

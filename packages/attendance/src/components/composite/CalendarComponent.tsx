@@ -1,13 +1,10 @@
 import React from "react";
 import moment from "moment";
-import { Box, Button, HStack, Pressable, Text, VStack } from "native-base";
+import { Box, HStack, Pressable, Text, VStack } from "native-base";
 import { TouchableHighlight } from "react-native-web";
 import { GetIcon } from "components/simple/GetIcon";
 import Message from "../simple/Message";
-import { overrideColorTheme } from "@shiksha/common-lib";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
-
+import { colorTheme, colors } from "utils/functions/ColorTheme";
 const CalendarComponent = ({
   monthDays,
   type,
@@ -27,7 +24,7 @@ const CalendarComponent = ({
         borderBottomWidth={
           monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
         }
-        borderBottomColor={colors.lightGray}
+        borderBottomColor={colorTheme.lightGray}
         p={"2"}
         {...(_weekBox?.[index] ? _weekBox[index] : {})}
       >
@@ -48,19 +45,24 @@ const CalendarComponent = ({
             smsIconProp = {
               ...smsIconProp,
               status: smsItem?.type,
+              // @ts-ignore
               type: smsItem?.status,
             };
           } else if (smsItem?.type && smsItem?.type === "Absent") {
             smsIconProp = {
               ...smsIconProp,
               status: smsItem?.type,
+              // @ts-ignore
               type: smsItem?.status,
             };
           } else if (day.day() === 0) {
+            // @ts-ignore
             smsIconProp = { ...smsIconProp, status: "Holiday" };
           } else if (isToday) {
+            // @ts-ignore
             smsIconProp = { ...smsIconProp, status: "Today" };
           } else if (moment().diff(day, "days") > 0) {
+            // @ts-ignore
             smsIconProp = { ...smsIconProp, status: "Unmarked" };
           }
 
@@ -118,6 +120,7 @@ const CalendarComponent = ({
                       {...smsIconProp}
                       status="Loader4LineIcon"
                       color={colors.primary}
+                      //@ts-ignore
                       isDisabled
                       _icon={{ _fontawesome: { spin: true } }}
                     />
@@ -133,8 +136,12 @@ const CalendarComponent = ({
     ));
   } else {
     return sms.map((item, index) => (
+      // @ts-ignore
       <Pressable key={index} onPress={(e) => setSmsObject(item)}>
-        <Message key={index} item={item} />
+        {
+          // @ts-ignore
+          <Message key={index} item={item} />
+        }
       </Pressable>
     ));
   }
