@@ -208,10 +208,20 @@ const ChildrenWorksheet = ({
     setSortData(newSort);
   };
 
+  const handleFilter = (obejct) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Filter",
+      filterObject: obejct,
+    });
+    capture("INTERACT", telemetryData);
+    setFilterObject(obejct);
+  };
+
   return (
     <Stack>
       <FilterButton
-        getObject={setFilterObject}
+        getObject={handleFilter}
         _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: colors.cardBg }}
         _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}

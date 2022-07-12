@@ -1,9 +1,11 @@
 import {
+  FilterButton,
+  IconByName,
+  capture,
+  telemetryFactory,
   BodyLarge,
   BodyMedium,
   Caption,
-  FilterButton,
-  IconByName,
   overrideColorTheme,
   Subtitle,
 } from "@shiksha/common-lib";
@@ -40,6 +42,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
 });
 
 export default function ListOfQuestions({
+  appName,
   questions,
   setQuestions,
   pageName,
@@ -72,6 +75,11 @@ export default function ListOfQuestions({
   };
 
   const handelAddQuestionButton = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Add-More-Questions",
+    });
+    capture("INTERACT", telemetryData);
     setShowQuestions(questions);
     setIsSuccess(false);
   };
@@ -100,6 +108,39 @@ export default function ListOfQuestions({
     setFormObject({ ...formObject, state: "Publish" });
   };
 
+  const handleAddToWorksheet = () => {
+    if (selectData.length <= 0) {
+      setAlertMessage(t("PLEASE_SELECT_ATLIST_ONE_QUESTION"));
+    } else {
+      setShowModule(true);
+      const telemetryData = telemetryFactory.interact({
+        appName,
+        type: "Worksheet-Question-Add",
+      });
+      capture("INTERACT", telemetryData);
+    }
+  };
+
+  const handleFilter = (obejct) => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Question-Filter",
+      filterObject: obejct,
+    });
+    capture("INTERACT", telemetryData);
+    setFormObject(obejct);
+  };
+
+  const handleAnswerKey = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Show-Answer",
+      answerKey: !isAnswerFilter,
+    });
+    capture("INTERACT", telemetryData);
+    setIsAnswerFilter(!isAnswerFilter);
+  };
+
   return (
     <Stack>
       <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
@@ -123,7 +164,7 @@ export default function ListOfQuestions({
       {!isSuccess ? (
         <Box>
           <FilterButton
-            getObject={setFormObject}
+            getObject={handleFilter}
             object={formObject}
             _actionSheet={{ bg: colors.worksheetCardBg }}
             _box={{ pt: 5, px: 5 }}
@@ -264,13 +305,7 @@ export default function ListOfQuestions({
                 _text={{ color: colors.white }}
                 px="5"
                 flex="1"
-                onPress={(e) => {
-                  if (selectData.length <= 0) {
-                    setAlertMessage("Please select atlist one question");
-                  } else {
-                    setShowModule(true);
-                  }
-                }}
+                onPress={handleAddToWorksheet}
               >
                 {t("ADD_TO_WORKSHEET")}
               </Button>
