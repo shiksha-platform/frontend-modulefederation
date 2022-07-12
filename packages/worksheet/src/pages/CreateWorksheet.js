@@ -1,6 +1,9 @@
 import {
+  capture,
+  telemetryFactory,
   Loading,
   Layout,
+  H2,
   questionRegistryService,
   overrideColorTheme,
   H2,
@@ -32,6 +35,14 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [manifest, setManifest] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Create",
+    });
+    capture("INTERACT", telemetryData);
+  }, []);
 
   React.useEffect(async () => {
     const telemetryData = telemetryFactory.interact({
@@ -108,6 +119,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     }
   };
 
+  const handleWorksheetTemplateOnPress = () => {
+    setFormObject({ ...formObject, state: "Publish" });
+    setPageName("AddDescriptionPage");
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Template-Choose",
+    });
+    capture("INTERACT", telemetryData);
+  };
+
   if (pageName === "success") {
     return (
       <SuccessPage
@@ -167,18 +188,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         />
       ) : pageName === "WorksheetTemplate" && !alertMessage ? (
         questions.length > 0 ? (
-          <WorksheetTemplate
-            onPress={(e) => {
-              setFormObject({ ...formObject, state: "Publish" });
-              setPageName("AddDescriptionPage");
-            }}
-          />
+          <WorksheetTemplate onPress={handleWorksheetTemplateOnPress} />
         ) : (
           ""
         )
       ) : pageName === "AddDescriptionPage" && !alertMessage ? (
         <AddDescriptionPage
           {...{
+            appName,
+            worksheetStartTime,
+            createType,
             formObject,
             setFormObject,
             questions,

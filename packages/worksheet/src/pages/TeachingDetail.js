@@ -12,6 +12,7 @@ import {
   telemetryFactory,
   capture,
   getApiConfig,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
@@ -99,34 +100,36 @@ export default function TeachingDetail({ footerLinks, appName }) {
         title: t("MY_TEACHING"),
       }}
       _appBar={{ languages: manifestLocal.languages }}
-      subHeader={`${classObject?.name ? classObject?.name : ""} ${
-        classObject?.subjectName ? classObject?.subjectName : ""
-      }`}
+      subHeader={
+        <H2>{`${classObject?.name ? classObject?.name : ""} ${
+          classObject?.subjectName ? classObject?.subjectName : ""
+        }`}</H2>
+      }
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <VStack>
         {message ? (
           <HStack
-            bg="viewNotification.600"
+            bg={colors.viewNotificationDark}
             p="5"
             justifyContent="space-between"
           >
-            <Text textTransform="inherit">
+            <BodyMedium textTransform="inherit">
               Choose Worksheets or Lesson Plans for the class. You can also
               create your own worksheets.
-            </Text>
+            </BodyMedium>
             <IconByName
               p="0"
               name="CloseCircleLineIcon"
-              color="viewNotification.900"
+              color={colors.worksheetCloseIcon}
               onPress={(e) => setMessage(false)}
             />
           </HStack>
         ) : (
           ""
         )}
-        <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Tab
             routes={[
               {
@@ -168,9 +171,9 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
         <Button
-          _text={{ color: "white" }}
+          _text={{ color: colors.white }}
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
@@ -240,7 +243,7 @@ const Worksheets = ({
           my="5"
           alignItems={"center"}
           rounded="lg"
-          bg="viewNotification.600"
+          bg={colors.viewNotificationDark}
         >
           {t("WORKSHEET_NOT_FOUND")}
         </Box>

@@ -47,5 +47,6 @@
   "NEW_QUESTIONS_ADDED": "नए प्रश्न जोड़े गए",
   "QUESTION_SELECTED": "प्रश्न चयनित",
   "AUTO_GENERATE": "स्वत: उत्पन्न",
-  "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें"
+  "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें",
+  "PLEASE_SELECT_ATLIST_ONE_QUESTION": "कृपया एक प्रश्न को सूचीबद्ध करें चुनें"
 }

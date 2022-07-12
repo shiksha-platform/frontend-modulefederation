@@ -118,7 +118,7 @@ export default function Worksheet({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("List of Worksheets"),
+        title: t("All Worksheets"),
         iconComponent: (
           <Box>
             <SortActionsheet
@@ -137,7 +137,7 @@ export default function Worksheet({ footerLinks, appName }) {
         setSearch,
         setSearchState,
       }}
-      subHeader={t("See all worksheets here")}
+      subHeader={<H2>{t("View all your worksheets")}</H2>}
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
@@ -177,19 +177,21 @@ const ChildrenWorksheet = ({
   return (
     <Stack>
       <FilterButton
-        getObject={setFilterObject}
+        getObject={handleFilter}
         _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: colors.cardBg }}
         _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}
         _filterButton={{
           rightIcon: "",
-          bg: "white",
+          bg: colors.white,
+          color: colors.primary,
         }}
         resetButtonText={t("COLLAPSE")}
+        color={colors.primary}
         filters={newDefaultInputs}
       />
       <VStack>
-        <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Stack>
             <VStack space={3}>
               {worksheets.length > 0 ? (
@@ -209,7 +211,7 @@ const ChildrenWorksheet = ({
                   my="5"
                   alignItems={"center"}
                   rounded="lg"
-                  bg="viewNotification.600"
+                  bg={colors.viewNotificationDark}
                 >
                   {t("WORKSHEET_NOT_FOUND")}
                 </Box>
@@ -219,9 +221,9 @@ const ChildrenWorksheet = ({
         </Box>
       </VStack>
       {!isHideCreateButton ? (
-        <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+        <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
           <Button
-            _text={{ color: "white" }}
+            _text={{ color: colors.white }}
             p="3"
             onPress={(e) => navigate("/worksheet/create")}
           >

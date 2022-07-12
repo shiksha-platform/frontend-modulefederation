@@ -12,7 +12,7 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconByName from './IconByName'
-import { BodyLarge } from './layout/HeaderTags'
+import { BodyLarge, H2 } from './layout/HeaderTags'
 
 const getValueByType = (value, type = 'array') => {
   return value ? value : type !== 'array' ? '' : []
@@ -81,6 +81,7 @@ const FilterButton = ({
         {!filtered ? (
           <Button
             rounded='full'
+            colorScheme='button'
             variant='outline'
             px='5'
             onPress={(e) => setFiltered(true)}
@@ -187,13 +188,14 @@ const FilterButton = ({
           {..._actionSheet}
         >
           <HStack justifyContent={'space-between'}>
-            <Stack p={5} pt={2} pb='25px'>
-              <Text fontSize='16px' fontWeight={'600'}>
+            <Stack p={5} pt={2} pb='15px'>
+              <H2>
                 {`${t('SELECT')} ${formData?.name ? formData?.name : ''}`}
-              </Text>
+              </H2>
             </Stack>
             <IconByName
               name='CloseCircleLineIcon'
+              color='classCard.900'
               onPress={(e) => setFormData({})}
             />
           </HStack>

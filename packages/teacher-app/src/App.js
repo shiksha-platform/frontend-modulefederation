@@ -1,12 +1,7 @@
 import React from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import {
-  DEFAULT_THEME,
-  initializeI18n,
-  Loading,
-  AppShell,
-} from "@shiksha/common-lib";
+import { DEFAULT_THEME, initializeI18n, AppShell } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
 
@@ -19,9 +14,7 @@ function App() {
   const Attendance = React.lazy(() => import("attendance/Attendance"));
   const Report = React.lazy(() => import("attendance/Report"));
   const ReportDetail = React.lazy(() => import("attendance/ReportDetail"));
-  const CompareReport = React.lazy(() => import("attendance/CompareReport"));
   const SendSMS = React.lazy(() => import("attendance/SendSMS"));
-  const MessageHistory = React.lazy(() => import("attendance/MessageHistory"));
   const TeachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
   const WorksheetShare = React.lazy(() => import("worksheet/WorksheetShare"));
   const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
@@ -105,14 +98,6 @@ function App() {
     {
       path: "/attendance/report/:classId/:view",
       component: ReportDetail,
-    },
-    {
-      path: "/attendance/reportCompare/:classId",
-      component: CompareReport,
-    },
-    {
-      path: "/students/sendSms/:studentId",
-      component: MessageHistory,
     },
     { path: "/attendance/sendSms/:classId", component: SendSMS },
     { path: "/students/:studentId", component: StudentDetails },
