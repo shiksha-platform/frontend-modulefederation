@@ -6,7 +6,6 @@ import {
   H2,
   questionRegistryService,
   overrideColorTheme,
-  H2,
   getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
