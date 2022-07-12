@@ -275,5 +275,10 @@
   "ENTER_WORKSHEET_DETAILS": "वर्कशीट विवरण दर्ज करें",
   "SHOW_QUESTIONS_BASED_ON": "पर आधारित प्रश्न दिखाएं",
   "PLEASE_SELECT_LIMIT": "कृपया सीमा चुनें",
-  "QUESTION_NOT_FOUND": "इस फ़िल्टर के लिए कोई प्रश्न नहीं मिला"
+  "QUESTION_NOT_FOUND": "इस फ़िल्टर के लिए कोई प्रश्न नहीं मिला",
+  "EMPLOYEE_CODE": "कर्मचारी कोड",
+  "DATE_FO_JOINING": "शामिल होने की तिथि",
+  "DATE_OF_BIRTH": "जन्म की तारीख",
+  "PERSONAL_DETAILS": "व्यक्तिगत विवरण",
+  "CONTACT_DETAILS": "सम्पर्क करने का विवरण"
 }

@@ -26,10 +26,11 @@ import {
   H3,
   overrideColorTheme,
 } from "@shiksha/common-lib";
-import AttendanceSummaryCard from "components/AttendanceSummaryCard";
-import SelfAttedanceSheet from "components/SelfAttedanceSheet";
+import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
+import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
 import moment from "moment";
 import colorTheme from "../colorTheme";
+import TeacherEdit from "../components/TeacherEdit";
 
 const colors = overrideColorTheme(colorTheme);
 // Start editing here, save and see your changes.
@@ -41,8 +42,6 @@ export default function Profile({ footerLinks, appName }) {
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
   const navigate = useNavigate();
-
-  const StudentEdit = React.lazy(() => import("students/StudentEdit"));
 
   useEffect(() => {
     let ignore = false;
@@ -136,7 +135,6 @@ export default function Profile({ footerLinks, appName }) {
               <HStack alignItems="center" justifyContent="space-between">
                 <VStack>
                   <H4 color={colors.white}>{t("MY_PROFILE")}</H4>
-
                   <H1 color={colors.white}>
                     {teacherObject?.firstName + " " + teacherObject?.lastName}
                   </H1>
@@ -196,53 +194,23 @@ export default function Profile({ footerLinks, appName }) {
             </Stack>
           </Stack>
         </Section>
-        <StudentEdit
-          studentObject={teacherObject}
-          setStudentObject={setTeacherObject}
-          onlyParameterProp={["firstName", "lastName", "email"]}
-          type="Teacher"
+        <TeacherEdit
+          header={t("PERSONAL_DETAILS")}
+          teacherObject={teacherObject}
+          onlyParameterProp={[
+            "employeeCode",
+            "joiningDate",
+            "birthDate",
+            "gender",
+          ]}
+          isEditable={false}
         />
-        <Section
-          title={t("CAREER")}
-          _title={{
-            borderBottomWidth: "1",
-            borderBottomColor: colors.coolGray,
-            py: "5",
-          }}
-          _box={{ mb: "4", roundedBottom: "xl", shadow: 2 }}
-        >
-          <Stack
-            py="5"
-            space={2}
-            borderBottomWidth="1"
-            borderBottomColor={colors.coolGray}
-          >
-            <Collapsible
-              header={t("MY_CLASS_RESULT")}
-              _icon={{ color: colors.gray, name: "ArrowRightSLineIcon" }}
-              _text={{ color: colors.gray }}
-            />
-          </Stack>
-          <Stack
-            py="5"
-            space={2}
-            borderBottomWidth="1"
-            borderBottomColor={colors.coolGray}
-          >
-            <Collapsible
-              header={t("COMPETENCY")}
-              _icon={{ color: colors.gray, name: "ArrowRightSLineIcon" }}
-              _text={{ color: colors.gray }}
-            />
-          </Stack>
-          <Stack py="5" space={2}>
-            <Collapsible
-              header={t("AWARDS")}
-              _icon={{ color: colors.gray, name: "ArrowRightSLineIcon" }}
-              _text={{ color: colors.gray }}
-            />
-          </Stack>
-        </Section>
+        <TeacherEdit
+          header={t("CONTACT_DETAILS")}
+          teacherObject={teacherObject}
+          setTeacherObject={setTeacherObject}
+          onlyParameterProp={["phoneNumber", "email"]}
+        />
       </Stack>
     </Layout>
   );

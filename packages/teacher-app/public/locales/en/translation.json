@@ -283,5 +283,10 @@
   "ENTER_WORKSHEET_DETAILS": "Enter Worksheet Details",
   "SHOW_QUESTIONS_BASED_ON": "Show questions based on",
   "PLEASE_SELECT_LIMIT": "Please select limit",
-  "QUESTION_NOT_FOUND": "No question found for this filter"
+  "QUESTION_NOT_FOUND": "No question found for this filter",
+  "EMPLOYEE_CODE": "Employee Code",
+  "DATE_FO_JOINING": "Date of Joining (DOJ)",
+  "DATE_OF_BIRTH": "Date of birth",
+  "PERSONAL_DETAILS": "Personal Details",
+  "CONTACT_DETAILS": "Contact Details"
 }

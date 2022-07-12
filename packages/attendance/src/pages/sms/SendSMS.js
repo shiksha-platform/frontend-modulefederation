@@ -278,7 +278,7 @@ export default function SendSMS({ footerLinks, appName }) {
                     type: "Attendance-Notification-View-Message",
                   });
                   capture("INTERACT", telemetryData);
-                  navigate("/notification/create");
+                  navigate("/notification/create?module=Attendance");
                 }}
               >
                 {t("SEND_ANOTHER_MESSAGE")}
