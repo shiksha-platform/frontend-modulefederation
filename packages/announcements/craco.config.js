@@ -3,7 +3,7 @@ const ExternalTemplateRemotesPlugin = require("external-remotes-plugin");
 
 module.exports = {
   devServer: {
-    port: 3008,
+    port: 4002,
   },
   webpack: {
     plugins: [new ExternalTemplateRemotesPlugin()],

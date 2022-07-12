@@ -143,7 +143,7 @@ const Announcements = ({ footerLinks, appName }) => {
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages,showPinnedAnnouncements: true}}
+      _appBar={{ languages: manifest.languages, showPinnedAnnouncements: true }}
       subHeader={t("VIEW_LATEST_ANNOUNCEMENTS")}
       _subHeader={{
         bg: colors?.cardBg,
@@ -161,7 +161,7 @@ const Announcements = ({ footerLinks, appName }) => {
           <VStack justifyContent="center" pb="5" space="4">
             <HStack space="2" justifyContent="start" px="3">
               <Input
-                placeholder="Search"
+                placeholder={t("SEARCH")}
                 px="2"
                 width="s"
                 variant="underlined"
