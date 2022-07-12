@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
+import PinnedAnnouncements from './PinnedAnnouncements'
 import { Box, Center, Stack } from 'native-base'
 import AppBar from './AppBar'
 import { useWindowSize } from '../helper'
@@ -14,7 +15,8 @@ export default function Layout({
   _appBar,
   _header,
   _subHeader,
-  _footer
+  _footer,
+  _pinnedAnnouncementsData
 }) {
   const [width, Height] = useWindowSize()
   const [refFoot, serRefFoot] = React.useState({})
@@ -34,6 +36,7 @@ export default function Layout({
           }}
           space={5}
         >
+          <PinnedAnnouncements {...{ _pinnedAnnouncementsData }} />
           {!isDisabledAppBar ? (
             <AppBar color={imageUrl ? 'white' : ''} {..._appBar} />
           ) : (

@@ -11,6 +11,7 @@ function AppShell({
   basename,
   isShowFooterLink,
   appName,
+  isShowPinnedAnnouncements,
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -56,6 +57,24 @@ function AppShell({
         ]
       }
 
+  //TODO: integrate with API call to fetch pinned announcements
+  //pinned announcements data is common to all components depending on their
+  console.log(isShowPinnedAnnouncements, isShowFooterLink)
+  const pinnedAnnouncementsData = !isShowPinnedAnnouncements
+    ? []
+    : [
+        {
+          data: 'Shiksha V2.0 Is Live! 🚀🎉',
+          color: 'green.100',
+          isDismissable: true
+        },
+        {
+          data: 'Students should not stand on road outside school during monsoon',
+          color: 'amber.100',
+          isDismissable: false
+        }
+      ]
+  console.log(pinnedAnnouncementsData)
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
@@ -90,7 +109,11 @@ function AppShell({
                 <Route
                   key={index}
                   path={item.path}
-                  element={<item.component {...{ footerLinks, appName }} />}
+                  element={
+                    <item.component
+                      {...{ footerLinks, appName, pinnedAnnouncementsData }}
+                    />
+                  }
                 />
               ))}
             </Routes>

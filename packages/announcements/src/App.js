@@ -25,7 +25,13 @@ function App() {
   const LoginComponent = React.lazy(() => import("core/Login"));
 
   return (
-    <AppShell theme={theme} routes={routes} AuthComponent={LoginComponent} />
+    <AppShell
+      theme={theme}
+      routes={routes}
+      AuthComponent={LoginComponent}
+      isShowPinnedAnnouncements={true}
+      isShowFooterLink={true}
+    />
   );
 }
 
