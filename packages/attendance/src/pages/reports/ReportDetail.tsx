@@ -177,11 +177,6 @@ export default function ReportDetail({ footerLinks, appName }) {
       }}
       _header={{
         title: t("REPORT_DETAILS"),
-<<<<<<< HEAD
-        subHeading:
-          (classObject?.name ? "Class " + classObject?.name : "") +
-          (classObject?.section ? " Sec " + classObject?.section : ""),
-=======
         // @ts-ignore
         subHeading: classObject?.name,
         iconComponent: (
@@ -210,7 +205,6 @@ export default function ReportDetail({ footerLinks, appName }) {
             </Box>
           </Link>
         ),
->>>>>>> 302ab87 (Some major refactoring for Reports)
       }}
       subHeader={
         <Stack>
@@ -287,174 +281,6 @@ export default function ReportDetail({ footerLinks, appName }) {
             }
           </Box>
         </Box>
-<<<<<<< HEAD
-        <Box bg={colors.white} p={4}>
-          <Stack space={2}>
-            <Collapsible
-              defaultCollapse={true}
-              isHeaderBold={false}
-              header={
-                <>
-                  <VStack>
-                    <Text bold fontSize={"md"}>
-                      100%
-                      {calendarView === "monthInDays"
-                        ? t("THIS_MONTH")
-                        : t("THIS_WEEK")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {presentStudents?.length + " " + t("STUDENTS")}
-                    </Text>
-                  </VStack>
-                </>
-              }
-              body={
-                <VStack space={2} pt="2">
-                  <Box>
-                    {presentStudents.map((item, index) =>
-                      index < 5 ? (
-                        <Box
-                          key={index}
-                          borderWidth="1"
-                          borderColor={colors.presentCardBorder}
-                          bg={colors.presentCardBg}
-                          p="10px"
-                          rounded="lg"
-                          my="10px"
-                        >
-                          <Suspense fallback="logding">
-                            <Card
-                              appName={appName}
-                              item={item}
-                              type="rollFather"
-                              textTitle={
-                                <VStack alignItems="center">
-                                  <BodyLarge>
-                                    <Text>{item.fullName}</Text>
-                                    <Text color={colors.lightGray}> • </Text>
-                                    <Text color={colors.presentCardText}>
-                                      100%
-                                    </Text>
-                                  </BodyLarge>
-                                </VStack>
-                              }
-                              href={"/students/" + item.id}
-                              hidePopUpButton
-                            />
-                          </Suspense>
-                        </Box>
-                      ) : (
-                        <div key={index}></div>
-                      )
-                    )}
-                    {presentStudents?.length <= 0 ? (
-                      <Caption p="4">
-                        {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
-                      </Caption>
-                    ) : (
-                      ""
-                    )}
-                  </Box>
-
-                  {presentStudents?.length > 5 ? (
-                    <Button
-                      mt="2"
-                      variant="outline"
-                      colorScheme="button"
-                      rounded="lg"
-                    >
-                      {t("SEE_MORE")}
-                    </Button>
-                  ) : (
-                    ""
-                  )}
-                </VStack>
-              }
-            />
-          </Stack>
-        </Box>
-
-        <Box bg={colors.white} p={4}>
-          <Stack space={2}>
-            <Collapsible
-              defaultCollapse={true}
-              isHeaderBold={false}
-              header={
-                <>
-                  <VStack>
-                    <Text bold fontSize={"md"}>
-                      {t("ABSENT_CONSECUTIVE_3_DAYS")}
-                    </Text>
-                    <Text fontSize={"xs"}>
-                      {absentStudents?.length + " " + t("STUDENTS")}
-                    </Text>
-                  </VStack>
-                </>
-              }
-              body={
-                <VStack space={2} pt="2">
-                  <Box>
-                    {absentStudents.map((item, index) =>
-                      index < 5 ? (
-                        <Box
-                          key={index}
-                          borderWidth="1"
-                          borderColor={colors.absentCardBorder}
-                          bg={colors.absentCardBg}
-                          p="10px"
-                          rounded="lg"
-                          my="10px"
-                        >
-                          <Suspense fallback="logding">
-                            <Card
-                              appName={appName}
-                              item={item}
-                              type="rollFather"
-                              textTitle={
-                                <VStack alignItems="center">
-                                  <BodyLarge>
-                                    <Text>{item.fullName}</Text>
-                                    <Text color={colors.lightGray}> • </Text>
-                                    <Text color={colors.absentCardText}>
-                                      3 {t("DAYS")}
-                                    </Text>
-                                  </BodyLarge>
-                                </VStack>
-                              }
-                              href={"/students/" + item.id}
-                              hidePopUpButton
-                            />
-                          </Suspense>
-                        </Box>
-                      ) : (
-                        <div key={index}></div>
-                      )
-                    )}
-                    {absentStudents?.length <= 0 ? (
-                      <Caption p="4">{t("NO_STUDENT_HAS_BEEN_ABSENT")}</Caption>
-                    ) : (
-                      <React.Fragment />
-                    )}
-                  </Box>
-                  {absentStudents?.length > 5 ? (
-                    <Button
-                      mt="2"
-                      variant="outline"
-                      colorScheme="button"
-                      rounded="lg"
-                    >
-                      {t("SEE_MORE")}
-                    </Button>
-                  ) : (
-                    <React.Fragment />
-                  )}
-                </VStack>
-              }
-            />
-          </Stack>
-        </Box>
-
-=======
         <ReportDetailData
           appName={appName}
           data={presentStudents}
@@ -467,7 +293,6 @@ export default function ReportDetail({ footerLinks, appName }) {
           calendarView={calendarView}
           type="absent"
         />
->>>>>>> 302ab87 (Some major refactoring for Reports)
         <Box bg={colors.white} p={4}>
           <Stack space={2}>
             {
