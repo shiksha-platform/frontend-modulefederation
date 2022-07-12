@@ -289,5 +289,6 @@
   "SEARCH_QUESTIONS": "Search Questions",
   "ENTER_TITLE": "Enter Title",
   "NEW_QUESTIONS_ADDED": "New Questions Added",
-  "QUESTION_SELECTED": "Question Selected"
+  "QUESTION_SELECTED": "Question Selected",
+  "PLEASE_SELECT_ATLIST_ONE_QUESTION": "Please select atlist one question"
 }

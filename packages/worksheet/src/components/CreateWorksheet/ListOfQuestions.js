@@ -103,7 +103,7 @@ export default function ListOfQuestions({
 
   const handleAddToWorksheet = () => {
     if (selectData.length <= 0) {
-      setAlertMessage("Please select atlist one question");
+      setAlertMessage(t("PLEASE_SELECT_ATLIST_ONE_QUESTION"));
     } else {
       setShowModule(true);
       const telemetryData = telemetryFactory.interact({
