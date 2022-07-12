@@ -190,7 +190,6 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                   </HStack>
                 }
               />
-<<<<<<< HEAD
             ))
           ) : (
             <Box
@@ -203,18 +202,6 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               Question Not Found
             </Box>
           )}
-=======
-              <Box rounded="full" bg={colors.cardBg} p="1">
-                <IconByName
-                  size="50"
-                  color="white"
-                  name="SendPlane2LineIcon"
-                  onPress={(e) => console.log("false")}
-                />
-              </Box>
-            </HStack>
-          </Box>
->>>>>>> 2e41450 (Some refactoring progress)
         </VStack>
       </Box>
       {!state ? (

@@ -115,17 +115,12 @@ export default function SendSMS({ footerLinks, appName }) {
       _footer={footerLinks}
     >
       <VStack space="1">
-<<<<<<< HEAD:packages/attendance/src/pages/sms/SendSMS.js
         <Box bg={colors.white} p="5">
           <BodyLarge>
             {(classObject?.name ? "Class " + classObject?.name : "") +
               " • " +
               (classObject?.section ? " Sec " + classObject?.section : "")}
           </BodyLarge>
-=======
-        <Box bg={colorTheme.white} p="5">
-          <H2>{classObject.name}</H2>
->>>>>>> 03f2767 (Migrated more files to tsx):packages/attendance/src/pages/sms/SendSMS.tsx
           <Caption>
             {t("TOTAL")}: {students.length} • {t("PRESENT")}:
             {attendance?.length}
@@ -244,18 +239,8 @@ export default function SendSMS({ footerLinks, appName }) {
         </Box>
         <Box bg={colorTheme.white} p="5" position="sticky" shadow={2}>
           <VStack space={"15px"} alignItems={"center"}>
-<<<<<<< HEAD:packages/attendance/src/pages/sms/SendSMS.js
-            <Subtitle
-              py="5"
-              px="10px"
-              color={colors.grayInLight}
-              textTransform="inherit"
-            >
-              <Text bold color={colors.darkGray}>
-=======
             <Subtitle py="5" px="10px" color={colorTheme.grayInLight}>
               <Text bold color={colorTheme.darkGray}>
->>>>>>> 03f2767 (Migrated more files to tsx):packages/attendance/src/pages/sms/SendSMS.tsx
                 {t("NOTES") + ": "}
               </Text>
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
