@@ -10,6 +10,7 @@ import {
   questionRegistryService,
   Loading,
   likeRegistryService,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { Button, Box, HStack, VStack } from "native-base";
@@ -19,6 +20,8 @@ import CommentActionsheet from "components/Actionsheet/CommentActionsheet";
 import QuestionActionsheet from "components/Actionsheet/QuestionActionsheet";
 import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
 import moment from "moment";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -145,7 +148,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </HStack>
         ),
       }}
-      bg="white"
+      bg={colors.white}
       _appBar={{
         onPressBackButton: handleBackButton,
         languages: manifest.languages,
@@ -153,7 +156,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           <HStack>
             <IconByName
               name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-              color={like.id ? "button.500" : "black.500"}
+              color={like.id ? colors.primary : colors.black}
               onPress={handleLike}
             />
             <IconByName name="ShareLineIcon" />
@@ -168,7 +171,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      <Box bg="white" p="5">
+      <Box bg={colors.white} p="5">
         <VStack space="5">
           {questions && questions.length > 0 ? (
             questions.map((question, index) => (
@@ -181,7 +184,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color="button.500"
+                      color={colors.primary}
                       onPress={(e) => setQuestionObject(question)}
                     />
                   </HStack>
@@ -194,7 +197,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               my="5"
               alignItems={"center"}
               rounded="lg"
-              bg="viewNotification.600"
+              bg={colors.viewNotificationDark}
             >
               Question Not Found
             </Box>
@@ -202,12 +205,12 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         </VStack>
       </Box>
       {!state ? (
-        <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+        <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: colors.white }}
               px="5"
               onPress={(e) => console.log(e)}
             >

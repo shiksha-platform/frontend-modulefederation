@@ -1,4 +1,11 @@
-import { IconByName, capture, telemetryFactory } from "@shiksha/common-lib";
+import {
+  capture,
+  telemetryFactory,
+  BodyLarge,
+  H2,
+  IconByName,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import {
   HStack,
   Stack,
@@ -13,6 +20,8 @@ import { useTranslation } from "react-i18next";
 import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
 import AlertValidationModal from "components/AlertValidationModal";
 import moment from "moment";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const getValueByType = (value, type = "array") => {
   return value ? value : type !== "array" ? "" : [];
@@ -93,7 +102,7 @@ export default function Form({
         {...{ formObject, setFormObject, formData, setFormData }}
         data={inputs}
       />
-      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
         <Button.Group>
           {createType === "create" ? (
             <Button
@@ -111,7 +120,7 @@ export default function Form({
           )}
           <Button
             colorScheme="button"
-            _text={{ color: "white" }}
+            _text={{ color: colors.white }}
             px="5"
             flex="1"
             onPress={handelAddQuestion}
@@ -121,20 +130,19 @@ export default function Form({
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
+        <Actionsheet.Content alignItems={"left"} bg={colors.worksheetCardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t(`Select ${formData?.name}`)}
-              </Text>
+            <Stack p={5} pt={2} pb="15px">
+              <H2>{t(`Select ${formData?.name}`)}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
+              color={colors.cardCloseIcon}
               onPress={(e) => setFormData({})}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg={colors.white} width={"100%"}>
           {type === "array" ? (
             <Pressable
               p="3"
@@ -163,8 +171,8 @@ export default function Form({
                     formData?.data &&
                     valueArr &&
                     formData?.data?.length === valueArr?.length
-                      ? "button.500"
-                      : "gray.300"
+                      ? colors.primary
+                      : colors.lightGray2
                   }
                   name={
                     formData?.data &&
@@ -218,8 +226,8 @@ export default function Form({
                   bg={
                     (type !== "array" && valueArr === value) ||
                     (type === "stingValueArray" && valueArr.includes(value))
-                      ? "gray.200"
-                      : "white"
+                      ? colors.lightGray2
+                      : colors.white
                   }
                 >
                   <HStack space="2" colorScheme="button" alignItems="center">
@@ -227,7 +235,9 @@ export default function Form({
                       <IconByName
                         isDisabled
                         color={
-                          valueArr.includes(value) ? "button.500" : "gray.300"
+                          valueArr.includes(value)
+                            ? colors.primary
+                            : colors.lightGray2
                         }
                         name={
                           valueArr.includes(value)
@@ -246,7 +256,7 @@ export default function Form({
           <Box p="5">
             <Button
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: colors.white }}
               onPress={(e) => setFormData({})}
             >
               {t("SELECT")}
@@ -273,14 +283,12 @@ const FormInput = ({
       return (
         <HStack
           key={index}
-          bg="white"
+          bg={colors.white}
           p="5"
           alignItems="center"
           justifyContent="space-between"
         >
-          <Text fontSize={"14px"} fontWeight="500">
-            {t(item.name)}
-          </Text>
+          <BodyLarge>{t(item.name)}</BodyLarge>
           <Button
             {...(formObject[attributeName]
               ? { _text: { color: "white", textTransform: "inherit" } }
@@ -297,10 +305,10 @@ const FormInput = ({
               <IconByName
                 color={
                   formObject[attributeName]
-                    ? "white"
+                    ? colors.white
                     : item?.buttonVariant
-                    ? "button.500"
-                    : "button.500"
+                    ? colors.primary
+                    : colors.primary
                 }
                 name="ArrowDownSLineIcon"
                 isDisabled

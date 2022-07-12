@@ -6,8 +6,12 @@ import {
   capture,
   telemetryFactory,
   worksheetRegistryService,
+  overrideColorTheme,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import moment from "moment";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function AddDescriptionPage({
   questions,
@@ -104,16 +108,14 @@ export default function AddDescriptionPage({
         let attribute = item.attributeName ? item.attributeName : item.name;
         let placeholder = item.placeholder ? item.placeholder : item.name;
         return (
-          <Box key={index + item.name} p="5" bg="white">
+          <Box key={index + item.name} p="5" bg={colors.white}>
             <FormControl isInvalid={attribute in errors}>
               <FormControl.Label>
-                <Text fontSize={"14px"} fontWeight="500">
-                  {item.label ? item.label : item.name}
-                </Text>
+                <BodyLarge>{item.label ? item.label : item.name}</BodyLarge>
               </FormControl.Label>
               {item.type === "select" ? (
                 <Select
-                  bg={"gray.100"}
+                  bg={colors.lightGray5}
                   accessibilityLabel={placeholder}
                   placeholder={placeholder}
                   key={index + item.name}
@@ -129,7 +131,7 @@ export default function AddDescriptionPage({
                 </Select>
               ) : (
                 <Input
-                  bg={"gray.100"}
+                  bg={colors.lightGray5}
                   variant="filled"
                   p={2}
                   {...item}
@@ -144,7 +146,7 @@ export default function AddDescriptionPage({
                 <FormControl.ErrorMessage
                   _text={{
                     fontSize: "xs",
-                    color: "error.500",
+                    color: colors.eventError,
                     fontWeight: 500,
                   }}
                 >
@@ -158,10 +160,10 @@ export default function AddDescriptionPage({
         );
       })}
 
-      <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
         <Button
           colorScheme="button"
-          _text={{ color: "white" }}
+          _text={{ color: colors.white }}
           px="5"
           flex="1"
           onPress={handleSubmit}
