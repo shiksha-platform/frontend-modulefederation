@@ -33,6 +33,24 @@ function AppShell({
       setTheme(newTheme)
     }
 
+  //TODO: integrate with API call to fetch pinned announcements
+  //pinned announcements data is common to all components depending on their
+  console.log(isShowPinnedAnnouncements, isShowFooterLink)
+  const pinnedAnnouncementsData = !isShowPinnedAnnouncements
+    ? []
+    : [
+        {
+          data: 'Shiksha V2.0 Is Live! 🚀🎉',
+          color: 'green.100',
+          isDismissable: true
+        },
+        {
+          data: 'Students should not stand on road outside school during monsoon',
+          color: 'amber.100',
+          isDismissable: false
+        }
+      ]
+  console.log(pinnedAnnouncementsData)
     getData()
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
@@ -75,7 +93,11 @@ function AppShell({
                   key={index}
                   path={item.path}
                   element={
-                    <item.component {...{ footerLinks, appName, colors }} />
+                    
+                    <item.component
+                      {...{ footerLinks, appName, pinnedAnnouncementsData, colors }}
+                    />
+                  
                   }
                 />
               ))}

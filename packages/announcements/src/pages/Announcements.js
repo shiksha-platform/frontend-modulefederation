@@ -75,7 +75,7 @@ const filters = [
   { name: "Author", data: ["Principal", "Teacher"] },
 ];
 
-const Announcements = ({ footerLinks, appName }) => {
+const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
   const { t } = useTranslation();
   const [showModal, setShowModal] = React.useState(false);
   const [filterData, setFilterData] = React.useState(
@@ -135,7 +135,7 @@ const Announcements = ({ footerLinks, appName }) => {
       setFilterData(f);
     }
   };
-
+  console.log(pinnedAnnouncementsData);
   return (
     <Layout
       _header={{
@@ -155,6 +155,7 @@ const Announcements = ({ footerLinks, appName }) => {
         },
       }}
       _footer={footerLinks}
+      _pinnedAnnouncementsData={pinnedAnnouncementsData}
     >
       <Stack space={1} mb="2">
         <Box bg={colors.white} p="5" roundedBottom={"xl"}>
