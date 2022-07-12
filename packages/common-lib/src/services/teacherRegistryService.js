@@ -61,7 +61,11 @@ export const getAll = async (
   }
 }
 
-export const getOne = async (filters = {}, headers = {}) => {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
   const result = await get(`${manifest.api_url}/teacher`, { headers }).catch(
     (error) => error
   )
