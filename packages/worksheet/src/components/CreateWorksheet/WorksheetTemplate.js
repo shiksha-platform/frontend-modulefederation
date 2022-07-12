@@ -1,9 +1,11 @@
-import { H1, H3, IconByName } from "@shiksha/common-lib";
+import { H1, H3, IconByName, overrideColorTheme } from "@shiksha/common-lib";
 import { HStack, Stack, Button, Box, VStack, Pressable } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function WorksheetTemplate({ onPress }) {
   const { t } = useTranslation();
@@ -15,7 +17,7 @@ export default function WorksheetTemplate({ onPress }) {
 
   return (
     <Box>
-      <Box bg="worksheetCard.200" p="5">
+      <Box bg={colors.worksheetCardBg} p="5">
         <Carousel
           showArrows={false}
           showThumbs={false}
@@ -28,14 +30,15 @@ export default function WorksheetTemplate({ onPress }) {
                 name={
                   value ? "RecordCircleFillIcon" : "CheckboxBlankCircleLineIcon"
                 }
-                color="button.500"
+                color={colors.primary}
                 p="1"
               />
             );
           }}
         >
           {["", "", ""].map((item, index) => {
-            const color = selected === index ? "button.100" : "gray.200";
+            const color =
+              selected === index ? colors.primaryNormal : colors.lightGray3;
             return (
               <Pressable
                 key={index}
@@ -43,7 +46,7 @@ export default function WorksheetTemplate({ onPress }) {
                 mb="10"
                 onPress={(e) => handleTemplateSelect(index)}
               >
-                <Box bg="white" p="5" alignItems="center">
+                <Box bg={colors.white} p="5" alignItems="center">
                   <VStack w="100%" space="5">
                     <HStack w="100%" space="5">
                       <Box bg={color} w="44px" h="44px" />
@@ -78,13 +81,13 @@ export default function WorksheetTemplate({ onPress }) {
           })}
         </Carousel>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
         <Button.Group>
           <Button
             isDisabled={selected >= 0 ? false : true}
             flex="1"
             colorScheme="button"
-            _text={{ color: "white" }}
+            _text={{ color: colors.white }}
             px="5"
             onPress={onPress}
           >

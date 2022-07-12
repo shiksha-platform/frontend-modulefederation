@@ -19,6 +19,7 @@ export default function Tab({ routes, _box }) {
                   <Text
                     {...{ color: index === i ? 'button.500' : 'blueGray.400' }}
                     fontWeight='500'
+                    fontSize='14px'
                   >
                     {route.title}
                   </Text>

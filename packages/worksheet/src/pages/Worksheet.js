@@ -142,7 +142,7 @@ export default function Worksheet({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("List of Worksheets"),
+        title: t("All Worksheets"),
         iconComponent: (
           <Button
             rounded="full"
@@ -154,7 +154,9 @@ export default function Worksheet({ footerLinks, appName }) {
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalSort(true)}
           >
-            <BodyLarge textTransform="capitalize">{t("SORT")}</BodyLarge>
+            <BodyLarge textTransform="capitalize" color={colors.primary}>
+              {t("SORT")}
+            </BodyLarge>
           </Button>
         ),
       }}
@@ -164,7 +166,7 @@ export default function Worksheet({ footerLinks, appName }) {
         setSearch,
         setSearchState,
       }}
-      subHeader={t("See all worksheets here")}
+      subHeader={<H2>{t("View all your worksheets")}</H2>}
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
@@ -215,13 +217,15 @@ const ChildrenWorksheet = ({
         _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}
         _filterButton={{
           rightIcon: "",
-          bg: "white",
+          bg: colors.white,
+          color: colors.primary,
         }}
         resetButtonText={t("COLLAPSE")}
+        color={colors.primary}
         filters={newDefaultInputs}
       />
       <VStack>
-        <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Stack>
             <VStack space={3}>
               {worksheets.length > 0 ? (
@@ -241,7 +245,7 @@ const ChildrenWorksheet = ({
                   my="5"
                   alignItems={"center"}
                   rounded="lg"
-                  bg="viewNotification.600"
+                  bg={colors.viewNotificationDark}
                 >
                   {t("WORKSHEET_NOT_FOUND")}
                 </Box>
@@ -251,9 +255,9 @@ const ChildrenWorksheet = ({
         </Box>
       </VStack>
       {!isHideCreateButton ? (
-        <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+        <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
           <Button
-            _text={{ color: "white" }}
+            _text={{ color: colors.white }}
             p="3"
             onPress={(e) => navigate("/worksheet/create")}
           >
@@ -265,17 +269,17 @@ const ChildrenWorksheet = ({
           >
             <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
               <HStack justifyContent={"space-between"}>
-                <Stack p={5} pt={2} pb="25px">
+                <Stack p={5} pt={2} pb="15px">
                   <H2>{t("SORT")}</H2>
                 </Stack>
                 <IconByName
                   name="CloseCircleLineIcon"
-                  color={colors.primaryDark}
+                  color={colors.cardCloseIcon}
                   onPress={(e) => setShowModalSort(false)}
                 />
               </HStack>
             </Actionsheet.Content>
-            <VStack bg="white" width={"100%"} space="1">
+            <VStack bg={colors.white} width={"100%"} space="1">
               {sortArray.map((value, index) => (
                 <Box key={index}>
                   <Box px="5" py="4">
@@ -313,7 +317,7 @@ const ChildrenWorksheet = ({
               <Box p="5">
                 <Button
                   colorScheme="button"
-                  _text={{ color: "white" }}
+                  _text={{ color: colors.white }}
                   onPress={(e) => setShowModalSort(false)}
                 >
                   {t("CONTINUE")}
