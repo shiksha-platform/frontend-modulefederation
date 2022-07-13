@@ -49,6 +49,7 @@ import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
 import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
+import BookLineIcon from 'remixicon-react/BookLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
 import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
@@ -58,6 +59,7 @@ import AddCircleFillIcon from 'remixicon-react/AddCircleFillIcon'
 import Heart3FillIcon from 'remixicon-react/Heart3FillIcon'
 import Heart3LineIcon from 'remixicon-react/Heart3LineIcon'
 import AccountBoxFillIcon from 'remixicon-react/AccountBoxFillIcon'
+import AccountBoxLineIcon from 'remixicon-react/AccountBoxLineIcon'
 import BarChart2LineIcon from 'remixicon-react/BarChart2LineIcon'
 import ArticleLineIcon from 'remixicon-react/ArticleLineIcon'
 import QuestionLineIcon from 'remixicon-react/QuestionLineIcon'
@@ -479,6 +481,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'BookLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<BookLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'SearchEyeLineIcon':
       icon = (
         <IconButton
@@ -556,6 +566,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<AccountBoxFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AccountBoxLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AccountBoxLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

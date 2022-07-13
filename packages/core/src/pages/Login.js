@@ -122,7 +122,7 @@ export default function Login() {
             <Box>
               <Heading>{t("SIGN_IN")}</Heading>
               <BodyMedium textTransform="inherit">
-                Hello, welcome back to our your account !
+                {t("WELCOME_BACK")}
               </BodyMedium>
             </Box>
             <VStack space={2}>

@@ -47,10 +47,10 @@ function AppShell({
             routeparameters: {}
           },
           {
-            title: 'CAREER',
+            title: 'MY_LEARNING',
             icon: 'UserLineIcon',
             module: 'Registry',
-            route: '/',
+            route: '/mylearning',
             routeparameters: {}
           }
         ]
