@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import {
-  Collapsible,
+  BodyLarge,
+  BodyMedium,
+  H1,
+  H2,
   IconByName,
-  attendanceRegistryService,
-  ProgressBar,
-  getUniqAttendance,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -12,18 +13,15 @@ import {
   VStack,
   Stack,
   Box,
-  Progress,
   Button,
   Divider,
   Actionsheet,
-  Checkbox,
-  Avatar,
-  Spacer,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { H2 } from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -61,19 +59,17 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
             </HStack>
           </Box>
           <Box p="4" textAlign="center" bg="orange.100">
-            <Text fontSize={24} color="green.600" bold mb="0">
+            <H1 color="green.600" bold mb="0">
               72 %
-            </Text>
-            <Text color="muted.600" fontSize="xs">
-              {t("Total Score")}
-            </Text>
-            <HStack justifyContent={"center"} alignItems="center">
+            </H1>
+            <BodyLarge color="muted.600">{t("Total Score")}</BodyLarge>
+            {/* <HStack justifyContent={"center"} alignItems="center">
               <IconByName name="StarSFillIcon" p="0" color="green.600" />
               <IconByName name="StarSFillIcon" p="0" color="green.600" />
               <IconByName name="StarSFillIcon" p="0" color="green.600" />
               <IconByName name="StarSFillIcon" p="0" color="green.600" />
               <IconByName name="StarSFillIcon" p="0" color="green.600" />
-            </HStack>
+            </HStack> */}
           </Box>
         </VStack>
       </Box>
@@ -82,7 +78,7 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
         <Button
           colorScheme="button"
           _text={{
-            color: "white",
+            color: colors.white,
           }}
           onPress={() => setToDoNextModal(true)}
         >
@@ -94,29 +90,27 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
         isOpen={toDoNextModal}
         onClose={() => setToDoNextModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("What would you like to do next?")}
-              </Text>
+            <Stack p={5} pt={2} pb="15px">
+              <H2>{t("What would you like to do next?")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setToDoNextModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
+        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
           <Actionsheet.Item onPress={() => setNextOption("repeat")}>
-            Repeat test with another student
+            <BodyLarge>Repeat test with another student</BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("similar")}>
-            Give similar test to another student
+            <BodyLarge>cGive similar test to another student</BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("end")}>
-            End Assessment
+            <BodyLarge>End Assessment</BodyLarge>
           </Actionsheet.Item>
           <Divider my={4}></Divider>
 
@@ -124,7 +118,7 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
             <Button
               colorScheme="button"
               _text={{
-                color: "white",
+                color: colors.white,
               }}
               // onPress={()=> setSelectedStudent()}
               onPress={() => handleNextOption()}
@@ -139,26 +133,24 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
         isOpen={similarTestModal}
         onClose={() => setSimilarTestModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Give similar test to another student")}
-              </Text>
+            <Stack p={5} pt={2} pb="15px">
+              <H2>{t("Give similar test to another student")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setSimilarTestModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
-          <Text my={3}>
+        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+          <BodyMedium my={3}>
             A similar test will consist of the same competencies with a
             different set of questions.
-          </Text>
-          <Text my={3}>Are you sure you want to continue?</Text>
+          </BodyMedium>
+          <BodyMedium my={3}>Are you sure you want to continue?</BodyMedium>
           <Divider my={4}></Divider>
 
           <Box>
@@ -166,7 +158,7 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
               <Button
                 colorScheme="button"
                 _text={{
-                  color: "#fff",
+                  color: colors.white,
                 }}
                 // onPress={()=> setSelectedStudent()}
               >
@@ -176,7 +168,7 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
               <Button
                 colorScheme="button"
                 _text={{
-                  color: "#fff",
+                  color: colors.white,
                 }}
                 // onPress={()=> setSelectedStudent()}
               >
