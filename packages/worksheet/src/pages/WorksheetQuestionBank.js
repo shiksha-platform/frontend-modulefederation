@@ -2,21 +2,25 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
 import {
+  capture,
+  telemetryFactory,
   Layout,
   IconByName,
   worksheetRegistryService,
   questionRegistryService,
   Loading,
   likeRegistryService,
+  getApiConfig,
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { Button, Box, HStack, VStack } from "native-base";
-import manifest from "../manifest.json";
+import manifestLocal from "../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
 import CommentActionsheet from "components/Actionsheet/CommentActionsheet";
 import QuestionActionsheet from "components/Actionsheet/QuestionActionsheet";
 import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
+import moment from "moment";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
@@ -35,8 +39,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const navigate = useNavigate();
   const { sub } = jwt_decode(localStorage.getItem("token"));
   const [comments, setCommets] = React.useState([]);
+  const [worksheetStartTime, setWorksheetStartTime] = useState();
+  const [questionConfig, setQuestionConfig] = React.useState([]);
 
   React.useEffect(async () => {
+    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    setQuestionConfig(
+      Array.isArray(newManifest?.["question-bank.questionMetadata"])
+        ? newManifest?.["question-bank.questionMetadata"]
+        : newManifest?.["question-bank.questionMetadata"]
+        ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+        : []
+    );
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =
       worksheetData && Array.isArray(worksheetData.questions)
@@ -90,6 +104,35 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     }
   };
 
+  React.useEffect(() => {
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Worksheet-View-Start",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+    });
+    capture("START", telemetryData);
+    setWorksheetStartTime(moment());
+  }, []);
+
+  const handleBackButton = () => {
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Worksheet-View-End",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+      duration: worksheetStartTime
+        ? moment().diff(worksheetStartTime, "seconds")
+        : 0,
+    });
+    capture("END", telemetryData);
+    navigate(-1);
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -117,7 +160,8 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       bg={colors.white}
       _appBar={{
-        languages: manifest.languages,
+        onPressBackButton: handleBackButton,
+        languages: manifestLocal.languages,
         rightIcon: state ? (
           <HStack>
             <IconByName
@@ -197,7 +241,11 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         }}
       />
       <QuestionActionsheet
-        {...{ questionObject, setQuestionObject, comments }}
+        {...{
+          questionObject,
+          setQuestionObject,
+          metadataConfig: questionConfig,
+        }}
       />
       <WorksheetActionsheet
         {...{

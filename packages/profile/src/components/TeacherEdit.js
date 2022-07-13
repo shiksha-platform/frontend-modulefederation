@@ -13,23 +13,21 @@ import {
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
-  IconByName,
   H1,
   H3,
   teacherRegistryService,
-  studentRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
-import colorTheme from "../../colorTheme";
-
+import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 // Start editing here, save and see your changes.
-export default function StudentEdit({
-  studentObject,
-  setStudentObject,
+export default function TeacherEdit({
+  teacherObject,
+  setTeacherObject,
   onlyParameterProp,
-  type,
+  isEditable,
+  header,
 }) {
   const { t } = useTranslation("student");
   const [object, setObject] = useState({});
@@ -47,17 +45,17 @@ export default function StudentEdit({
           "fathersName",
           "phoneNumber",
           "email",
-          "admissionNo",
           "gender",
         ];
   const parameter = {
-    address: { placeholder: t("ADDRESS") },
+    employeeCode: { placeholder: t("EMPLOYEE_CODE") },
+    joiningDate: { placeholder: t("DATE_FO_JOINING") },
+    birthDate: { placeholder: t("DATE_OF_BIRTH") },
     firstName: { placeholder: t("FIRST_NAME"), required: true },
     lastName: { placeholder: t("LAST_NAME") },
     fathersName: { placeholder: t("FATHERS_NAME") },
     phoneNumber: { placeholder: t("PHONE_NUMBER") },
     email: { placeholder: t("EMAIL"), type: "email" },
-    admissionNo: { placeholder: t("ADMISSION_NUMBER") },
     gender: {
       placeholder: t("GENDER"),
       type: "select",
@@ -71,7 +69,7 @@ export default function StudentEdit({
       placeholder: parameter[e]?.placeholder ? parameter[e].placeholder : e,
       isRequired: parameter[e]?.required ? parameter[e].required : false,
       type: parameter[e]?.type ? parameter[e].type : "text",
-      value: object[e] ? object[e] : "",
+      value: object?.[e] ? object[e] : "",
       onChange: (item) => {
         setEditChangeState(true);
         if (e === "firstName") {
@@ -99,19 +97,20 @@ export default function StudentEdit({
     let arr = {};
     if (
       (onlyParameter.includes("phoneNumber") && !object?.phoneNumber) ||
-      object?.phoneNumber === ""
+      (object?.phoneNumber === "" && onlyParameter.length === 0)
     ) {
       arr = { ...arr, phoneNumber: "Phone Number is invalid" };
     }
 
     if (
       (onlyParameter.includes("email") && !object?.email) ||
-      object?.email === ""
+      (object?.email === "" && onlyParameter.length === 0)
     ) {
       arr = { ...arr, email: "email is invalid" };
     }
 
     setErrors(arr);
+
     if (arr.phoneNumber || arr.email) {
       return false;
     }
@@ -120,25 +119,16 @@ export default function StudentEdit({
 
   const handleSubmit = async (e) => {
     if (validate()) {
-      if (editChangeState) {
+      if (editChangeState && setTeacherObject) {
         let result = {};
-        if (type && type === "Teacher") {
-          result = await teacherRegistryService.update(object, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-            onlyParameter: [...onlyParameter, "fullName"],
-          });
-        } else {
-          result = await studentRegistryService.update(object, {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-            onlyParameter: [...onlyParameter, "fullName"],
-          });
-        }
+        result = await teacherRegistryService.update(object, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          onlyParameter: [...onlyParameter, "fullName"],
+        });
         if (result.data) {
-          setStudentObject(object);
+          setTeacherObject(object);
           toast.show({
             render: () => {
               return (
@@ -173,41 +163,45 @@ export default function StudentEdit({
 
     const getData = async () => {
       if (!ignore) {
-        setObject(studentObject);
+        setObject(teacherObject);
       }
     };
     getData();
-  }, [studentObject]);
+  }, [teacherObject]);
 
   return (
     <Section
-      title={t("DETAILS")}
+      title={header ? header : t("DETAILS")}
       button={
-        editState ? (
-          <Button
-            colorScheme="button"
-            _text={{ fontWeight: "400", color: "white" }}
-            py={1}
-            px={2}
-            onPress={handleSubmit}
-          >
-            {t("SAVE")}
-          </Button>
+        isEditable !== false ? (
+          editState ? (
+            <Button
+              colorScheme="button"
+              _text={{ fontWeight: "400", color: "white" }}
+              py={1}
+              px={2}
+              onPress={handleSubmit}
+            >
+              {t("SAVE")}
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              colorScheme="button"
+              _text={{
+                fontWeight: "600",
+                fontSize: "14px",
+                textTransform: "capitalzise",
+              }}
+              py={1}
+              px={2}
+              onPress={(e) => setEditState(true)}
+            >
+              {t("EDIT")}
+            </Button>
+          )
         ) : (
-          <Button
-            variant="ghost"
-            colorScheme="button"
-            _text={{
-              fontWeight: "600",
-              fontSize: "14px",
-              textTransform: "capitalzise",
-            }}
-            py={1}
-            px={2}
-            onPress={(e) => setEditState(true)}
-          >
-            {t("EDIT")}
-          </Button>
+          <React.Fragment />
         )
       }
     >

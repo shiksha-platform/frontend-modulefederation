@@ -41,5 +41,12 @@
   "ENTER_WORKSHEET_DETAILS": "वर्कशीट विवरण दर्ज करें",
   "SHOW_QUESTIONS_BASED_ON": "पर आधारित प्रश्न दिखाएं",
   "PLEASE_SELECT_LIMIT": "कृपया सीमा चुनें",
-  "QUESTION_NOT_FOUND": "इस फ़िल्टर के लिए कोई प्रश्न नहीं मिला"
+  "QUESTION_NOT_FOUND": "इस फ़िल्टर के लिए कोई प्रश्न नहीं मिला",
+  "SEARCH_QUESTIONS": "प्रश्न खोजें",
+  "ENTER_TITLE": "शीर्षक दर्ज करें",
+  "NEW_QUESTIONS_ADDED": "नए प्रश्न जोड़े गए",
+  "QUESTION_SELECTED": "प्रश्न चयनित",
+  "AUTO_GENERATE": "स्वत: उत्पन्न",
+  "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें",
+  "PLEASE_SELECT_ATLIST_ONE_QUESTION": "कृपया एक प्रश्न को सूचीबद्ध करें चुनें"
 }

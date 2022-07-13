@@ -1,5 +1,10 @@
 {
   "YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS_MONTH": "You have been present all days this month",
   "ABSENT_TODAY_POOR_THAN_LAST_WEEK": "absent today! Poor than last week",
-  "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "Agerage than last month. Can be improved"
+  "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "Agerage than last month. Can be improved",
+  "EMPLOYEE_CODE": "Employee Code",
+  "DATE_FO_JOINING": "Date of Joining (DOJ)",
+  "DATE_OF_BIRTH": "Date of birth",
+  "PERSONAL_DETAILS": "Personal Details",
+  "CONTACT_DETAILS": "Contact Details"
 }
