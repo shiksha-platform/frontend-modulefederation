@@ -109,9 +109,10 @@ const TimeTableRoute = () => {
     <Box py="5" bg={colors.white}>
       <Box p="5">
         <HStack justifyContent="space-between" alignItems="center">
-          <DayWiesBar
+          <TimeBar
             _box={{ p: 0, bg: "transparent" }}
             {...{ page, setPage }}
+            type="days"
           />
           <Button
             rounded={"full"}
@@ -355,7 +356,7 @@ const TimeTableRoute = () => {
                 {index ? (
                   <Box borderWidth={1} borderColor="gray.200">
                     <IconByName
-                      size="sm"
+                      size="50"
                       name="FlashlightLineIcon"
                       colorScheme={
                         index === 1 ? "timeTableFlashIcon" : "timeTablemiddle"
@@ -445,7 +446,7 @@ const TimeTableRoute = () => {
   );
 };
 
-const DayWiesBar = ({ activeColor, setActiveColor, page, setPage, _box }) => {
+const DayWiseBar = ({ activeColor, setActiveColor, page, setPage, _box }) => {
   const [date, setDate] = React.useState();
   const { t } = useTranslation();
 
@@ -521,7 +522,7 @@ const Display = ({
       <HStack justifyContent="space-between" alignItems="center" space={4}>
         <HStack space="4" alignItems="center">
           <IconByName
-            size="sm"
+            size="50"
             color={
               typeof previousDisabled === "undefined" ||
               previousDisabled === false
@@ -550,7 +551,7 @@ const Display = ({
         </HStack>
         <HStack space="2">
           <IconByName
-            size="sm"
+            size="50"
             color={
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor

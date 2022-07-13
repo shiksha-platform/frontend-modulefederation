@@ -23,7 +23,7 @@ const FormatDate = ({ date, type }) => {
   }
 };
 
-export function DayWiesBar({
+export function DayWiseBar({
   activeColor,
   setActiveColor,
   page,
@@ -69,7 +69,7 @@ export function DayWiesBar({
   );
 }
 
-export function WeekWiesBar({
+export function WeekWiseBar({
   activeColor,
   setActiveColor,
   page,
@@ -131,7 +131,7 @@ const Display = ({
       <HStack justifyContent="space-between" alignItems="center" space={4}>
         <HStack space="4" alignItems="center">
           <IconByName
-            size="sm"
+            size="50"
             color={
               typeof previousDisabled === "undefined" ||
               previousDisabled === false
@@ -160,7 +160,7 @@ const Display = ({
         </HStack>
         <HStack space="2">
           <IconByName
-            size="sm"
+            size="50"
             color={
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor

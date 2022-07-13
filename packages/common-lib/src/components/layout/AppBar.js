@@ -58,7 +58,7 @@ export default function AppBar({
               borderWidth='0'
               children={
                 <IconByName
-                  size='sm'
+                  size='50'
                   name='ArrowLeftLineIcon'
                   color={color ? color : ''}
                   onPress={() => {
@@ -103,10 +103,10 @@ export default function AppBar({
           >
             <HStack space='4' alignItems='center'>
               {isEnableHamburgerMenuButton ? (
-                <IconByName size='sm' name='bars' color={color ? color : ''} />
+                <IconByName size='50' name='bars' color={color ? color : ''} />
               ) : (
                 <IconByName
-                  size='sm'
+                  size='50'
                   name='ArrowLeftLineIcon'
                   color={color ? color : ''}
                   onPress={() => {
