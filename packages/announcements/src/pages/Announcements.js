@@ -135,7 +135,6 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
       setFilterData(f);
     }
   };
-  console.log(pinnedAnnouncementsData);
   return (
     <Layout
       _header={{
@@ -247,7 +246,6 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                 ...selectedAnnouncement,
                 ...announcement,
               }));
-              console.log(selectedAnnouncement);
             }}
             showMoreAnnouncements={showMoreAnnouncements}
           />
@@ -322,7 +320,6 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                   }
                   onChange={(e) => {
                     modifyFilter(showFilterModal, value, e);
-                    console.log(e);
                   }}
                 >
                   {value}
@@ -335,7 +332,6 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                 _text={{ color: "white" }}
                 onPress={(e) => {
                   setShowFilterModal(-1);
-                  console.log(filterData);
                 }}
               >
                 {t("CONTINUE")}

@@ -30,7 +30,6 @@ function App() {
       routes={routes}
       AuthComponent={LoginComponent}
       isShowPinnedAnnouncements={true}
-      isShowFooterLink={true}
     />
   );
 }

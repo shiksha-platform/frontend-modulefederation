@@ -25,7 +25,6 @@ export default function AppBar({
   onPressBackButton,
   rightIcon,
   isShowNotificationButton,
-  showPinnedAnnouncements,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
