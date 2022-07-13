@@ -11,7 +11,6 @@ export default function PinnedAnnouncements({ _pinnedAnnouncementsData }: any) {
     () => pinnedAnnouncementsList,
     [pinnedAnnouncementsList]
   )
-  console.log(_pinnedAnnouncementsData)
   return (
     <Box>
       <VStack space='2'>

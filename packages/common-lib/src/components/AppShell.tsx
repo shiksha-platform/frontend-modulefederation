@@ -35,7 +35,6 @@ function AppShell({
 
   //TODO: integrate with API call to fetch pinned announcements
   //pinned announcements data is common to all components depending on their
-  console.log(isShowPinnedAnnouncements, isShowFooterLink)
   const pinnedAnnouncementsData = !isShowPinnedAnnouncements
     ? []
     : [
@@ -50,7 +49,6 @@ function AppShell({
           isDismissable: false
         }
       ]
-  console.log(pinnedAnnouncementsData)
     getData()
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
