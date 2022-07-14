@@ -60,6 +60,7 @@ export default function ListOfQuestions({
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState();
   const [filters, setFilters] = React.useState([]);
+  const [correctAnswer, setCorrectAnswer] = React.useState(false);
   const [questionConfig, setQuestionConfig] = React.useState([]);
 
   React.useEffect(() => {
@@ -75,6 +76,9 @@ export default function ListOfQuestions({
         : [];
       setFilters(
         newDefaultInputs.filter((e) => data.includes(e.attributeName))
+      );
+      setCorrectAnswer(
+        manifest?.["worksheet.show-correct-answer"] === "true" ? true : false
       );
       setQuestionConfig(
         Array.isArray(manifest?.["question-bank.questionMetadata"])
@@ -130,7 +134,7 @@ export default function ListOfQuestions({
 
   const handleAddToWorksheet = () => {
     if (selectData.length <= 0) {
-      setAlertMessage(t("PLEASE_SELECT_ATLIST_ONE_QUESTION"));
+      setAlertMessage(t("PLEASE_SELECT_AT_LEAST_ONE_QUESTION"));
     } else {
       setShowModule(true);
       const telemetryData = telemetryFactory.interact({
@@ -296,7 +300,7 @@ export default function ListOfQuestions({
               You have selected {selectData.length} questions to add to the
               worksheet.
             </Caption>
-            {questionConfig.includes("correct-answer") ? (
+            {correctAnswer ? (
               <Pressable onPress={handleAnswerKey}>
                 <HStack alignItems="center" space="1" pt="1" py="4">
                   <IconByName

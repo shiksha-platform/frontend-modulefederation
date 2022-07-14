@@ -41,11 +41,14 @@ const newDefaultInputs = defaultInputs.map((e) => {
     ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
       ? "grade"
       : e.attributeName,
-    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+    ["type"]: ["subject", "gradeLevel", "source"].includes(e.attributeName)
       ? "stingValueArray"
       : "array",
   };
 });
+
+const getArray = (item) =>
+  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
 
 export default function Form({
   manifest,
@@ -70,27 +73,41 @@ export default function Form({
   React.useEffect(
     (e) => {
       if (createType === "auto") {
-        const filters = Array.isArray(
-          manifest?.["worksheet.configureWorksheetGetFilter"]
-        )
-          ? manifest?.["worksheet.configureWorksheetGetFilter"]
-          : manifest?.["worksheet.configureWorksheetGetFilter"]
-          ? JSON.parse(manifest?.["worksheet.configureWorksheetGetFilter"])
-          : [];
-        const autoFiters = [...newDefaultInputs, ...autoGenerateInputs];
-        setInputs(autoFiters.filter((e) => filters.includes(e.attributeName)));
-      } else {
-        const filters = Array.isArray(
+        const filters = getArray(
           manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
-        )
-          ? manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
-          : manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
-          ? JSON.parse(
-              manifest?.["worksheet.configureAutoGenerateWorksheetGetFilter"]
-            )
-          : [];
+        );
+        const source = getArray(manifest?.["question-bank.questionResource"]);
+        newDefaultInputs.map((item, index) => {
+          if (item.attributeName === "source") {
+            item.data = source;
+          }
+          return item;
+        });
+        const autoFiters = [...newDefaultInputs, ...autoGenerateInputs];
         setInputs(
-          newDefaultInputs.filter((e) => filters.includes(e.attributeName))
+          autoFiters.filter(
+            (e) =>
+              filters.includes(e.attributeName) ||
+              (e.attributeName === "grade" && filters.includes("class"))
+          )
+        );
+      } else {
+        const filters = getArray(
+          manifest?.["worksheet.configureWorksheetGetFilter"]
+        );
+        const source = getArray(manifest?.["question-bank.questionResource"]);
+        newDefaultInputs.map((item, index) => {
+          if (item.attributeName === "source") {
+            item.data = source;
+          }
+          return item;
+        });
+        setInputs(
+          newDefaultInputs.filter(
+            (e) =>
+              filters.includes(e.attributeName) ||
+              (e.attributeName === "grade" && filters.includes("class"))
+          )
         );
       }
     },

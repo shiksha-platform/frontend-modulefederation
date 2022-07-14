@@ -70,12 +70,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           ? e.attributeName
           : null
       );
-      if (!limit?.limit && createType === "auto") {
+      if (!formObject.source) {
+        setAlertMessage(t("PLEASE_SELECT_SOURCE"));
+        setPageName();
+      } else if (!limit?.limit && createType === "auto") {
         setAlertMessage(t("PLEASE_SELECT_LIMIT"));
         setPageName();
       } else {
         let data = {
-          adapter: manifest["question-bank.questionResource"],
+          adapter: formObject.source,
           limit: 10,
         };
         attribute.forEach((item, index) => {
