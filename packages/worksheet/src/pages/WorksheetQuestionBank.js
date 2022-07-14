@@ -2,20 +2,27 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
 import {
+  capture,
+  telemetryFactory,
   Layout,
   IconByName,
   worksheetRegistryService,
   questionRegistryService,
   Loading,
   likeRegistryService,
+  getApiConfig,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { Button, Box, HStack, VStack } from "native-base";
-import manifest from "../manifest.json";
+import manifestLocal from "../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
 import CommentActionsheet from "components/Actionsheet/CommentActionsheet";
 import QuestionActionsheet from "components/Actionsheet/QuestionActionsheet";
 import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
+import moment from "moment";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -32,8 +39,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const navigate = useNavigate();
   const { sub } = jwt_decode(localStorage.getItem("token"));
   const [comments, setCommets] = React.useState([]);
+  const [worksheetStartTime, setWorksheetStartTime] = useState();
+  const [questionConfig, setQuestionConfig] = React.useState([]);
 
   React.useEffect(async () => {
+    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    setQuestionConfig(
+      Array.isArray(newManifest?.["question-bank.questionMetadata"])
+        ? newManifest?.["question-bank.questionMetadata"]
+        : newManifest?.["question-bank.questionMetadata"]
+        ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+        : []
+    );
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =
       worksheetData && Array.isArray(worksheetData.questions)
@@ -87,6 +104,35 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     }
   };
 
+  React.useEffect(() => {
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Worksheet-View-Start",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+    });
+    capture("START", telemetryData);
+    setWorksheetStartTime(moment());
+  }, []);
+
+  const handleBackButton = () => {
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Worksheet-View-End",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+      duration: worksheetStartTime
+        ? moment().diff(worksheetStartTime, "seconds")
+        : 0,
+    });
+    capture("END", telemetryData);
+    navigate(-1);
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -112,14 +158,15 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </HStack>
         ),
       }}
-      bg="white"
+      bg={colors.white}
       _appBar={{
-        languages: manifest.languages,
+        onPressBackButton: handleBackButton,
+        languages: manifestLocal.languages,
         rightIcon: state ? (
           <HStack>
             <IconByName
               name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-              color={like.id ? "button.500" : "black.500"}
+              color={like.id ? colors.primary : colors.black}
               onPress={handleLike}
             />
             <IconByName name="ShareLineIcon" />
@@ -134,7 +181,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      <Box bg="white" p="5">
+      <Box bg={colors.white} p="5">
         <VStack space="5">
           {questions && questions.length > 0 ? (
             questions.map((question, index) => (
@@ -147,7 +194,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color="button.500"
+                      color={colors.primary}
                       onPress={(e) => setQuestionObject(question)}
                     />
                   </HStack>
@@ -160,7 +207,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               my="5"
               alignItems={"center"}
               rounded="lg"
-              bg="viewNotification.600"
+              bg={colors.viewNotificationDark}
             >
               Question Not Found
             </Box>
@@ -168,12 +215,12 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         </VStack>
       </Box>
       {!state ? (
-        <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
+        <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: colors.white }}
               px="5"
               onPress={(e) => console.log(e)}
             >
@@ -194,7 +241,11 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         }}
       />
       <QuestionActionsheet
-        {...{ questionObject, setQuestionObject, comments }}
+        {...{
+          questionObject,
+          setQuestionObject,
+          metadataConfig: questionConfig,
+        }}
       />
       <WorksheetActionsheet
         {...{

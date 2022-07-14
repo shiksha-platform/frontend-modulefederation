@@ -1,32 +1,24 @@
 import React, { useState } from "react";
 import {
   Collapsible,
-  IconByName,
-  attendanceRegistryService,
-  ProgressBar,
-  getUniqAttendance,
+  overrideColorTheme,
+  H2,
+  Caption,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import {
   HStack,
-  Text,
   VStack,
-  Stack,
   Box,
-  Progress,
-  Button,
   Divider,
-  Actionsheet,
-  Checkbox,
   Avatar,
   Spacer,
   Pressable,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { H2 } from "@shiksha/common-lib";
-import StudentDetailCard from "./StudentDetail";
-
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
@@ -58,32 +50,29 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
   }, []);
 
   return (
-    <>
-      <Collapsible
-        defaultCollapse={true}
-        header={
-          <>
-            <VStack>
-              <H2 fontWeight="600" color="gray.800">
-                {t("Students List")}
-              </H2>
-              <Text color="gray.400" fontSize={"xs"}>
-                {t("Total ") + 24} . {t("Present ") + 19}
-              </Text>
-            </VStack>
-          </>
-        }
-        fontSize="2px"
-      >
-        {studentlist &&
+    <Collapsible
+      defaultCollapse={true}
+      header={
+        <>
+          <VStack>
+            <H2>{t("Students List")}</H2>
+            <HStack alignItems={"center"}>
+              <Caption color={colors.gray}>{t("Total ") + 24}</Caption>{" "}
+              <Caption color={colors.lightGray}> ●</Caption>{" "}
+              <Caption color={colors.gray}> {t("Present ") + 19}</Caption>
+            </HStack>
+          </VStack>
+        </>
+      }
+      fontSize="2px"
+    >
+      {studentlist &&
         studentlist.length &&
         studentlist.map((student, index) => {
           return (
             <React.Fragment key={`student${index}`}>
-              <Box py="2">
-                {/*<Pressable onPress={() => navigate("/assessment-result")}>*/}
-                {/*<Pressable onPress={() => navigate("/quml-test")}>*/}
-                <Pressable onPress={() => setSelectedStudent(student)}>
+              <Box py="3">
+                <Pressable onPress={() => navigate("/assessment-result")}>
                   <HStack alignItems="center" space={3}>
                     <Avatar
                       size="48px"
@@ -93,44 +82,27 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
                       }}
                     />
                     <VStack>
-                      <Text
-                        color="coolGray.800"
-                        _dark={{
-                          color: "warmGray.50",
-                        }}
-                        bold
-                      >
-                        {index + 1} . {student.name}
-                      </Text>
-                      <Text color="gray.400" fontSize={"xs"}>
+                      <BodyLarge>
+                        {index + 1}{" "}
+                        <Caption color={colors.lightGray}> ●</Caption>{" "}
+                        {student.name}
+                      </BodyLarge>
+                      <Caption color={colors.lightGray}>
                         Mr. {student.fathersName}
-                      </Text>
+                      </Caption>
                     </VStack>
                     <Spacer />
                   </HStack>
                 </Pressable>
               </Box>
 
-              {studentlist.length - 1 != index && <Divider></Divider>}
+              {studentlist.length - 1 != index && (
+                <Divider bg={colors.dividerColor}></Divider>
+              )}
             </React.Fragment>
           );
         })}
-      </Collapsible>
-      {
-        selectedStudent && <Box bg="white" p="5" position="fixed" w={'100%'} bottom="84" shadow={2}>
-          <Button
-            colorScheme="button"
-            _text={{
-              color: "white",
-            }}
-            onPress={() => navigate("/quml-test")}
-          >
-            {t("Start assessment")}
-          </Button>
-        </Box>
-      }
-
-  </>
+    </Collapsible>
   );
 };
 

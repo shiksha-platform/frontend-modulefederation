@@ -7,6 +7,10 @@ import {
   H3,
   telemetryFactory,
   capture,
+  overrideColorTheme,
+  BodyLarge,
+  Caption,
+  Subtitle,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -14,6 +18,9 @@ import { Link, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar, Button } from "native-base";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import colorTheme from "../../colorTheme";
+import RoundedProgressBar from "components/RoundedProgressBar";
+const colors = overrideColorTheme(colorTheme);
 Chart.register(ArcElement, Tooltip, Legend);
 
 export default function ReportDetails({ appName }) {
@@ -37,16 +44,15 @@ export default function ReportDetails({ appName }) {
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: colors.successBarColor,
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: colors.pendingBarColor,
       value: 6,
     },
   ]);
-
   const _handleSpotAssessmentFullReportStart = () => {
     const telemetryData = telemetryFactory.start({
       appName,
@@ -91,34 +97,28 @@ export default function ReportDetails({ appName }) {
         title: "Report Details",
         isEnableSearchBtn: true,
         // setSearch: setSearch,
-        subHeading: "Spot Assessment",
+        subHeading: <BodyLarge py="2">{t("Summative Assessment 1")}</BodyLarge>,
       }}
       _appBar={{
         languages: ["en"],
-        rightIcon: <HStack>
-          <IconByName name="ShareLineIcon" />
-          <IconByName name="DownloadLineIcon" />
-        </HStack>
+        rightIcon: (
+          <HStack>
+            <IconByName name="ShareLineIcon" />
+            <IconByName name="DownloadLineIcon" />
+          </HStack>
+        ),
       }}
       subHeader={
         <VStack>
-          <Text fontSize={"lg"}>Science</Text>
+          <H2>Science</H2>
           <HStack alignItems={"center"}>
-            <Text color={"#373839"} fontSize={"xs"}>
-              {t("Class VI")}
-            </Text>{" "}
-            <Text fontSize="5px" color="#373839">
-              {" "}
-              ●
-            </Text>{" "}
-            <Text color="#373839" fontSize={"xs"}>
-              {" "}
-              {t("Sec A")}
-            </Text>
+            <Caption>{t("Class VI")}</Caption>{" "}
+            <Caption color={colors.lightGray0}> ●</Caption>{" "}
+            <Caption> {t("Sec A")}</Caption>
           </HStack>
         </VStack>
       }
-      _subHeader={{ bg: "#FFCAAC" }}
+      _subHeader={{ bg: colors.reportDetailsSubheaderBg }}
       _footer={{
         menues: [
           {
@@ -160,42 +160,45 @@ export default function ReportDetails({ appName }) {
       }}
     >
       <Stack space={1} mb="2" shadow={2}>
-        <Box bg={"#EFEFEF"}>
+        <Box>
           <VStack space={2}>
-            <Box p={4} bg={"white"}>
+            <Box p={4} bg={colors.white}>
               <HStack alignItems="center" justifyContent="space-between">
-                <Text fontSize={16} fontWeight={600}>
-                  15, January 2022
-                </Text>
+                <H2>15, January 2022</H2>
                 <IconByName name="ListUnorderedIcon" pr="0" />
               </HStack>
             </Box>
 
-            <Box p={4} bg={"white"}>
+            <Box p={4} bg={colors.white}>
               <VStack space={2}>
-                <H2 bold>Class Participation</H2>
+                <H2>Class Participation</H2>
                 <Box borderRadius="md">
                   <VStack>
-                    <Box px="4" py={2} bg={"#F57B7B"} roundedTop="6">
+                    <Box
+                      px="4"
+                      py={2}
+                      bg={colors.scoreCardIcon2}
+                      roundedTop="6"
+                    >
                       <HStack alignItems="center">
                         <IconByName
                           name="EmotionSadLineIcon"
                           pr="0"
-                          color="white"
+                          color={colors.white}
                         />
-                        <Text color="white" bold fontSize="xs">
+                        <Subtitle color={colors.white}>
                           {" "}
                           Poor overall performance!
-                        </Text>
+                        </Subtitle>
                       </HStack>
                     </Box>
-                    <Box p="4" bg={"#FFF8F7"}>
+                    <Box p="4" bg={colors.QuationsBoxContentBg}>
                       <VStack flex="auto" alignContent={"center"}>
                         <ProgressBar
                           isTextShow
                           legendType="separated"
                           h="35px"
-                          _bar={{ rounded: "md" }}
+                          _bar={{ rounded: "md", mb: "2" }}
                           isLabelCountHide
                           data={progressAssessment}
                         />
@@ -203,26 +206,23 @@ export default function ReportDetails({ appName }) {
                     </Box>
                     <Box
                       p="4"
-                      bg={"#FEF1EE"}
+                      bg={colors.QuationsBoxBg}
                       borderBottomRadius={6}
                       textAlign="center"
                     >
-                      <Text>
-                        Average Class Score is <Text bold>18</Text> out of{" "}
-                        <Text bold>25</Text>
-                      </Text>
+                      <Subtitle>
+                        Average Class Score is <H2>18</H2> out of <H2>25</H2>
+                      </Subtitle>
                     </Box>
                   </VStack>
                 </Box>
               </VStack>
             </Box>
 
-            <Box p={4} bg="white">
+            <Box p={4} bg={colors.white}>
               <VStack space={4}>
-                <H2 mb={3} fontWeight={600}>
-                  100% Achievers
-                </H2>
-                <Box p={4} bg="#FFF9F9" rounded="10">
+                <H2 mb={3}>100% Achievers</H2>
+                <Box p={4} bg={colors.achiverBoxBg} rounded="10">
                   <HStack space={2} justifyContent="space-between">
                     <Box textAlign={"center"}>
                       <VStack space={1}>
@@ -235,9 +235,7 @@ export default function ReportDetails({ appName }) {
                           }}
                         />
                         <H3>Shivani Joshi</H3>
-                        <Text fontSize="xs" color={"#373839"}>
-                          Roll No 11
-                        </Text>
+                        <Subtitle color={colors.gray}>Roll No 11</Subtitle>
                       </VStack>
                     </Box>
 
@@ -252,9 +250,7 @@ export default function ReportDetails({ appName }) {
                           }}
                         />
                         <H3>Shivani Joshi</H3>
-                        <Text fontSize="xs" color={"#373839"}>
-                          Roll No 11
-                        </Text>
+                        <Subtitle color={colors.gray}>Roll No 11</Subtitle>
                       </VStack>
                     </Box>
 
@@ -269,164 +265,147 @@ export default function ReportDetails({ appName }) {
                           }}
                         />
                         <H3>Shivani Joshi</H3>
-                        <Text fontSize="xs" color={"#373839"}>
-                          Roll No 11
-                        </Text>
+                        <Subtitle color={colors.gray}>Roll No 11</Subtitle>
                       </VStack>
                     </Box>
                   </HStack>
                 </Box>
               </VStack>
             </Box>
-            <Box p={4} bg="white">
+            <Box p={4} px="0px" bg={colors.white}>
               <Collapsible
                 defaultCollapse={true}
                 header={
                   <VStack>
-                    <H2 px={2} fontWeight={600}>
-                      {t("Student Wise Assessment")}
-                    </H2>
+                    <H2>{t("Student Wise Assessment")}</H2>
                     <HStack alignItems={"center"}>
-                      <Text color={"#373839"} fontSize={"xs"} fontWeight={400}>
-                        {t("3 Students")}{" "}
-                      </Text>
-                      <Text fontSize="5px" color="#373839" fontWeight={400}>
-                        {" "}
-                        ●{" "}
-                      </Text>
-                      <Text color="#373839" fontSize={"xs"} fontWeight={400}>
+                      <Caption color={colors.gray}>{t("3 Students")} </Caption>
+                      <Caption color={colors.lightGray0}> ● </Caption>
+                      <Caption color={colors.gray}>
                         {" "}
                         {t("Max Score : " + 25)}
-                      </Text>
+                      </Caption>
                     </HStack>
                   </VStack>
                 }
                 fontSize="2px"
               >
-                <VStack pt={6} space={4}>
-                  <Box>
-                    <VStack space={4}>
-                      <Box>
-                        <HStack
-                          alignItems="center"
-                          justifyContent="space-between"
-                        >
-                          <Box>
-                            <HStack>
-                              <Avatar
-                                size="48px"
-                                borderRadius="md"
-                                mr={4}
-                                source={{
-                                  uri: "https://via.placeholder.com/50x50.png",
-                                }}
-                              />
-                              <Box>
-                                <VStack>
-                                  <H2>Shah Rukh Khan</H2>
-                                  <HStack alignItems={"center"}>
-                                    <Text
-                                      color={"#373839"}
-                                      fontSize={"xs"}
-                                      fontWeight={400}
-                                    >
-                                      {t("Roll No. 23")}{" "}
-                                    </Text>
-                                    <Text
-                                      fontSize="5px"
-                                      color="#373839"
-                                      fontWeight={400}
-                                    >
-                                      {" "}
-                                      ●{" "}
-                                    </Text>
-                                    <Text
-                                      color="#373839"
-                                      fontSize={"xs"}
-                                      fontWeight={400}
-                                    >
-                                      {" "}
-                                      {t("Mr. Father's Name")}
-                                    </Text>
-                                  </HStack>
-                                </VStack>
-                              </Box>
-                            </HStack>
-                          </Box>
-                          <Box>
-                            <VStack>
-                              <Box position="relative">
-                                <Doughnut
-                                  width={"25px"}
-                                  height={"25px"}
-                                  data={{
-                                    datasets: [
-                                      {
-                                        id: 1,
-                                        label: "",
-                                        data: [14, 6],
-                                        backgroundColor: ["#0D921B", "#F7F7FD"],
-                                        borderWidth: 0,
-                                        cutout: "80%",
-                                      },
-                                    ],
+                <Box>
+                  <VStack pt={6} space={4}>
+                    <Box
+                      bg={colors.QuationsBoxContentBg}
+                      rounded="10px"
+                      px="4"
+                      py="2"
+                    >
+                      <VStack space={4}>
+                        <Box>
+                          <HStack
+                            alignItems="center"
+                            justifyContent="space-between"
+                          >
+                            <Box>
+                              <HStack>
+                                <Avatar
+                                  size="48px"
+                                  borderRadius="md"
+                                  mr={4}
+                                  source={{
+                                    uri: "https://via.placeholder.com/50x50.png",
                                   }}
                                 />
-                                <Text
-                                  position="absolute"
-                                  top="50%"
-                                  left="50%"
-                                  style={{ transform: "translate(-50%, -25%)" }}
-                                >
-                                  14
-                                </Text>
-                              </Box>
-                              <Text>Total Score</Text>
-                            </VStack>
-                          </Box>
-                        </HStack>
-                      </Box>
-
-                      <Box borderColor="#EFEFEF" borderRadius={10} p={4}>
-                        <HStack justifyContent="space-between" flexWrap="wrap">
-                          {questionList &&
-                            questionList.length &&
-                            questionList.map((question, index) => {
-                              return (
-                                <Box
-                                  key={`q-${index}`}
-                                  minW="20%"
-                                  textAlign="center"
-                                  mb={8}
-                                >
-                                  <VStack justifyContent="center" space={2}>
-                                    <Text fontSize="xs">Q-{question}</Text>
-                                    {/*<IconByName name="CheckboxCircleLineIcon" color={"#0D921B"} p={0} _icon={{ size: 20 }} mx={"auto"} />*/}
-                                    <IconByName
-                                      name="CloseCircleLineIcon"
-                                      color={"#F57B7B"}
-                                      p={0}
-                                      _icon={{ size: 20 }}
-                                      mx={"auto"}
-                                    />
+                                <Box>
+                                  <VStack>
+                                    <H2>Shah Rukh Khan</H2>
+                                    <HStack alignItems={"center"}>
+                                      <Caption color={colors.lightGray0}>
+                                        {t("Roll No. 23")}{" "}
+                                      </Caption>
+                                      <Caption color={colors.lightGray0}>
+                                        {" "}
+                                        ●{" "}
+                                      </Caption>
+                                      <Caption color={colors.lightGray0}>
+                                        {" "}
+                                        {t("Mr. Father's Name")}
+                                      </Caption>
+                                    </HStack>
                                   </VStack>
                                 </Box>
-                              );
-                            })}
-                        </HStack>
-                      </Box>
-                      <Box>
-                        <Button
-                          colorScheme="button"
-                          variant="outline"
-                          py={3}
-                        >
-                          {t("See all students")}
-                        </Button>
-                      </Box>
-                    </VStack>
+                              </HStack>
+                            </Box>
+                            <Box>
+                              <VStack>
+                                <Box position="relative">
+                                  <RoundedProgressBar
+                                    values={[18, 6]}
+                                    colors={[
+                                      colors.successBarColor,
+                                      colors.circleProgressBarcolor,
+                                    ]}
+                                    // legend={{ text: "Total Score", fontSize: "14px" }}
+                                    cutout={"80%"}
+                                    size="45px"
+                                  />
+                                  <Text
+                                    position="absolute"
+                                    top="50%"
+                                    left="50%"
+                                    style={{
+                                      transform: "translate(-50%, -25%)",
+                                    }}
+                                  >
+                                    18
+                                  </Text>
+                                </Box>
+                                <Caption color={colors.lightGray0}>
+                                  Total Score
+                                </Caption>
+                              </VStack>
+                            </Box>
+                          </HStack>
+                        </Box>
+
+                        <Box borderColor="#EFEFEF" borderRadius={10} p={4}>
+                          <HStack
+                            justifyContent="space-between"
+                            flexWrap="wrap"
+                          >
+                            {questionList &&
+                              questionList.length &&
+                              questionList.map((question, index) => {
+                                return (
+                                  <Box
+                                    key={`q-${index}`}
+                                    minW="20%"
+                                    textAlign="center"
+                                    mb={8}
+                                  >
+                                    <VStack justifyContent="center" space={2}>
+                                      <Caption>Q-{question}</Caption>
+                                      {/*<IconByName name="CheckboxCircleLineIcon" color={"#0D921B"} p={0} _icon={{ size: 20 }} mx={"auto"} />*/}
+                                      <IconByName
+                                        name="CloseCircleLineIcon"
+                                        color={colors.scoreCardIcon2}
+                                        p={0}
+                                        _icon={{ size: 20 }}
+                                        mx={"auto"}
+                                      />
+                                    </VStack>
+                                  </Box>
+                                );
+                              })}
+                          </HStack>
+                        </Box>
+                      </VStack>
+                    </Box>
+                  </VStack>
+                  <Box py="2">
+                    <Button colorScheme="button" variant="outline" py={3}>
+                      {t("See all students")}
+                    </Button>
                   </Box>
-                </VStack>
+                </Box>
               </Collapsible>
             </Box>
           </VStack>

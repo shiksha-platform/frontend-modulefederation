@@ -1,43 +1,33 @@
 import React, { useState, useEffect } from "react";
-import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-  Divider,
-  Actionsheet,
-  Checkbox,
-  Radio, Avatar
-} from "native-base";
+import { HStack, Text, VStack, Box, Button, Avatar } from "native-base";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import SingleSelectQuestionCard from "./questionTypes/SingleSelectQuestionCard";
-import MultipleSelectQuestionCard from "./questionTypes/MultipleSelectQuestionCard";
-import SimpleQuestionCard from "./questionTypes/SimpleQuestionCard";
 import {
-  assessmentRegistryService, IconByName, Layout,
+  BodyLarge,
+  Layout,
   Loading,
-  useWindowSize
+  useWindowSize,
+  overrideColorTheme,
+  Caption,
 } from "@shiksha/common-lib";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const QuestionList2 = ({ questionNumber }) => {
   const { t } = useTranslation();
   const [questionList, setQuestionList] = useState([
     {
-      question: '<p>This is dummy question 1</p>',
-      qType: 'single'
+      question: "<p>This is dummy question 1</p>",
+      qType: "single",
     },
     {
-      question: '<p>This is dummy question 2</p>',
-      qType: 'single'
+      question: "<p>This is dummy question 2</p>",
+      qType: "single",
     },
     {
-      question: '<p>This is dummy question 3</p>',
-      qType: 'single'
-    }
+      question: "<p>This is dummy question 3</p>",
+      qType: "single",
+    },
   ]);
   const [loading, setLoading] = React.useState(false);
   const [width, height] = useWindowSize();
@@ -52,7 +42,7 @@ const QuestionList2 = ({ questionNumber }) => {
         title: "Summative Assessment 1",
         isEnableSearchBtn: true,
         // setSearch: setSearch,
-        subHeading: "State Examinations",
+        subHeading: <BodyLarge>{t("State Examinations")}</BodyLarge>,
         iconComponent: (
           <Avatar
             size="48px"
@@ -67,12 +57,8 @@ const QuestionList2 = ({ questionNumber }) => {
       subHeader={
         <HStack space="4" justifyContent="space-between" alignItems="center">
           <VStack>
-            <Text fontSize={"lg"}>
-              Rahul
-            </Text>
-            <Text fontSize={"xs"} color={"muted.600"}>
-              Mr. Father’s Name
-            </Text>
+            <BodyLarge>Rahul</BodyLarge>
+            <Caption color={colors.lightGray0}>Mr. Father’s Name</Caption>
           </VStack>
           <Avatar
             size="37px"
@@ -83,7 +69,7 @@ const QuestionList2 = ({ questionNumber }) => {
           />
         </HStack>
       }
-      _subHeader={{ bg: "#D9F0FC" }}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={{
         menues: [
           {
@@ -143,12 +129,8 @@ const QuestionList2 = ({ questionNumber }) => {
           )}
         </VStack>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="84" shadow={2}>
-        <Button
-          colorScheme="button"
-          py={3}
-          _text={{ color: "#fff" }}
-        >
+      <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
+        <Button colorScheme="button" py={3} _text={{ color: colors.white }}>
           {t("Save")}
         </Button>
       </Box>

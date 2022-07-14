@@ -11,11 +11,13 @@ import {
   Loading,
   telemetryFactory,
   capture,
+  getApiConfig,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { useNavigate, useParams } from "react-router-dom";
-import manifest from "../manifest.json";
+import manifestLocal from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import colorTheme from "../colorTheme";
@@ -33,6 +35,8 @@ export default function TeachingDetail({ footerLinks, appName }) {
   const [worksheetDrafts, setWorksheetDrafts] = React.useState([]);
   const [classObject, setClassObject] = React.useState({});
   const [loading, setLoading] = React.useState(true);
+  const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
+  const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const { classId } = useParams();
 
   const getClass = async () => {
@@ -45,7 +49,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
     }
   };
 
-  React.useState(async () => {
+  React.useEffect(async () => {
     getClass();
     const data = await worksheetRegistryService.getAll({
       limit: 2,
@@ -57,6 +61,22 @@ export default function TeachingDetail({ footerLinks, appName }) {
       state: { eq: "Draft" },
     });
     setWorksheetDrafts(draftsData);
+    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    setWorksheetConfig(
+      Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
+        ? newManifest?.["worksheet.worksheetMetadata"]
+        : newManifest?.["worksheet.worksheetMetadata"]
+        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
+        : []
+    );
+    setShowButtonArray([...showButtonArray, ...buttons]);
     setLoading(false);
   }, []);
 
@@ -79,35 +99,37 @@ export default function TeachingDetail({ footerLinks, appName }) {
       _header={{
         title: t("MY_TEACHING"),
       }}
-      _appBar={{ languages: manifest.languages }}
-      subHeader={`${classObject?.name ? classObject?.name : ""} ${
-        classObject?.subjectName ? classObject?.subjectName : ""
-      }`}
+      _appBar={{ languages: manifestLocal.languages }}
+      subHeader={
+        <H2>{`${classObject?.name ? classObject?.name : ""} ${
+          classObject?.subjectName ? classObject?.subjectName : ""
+        }`}</H2>
+      }
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
       <VStack>
         {message ? (
           <HStack
-            bg="viewNotification.600"
+            bg={colors.viewNotificationDark}
             p="5"
             justifyContent="space-between"
           >
-            <Text textTransform="inherit">
+            <BodyMedium textTransform="inherit">
               Choose Worksheets or Lesson Plans for the class. You can also
               create your own worksheets.
-            </Text>
+            </BodyMedium>
             <IconByName
               p="0"
               name="CloseCircleLineIcon"
-              color="viewNotification.900"
+              color={colors.worksheetCloseIcon}
               onPress={(e) => setMessage(false)}
             />
           </HStack>
         ) : (
           ""
         )}
-        <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Tab
             routes={[
               {
@@ -115,20 +137,28 @@ export default function TeachingDetail({ footerLinks, appName }) {
                 component: (
                   <VStack>
                     <Worksheets
+                      _woksheetBox={{
+                        canShowButtonArray: showButtonArray,
+                        worksheetConfig,
+                      }}
                       appName={appName}
                       data={worksheets}
                       leftTitle="My Worksheets"
                       rightTitle="Explore All Worksheets"
-                      seeButtonText={t("SEE_ALL_WORKSHEETS")}
+                      seeButtonText={t("SHOW MORE")}
                       _seeButton={{
                         onPress: (e) => handleExploreAllWorksheets("Publish"),
                       }}
                     />
                     <Worksheets
+                      _woksheetBox={{
+                        canShowButtonArray: showButtonArray,
+                        worksheetConfig,
+                      }}
                       appName={appName}
                       data={worksheetDrafts}
                       leftTitle="Drafts"
-                      seeButtonText={t("SEE_ALL_DRAFTS")}
+                      seeButtonText={t("SHOW MORE")}
                       _seeButton={{
                         onPress: (e) => handleExploreAllWorksheets("Draft"),
                       }}
@@ -141,9 +171,9 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
         <Button
-          _text={{ color: "white" }}
+          _text={{ color: colors.white }}
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
@@ -185,7 +215,6 @@ const Worksheets = ({
               return (
                 <WorksheetBox
                   appName={appName}
-                  canShare={true}
                   key={index}
                   {...{ item, url: `/worksheet/${item.id}` }}
                   {..._woksheetBox}
@@ -214,7 +243,7 @@ const Worksheets = ({
           my="5"
           alignItems={"center"}
           rounded="lg"
-          bg="viewNotification.600"
+          bg={colors.viewNotificationDark}
         >
           {t("WORKSHEET_NOT_FOUND")}
         </Box>

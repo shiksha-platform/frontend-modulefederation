@@ -1,4 +1,11 @@
-import { BodyMedium, Caption, H2, IconByName } from "@shiksha/common-lib";
+import {
+  BodyMedium,
+  Caption,
+  H2,
+  IconByName,
+  overrideColorTheme,
+  Subtitle,
+} from "@shiksha/common-lib";
 import {
   Actionsheet,
   Avatar,
@@ -10,6 +17,8 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function Worksheet({
   worksheet,
@@ -27,11 +36,11 @@ export default function Worksheet({
       onClose={() => setShowModuleWorksheet(false)}
     >
       <Actionsheet.Content alignItems={"left"}>
-        <Stack p={5} pt={2} pb="25px" textAlign="center">
+        <Stack p={5} pt={2} pb="15px" textAlign="center">
           <H2>{worksheet?.name ? worksheet?.name : ""}</H2>
         </Stack>
         <IconByName
-          color="gray.300"
+          color={colors.lightGray2}
           position="absolute"
           top="10px"
           right="10px"
@@ -39,9 +48,13 @@ export default function Worksheet({
           onPress={(e) => setShowModuleWorksheet(false)}
         />
       </Actionsheet.Content>
-      <Box bg="white" width={"100%"} p="5">
+      <Box bg={colors.white} width={"100%"} p="5">
         <VStack space="4">
-          <BodyMedium color="gray.400" textTransform="inherit">
+          <BodyMedium
+            color={colors.messageInfo}
+            textTransform="inherit"
+            textAlign="center"
+          >
             {worksheet?.description}
           </BodyMedium>
 
@@ -50,33 +63,33 @@ export default function Worksheet({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="SurveyLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <BodyMedium color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("SUBJECT")}: {worksheet?.subject}
                 </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="BarChart2LineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <BodyMedium color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("LEVEL")}: {worksheet?.level}
                 </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="QuestionLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <BodyMedium color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("QUESTIONS")}:
                   {Array.isArray(worksheet?.questions)
                     ? worksheet?.questions.length
@@ -88,33 +101,33 @@ export default function Worksheet({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="AccountBoxFillIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <BodyMedium color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("GRADE")}: {worksheet?.grade}
                 </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="ArticleLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <BodyMedium color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("TOPIC")}: {worksheet?.topic}
                 </BodyMedium>
               </HStack>
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="Download2LineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <BodyMedium color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("DOWNLOADS")}: {worksheet?.downloads}
                 </BodyMedium>
               </HStack>
@@ -125,13 +138,13 @@ export default function Worksheet({
               <HStack alignItems="center">
                 <IconByName
                   name="Heart3FillIcon"
-                  color="red.500"
+                  color={colors.eventError}
                   _icon={{ size: 12 }}
                   isDisabled
                 />
-                <Caption>
+                <Subtitle>
                   {likeCount} {t("TEACHERS_LIKE_THIS")}
-                </Caption>
+                </Subtitle>
               </HStack>
               <Pressable
                 onPress={(e) =>
@@ -165,9 +178,9 @@ export default function Worksheet({
                       TE
                     </Avatar>
                   </Avatar.Group>
-                  <Caption color="button.500">
+                  <Subtitle color={colors.primary}>
                     {commentCount} {t("COMMENTS")}
-                  </Caption>
+                  </Subtitle>
                 </HStack>
               </Pressable>
             </HStack>

@@ -7,7 +7,7 @@ import {
   Loading,
   overrideColorTheme,
   H2,
-  worksheetRegistryService,
+  questionRegistryService,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { Box, ScrollView, VStack } from "native-base";
@@ -22,7 +22,7 @@ export default function QuestionBank({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(async () => {
-    const questions = await worksheetRegistryService.getAllQuestions(
+    const questions = await questionRegistryService.getAllQuestions(
       filterObject
     );
     setQuestions(questions);
@@ -43,7 +43,7 @@ export default function QuestionBank({ footerLinks, appName }) {
         title: translationCheck("MY_CLASSES", "Question Bank"),
         avatar: true,
       }}
-      bg="white"
+      bg={colors.white}
       _appBar={{ languages: ["en"] }}
       subHeader={<H2 textTransform="inherit">{t("THE_CLASSES_YOU_TAKE")}</H2>}
       _subHeader={{
@@ -102,7 +102,7 @@ export default function QuestionBank({ footerLinks, appName }) {
       />
       {/* <QuestionHeading text="Fill in the blanks" /> */}
       <ScrollView maxH={Height}>
-        <Box bg="white" p="5">
+        <Box bg={colors.white} p="5">
           <VStack space="5">
             {questions &&
               questions.map((question, index) => (

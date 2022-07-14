@@ -1,6 +1,6 @@
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
-import { get, post } from './RestClient'
+import { get, post, update as updateRequest } from './RestClient'
 
 const interfaceData = {
   id: 'teacherId',
@@ -61,12 +61,41 @@ export const getAll = async (
   }
 }
 
-export const getOne = async (filters = {}, headers = {}) => {
+export const getOne = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
   const result = await get(`${manifest.api_url}/teacher`, { headers }).catch(
     (error) => error
   )
   if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData)
+  } else {
+    return {}
+  }
+}
+
+export const update = async (data = {}, headers = {}) => {
+  let newInterfaceData = interfaceData
+  if (headers?.removeParameter || headers?.onlyParameter) {
+    newInterfaceData = {
+      ...interfaceData,
+      removeParameter: headers?.removeParameter ? headers?.removeParameter : [],
+      onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : []
+    }
+  }
+  let newData = mapInterfaceData(data, newInterfaceData, true)
+
+  const result = await updateRequest(
+    manifest.api_url + '/teacher/' + data.id,
+    newData,
+    {
+      headers: headers?.headers ? headers?.headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
   } else {
     return {}
   }

@@ -5,6 +5,7 @@ import {
   Tab,
   classRegistryService,
   overrideColorTheme,
+  H2,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Actionsheet, Box, Button } from "native-base";
@@ -46,13 +47,17 @@ export default function Teaching({ footerLinks, appName }) {
         title: t("MY_TEACHING"),
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t(
-        "Access and plan your teaching material like worksheets and lesson plans"
-      )}
+      subHeader={
+        <H2>
+          {t(
+            "Access and plan your teaching material like worksheets and lesson plans"
+          )}
+        </H2>
+      }
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
-      <Box bg="white" p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         <Tab
           routes={[
             {

@@ -97,8 +97,8 @@ export const create = async (data, header = {}) => {
     headers: headers?.headers ? headers?.headers : {}
   })
   if (result.data) {
-    return true
-    // return result.data.map((e) => mapInterfaceData(e, interfaceData));
+    let { Worksheet } = result.data?.data?.result
+    return Worksheet
   } else {
     return false
   }

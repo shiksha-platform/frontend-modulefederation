@@ -157,23 +157,6 @@ export default function StudentDetails({ footerLinks, appName }) {
                   >
                     {t("FULL_CLASS_ATTENDANCE")}
                   </Button>
-                  <Button
-                    flex="1"
-                    colorScheme="button"
-                    _text={{ color: "white" }}
-                    onPress={(e) => {
-                      const telemetryData = telemetryFactory.interact({
-                        appName,
-                        type: "Attendance-Notification-Message-History",
-                        sentCount: 10,
-                        failedCount: 5,
-                      });
-                      capture("INTERACT", telemetryData);
-                      navigate("/students/sendSms/" + studentObject.id);
-                    }}
-                  >
-                    {t("MESSAGE_HISTORY")}
-                  </Button>
                 </Button.Group>
               </>
             </Collapsible>

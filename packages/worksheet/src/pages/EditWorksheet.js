@@ -1,8 +1,9 @@
 import {
-  IconByName,
   Loading,
   worksheetRegistryService,
   questionRegistryService,
+  getApiConfig,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -10,6 +11,8 @@ import ListOfWorksheet from "../components/WorksheetEdit/ListOfWorksheet";
 import UpdateDescriptionPage from "../components/WorksheetEdit/UpdateDescriptionPage";
 import FormWorksheet from "components/WorksheetEdit/FormWorksheet";
 import QuestionActionsheet from "../components/Actionsheet/QuestionActionsheet";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function EditWorksheet({ footerLinks, appName }) {
   const [pageName, setPageName] = React.useState();
@@ -18,9 +21,18 @@ export default function EditWorksheet({ footerLinks, appName }) {
   const [worksheet, setWorksheet] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   const [questionObject, setQuestionObject] = React.useState({});
+  const [questionConfig, setQuestionConfig] = React.useState([]);
   const { id } = useParams();
 
   React.useEffect(async () => {
+    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    setQuestionConfig(
+      Array.isArray(newManifest?.["question-bank.questionMetadata"])
+        ? newManifest?.["question-bank.questionMetadata"]
+        : newManifest?.["question-bank.questionMetadata"]
+        ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+        : []
+    );
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =
       worksheetData && Array.isArray(worksheetData.questions)
@@ -99,7 +111,13 @@ export default function EditWorksheet({ footerLinks, appName }) {
             setFormObject: setWorksheet,
           }}
         />
-        <QuestionActionsheet {...{ questionObject, setQuestionObject }} />
+        <QuestionActionsheet
+          {...{
+            questionObject,
+            setQuestionObject,
+            metadataConfig: questionConfig,
+          }}
+        />
       </>
     );
   }
