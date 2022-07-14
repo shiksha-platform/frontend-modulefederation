@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import {
-  Collapsible,
   IconByName,
-  attendanceRegistryService,
-  ProgressBar,
-  getUniqAttendance,
   Loading,
   H1,
-  H3,
   Layout,
   useWindowSize,
   telemetryFactory,
   capture,
+  BodyLarge,
+  H2,
+  BodyMedium,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -19,20 +18,17 @@ import {
   VStack,
   Stack,
   Box,
-  Progress,
   Button,
   Divider,
   Actionsheet,
-  Checkbox,
   Avatar,
-  Spacer,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { H2 } from "@shiksha/common-lib";
-import manifest from "../../manifest.json";
 import RoundedProgressBar from "../RoundedProgressBar";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -97,18 +93,18 @@ const SpotAssessmentResult2 = ({ appName }) => {
         height={height}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg="warningAlert.500" pb="100px" pt="32px">
+            <VStack bg={colors.scoreCardBg1} pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
                 name="EmotionNormalLineIcon"
-                color="#E78D12"
+                color={colors.scoreCardIcon1}
                 _icon={{ size: 100 }}
               />
               <Box alignItems="center">
-                <H1 fontSize="22px" fontWeight="600" color="#E78D12">
-                  NOT BAD!
-                </H1>
-                <Text color="#E78D12">You got most of the answers right.</Text>
+                <H1 color={colors.scoreCardIcon1}>NOT BAD!</H1>
+                <BodyLarge color={colors.scoreCardIcon1}>
+                  You got most of the answers right.
+                </BodyLarge>
               </Box>
             </VStack>
             <VStack space={50} bg="white">
@@ -125,10 +121,10 @@ const SpotAssessmentResult2 = ({ appName }) => {
                       />
                     </Box>
                     <Box>
-                      <Text fontSize="18" fontWeight="600">
-                        Shah Rukh Khan
-                      </Text>
-                      <Text color={"#757588"}>Mr. Father’s Name</Text>
+                      <H2>Shah Rukh Khan</H2>
+                      <BodyMedium color={colors.gray}>
+                        Mr. Father’s Name
+                      </BodyMedium>
                     </Box>
                   </VStack>
                 </Box>
@@ -138,13 +134,16 @@ const SpotAssessmentResult2 = ({ appName }) => {
                   <Box p="4" alignItems="center">
                     <RoundedProgressBar
                       values={[63, 28]}
-                      colors={["#E78D12", "#EAE0DF"]}
+                      colors={[
+                        colors.scoreCardIcon1,
+                        colors.circleProgressBarcolor,
+                      ]}
                       title={{ text: "63%", fontSize: "21px" }}
                       legend={{ text: "Total Score", fontSize: "14px" }}
                       cutout={"85%"}
                       size="80px"
                     />
-                    <HStack justifyContent={"center"} alignItems="center">
+                    {/* <HStack justifyContent={"center"} alignItems="center">
                       <IconByName name="StarFillIcon" p="0" color="#E78D12" />
                       <IconByName name="StarFillIcon" p="0" color="#E78D12" />
                       <IconByName name="StarFillIcon" p="0" color="#E78D12" />
@@ -154,7 +153,7 @@ const SpotAssessmentResult2 = ({ appName }) => {
                         color="#E78D12"
                       />
                       <IconByName name="StarLineIcon" p="0" color="#E78D12" />
-                    </HStack>
+                    </HStack> */}
                   </Box>
                 </VStack>
               </Box>
@@ -162,7 +161,7 @@ const SpotAssessmentResult2 = ({ appName }) => {
                 <Button
                   colorScheme="button"
                   _text={{
-                    color: "white",
+                    color: colors.white,
                   }}
                   onPress={() => setToDoNextModal(true)}
                 >
@@ -177,29 +176,27 @@ const SpotAssessmentResult2 = ({ appName }) => {
         isOpen={toDoNextModal}
         onClose={() => setToDoNextModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("What would you like to do next?")}
-              </Text>
+            <Stack p={5} pt={2} pb="15px">
+              <H2>{t("What would you like to do next?")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setToDoNextModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
+        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
           <Actionsheet.Item onPress={() => setNextOption("repeat")}>
-            Repeat test with another student
+            <BodyLarge>Repeat test with another student</BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("similar")}>
-            Give similar test to another student
+            <BodyLarge>Give similar test to another student</BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("end")}>
-            End Assessment
+            <BodyLarge>End Assessment</BodyLarge>
           </Actionsheet.Item>
           <Divider my={4}></Divider>
 
@@ -207,7 +204,7 @@ const SpotAssessmentResult2 = ({ appName }) => {
             <Button
               colorScheme="button"
               _text={{
-                color: "white",
+                color: colors.white,
               }}
               // onPress={()=> setSelectedStudent()}
               onPress={() => handleNextOption()}
@@ -222,26 +219,24 @@ const SpotAssessmentResult2 = ({ appName }) => {
         isOpen={similarTestModal}
         onClose={() => setSimilarTestModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Give similar test to another student")}
-              </Text>
+            <Stack p={5} pt={2} pb="15px">
+              <H2>{t("Give similar test to another student")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setSimilarTestModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
-          <Text my={3}>
+        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+          <BodyMedium my={3}>
             A similar test will consist of the same competencies with a
             different set of questions.
-          </Text>
-          <Text my={3}>Are you sure you want to continue?</Text>
+          </BodyMedium>
+          <BodyMedium my={3}>Are you sure you want to continue?</BodyMedium>
           <Divider my={4}></Divider>
 
           <Box>
@@ -249,7 +244,7 @@ const SpotAssessmentResult2 = ({ appName }) => {
               <Button
                 colorScheme="button"
                 _text={{
-                  color: "#fff",
+                  color: colors.white,
                 }}
                 // onPress={()=> setSelectedStudent()}
               >
@@ -259,7 +254,7 @@ const SpotAssessmentResult2 = ({ appName }) => {
               <Button
                 colorScheme="button"
                 _text={{
-                  color: "#fff",
+                  color: colors.white,
                 }}
                 onPress={() => handleContinueWithSimilarQuestion()}
               >
