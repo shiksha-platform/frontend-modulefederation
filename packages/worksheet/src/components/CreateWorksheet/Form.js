@@ -88,7 +88,7 @@ export default function Form({
           autoFiters.filter(
             (e) =>
               filters.includes(e.attributeName) ||
-              (e.attributeName === "grade" && filters.includes("class"))
+              (e.attributeName === "grade" && filters.includes("gradeLevel"))
           )
         );
       } else {
@@ -106,7 +106,7 @@ export default function Form({
           newDefaultInputs.filter(
             (e) =>
               filters.includes(e.attributeName) ||
-              (e.attributeName === "grade" && filters.includes("class"))
+              (e.attributeName === "grade" && filters.includes("gradeLevel"))
           )
         );
       }

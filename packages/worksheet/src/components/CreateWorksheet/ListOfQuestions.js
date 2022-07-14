@@ -36,11 +36,14 @@ const newDefaultInputs = defaultInputs.map((e) => {
     ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
       ? "grade"
       : e.attributeName,
-    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+    ["type"]: ["subject", "gradeLevel", "source"].includes(e.attributeName)
       ? "stingValueArray"
       : "array",
   };
 });
+
+const getArray = (item) =>
+  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
 
 export default function ListOfQuestions({
   appName,
@@ -67,26 +70,27 @@ export default function ListOfQuestions({
     if (!isSuccess) {
       setPageName("ListOfQuestions");
       setShowQuestions(questions);
-      const data = Array.isArray(
+      const data = getArray(
         manifest?.["question-bank.configureQuestionGetFilter"]
-      )
-        ? manifest?.["question-bank.configureQuestionGetFilter"]
-        : manifest?.["question-bank.configureQuestionGetFilter"]
-        ? JSON.parse(manifest?.["question-bank.configureQuestionGetFilter"])
-        : [];
+      );
+      const source = getArray(manifest?.["question-bank.questionResource"]);
+      const filters = newDefaultInputs.map((item, index) => {
+        if (item.attributeName === "source") {
+          item.data = source;
+        }
+        return item;
+      });
       setFilters(
-        newDefaultInputs.filter((e) => data.includes(e.attributeName))
+        filters.filter(
+          (e) =>
+            data.includes(e.attributeName) ||
+            (e.attributeName === "grade" && data.includes("gradeLevel"))
+        )
       );
       setCorrectAnswer(
         manifest?.["worksheet.show-correct-answer"] === "true" ? true : false
       );
-      setQuestionConfig(
-        Array.isArray(manifest?.["question-bank.questionMetadata"])
-          ? manifest?.["question-bank.questionMetadata"]
-          : manifest?.["question-bank.questionMetadata"]
-          ? JSON.parse(manifest?.["question-bank.questionMetadata"])
-          : []
-      );
+      setQuestionConfig(getArray(manifest?.["question-bank.questionMetadata"]));
     }
   }, [formObject]);
 
