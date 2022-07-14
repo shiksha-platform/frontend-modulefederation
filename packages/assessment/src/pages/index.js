@@ -1,4 +1,12 @@
-import { Collapsible, IconByName, Layout } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  BodyMedium,
+  Collapsible,
+  H3,
+  IconByName,
+  Layout,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -6,6 +14,8 @@ import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import SpotAssessmentCard from "../components/SpotAssessment/SpotAssessmentCard";
 import StudentListCard from "../components/SpotAssessment/StudentList";
 import ExamScoresCard from "../components/ExamScores/ExamScoresCard";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function Assessment() {
   const { t } = useTranslation();
@@ -40,8 +50,8 @@ export default function Assessment() {
           ),
         }}
         _appBar={{ languages: ["en"] }}
-        subHeader={<Text fontSize={"lg"}>"View All Students"</Text>}
-        _subHeader={{ bg: "attendanceCard.500" }}
+        subHeader={<H3>Choose a Student</H3>}
+        _subHeader={{ bg: colors.cardBg, py: "6" }}
         _footer={{
           menues: [
             {
@@ -155,10 +165,9 @@ export default function Assessment() {
       <Stack space={1} mb="2" shadow={2}>
         <Collapsible
           defaultCollapse={true}
-          header={<Text px={2}>{t("ASSESSMENTS")}</Text>}
-          fontSize="2px"
+          header={<BodyLarge>{t("Assessment")}</BodyLarge>}
         >
-          <VStack p="2" space={4}>
+          <VStack py="4" space={4}>
             <SpotAssessmentCard setPageName={setPageName} />
             <ExamScoresCard setPageName={setPageName} />
           </VStack>

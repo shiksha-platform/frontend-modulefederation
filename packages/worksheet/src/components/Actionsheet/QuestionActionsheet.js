@@ -40,7 +40,7 @@ export default function Question({
       <Box bg={colors.white} width={"100%"} p="5">
         <VStack space="5">
           {metadataConfig?.includes("question") ? (
-            <BodyMedium color="gray.400" textTransform="inherit">
+            <BodyMedium color={colors.messageInfo} textTransform="inherit">
               <div
                 dangerouslySetInnerHTML={{ __html: questionObject?.question }}
               />
@@ -55,12 +55,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="AccountBoxFillIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("CLASS")}: {questionObject?.class}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />
@@ -70,12 +70,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="FileInfoLineIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("TOPICS")}: {questionObject?.topic}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />
@@ -85,12 +85,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="SurveyLineIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("SOURCE")}: {questionObject?.source}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />
@@ -100,12 +100,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="SurveyLineIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("LANGUAGE")}:{questionObject?.languageCode}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />
@@ -116,12 +116,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="SurveyLineIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("SUBJECT")}: {questionObject?.subject}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />
@@ -131,12 +131,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="BarChart2LineIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("LEVEL")}: {questionObject?.level}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />
@@ -146,12 +146,12 @@ export default function Question({
                   <HStack space="1" alignItems="center">
                     <IconByName
                       name="BarChart2LineIcon"
-                      _icon={{ size: 12 }}
+                      _icon={{ size: 14 }}
                       p="0"
                     />
-                    <Caption>
+                    <BodyMedium>
                       {t("OUTCOME")}: {questionObject?.outcome}
-                    </Caption>
+                    </BodyMedium>
                   </HStack>
                 ) : (
                   <React.Fragment />

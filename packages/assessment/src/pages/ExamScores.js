@@ -1,9 +1,21 @@
-import { Collapsible, IconByName, Layout } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  BodyMedium,
+  Caption,
+  Collapsible,
+  H3,
+  IconByName,
+  Layout,
+  overrideColorTheme,
+  Subtitle,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import StudentsList from "../components/ExamScores/StudentsList";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 export default function ExamScores() {
   const { t } = useTranslation();
@@ -30,9 +42,11 @@ export default function ExamScores() {
         isEnableSearchBtn: true,
         // setSearch: setSearch,
         subHeading:
-          headerDetails && headerDetails.subHeading
-            ? headerDetails.subHeading
-            : t("Fill Scores"),
+          headerDetails && headerDetails.subHeading ? (
+            headerDetails.subHeading
+          ) : (
+            <BodyLarge>{t("Summative Assessment 1")}</BodyLarge>
+          ),
         iconComponent: (
           <Avatar
             size="48px"
@@ -46,21 +60,21 @@ export default function ExamScores() {
       _appBar={{ languages: ["en"] }}
       subHeader={
         <VStack>
-          <Text fontSize={"lg"}>
+          <H3>
             {headerDetails && headerDetails.student
               ? headerDetails.student.name
               : "View All Students"}
-          </Text>
+          </H3>
           {headerDetails &&
             headerDetails.student &&
             headerDetails.student.fathersName && (
-              <Text fontSize={"xs"} color={"muted.600"}>
+              <Caption color={colors.gray}>
                 Mr. {headerDetails.student.fathersName}
-              </Text>
+              </Caption>
             )}
         </VStack>
       }
-      _subHeader={{ bg: "attendanceCard.500" }}
+      _subHeader={{ bg: colors.cardBg, py: "6" }}
       _footer={{
         menues: [
           {

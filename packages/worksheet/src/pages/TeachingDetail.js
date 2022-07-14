@@ -145,7 +145,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
                       data={worksheets}
                       leftTitle="My Worksheets"
                       rightTitle="Explore All Worksheets"
-                      seeButtonText={t("SEE_ALL_WORKSHEETS")}
+                      seeButtonText={t("SHOW MORE")}
                       _seeButton={{
                         onPress: (e) => handleExploreAllWorksheets("Publish"),
                       }}
@@ -158,7 +158,7 @@ export default function TeachingDetail({ footerLinks, appName }) {
                       appName={appName}
                       data={worksheetDrafts}
                       leftTitle="Drafts"
-                      seeButtonText={t("SEE_ALL_DRAFTS")}
+                      seeButtonText={t("SHOW MORE")}
                       _seeButton={{
                         onPress: (e) => handleExploreAllWorksheets("Draft"),
                       }}

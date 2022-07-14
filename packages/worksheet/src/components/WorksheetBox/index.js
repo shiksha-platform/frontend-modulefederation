@@ -198,8 +198,8 @@ export default function WorksheetBox({
           <RightButton />
         </HStack>
         {worksheetConfig?.includes("description") || true ? (
-          <Subtitle
-            color="worksheetBoxText.500"
+          <BodyMedium
+            color={colors.worksheetText}
             style={{
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -209,7 +209,7 @@ export default function WorksheetBox({
             }}
           >
             {item.description}
-          </Subtitle>
+          </BodyMedium>
         ) : (
           <React.Fragment />
         )}
@@ -219,13 +219,13 @@ export default function WorksheetBox({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="SurveyLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <Subtitle color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {"Subject: " + item.subject}
-                </Subtitle>
+                </BodyMedium>
               </HStack>
             ) : (
               <React.Fragment />
@@ -234,13 +234,13 @@ export default function WorksheetBox({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="BarChart2LineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <Subtitle color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {"Level: " + item.level}
-                </Subtitle>
+                </BodyMedium>
               </HStack>
             ) : (
               <React.Fragment />
@@ -249,16 +249,16 @@ export default function WorksheetBox({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="QuestionLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <Subtitle color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {"Questions: " +
                     (Array.isArray(item.questions)
                       ? item.questions.length
                       : item.questions)}
-                </Subtitle>
+                </BodyMedium>
               </HStack>
             ) : (
               <React.Fragment />
@@ -269,13 +269,13 @@ export default function WorksheetBox({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="AccountBoxFillIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <Subtitle color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {"Grade: " + item.grade}
-                </Subtitle>
+                </BodyMedium>
               </HStack>
             ) : (
               <React.Fragment />
@@ -284,13 +284,13 @@ export default function WorksheetBox({
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="ArticleLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <Subtitle color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {t("TOPIC") + ": " + item.topic}
-                </Subtitle>
+                </BodyMedium>
               </HStack>
             ) : (
               <React.Fragment />
@@ -298,15 +298,14 @@ export default function WorksheetBox({
             {worksheetConfig?.includes("download") ? (
               <HStack space="1" alignItems="center">
                 <IconByName
-                  onPress={handleDownload}
-                  name="DownloadLineIcon"
-                  _icon={{ size: 15 }}
-                  color={colors.primary}
+                  name="Download2LineIcon"
+                  _icon={{ size: 14 }}
+                  color={colors.worksheetBoxText}
                   p="0"
                 />
-                <Subtitle color="worksheetBoxText.400">
+                <BodyMedium color={colors.worksheetBoxText}>
                   {"Downloads: " + item.downloads}
-                </Subtitle>
+                </BodyMedium>
               </HStack>
             ) : (
               <React.Fragment />
@@ -320,7 +319,7 @@ export default function WorksheetBox({
               <IconByName
                 name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
                 _icon={{ size: 15 }}
-                color="button.500"
+                color={colors.primary}
                 p="0"
                 onPress={handleLike}
               />
@@ -346,7 +345,7 @@ export default function WorksheetBox({
                 onPress={handleDownload}
                 name="DownloadLineIcon"
                 _icon={{ size: 15 }}
-                color="button.500"
+                color={colors.primary}
                 p="0"
               />
             </Box>

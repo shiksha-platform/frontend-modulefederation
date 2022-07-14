@@ -301,7 +301,7 @@ export default function ListOfQuestions({
                 <HStack alignItems="center" space="1" pt="1" py="4">
                   <IconByName
                     isDisabled
-                    color={isAnswerFilter ? "button.500" : "gray.300"}
+                    color={isAnswerFilter ? colors.primary : colors.lightGray2}
                     name={
                       isAnswerFilter
                         ? "CheckboxLineIcon"
