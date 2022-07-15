@@ -14,7 +14,7 @@ export default function MyLearningComponent({
   seeButton,
   seeButtonText,
   _seeButton,
-  _woksheetBox,
+  _courseBox,
   appName,
 }) {
   const { t } = useTranslation();
@@ -40,8 +40,8 @@ export default function MyLearningComponent({
                   appName={appName}
                   canShare={true}
                   key={index}
-                  {...{ item, url: `/mylearning/${item.id}` }}
-                  {..._woksheetBox}
+                  {...{ item, url: `/mylearning/${item.id}/view` }}
+                  {..._courseBox}
                 />
               );
             })}

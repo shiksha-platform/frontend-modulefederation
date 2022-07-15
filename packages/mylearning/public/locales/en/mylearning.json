@@ -27,5 +27,6 @@
   "SORT": "Sort",
   "FILTER": "Filter",
   "RESET_FILTER": "Reset Filter",
-  "COLLAPSE": "Collapse"
+  "COLLAPSE": "Collapse",
+  "SEE_COURSE_CONTENTS": "See course contents"
 }

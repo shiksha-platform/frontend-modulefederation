@@ -84,6 +84,7 @@ import StarHalfFillIcon from 'remixicon-react/StarHalfFillIcon'
 import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
+import ShieldStarLineIcon from 'remixicon-react/ShieldStarLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -758,6 +759,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ShieldStarLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ShieldStarLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

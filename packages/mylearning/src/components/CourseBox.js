@@ -32,9 +32,10 @@ const AttributeData = [
 export default function LearningBox({
   item,
   url,
-  canShare,
   canShowButtonArray,
+  isHeaderHide,
   _addIconButton,
+  _box,
   appName,
 }) {
   const { t } = useTranslation();
@@ -154,37 +155,47 @@ export default function LearningBox({
   };
 
   return (
-    <Box p="5" borderWidth="1" borderColor={colors.lightGray2} rounded="lg">
+    <Box
+      p="5"
+      borderWidth="1"
+      borderColor={colors.lightGray2}
+      rounded="lg"
+      {..._box}
+    >
       <VStack space={4}>
-        <HStack justifyContent="space-between" alignItems="flex-start">
-          <Pressable onPress={() => (url ? navigate(url) : "")}>
-            <HStack space={2} alignItems="center">
-              <Avatar bg={randomColors[random]} size="57" rounded="md">
-                <H2 color={colors.white}>
-                  {item.name?.toUpperCase().substr(0, 1)}
-                </H2>
-              </Avatar>
-              <Stack space="1">
-                <VStack space="1px">
-                  <H2>{item.name}</H2>
-                </VStack>
-                <HStack space={1} alignItems="center">
-                  <IconByName
-                    name="Heart3FillIcon"
-                    color={colors.eventError}
-                    _icon={{ size: 12 }}
-                    isDisabled
-                  />
-                  <Caption>{(likes ? likes.length : 0) + " likes"}</Caption>
-                  <Caption>
-                    ({(comments ? comments.length : 0) + " comments"})
-                  </Caption>
-                </HStack>
-              </Stack>
-            </HStack>
-          </Pressable>
-          <RightButton />
-        </HStack>
+        {!isHeaderHide ? (
+          <HStack justifyContent="space-between" alignItems="flex-start">
+            <Pressable onPress={() => (url ? navigate(url) : "")}>
+              <HStack space={2} alignItems="center">
+                <Avatar bg={randomColors[random]} size="57" rounded="md">
+                  <H2 color={colors.white}>
+                    {item.name?.toUpperCase().substr(0, 1)}
+                  </H2>
+                </Avatar>
+                <Stack space="1">
+                  <VStack space="1px">
+                    <H2>{item.name}</H2>
+                  </VStack>
+                  <HStack space={1} alignItems="center">
+                    <IconByName
+                      name="Heart3FillIcon"
+                      color={colors.eventError}
+                      _icon={{ size: 12 }}
+                      isDisabled
+                    />
+                    <Caption>{(likes ? likes.length : 0) + " likes"}</Caption>
+                    <Caption>
+                      ({(comments ? comments.length : 0) + " comments"})
+                    </Caption>
+                  </HStack>
+                </Stack>
+              </HStack>
+            </Pressable>
+            <RightButton />
+          </HStack>
+        ) : (
+          <React.Fragment />
+        )}
         <BodyMedium
           color={colors.worksheetText}
           style={{
@@ -215,37 +226,33 @@ export default function LearningBox({
             ]}
           />
         </HStack>
-        {canShare ? (
-          <HStack space="5">
-            {!showButtonArray || showButtonArray.includes("Like") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-                  _icon={{ size: 15 }}
-                  color={colors.primary}
-                  p="0"
-                  onPress={handleLike}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-            {!showButtonArray || showButtonArray.includes("Share") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name="ShareLineIcon"
-                  _icon={{ size: 15 }}
-                  p="0"
-                  onPress={handleShare}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-          </HStack>
-        ) : (
-          ""
-        )}
+        <HStack space="5">
+          {!showButtonArray || showButtonArray.includes("Like") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+                _icon={{ size: 15 }}
+                color={colors.primary}
+                p="0"
+                onPress={handleLike}
+              />
+            </Box>
+          ) : (
+            ""
+          )}
+          {!showButtonArray || showButtonArray.includes("Share") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name="ShareLineIcon"
+                _icon={{ size: 15 }}
+                p="0"
+                onPress={handleShare}
+              />
+            </Box>
+          ) : (
+            ""
+          )}
+        </HStack>
       </VStack>
     </Box>
   );

@@ -4,6 +4,8 @@ module.exports = {
   name: "mylearning",
   exposes: {
     "./MyLearning": "./src/pages/MyLearning",
+    "./CourseList": "./src/pages/CourseList",
+    "./CourseDetails": "./src/pages/CourseDetails",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

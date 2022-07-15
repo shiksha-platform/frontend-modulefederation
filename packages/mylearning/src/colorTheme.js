@@ -30,5 +30,7 @@ const colorTheme = {
   worksheetText: "#373839",
   worksheetCloseIcon: "#AA948E",
   messageInfo: "#7C7E82",
+  courseDetailsBoxBorder: "#FFF2F0",
+  courseDetailsBoxBg: "#FFF8F7",
 };
 export default colorTheme;

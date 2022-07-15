@@ -43,6 +43,8 @@ function App() {
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
   const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
+  const CourseList = React.lazy(() => import("mylearning/CourseList"));
+  const CourseDetails = React.lazy(() => import("mylearning/CourseDetails"));
 
   const routes = [
     {
@@ -111,6 +113,18 @@ function App() {
     { path: "/profile/attendance", component: AttendanceReport },
 
     { path: "/mylearning", component: MyLearning },
+    {
+      path: "/mylearning/list/:state",
+      component: CourseList,
+    },
+    {
+      path: "/mylearning/list",
+      component: CourseList,
+    },
+    {
+      path: "/mylearning/:id/view",
+      component: CourseDetails,
+    },
     { path: "*", component: Home },
   ];
 
