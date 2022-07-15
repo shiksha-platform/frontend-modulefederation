@@ -1,15 +1,8 @@
 const colorTheme = {
-  primary: "#F87558",
-  cardTitle: "#383739",
   cardBg: "#D9F0FC",
   cardBgTransparent: "#18181b66",
-  cardCloseIcon: "#7F9DAC",
   present: "#0d911c",
-  white: "#FFFFFF",
   buttonColorgray: "#f0f0f0",
-  success: "#0D921B",
-  warning: "#FFC369",
-  danger: "#F57B7B",
   gray: "#9E9E9E",
   coolGray: "#e5e7eb",
   lightGray: "#d1d5db",
@@ -26,7 +19,6 @@ const colorTheme = {
   date: "#373839",
   dateText: "#9C9EA0",
   specialDuty: "#06D6A0",
-  holiDay: "#F0F0F4",
   isActive: "#545454",
 };
 export default colorTheme;

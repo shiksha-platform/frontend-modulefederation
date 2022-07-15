@@ -9,6 +9,7 @@ import {
   overrideColorTheme,
   SearchLayout,
   getApiConfig,
+  H2,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, Stack, VStack } from "native-base";

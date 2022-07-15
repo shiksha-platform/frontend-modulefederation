@@ -199,7 +199,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
               </VStack>
             </VStack>
           </Box>
-          <Button variant={"outline"}>{t("SEE_MORE")}</Button>
+          {/* <Button variant={"outline"}>{t("SEE_MORE")}</Button> */}
         </VStack>
       </VStack>
     </Layout>

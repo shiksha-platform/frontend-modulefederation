@@ -63,7 +63,7 @@
   "WEEK_ATTENDANCE": "Attendance",
   "FULL_CLASS_ATTENDANCE": "Full Class Attendance",
   "THE_CLASSES_YOU_TAKE": "View all classes in your school",
-  "THE_CLASS_YOU_TAKE": "View all class in your school",
+  "THE_CLASS_YOU_TAKE": "View all classes in your school",
   "STUDENTS_DETAIL": "Student details",
   "SUBMIT": "Submit",
   "ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT": "Attendance will automatically be submitted at the end of the day",
@@ -297,5 +297,5 @@
   "QUESTION_SELECTED": "Question Selected",
   "AUTO_GENERATE": "Auto Generate",
   "INCLUDE_ANSWER_KEY": "Include answer key in worksheet",
-  "PLEASE_SELECT_ATLIST_ONE_QUESTION": "Please select atlist one question"
+  "PLEASE_SELECT_ATLEAST_ONE_QUESTION": "Please select at least one question"
 }

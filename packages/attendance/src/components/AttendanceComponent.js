@@ -459,14 +459,14 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
                     </Caption>
                     <Button.Group width="100%">
-                      <Button
+                      {/* <Button
                         flex={1}
                         variant="outline"
                         colorScheme="button"
                         onPress={(e) => modalClose()}
                       >
                         {t("CLOSE")}
-                      </Button>
+                      </Button> */}
                       <Button
                         flex={1}
                         colorScheme="button"

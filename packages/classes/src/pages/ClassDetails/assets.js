@@ -176,7 +176,7 @@ export const _header = (data) => {
               <H2 color={colors.white}>{data?.name}</H2>
               <H1 color={colors.white}>{t("CLASS_DETAILS")}</H1>
             </VStack>
-            <HStack alignItems="center">
+            {/* <HStack alignItems="center">
               <Box px="3">
                 <Menu
                   trigger={(triggerProps) => {
@@ -215,7 +215,7 @@ export const _header = (data) => {
                 </Menu>
               </Box>
               <IconByName color={colors.white} name="ShareLineIcon" />
-            </HStack>
+            </HStack> */}
           </HStack>
         </Box>
       </Box>
