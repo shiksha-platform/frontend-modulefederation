@@ -22,6 +22,10 @@ import manifest from "../manifest.json";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
+const PRESENT = "Present";
+const ABSENT = "Absent";
+const UNMARKED = "Unmarked";
+
 const SelfAttedanceSheet = React.lazy(() =>
   import("profile/SelfAttedanceSheet")
 );
@@ -162,7 +166,14 @@ function Home({ footerLinks, appName }) {
   }, []);
 
   return (
-    <>
+    <SelfAttedanceSheet
+      {...{
+        showModal,
+        setShowModal,
+        setAttendance: setSelfAttendance,
+        appName,
+      }}
+    >
       <Layout
         _header={{
           title: t("HOME"),
@@ -185,9 +196,23 @@ function Home({ footerLinks, appName }) {
               )}
               {selfAttendance?.attendance ? (
                 <IconByName
-                  name="CheckboxCircleFillIcon"
+                  name={
+                    selfAttendance.attendance === PRESENT &&
+                    selfAttendance?.remark !== ""
+                      ? "AwardFillIcon"
+                      : selfAttendance.attendance === ABSENT
+                      ? "CloseCircleFillIcon"
+                      : "CheckboxCircleFillIcon"
+                  }
                   isDisabled
-                  color="present.500"
+                  color={
+                    selfAttendance.attendance === PRESENT &&
+                    selfAttendance?.remark !== ""
+                      ? "special_duty.500"
+                      : selfAttendance.attendance === ABSENT
+                      ? "absent.500"
+                      : "present.500"
+                  }
                   position="absolute"
                   bottom="-5px"
                   right="-5px"
@@ -212,14 +237,6 @@ function Home({ footerLinks, appName }) {
         }}
         _footer={footerLinks}
       >
-        <SelfAttedanceSheet
-          {...{
-            showModal,
-            setShowModal,
-            setAttendance: setSelfAttendance,
-            appName,
-          }}
-        />
         <Box bg="white" roundedBottom={"2xl"} py={6} px={4} mb={5} shadow={3}>
           <Stack>
             <VStack space={6}>
@@ -242,11 +259,8 @@ function Home({ footerLinks, appName }) {
             mb="69px"
           >
             <VStack space={5} p="5">
-              <H1>How to mark your own attendance?</H1>
-              <BodyLarge>
-                To mark your own attendance, tap on your profile picture, select
-                an option according to your choice and mark attendance.
-              </BodyLarge>
+              <H1>{t("HOW_TO_MARK_OWN_ATTENDANCE")}</H1>
+              <BodyLarge>{t("HOW_TO_MARK_OWN_ATTENDANCE_MESSAGE")}</BodyLarge>
               <Button.Group>
                 <Button
                   flex="1"
@@ -274,7 +288,7 @@ function Home({ footerLinks, appName }) {
           </Modal.Content>
         </Modal>
       </Layout>
-    </>
+    </SelfAttedanceSheet>
   );
 }
 export default Home;

@@ -244,6 +244,8 @@
   "TEACHING": "शिक्षा",
   "ACCESS_AND_PLAN_YOUR_TEACHING_MATERIAL": "अपनी शिक्षण सामग्री तक पहुंचें और योजना बनाएं",
   "NAME": "नाम",
+  "SIGN_IN": "साइन इन करें",
+  "SIGN_UP": "साइन अप करें",
   "SORT": "क्रम से लगाना",
   "TOPIC": "विषय",
   "SEE_ALL_WORKSHEETS": "सभी वर्कशीट देखें",
@@ -290,5 +292,18 @@
   "AUTO_GENERATE": "स्वत: उत्पन्न",
   "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें",
   "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "कृपया एक प्रश्न को सूचीबद्ध करें चुनें",
-  "PLEASE_SELECT_SOURCE": "कृपया स्रोत चुनें"
+  "PLEASE_SELECT_SOURCE": "कृपया स्रोत चुनें",
+  "TURN_ON_DEVICE_LOCATION": "डिवाइस स्थान चालू करें",
+  "DEVICE_LOCATION_CANT_MARK_ATTENDANCE": "उपस्थिति अंकन के लिए आपके डिवाइस स्थान में लॉग इन करना आवश्यक है। स्थान के बिना, ऐप आपकी उपस्थिति को चिह्नित नहीं कर सकता है।",
+  "HOW_TO_MARK_OWN_ATTENDANCE": "अपनी खुद की उपस्थिति कैसे चिह्नित करें?",
+  "HOW_TO_MARK_OWN_ATTENDANCE_MESSAGE": "अपनी उपस्थिति दर्ज करने के लिए, अपने प्रोफ़ाइल चित्र पर टैप करें, अपनी पसंद के अनुसार एक विकल्प चुनें और उपस्थिति चिह्नित करें।",
+  "TURN_ON": "चालू करो",
+  "GO_BACK": "वापस जाओ",
+  "WELCOME_BACK": "नमस्कार, हमारे अपने खाते में वापस स्वागत है!",
+  "PLEASE_ENTER_VALID_CREDENTIALS": "कृपया मान्य क्रेडेंशियल दर्ज करें",
+  "USERNAME_IS_REQUIRED": "उपयोगकर्ता नाम आवश्यक है",
+  "PASSWORD_IS_REQUIRED": "पासवर्ड की आवश्यकता है",
+  "FORGOT_PASSWORD": "पासवर्ड भूल गए?",
+  "DONT_HAVE_AN_ACCOUNT": "खाता नहीं है?",
+  "LOADING": "लोड हो रहा है"
 }
