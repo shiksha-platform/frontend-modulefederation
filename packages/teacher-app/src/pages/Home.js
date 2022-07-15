@@ -265,7 +265,10 @@ function Home({ footerLinks, appName }) {
                   fontWeight="600"
                   colorScheme="button"
                   _text={{ color: "white", textTransform: "capitalize" }}
-                  onPress={(e) => setPopupModal(false)}
+                  onPress={(e) => {
+                    setShowModal(true);
+                    setPopupModal(false);
+                  }}
                 >
                   {t("NEXT")}
                 </Button>
