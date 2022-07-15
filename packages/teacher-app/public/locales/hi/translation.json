@@ -15,7 +15,7 @@
   "2_SCHOOL_ACTIVITIES_1_OFFICIAL_VISIT": "2 स्कूल गतिविधियाँ, 1 आधिकारिक दौरा",
   "MY_SCHOOL_APP": "शिक्षक",
   "MY_CLASSES": "मेरी कक्षाएँ",
-  "MY_CLASS": "मेरी कक्षाएँ",
+  "MY_CLASS": "समय",
   "CLASSES": "कक्षाएँ",
   "MY_STUDENTS": "मेरे विद्यार्थी",
   "STUDENTS": "विद्यार्थी",
@@ -277,6 +277,11 @@
   "SHOW_QUESTIONS_BASED_ON": "पर आधारित प्रश्न दिखाएं",
   "PLEASE_SELECT_LIMIT": "कृपया सीमा चुनें",
   "QUESTION_NOT_FOUND": "इस फ़िल्टर के लिए कोई प्रश्न नहीं मिला",
+  "EMPLOYEE_CODE": "कर्मचारी कोड",
+  "DATE_FO_JOINING": "शामिल होने की तिथि",
+  "DATE_OF_BIRTH": "जन्म की तारीख",
+  "PERSONAL_DETAILS": "व्यक्तिगत विवरण",
+  "CONTACT_DETAILS": "सम्पर्क करने का विवरण",
   "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "इस सप्ताह किसी भी छात्र ने 100% उपस्थिति हासिल नहीं की है",
   "NO_STUDENT_HAS_BEEN_ABSENT": "कोई भी छात्र 3 दिनों से अधिक समय से अनुपस्थित नहीं है",
   "SEARCH_QUESTIONS": "प्रश्न खोजें",
@@ -306,5 +311,7 @@
   "SEE_YOUR_COURSES": "अपने पाठ्यक्रम यहां देखें",
   "SEE_YOUR_ONGOING_COURSES": "अपने चल रहे पाठ्यक्रम यहां देखें",
   "SEE_YOUR_ASSIGNED_COURSES": "अपने असाइन किए गए पाठ्यक्रम यहां देखें",
-  "SEE_YOUR_COMPLETED_COURSES": "अपने पूर्ण किए गए पाठ्यक्रम यहां देखें"
+  "SEE_YOUR_COMPLETED_COURSES": "अपने पूर्ण किए गए पाठ्यक्रम यहां देखें",
+  "AUTO_GENERATE": "स्वत: उत्पन्न",
+  "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें"
 }

@@ -1,20 +1,15 @@
 import React, { useState } from "react";
-import { IconByName, ProgressBar } from "@shiksha/common-lib";
 import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-  Divider,
-  Actionsheet,
-  Checkbox,
-  Radio,
-} from "native-base";
+  BodyLarge,
+  BodySmall,
+  IconByName,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
+import { HStack, Text, VStack, Box, Divider } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const MultipleSelectQuestionCard = ({ questionNumber, question }) => {
   const navigate = useNavigate();
@@ -22,37 +17,38 @@ const MultipleSelectQuestionCard = ({ questionNumber, question }) => {
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: colors.successBarColor,
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: colors.pendingBarColor,
       value: 6,
     },
   ]);
-
   return (
     <>
       <Box borderRadius="md">
         <VStack>
-          <Box px="4" py={2} bg={"#FEF1EE"} roundedTop="6">
+          <Box px="4" py={2} bg={colors.QuationsBoxBg} roundedTop="6">
             <HStack>
-              <Text bold mt={4} mr={2}>
+              <BodyLarge bold mt={4} mr={2}>
                 Q{questionNumber}.{" "}
-              </Text>
+              </BodyLarge>
               <div
                 dangerouslySetInnerHTML={{ __html: question?.question }}
               ></div>
               <IconByName
                 name="InformationFillIcon"
                 p={0}
-                color={"#F87558"}
+                w="20px"
+                h="20px"
+                color={colors.primary}
                 mt={3}
               />
             </HStack>
           </Box>
-          <Box p="4" bg={"#FFF8F7"} borderBottomRadius={6}>
+          <Box p="4" bg={colors.QuationsBoxContentBg} borderBottomRadius={6}>
             <VStack space={4}>
               <HStack
                 alignItems={"center"}
@@ -99,50 +95,50 @@ const MultipleSelectQuestionCard = ({ questionNumber, question }) => {
                   >
                     <Box
                       borderWidth={2}
-                      borderColor={"#F87558"}
+                      borderColor={colors.primary}
                       borderRadius={"full"}
                       w="30px"
                       h="30px"
                       alignItems={"center"}
                       justifyContent="center"
                     >
-                      <Text color={"#F87558"}>A</Text>
+                      <BodySmall color={colors.primary}>A</BodySmall>
                     </Box>
 
                     <Box
                       borderWidth={2}
-                      borderColor={"#F87558"}
+                      borderColor={colors.primary}
                       borderRadius={"full"}
                       w="30px"
                       h="30px"
                       alignItems={"center"}
                       justifyContent="center"
                     >
-                      <Text color={"#F87558"}>B</Text>
+                      <BodySmall color={colors.primary}>B</BodySmall>
                     </Box>
 
                     <Box
                       borderWidth={2}
-                      borderColor={"#F87558"}
+                      borderColor={colors.primary}
                       borderRadius={"full"}
                       w="30px"
                       h="30px"
                       alignItems={"center"}
                       justifyContent="center"
                     >
-                      <Text color={"#F87558"}>C</Text>
+                      <BodySmall color={colors.primary}>C</BodySmall>
                     </Box>
 
                     <Box
                       borderWidth={2}
-                      borderColor={"#F87558"}
+                      borderColor={colors.primary}
                       borderRadius={"full"}
                       w="30px"
                       h="30px"
                       alignItems={"center"}
                       justifyContent="center"
                     >
-                      <Text color={"#F87558"}>D</Text>
+                      <BodySmall color={colors.primary}>D</BodySmall>
                     </Box>
                   </HStack>
                 </VStack>

@@ -1,42 +1,37 @@
 import React, { useState } from "react";
 import {
-  Collapsible,
-  IconByName,
-  attendanceRegistryService,
-  ProgressBar,
-  getUniqAttendance,
+  H2,
+  overrideColorTheme,
+  Caption,
+  BodyLarge,
+  Subtitle,
 } from "@shiksha/common-lib";
 import {
   HStack,
   Text,
   VStack,
-  Stack,
   Box,
-  Progress,
   Button,
   Divider,
-  Actionsheet,
   Checkbox,
   Avatar,
-  Spacer,
   Input,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { H2 } from "@shiksha/common-lib";
-import SingleSelectQuestionCard from "./questionTypes/SingleSelectQuestionCard";
-import SimpleQuestionCard from "./questionTypes/SimpleQuestionCard";
-import MultipleSelectQuestionCard from "./questionTypes/MultipleSelectQuestionCard";
 import QuestionList from "./QuestionLIst";
 import RoundedProgressBar from "../RoundedProgressBar";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
+
 // import StudentDetailCard from "./StudentDetail";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const StudentsList = ({ classId, students, setHeaderDetails }) => {
+const StudentsList = ({ setHeaderDetails }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [studentlist, setStudentlist] = useState([]);
@@ -67,7 +62,7 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
     if (selectedStudent) {
       setHeaderDetails({
         title: "Summative Assessment 1",
-        subHeading: "State Examinations",
+        subHeading: <BodyLarge>{t("State Examinations")}</BodyLarge>,
         student: {
           name: selectedStudent.name,
           fathersName: selectedStudent.fathersName,
@@ -80,14 +75,12 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
     if (activeStage === 2) {
       return (
         <Box p={4}>
-          <Box shadow={2} rounded={6} p={4} pb={0}>
+          <Box bg={colors.white} shadow={2} rounded={6} p={4} pb={0}>
             <Box>
               <VStack space={8}>
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>
-                      Practical
-                    </Text>
+                    <H2>Practical</H2>
                     <Input placeholder="Enter Marks" />
                   </VStack>
                 </Box>
@@ -96,9 +89,7 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
 
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>
-                      Theory
-                    </Text>
+                    <H2>Theory</H2>
                     <Input placeholder="Enter Marks" />
                   </VStack>
                 </Box>
@@ -109,7 +100,7 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <Button
                 colorScheme="button"
                 py={3}
-                _text={{ color: "#fff" }}
+                _text={{ color: colors.white }}
                 onPress={() => setActiveStage(3)}
               >
                 {t("Save")}
@@ -121,64 +112,62 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
     } else if (activeStage === 3) {
       return (
         <Box p={4}>
-          <Box shadow={2} rounded={6} p={4} pb={0}>
+          <Box bg={colors.white} shadow={2} rounded={6} p={4} pb={0}>
             <Box>
               <VStack space={8}>
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>
-                      Practical
-                    </Text>
+                    <H2>Practical</H2>
                     <HStack
                       alignItems={"center"}
                       justifyContent={"space-between"}
                     >
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>A</Text>
+                        <Subtitle color={colors.primary}>A</Subtitle>
                       </Box>
 
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>B</Text>
+                        <Subtitle color={colors.primary}>B</Subtitle>
                       </Box>
 
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>C</Text>
+                        <Subtitle color={colors.primary}>C</Subtitle>
                       </Box>
 
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>D</Text>
+                        <Subtitle color={colors.primary}>D</Subtitle>
                       </Box>
                     </HStack>
                   </VStack>
@@ -188,59 +177,57 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
 
                 <Box>
                   <VStack space={2}>
-                    <Text fontSize="lg" bold>
-                      Theory
-                    </Text>
+                    <H2>Theory</H2>
                     <HStack
                       alignItems={"center"}
                       justifyContent={"space-between"}
                     >
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>A</Text>
+                        <Subtitle color={colors.primary}>A</Subtitle>
                       </Box>
 
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>B</Text>
+                        <Subtitle color={colors.primary}>B</Subtitle>
                       </Box>
 
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>C</Text>
+                        <Subtitle color={colors.primary}>C</Subtitle>
                       </Box>
 
                       <Box
                         borderWidth={2}
-                        borderColor={"#F87558"}
+                        borderColor={colors.primary}
                         borderRadius={"full"}
                         w="30px"
                         h="30px"
                         alignItems={"center"}
                         justifyContent="center"
                       >
-                        <Text color={"#F87558"}>D</Text>
+                        <Subtitle color={colors.primary}>D</Subtitle>
                       </Box>
                     </HStack>
                   </VStack>
@@ -252,7 +239,7 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
               <Button
                 colorScheme="button"
                 py={3}
-                _text={{ color: "#fff" }}
+                _text={{ color: colors.white }}
                 onPress={() => setActiveStage(3)}
               >
                 {t("Save")}
@@ -263,14 +250,14 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
       );
     } else {
       return (
-        <Box p={4}>
+        <Box bg={colors.white} p={4}>
           <VStack space={4}>
             <QuestionList />
             <Box py="4">
               <Button
                 colorScheme="button"
                 py={3}
-                _text={{ color: "#fff" }}
+                _text={{ color: colors.white }}
                 onPress={() => setActiveStage(2)}
               >
                 {t("Save")}
@@ -282,25 +269,15 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
     }
   } else {
     return (
-      <Box p={4}>
+      <Box p={4} bg={colors.white}>
         <VStack space={4}>
           <Box>
             <VStack mb={3}>
-              <H2 fontWeight="600" color="gray.800">
-                {t("Students List")}
-              </H2>
+              <H2>{t("Students List")}</H2>
               <HStack alignItems={"center"}>
-                <Text color="gray.400" fontSize={"xs"}>
-                  {t("Total ") + 24}
-                </Text>{" "}
-                <Text fontSize="5px" color="gray.400">
-                  {" "}
-                  ●
-                </Text>{" "}
-                <Text color="gray.400" fontSize={"xs"}>
-                  {" "}
-                  {t("Present ") + 19}
-                </Text>
+                <Caption color={colors.gray}>{t("Total ") + 24}</Caption>{" "}
+                <Caption color={colors.lightGray}> ●</Caption>{" "}
+                <Caption color={colors.gray}> {t("Present ") + 19}</Caption>
               </HStack>
             </VStack>
           </Box>
@@ -323,33 +300,35 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
                               }}
                             />
                             <VStack>
-                              <Text
-                                color="coolGray.800"
-                                _dark={{
-                                  color: "warmGray.50",
-                                }}
-                                bold
-                              >
-                                {index + 1} . {student.name}
-                              </Text>
-                              <Text color="gray.400" fontSize={"xs"}>
+                              <BodyLarge>
+                                {index + 1}{" "}
+                                <Caption color={colors.lightGray}> ●</Caption>{" "}
+                                {student.name}
+                              </BodyLarge>
+                              <Caption color={colors.lightGray}>
                                 Mr. {student.fathersName}
-                              </Text>
+                              </Caption>
                             </VStack>
                           </HStack>
                           <HStack
                             alignItems="center"
                             justifyContent={"space-between"}
                           >
-                            <Checkbox colorScheme="orange">
-                              {t("Absent")}
+                            <Checkbox
+                              colorScheme="button"
+                              borderColor={colors.primary}
+                              borderRadius="0"
+                            >
+                              {""}
+                              <BodyLarge>{t("Absent")}</BodyLarge>
                             </Checkbox>
                             {index === 0 && (
                               <Button
                                 colorScheme="button"
-                                _text={{ color: "#fff" }}
+                                _text={{ color: colors.white }}
                                 size="xs"
                                 px={3}
+                                py="6px"
                                 onPress={() => setSelectedStudent(student)}
                               >
                                 {t("Mark")}
@@ -357,20 +336,28 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
                             )}
 
                             {index === 1 && (
-                              <Button isDisabled={true} size="xs" px={3}>
+                              <Button
+                                isDisabled={true}
+                                size="xs"
+                                px={3}
+                                py="6px"
+                              >
                                 {t("Mark")}
                               </Button>
                             )}
 
                             {index === 2 && (
                               <HStack alignItems="center">
-                                <Text mr={1} color="#666666">
+                                <BodyLarge mr={1} color={colors.lightGray0}>
                                   Total Score
-                                </Text>
+                                </BodyLarge>
                                 <Box marginTop={"-8px"}>
                                   <RoundedProgressBar
                                     values={[79, 21]}
-                                    colors={["#0D921B", "#EAE0DF"]}
+                                    colors={[
+                                      colors.successBarColor,
+                                      colors.circleProgressBarcolor,
+                                    ]}
                                     title={{ text: "79", fontSize: "12px" }}
                                     // legend={{ text: "Total Score", fontSize: "14px" }}
                                     cutout={"79%"}
@@ -378,11 +365,22 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
                                   />
                                 </Box>
                               </HStack>
+                              // <Button
+                              //   colorScheme="button"
+                              //   _text={{ color: colors.white }}
+                              //   size="xs"
+                              //   px={3}
+                              //   py="6px"
+                              // >
+                              //   {t("Mark")}
+                              // </Button>
                             )}
                           </HStack>
                         </VStack>
                       </Box>
-                      {studentlist.length - 1 != index && <Divider></Divider>}
+                      {studentlist.length - 1 != index && (
+                        <Divider bg={colors.dividerColor}></Divider>
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -393,7 +391,7 @@ const StudentsList = ({ classId, students, setHeaderDetails }) => {
             <Button
               colorScheme="button"
               py={3}
-              _text={{ color: "#fff" }}
+              _text={{ color: colors.white }}
               onPress={() => navigate("/examscores")}
             >
               {t("Save")}

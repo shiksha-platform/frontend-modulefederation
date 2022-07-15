@@ -14,7 +14,12 @@ import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function SuccessPage({ handleBackButton, formObject, appName }) {
+export default function SuccessPage({
+  handleBackButton,
+  formObject,
+  appName,
+  worksheetConfig,
+}) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
 
@@ -47,6 +52,7 @@ export default function SuccessPage({ handleBackButton, formObject, appName }) {
             </VStack>
             <Box p="5">
               <WorksheetBox
+                worksheetConfig={worksheetConfig}
                 appName={appName}
                 {...{
                   item: {
