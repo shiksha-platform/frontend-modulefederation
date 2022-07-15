@@ -22,6 +22,7 @@ export default function EditWorksheet({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(true);
   const [questionObject, setQuestionObject] = React.useState({});
   const [questionConfig, setQuestionConfig] = React.useState([]);
+  const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const { id } = useParams();
 
   React.useEffect(async () => {
@@ -31,6 +32,13 @@ export default function EditWorksheet({ footerLinks, appName }) {
         ? newManifest?.["question-bank.questionMetadata"]
         : newManifest?.["question-bank.questionMetadata"]
         ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+        : []
+    );
+    setWorksheetConfig(
+      Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
+        ? newManifest?.["worksheet.worksheetMetadata"]
+        : newManifest?.["worksheet.worksheetMetadata"]
+        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
         : []
     );
     const worksheetData = await worksheetRegistryService.getOne({ id });
@@ -98,6 +106,7 @@ export default function EditWorksheet({ footerLinks, appName }) {
       <>
         <FormWorksheet
           {...{
+            worksheetConfig,
             questions,
             selectData,
             setSelectData,

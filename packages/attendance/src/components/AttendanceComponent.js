@@ -305,11 +305,6 @@ export const MultipalAttendance = ({
                       {classObject?.title ?? ""}
                     </BodySmall>
                   </Stack>
-                  <IconByName
-                    name="CloseCircleLineIcon"
-                    color={colors.white}
-                    onPress={(e) => modalClose()}
-                  />
                 </HStack>
               </Actionsheet.Content>
               <ScrollView width={"100%"} space="1" bg={colors.coolGray}>
