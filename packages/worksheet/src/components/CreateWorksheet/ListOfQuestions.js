@@ -36,11 +36,14 @@ const newDefaultInputs = defaultInputs.map((e) => {
     ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
       ? "grade"
       : e.attributeName,
-    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+    ["type"]: ["subject", "gradeLevel", "source"].includes(e.attributeName)
       ? "stingValueArray"
       : "array",
   };
 });
+
+const getArray = (item) =>
+  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
 
 export default function ListOfQuestions({
   appName,
@@ -60,29 +63,34 @@ export default function ListOfQuestions({
   const [isAnswerFilter, setIsAnswerFilter] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState();
   const [filters, setFilters] = React.useState([]);
+  const [correctAnswer, setCorrectAnswer] = React.useState(false);
   const [questionConfig, setQuestionConfig] = React.useState([]);
 
   React.useEffect(() => {
     if (!isSuccess) {
       setPageName("ListOfQuestions");
       setShowQuestions(questions);
-      const data = Array.isArray(
+      const data = getArray(
         manifest?.["question-bank.configureQuestionGetFilter"]
-      )
-        ? manifest?.["question-bank.configureQuestionGetFilter"]
-        : manifest?.["question-bank.configureQuestionGetFilter"]
-        ? JSON.parse(manifest?.["question-bank.configureQuestionGetFilter"])
-        : [];
+      );
+      const source = getArray(manifest?.["question-bank.questionResource"]);
+      const filters = newDefaultInputs.map((item, index) => {
+        if (item.attributeName === "source") {
+          item.data = source;
+        }
+        return item;
+      });
       setFilters(
-        newDefaultInputs.filter((e) => data.includes(e.attributeName))
+        filters.filter(
+          (e) =>
+            data.includes(e.attributeName) ||
+            (e.attributeName === "grade" && data.includes("gradeLevel"))
+        )
       );
-      setQuestionConfig(
-        Array.isArray(manifest?.["question-bank.questionMetadata"])
-          ? manifest?.["question-bank.questionMetadata"]
-          : manifest?.["question-bank.questionMetadata"]
-          ? JSON.parse(manifest?.["question-bank.questionMetadata"])
-          : []
+      setCorrectAnswer(
+        manifest?.["worksheet.show-correct-answer"] === "true" ? true : false
       );
+      setQuestionConfig(getArray(manifest?.["question-bank.questionMetadata"]));
     }
   }, [formObject]);
 
@@ -130,7 +138,7 @@ export default function ListOfQuestions({
 
   const handleAddToWorksheet = () => {
     if (selectData.length <= 0) {
-      setAlertMessage(t("PLEASE_SELECT_ATLIST_ONE_QUESTION"));
+      setAlertMessage(t("PLEASE_SELECT_AT_LEAST_ONE_QUESTION"));
     } else {
       setShowModule(true);
       const telemetryData = telemetryFactory.interact({
@@ -296,7 +304,7 @@ export default function ListOfQuestions({
               You have selected {selectData.length} questions to add to the
               worksheet.
             </Caption>
-            {questionConfig.includes("correct-answer") ? (
+            {correctAnswer ? (
               <Pressable onPress={handleAnswerKey}>
                 <HStack alignItems="center" space="1" pt="1" py="4">
                   <IconByName
