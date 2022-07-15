@@ -20,7 +20,17 @@ import { useTranslation } from "react-i18next";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
+const AttributeData = [
+  { icon: "SurveyLineIcon", label: "SUBJECT", attribute: "subject" },
+  { icon: "BarChart2LineIcon", label: "LEVEL", attribute: "level" },
+  { icon: "QuestionLineIcon", label: "QUESTIONS", attribute: "questions" },
+  { icon: "AccountBoxFillIcon", label: "GRADE", attribute: "grade" },
+  { icon: "ArticleLineIcon", label: "TOPIC", attribute: "topic" },
+  { icon: "Download2LineIcon", label: "DOWNLOADS", attribute: "downloads" },
+];
+
 export default function Worksheet({
+  worksheetConfig,
   worksheet,
   showModuleWorksheet,
   setShowModuleWorksheet,
@@ -57,82 +67,13 @@ export default function Worksheet({
           >
             {worksheet?.description}
           </BodyMedium>
+          <AttributeComponent
+            data={AttributeData.filter((e) =>
+              worksheetConfig.includes(e.attribute)
+            )}
+            object={worksheet}
+          />
 
-          <HStack space="2">
-            <VStack space="3">
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="SurveyLineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("SUBJECT")}: {worksheet?.subject}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="BarChart2LineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("LEVEL")}: {worksheet?.level}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="QuestionLineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("QUESTIONS")}:
-                  {Array.isArray(worksheet?.questions)
-                    ? worksheet?.questions.length
-                    : worksheet?.questions}
-                </BodyMedium>
-              </HStack>
-            </VStack>
-            <VStack space="3">
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="AccountBoxFillIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("GRADE")}: {worksheet?.grade}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="ArticleLineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("TOPIC")}: {worksheet?.topic}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="Download2LineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("DOWNLOADS")}: {worksheet?.downloads}
-                </BodyMedium>
-              </HStack>
-            </VStack>
-          </HStack>
           {!footer ? (
             <HStack space={5} alignItems="center">
               <HStack alignItems="center">
@@ -192,3 +133,50 @@ export default function Worksheet({
     </Actionsheet>
   );
 }
+
+const AttributeComponent = ({ data, object }) => {
+  const { t } = useTranslation();
+
+  const elements = data.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 2);
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+    resultArray[chunkIndex].push(item);
+    return resultArray;
+  }, []);
+
+  return (
+    <VStack space="2">
+      {elements.map((attributes, index) => (
+        <HStack key={index}>
+          {attributes.map((item, subIndex) => (
+            <HStack
+              key={subIndex}
+              space="1"
+              alignItems="center"
+              w={100 / attributes.length + "%"}
+            >
+              <IconByName
+                isDisabled
+                name={item.icon}
+                _icon={{ size: 14 }}
+                color={colors.worksheetBoxText}
+                p="0"
+              />
+              <BodyMedium color={colors.worksheetBoxText}>
+                {t(item?.label) +
+                  " : " +
+                  (object?.[item.attribute]
+                    ? Array.isArray(object?.[item.attribute])
+                      ? object?.[item.attribute].length
+                      : object?.[item.attribute]
+                    : "")}
+              </BodyMedium>
+            </HStack>
+          ))}
+        </HStack>
+      ))}
+    </VStack>
+  );
+};

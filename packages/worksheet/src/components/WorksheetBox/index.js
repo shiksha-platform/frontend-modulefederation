@@ -246,7 +246,7 @@ export default function WorksheetBox({
             ) : (
               <React.Fragment />
             )}
-            {worksheetConfig?.includes("question") ? (
+            {worksheetConfig?.includes("questions") ? (
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="QuestionLineIcon"
@@ -296,7 +296,7 @@ export default function WorksheetBox({
             ) : (
               <React.Fragment />
             )}
-            {worksheetConfig?.includes("download") ? (
+            {worksheetConfig?.includes("downloads") ? (
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="Download2LineIcon"
