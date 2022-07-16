@@ -1,10 +1,5 @@
 const colorTheme = {
-  primary: "#F87558",
-  cardTitle: "#383739",
   cardBg: "#D9F0FC",
-  cardCloseIcon: "#7F9DAC",
-  white: "#FFFFFF",
-  black: "#000000",
   notificationCardBg: "#FDDFD8",
   createNotificationCardBg: "#B9FBC0",
   absentCardBg: "#FDE7E7",

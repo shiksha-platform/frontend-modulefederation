@@ -144,6 +144,7 @@ export default function WorksheetBox({
       name: "AddCircleFillIcon",
       _icon: { size: 30 },
       color: colors.primary,
+      display: "none",
       p: "0",
       onPress: handleAddToTimeline,
       rounded: "full",

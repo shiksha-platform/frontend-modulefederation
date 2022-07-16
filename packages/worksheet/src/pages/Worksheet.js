@@ -149,7 +149,7 @@ export default function Worksheet({ footerLinks, appName }) {
         setSearch,
         setSearchState,
       }}
-      subHeader={<H2>{t("View all your worksheets")}</H2>}
+      subHeader={<H2 textTransform="none">{t("View all your worksheets")}</H2>}
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >

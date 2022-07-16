@@ -305,5 +305,7 @@
   "PASSWORD_IS_REQUIRED": "पासवर्ड की आवश्यकता है",
   "FORGOT_PASSWORD": "पासवर्ड भूल गए?",
   "DONT_HAVE_AN_ACCOUNT": "खाता नहीं है?",
-  "LOADING": "लोड हो रहा है"
+  "LOADING": "लोड हो रहा है",
+  "REMOVE_PHOTO": "फोटो हटाएं",
+  "UPLOAD_PHPTP": "फोटो अपलोड करें"
 }
