@@ -56,6 +56,26 @@ function AppShell({
         ]
       }
 
+  //TODO: integrate with API call to fetch whitelisted modules
+  const pinnedAnnouncementsWhitelist = ['announcements']
+  //TODO: integrate with API call to fetch pinned announcements
+
+  const pinnedAnnouncementsData = !pinnedAnnouncementsWhitelist.some(
+    (val: string) => val === appName
+  )
+    ? undefined
+    : [
+        {
+          data: 'Shiksha V2.0 Is Live! 🚀🎉',
+          color: 'green.100',
+          isDismissable: true
+        },
+        {
+          data: 'Students should not stand on road outside school during monsoon',
+          color: 'amber.100',
+          isDismissable: false
+        }
+      ]
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
@@ -90,7 +110,11 @@ function AppShell({
                 <Route
                   key={index}
                   path={item.path}
-                  element={<item.component {...{ footerLinks, appName }} />}
+                  element={
+                    <item.component
+                      {...{ footerLinks, appName, pinnedAnnouncementsData }}
+                    />
+                  }
                 />
               ))}
             </Routes>

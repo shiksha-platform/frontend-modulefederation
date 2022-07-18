@@ -48,7 +48,6 @@ export default function AppBar({
     <Box pt={7} px={5} {...props?._box}>
       <StatusBar bg='gray.600' barStyle='light-content' />
       <Box safeAreaTop bg='gray.600' />
-
       {searchInput ? (
         <Stack alignItems='center'>
           <InputGroup width='100%'>
