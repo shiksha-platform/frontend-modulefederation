@@ -36,7 +36,9 @@ export default function Layout({
           }}
           space={5}
         >
-          <PinnedAnnouncements {...{ _pinnedAnnouncementsData }} />
+          {_pinnedAnnouncementsData ? (
+            <PinnedAnnouncements {...{ _pinnedAnnouncementsData }} />
+          ) : null}
           {!isDisabledAppBar ? (
             <AppBar color={imageUrl ? 'white' : ''} {..._appBar} />
           ) : (

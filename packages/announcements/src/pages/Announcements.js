@@ -142,7 +142,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
         subHeading: moment().format("hh:mm A"),
         _subHeading: { fontWeight: 500, textTransform: "uppercase" },
       }}
-      _appBar={{ languages: manifest.languages, showPinnedAnnouncements: true }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={t("VIEW_LATEST_ANNOUNCEMENTS")}
       _subHeader={{
         bg: colors?.cardBg,
