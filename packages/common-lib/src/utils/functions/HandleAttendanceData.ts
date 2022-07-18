@@ -1,10 +1,21 @@
 // Lib
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 
 // Utils
 import { PRESENT, ABSENT, UNMARKED } from './Constants'
 import { GetStatusFromManifest } from './GetStatusFromManifest'
 
+export interface IHandleAttendanceData {
+  attendance: Array<any>
+  day: Moment
+  sms: any
+  isIconSizeSmall: Boolean
+  student: any
+  manifest: any
+}
+
+// Returns various data related to attendance
+// such as if day is allowed, the icon props for the attendance icon
 export const HandleAttendanceData = ({
   attendance,
   day,
@@ -12,8 +23,8 @@ export const HandleAttendanceData = ({
   isIconSizeSmall,
   student,
   manifest
-}) => {
-  const holidays = []
+}: IHandleAttendanceData) => {
+  const holidays: Array<any> = []
   const status = GetStatusFromManifest(manifest)
   let isToday = moment().format('YYYY-MM-DD') === day.format('YYYY-MM-DD')
   let isAllowDay = false
@@ -26,7 +37,8 @@ export const HandleAttendanceData = ({
   let isHoliday = day.day() === 0 || holidays.includes(day.format('YYYY-MM-DD'))
   let dateValue = day.format('YYYY-MM-DD')
   let smsDay = sms?.find(
-    (e) => e.date === day.format('YYYY-MM-DD') && e.studentId === student.id
+    (e: any) =>
+      e.date === day.format('YYYY-MM-DD') && e.studentId === student.id
   )
   let attendanceItem = attendance
     .slice()

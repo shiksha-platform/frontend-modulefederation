@@ -5,11 +5,13 @@ export interface IGetStudentsAttendance {
   attendance: Array<any>
   type?: string
 }
-// type tells if format matching or the other one
+
+// Returns attendance following a certain criteria
+// type specifies on what criteria
 export const GetStudentsAttendance = ({
-  students,
+  students = [],
   attendance,
-  type
+  type = 'format'
 }: IGetStudentsAttendance) => {
   if (type.toLowerCase() === 'format')
     return students

@@ -6,6 +6,8 @@ interface IFormatDate {
 }
 
 // TODO: Remove TSignore
+// Formats the date given the data(moment object) and type
+// Returns a formatted string
 export const FormatDate: Function = ({ date, type }: IFormatDate) => {
   if (!date) return ''
   if (type === 'Month') {

@@ -17,6 +17,7 @@ export interface IGetPercentage {
   ): any
 }
 
+// Returns the percentage of students who are absent/present
 export const GetPercentage: IGetPercentage = (
   attendances,
   student,
@@ -24,7 +25,7 @@ export const GetPercentage: IGetPercentage = (
   status = 'Present',
   type = 'percentage',
   page,
-  compare
+  compare = ''
 ) => {
   let weekdays = calendar(
     page,

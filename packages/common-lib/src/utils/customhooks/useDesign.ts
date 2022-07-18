@@ -3,14 +3,30 @@ import * as React from 'react'
 import { calendar } from '@shiksha/common-lib'
 
 // Utils
-import { isMoment, isMoment2DArray } from 'utils/types/typeGuards'
-import { PRESENT } from 'utils/functions/Constants'
-import { colorTheme } from 'utils/functions/ColorTheme'
-import { GetStudentsAttendance } from 'utils/functions/GetStudentsAttendance'
+import { isMoment, isMoment2DArray } from '../types/typeGuards'
+import { PRESENT } from '../functions/Constants'
+import { GetStudentsAttendance } from '../functions/GetStudentsAttendance'
 
-export const useDesignHook = ({ attendance, page, calendarView, t }) => {
+export interface IUseDesign {
+  attendance: Array<any>
+  page: number
+  colorTheme: any
+  calendarView: string
+  t: any
+}
+
+// Creates a design hook that helps with maintaining the
+// design state
+// Currently used in attendance
+export const useDesign = ({
+  attendance,
+  page,
+  colorTheme,
+  calendarView,
+  t
+}: IUseDesign) => {
   const [design, setDesign] = React.useState<any>({})
-  const holidays = []
+  const holidays: Array<any> = []
   React.useEffect(() => {
     let daysWithoutHolidays = []
     if (typeof page === 'object') {

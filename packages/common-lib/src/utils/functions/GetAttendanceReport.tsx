@@ -1,8 +1,8 @@
 // Services
-import { GetAttendance } from 'services/calls/registryCalls'
+import { attendanceRegistryService } from '../..'
 
 // Utils
-import { isMoment, isMoment2DArray } from 'utils/types/typeGuards'
+import { isMoment, isMoment2DArray } from '../types/typeGuards'
 export interface IGetAttendanceReport {
   (page: any, calendar: Function, calendarView: string, fun?: string): any
 }
@@ -20,6 +20,6 @@ export const GetAttendanceReport: IGetAttendanceReport = async (
     toDate: weekdays?.[weekdays.length - 1]?.format('Y-MM-DD'),
     fun
   }
-  const attendanceData = await GetAttendance(params)
+  const attendanceData = await attendanceRegistryService.getAll(params)
   return attendanceData
 }

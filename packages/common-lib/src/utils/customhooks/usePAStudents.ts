@@ -4,17 +4,33 @@ import { calendar } from '@shiksha/common-lib'
 import { getStudentsPresentAbsent } from '@shiksha/common-lib'
 
 // Services
-import { GetAttendance, DefaultStudents } from 'services/calls/registryCalls'
+import { attendanceRegistryService, studentRegistryService } from '../..'
 
 // Utilities
-import { MomentUnionType } from 'utils/types/types'
-import { isMomentArray } from 'utils/types/typeGuards'
+import { MomentUnionType } from '../types/types'
+import { isMomentArray } from '../types/typeGuards'
 
-export const usePAStudents = ({ students, attendance, type }) => {
-  const holidays = []
+export interface IUsePAStudents {
+  students: Array<any>
+  attendance: Array<any>
+  type: string
+}
+
+// A flexible hook used for maintaining list of present/absent students
+// passing parameters allows us to configure what kind we need
+export const usePAStudents = ({
+  students,
+  attendance,
+  type
+}: IUsePAStudents) => {
+  const holidays: Array<any> = []
   const [paStudents, setPaStudents] = useState([])
   useEffect(() => {
-    const getPresentStudents = async ({ students }) => {
+    const getPresentStudents = async ({
+      students
+    }: {
+      students: Array<any>
+    }) => {
       let weekdays: MomentUnionType = calendar(-1, 'week')
       // Check type, also for typescripts
       if (isMomentArray(weekdays)) {
@@ -29,8 +45,8 @@ export const usePAStudents = ({ students, attendance, type }) => {
           toDate: weekdays?.[weekdays.length - 1]?.format('YYYY-MM-DD')
         }
         if (type.toLowerCase() === 'absent') params['fun'] = 'getAbsentStudents'
-        let attendanceData = await GetAttendance(params)
-        let data
+        let attendanceData = await attendanceRegistryService.getAll(params)
+        let data: any
         if (type.toLowerCase() === 'present')
           data = getStudentsPresentAbsent(
             attendanceData,
@@ -45,10 +61,10 @@ export const usePAStudents = ({ students, attendance, type }) => {
             'Absent'
           )
 
-        let dataNew = students.filter((e) =>
-          data.map((e) => e.id).includes(e.id)
+        let dataNew = students.filter((e: any) =>
+          data.map((e: any) => e.id).includes(e.id)
         )
-        setPaStudents(await DefaultStudents(dataNew))
+        setPaStudents(await studentRegistryService.setDefaultValue(dataNew))
       }
     }
     getPresentStudents({ students })

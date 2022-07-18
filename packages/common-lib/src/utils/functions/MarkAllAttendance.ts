@@ -1,19 +1,28 @@
 // Lib
 import moment from 'moment'
 import { telemetryFactory, capture } from '@shiksha/common-lib'
-import { MultipleAttendance } from 'services/calls/registryCalls'
+import { attendanceRegistryService } from '../..'
 
 // Utils
 import { PRESENT } from './Constants'
 
-const groupExists = (classObject) => classObject?.id
+// Small helper function to check if a class exists
+const groupExists = (classObject: any) => classObject?.id
 
+export interface IMarkAllAttendance {
+  appName: string
+  students: Array<any>
+  getAttendance: Function
+  classObject: any
+}
+
+// Marks and returns the attendance,
 export const MarkAllAttendance = async ({
   appName,
   students,
   getAttendance,
   classObject
-}) => {
+}: IMarkAllAttendance) => {
   let student = students.find((e, index) => !index)
 
   const attendanceData = students.map((item, index) => {
@@ -30,7 +39,7 @@ export const MarkAllAttendance = async ({
     attendanceData
   }
 
-  const result = MultipleAttendance(allData)
+  const result = attendanceRegistryService.multipal(allData)
   if (getAttendance) {
     getAttendance()
   }

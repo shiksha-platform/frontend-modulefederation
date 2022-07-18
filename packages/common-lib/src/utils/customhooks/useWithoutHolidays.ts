@@ -3,11 +3,20 @@ import * as React from 'react'
 import { calendar } from '@shiksha/common-lib'
 
 // Utilities
-import { isMoment, isMoment2DArray } from 'utils/types/typeGuards'
+import { isMoment, isMoment2DArray } from '../types/typeGuards'
 
-export const useWithoutHolidays = ({ page, calendarView }) => {
-  const [withoutHolidays, setWithoutHolidays] = React.useState([])
-  const holidays = []
+export interface IUseWithoutHolidays {
+  page: any
+  calendarView: string
+}
+// This hook maintains the list of days that are not a holiday
+// currently used in attendance
+export const useWithoutHolidays = ({
+  page,
+  calendarView
+}: IUseWithoutHolidays) => {
+  const [withoutHolidays, setWithoutHolidays] = React.useState<Array<any>>([])
+  const holidays: Array<any> = []
   React.useEffect(() => {
     let daysWithoutHolidays = []
     if (typeof page === 'object') {

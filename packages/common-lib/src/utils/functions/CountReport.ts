@@ -1,5 +1,4 @@
 // Constants
-import { useTranslation } from 'react-i18next'
 import { MALE, FEMALE } from './Constants'
 import { GetStudentsAttendance } from './GetStudentsAttendance'
 
@@ -14,6 +13,9 @@ export interface ICountReport {
   students?: any
   t?: any
 }
+
+// Returns the data corresponding to a report depending on the
+// parameters passed
 export const CountReport = ({
   gender,
   isAverage,
@@ -29,11 +31,11 @@ export const CountReport = ({
   if (gender && [t('BOYS'), t('GIRLS')].includes(gender)) {
     studentIds = students
       .filter(
-        (e) =>
+        (e: any) =>
           e.gender ===
           (gender === t('BOYS') ? MALE : gender === t('GIRLS') ? FEMALE : '')
       )
-      .map((e) => e.id)
+      .map((e: any) => e.id)
   }
 
   if (attendanceType === 'Unmarked' && gender === t('TOTAL')) {
