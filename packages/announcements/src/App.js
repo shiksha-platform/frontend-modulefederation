@@ -29,7 +29,7 @@ function App() {
       theme={theme}
       routes={routes}
       AuthComponent={LoginComponent}
-      isShowPinnedAnnouncements={true}
+      appName="announcements"
     />
   );
 }

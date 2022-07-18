@@ -33,10 +33,14 @@ function AppShell({
       setTheme(newTheme)
     }
 
+  //TODO: integrate with API call to fetch whitelisted modules
+  const pinnedAnnouncementsWhitelist = ['announcements']
   //TODO: integrate with API call to fetch pinned announcements
-  //pinned announcements data is common to all components depending on their
-  const pinnedAnnouncementsData = !isShowPinnedAnnouncements
-    ? []
+
+  const pinnedAnnouncementsData = !pinnedAnnouncementsWhitelist.some(
+    (val: string) => val === appName
+  )
+    ? undefined
     : [
         {
           data: 'Shiksha V2.0 Is Live! 🚀🎉',
