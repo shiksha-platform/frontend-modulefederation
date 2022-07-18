@@ -41,6 +41,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const [comments, setCommets] = React.useState([]);
   const [worksheetStartTime, setWorksheetStartTime] = useState();
   const [questionConfig, setQuestionConfig] = React.useState([]);
+  const [worksheetConfig, setWorksheetConfig] = React.useState([]);
 
   React.useEffect(async () => {
     const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
@@ -49,6 +50,13 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         ? newManifest?.["question-bank.questionMetadata"]
         : newManifest?.["question-bank.questionMetadata"]
         ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+        : []
+    );
+    setWorksheetConfig(
+      Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
+        ? newManifest?.["worksheet.worksheetMetadata"]
+        : newManifest?.["worksheet.worksheetMetadata"]
+        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
         : []
     );
     const worksheetData = await worksheetRegistryService.getOne({ id });
@@ -249,6 +257,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       />
       <WorksheetActionsheet
         {...{
+          worksheetConfig,
           worksheet,
           showModuleWorksheet,
           setShowModuleWorksheet,

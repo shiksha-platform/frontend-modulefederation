@@ -313,5 +313,7 @@
   "SEE_YOUR_ASSIGNED_COURSES": "अपने असाइन किए गए पाठ्यक्रम यहां देखें",
   "SEE_YOUR_COMPLETED_COURSES": "अपने पूर्ण किए गए पाठ्यक्रम यहां देखें",
   "AUTO_GENERATE": "स्वत: उत्पन्न",
-  "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें"
+  "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें",
+  "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "कृपया एक प्रश्न को सूचीबद्ध करें चुनें",
+  "PLEASE_SELECT_SOURCE": "कृपया स्रोत चुनें"
 }

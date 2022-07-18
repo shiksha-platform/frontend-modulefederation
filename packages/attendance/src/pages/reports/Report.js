@@ -146,7 +146,7 @@ export default function Report({ footerLinks }) {
               <React.Fragment />
             )}
 
-            {reportTypes.includes("weekly-eport") ? (
+            {reportTypes.includes("weekly-report") ? (
               <Menu.Item onPress={(item) => setCalendarView("week")}>
                 {t("WEEK_VIEW")}
               </Menu.Item>

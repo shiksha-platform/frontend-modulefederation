@@ -48,9 +48,9 @@ export default function Teaching({ footerLinks, appName }) {
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={
-        <H2>
+        <H2 textTransform="none">
           {t(
-            "Access and plan your teaching material like worksheets and lesson plans"
+            "Access and plan your teaching material, like worksheets and lesson plans"
           )}
         </H2>
       }
