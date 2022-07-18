@@ -6,6 +6,8 @@ module.exports = {
     "./MyLearning": "./src/pages/MyLearning",
     "./CourseList": "./src/pages/CourseList",
     "./CourseDetails": "./src/pages/CourseDetails",
+    "./VideoList": "./src/pages/VideoList",
+    "./VideoDetails": "./src/pages/VideoDetails",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

@@ -3,14 +3,27 @@ import {
   IconByName,
   telemetryFactory,
   H2,
-  Caption,
   likeRegistryService,
   overrideColorTheme,
   BodySmall,
   BodyMedium,
   ProgressBar,
+  Caption,
+  BodyLarge,
 } from "@shiksha/common-lib";
-import { Avatar, Box, HStack, Pressable, Stack, VStack } from "native-base";
+import {
+  AspectRatio,
+  Avatar,
+  Box,
+  Center,
+  Heading,
+  HStack,
+  Image,
+  Pressable,
+  Stack,
+  Text,
+  VStack,
+} from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -23,17 +36,13 @@ const ASSIGNED = "Assigned";
 const COMPLETED = "Completed";
 
 const AttributeData = [
-  { icon: "TimeLineIcon", label: "DURATION", attribute: "duration" },
-  { icon: "BookLineIcon", label: "SOURCE", attribute: "source" },
   { icon: "CalendarCheckLineIcon", label: "DUE_DATE", attribute: "dueDate" },
-  { icon: "AccountBoxLineIcon", label: "TAKEN_BY", attribute: "takenBy" },
 ];
 
-export default function LearningBox({
+export default function VideoBox({
   item,
   url,
   canShowButtonArray,
-  isHeaderHide,
   _addIconButton,
   _box,
   appName,
@@ -46,17 +55,16 @@ export default function LearningBox({
     "fuchsia.700",
     "rose.600",
   ];
+  const ref = React.useRef(null);
   const [like, setLike] = React.useState({});
   const [likes, setLikes] = React.useState([]);
   const [showButtonArray, setShowButtonArray] = React.useState([]);
-  const [comments, setComments] = React.useState([]);
   const [random, setRandom] = React.useState();
   const { sub } = jwt_decode(localStorage.getItem("token"));
 
   React.useEffect(async (e) => {
     setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
     await getLikes();
-    await getComments();
     if (item.state === "DRAFT") {
       setShowButtonArray(["Like"]);
     } else {
@@ -67,10 +75,6 @@ export default function LearningBox({
   const getLikes = async () => {
     setLikes([]);
     setLike({});
-  };
-
-  const getComments = async () => {
-    setComments([]);
   };
 
   const handleLike = async () => {
@@ -84,13 +88,13 @@ export default function LearningBox({
     } else {
       let newData = {
         contextId: item?.id,
-        context: "MyLearning",
+        context: "Video",
         type: "like",
       };
       const { osid } = await likeRegistryService.create(newData);
       const telemetryData = telemetryFactory.interact({
         appName,
-        type: "MyLearning-Like",
+        type: "Video-Like",
         MyLearningId: item?.id,
         subject: item?.subject,
         grade: item?.grade,
@@ -106,7 +110,7 @@ export default function LearningBox({
   const handleShare = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "MyLearning-Share",
+      type: "Video-Share",
       myLearningId: item?.id,
       subject: item?.subject,
       grade: item?.grade,
@@ -122,7 +126,7 @@ export default function LearningBox({
     } else {
       const telemetryData = telemetryFactory.interact({
         appName,
-        type: "MyLearning-Add-To-Timeline",
+        type: "Video-Add-To-Timeline",
         myLearningId: item?.id,
         subject: item?.subject,
         grade: item?.grade,
@@ -134,9 +138,8 @@ export default function LearningBox({
 
   const RightButton = () => {
     let props = {
-      name: "AddCircleFillIcon",
-      _icon: { size: 30 },
-      color: colors.primary,
+      name: "InformationLineIcon",
+      _icon: { size: 20 },
       p: "0",
       onPress: handleAddToTimeline,
       rounded: "full",
@@ -155,106 +158,120 @@ export default function LearningBox({
   };
 
   return (
-    <Box
-      p="5"
-      borderWidth="1"
-      borderColor={colors.lightGray2}
-      rounded="lg"
-      {..._box}
-    >
-      <VStack space={4}>
-        {!isHeaderHide ? (
-          <HStack justifyContent="space-between" alignItems="flex-start">
-            <Pressable onPress={() => (url ? navigate(url) : "")}>
-              <HStack space={2} alignItems="center">
-                <Avatar bg={randomColors[random]} size="57" rounded="md">
-                  <H2 color={colors.white}>
-                    {item.name?.toUpperCase().substr(0, 1)}
-                  </H2>
-                </Avatar>
-                <Stack space="1">
-                  <VStack space="1px">
-                    <H2>{item.name}</H2>
-                  </VStack>
-                  <HStack space={1} alignItems="center">
-                    <IconByName
-                      name="Heart3FillIcon"
-                      color={colors.eventError}
-                      _icon={{ size: 12 }}
-                      isDisabled
-                    />
-                    <Caption>{(likes ? likes.length : 0) + " likes"}</Caption>
-                    <Caption>
-                      ({(comments ? comments.length : 0) + " comments"})
-                    </Caption>
-                  </HStack>
-                </Stack>
-              </HStack>
-            </Pressable>
-            <RightButton />
-          </HStack>
-        ) : (
-          <React.Fragment />
-        )}
-        <BodyMedium
-          color={colors.worksheetText}
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "3",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {item.description}
-        </BodyMedium>
-        <AttributeComponent data={AttributeData} object={item} />
-        <HStack space="4" alignItems="center">
-          <BodySmall>{t("PROGRESS")}</BodySmall>
-          <ProgressBar
-            flex="1"
-            sufix={"%"}
-            data={[
-              {
-                color: colors.success,
-                value: 50,
-              },
-              {
-                color: colors.danger,
-                value: 50,
-              },
-            ]}
-          />
-        </HStack>
-        <HStack space="5">
-          {!showButtonArray || showButtonArray.includes("Like") ? (
-            <Box shadow="2" p="2" rounded="full">
-              <IconByName
-                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-                _icon={{ size: 15 }}
-                color={colors.primary}
-                p="0"
-                onPress={handleLike}
-              />
+    <>
+      <HStack bg={colors.videoBoxBg} rounded="10px" maxH={"140px"}>
+        <Box flex={3 / 4}>
+          <Box flex={1} justifyContent="center" alignItems="center">
+            <Image
+              maxH={"140px"}
+              rounded="10px"
+              w={"100%"}
+              h={"100%"}
+              source={{
+                uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+              }}
+              alt="image"
+            />
+            <Box bg={"rgba(0, 0, 0, 0.6)"} position="absolute" rounded="full">
+              <IconByName name="PlayFillIcon" color={colors.white} />
             </Box>
-          ) : (
-            ""
-          )}
-          {!showButtonArray || showButtonArray.includes("Share") ? (
-            <Box shadow="2" p="2" rounded="full">
-              <IconByName
-                name="ShareLineIcon"
-                _icon={{ size: 15 }}
-                p="0"
-                onPress={handleShare}
-              />
-            </Box>
-          ) : (
-            ""
-          )}
-        </HStack>
-      </VStack>
-    </Box>
+          </Box>
+          <Center
+            bg={"rgba(0, 0, 0, 0.6)"}
+            rounded="lg"
+            position="absolute"
+            bottom="8px"
+            right="8px"
+            px="3"
+            py="1.5"
+          >
+            03:00
+          </Center>
+        </Box>
+        <Box flex="1" p="3">
+          <VStack space="2">
+            <VStack space="2">
+              <VStack space="1">
+                <HStack space="1px" justifyContent="space-between">
+                  <Pressable
+                    onPress={() => (url ? navigate(url) : "")}
+                    width="100%"
+                    flex="1"
+                  >
+                    <BodyLarge
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display: "-webkit-box",
+                        WebkitLineClamp: "1",
+                        WebkitBoxOrient: "vertical",
+                      }}
+                    >
+                      {item.name}
+                    </BodyLarge>
+                  </Pressable>
+                  <RightButton />
+                </HStack>
+                <Caption
+                  color={colors.gray}
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: "2",
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {item.description}
+                </Caption>
+              </VStack>
+              <AttributeComponent data={AttributeData} object={item} />
+            </VStack>
+            <HStack space="5">
+              {!showButtonArray || showButtonArray.includes("Download") ? (
+                <Box shadow="2" p="6px" rounded="full" bg={colors.white}>
+                  <IconByName
+                    name={"Download2LineIcon"}
+                    _icon={{ size: 16 }}
+                    p="0"
+                    onPress={handleLike}
+                  />
+                </Box>
+              ) : (
+                <React.Fragment />
+              )}
+
+              {!showButtonArray || showButtonArray.includes("Like") ? (
+                <Box shadow="2" p="6px" rounded="full" bg={colors.white}>
+                  <IconByName
+                    name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+                    _icon={{ size: 16 }}
+                    color={colors.primary}
+                    p="0"
+                    onPress={handleLike}
+                  />
+                </Box>
+              ) : (
+                <React.Fragment />
+              )}
+
+              {!showButtonArray || showButtonArray.includes("Share") ? (
+                <Box shadow="2" p="6px" rounded="full" bg={colors.white}>
+                  <IconByName
+                    name="ShareLineIcon"
+                    _icon={{ size: 16 }}
+                    p="0"
+                    onPress={handleShare}
+                  />
+                </Box>
+              ) : (
+                <React.Fragment />
+              )}
+            </HStack>
+          </VStack>
+        </Box>
+      </HStack>
+    </>
   );
 }
 
@@ -283,11 +300,11 @@ const AttributeComponent = ({ data, object }) => {
                 color={colors.worksheetBoxText}
                 p="0"
               />
-              <BodyMedium color={colors.worksheetBoxText}>
+              <Caption color={colors.worksheetBoxText}>
                 {t(item?.label) +
                   " : " +
                   (object?.[item.attribute] ? object?.[item.attribute] : "")}
-              </BodyMedium>
+              </Caption>
             </HStack>
           ))}
         </VStack>

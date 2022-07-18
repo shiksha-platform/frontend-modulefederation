@@ -5,6 +5,8 @@ import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import CourseList from "./pages/CourseList";
 import MyLearning from "./pages/MyLearning";
 import CourseDetails from "./pages/CourseDetails";
+import VideoList from "./pages/VideoList";
+import VideoDetails from "./pages/VideoDetails";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -24,6 +26,18 @@ function App() {
     {
       path: "/mylearning/:id/view",
       component: CourseDetails,
+    },
+    {
+      path: "/mylearning/video/list/:state",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/list",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/:id/view",
+      component: VideoDetails,
     },
     {
       path: "/mylearning",

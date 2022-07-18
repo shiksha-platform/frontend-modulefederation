@@ -45,6 +45,8 @@ function App() {
   const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
   const CourseList = React.lazy(() => import("mylearning/CourseList"));
   const CourseDetails = React.lazy(() => import("mylearning/CourseDetails"));
+  const VideoList = React.lazy(() => import("mylearning/VideoList"));
+  const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
 
   const routes = [
     {
@@ -124,6 +126,18 @@ function App() {
     {
       path: "/mylearning/:id/view",
       component: CourseDetails,
+    },
+    {
+      path: "/mylearning/video/list/:state",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/list",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/:id/view",
+      component: VideoDetails,
     },
     { path: "*", component: Home },
   ];

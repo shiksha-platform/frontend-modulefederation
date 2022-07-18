@@ -5,6 +5,7 @@ import { Box, VStack } from "native-base";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 import MyLearningRoute from "../components/MyLearningRoute";
+import MyVideosRoute from "../components/MyVideosRoute";
 const colors = overrideColorTheme(colorTheme);
 
 export default function App({ footerLinks, appName }) {
@@ -30,7 +31,7 @@ export default function App({ footerLinks, appName }) {
                 title: t("MY_LEARNING"),
                 component: <MyLearningRoute {...{ appName }} />,
               },
-              { title: t("MY_VIDEOS"), component: <MyVideos /> },
+              { title: t("MY_VIDEOS"), component: <MyVideosRoute /> },
             ]}
           />
         </Box>
@@ -38,7 +39,3 @@ export default function App({ footerLinks, appName }) {
     </Layout>
   );
 }
-
-const MyVideos = () => {
-  return <h4>MyVideos</h4>;
-};

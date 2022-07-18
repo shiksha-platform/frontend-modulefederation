@@ -85,6 +85,7 @@ import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
 import ShieldStarLineIcon from 'remixicon-react/ShieldStarLineIcon'
+import PlayFillIcon from 'remixicon-react/PlayFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -767,6 +768,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<ShieldStarLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'PlayFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<PlayFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

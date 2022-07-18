@@ -32,5 +32,6 @@ const colorTheme = {
   messageInfo: "#7C7E82",
   courseDetailsBoxBorder: "#FFF2F0",
   courseDetailsBoxBg: "#FFF8F7",
+  videoBoxBg: "#FEF1EE",
 };
 export default colorTheme;
