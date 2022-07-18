@@ -139,10 +139,10 @@ export default function Profile({ footerLinks, appName }) {
                     {teacherObject?.firstName + " " + teacherObject?.lastName}
                   </H1>
                 </VStack>
-                <HStack>
+                {/* <HStack>
                   <IconByName color={colors.white} name="CameraLineIcon" />
                   <IconByName color={colors.white} name="ShareLineIcon" />
-                </HStack>
+                </HStack> */}
               </HStack>
             </Box>
           </Box>

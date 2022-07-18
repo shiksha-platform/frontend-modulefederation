@@ -70,12 +70,15 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           ? e.attributeName
           : null
       );
-      if (!limit?.limit && createType === "auto") {
+      if (!formObject.source) {
+        setAlertMessage(t("PLEASE_SELECT_SOURCE"));
+        setPageName();
+      } else if (!limit?.limit && createType === "auto") {
         setAlertMessage(t("PLEASE_SELECT_LIMIT"));
         setPageName();
       } else {
         let data = {
-          adapter: manifest["question-bank.questionResource"],
+          adapter: formObject.source,
           limit: 10,
         };
         attribute.forEach((item, index) => {
@@ -86,7 +89,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         );
         setQuestions(newQuestions);
         if (newQuestions.length <= 0) {
-          setAlertMessage(t("QUESTION_NOT_FOUND"));
+          setAlertMessage(
+            <H2 textTransform="none">{t("QUESTION_NOT_FOUND")}</H2>
+          );
           setPageName();
         } else {
           setAlertMessage();
