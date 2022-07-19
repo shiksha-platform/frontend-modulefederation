@@ -17,13 +17,11 @@ import moment from "moment";
 import {
   IconByName,
   getStudentsPresentAbsent,
-  useWindowSize,
   capture,
   telemetryFactory,
   calendar,
   attendanceRegistryService,
   studentRegistryService,
-  H4,
   H2,
   BodySmall,
   Subtitle,
@@ -32,7 +30,6 @@ import {
   Caption,
   BodyMedium,
   overrideColorTheme,
-  getApiConfig,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import { useNavigate } from "react-router-dom";
@@ -115,11 +112,12 @@ export const MultipalAttendance = ({
   setIsEditDisabled,
   isWithEditButton,
   appName,
+  lastAttedance,
   manifest,
 }) => {
   const { t } = useTranslation();
-  const [showModal, setShowModal] = useState(false);
-  const [presentStudents, setPresentStudents] = useState([]);
+  const [showModal, setShowModal] = React.useState(false);
+  const [presentStudents, setPresentStudents] = React.useState([]);
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
   const holidays = [];
@@ -128,7 +126,7 @@ export const MultipalAttendance = ({
     if (showModal) setStartTime(moment());
   }, [showModal]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const getPresentStudents = async ({ students }) => {
       let weekdays = calendar(-1, "week");
       let workingDaysCount = weekdays.filter(
@@ -154,11 +152,6 @@ export const MultipalAttendance = ({
     getPresentStudents({ students });
   }, [students, attendance]);
 
-  const getLastAttedance = () => {
-    let dates = attendance.map((d) => moment(d.updatedAt));
-    let date = moment.max(dates);
-    return dates.length ? date.format("HH:MMA") : "N/A";
-  };
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
@@ -238,7 +231,7 @@ export const MultipalAttendance = ({
             <VStack space={"15px"}>
               <VStack>
                 <Subtitle textTransform={"inherit"}>
-                  {t("LAST_UPDATED_AT") + " " + getLastAttedance()}
+                  {t("LAST_UPDATED_AT") + " " + lastAttedance}
                 </Subtitle>
                 <BodySmall textTransform={"inherit"}>
                   {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
@@ -351,7 +344,7 @@ export const MultipalAttendance = ({
                           <Subtitle color={colors.successAlertText}>
                             {fullName ? fullName : ""}
                             {" at "}
-                            {getLastAttedance()}
+                            {lastAttedance}
                           </Subtitle>
                         </HStack>
                       ),
@@ -509,6 +502,7 @@ export default function AttendanceComponent({
   _weekBox,
   appName,
   manifest,
+  setLastAttedance,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -586,6 +580,7 @@ export default function AttendanceComponent({
               ...newData,
               { ...dataObject, id: dataObject.attendanceId },
             ]);
+            setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
           });
@@ -602,6 +597,7 @@ export default function AttendanceComponent({
           })
           .then((e) => {
             setAttendance([...attendance, dataObject]);
+            setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
           });
