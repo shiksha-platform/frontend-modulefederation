@@ -7,6 +7,10 @@ import {
   IconByName,
   H3,
   H4,
+  overrideColorTheme,
+  BodyLarge,
+  BodyMedium,
+  Caption,
 } from "@shiksha/common-lib";
 import {
   Actionsheet,
@@ -29,6 +33,8 @@ import {
 } from "react-share";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const newStudents = [
   {
@@ -96,20 +102,16 @@ export default function WorksheetShare({ footerLinks, appName }) {
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={`class V`}
-      _subHeader={{ bg: "worksheetCard.500" }}
+      _subHeader={{ bg: colors.worksheetCardBg }}
       _footer={footerLinks}
     >
       <Stack>
-        <VStack bg="white" space="2">
+        <VStack bg={colors.white} space="2">
           <Collapsible
             header={
               <VStack space="2" py="5">
-                <Text fontSize="14px" fontWeight="500">
-                  {"Student List"}
-                </Text>
-                <Text fontSize="10px" fontWeight="300">
-                  {`Total: ${students?.length}`}
-                </Text>
+                <BodyLarge>{"Student List"}</BodyLarge>
+                <Caption>{`Total: ${students?.length}`}</Caption>
               </VStack>
             }
           >
@@ -117,7 +119,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
               <Box
                 key={index}
                 borderBottomWidth="1"
-                borderColor="gray.100"
+                borderColor={colors.lightGray5}
                 p="10px"
               >
                 <Suspense fallback="logding">
@@ -127,23 +129,25 @@ export default function WorksheetShare({ footerLinks, appName }) {
                     type="rollFather"
                     textTitle={
                       <VStack alignItems="center">
-                        <Text fontSize="14" fontWeight="500">
+                        <BodyLarge>
                           <Text>{item.admissionNo}</Text>
-                          <Text color="gray.300"> • </Text>
+                          <Text color={colors.lightGray2}> • </Text>
                           <Text>{item.fullName}</Text>
-                        </Text>
+                        </BodyLarge>
                       </VStack>
                     }
                     textSubTitle={
                       <VStack alignItems="center">
-                        <Text fontSize="10" fontWeight="400" color="gray.400">
-                          <Text>{item.fathersName}</Text>
-                        </Text>
+                        <Caption color={colors.gray}>
+                          {item.fathersName}
+                        </Caption>
                       </VStack>
                     }
                     rightComponent={
                       <IconByName
-                        color={item?.isSelected ? "button.500" : "gray.300"}
+                        color={
+                          item?.isSelected ? colors.primary : colors.lightGray2
+                        }
                         name={
                           item?.isSelected
                             ? "CheckboxLineIcon"
@@ -175,12 +179,12 @@ export default function WorksheetShare({ footerLinks, appName }) {
             ))}
           </Collapsible>
         </VStack>
-        <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: colors.white }}
               px="5"
               onPress={(e) => setShowModal(true)}
             >
@@ -191,22 +195,26 @@ export default function WorksheetShare({ footerLinks, appName }) {
       </Stack>
       <Actionsheet
         isOpen={showModal}
-        _backdrop={{ opacity: "0.9", bg: "gray.500" }}
+        _backdrop={{ opacity: "0.9", bg: colors.gray }}
       >
-        <Actionsheet.Content p="0" alignItems={"left"} bg="worksheetCard.500">
+        <Actionsheet.Content
+          p="0"
+          alignItems={"left"}
+          bg={colors.worksheetCardBg}
+        >
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
+            <Stack p={5} pt={2} pb="15px">
               <H2 fontWeight={"600"}>{t("SELECT_VIEW")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="worksheetCard.800"
+              color={colors.worksheetCardIcon}
               onPress={(e) => setShowModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
 
-        <Box w="100%" bg="white">
+        <Box w="100%" bg={colors.white}>
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <WhatsappShareButton
@@ -239,57 +247,53 @@ export default function WorksheetShare({ footerLinks, appName }) {
         isOpen={showSuccessModal}
         _backdrop={{ opacity: "0.9", bg: "gray.500" }}
       >
-        <Actionsheet.Content p="0" alignItems={"left"} bg="worksheetCard.500">
+        <Actionsheet.Content p="0" alignItems={"left"} bg={colors.successAlert}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <H2 fontWeight={"600"}>{t("Worksheet Sent")}</H2>
-              <H4 color="worksheetCard.800">
-                {moment().format("DD MMM, h:m")}
-              </H4>
+            <Stack p={5} pt={2} pb="15px">
+              <H2>{t("Worksheet Sent")}</H2>
+              <H4 color={colors.darkGreen}>{moment().format("DD MMM, h:m")}</H4>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="worksheetCard.800"
+              color={colors.worksheetCardIcon}
               onPress={handleSuccessModule}
             />
           </HStack>
         </Actionsheet.Content>
 
-        <Box w="100%" bg="white">
+        <Box w="100%" bg={colors.white}>
           <Box px="5">
             <HStack
               py="5"
               borderBottomWidth="1"
-              borderColor="gray.200"
+              borderColor={colors.lightGray2}
               alignItems="center"
               space="1"
             >
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
-                color="classCard.900"
+                color={colors.cardCloseIcon}
                 isDisabled
               />
-              <Text fontSize="14" fontWeight="500">
+              <BodyLarge>
                 {t(
                   `Sending to ${
                     students.filter((e) => e.isSelected).length
                   } parents`
                 )}
-              </Text>
+              </BodyLarge>
             </HStack>
           </Box>
           <VStack p="5" space={6}>
-            <Text fontSize="14" fontWeight="600">
-              {t("NOTICE")}
-            </Text>
-            <Text fontSize="14" fontWeight="400" textTransform={"inherit"}>
+            <H3>{t("NOTICE")}</H3>
+            <BodyMedium textTransform={"inherit"}>
               Hi there, I just shared this amazing worksheet from shikshaApp
               click the below link to open it.
               https://shiksha.edu/learningmadeeasy+1/eaSe89Js.
-            </Text>
+            </BodyMedium>
           </VStack>
-          <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
+          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
             <Button.Group>
               <Button
                 flex="1"
@@ -303,7 +307,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
               <Button
                 flex="1"
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: colors.white }}
                 px="5"
                 onPress={handleSuccessModule}
               >

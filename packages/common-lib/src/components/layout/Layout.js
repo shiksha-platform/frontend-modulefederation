@@ -44,15 +44,11 @@ export default function Layout({
         {subHeader ? (
           <Box
             {...{
-              p: '4',
+              py: '6',
+              px: '5',
               position: 'relative',
               bg: 'white',
-              roundedTop: '20',
-              _text: {
-                textTransform: 'inherit',
-                fontSize: '12px',
-                fontWeight: '400'
-              }
+              roundedTop: '20'
             }}
             {..._subHeader}
           >

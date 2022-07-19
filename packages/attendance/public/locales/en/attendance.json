@@ -61,5 +61,9 @@
   "SENT": "Sent",
   "FAILED": "Failed",
   "RETRY": "Retry",
-  "DONE": "Done"
+  "DONE": "Done",
+  "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "No Student Has Achieved 100% Attendance This Week",
+  "NO_STUDENT_HAS_BEEN_ABSENT": "No student has been absent for more than 3 days",
+  "SEND_ANOTHER_MESSAGE": "Send another message",
+  "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "View messages being sent by admin"
 }

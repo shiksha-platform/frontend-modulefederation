@@ -128,7 +128,10 @@ export default function ReportDetail({ footerLinks, appName }) {
   };
 
   const getAbsentStudents = async (students) => {
-    let weekdays = calendar(-1, calendarView);
+    let weekdays = calendar(
+      -1,
+      ["days", "week"].includes(calendarView) ? "week" : calendarView
+    );
     let params = {
       fromDate: weekdays?.[0]?.format("Y-MM-DD"),
       toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
@@ -178,34 +181,16 @@ export default function ReportDetail({ footerLinks, appName }) {
       }}
       _header={{
         title: t("REPORT_DETAILS"),
-        subHeading: classObject?.name,
-        iconComponent: (
-          <Link
-            to={"/attendance/reportCompare/" + classId}
-            style={{ textDecoration: "none" }}
-          >
-            <Box
-              rounded={"full"}
-              px="4"
-              py="1"
-              borderColor={colors.primary}
-              borderWidth={1}
-            >
-              <HStack space="2">
-                <BodyLarge color={colors.primary}>{t("COMPARE")}</BodyLarge>
-                <IconByName
-                  color={colors.primary}
-                  name="ArrowDownSLineIcon"
-                  isDisabled
-                />
-              </HStack>
-            </Box>
-          </Link>
-        ),
+        subHeading:
+          (classObject?.name ? "Class " + classObject?.name : "") +
+          (classObject?.section ? " Sec " + classObject?.section : ""),
       }}
       subHeader={
         <Stack>
-          <H2>{classObject.name}</H2>
+          <H2>
+            {(classObject?.name ? "Class " + classObject?.name : "") +
+              (classObject?.section ? " Sec " + classObject?.section : "")}
+          </H2>
           <Caption>
             {t("TOTAL")}: {students.length} {t("PRESENT")}:
             {
@@ -292,10 +277,10 @@ export default function ReportDetail({ footerLinks, appName }) {
               body={
                 <VStack space={2} pt="2">
                   <Box>
-                    <FlatList
-                      data={presentStudents}
-                      renderItem={({ item }) => (
+                    {presentStudents.map((item, index) =>
+                      index < 5 ? (
                         <Box
+                          key={index}
                           borderWidth="1"
                           borderColor={colors.presentCardBorder}
                           bg={colors.presentCardBg}
@@ -324,18 +309,31 @@ export default function ReportDetail({ footerLinks, appName }) {
                             />
                           </Suspense>
                         </Box>
-                      )}
-                      keyExtractor={(item) => item.id}
-                    />
+                      ) : (
+                        <div key={index}></div>
+                      )
+                    )}
+                    {presentStudents?.length <= 0 ? (
+                      <Caption p="4">
+                        {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
+                      </Caption>
+                    ) : (
+                      ""
+                    )}
                   </Box>
-                  <Button
-                    mt="2"
-                    variant="outline"
-                    colorScheme="button"
-                    rounded="lg"
-                  >
-                    {t("SEE_MORE")}
-                  </Button>
+
+                  {presentStudents?.length > 5 ? (
+                    <Button
+                      mt="2"
+                      variant="outline"
+                      colorScheme="button"
+                      rounded="lg"
+                    >
+                      {t("SEE_MORE")}
+                    </Button>
+                  ) : (
+                    ""
+                  )}
                 </VStack>
               }
             />
@@ -362,10 +360,10 @@ export default function ReportDetail({ footerLinks, appName }) {
               body={
                 <VStack space={2} pt="2">
                   <Box>
-                    <FlatList
-                      data={absentStudents}
-                      renderItem={({ item }) => (
+                    {absentStudents.map((item, index) =>
+                      index < 5 ? (
                         <Box
+                          key={index}
                           borderWidth="1"
                           borderColor={colors.absentCardBorder}
                           bg={colors.absentCardBg}
@@ -394,18 +392,28 @@ export default function ReportDetail({ footerLinks, appName }) {
                             />
                           </Suspense>
                         </Box>
-                      )}
-                      keyExtractor={(item) => item.id}
-                    />
+                      ) : (
+                        <div key={index}></div>
+                      )
+                    )}
+                    {absentStudents?.length <= 0 ? (
+                      <Caption p="4">{t("NO_STUDENT_HAS_BEEN_ABSENT")}</Caption>
+                    ) : (
+                      <React.Fragment />
+                    )}
                   </Box>
-                  <Button
-                    mt="2"
-                    variant="outline"
-                    colorScheme="button"
-                    rounded="lg"
-                  >
-                    {t("SEE_MORE")}
-                  </Button>
+                  {absentStudents?.length > 5 ? (
+                    <Button
+                      mt="2"
+                      variant="outline"
+                      colorScheme="button"
+                      rounded="lg"
+                    >
+                      {t("SEE_MORE")}
+                    </Button>
+                  ) : (
+                    <React.Fragment />
+                  )}
                 </VStack>
               }
             />

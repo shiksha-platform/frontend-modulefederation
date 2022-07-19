@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Button,
-  Text,
   Image,
   Pressable,
   Stack,
@@ -21,6 +20,7 @@ import {
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const SelfAttedanceSheet = React.lazy(() =>
   import("profile/SelfAttedanceSheet")
@@ -32,6 +32,7 @@ function Home({ footerLinks, appName }) {
   const [popupModal, setPopupModal] = React.useState(true);
   let newAvatar = localStorage.getItem("firstName");
   const [selfAttendance, setSelfAttendance] = React.useState({});
+  const navigate = useNavigate();
 
   let cameraUrl = "";
   let avatarUrlObject = cameraUrl
@@ -73,6 +74,7 @@ function Home({ footerLinks, appName }) {
       data: [
         {
           title: t("CLASSES"),
+          link: "/classes",
           subTitle: "3 " + t("REMAINING"),
           icon: "ParentLineIcon",
           _box: {
@@ -263,7 +265,10 @@ function Home({ footerLinks, appName }) {
                   fontWeight="600"
                   colorScheme="button"
                   _text={{ color: "white", textTransform: "capitalize" }}
-                  onPress={(e) => setPopupModal(false)}
+                  onPress={(e) => {
+                    setShowModal(true);
+                    setPopupModal(false);
+                  }}
                 >
                   {t("NEXT")}
                 </Button>

@@ -1,6 +1,9 @@
 import { Box, Text, VStack } from "native-base";
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
+import { overrideColorTheme } from "@shiksha/common-lib";
+import colorTheme from "../colorTheme";
+const colors0 = overrideColorTheme(colorTheme);
 
 export default function RoundedProgressBar({
   values,
@@ -22,7 +25,9 @@ export default function RoundedProgressBar({
                   id: 1,
                   label: "",
                   data: values ? values : [14, 6],
-                  backgroundColor: colors ? colors : ["#0D921B", "#F7F7FD"],
+                  backgroundColor: colors
+                    ? colors
+                    : [colors0.successBarColor, colors0.lightGray4],
                   borderWidth: 0,
                   cutout: cutout ? cutout : "80%",
                 },

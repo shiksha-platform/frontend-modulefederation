@@ -47,7 +47,7 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
         >
           {["", "", ""].map((item, index) => (
             <Box key={index} m="10px" mb="10">
-              <Box bg="white" p="5" alignItems="center">
+              <Box bg={colors.white} p="5" alignItems="center">
                 <VStack w="100%" space="5">
                   <HStack w="100%" space="5">
                     <Box bg={colors.grayLight} w="44px" h="44px" />
@@ -81,12 +81,12 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
           ))}
         </Carousel>
       </Box>
-      <Box bg="white" p="5" position="sticky" bottom="85" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
         <Button.Group>
           <Button
             flex="1"
             colorScheme="button"
-            _text={{ color: "white" }}
+            _text={{ color: colors.white }}
             px="5"
           >
             {t("CONTINUE")}

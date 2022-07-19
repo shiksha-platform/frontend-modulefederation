@@ -1,38 +1,34 @@
 import React, { useState, useEffect } from "react";
 import {
-  Collapsible,
   IconByName,
-  attendanceRegistryService,
-  ProgressBar,
-  getUniqAttendance,
   Loading,
   H1,
-  H3,
+  H2,
   Layout,
   useWindowSize,
   telemetryFactory,
   capture,
+  overrideColorTheme,
+  BodyLarge,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import {
   HStack,
-  Text,
   VStack,
   Stack,
   Box,
-  Progress,
   Button,
-  Divider,
   Actionsheet,
-  Checkbox,
   Avatar,
-  Spacer,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { H2 } from "@shiksha/common-lib";
 import manifest from "../../manifest.json";
 import RoundedProgressBar from "../RoundedProgressBar";
+import colorTheme from "../../colorTheme";
+
+const colors = overrideColorTheme(colorTheme);
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -97,27 +93,21 @@ const SpotAssessmentResult = ({ appName }) => {
         height={height}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg="successAlert.500" pb="100px" pt="32px">
+            <VStack bg={colors.bgSuccessAlert} pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
                 name="EmotionHappyLineIcon"
-                color="successAlertText.500"
+                color={colors.success}
                 _icon={{ size: 100 }}
               />
               <Box alignItems="center">
-                <H1
-                  fontSize="22px"
-                  fontWeight="600"
-                  color="successAlertText.500"
-                >
-                  YAY!
-                </H1>
-                <Text color="successAlertText.500">
+                <H1 color={colors.success}>YAY!</H1>
+                <BodyLarge color={colors.success}>
                   You got most of the answers right.
-                </Text>
+                </BodyLarge>
               </Box>
             </VStack>
-            <VStack space={50} bg="white">
+            <VStack space={50} bg={colors.white}>
               <Box alignItems="center">
                 <Box textAlign="center" marginTop="-40px">
                   <VStack space={3}>
@@ -131,10 +121,10 @@ const SpotAssessmentResult = ({ appName }) => {
                       />
                     </Box>
                     <Box>
-                      <Text fontSize="18" fontWeight="600">
-                        Shah Rukh Khan
-                      </Text>
-                      <Text color={"#757588"}>Mr. Father’s Name</Text>
+                      <H2>Shah Rukh Khan</H2>
+                      <BodyMedium color={colors.gray}>
+                        Mr. Father’s Name
+                      </BodyMedium>
                     </Box>
                   </VStack>
                 </Box>
@@ -144,39 +134,46 @@ const SpotAssessmentResult = ({ appName }) => {
                   <Box p="4" alignItems="center">
                     <RoundedProgressBar
                       values={[72, 28]}
-                      colors={["#0D921B", "#F7F7FD"]}
+                      colors={[
+                        colors.scoreSuccessStarColor,
+                        colors.circleProgressBarcolor,
+                      ]}
                       title={{ text: "72%", fontSize: "21px" }}
                       legend={{ text: "Total Score", fontSize: "14px" }}
                       cutout={"85%"}
                       size="80px"
                     />
-                    <HStack justifyContent={"center"} alignItems="center">
+                    {/* <HStack justifyContent={"center"} alignItems="center">
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
+                      <IconByName name="StarFillIcon" p="0" color="green.600" />
                       <IconByName
                         name="StarSFillIcon"
                         p="0"
-                        color="green.600"
+                        color={colors.scoreSuccessStarColor}
                       />
                       <IconByName
                         name="StarSFillIcon"
                         p="0"
-                        color="green.600"
+                        color={colors.scoreSuccessStarColor}
                       />
                       <IconByName
                         name="StarSFillIcon"
                         p="0"
-                        color="green.600"
+                        color={colors.scoreSuccessStarColor}
                       />
                       <IconByName
                         name="StarSFillIcon"
                         p="0"
-                        color="green.600"
+                        color={colors.scoreSuccessStarColor}
                       />
                       <IconByName
                         name="StarSFillIcon"
                         p="0"
-                        color="green.600"
+                        color={colors.scoreSuccessStarColor}
                       />
-                    </HStack>
+                    </HStack> */}
                   </Box>
                 </VStack>
               </Box>
@@ -184,7 +181,7 @@ const SpotAssessmentResult = ({ appName }) => {
                 <Button
                   colorScheme="button"
                   _text={{
-                    color: "white",
+                    color: colors.white,
                   }}
                   onPress={() => setToDoNextModal(true)}
                 >
@@ -199,37 +196,34 @@ const SpotAssessmentResult = ({ appName }) => {
         isOpen={toDoNextModal}
         onClose={() => setToDoNextModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("What would you like to do next?")}
-              </Text>
+            <Stack p={3} pt={2} pb="15px">
+              <H2>{t("What would you like to do next?")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setToDoNextModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
+        <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
           <Actionsheet.Item onPress={() => setNextOption("repeat")}>
-            Repeat test with another student
+            <BodyLarge>Repeat test with another student</BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("similar")}>
-            Give similar test to another student
+            <BodyLarge>Give similar test to another student</BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("end")}>
-            End Assessment
+            <BodyLarge>End Assessment</BodyLarge>
           </Actionsheet.Item>
-          <Divider my={4}></Divider>
 
-          <Box p="4" pt="0">
+          <Box p="4">
             <Button
               colorScheme="button"
               _text={{
-                color: "white",
+                color: colors.white,
               }}
               // onPress={()=> setSelectedStudent()}
               onPress={() => handleNextOption()}
@@ -244,35 +238,31 @@ const SpotAssessmentResult = ({ appName }) => {
         isOpen={similarTestModal}
         onClose={() => setSimilarTestModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Give similar test to another student")}
-              </Text>
+            <Stack p={2} pt={2} pb="15px">
+              <H2>{t("Give similar test to another student")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setSimilarTestModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
-          <Text my={3}>
+        <Box w="100%" px={5} py="1" justifyContent="center" bg={colors.white}>
+          <BodyMedium py={4}>
             A similar test will consist of the same competencies with a
             different set of questions.
-          </Text>
-          <Text my={3}>Are you sure you want to continue?</Text>
-          <Divider my={4}></Divider>
+          </BodyMedium>
+          <BodyMedium py={4}>Are you sure you want to continue?</BodyMedium>
 
-          <Box>
+          <Box py="5">
             <HStack justifyContent={"space-between"}>
               <Button
                 colorScheme="button"
-                _text={{
-                  color: "#fff",
-                }}
+                variant="outline"
+
                 // onPress={()=> setSelectedStudent()}
               >
                 {t("Choose  COMPETENCIES")}
@@ -281,7 +271,7 @@ const SpotAssessmentResult = ({ appName }) => {
               <Button
                 colorScheme="button"
                 _text={{
-                  color: "#fff",
+                  color: colors.white,
                 }}
                 onPress={() => handleContinueWithSimilarQuestion()}
               >

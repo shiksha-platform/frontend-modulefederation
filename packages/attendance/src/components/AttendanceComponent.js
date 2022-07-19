@@ -162,7 +162,11 @@ export const MultipalAttendance = ({
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
-    if (typeof students === "object" && students.length > 0) {
+    if (
+      typeof students === "object" &&
+      students.length > 0 &&
+      moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]
+    ) {
       let student = students.find((e, index) => !index);
 
       const attendanceData = students.map((item, index) => {
@@ -301,11 +305,6 @@ export const MultipalAttendance = ({
                       {classObject?.title ?? ""}
                     </BodySmall>
                   </Stack>
-                  <IconByName
-                    name="CloseCircleLineIcon"
-                    color={colors.white}
-                    onPress={(e) => modalClose()}
-                  />
                 </HStack>
               </Actionsheet.Content>
               <ScrollView width={"100%"} space="1" bg={colors.coolGray}>
@@ -359,7 +358,7 @@ export const MultipalAttendance = ({
                     <BodyLarge>
                       {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
                     </BodyLarge>
-                    <Caption>{t("STUDENTS_ABSENT")}</Caption>
+                    {/* <Caption>{t("STUDENTS_ABSENT")}</Caption> */}
 
                     <Button.Group>
                       <Button
@@ -379,7 +378,7 @@ export const MultipalAttendance = ({
                           );
                         }}
                       >
-                        {t("VIEW_MESSAGE")}
+                        {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
                       </Button>
                       <Button
                         _text={{ color: colors.white }}
@@ -390,7 +389,7 @@ export const MultipalAttendance = ({
                             type: "Attendance-Notification-View-Message",
                           });
                           capture("INTERACT", telemetryData);
-                          navigate("/notification/create");
+                          navigate("/notification/create?module=Attendance");
                         }}
                       >
                         {t("SEND_ANOTHER_MESSAGE")}
@@ -434,7 +433,7 @@ export const MultipalAttendance = ({
                       </HStack>
                       {presentStudents?.length <= 0 ? (
                         <Caption>
-                          No Student Has Achieved 100% Attendance This Week
+                          {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
                         </Caption>
                       ) : (
                         ""
@@ -455,14 +454,14 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
                     </Caption>
                     <Button.Group width="100%">
-                      <Button
+                      {/* <Button
                         flex={1}
                         variant="outline"
                         colorScheme="button"
                         onPress={(e) => modalClose()}
                       >
                         {t("CLOSE")}
-                      </Button>
+                      </Button> */}
                       <Button
                         flex={1}
                         colorScheme="button"
@@ -557,49 +556,53 @@ export default function AttendanceComponent({
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
-    if (dataObject.attendanceId) {
-      attendanceRegistryService
-        .update(
-          {
-            id: dataObject.attendanceId,
-            attendance: dataObject.attendance,
-          },
-          {
-            onlyParameter: ["attendance", "id", "date", "classId"],
-          }
-        )
-        .then((e) => {
-          const newData = attendance.filter(
-            (e) =>
-              !(
-                e.date === dataObject.date &&
-                e.studentId === dataObject.studentId
-              )
-          );
+    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
+      if (dataObject.attendanceId) {
+        attendanceRegistryService
+          .update(
+            {
+              id: dataObject.attendanceId,
+              attendance: dataObject.attendance,
+            },
+            {
+              onlyParameter: ["attendance", "id", "date", "classId"],
+            }
+          )
+          .then((e) => {
+            const newData = attendance.filter(
+              (e) =>
+                !(
+                  e.date === dataObject.date &&
+                  e.studentId === dataObject.studentId
+                )
+            );
 
-          setAttendance([
-            ...newData,
-            { ...dataObject, id: dataObject.attendanceId },
-          ]);
-          setLoading({});
-          setShowModal(false);
-        });
+            setAttendance([
+              ...newData,
+              { ...dataObject, id: dataObject.attendanceId },
+            ]);
+            setLoading({});
+            setShowModal(false);
+          });
+      } else {
+        attendanceRegistryService
+          .create({
+            studentId: student.id,
+            date: dataObject.date,
+            attendance: dataObject.attendance,
+            attendanceNote: "Test",
+            classId: student.currentClassID,
+            subjectId: "History",
+            teacherId: teacherId,
+          })
+          .then((e) => {
+            setAttendance([...attendance, dataObject]);
+            setLoading({});
+            setShowModal(false);
+          });
+      }
     } else {
-      attendanceRegistryService
-        .create({
-          studentId: student.id,
-          date: dataObject.date,
-          attendance: dataObject.attendance,
-          attendanceNote: "Test",
-          classId: student.currentClassID,
-          subjectId: "History",
-          teacherId: teacherId,
-        })
-        .then((e) => {
-          setAttendance([...attendance, dataObject]);
-          setLoading({});
-          setShowModal(false);
-        });
+      setLoading({});
     }
   };
   return (
@@ -778,11 +781,7 @@ const CalendarComponent = ({
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
     let isAllowDay = false;
-    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
-      isAllowDay = true;
-    } else if (
-      manifest?.["class_attendance.previous_attendance_edit"] === "true"
-    ) {
+    if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
       isAllowDay = day.format("YYYY-MM-DD") <= moment().format("YYYY-MM-DD");
     } else {
       isAllowDay = day.format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
@@ -933,7 +932,8 @@ const CalendarComponent = ({
             </Text>
             <TouchableHighlight
               onPress={(e) => {
-                if (!isEditDisabled && isAllowDay && !isHoliday) {
+                //check if isToday required or not
+                if (!isEditDisabled && isAllowDay && !isHoliday && isToday) {
                   const newAttendanceData = {
                     attendanceId: attendanceItem?.id ? attendanceItem.id : null,
                     id: attendanceItem?.id ? attendanceItem.id : null,

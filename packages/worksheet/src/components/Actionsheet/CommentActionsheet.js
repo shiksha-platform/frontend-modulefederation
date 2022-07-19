@@ -65,25 +65,25 @@ export default function Comment({
       isOpen={showModuleComments}
       onClose={() => setShowModuleComments(false)}
     >
-      <Actionsheet.Content alignItems={"left"} bg="worksheetCard.500">
+      <Actionsheet.Content alignItems={"left"} bg={colors.worksheetCardBg}>
         <HStack justifyContent={"space-between"}>
-          <Stack p={5} pt={1} pb="20px">
+          <Stack p={5} pt={1} pb="15px">
             <H2>{t("Comments")}</H2>
           </Stack>
           <IconByName
             name="CloseCircleLineIcon"
-            color="worksheetCard.900"
+            color={colors.worksheetCardIcon}
             onPress={(e) => setShowModuleComments(false)}
           />
         </HStack>
       </Actionsheet.Content>
       <VStack width={"100%"} space="1px">
         {comments.map((item, index) => (
-          <Box bg="white" p="5" key={index}>
+          <Box bg={colors.white} p="5" key={index}>
             <HStack space="2" alignItems="center">
               <Avatar
                 size="md"
-                bg="green.500"
+                bg={colors.success}
                 source={{
                   uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
                 }}
@@ -92,19 +92,21 @@ export default function Comment({
               </Avatar>
               <VStack>
                 <BodyLarge>{t("Mrs. Jina Jain")}</BodyLarge>
-                <Subtitle color="gray.400">{t("12 January, 4:00PM")}</Subtitle>
+                <Subtitle color={colors.lightGray2}>
+                  {t("12 January, 4:00PM")}
+                </Subtitle>
               </VStack>
             </HStack>
             <Subtitle p="5">{item.comment}</Subtitle>
           </Box>
         ))}
-        <Box bg="white" p="5">
+        <Box bg={colors.white} p="5">
           <HStack space="2" alignItems="center" w={"100%"}>
             <FormControl isInvalid={error}>
               <InputGroup>
                 <Input
                   h="48px"
-                  bg={"coolGray.100"}
+                  bg={colors.lightGray4}
                   size={"full"}
                   placeholder={t("WRITE_COMMENT")}
                   value={comment}
@@ -112,10 +114,10 @@ export default function Comment({
                 />
                 <InputRightAddon
                   children={
-                    <Box rounded="full" bg="button.500">
+                    <Box rounded="full" bg={colors.primary}>
                       <IconByName
                         _icon={{ size: "15" }}
-                        color="white"
+                        color={colors.white}
                         name="SendPlane2LineIcon"
                         onPress={handleSubmit}
                       />

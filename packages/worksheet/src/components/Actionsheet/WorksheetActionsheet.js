@@ -1,4 +1,11 @@
-import { BodyMedium, Caption, H2, IconByName } from "@shiksha/common-lib";
+import {
+  BodyMedium,
+  Caption,
+  H2,
+  IconByName,
+  overrideColorTheme,
+  Subtitle,
+} from "@shiksha/common-lib";
 import {
   Actionsheet,
   Avatar,
@@ -10,8 +17,20 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
+
+const AttributeData = [
+  { icon: "SurveyLineIcon", label: "SUBJECT", attribute: "subject" },
+  { icon: "BarChart2LineIcon", label: "LEVEL", attribute: "level" },
+  { icon: "QuestionLineIcon", label: "QUESTIONS", attribute: "questions" },
+  { icon: "AccountBoxFillIcon", label: "GRADE", attribute: "grade" },
+  { icon: "ArticleLineIcon", label: "TOPIC", attribute: "topic" },
+  { icon: "Download2LineIcon", label: "DOWNLOADS", attribute: "downloads" },
+];
 
 export default function Worksheet({
+  worksheetConfig,
   worksheet,
   showModuleWorksheet,
   setShowModuleWorksheet,
@@ -27,11 +46,11 @@ export default function Worksheet({
       onClose={() => setShowModuleWorksheet(false)}
     >
       <Actionsheet.Content alignItems={"left"}>
-        <Stack p={5} pt={2} pb="25px" textAlign="center">
+        <Stack p={5} pt={2} pb="15px" textAlign="center">
           <H2>{worksheet?.name ? worksheet?.name : ""}</H2>
         </Stack>
         <IconByName
-          color="gray.300"
+          color={colors.lightGray2}
           position="absolute"
           top="10px"
           right="10px"
@@ -39,99 +58,34 @@ export default function Worksheet({
           onPress={(e) => setShowModuleWorksheet(false)}
         />
       </Actionsheet.Content>
-      <Box bg="white" width={"100%"} p="5">
+      <Box bg={colors.white} width={"100%"} p="5">
         <VStack space="4">
-          <BodyMedium color="gray.400" textTransform="inherit">
+          <BodyMedium
+            color={colors.messageInfo}
+            textTransform="inherit"
+            textAlign="center"
+          >
             {worksheet?.description}
           </BodyMedium>
+          <AttributeComponent
+            data={AttributeData.filter((e) =>
+              worksheetConfig.includes(e.attribute)
+            )}
+            object={worksheet}
+          />
 
-          <HStack space="2">
-            <VStack space="3">
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="SurveyLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
-                  p="0"
-                />
-                <BodyMedium color="worksheetBoxText.400">
-                  {t("SUBJECT")}: {worksheet?.subject}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="BarChart2LineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
-                  p="0"
-                />
-                <BodyMedium color="worksheetBoxText.400">
-                  {t("LEVEL")}: {worksheet?.level}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="QuestionLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
-                  p="0"
-                />
-                <BodyMedium color="worksheetBoxText.400">
-                  {t("QUESTIONS")}:
-                  {Array.isArray(worksheet?.questions)
-                    ? worksheet?.questions.length
-                    : worksheet?.questions}
-                </BodyMedium>
-              </HStack>
-            </VStack>
-            <VStack space="3">
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="AccountBoxFillIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
-                  p="0"
-                />
-                <BodyMedium color="worksheetBoxText.400">
-                  {t("GRADE")}: {worksheet?.grade}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="ArticleLineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
-                  p="0"
-                />
-                <BodyMedium color="worksheetBoxText.400">
-                  {t("TOPIC")}: {worksheet?.topic}
-                </BodyMedium>
-              </HStack>
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="Download2LineIcon"
-                  _icon={{ size: 12 }}
-                  color="worksheetBoxText.400"
-                  p="0"
-                />
-                <BodyMedium color="worksheetBoxText.400">
-                  {t("DOWNLOADS")}: {worksheet?.downloads}
-                </BodyMedium>
-              </HStack>
-            </VStack>
-          </HStack>
           {!footer ? (
             <HStack space={5} alignItems="center">
               <HStack alignItems="center">
                 <IconByName
                   name="Heart3FillIcon"
-                  color="red.500"
+                  color={colors.eventError}
                   _icon={{ size: 12 }}
                   isDisabled
                 />
-                <Caption>
+                <Subtitle>
                   {likeCount} {t("TEACHERS_LIKE_THIS")}
-                </Caption>
+                </Subtitle>
               </HStack>
               <Pressable
                 onPress={(e) =>
@@ -165,9 +119,9 @@ export default function Worksheet({
                       TE
                     </Avatar>
                   </Avatar.Group>
-                  <Caption color="button.500">
+                  <Subtitle color={colors.primary}>
                     {commentCount} {t("COMMENTS")}
-                  </Caption>
+                  </Subtitle>
                 </HStack>
               </Pressable>
             </HStack>
@@ -179,3 +133,50 @@ export default function Worksheet({
     </Actionsheet>
   );
 }
+
+const AttributeComponent = ({ data, object }) => {
+  const { t } = useTranslation();
+
+  const elements = data.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / 2);
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+    resultArray[chunkIndex].push(item);
+    return resultArray;
+  }, []);
+
+  return (
+    <VStack space="2">
+      {elements.map((attributes, index) => (
+        <HStack key={index}>
+          {attributes.map((item, subIndex) => (
+            <HStack
+              key={subIndex}
+              space="1"
+              alignItems="center"
+              w={100 / attributes.length + "%"}
+            >
+              <IconByName
+                isDisabled
+                name={item.icon}
+                _icon={{ size: 14 }}
+                color={colors.worksheetBoxText}
+                p="0"
+              />
+              <BodyMedium color={colors.worksheetBoxText}>
+                {t(item?.label) +
+                  " : " +
+                  (object?.[item.attribute]
+                    ? Array.isArray(object?.[item.attribute])
+                      ? object?.[item.attribute].length
+                      : object?.[item.attribute]
+                    : "")}
+              </BodyMedium>
+            </HStack>
+          ))}
+        </HStack>
+      ))}
+    </VStack>
+  );
+};

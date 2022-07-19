@@ -83,7 +83,7 @@ const TimeTableRoute = () => {
       backgroundColor: e.backgroundColor
         ? e.backgroundColor
         : timeTableCardOrange,
-      borderColor: e.borderColor ? e.borderColor : timeTableBorderColor,
+      borderColor: e.borderColor ? e.borderColor : timeTableCardOrange,
       borderWidth: "1",
       borderRadius: "5px",
     };

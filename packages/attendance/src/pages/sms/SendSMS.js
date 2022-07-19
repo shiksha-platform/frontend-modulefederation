@@ -29,6 +29,7 @@ import {
   overrideColorTheme,
   Caption,
   Subtitle,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import colorTheme from "../../colorTheme";
@@ -128,7 +129,13 @@ export default function SendSMS({ footerLinks, appName }) {
     <Layout
       _header={{
         title: t("Message Sent By Admin"),
-        subHeading: classObject.name,
+        subHeading: (
+          <BodyLarge>
+            {(classObject?.name ? "Class " + classObject?.name : "") +
+              " • " +
+              (classObject?.section ? " Sec " + classObject?.section : "")}
+          </BodyLarge>
+        ),
         _subHeading: { fontWeight: 500 },
       }}
       subHeader={
@@ -146,9 +153,14 @@ export default function SendSMS({ footerLinks, appName }) {
     >
       <VStack space="1">
         <Box bg={colors.white} p="5">
-          <H2>{classObject.name}</H2>
+          <BodyLarge>
+            {(classObject?.name ? "Class " + classObject?.name : "") +
+              " • " +
+              (classObject?.section ? " Sec " + classObject?.section : "")}
+          </BodyLarge>
           <Caption>
-            {t("TOTAL")}: {students.length} {t("PRESENT")}:{attendance?.length}
+            {t("TOTAL")}: {students.length} • {t("PRESENT")}:
+            {attendance?.length}
           </Caption>
         </Box>
         <Box bg={colors.white} p={4}>
@@ -162,7 +174,9 @@ export default function SendSMS({ footerLinks, appName }) {
                     <H2 bold={true} fontSize={"md"}>
                       100% {t("THIS_WEEK")}
                     </H2>
-                    <H4>{presentStudents?.length + " " + t("STUDENTS")}</H4>
+                    <Caption>
+                      {presentStudents?.length + " " + t("STUDENTS")}
+                    </Caption>
                   </VStack>
                 </>
               }
@@ -213,7 +227,9 @@ export default function SendSMS({ footerLinks, appName }) {
                 <>
                   <VStack>
                     <H2 bold={true}>{t("ABSENT_CONSECUTIVE_3_DAYS")}</H2>
-                    <H4>{absentStudents?.length + " " + t("STUDENTS")}</H4>
+                    <Caption>
+                      {absentStudents?.length + " " + t("STUDENTS")}
+                    </Caption>
                   </VStack>
                 </>
               }
@@ -258,7 +274,12 @@ export default function SendSMS({ footerLinks, appName }) {
         </Box>
         <Box bg={colors.white} p="5" position="sticky" shadow={2}>
           <VStack space={"15px"} alignItems={"center"}>
-            <Subtitle py="5" px="10px" color={colors.grayInLight}>
+            <Subtitle
+              py="5"
+              px="10px"
+              color={colors.grayInLight}
+              textTransform="inherit"
+            >
               <Text bold color={colors.darkGray}>
                 {t("NOTES") + ": "}
               </Text>
@@ -278,7 +299,7 @@ export default function SendSMS({ footerLinks, appName }) {
                     type: "Attendance-Notification-View-Message",
                   });
                   capture("INTERACT", telemetryData);
-                  navigate("/notification/create");
+                  navigate("/notification/create?module=Attendance");
                 }}
               >
                 {t("SEND_ANOTHER_MESSAGE")}

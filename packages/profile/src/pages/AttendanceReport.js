@@ -1,14 +1,5 @@
 import moment from "moment";
-import {
-  Actionsheet,
-  Box,
-  Button,
-  HStack,
-  Pressable,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Actionsheet, Box, Button, HStack, Text, VStack } from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
@@ -20,6 +11,7 @@ import {
   ProgressBar,
   calendar,
   teacherRegistryService,
+  attendanceRegistryService,
   overrideColorTheme,
   H2,
   BodyLarge,
@@ -33,13 +25,11 @@ const colors = overrideColorTheme(colorTheme);
 export default function AttendanceReport({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
-  const [attendanceType, setAttendanceType] = useState("MORNING_SCHOOL");
   const [teacherObject, setTeacherObject] = useState({});
   const teacherId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
   const [attendance, setAttendance] = useState([]);
   const [attendanceObject, setAttendanceObject] = useState({});
-  const [showModal, setShowModal] = useState(false);
   const [weekDays, setWeekDays] = useState([]);
   const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
   const navigate = useNavigate();
@@ -57,40 +47,24 @@ export default function AttendanceReport({ footerLinks, appName }) {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      const resultTeacher = await teacherRegistryService.getOne(
-        { id: teacherId },
-        { Authorization: "Bearer " + token }
-      );
       if (!ignore) {
-        setTeacherObject(resultTeacher);
-        let newMonthDays = calendar(weekPage, "monthInDays");
-        setAttendance(
-          newMonthDays
-            .map((date, index) => {
-              if (date.day() !== 0 && moment().add(weekPage, "months") > date) {
-                let newType =
-                  index % 4 === 0
-                    ? "Unmarked"
-                    : index % 3 === 0
-                    ? "SpecialDuty"
-                    : index % 2 === 0
-                    ? "Present"
-                    : "Absent";
-                return {
-                  status: "Send",
-                  type: newType,
-                  date: date.format("Y-MM-DD"),
-                  message:
-                    date.format("dddd, DD MMMM, Y") +
-                    " Time: (10.00am - 2.30pm) was on " +
-                    newType +
-                    " at Kendriya Vidyalaya Ganeshkhind. Principal Dr. R.C Chandra",
-                };
-              }
-              return null;
-            })
-            .filter((e) => e)
+        const resultTeacher = await teacherRegistryService.getOne(
+          { id: teacherId },
+          { Authorization: "Bearer " + token }
         );
+        setTeacherObject(resultTeacher);
+        let thisMonthParams = {
+          fromDate: moment()
+            .add(-2, "months")
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+          toDate: moment().format("YYYY-MM-DD"),
+          userId: localStorage.getItem("id"),
+        };
+        const thisMonthAttendance = await attendanceRegistryService.getAll(
+          thisMonthParams
+        );
+        setAttendance(thisMonthAttendance);
       }
     };
     getData();
@@ -134,91 +108,10 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <Box bg={colors.white} p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <H2>{t("MY_ATTENDANCE")}</H2>
-            <Stack>
-              <Button
-                rounded={"full"}
-                colorScheme="button"
-                variant="outline"
-                bg="button.100"
-                rightIcon={
-                  <IconByName
-                    color={colors.primary}
-                    name="ArrowDownSLineIcon"
-                    isDisabled
-                  />
-                }
-                onPress={(e) => setShowModal(true)}
-              >
-                <BodyLarge color={colors.primary}>
-                  {t(attendanceType)}
-                </BodyLarge>
-              </Button>
-              <Actionsheet
-                isOpen={showModal}
-                _backdrop={{ opacity: "0.9", bg: colors.gray }}
-              >
-                <Actionsheet.Content
-                  p="0"
-                  alignItems={"left"}
-                  bg={colors.cardBg}
-                >
-                  <HStack justifyContent={"space-between"}>
-                    <Stack p={5} pt={2} pb="25px">
-                      <H2>{t("SELECT_VIEW")}</H2>
-                    </Stack>
-                    <IconByName
-                      name="CloseCircleLineIcon"
-                      color={colors.cardCloseIcon}
-                      onPress={(e) => setShowModal(false)}
-                    />
-                  </HStack>
-                </Actionsheet.Content>
-                <Box w="100%" bg={colors.white}>
-                  {[
-                    { name: t("MORNING_SCHOOL"), value: "MORNING_SCHOOL" },
-                    { name: t("EVENING_SCHOOL"), value: "EVENING_SCHOOL" },
-                    { name: t("HOLIDAYS"), value: "HOLIDAYS" },
-                  ].map((item, index) => {
-                    return (
-                      <Pressable
-                        key={index}
-                        p="5"
-                        borderBottomWidth={1}
-                        borderBottomColor="coolGray.100"
-                        onPress={(e) => {
-                          setAttendanceType(item.value);
-                        }}
-                      >
-                        <BodyLarge
-                          color={
-                            attendanceType === item.value ? colors.primary : ""
-                          }
-                        >
-                          {item.name}
-                        </BodyLarge>
-                      </Pressable>
-                    );
-                  })}
-                  <Box p="5">
-                    <Button
-                      variant="outline"
-                      onPress={(e) => setShowModal(false)}
-                    >
-                      {t("CONTINUE")}
-                    </Button>
-                  </Box>
-                </Box>
-              </Actionsheet>
-            </Stack>
           </HStack>
         </Box>
         <Box bg={colors.white}>
-          <HStack space="4" justifyContent="space-between" alignItems="center">
-            <Box p="5">
-              <H2>{t("SEND_MESSAGE")}</H2>
-            </Box>
-          </HStack>
-          <VStack>
+          <VStack py="5">
             <CalendarComponent
               monthDays={weekDays}
               item={teacherObject}
@@ -227,7 +120,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
             />
           </VStack>
           <Actionsheet
-            isOpen={attendanceObject?.status}
+            isOpen={attendanceObject?.attendance}
             _backdrop={{ opacity: "0.9", bg: colors.gray }}
           >
             <Actionsheet.Content
@@ -258,7 +151,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <VStack space={5} bg={colors.white} p="5">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
-              <H2>{t("MY_MONTHLY_ATTENDANCE")}</H2>
+              <H2 textTransform="none">{t("MY_MONTHLY_ATTENDANCE")}</H2>
             </Box>
           </HStack>
           <Box bg={colors.reportBoxBg} rounded="10px">
@@ -291,8 +184,12 @@ export default function AttendanceReport({ footerLinks, appName }) {
                                 : status === "Unmarked"
                                 ? colors.attendanceUnmarked
                                 : "special_duty.500",
-                            value: attendance.filter((e) => e.type === status)
-                              .length,
+                            value: attendance.filter(
+                              (e) =>
+                                e.attendance === status &&
+                                moment(e.date).format("Y MMM") ===
+                                  month.format("Y MMM")
+                            ).length,
                           };
                         })}
                       />
@@ -302,7 +199,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
               </VStack>
             </VStack>
           </Box>
-          <Button variant={"outline"}>{t("SEE_MORE")}</Button>
+          {/* <Button variant={"outline"}>{t("SEE_MORE")}</Button> */}
         </VStack>
       </VStack>
     </Layout>
@@ -338,29 +235,33 @@ const CalendarComponent = ({
           .slice()
           .reverse()
           .find((e) => e.date === dateValue);
+
         let smsIconProp = !isIconSizeSmall
           ? {
               _box: { py: 2, minW: "46px", alignItems: "center" },
               status: "CheckboxBlankCircleLineIcon",
             }
           : {};
-        if (smsItem?.type && smsItem?.type === "Present") {
+        if (smsItem?.attendance && smsItem?.attendance === "Present") {
           smsIconProp = {
             ...smsIconProp,
-            status: smsItem?.type,
-            type: smsItem?.status,
+            status: smsItem?.attendance,
+            type: smsItem?.attendance,
           };
-        } else if (smsItem?.type && smsItem?.type === "Absent") {
+        } else if (smsItem?.attendance && smsItem?.attendance === "Absent") {
           smsIconProp = {
             ...smsIconProp,
-            status: smsItem?.type,
-            type: smsItem?.status,
+            status: smsItem?.attendance,
+            type: smsItem?.attendance,
           };
-        } else if (smsItem?.type && smsItem?.type === "SpecialDuty") {
+        } else if (
+          smsItem?.attendance &&
+          smsItem?.attendance === "SpecialDuty"
+        ) {
           smsIconProp = {
             ...smsIconProp,
-            status: smsItem?.type,
-            type: smsItem?.status,
+            status: smsItem?.attendance,
+            type: smsItem?.attendance,
           };
         } else if (day.day() === 0) {
           smsIconProp = { ...smsIconProp, status: "Holiday" };
