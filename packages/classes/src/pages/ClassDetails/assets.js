@@ -9,15 +9,7 @@ import {
   H1,
   BodySmall,
 } from "@shiksha/common-lib";
-import {
-  Stack,
-  Box,
-  VStack,
-  Heading,
-  HStack,
-  Menu,
-  Pressable,
-} from "native-base";
+import { Stack, Box, VStack, HStack, Menu, Pressable } from "native-base";
 import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
@@ -176,9 +168,11 @@ export const _header = (data) => {
               <H2 color={colors.white}>{data?.name}</H2>
               <H1 color={colors.white}>{t("CLASS_DETAILS")}</H1>
             </VStack>
-            {/* <HStack alignItems="center">
+            <HStack alignItems="center">
               <Box px="3">
                 <Menu
+                  right="100%"
+                  width="150"
                   trigger={(triggerProps) => {
                     return (
                       <Pressable {...triggerProps}>
@@ -191,18 +185,18 @@ export const _header = (data) => {
                     );
                   }}
                 >
-                  <Menu.Item>
+                  {/* <Menu.Item>
                     <Pressable onPress={onFileUpload}>
-                      <BodySmall>Remove Photo</BodySmall>
+                      <BodySmall>{t("REMOVE_PHOTO")}</BodySmall>
                     </Pressable>
-                  </Menu.Item>
+                  </Menu.Item> */}
                   <Menu.Item>
-                    <BodySmall>Upload Photo</BodySmall>
+                    <BodySmall>{t("UPLOAD_PHPTP")}</BodySmall>
                     <input
                       type="file"
                       style={{
                         opacity: 0,
-                        width: "24px",
+                        width: "100%",
                         position: "absolute",
                         padding: "5px",
                         zIndex: "10",
@@ -214,8 +208,8 @@ export const _header = (data) => {
                   </Menu.Item>
                 </Menu>
               </Box>
-              <IconByName color={colors.white} name="ShareLineIcon" />
-            </HStack> */}
+              {/* <IconByName color={colors.white} name="ShareLineIcon" /> */}
+            </HStack>
           </HStack>
         </Box>
       </Box>

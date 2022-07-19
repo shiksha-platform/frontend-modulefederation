@@ -49,6 +49,7 @@ export default function Attendance({ footerLinks, appName }) {
   const [unmarkStudents, setUnmarkStudents] = useState([]);
   const navigate = useNavigate();
   const [manifest, setManifest] = React.useState();
+  const [lastAttedance, setLastAttedance] = React.useState("");
 
   useEffect(() => {
     let studentIds = attendance
@@ -66,8 +67,12 @@ export default function Attendance({ footerLinks, appName }) {
           )
       )
     );
-  }, [attendance, students]);
 
+    let dates = attendance.map((d) => moment(d.updatedAt));
+    let date = moment.max(dates);
+    setLastAttedance(dates.length ? moment(date).format("hh:mma") : "N/A");
+  }, [attendance, students]);
+  console.log(lastAttedance);
   useEffect(() => {
     const filterStudent = students.filter((e) =>
       e?.fullName?.toLowerCase().match(search?.toLowerCase())
@@ -299,6 +304,7 @@ export default function Attendance({ footerLinks, appName }) {
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
+              setLastAttedance={setLastAttedance}
               manifest={manifest}
               hidePopUpButton={false}
               page={weekPage}
@@ -328,6 +334,7 @@ export default function Attendance({ footerLinks, appName }) {
           classObject,
           isEditDisabled,
           setIsEditDisabled: newSetIsEditDisabled,
+          lastAttedance,
           appName,
         }}
       />

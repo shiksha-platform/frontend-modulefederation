@@ -25,7 +25,7 @@ export default function interfaceData(
           formate?.onlyParameter.length > 0 &&
           formate?.onlyParameter.includes(key1)
         ) {
-          if (element[key1]) {
+          if (element[key1] || element[key1] === '') {
             data[value1] = element[key1]
           }
         } else if (

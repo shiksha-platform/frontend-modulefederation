@@ -96,6 +96,7 @@ const newSpecialDutyList = [
 ];
 
 export default function SelfAttedanceSheet({
+  children,
   showModal,
   setShowModal,
   setAttendance,
@@ -149,15 +150,19 @@ export default function SelfAttedanceSheet({
   };
 
   const markSelfAttendance = (image) => {
-    setLoding(true);
-    setCameraUrl(image);
-    let newAttedance = {
-      ...selfAttendance,
-      date: moment().format("YYYY-MM-DD"),
-      studentId: localStorage.getItem("id"),
-      image: image,
-    };
-    handleMarkAttendance(newAttedance);
+    if (image) {
+      setLoding(true);
+      setCameraUrl(image);
+      let newAttedance = {
+        ...selfAttendance,
+        date: moment().format("YYYY-MM-DD"),
+        studentId: localStorage.getItem("id"),
+        image: image,
+      };
+      handleMarkAttendance(newAttedance);
+    } else {
+      setCameraUrl();
+    }
   };
 
   const handleMarkAttendance = (newAttedance) => {
@@ -268,12 +273,22 @@ export default function SelfAttedanceSheet({
     };
   }, []);
 
+  const handleGoBack = () => {
+    navigate("/");
+    setDone(false);
+    setCameraModal(false);
+    setLocationModal(false);
+    setShowModal(false);
+    setCameraUrl();
+  };
+
   const setAttendanceMark = (e) => {
     if (selfAttendance.attendance == ABSENT) {
       setLocationModal(false);
       setShowModal(true);
       setDone(true);
       setCameraModal(false);
+      handleMarkAttendance(selfAttendance);
     } else if (
       selfAttendance.attendance == PRESENT &&
       selfAttendance.name === selfAttendance.remark
@@ -282,6 +297,7 @@ export default function SelfAttedanceSheet({
       setShowModal(true);
       setDone(true);
       setCameraModal(false);
+      handleMarkAttendance(selfAttendance);
     }
     setLocationModal(true);
     setShowModal(false);
@@ -351,25 +367,15 @@ export default function SelfAttedanceSheet({
                 : ""}
             </BodyMedium>
           </VStack>
-          <Button
-            _text={{ color: colors.white }}
-            onPress={(e) => {
-              navigate("/");
-              setDone(false);
-              setCameraModal(false);
-              setLocationModal(false);
-              setShowModal(false);
-            }}
-          >
+          <Button _text={{ color: colors.white }} onPress={handleGoBack}>
             {t("GO_BACK")}
           </Button>
         </VStack>
       </Box>
     );
   }
-
-  return (
-    <>
+  if (cameraModal) {
+    return (
       <Camera
         {...{
           cameraModal,
@@ -378,51 +384,62 @@ export default function SelfAttedanceSheet({
           setCameraUrl: markSelfAttendance,
         }}
       />
-      <Modal isOpen={locationModal} onClose={() => setLocationModal(false)}>
-        <Modal.Content maxWidth="400px">
-          <Modal.Body>
-            <VStack space="6" textAlign="center" py="20px" px="30px">
-              <IconByName
-                alignSelf="center"
-                name="MapPinLineIcon"
-                isDisabled
-                color={colors.primary}
-                _icon={{
-                  size: "60px",
-                }}
-              />
-              <H2>Turn on device location.</H2>
-              <BodyLarge>
-                Attendance marking requires to log in your device location.
-                Without location, the app can't mark your attendance.
-              </BodyLarge>
-              <Button.Group space={2}>
-                <Button
-                  flex={1}
-                  variant="outline"
-                  onPress={() => {
-                    setLocationModal(false);
-                    setShowModal(true);
+    );
+  }
+  if (locationModal) {
+    return (
+      <>
+        {children}
+        <Modal isOpen={locationModal} onClose={() => setLocationModal(false)}>
+          <Modal.Content maxWidth="400px">
+            <Modal.Body>
+              <VStack space="6" textAlign="center" py="20px" px="30px">
+                <IconByName
+                  alignSelf="center"
+                  name="MapPinLineIcon"
+                  isDisabled
+                  color={colors.primary}
+                  _icon={{
+                    size: "60px",
                   }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  flex={1}
-                  _text={{ color: colors.white }}
-                  onPress={() => {
-                    getLocation();
-                    setLocationModal(false);
-                    setCameraModal(true);
-                  }}
-                >
-                  Turn On
-                </Button>
-              </Button.Group>
-            </VStack>
-          </Modal.Body>
-        </Modal.Content>
-      </Modal>
+                />
+                <H2>{t("TURN_ON_DEVICE_LOCATION")}</H2>
+                <BodyLarge>
+                  {t("DEVICE_LOCATION_CANT_MARK_ATTENDANCE")}
+                </BodyLarge>
+                <Button.Group space={2}>
+                  <Button
+                    flex={1}
+                    variant="outline"
+                    onPress={() => {
+                      setLocationModal(false);
+                      setShowModal(true);
+                    }}
+                  >
+                    {t("CANCEL")}
+                  </Button>
+                  <Button
+                    flex={1}
+                    _text={{ color: colors.white }}
+                    onPress={() => {
+                      getLocation();
+                      setLocationModal(false);
+                      setCameraModal(true);
+                    }}
+                  >
+                    {t("TURN_ON")}
+                  </Button>
+                </Button.Group>
+              </VStack>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
+      </>
+    );
+  }
+  return (
+    <>
+      {children}
       <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
         <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
@@ -459,6 +476,7 @@ export default function SelfAttedanceSheet({
                       ...selfAttendance,
                       attendance: item.attendance,
                       name: t(item.name),
+                      remark: "",
                     });
                   }
                 }}
@@ -520,9 +538,7 @@ export default function SelfAttedanceSheet({
                 textTransform: "uppercase",
                 color: selfAttendance?.attendance ? colors.white : "",
               }}
-              onPress={(e) => {
-                setAttendanceMark(e);
-              }}
+              onPress={setAttendanceMark}
             >
               {t("MARK")}
             </Button>
