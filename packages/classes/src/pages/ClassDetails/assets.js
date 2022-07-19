@@ -168,7 +168,7 @@ export const _header = (data) => {
               <H2 color={colors.white}>{data?.name}</H2>
               <H1 color={colors.white}>{t("CLASS_DETAILS")}</H1>
             </VStack>
-            <HStack alignItems="center">
+            {/* <HStack alignItems="center">
               <Box px="3">
                 <Menu
                   right="100%"
@@ -190,7 +190,7 @@ export const _header = (data) => {
                       <BodySmall>{t("REMOVE_PHOTO")}</BodySmall>
                     </Pressable>
                   </Menu.Item> */}
-                  <Menu.Item>
+            {/* <Menu.Item>
                     <BodySmall>{t("UPLOAD_PHPTP")}</BodySmall>
                     <input
                       type="file"
@@ -205,11 +205,11 @@ export const _header = (data) => {
                       }}
                       onChange={onFileUpload}
                     />
-                  </Menu.Item>
-                </Menu>
-              </Box>
-              {/* <IconByName color={colors.white} name="ShareLineIcon" /> */}
-            </HStack>
+                  </Menu.Item> */}
+            {/* </Menu> */}
+            {/* </Box>
+              <IconByName color={colors.white} name="ShareLineIcon" />}
+            </HStack> } */}
           </HStack>
         </Box>
       </Box>

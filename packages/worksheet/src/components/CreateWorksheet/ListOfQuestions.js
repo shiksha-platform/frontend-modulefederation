@@ -138,7 +138,9 @@ export default function ListOfQuestions({
 
   const handleAddToWorksheet = () => {
     if (selectData.length <= 0) {
-      setAlertMessage(t("PLEASE_SELECT_AT_LEAST_ONE_QUESTION"));
+      setAlertMessage(
+        <H3 textTransform="none">{t("PLEASE_SELECT_AT_LEAST_ONE_QUESTION")}</H3>
+      );
     } else {
       setShowModule(true);
       const telemetryData = telemetryFactory.interact({

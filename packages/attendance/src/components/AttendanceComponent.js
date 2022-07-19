@@ -300,8 +300,8 @@ export const MultipalAttendance = ({
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
+                    onPress={(e) => setShowModal(false)}
                     color={colors.white}
-                    onPress={(e) => modalClose()}
                   />
                 </HStack>
               </Actionsheet.Content>
