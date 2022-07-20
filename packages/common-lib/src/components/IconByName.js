@@ -91,6 +91,9 @@ import VolumeUpLineIcon from 'remixicon-react/VolumeUpLineIcon'
 import VolumeDownLineIcon from 'remixicon-react/VolumeDownLineIcon'
 import VolumeMuteLineIcon from 'remixicon-react/VolumeMuteLineIcon'
 import FullscreenLineIcon from 'remixicon-react/FullscreenLineIcon'
+import Settings4LineIcon from 'remixicon-react/Settings4LineIcon'
+import CameraSwitchLineIcon from 'remixicon-react/CameraSwitchLineIcon'
+import AwardFillIcon from 'remixicon-react/AwardFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -437,6 +440,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<AwardLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AwardFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AwardFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -822,6 +833,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<FullscreenLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Settings4LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Settings4LineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CameraSwitchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CameraSwitchLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

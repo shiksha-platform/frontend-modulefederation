@@ -1,22 +1,6 @@
 import React, { useState } from "react";
-import {
-  IconByName,
-  ProgressBar,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
-import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-  Divider,
-  Actionsheet,
-  Checkbox,
-  Radio,
-} from "native-base";
+import { IconByName, overrideColorTheme } from "@shiksha/common-lib";
+import { HStack, Text, VStack, Box, Radio } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../../../colorTheme";

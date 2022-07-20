@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   HStack,
-  Text,
   Button,
   Box,
   FormControl,
@@ -43,14 +42,14 @@ export default function Login() {
       typeof credentials?.username === "undefined" ||
       credentials?.username === ""
     ) {
-      arr = { ...arr, username: "Username is required" };
+      arr = { ...arr, username: t("USERNAME_IS_REQUIRED") };
     }
 
     if (
       typeof credentials?.password === "undefined" ||
       credentials?.password === ""
     ) {
-      arr = { ...arr, password: "Password is required" };
+      arr = { ...arr, password: t("PASSWORD_IS_REQUIRED") };
     }
 
     setErrors(arr);
@@ -103,7 +102,7 @@ export default function Login() {
         }
       } else {
         localStorage.removeItem("token");
-        setErrors({ alert: "Please enter valid credentials" });
+        setErrors({ alert: t("PLEASE_ENTER_VALID_CREDENTIALS") });
       }
     }
   };
@@ -229,11 +228,11 @@ export default function Login() {
                   {t("SUBMIT")}
                 </Button>
                 <BodyMedium color="button.500" textAlign="center">
-                  Forgot Password?
+                  {t("FORGOT_PASSWORD")}
                 </BodyMedium>
                 <HStack alignItems="center" space="2">
                   <BodyMedium textTransform="inherit">
-                    Dont have an account?
+                    {t("DONT_HAVE_AN_ACCOUNT")}
                   </BodyMedium>
                   <BodyMedium color="button.500">{t("SIGN_UP")}</BodyMedium>
                 </HStack>
