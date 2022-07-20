@@ -86,6 +86,11 @@ import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
 import ShieldStarLineIcon from 'remixicon-react/ShieldStarLineIcon'
 import PlayFillIcon from 'remixicon-react/PlayFillIcon'
+import PauseFillIcon from 'remixicon-react/PauseFillIcon'
+import VolumeUpLineIcon from 'remixicon-react/VolumeUpLineIcon'
+import VolumeDownLineIcon from 'remixicon-react/VolumeDownLineIcon'
+import VolumeMuteLineIcon from 'remixicon-react/VolumeMuteLineIcon'
+import FullscreenLineIcon from 'remixicon-react/FullscreenLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -776,6 +781,47 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<PlayFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'PauseFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<PauseFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+
+    case 'VolumeUpLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<VolumeUpLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'VolumeMuteLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<VolumeMuteLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'VolumeDownLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<VolumeDownLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'FullscreenLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<FullscreenLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

@@ -5,6 +5,9 @@ import { Box, Button, HStack, Stack, VStack } from "native-base";
 import { useNavigate } from "react-router-dom";
 import VideoBox from "./VideoBox";
 import colorTheme from "../colorTheme";
+import VideoActionsheet from "./Actionsheet/VideoActionsheet";
+import CommentActionsheet from "./Actionsheet/CommentActionsheet";
+
 const colors = overrideColorTheme(colorTheme);
 
 export default function VideoComponent({
@@ -16,11 +19,24 @@ export default function VideoComponent({
   _seeButton,
   _videoBox,
   appName,
+  _box,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [video, setVideo] = React.useState({});
+  const [showModuleComments, setShowModuleComments] = React.useState(false);
+  const [comments, setCommets] = React.useState([]);
+
+  const handleCommentModuleOpen = () => {
+    setShowModuleComments(true);
+  };
+
+  const handleCommentModuleClose = () => {
+    setShowModuleComments(false);
+  };
+
   return (
-    <Stack>
+    <Box {..._box}>
       <HStack justifyContent="space-between" py="5" alignItems="center">
         {leftTitle ? <H2>{leftTitle}</H2> : ""}
         {rightTitle ? (
@@ -40,6 +56,7 @@ export default function VideoComponent({
             {data.map((item, index) => {
               return (
                 <VideoBox
+                  _addIconButton={{ onPress: (e) => setVideo(item) }}
                   appName={appName}
                   canShare={true}
                   key={index}
@@ -72,9 +89,28 @@ export default function VideoComponent({
           rounded="lg"
           bg={colors.viewNotificationDark}
         >
-          {t("LEARNING_NOT_FOUND")}
+          {t("VIDEO_NOT_FOUND")}
         </Box>
       )}
-    </Stack>
+
+      <VideoActionsheet
+        {...{
+          config: ["duration", "dueDate", "source"],
+          video,
+          setVideo,
+          handleCommentModuleOpen,
+        }}
+      />
+      <CommentActionsheet
+        {...{
+          item: video,
+          setShowModuleComments: handleCommentModuleClose,
+          showModuleComments,
+          context: "Videos",
+          comments,
+          setCommets,
+        }}
+      />
+    </Box>
   );
 }

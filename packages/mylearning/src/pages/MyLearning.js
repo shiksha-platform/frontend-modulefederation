@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Box, VStack } from "native-base";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
-import MyLearningRoute from "../components/MyLearningRoute";
+import MyCoursesRoute from "../components/MyCoursesRoute";
 import MyVideosRoute from "../components/MyVideosRoute";
 const colors = overrideColorTheme(colorTheme);
 
@@ -24,12 +24,13 @@ export default function App({ footerLinks, appName }) {
       _footer={footerLinks}
     >
       <VStack>
-        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box mb="4" roundedBottom={"xl"} shadow={2}>
           <Tab
+            _box={{ bg: colors.white, px: "5", pt: "5" }}
             routes={[
               {
-                title: t("MY_LEARNING"),
-                component: <MyLearningRoute {...{ appName }} />,
+                title: t("MY_COURSES"),
+                component: <MyCoursesRoute {...{ appName }} />,
               },
               { title: t("MY_VIDEOS"), component: <MyVideosRoute /> },
             ]}

@@ -27,6 +27,8 @@ import {
 } from "native-base";
 import { useParams } from "react-router-dom";
 import manifest from "../manifest.json";
+import colorTheme from "../colorTheme";
+import VideoComponent from "../components/VideoComponent";
 import { defaultInputs } from "config/mylearningConfig";
 import { courses as coursesData } from "../config/mylearning";
 
@@ -83,9 +85,6 @@ const sortArray = [
     ],
   },
 ];
-import colorTheme from "../colorTheme";
-import MyLearningComponent from "components/MyLearningComponent";
-import VideoComponent from "components/VideoComponent";
 
 const newDefaultInputs = defaultInputs.map((e) => {
   return {
@@ -120,25 +119,25 @@ export default function VideoList({ footerLinks, appName }) {
 
   const getTitle = () => {
     if (state === ONGOING) {
-      return t("ALL_ONGOING_COURSES");
+      return t("ALL_ONGOING_VIDEOS");
     } else if (state === ASSIGNED) {
-      return t("ALL_ASSIGNED_COURSES");
+      return t("ALL_ASSIGNED_VIDEOS");
     } else if (state === COMPLETED) {
-      return t("ALL_COMPLETED_COURSES");
+      return t("ALL_COMPLETED_VIDEOS");
     } else {
-      return t("ALL_COURSES");
+      return t("ALL_VIDEOS");
     }
   };
 
   const getSubTitle = () => {
     if (state === ONGOING) {
-      return t("SEE_YOUR_ONGOING_COURSES");
+      return t("SEE_ALL_ONGOING_VIDEOS");
     } else if (state === ASSIGNED) {
-      return t("SEE_YOUR_ASSIGNED_COURSES");
+      return t("SEE_ALL_ASSIGNED_VIDEOS");
     } else if (state === COMPLETED) {
-      return t("SEE_YOUR_COMPLETED_COURSES");
+      return t("SEE_ALL_COMPLETED_VIDEOS");
     } else {
-      return t("SEE_YOUR_COURSES");
+      return t("SEE_ALL_VIDEOS");
     }
   };
 

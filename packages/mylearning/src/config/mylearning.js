@@ -41,7 +41,7 @@ export const videos = [
   {
     id: 1,
     state: "Ongoing",
-    name: "Learning made easy by Diksha",
+    name: "Design with education in mind",
     description: "Short description in one or two rows, truncated if longer.",
     image: "",
     duration: "10",

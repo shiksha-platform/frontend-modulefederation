@@ -53,3 +53,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+video::-webkit-media-controls-enclosure {
+  display: none !important;
+}

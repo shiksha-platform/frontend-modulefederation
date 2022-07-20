@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import VideoComponent from "./VideoComponent";
 import colorTheme from "../colorTheme";
 import { videos as videosData } from "../config/mylearning";
+import VideoActionsheet from "./Actionsheet/VideoActionsheet";
 const colors = overrideColorTheme(colorTheme);
 
 const ONGOING = "Ongoing";
@@ -48,8 +49,9 @@ export default function MyVideosRoute({ appName }) {
     navigate(`/mylearning/video/list/${state}`);
   };
   return (
-    <VStack>
+    <VStack space={2}>
       <VideoComponent
+        _box={{ bg: colors.white, p: "5" }}
         appName={appName}
         data={videoOngoing}
         leftTitle={
@@ -64,10 +66,12 @@ export default function MyVideosRoute({ appName }) {
         seeButtonText={t("SHOW_MORE")}
         _seeButton={{
           onPress: (e) => handleExploreAllVideo(ONGOING),
+          mt: "4",
         }}
       />
       {videoAssigned.length > 0 ? (
         <VideoComponent
+          _box={{ bg: colors.white, p: "5" }}
           appName={appName}
           data={videoAssigned}
           leftTitle={
@@ -81,12 +85,14 @@ export default function MyVideosRoute({ appName }) {
           seeButtonText={t("SHOW_MORE")}
           _seeButton={{
             onPress: (e) => handleExploreAllVideo(ASSIGNED),
+            mt: "4",
           }}
         />
       ) : (
         <React.Fragment />
       )}
       <VideoComponent
+        _box={{ bg: colors.white, p: "5" }}
         appName={appName}
         data={videoCompleted}
         leftTitle={
@@ -100,6 +106,7 @@ export default function MyVideosRoute({ appName }) {
         seeButtonText={t("SHOW_MORE")}
         _seeButton={{
           onPress: (e) => handleExploreAllVideo(COMPLETED),
+          mt: "4",
         }}
       />
     </VStack>

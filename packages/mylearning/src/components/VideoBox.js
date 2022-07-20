@@ -2,33 +2,18 @@ import {
   capture,
   IconByName,
   telemetryFactory,
-  H2,
   likeRegistryService,
   overrideColorTheme,
-  BodySmall,
-  BodyMedium,
-  ProgressBar,
   Caption,
   BodyLarge,
 } from "@shiksha/common-lib";
-import {
-  AspectRatio,
-  Avatar,
-  Box,
-  Center,
-  Heading,
-  HStack,
-  Image,
-  Pressable,
-  Stack,
-  Text,
-  VStack,
-} from "native-base";
+import { Box, Center, HStack, Image, Pressable, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import colorTheme from "../colorTheme";
+import AttributeComponent from "./AttributeComponent";
 const colors = overrideColorTheme(colorTheme);
 
 const ONGOING = "Ongoing";
@@ -274,41 +259,3 @@ export default function VideoBox({
     </>
   );
 }
-
-const AttributeComponent = ({ data, object }) => {
-  const { t } = useTranslation();
-
-  const elements = data.reduce((resultArray, item, index) => {
-    const chunkIndex = Math.floor(index / 2);
-    if (!resultArray[chunkIndex]) {
-      resultArray[chunkIndex] = []; // start a new chunk
-    }
-    resultArray[chunkIndex].push(item);
-    return resultArray;
-  }, []);
-
-  return (
-    <HStack space="2">
-      {elements.map((attributes, index) => (
-        <VStack key={index}>
-          {attributes.map((item, subIndex) => (
-            <HStack key={subIndex} space="1" alignItems="center">
-              <IconByName
-                isDisabled
-                name={item.icon}
-                _icon={{ size: 14 }}
-                color={colors.worksheetBoxText}
-                p="0"
-              />
-              <Caption color={colors.worksheetBoxText}>
-                {t(item?.label) +
-                  " : " +
-                  (object?.[item.attribute] ? object?.[item.attribute] : "")}
-              </Caption>
-            </HStack>
-          ))}
-        </VStack>
-      ))}
-    </HStack>
-  );
-};

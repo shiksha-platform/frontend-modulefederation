@@ -29,6 +29,8 @@ import { useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import { defaultInputs } from "config/mylearningConfig";
 import { courses as coursesData } from "../config/mylearning";
+import colorTheme from "../colorTheme";
+import MyCoursesComponent from "components/MyCoursesComponent";
 
 const sortArray = [
   {
@@ -83,8 +85,6 @@ const sortArray = [
     ],
   },
 ];
-import colorTheme from "../colorTheme";
-import MyLearningComponent from "components/MyLearningComponent";
 
 const newDefaultInputs = defaultInputs.map((e) => {
   return {
@@ -131,13 +131,13 @@ export default function MyLearning({ footerLinks, appName }) {
 
   const getSubTitle = () => {
     if (state === ONGOING) {
-      return t("SEE_YOUR_ONGOING_COURSES");
+      return t("SEE_ALL_ONGOING_COURSES");
     } else if (state === ASSIGNED) {
-      return t("SEE_YOUR_ASSIGNED_COURSES");
+      return t("SEE_ALL_ASSIGNED_COURSES");
     } else if (state === COMPLETED) {
-      return t("SEE_YOUR_COMPLETED_COURSES");
+      return t("SEE_ALL_COMPLETED_COURSES");
     } else {
-      return t("SEE_YOUR_COURSES");
+      return t("SEE_ALL_COURSES");
     }
   };
 
@@ -280,7 +280,7 @@ const Children = ({
           roundedBottom={"xl"}
           shadow={2}
         >
-          <MyLearningComponent
+          <MyCoursesComponent
             seeButton={<React.Fragment />}
             appName={appName}
             data={courses}

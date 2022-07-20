@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import colorTheme from "../colorTheme";
+import AttributeComponent from "./AttributeComponent";
 const colors = overrideColorTheme(colorTheme);
 
 const ONGOING = "Ongoing";
@@ -134,23 +135,14 @@ export default function LearningBox({
 
   const RightButton = () => {
     let props = {
-      name: "AddCircleFillIcon",
-      _icon: { size: 30 },
-      color: colors.primary,
-      p: "0",
+      name: "InformationLineIcon",
+      _icon: { size: 25 },
+      bg: colors.white,
+      p: 1,
       onPress: handleAddToTimeline,
       rounded: "full",
     };
-    if (item.state === "DRAFT") {
-      props = {
-        ...props,
-        name: "EditBoxLineIcon",
-        color: colors.gray,
-        bg: colors.white,
-        p: 1,
-        _icon: { size: 20 },
-      };
-    }
+
     return <IconByName {...props} {..._addIconButton} />;
   };
 
@@ -257,41 +249,3 @@ export default function LearningBox({
     </Box>
   );
 }
-
-const AttributeComponent = ({ data, object }) => {
-  const { t } = useTranslation();
-
-  const elements = data.reduce((resultArray, item, index) => {
-    const chunkIndex = Math.floor(index / 2);
-    if (!resultArray[chunkIndex]) {
-      resultArray[chunkIndex] = []; // start a new chunk
-    }
-    resultArray[chunkIndex].push(item);
-    return resultArray;
-  }, []);
-
-  return (
-    <HStack space="2">
-      {elements.map((attributes, index) => (
-        <VStack key={index}>
-          {attributes.map((item, subIndex) => (
-            <HStack key={subIndex} space="1" alignItems="center">
-              <IconByName
-                isDisabled
-                name={item.icon}
-                _icon={{ size: 14 }}
-                color={colors.worksheetBoxText}
-                p="0"
-              />
-              <BodyMedium color={colors.worksheetBoxText}>
-                {t(item?.label) +
-                  " : " +
-                  (object?.[item.attribute] ? object?.[item.attribute] : "")}
-              </BodyMedium>
-            </HStack>
-          ))}
-        </VStack>
-      ))}
-    </HStack>
-  );
-};
