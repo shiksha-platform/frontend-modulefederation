@@ -10,14 +10,18 @@ import {
   useWindowSize,
 } from "@shiksha/common-lib";
 
-const QuestionList = ({ questionNumber }) => {
+const QuestionList = ({ questionNumber, questionType }) => {
   const { t } = useTranslation();
   const [questionList, setQuestionList] = useState([]);
   const [loading, setLoading] = React.useState(true);
   const [width, height] = useWindowSize();
+  const limit = "20";
 
   const getQuestionList = async () => {
-    const res = await assessmentRegistryService.getAllQuestions({}, {});
+    const res = await assessmentRegistryService.getAllQuestions(
+      { qType: questionType },
+      { limit }
+    );
     // console.log('res', res);
     setQuestionList(res);
     setLoading(false);

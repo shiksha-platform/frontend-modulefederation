@@ -53,13 +53,13 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
         <HStack alignItems={"center"} justifyContent="space-around">
           <VStack alignItems="center">
             <H1 color={colors.present}>
-              {thisMonth ? parseFloat(thisMonth).toFixed(2) : 0}%
+              {thisMonth ? Math.round(thisMonth) : 0}%
             </H1>
             <BodySmall color={colors.gray}>{t("THIS_MONTH")}</BodySmall>
           </VStack>
           <VStack alignItems="center">
             <H1 color={colors.presentCardCompareText}>
-              {lastMonth ? parseFloat(lastMonth).toFixed(2) : 0}%
+              {lastMonth ? Math.round(lastMonth) : 0}%
             </H1>
             <BodySmall color={colors.gray}>{t("LAST_MONTH")}</BodySmall>
           </VStack>

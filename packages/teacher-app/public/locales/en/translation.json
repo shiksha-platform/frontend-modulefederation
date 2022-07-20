@@ -298,5 +298,20 @@
   "AUTO_GENERATE": "Auto Generate",
   "INCLUDE_ANSWER_KEY": "Include answer key in worksheet",
   "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "Please select at least one question",
-  "PLEASE_SELECT_SOURCE": "Please select source"
+  "PLEASE_SELECT_SOURCE": "Please select source",
+  "TURN_ON_DEVICE_LOCATION": "Turn on device location",
+  "DEVICE_LOCATION_CANT_MARK_ATTENDANCE": "Attendance marking requires to log in your device location. Without location, the app can't mark your attendance.",
+  "HOW_TO_MARK_OWN_ATTENDANCE": "How to mark your own attendance?",
+  "HOW_TO_MARK_OWN_ATTENDANCE_MESSAGE": "To mark your own attendance, tap on your profile picture, select an option according to your choice and mark attendance.",
+  "TURN_ON": "Turn On",
+  "GO_BACK": "Go back",
+  "WELCOME_BACK": "Hello, welcome back to our your account !",
+  "PLEASE_ENTER_VALID_CREDENTIALS": "Please enter valid credentials",
+  "USERNAME_IS_REQUIRED": "Username is required",
+  "PASSWORD_IS_REQUIRED": "Password is required",
+  "FORGOT_PASSWORD": "Forgot Password?",
+  "DONT_HAVE_AN_ACCOUNT": "Don't have an account?",
+  "LOADING": "Loading",
+  "REMOVE_PHOTO": "Remove Photo",
+  "UPLOAD_PHPTP": "Upload Photo"
 }

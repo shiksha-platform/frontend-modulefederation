@@ -82,6 +82,9 @@ import StarHalfFillIcon from 'remixicon-react/StarHalfFillIcon'
 import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
+import Settings4LineIcon from 'remixicon-react/Settings4LineIcon'
+import CameraSwitchLineIcon from 'remixicon-react/CameraSwitchLineIcon'
+import AwardFillIcon from 'remixicon-react/AwardFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -431,6 +434,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'AwardFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AwardFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'EmotionHappyLineIcon':
       icon = (
         <IconButton
@@ -740,6 +751,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Settings4LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Settings4LineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CameraSwitchLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CameraSwitchLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

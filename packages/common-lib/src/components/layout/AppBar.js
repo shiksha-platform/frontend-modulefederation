@@ -142,6 +142,7 @@ export default function AppBar({
               )}
               <Stack px='3'>
                 <Menu
+                  right='100%'
                   w='190'
                   placement='bottom right'
                   trigger={(triggerProps) => {
