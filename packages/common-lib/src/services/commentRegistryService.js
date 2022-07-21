@@ -1,6 +1,7 @@
 import { get, post, update as updateRequest } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
+import * as teacherRegistryService from './teacherRegistryService'
 
 const interfaceData = {
   id: 'commentId',
@@ -27,7 +28,9 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+
+    return data
   } else {
     return []
   }
