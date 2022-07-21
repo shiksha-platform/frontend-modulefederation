@@ -9,7 +9,7 @@ export const courses = [
     duration: "10",
     source: "Diksha",
     dueDate: "27 Jul, 2022",
-    takenBy: "27 Jul, 2022",
+    takenBy: "3",
   },
   {
     id: "2",
@@ -21,7 +21,7 @@ export const courses = [
     duration: "10",
     source: "Diksha",
     dueDate: "27 Jul, 2022",
-    takenBy: "27 Jul, 2022",
+    takenBy: "12",
   },
   {
     id: "3",
@@ -33,7 +33,7 @@ export const courses = [
     duration: "10",
     source: "Diksha",
     dueDate: "27 Jul, 2022",
-    takenBy: "27 Jul, 2022",
+    takenBy: "57",
   },
 ];
 
@@ -44,10 +44,10 @@ export const videos = [
     name: "Design with education in mind",
     description: "Short description in one or two rows, truncated if longer.",
     image: "",
-    duration: "10",
+    duration: "10 minutes",
     source: "Diksha",
     dueDate: "27 Jul, 2022",
-    takenBy: "27 Jul, 2022",
+    takenBy: "5",
   },
   {
     id: "2",
@@ -55,10 +55,10 @@ export const videos = [
     name: "Learning made easy by Diksha",
     description: "Short description in one or two rows, truncated if longer.",
     image: "",
-    duration: "10",
+    duration: "9 minutes",
     source: "Diksha",
     dueDate: "27 Jul, 2022",
-    takenBy: "27 Jul, 2022",
+    takenBy: "20",
   },
   {
     id: "3",
@@ -66,9 +66,9 @@ export const videos = [
     name: "Learning made easy by Diksha",
     description: "Short description in one or two rows, truncated if longer.",
     image: "",
-    duration: "10",
+    duration: "8 minutes",
     source: "Diksha",
     dueDate: "27 Jul, 2022",
-    takenBy: "27 Jul, 2022",
+    takenBy: "97",
   },
 ];
