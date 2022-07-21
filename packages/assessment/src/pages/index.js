@@ -8,7 +8,7 @@ import {
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import SpotAssessmentCard from "../components/SpotAssessment/SpotAssessmentCard";
@@ -19,17 +19,24 @@ const colors = overrideColorTheme(colorTheme);
 
 export default function Assessment() {
   const { t } = useTranslation();
+  let { classId } = useParams();
+  // if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
+  if (!classId) classId = "9ccc0210-65c5-4af6-ac73-a12304f538c6";
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
   const [students, setStudents] = useState([]);
   const [searchStudents, setSearchStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
-  const { classId } = useParams();
+  // const { classId } = useParams();
   const [loading, setLoading] = useState(false);
   const teacherId = sessionStorage.getItem("id");
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
   const [pageName, setPageName] = useState();
+
+  useEffect(() => {
+    localStorage.setItem("assessment-class", classId);
+  }, []);
 
   if (pageName === "assessmentStudentList") {
     return (
@@ -50,7 +57,7 @@ export default function Assessment() {
           ),
         }}
         _appBar={{ languages: ["en"] }}
-        subHeader={<H3>Choose a Student</H3>}
+        subHeader={<H3 textTransform="none">{t("Choose a Student")}</H3>}
         _subHeader={{ bg: colors.cardBg, py: "6" }}
         _footer={{
           menues: [
@@ -93,7 +100,7 @@ export default function Assessment() {
         }}
       >
         <Stack space={1} mb="2" shadow={2}>
-          <StudentListCard />
+          <StudentListCard classId={classId} />
         </Stack>
       </Layout>
     );
@@ -109,19 +116,14 @@ export default function Assessment() {
       }}
       _appBar={{ languages: ["en"] }}
       subHeader={
-        <Link
-          to={"#"}
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
-        >
-          <HStack space="4" justifyContent="space-between">
-            <VStack>
-              <Text fontSize={"lg"}>{"Assessment"}</Text>
-            </VStack>
-            <IconByName size="sm" name="ArrowRightSLineIcon" />
-          </HStack>
-        </Link>
+        <HStack space="4" justifyContent="space-between">
+          <VStack>
+            <Text fontSize={"lg"}>{"Assessment"}</Text>
+          </VStack>
+          <IconByName size="sm" name="ArrowRightSLineIcon" />
+        </HStack>
       }
-      _subHeader={{ bg: "attendanceCard.500" }}
+      _subHeader={{ bg: colors.cardBg }}
       _footer={{
         menues: [
           {
