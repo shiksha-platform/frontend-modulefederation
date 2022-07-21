@@ -1,6 +1,6 @@
 export const courses = [
   {
-    id: 1,
+    id: "1",
     state: "Ongoing",
     name: "Addition",
     description:
@@ -12,7 +12,7 @@ export const courses = [
     takenBy: "27 Jul, 2022",
   },
   {
-    id: 2,
+    id: "2",
     state: "Assigned",
     name: "Subtraction",
     description:
@@ -24,7 +24,7 @@ export const courses = [
     takenBy: "27 Jul, 2022",
   },
   {
-    id: 3,
+    id: "3",
     state: "Completed",
     name: "Subtraction",
     description:
@@ -39,7 +39,7 @@ export const courses = [
 
 export const videos = [
   {
-    id: 1,
+    id: "1",
     state: "Ongoing",
     name: "Design with education in mind",
     description: "Short description in one or two rows, truncated if longer.",
@@ -50,7 +50,7 @@ export const videos = [
     takenBy: "27 Jul, 2022",
   },
   {
-    id: 2,
+    id: "2",
     state: "Assigned",
     name: "Learning made easy by Diksha",
     description: "Short description in one or two rows, truncated if longer.",
@@ -61,7 +61,7 @@ export const videos = [
     takenBy: "27 Jul, 2022",
   },
   {
-    id: 3,
+    id: "3",
     state: "Completed",
     name: "Learning made easy by Diksha",
     description: "Short description in one or two rows, truncated if longer.",

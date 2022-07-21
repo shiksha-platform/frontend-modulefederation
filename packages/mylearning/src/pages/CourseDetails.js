@@ -15,6 +15,7 @@ import colorTheme from "../colorTheme";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CourseBox from "../components/CourseBox";
+import VideoBox from "components/VideoBox";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -79,33 +80,36 @@ export default function CourseDetails({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      <VStack space="1">
+      <VStack space="2">
         <Box bg={colors.white} p="5">
-          <CourseBox
-            {...{
-              item: course,
-              appName,
-              isHeaderHide: true,
-              _box: { p: "0", borderWidth: "0" },
-            }}
-          />
-          <Box
-            bg={colors.courseDetailsBoxBg}
-            borderWidth="1"
-            borderColor={colors.courseDetailsBoxBorder}
-            rounded="md"
-          >
-            <HStack alignItems="center" space={1}>
-              <IconByName
-                _icon={{ size: 15 }}
-                color="green.500"
-                name="ShieldStarLineIcon"
-              />
-              <BodySmall>
-                {t("200 Teachers have completed this course")}
-              </BodySmall>
-            </HStack>
-          </Box>
+          <VStack space="2">
+            <CourseBox
+              {...{
+                canShowButtonArray: [],
+                item: course,
+                appName,
+                isHeaderHide: true,
+                _box: { p: "0", borderWidth: "0" },
+              }}
+            />
+            <Box
+              bg={colors.courseDetailsBoxBg}
+              borderWidth="1"
+              borderColor={colors.courseDetailsBoxBorder}
+              rounded="md"
+            >
+              <HStack alignItems="center" space={1}>
+                <IconByName
+                  _icon={{ size: 15 }}
+                  color="green.500"
+                  name="ShieldStarLineIcon"
+                />
+                <BodySmall>
+                  {t("200 Teachers have completed this course")}
+                </BodySmall>
+              </HStack>
+            </Box>
+          </VStack>
         </Box>
         <Box bg={colors.white}>
           <Collapsible
@@ -120,7 +124,30 @@ export default function CourseDetails({ footerLinks, appName }) {
             fontSize="2px"
           ></Collapsible>
         </Box>
-
+        <Box bg={colors.white}>
+          <Collapsible
+            defaultCollapse={true}
+            header={
+              <VStack>
+                <H2 px={2} fontWeight={600}>
+                  {t("Video 2")}
+                </H2>
+              </VStack>
+            }
+            fontSize="2px"
+          >
+            <Box py="5">
+              <VideoBox
+                appName={appName}
+                canShare={true}
+                {...{
+                  item: course,
+                  url: `/mylearning/video/${course.id}/view`,
+                }}
+              />
+            </Box>
+          </Collapsible>
+        </Box>
         <Box bg={colors.white}>
           <Collapsible
             defaultCollapse={true}

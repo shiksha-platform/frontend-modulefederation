@@ -24,14 +24,9 @@ export default function AttributeComponent({ data, object }) {
   return (
     <VStack space="2">
       {elements.map((attributes, index) => (
-        <HStack key={index}>
+        <HStack key={index} space="2">
           {attributes.map((item, subIndex) => (
-            <HStack
-              key={subIndex}
-              space="1"
-              alignItems="center"
-              w={100 / attributes.length + "%"}
-            >
+            <HStack key={subIndex} space="1" alignItems="baseline" flex={1}>
               <IconByName
                 isDisabled
                 name={item.icon}

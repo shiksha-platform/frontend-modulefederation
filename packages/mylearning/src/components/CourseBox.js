@@ -25,8 +25,8 @@ const COMPLETED = "Completed";
 
 const AttributeData = [
   { icon: "TimeLineIcon", label: "DURATION", attribute: "duration" },
-  { icon: "BookLineIcon", label: "SOURCE", attribute: "source" },
   { icon: "CalendarCheckLineIcon", label: "DUE_DATE", attribute: "dueDate" },
+  { icon: "BookLineIcon", label: "SOURCE", attribute: "source" },
   { icon: "AccountBoxLineIcon", label: "TAKEN_BY", attribute: "takenBy" },
 ];
 
@@ -114,12 +114,12 @@ export default function LearningBox({
       topic: item?.topic,
     });
     capture("INTERACT", telemetryData);
-    navigate(`/mylearning/${item.id}/share`);
+    // navigate(`/mylearning/${item.id}/share`);
   };
 
   const handleAddToTimeline = () => {
     if (item.state === "DRAFT") {
-      navigate(`/mylearning/${item.id}/edit`);
+      // navigate(`/mylearning/${item.id}/edit`);
     } else {
       const telemetryData = telemetryFactory.interact({
         appName,
@@ -230,7 +230,7 @@ export default function LearningBox({
               />
             </Box>
           ) : (
-            ""
+            <React.Fragment />
           )}
           {!showButtonArray || showButtonArray.includes("Share") ? (
             <Box shadow="2" p="2" rounded="full">
@@ -242,7 +242,7 @@ export default function LearningBox({
               />
             </Box>
           ) : (
-            ""
+            <React.Fragment />
           )}
         </HStack>
       </VStack>

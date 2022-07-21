@@ -31,6 +31,7 @@ export default function CourseActionsheet({
   course,
   setCourse,
   handleCommentModuleOpen,
+  handleLikeModuleOpen,
   likeCount,
   commentCount,
   footer,
@@ -67,17 +68,25 @@ export default function CourseActionsheet({
 
           {!footer ? (
             <HStack space={5} alignItems="center">
-              <HStack alignItems="center">
-                <IconByName
-                  name="Heart3FillIcon"
-                  color={colors.eventError}
-                  _icon={{ size: 12 }}
-                  isDisabled
-                />
-                <Subtitle>
-                  {likeCount} {t("TEACHERS_LIKE_THIS")}
-                </Subtitle>
-              </HStack>
+              <Pressable
+                onPress={(e) =>
+                  handleLikeModuleOpen
+                    ? handleLikeModuleOpen()
+                    : console.log("not found handleLikeModuleOpen")
+                }
+              >
+                <HStack alignItems="center">
+                  <IconByName
+                    name="Heart3FillIcon"
+                    color={colors.eventError}
+                    _icon={{ size: 12 }}
+                    isDisabled
+                  />
+                  <Subtitle>
+                    {likeCount} {t("TEACHERS_LIKE_THIS")}
+                  </Subtitle>
+                </HStack>
+              </Pressable>
               <Pressable
                 onPress={(e) =>
                   handleCommentModuleOpen

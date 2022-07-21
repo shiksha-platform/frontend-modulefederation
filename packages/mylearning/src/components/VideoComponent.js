@@ -7,6 +7,7 @@ import VideoBox from "./VideoBox";
 import colorTheme from "../colorTheme";
 import VideoActionsheet from "./Actionsheet/VideoActionsheet";
 import CommentActionsheet from "./Actionsheet/CommentActionsheet";
+import LikeActionsheet from "./Actionsheet/LikeActionsheet";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -26,6 +27,14 @@ export default function VideoComponent({
   const [video, setVideo] = React.useState({});
   const [showModuleComments, setShowModuleComments] = React.useState(false);
   const [comments, setCommets] = React.useState([]);
+  const [showModuleLike, setShowModuleLike] = React.useState(false);
+
+  const handleLikeModuleOpen = () => {
+    setShowModuleLike(true);
+  };
+  const handleLikeModuleClose = () => {
+    setShowModuleLike(false);
+  };
 
   const handleCommentModuleOpen = () => {
     setShowModuleComments(true);
@@ -99,6 +108,14 @@ export default function VideoComponent({
           video,
           setVideo,
           handleCommentModuleOpen,
+          handleLikeModuleOpen,
+        }}
+      />
+      <LikeActionsheet
+        {...{
+          setShowModuleLike: handleLikeModuleClose,
+          showModuleLike,
+          likeUsers: ["1", "2", "3", "4"],
         }}
       />
       <CommentActionsheet
