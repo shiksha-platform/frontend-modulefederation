@@ -96,7 +96,7 @@ export default function Login({ swPath }) {
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           localStorage.setItem("schoolId", resultTeacher.schoolId);
-          localStorage.setItem("pushToken", pushToken);
+          localStorage.setItem("fcmToken", fcmToken);
           //window.location.reload();
 
           eventBus.publish("AUTH", {
