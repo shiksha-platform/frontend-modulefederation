@@ -44,12 +44,16 @@ export const create = async (
     onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(process.env.REACT_APP_API_URL + '/comment', newData, {
-    headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-      ...headers
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/comment',
+    newData,
+    {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+        ...headers
+      }
     }
-  })
+  )
   if (result.data) {
     let { Comment } = result.data?.data?.result
     return Comment

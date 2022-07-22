@@ -5,16 +5,15 @@ import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 
 const AppRoutesContainer = ({
-    theme,
-    routes,
-    AuthComponent,
-    basename,
-    isShowFooterLink,
-    appName,
-    ...otherProps
-  }: any) => {
-
-    const footerLinks = !isShowFooterLink
+  theme,
+  routes,
+  AuthComponent,
+  basename,
+  isShowFooterLink,
+  appName,
+  ...otherProps
+}: any) => {
+  const footerLinks = !isShowFooterLink
     ? {}
     : {
         menues: [
@@ -55,29 +54,29 @@ const AppRoutesContainer = ({
           }
         ]
       }
-    return (
-      <NativeBaseProvider theme={theme}>
-        <Suspense
-          fallback={
-            <Center>
-              <Loading />
-            </Center>
-          }
-        >
-          <Router basename={basename}>
-            <Routes>
-              {routes.map((item: any, index: number) => (
-                <Route
-                  key={index}
-                  path={item.path}
-                  element={<item.component {...{ footerLinks, appName }} />}
-                />
-              ))}
-            </Routes>
-          </Router>
-        </Suspense>
-      </NativeBaseProvider>
-    )
-  }
+  return (
+    <NativeBaseProvider theme={theme}>
+      <Suspense
+        fallback={
+          <Center>
+            <Loading />
+          </Center>
+        }
+      >
+        <Router basename={basename}>
+          <Routes>
+            {routes.map((item: any, index: number) => (
+              <Route
+                key={index}
+                path={item.path}
+                element={<item.component {...{ footerLinks, appName }} />}
+              />
+            ))}
+          </Routes>
+        </Router>
+      </Suspense>
+    </NativeBaseProvider>
+  )
+}
 
-  export default AppRoutesContainer
+export default AppRoutesContainer

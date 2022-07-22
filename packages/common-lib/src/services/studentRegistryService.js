@@ -56,9 +56,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(process.env.REACT_APP_API_URL + '/student/' + filters.id, {
-    headers
-  })
+  const result = await get(
+    process.env.REACT_APP_API_URL + '/student/' + filters.id,
+    {
+      headers
+    }
+  )
   if (result?.data?.data) {
     let resultStudent = mapInterfaceData(result.data.data, interfaceData)
     resultStudent.id = resultStudent.id?.startsWith('1-')

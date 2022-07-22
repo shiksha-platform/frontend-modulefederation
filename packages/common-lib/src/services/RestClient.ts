@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export async function get(url: string, headers: any = {}) {
-  if(localStorage.getItem('token') != undefined){
+  if (localStorage.getItem('token') != undefined) {
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -14,7 +14,7 @@ export async function get(url: string, headers: any = {}) {
 }
 
 export async function post(url: string, body: any, headers: any = {}) {
-  if(localStorage.getItem('token') != undefined){
+  if (localStorage.getItem('token') != undefined) {
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -27,7 +27,7 @@ export async function post(url: string, body: any, headers: any = {}) {
 }
 
 export async function update(url: string, body: any, headers: any = {}) {
-  if(localStorage.getItem('token') != undefined){
+  if (localStorage.getItem('token') != undefined) {
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -40,7 +40,7 @@ export async function update(url: string, body: any, headers: any = {}) {
 }
 
 export async function distory(url: string, body: any, headers: any = {}) {
-  if(localStorage.getItem('token') != undefined){
+  if (localStorage.getItem('token') != undefined) {
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')

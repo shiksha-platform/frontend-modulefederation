@@ -94,9 +94,13 @@ export const getAllData = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await post(`${process.env.REACT_APP_API_URL}/group/search`, params, {
-    headers
-  })
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/group/search`,
+    params,
+    {
+      headers
+    }
+  )
 
   if (result.data) {
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
@@ -111,9 +115,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${process.env.REACT_APP_API_URL}/group/${filters.id}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/group/${filters.id}`,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData)
   } else {

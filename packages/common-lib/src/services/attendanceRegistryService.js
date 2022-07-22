@@ -52,9 +52,13 @@ export const create = async (data, headers = {}) => {
     onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(process.env.REACT_APP_API_URL + '/attendance', newData, {
-    headers: header
-  })
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/attendance',
+    newData,
+    {
+      headers: header
+    }
+  )
   if (result.data) {
     let { Attendance } = result.data?.data?.result
     return Attendance

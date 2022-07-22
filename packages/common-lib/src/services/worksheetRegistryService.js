@@ -61,9 +61,12 @@ export const getOne = async (filters = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   try {
-    const result = await get(process.env.REACT_APP_API_URL + '/worksheet/' + filters.id, {
-      headers
-    })
+    const result = await get(
+      process.env.REACT_APP_API_URL + '/worksheet/' + filters.id,
+      {
+        headers
+      }
+    )
     if (result?.data?.data) {
       let mapResult = mapInterfaceData(result.data.data, interfaceData)
       mapResult.id = mapResult.id?.startsWith('1-')
@@ -93,9 +96,13 @@ export const create = async (data, header = {}) => {
     onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(process.env.REACT_APP_API_URL + '/worksheet', newData, {
-    headers: headers?.headers ? headers?.headers : {}
-  })
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/worksheet',
+    newData,
+    {
+      headers: headers?.headers ? headers?.headers : {}
+    }
+  )
   if (result.data) {
     let { Worksheet } = result.data?.data?.result
     return Worksheet

@@ -27,10 +27,13 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${process.env.REACT_APP_API_URL}/config/{module}/all`, {
-    ...params,
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/config/{module}/all`,
+    {
+      ...params,
+      headers
+    }
+  )
   if (result.data) {
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
@@ -44,9 +47,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${process.env.REACT_APP_API_URL}/config/${filters.id}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/config/${filters.id}`,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData)
   } else {

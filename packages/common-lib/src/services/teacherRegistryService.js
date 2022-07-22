@@ -55,11 +55,15 @@ export const getAll = async (params = {}, header = {}) => {
     ...header
   }
 
-  console.log(process.env);
-  
-  const result = await post(`${process.env.REACT_APP_API_URL}/teacher/search`, params, {
-    headers
-  })
+  console.log(process.env)
+
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/teacher/search`,
+    params,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return result.data.map((e) => mapInterfaceData(e, interfaceData))
   } else {
@@ -73,7 +77,7 @@ export const getOne = async (params = {}, header = {}) => {
     ...header
   }
 
-  console.log(process.env);
+  console.log(process.env)
   const result = await get(`${process.env.REACT_APP_API_URL}/teacher`, {
     params,
     headers

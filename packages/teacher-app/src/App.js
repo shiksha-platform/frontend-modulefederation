@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import { DEFAULT_THEME, initializeI18n, AppShell, AppRoutesContainer, teacherRegistryService } from "@shiksha/common-lib";
+import {
+  DEFAULT_THEME,
+  initializeI18n,
+  AppShell,
+  AppRoutesContainer,
+  teacherRegistryService,
+} from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
 
@@ -112,17 +118,13 @@ function App() {
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const searchParams = Object.fromEntries(urlSearchParams.entries());
-  
-  useEffect(async()=>{
-    const resultTeacher = await teacherRegistryService.getOne(
-      {},
-      {}
-    );
 
-    if(searchParams.token != undefined){
-      localStorage.setItem("token", searchParams.token); 
+  useEffect(async () => {
+    const resultTeacher = await teacherRegistryService.getOne({}, {});
+
+    if (searchParams.token != undefined) {
+      localStorage.setItem("token", searchParams.token);
     }
-
 
     if (resultTeacher) {
       let id = resultTeacher.id.replace("1-", "");
@@ -138,9 +140,12 @@ function App() {
       localStorage.setItem("schoolId", resultTeacher.schoolId);
       //window.location.reload();
     }
-  },[]);  
-const LoginComponent = React.lazy(() => import("core/Login"));
-if(process.env.OAUTH_PROXY_ENABLED == undefined || JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false){
+  }, []);
+  const LoginComponent = React.lazy(() => import("core/Login"));
+  if (
+    process.env.OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+  ) {
     return (
       <AppShell
         theme={theme}
