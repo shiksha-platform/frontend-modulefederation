@@ -62,8 +62,6 @@ export default function Login({ swPath }) {
 
   const handleLogin = async () => {
     if (validate()) {
-      const fcmToken = await getUserToken(swPath);
-
       const result = await fetchToken(
         manifest.auth_url,
         credentials?.username,
@@ -83,10 +81,6 @@ export default function Login({ swPath }) {
         if (resultTeacher.id) {
           let { id } = resultTeacher;
           localStorage.setItem("id", id);
-          const updateTokenTeacher = await teacherRegistryService.update({
-            id,
-            fcmToken,
-          });
           localStorage.setItem(
             "fullName",
             resultTeacher.fullName
@@ -96,7 +90,13 @@ export default function Login({ swPath }) {
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           localStorage.setItem("schoolId", resultTeacher.schoolId);
-          localStorage.setItem("fcmToken", fcmToken);
+          try {
+            const fcmToken = await getUserToken(swPath);
+            await teacherRegistryService.update({ id, fcmToken });
+            localStorage.setItem("fcmToken", fcmToken);
+          } catch (e) {
+            console.log(e);
+          }
           //window.location.reload();
 
           eventBus.publish("AUTH", {
