@@ -43,6 +43,7 @@ const interfaceData = {
   teacherAddress: 'teacherAddress',
   updatedAt: 'updatedAt',
   village: 'village',
+  fcmToken: 'fcmToken',
   mergeParameterWithValue: {
     title: 'fullName'
   }
@@ -81,7 +82,11 @@ export const getOne = async (params = {}, header = {}) => {
   }
 }
 
-export const update = async (data = {}, headers = {}) => {
+export const update = async (data = {}, header = {}) => {
+  let headers = {
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ...header
+  }
   let newInterfaceData = interfaceData
   if (headers?.removeParameter || headers?.onlyParameter) {
     newInterfaceData = {
@@ -95,9 +100,7 @@ export const update = async (data = {}, headers = {}) => {
   const result = await updateRequest(
     manifest.api_url + '/teacher/' + data.id,
     newData,
-    {
-      headers: headers?.headers ? headers?.headers : {}
-    }
+    { headers }
   )
   if (result?.data) {
     return result
