@@ -26,19 +26,24 @@ const publicKey =
   'BEX47b856ssFWemDHoDRcVoloLdY4fx8v9FUvVgoYabZbJjteLH3KpgrhbG5wHvLyoovUDivC6Tuebzs33wjcVo'
 
 export const getUserToken = async (basePath = '') => {
-  if (basePath && basePath !== '') {
-    const path = basePath + '/firebase-messaging-sw.js'
-    const serviceWorkerRegistration = await navigator.serviceWorker.register(
-      path
-    )
-    return await getToken(messaging, {
-      vapidKey: publicKey,
-      serviceWorkerRegistration
-    })
-  } else {
-    return await getToken(messaging, {
-      vapidKey: publicKey
-    })
+  try {
+    if (basePath && basePath !== '') {
+      const path = basePath + '/firebase-messaging-sw.js'
+      const serviceWorkerRegistration = await navigator.serviceWorker.register(
+        path
+      )
+      return await getToken(messaging, {
+        vapidKey: publicKey,
+        serviceWorkerRegistration
+      })
+    } else {
+      return await getToken(messaging, {
+        vapidKey: publicKey
+      })
+    }
+  } catch (e) {
+    console.log(e)
+    return ''
   }
 }
 
