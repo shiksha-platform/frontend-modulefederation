@@ -42,6 +42,24 @@ function App() {
   const Profile = React.lazy(() => import("profile/Profile"));
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
+  // Assessment Module Imports
+  const Assessment = React.lazy("assessment/Assessment");
+  const ExamScores = React.lazy("assessment/ExamScores");
+  const SuccessPublicationReport = React.lazy(
+    "assessment/successPublicationReport"
+  );
+  const ReportDetails = React.lazy("assessment/ReportDetails");
+  const SpotAssessmentResult = React.lazy("assessment/SpotAssessmentResult");
+  const SpotAssessmentResult2 = React.lazy("assessment/SpotAssessmentResult2");
+  const SpotAssessmentResult3 = React.lazy("assessment/SpotAssessmentResult3");
+  const QumlTest = React.lazy("assessment/QumlTest");
+  const QuestionList2 = React.lazy("assessment/QuestionLIst2");
+  const QuestionList3 = React.lazy("assessment/QuestionLIst3");
+  const QuestionList4 = React.lazy("assessment/QuestionLIst4");
+  const QuestionList5 = React.lazy("assessment/QuestionLIst5");
+  const QuestionList6 = React.lazy("assessment/QuestionLIst6");
+  const QuestionList7 = React.lazy("assessment/QuestionLIst7");
+
   const routes = [
     {
       path: "/worksheet/list/:state",
@@ -107,6 +125,63 @@ function App() {
     { path: "/notification/outbox", component: Outbox },
     { path: "/profile", component: Profile },
     { path: "/profile/attendance", component: AttendanceReport },
+    // Asessment Routes
+    {
+      path: "/assessment/exam-list2",
+      component: QuestionList2,
+    },
+    {
+      path: "/assessment/exam-list3",
+      component: QuestionList3,
+    },
+    {
+      path: "/assessment/exam-list4",
+      component: QuestionList4,
+    },
+    {
+      path: "/assessment/exam-list5",
+      component: QuestionList5,
+    },
+    {
+      path: "/assessment/exam-list6",
+      component: QuestionList6,
+    },
+    {
+      path: "/assessment/exam-list7",
+      component: QuestionList7,
+    },
+    {
+      path: "/assessment/examscores",
+      component: ExamScores,
+    },
+    {
+      path: "/assessment/assessment-result",
+      component: SpotAssessmentResult,
+    },
+    {
+      path: "/assessment/assessment-result2",
+      component: SpotAssessmentResult2,
+    },
+    {
+      path: "/assessment/assessment-result3",
+      component: SpotAssessmentResult3,
+    },
+    {
+      path: "/assessment/assessment-success",
+      component: SuccessPublicationReport,
+    },
+    {
+      path: "/assessment/assessment-detailed-report",
+      component: ReportDetails,
+    },
+    {
+      path: "/assessment/quml-test",
+      component: QumlTest,
+    },
+    {
+      path: "/assessment",
+      component: Assessment,
+    },
     { path: "*", component: Home },
   ];
 

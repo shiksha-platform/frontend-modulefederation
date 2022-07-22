@@ -96,7 +96,13 @@ export default function Login({ swPath }) {
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           localStorage.setItem("schoolId", resultTeacher.schoolId);
-          localStorage.setItem("pushToken", pushToken);
+          try {
+            const fcmToken = await getUserToken(swPath);
+            await teacherRegistryService.update({ id, fcmToken });
+            localStorage.setItem("fcmToken", fcmToken);
+          } catch (e) {
+            console.log({ e });
+          }
           //window.location.reload();
 
           eventBus.publish("AUTH", {
