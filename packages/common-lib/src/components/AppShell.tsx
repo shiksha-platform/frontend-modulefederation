@@ -3,6 +3,7 @@ import { Center, NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
+import { PushNotification } from './firebase/firebase'
 
 function AppShell({
   theme,
@@ -11,6 +12,7 @@ function AppShell({
   basename,
   isShowFooterLink,
   appName,
+  _authComponent,
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
@@ -47,10 +49,10 @@ function AppShell({
             routeparameters: {}
           },
           {
-            title: 'CAREER',
+            title: 'MY_LEARNING',
             icon: 'UserLineIcon',
             module: 'Registry',
-            route: '/',
+            route: '/mylearning',
             routeparameters: {}
           }
         ]
@@ -66,17 +68,20 @@ function AppShell({
       eventBus.unsubscribe(subscription)
     }
   }, [token])
+
   if (!token) {
     return (
       <NativeBaseProvider theme={theme}>
+        <PushNotification />
         <React.Suspense fallback={<Loading />}>
-          <AuthComponent />
+          <AuthComponent {..._authComponent} />
         </React.Suspense>
       </NativeBaseProvider>
     )
   } else {
     return (
       <NativeBaseProvider theme={theme}>
+        <PushNotification />
         <Suspense
           fallback={
             <Center>
