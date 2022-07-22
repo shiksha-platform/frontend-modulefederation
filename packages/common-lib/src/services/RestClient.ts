@@ -14,7 +14,11 @@ export async function get(url: string, headers: any = {}) {
 }
 
 export async function post(url: string, body: any, headers: any = {}) {
+<<<<<<< HEAD
   if (localStorage.getItem('token') != undefined) {
+=======
+  if(localStorage.getItem('token') != undefined){
+>>>>>>> fix: add appsell without login flow to use with oauth2 proxy
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -27,7 +31,11 @@ export async function post(url: string, body: any, headers: any = {}) {
 }
 
 export async function update(url: string, body: any, headers: any = {}) {
+<<<<<<< HEAD
   if (localStorage.getItem('token') != undefined) {
+=======
+  if(localStorage.getItem('token') != undefined){
+>>>>>>> fix: add appsell without login flow to use with oauth2 proxy
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -40,7 +48,11 @@ export async function update(url: string, body: any, headers: any = {}) {
 }
 
 export async function distory(url: string, body: any, headers: any = {}) {
+<<<<<<< HEAD
   if (localStorage.getItem('token') != undefined) {
+=======
+  if(localStorage.getItem('token') != undefined){
+>>>>>>> fix: add appsell without login flow to use with oauth2 proxy
     headers = {
       ...headers,
       Authorization: 'Bearer ' + localStorage.getItem('token')
