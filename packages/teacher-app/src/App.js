@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import { DEFAULT_THEME, initializeI18n, AppShell } from "@shiksha/common-lib";
+import {
+  DEFAULT_THEME,
+  initializeI18n,
+  AppShell,
+  AppRoutesContainer,
+  teacherRegistryService,
+} from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
 
@@ -191,17 +197,57 @@ function App() {
     { path: "*", component: Home },
   ];
 
-  const LoginComponent = React.lazy(() => import("core/Login"));
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const searchParams = Object.fromEntries(urlSearchParams.entries());
 
-  return (
-    <AppShell
-      theme={theme}
-      basename={process.env.PUBLIC_URL}
-      routes={routes}
-      AuthComponent={LoginComponent}
-      isShowFooterLink={true}
-      appName="Teacher App"
-    />
-  );
+  useEffect(async () => {
+    const resultTeacher = await teacherRegistryService.getOne({}, {});
+
+    if (searchParams.token != undefined) {
+      localStorage.setItem("token", searchParams.token);
+    }
+
+    if (resultTeacher) {
+      let id = resultTeacher.id.replace("1-", "");
+      localStorage.setItem("id", id);
+      localStorage.setItem(
+        "fullName",
+        resultTeacher.fullName
+          ? resultTeacher.fullName
+          : `${resultTeacher.firstName} ${resultTeacher.lastName}`
+      );
+      localStorage.setItem("firstName", resultTeacher.firstName);
+      localStorage.setItem("lastName", resultTeacher.lastName);
+      localStorage.setItem("schoolId", resultTeacher.schoolId);
+      //window.location.reload();
+    }
+  }, []);
+  const LoginComponent = React.lazy(() => import("core/Login"));
+  if (
+    process.env.OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+  ) {
+    return (
+      <AppShell
+        theme={theme}
+        basename={process.env.PUBLIC_URL}
+        routes={routes}
+        AuthComponent={LoginComponent}
+        isShowFooterLink={true}
+        appName="Teacher App"
+      />
+    );
+  } else {
+    return (
+      <AppRoutesContainer
+        theme={theme}
+        basename={process.env.PUBLIC_URL}
+        routes={routes}
+        AuthComponent={LoginComponent}
+        isShowFooterLink={true}
+        appName="Teacher App"
+      />
+    );
+  }
 }
 export default App;
