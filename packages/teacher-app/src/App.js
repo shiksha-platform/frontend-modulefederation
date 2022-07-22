@@ -43,22 +43,28 @@ function App() {
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
   // Assessment Module Imports
-  const Assessment = React.lazy("assessment/Assessment");
-  const ExamScores = React.lazy("assessment/ExamScores");
-  const SuccessPublicationReport = React.lazy(
-    "assessment/successPublicationReport"
+  const Assessment = React.lazy(() => import("assessment/Assessment"));
+  const ExamScores = React.lazy(() => import("assessment/ExamScores"));
+  const SuccessPublicationReport = React.lazy(() =>
+    import("assessment/successPublicationReport")
   );
-  const ReportDetails = React.lazy("assessment/ReportDetails");
-  const SpotAssessmentResult = React.lazy("assessment/SpotAssessmentResult");
-  const SpotAssessmentResult2 = React.lazy("assessment/SpotAssessmentResult2");
-  const SpotAssessmentResult3 = React.lazy("assessment/SpotAssessmentResult3");
-  const QumlTest = React.lazy("assessment/QumlTest");
-  const QuestionList2 = React.lazy("assessment/QuestionLIst2");
-  const QuestionList3 = React.lazy("assessment/QuestionLIst3");
-  const QuestionList4 = React.lazy("assessment/QuestionLIst4");
-  const QuestionList5 = React.lazy("assessment/QuestionLIst5");
-  const QuestionList6 = React.lazy("assessment/QuestionLIst6");
-  const QuestionList7 = React.lazy("assessment/QuestionLIst7");
+  const ReportDetails = React.lazy(() => import("assessment/ReportDetails"));
+  const SpotAssessmentResult = React.lazy(() =>
+    import("assessment/SpotAssessmentResult")
+  );
+  const SpotAssessmentResult2 = React.lazy(() =>
+    import("assessment/SpotAssessmentResult2")
+  );
+  const SpotAssessmentResult3 = React.lazy(() =>
+    import("assessment/SpotAssessmentResult3")
+  );
+  const QumlTest = React.lazy(() => import("assessment/QumlTest"));
+  const QuestionList2 = React.lazy(() => import("assessment/QuestionLIst2"));
+  const QuestionList3 = React.lazy(() => import("assessment/QuestionLIst3"));
+  const QuestionList4 = React.lazy(() => import("assessment/QuestionLIst4"));
+  const QuestionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
+  const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
+  const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
 
   const routes = [
     {
