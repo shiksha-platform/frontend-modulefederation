@@ -55,7 +55,9 @@ export const getAll = async (params = {}, header = {}) => {
     ...header
   }
 
-  const result = await post(`${manifest.api_url}/teacher/search`, params, {
+  console.log(process.env);
+  
+  const result = await post(`${process.env.REACT_APP_API_URL}/teacher/search`, params, {
     headers
   })
   if (result.data) {
@@ -71,7 +73,8 @@ export const getOne = async (params = {}, header = {}) => {
     ...header
   }
 
-  const result = await get(`${manifest.api_url}/teacher`, {
+  console.log(process.env);
+  const result = await get(`${process.env.REACT_APP_API_URL}/teacher`, {
     params,
     headers
   }).catch((error) => error)
@@ -98,7 +101,7 @@ export const update = async (data = {}, header = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/teacher/' + data.id,
+    process.env.REACT_APP_API_URL + '/teacher/' + data.id,
     newData,
     { headers }
   )

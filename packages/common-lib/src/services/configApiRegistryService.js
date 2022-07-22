@@ -27,7 +27,7 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/config/{module}/all`, {
+  const result = await get(`${process.env.REACT_APP_API_URL}/config/{module}/all`, {
     ...params,
     headers
   })
@@ -44,7 +44,7 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/config/${filters.id}`, {
+  const result = await get(`${process.env.REACT_APP_API_URL}/config/${filters.id}`, {
     headers
   })
   if (result.data) {

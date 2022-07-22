@@ -41,7 +41,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   }
   const result = await post(
-    manifest.api_url + '/worksheet/search',
+    process.env.REACT_APP_API_URL + '/worksheet/search',
     { filters: params, limit: limit },
     {
       headers: headers?.headers ? headers?.headers : {}
@@ -61,7 +61,7 @@ export const getOne = async (filters = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   try {
-    const result = await get(manifest.api_url + '/worksheet/' + filters.id, {
+    const result = await get(process.env.REACT_APP_API_URL + '/worksheet/' + filters.id, {
       headers
     })
     if (result?.data?.data) {
@@ -93,7 +93,7 @@ export const create = async (data, header = {}) => {
     onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/worksheet', newData, {
+  const result = await post(process.env.REACT_APP_API_URL + '/worksheet', newData, {
     headers: headers?.headers ? headers?.headers : {}
   })
   if (result.data) {
@@ -114,7 +114,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    manifest.api_url + '/worksheet/' + data.id,
+    process.env.REACT_APP_API_URL + '/worksheet/' + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}

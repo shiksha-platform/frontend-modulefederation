@@ -17,7 +17,7 @@ let commentEntityAttributes = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   const result = await post(
-    manifest.api_url + '/comment/search',
+    process.env.REACT_APP_API_URL + '/comment/search',
     { filters: params, limit: limit },
     {
       headers: {
@@ -44,7 +44,7 @@ export const create = async (
     onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/comment', newData, {
+  const result = await post(process.env.REACT_APP_API_URL + '/comment', newData, {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem('token'),
       ...headers
@@ -75,7 +75,7 @@ export const update = async (
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/comment/' + data.id,
+    process.env.REACT_APP_API_URL + '/comment/' + data.id,
     newData,
     {
       headers: header
