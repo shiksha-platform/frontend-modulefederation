@@ -21,7 +21,8 @@ export default function Assessment() {
   const { t } = useTranslation();
   let { classId } = useParams();
   // if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
-  if (!classId) classId = "9ccc0210-65c5-4af6-ac73-a12304f538c6";
+  // if (!classId) classId = "9ccc0210-65c5-4af6-ac73-a12304f538c6";
+  if (!classId) classId = "ce045222-52a8-4a0a-8266-9220f63baba7";
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
   const [students, setStudents] = useState([]);
@@ -45,7 +46,7 @@ export default function Assessment() {
           title: "Class VI A",
           isEnableSearchBtn: true,
           // setSearch: setSearch,
-          subHeading: t("Class Details"),
+          subHeading: t("Select Students"),
           iconComponent: (
             <Avatar
               size="48px"

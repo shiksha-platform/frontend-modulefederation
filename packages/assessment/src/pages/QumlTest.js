@@ -3,7 +3,7 @@ import {
   IconByName,
   Layout,
   assessmentRegistryService,
-  overrideColorTheme,
+  overrideColorTheme, H2, Loading, useWindowSize
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
@@ -15,20 +15,21 @@ const colors = overrideColorTheme(colorTheme);
 export default function QumlTest() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [headerDetails, setHeaderDetails] = useState();
+  const [loading, setLoading] = React.useState(false);
   const [questionIds, setQuestionIds] = useState(
     JSON.parse(localStorage.getItem("assessment-questionIds")) || []
   );
+  const [width, height] = useWindowSize();
 
   const startAssessment = async (qumlResult) => {
+    setLoading(true);
     const subject = localStorage.getItem("assessment-subject");
     const competencies = JSON.parse(
       localStorage.getItem("assessment-competencies")
     );
     const classId = localStorage.getItem("assessment-class");
     const assessmentType = localStorage.getItem("assessment-type");
-    const studentId =
-      JSON.parse(localStorage.getItem("assessment-student")).id || null;
+    const studentId = JSON.parse(localStorage.getItem("assessment-student")).id || null;
     // const questionIds = JSON.parse(localStorage.getItem('assessment-questionIds'));
     // const qumlResult = JSON.parse(localStorage.getItem('assessment-quml-result'));
 
@@ -57,6 +58,7 @@ export default function QumlTest() {
       await assessmentRegistryService.getAssessmentDetails(id);
     console.log("assessmentDetails", assessmentDetails);
     localStorage.setItem("assessment-score", assessmentDetails.score);
+    setLoading(false);
     navigate("/assessment-result");
   };
 
@@ -65,7 +67,6 @@ export default function QumlTest() {
       "message",
       (event) => {
         if (event.origin !== "http://139.59.25.99:8090")
-          // if (event.origin !== "http://192.168.0.123:4200")
           return;
         localStorage.setItem(
           "assessment-quml-result",
@@ -81,26 +82,21 @@ export default function QumlTest() {
     };
   }, []);
 
+  if (loading) {
+    return <Loading height={height} />;
+  }
+
   return (
     <Layout
       _header={{
-        title: "Test",
+        title: "Assessment",
       }}
       _appBar={{ languages: ["en"] }}
       subHeader={
         <VStack>
-          <Text fontSize={"lg"}>
-            {headerDetails && headerDetails.student
-              ? headerDetails.student.name
-              : "Attempt the questions"}
+          <Text fontSize={"lg"} textTransform="none">
+            {t("Attempt the questions")}
           </Text>
-          {headerDetails &&
-            headerDetails.student &&
-            headerDetails.student.fathersName && (
-              <Text fontSize={"xs"} color={"muted.600"}>
-                Mr. {headerDetails.student.fathersName}
-              </Text>
-            )}
         </VStack>
       }
       _subHeader={{ bg: colors.cardBg }}

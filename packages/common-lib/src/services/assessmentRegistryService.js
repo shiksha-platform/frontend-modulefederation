@@ -20,6 +20,36 @@ const interfaceData = {
   }
 }
 
+const studentInterfaceData = {
+  id: 'studentId',
+  fullName: 'firstName',
+  firstName: 'firstName',
+  fathersName: 'fatherFirstName',
+  phoneNumber: 'studentPhoneNumber',
+  lastName: 'lastName',
+  aadhaar: 'aadhaar',
+  classId: 'classId',
+  schoolId: 'schoolId',
+  refId: 'studentRefId',
+  birthDate: 'birthDate',
+  bloodGroup: 'bloodGroup',
+  bpl: 'bpl',
+  height: 'height',
+  weight: 'weight',
+  homeless: 'homeless',
+  iscwsn: 'iscwsn',
+  migrant: 'migrant',
+  religion: 'religion',
+  singleGirl: 'singleGirl',
+  socialCategory: 'socialCategory',
+  admissionNo: 'refId1',
+  currentClassID: 'classId',
+  email: 'studentEmail',
+  address: 'address',
+  gender: 'gender',
+  attendance: 'attendance'
+}
+
 export const getAllQuestions = async (filter, request) => {
   const questionList = await post(
     'https://vdn.diksha.gov.in/action/composite/v3/search',
@@ -159,8 +189,8 @@ export const getAttendanceDetailsByClass = async (
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(
-    `${manifest.api_url}/attendance/${groupId}/studentdetails`,
+  const result = await post(
+    `${manifest.api_url}/attendance/${groupId}/studentdetails`, {},
     {
       params,
       headers
@@ -168,7 +198,10 @@ export const getAttendanceDetailsByClass = async (
   )
 
   if (result.data && result.data.data) {
-    return result.data.data.sort()
+    const data = result.data.data.map((e) =>
+      mapInterfaceData(e, studentInterfaceData)
+    )
+    return _.sortBy(data, 'firstName')
   } else {
     return []
   }
