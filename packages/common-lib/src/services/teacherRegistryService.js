@@ -71,3 +71,31 @@ export const getOne = async (filters = {}, headers = {}) => {
     return {}
   }
 }
+
+export const update = async (data = {}, header = {}) => {
+  let newInterfaceData = interfaceData
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  if (headers?.removeParameter || headers?.onlyParameter) {
+    newInterfaceData = {
+      ...interfaceData,
+      removeParameter: headers?.removeParameter ? headers?.removeParameter : [],
+      onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : []
+    }
+  }
+  let newData = mapInterfaceData(data, newInterfaceData, true)
+  const result = await coreUpdate(
+    manifest.api_url + '/teacher/' + data.id,
+    newData,
+    {
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
+  } else {
+    return {}
+  }
+}

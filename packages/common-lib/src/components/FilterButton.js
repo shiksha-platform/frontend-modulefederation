@@ -101,8 +101,8 @@ const FilterButton = ({
                   : value.name
                 const isSelect = Array.isArray(groupValue?.[attributeName])
                   ? groupValue?.[attributeName].filter((e) =>
-                      value?.data.includes(e)
-                    ).length
+                    value?.data.includes(e)
+                  ).length
                   : value?.data.includes(groupValue?.[attributeName])
                 const overrideBtnProp = isSelect
                   ? { ..._button, bg: 'button.500' }
@@ -225,15 +225,15 @@ const FilterButton = ({
                   isDisabled
                   color={
                     formData?.data &&
-                    valueArr &&
-                    formData?.data?.length === valueArr?.length
+                      valueArr &&
+                      formData?.data?.length === valueArr?.length
                       ? 'button.500'
                       : 'gray.300'
                   }
                   name={
                     formData?.data &&
-                    valueArr &&
-                    formData?.data?.length === valueArr?.length
+                      valueArr &&
+                      formData?.data?.length === valueArr?.length
                       ? 'CheckboxLineIcon'
                       : 'CheckboxBlankLineIcon'
                   }
@@ -253,7 +253,7 @@ const FilterButton = ({
                   onPress={(e) => handleSelectVlaue(value)}
                   bg={
                     (type !== 'array' && valueArr === value) ||
-                    (type === 'stingValueArray' && valueArr.includes(value))
+                      (type === 'stingValueArray' && valueArr.includes(value))
                       ? 'gray.200'
                       : 'white'
                   }

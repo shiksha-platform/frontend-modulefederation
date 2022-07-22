@@ -11,6 +11,8 @@ import {
   BodyMedium,
   H3,
   overrideColorTheme,
+  notificationRegistryService,
+  configRegistryService
 } from "@shiksha/common-lib";
 import moment from "moment";
 import {
@@ -23,31 +25,111 @@ import {
   Pressable,
   Checkbox,
   VStack,
+  ScrollView,
   Center,
 } from "native-base";
 import React from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+import { useLocation } from 'react-router-dom';
 
 export default function ScheduleNotification({ footerLinks, appName }) {
   const { t } = useTranslation();
-  const [dateTime, setDateTime] = React.useState({});
-  const [dateTimeData, setDateTimeData] = React.useState({});
-  const [recurring, setRecurring] = React.useState(false);
-  const [recurringData, setRecurringData] = React.useState([]);
-  const [showSummaryModal, setShowSummaryModal] = React.useState();
-  const [success, setSuccess] = React.useState(false);
+  const [dateTime, setDateTime] = useState({});
+  const [dateTimeData, setDateTimeData] = useState({});
+  const [recurring, setRecurring] = useState(false);
+  const [recurringData, setRecurringData] = useState([]);
+  const [showSummaryModal, setShowSummaryModal] = useState();
+  const [success, setSuccess] = useState(false);
   const [width, height] = useWindowSize();
+  const location = useLocation();
 
-  React.useEffect(() => {
-    setRecurringData([
-      { name: "REPEAT", data: ["Daily", "Weekly", "Monthly"] },
-    ]);
-  }, [recurring]);
+  const scheduleNotificationValidation = () => {
+    if (dateTime.Date && dateTime.Time && dateTime.Month) {
+      setShowSummaryModal({ ...dateTime, name: "View Summary" });
+    }
+    else {
+      alert("Please select all the fields before proceeding");
+    }
+  }
 
-  React.useEffect(() => {
+  const to24HrsFormat = (time) => {
+    if (time) {
+      let hour = time.split(" ")[0].split(":")[0]
+      let mins = time.split(" ")[0].split(":")[1]
+      let code = time.split(" ")[1]
+      console.log(hour, code)
+
+      let newTime = ""
+      if (code == "PM") {
+        let newHour = Number(hour) + 12
+        newTime = newHour + ":" + mins
+      } else {
+        newTime = time.split(" ")[0]
+      }
+      console.log(newTime);
+      return newTime;
+    }
+  }
+
+
+  const NotificationObject = {
+    Absent_Today: "Absentfortoday",
+    Absent_For_LastWeek: "Absentforlastweek",
+    absent_for_last_3_days: "Absentfor3days",
+    absent_yesterday: "Absentyesterday",
+    "100percent_present": "Present100percent",
+    Attendance: "attendance",
+    Lessonplans: "lessonplans",
+    Worksheet: "worksheet"
+  }
+
+  const NotificationSendRequest = async () => {
+    let ist = new Date(new Date().getFullYear(), dateTime.Month.substring(0, 2), dateTime.Date, to24HrsFormat(dateTime.Time).substring(0, 2), dateTime.Time.substring(3, 5));
+    let utc = moment.utc(ist).format("YYYY-MM-DD HH:mm:ss ");
+    let utcMin = utc.slice(14, 16);
+    let utcHrs = utc.slice(11, 13);
+    let utcDay = utc.slice(8, 10);
+    let utcMon = utc.slice(5, 7);
+    const respp = await notificationRegistryService.sendScheduledNotificationPost(
+      {
+        module: NotificationObject[location.state.Module],
+        eventTrigger: NotificationObject[location.state.Event],
+        templateId: "57",
+        groupId: location.state.GroupId,
+        channel: location.state.Channel,
+        senderId: localStorage.getItem("id"),
+        month: parseInt(utcMon) - 1,
+        date: `${new Date().getFullYear()}/${parseInt(utcMon) - 1}/${utcDay}`,
+        hours: utcHrs,
+        minutes: utcMin,
+        taskName: Math.random().toString(27).substring(2, 8),
+      });
+    return respp;
+  }
+
+  const handleTelemetry = () => {
+    NotificationSendRequest();
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Notification-End",
+      tag: "send later",
+      studentCount: students.length,
+      date: new Date().toISOString().slice(0, 10)
+    });
+    capture("END", telemetryData);
+  }
+
+  // useEffect(() => {
+  //   setRecurringData([
+  //     { name: "REPEAT", data: ["Daily", "Weekly", "Monthly"] },
+  //   ]);
+  // }, [recurring]);
+
+  useEffect(() => {
     let data = {};
     setDateTime({ ...dateTime, FREQUENCY: "", Time: "" });
     if (dateTime?.REPEAT === "Weekly") {
@@ -79,9 +161,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           icon={<IconByName name="MailLockLineIcon" _icon={{ size: 100 }} />}
           message={
             <Center mx="5">
-              <H1 color="gray.500">{"Notification Scheduled"}</H1>
+              <H1 color="gray.500">{t("NOTIFICATION_SCHEDULED")}</H1>
               <BodyMedium textAlign="center" color="gray.500">
-                {`Attendance Notification has been scheduled for Thursdays 2:00pm`}
+                {`Attendance Notification has been scheduled for ${new Date().getFullYear()}/${dateTime.Month ? dateTime?.Month.substring(0, 2) : ""}/${dateTime.Date ? dateTime?.Date : ""} at ${dateTime.Time ? dateTime?.Time : " "}`}
+                {/* /${dateTime?.Month.substring(0, 2)}/${dateTime?.Date} at ${dateTime?.Time} */}
               </BodyMedium>
               {/* <Button
                 colorScheme="button"
@@ -124,16 +207,16 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         <FormInput
           {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
           data={[
-            { name: "Date", data: ["24", "12"] },
-            { name: "Month", data: ["April"] },
+            { name: "Date", data: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"] },
+            { name: "Month", data: ['01. January', '02. February', '03. March', '04. April', '05. May', '06. June', '07. July', '08. August', '09. September', '10. October', '11. November', '12. December'] },
             {
               name: "Time",
               buttonVariant: "outline",
-              data: ["8.30AM", "9.30AM", "10.30AM"],
+              data: ["09.00 AM", "09.30 AM", "10.00 AM", "10.30 AM", "11.00 AM", "11.30 AM", "12.00 PM", "12.30 PM", "01.00 PM", "01.30 PM", "02.00 PM", "02.30 PM", "03.00 PM", "03.30 PM", "04.00 PM", "04.30 PM", "05.00 PM", "05.30 PM", "06.00 PM"],
             },
           ]}
         />
-        <Box bg={colors.white} p="5">
+        {/*<Box bg={colors.white} p="5">
           <Checkbox
             isChecked={recurring}
             colorScheme="button"
@@ -143,7 +226,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           >
             {t("THIS_IS_A_RECURRING_NOTIFICATION")}
           </Checkbox>
-        </Box>
+        </Box> */}
         {recurring ? (
           <FormInput
             {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
@@ -169,11 +252,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               px="5"
               ml="5px"
               flex="1"
-              onPress={(e) => {
-                setShowSummaryModal({ ...dateTime, name: "View Summary" });
-              }}
+              onPress={() => scheduleNotificationValidation()}
+
             >
-              {t("VIEW SUMMARY")}
+              {t("VIEW_SUMMARY")}
             </Button>
           </Button.Group>
         </Box>
@@ -193,36 +275,39 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"}>
+          <ScrollView maxH="80%" bg={colors.white} width={"100%"}>
             {dateTimeData?.data &&
               dateTimeData.data.map((value, index) => {
                 return (
                   <Pressable
                     key={index}
                     p="5"
-                    onPress={(e) =>
+                    onPress={(e) => {
                       setDateTime({ ...dateTime, [dateTimeData.name]: value })
-                    }
+                    }}
                     bg={
                       dateTime[dateTimeData.name] === value
                         ? colors.coolGray
                         : ""
                     }
                   >
-                    <Text colorScheme="button">{value}</Text>
+                    <Text colorScheme="button" >{value}</Text>
                   </Pressable>
+
                 );
               })}
-            <Box p="5">
+            <Box p="5" position="sticky" bottom="00">
               <Button
                 colorScheme="button"
                 _text={{ color: "white" }}
-                onPress={(e) => setDateTimeData({})}
+                onPress={(e) => {
+                  setDateTimeData({})
+                }}
               >
-                {t("SELECT")}
+                {t("CONTINUE")}
               </Button>
             </Box>
-          </Box>
+          </ScrollView>
         </Actionsheet>
         <Actionsheet
           isOpen={showSummaryModal?.name}
@@ -253,7 +338,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                   isDisabled
                 />
                 <BodyLarge>
-                  {t(`Sending to ${students.length} parents`)}
+                  {t(`Sending to ${location.state.studentCount} parents`)}
                 </BodyLarge>
               </HStack>
             </Box>
@@ -272,15 +357,16 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                   isDisabled
                 />
                 <BodyLarge>
-                  {t("Scheduled weekly on Thursday, 2:00 pm")}
+                  {t(`Scheduled for ${new Date().getFullYear()}/${dateTime.Month ? dateTime?.Month.substring(0, 2) : ""}/${dateTime.Date ? dateTime?.Date : ""} at ${dateTime.Time ? dateTime?.Time : " "}`)}
+                  {/* / ${dateTime?.Month.substring(0, 2)}/${dateTime?.Date} at ${dateTime?.Time} */}
                 </BodyLarge>
               </HStack>
             </Box>
             <VStack p="5" space={6}>
               <H3>{t("NOTICE")}</H3>
               <BodyMedium textTransform={"inherit"}>
-                Worksheets help the kids in exploring multiple concepts They
-                develop fine motor skills, logical thinking
+                Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be Taken As Authentication That You Have Personally Verified And Overseen The Distribution Of Smartphone To The Mentioned Student ID Of Your School. Thank You! - Samagra Shiksha, Himachal Pradesh
+                View Recipient List
               </BodyMedium>
             </VStack>
             <Box p="5">
@@ -288,6 +374,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {
+                  NotificationSendRequest();
                   setSuccess(true);
                   setShowSummaryModal({});
                   if (recurring) {
@@ -302,7 +389,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                   }
                 }}
               >
-                {t("SCHEDULE MESSAGE")}
+                {t("SCHEDULE_MESSAGE")}
               </Button>
             </Box>
           </Box>
@@ -347,7 +434,9 @@ const FormInput = ({
               isDisabled
             />
           }
-          onPress={(e) => setDateTimeData(item)}
+          onPress={(e) => {
+            setDateTimeData(item)
+          }}
         >
           {dateTime[item.name] ? dateTime[item.name] : `Select ${t(item.name)}`}
         </Button>

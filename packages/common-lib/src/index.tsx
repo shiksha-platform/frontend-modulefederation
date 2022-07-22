@@ -35,6 +35,8 @@ import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
+import * as notificationRegistryService from './services/notificationRegistryService'
+import { getAllForUser } from './services/firebaseHistoryRegistryService'
 
 export {
   AppBar,
@@ -63,7 +65,9 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
-  getApiConfig
+  getApiConfig,
+  notificationRegistryService,
+  getAllForUser
 }
 
 export * from './services/Auth'

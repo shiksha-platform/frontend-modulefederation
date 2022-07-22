@@ -80,6 +80,8 @@ import ArrowRightSFillIcon from 'remixicon-react/ArrowRightSFillIcon'
 import AddFillIcon from 'remixicon-react/AddFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
+import GalleryUploadLineIcon from 'remixicon-react/GalleryUploadLineIcon'
+import DeleteBinFillIcon from 'remixicon-react/DeleteBinFillIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -722,6 +724,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'GalleryUploadLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<GalleryUploadLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'DeleteBinFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<DeleteBinFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

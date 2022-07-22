@@ -40,6 +40,24 @@ export const getAll = async (params = {}, header = {}) => {
   }
 }
 
+export const getOne = async (params = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+
+  const result = await get(manifest.api_url + `/attendance/usersegment/` + `${params.attendance}`, {
+    params: { ...params },
+    headers
+  })
+  if (result.data) {
+    //return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    return result.data.data;
+  } else {
+    return []
+  }
+}
+
 export const create = async (data, headers = {}) => {
   let header = {
     ...headers,

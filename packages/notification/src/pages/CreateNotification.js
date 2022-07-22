@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   Box,
@@ -23,62 +24,44 @@ import {
   telemetryFactory,
   useWindowSize,
   overrideColorTheme,
+  notificationRegistryService,
+  attendanceRegistryService
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
-import { FormNotification } from "../component/FormNotification";
-import RecipientList, { StudentList } from "../component/RecipientList";
+import FormNotification from "../component/FormNotification";
+import RecipientList from "../component/RecipientList";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
+import { useSearchParams } from "react-router-dom";
 const colors = overrideColorTheme(colorTheme);
-const newStudents = [
-  {
-    fullName: "Shah Rukh Khan",
-    admissionNo: "1",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Salman Khan",
-    admissionNo: "7",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Rahul Dravid",
-    admissionNo: "8",
-    fathersName: "Mr. Fathers Name",
-    days: "3",
-  },
-  {
-    fullName: "Shah Rukh Khan",
-    admissionNo: "9",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Sandhya Shankar",
-    admissionNo: "3",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Siddharth Kabra",
-    admissionNo: "6",
-    fathersName: "Mr. Fathers Name",
-    days: "3",
-  },
-];
+
 const CreateNotification = ({ footerLinks, appName }) => {
   const { t } = useTranslation();
-  const [pageName, setPageName] = React.useState();
-  const [students, setStudents] = React.useState([]);
+  const [pageName, setPageName] = useState();
+  const [students, setStudents] = useState([]);
   const [width, height] = useWindowSize();
+  const [dateTime, setDateTime] = useState({});
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  React.useEffect(() => {
+  const NotificationObject = {
+    Absent_Today: "Absentfortoday",
+    Absent_For_LastWeek: "Absentforlastweek",
+    absent_for_last_3_days: "Absentfor3days",
+    absent_yesterday: "Absentyesterday",
+    "100percent_present": "Present100percent",
+    Attendance: "attendance",
+    Lessonplans: "lessonplans",
+    Worksheet: "worksheet"
+  }
+
+  if (searchParams.get('module')) {
+    dateTime.Module = "Attendance";
+  }
+
+  useEffect(() => {
     capture("PAGE");
-    setStudents(newStudents);
   }, []);
 
   const handleBackButton = () => {
@@ -93,6 +76,36 @@ const CreateNotification = ({ footerLinks, appName }) => {
     }
   };
 
+  const notificationSendRequest = () => {
+    const respp = notificationRegistryService.sendNotificationPost(
+      {
+        module: NotificationObject[dateTime.Module],
+        eventTrigger: NotificationObject[dateTime.Event],
+        templateId: "57",
+        groupId: dateTime.GroupId,
+        channel: dateTime.Channel,
+        senderId: localStorage.getItem("id")
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+  }
+
+  const handleOnPressForSendMsg = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Notification-End",
+      tag: "send now",
+      studentCount: students.length,
+      date: new Date().toISOString().slice(0, 10)
+    });
+    capture("END", telemetryData)
+    notificationSendRequest();
+    setPageName("Success");
+  }
+
   if (pageName === "Success") {
     return (
       <Layout
@@ -101,13 +114,14 @@ const CreateNotification = ({ footerLinks, appName }) => {
           onPressBackButton: handleBackButton,
         }}
       >
+
         <Loading
           width={width}
           height={height - 60}
           icon={<IconByName name="MailSendLineIcon" _icon={{ size: 100 }} />}
           message={
             <Center>
-              <H1 color={colors.coolGraylight}>{"Notification Sent"}</H1>
+              <H1 color={colors.coolGraylight}>{t("NOTIFICATION_SENT")}</H1>
               <BodyMedium color={colors.coolGraylight}>
                 {`Attendance Notification has been sent to ${students.length} parents`}
               </BodyMedium>
@@ -149,11 +163,11 @@ const CreateNotification = ({ footerLinks, appName }) => {
       _footer={footerLinks}
     >
       {pageName === "StudentList" ? (
-        <StudentList {...{ setPageName, students, setStudents }} />
+        <StudentList {...{ setPageName, students, setStudents, dateTime }} />
       ) : pageName === "RecipientList" ? (
-        <RecipientList {...{ setPageName, students, setStudents, appName }} />
+        <RecipientList {...{ setPageName, students, setStudents, appName, dateTime }} />
       ) : (
-        <FormNotification {...{ setPageName, students, setStudents }} />
+        <FormNotification {...{ setPageName, students, setStudents, dateTime, setDateTime }} />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
         <Actionsheet.Content
@@ -162,7 +176,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
         >
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="15px">
-              <H2>{t("VIEW_NOTIFCATION")}</H2>
+              <H2>{t("VIEW_NOTIFICATION")}</H2>
             </Stack>
             {/* <IconByName
               name="CloseCircleLineIcon"
@@ -194,8 +208,8 @@ const CreateNotification = ({ footerLinks, appName }) => {
           <VStack p="5" space={6}>
             <H3>{t("NOTICE")}</H3>
             <BodyMedium textTransform={"inherit"}>
-              Worksheets help the kids in exploring multiple concepts They
-              develop fine motor skills, logical thinking
+              Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be Taken As Authentication That You Have Personally Verified And Overseen The Distribution Of Smartphone To The Mentioned Student ID Of Your School. Thank You! - Samagra Shiksha, Himachal Pradesh
+              View Recipient List
             </BodyMedium>
           </VStack>
           <Box p="5">
@@ -208,7 +222,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
                 mr="5px"
                 onPress={(e) => setPageName()}
               >
-                {t("Cancel")}
+                {t("CANCEL")}
               </Button>
               <Button
                 flex="1"
@@ -216,22 +230,9 @@ const CreateNotification = ({ footerLinks, appName }) => {
                 _text={{ color: "white" }}
                 px="5"
                 ml="5px"
-                onPress={(e) => {
-                  const telemetryData = telemetryFactory.interact({
-                    appName,
-                    type: "Attendance-Notification-End-Send-Another-Message",
-                    startEventId: "2fd27a3a-27d6-481e-9ea5-24c5a976b0e9",
-                    badTemplate: "10%",
-                    goodTemplate: "50%",
-                    Now: "10%",
-                    Later: "50%",
-                    channel: "SMS",
-                  });
-                  capture("INTERACT", telemetryData);
-                  setPageName("Success");
-                }}
+                onPress={(e) => handleOnPressForSendMsg()}
               >
-                {t("Send message")}
+                {t("SEND_MESSAGE")}
               </Button>
             </Button.Group>
           </Box>
