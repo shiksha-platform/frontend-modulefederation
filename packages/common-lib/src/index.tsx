@@ -35,7 +35,7 @@ import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
-
+import AppRoutesContainer from './components/AppRoutesContainer'
 export {
   AppBar,
   Header,
@@ -51,6 +51,7 @@ export {
   DEFAULT_THEME,
   initializeI18n,
   AppShell,
+  AppRoutesContainer,
   ProgressBar,
   Tab,
   Loading,
@@ -73,3 +74,4 @@ export * from './components/helper'
 export * from './services/Telemetry'
 export * from './components/calender'
 export * from './components/layout/HeaderTags/index'
+export * from './components/firebase/firebase'

@@ -51,7 +51,7 @@ const ClassDetails = ({ footerLinks }) => {
       imageUrl={
         !loading
           ? classObject.image && classObject.image !== ""
-            ? `${manifest.api_url}/files/${encodeURIComponent(
+            ? `${process.env.REACT_APP_API_URL}/files/${encodeURIComponent(
                 classObject.image
               )}`
             : `${window.location.origin}/class.png`
