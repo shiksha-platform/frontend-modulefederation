@@ -1,0 +1,61 @@
+import * as React from "react";
+import { StudentCardsList } from "components/composite/StudentCardsList";
+
+// Utils
+import { colorTheme } from "utils/functions/ColorTheme";
+
+// Mock Data
+const data = [
+  {
+    aadhaar: 1,
+    address: "Park",
+    admissionNo: 123,
+    birthDate: undefined,
+    bloodGroup: undefined,
+    bpl: undefined,
+    classId: undefined,
+    currentClassID: undefined,
+    email: undefined,
+    fathersName: undefined,
+    firstName: undefined,
+    fullName: undefined,
+    gender: undefined,
+    height: undefined,
+    homeless: undefined,
+    id: undefined,
+    iscwsn: undefined,
+    lastName: undefined,
+    migrant: undefined,
+    phoneNumber: undefined,
+    refId: undefined,
+    religion: undefined,
+    schoolId: undefined,
+    singleGirl: undefined,
+    socialCategory: undefined,
+    weight: undefined,
+  },
+];
+
+
+// Templates
+const Template = (args) => {
+  return <StudentCardsList {...args} />;
+};
+
+export default {
+  title: "Attendance/Composite/StudentCardsList",
+  component: StudentCardsList,
+};
+export const WeekPresentView = Template.bind({});
+WeekPresentView.args = {
+  thisTitle: "THIS_WEEK",
+  lastTitle: "LAST_WEEK",
+  data,
+  attendance,
+  compareAttendance,
+  type: "absent",
+  appName: "Shiksha",
+  _bgColor: colorTheme.presentCardCompareBg,
+  _textColor: colorTheme.presentCardText,
+  _textCompareColor: colorTheme.presentCardCompareText,
+};
