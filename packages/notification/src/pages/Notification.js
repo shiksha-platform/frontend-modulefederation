@@ -374,7 +374,7 @@ const Notification = ({ footerLinks, appName }) => {
             <VStack p="5" space={6}>
               <BodyLarge>{t("NOTICE")}</BodyLarge>
               <BodyMedium textTransform={"inherit"}>
-                {notification?.content ? notification?.content : "Dummy text"}
+                {notification?.payload?.text ? notification?.payload?.text : "Dummy text"}
               </BodyMedium>
             </VStack>
             <Box bg={colors.white} p="5" bottom="0" shadow="2">
