@@ -23,6 +23,7 @@ import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
 import moment from "moment";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+const DRAFT = "Draft";
 
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -42,6 +43,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const [worksheetStartTime, setWorksheetStartTime] = useState();
   const [questionConfig, setQuestionConfig] = React.useState([]);
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
+  const [showButtonArray, setShowButtonArray] = React.useState([]);
 
   React.useEffect(async () => {
     const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
@@ -59,6 +61,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
         : []
     );
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    if (worksheet.state === DRAFT) {
+      setShowButtonArray(["Like"]);
+    } else {
+      setShowButtonArray([...buttons, "Like"]);
+    }
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =
       worksheetData && Array.isArray(worksheetData.questions)
@@ -110,6 +124,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       const { osid } = await likeRegistryService.create(newData);
       setLike({ ...newData, id: osid });
     }
+  };
+  const handleShare = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Share",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    navigate(`/worksheet/${worksheet.id}/share`);
   };
 
   React.useEffect(() => {
@@ -172,16 +198,28 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         languages: manifestLocal.languages,
         rightIcon: state ? (
           <HStack>
-            <IconByName
-              name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-              color={like.id ? colors.primary : colors.black}
-              onPress={handleLike}
-            />
-            <IconByName name="ShareLineIcon" />
-            <IconByName
-              onPress={(e) => navigate("/worksheet/template")}
-              name="DownloadLineIcon"
-            />
+            {!showButtonArray || showButtonArray.includes("Like") ? (
+              <IconByName
+                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+                color={like.id ? colors.primary : colors.black}
+                onPress={handleLike}
+              />
+            ) : (
+              <React.Fragment />
+            )}
+            {!showButtonArray || showButtonArray.includes("Share") ? (
+              <IconByName name="ShareLineIcon" onPress={handleShare} />
+            ) : (
+              <React.Fragment />
+            )}
+            {!showButtonArray || showButtonArray.includes("Download") ? (
+              <IconByName
+                onPress={(e) => navigate("/worksheet/template")}
+                name="DownloadLineIcon"
+              />
+            ) : (
+              <React.Fragment />
+            )}
           </HStack>
         ) : (
           <React.Fragment />

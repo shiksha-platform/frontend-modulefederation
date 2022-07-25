@@ -50,18 +50,18 @@ export default function SearchLayout({
             <Input
               flex='1'
               variant='unstyled'
-              InputRightElement={
-                <React.Fragment>
-                  <IconByName
-                    _icon={{ size: '23' }}
-                    color='coolGray.500'
-                    w='1/8'
-                    name='MicLineIcon'
-                    pl='0'
-                    onPress={(e) => console.log('not found mic fuction')}
-                  />
-                </React.Fragment>
-              }
+              // InputRightElement={
+              //   <React.Fragment>
+              //     <IconByName
+              //       _icon={{ size: '23' }}
+              //       color='coolGray.500'
+              //       w='1/8'
+              //       name='MicLineIcon'
+              //       pl='0'
+              //       onPress={(e) => console.log('not found mic fuction')}
+              //     />
+              //   </React.Fragment>
+              // }
               placeholder={`Type ${
                 minStringLenght ? 'min ' + minStringLenght : ''
               } to search `}

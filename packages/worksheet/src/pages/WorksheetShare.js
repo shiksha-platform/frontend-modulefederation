@@ -218,7 +218,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <WhatsappShareButton
-                url={`https://sandbox.shikshaplatform.io/modules/worksheet/${worksheetId}/view`}
+                url={`https://sandbox.shikshaplatform.io/modules/worksheet/worksheet/${worksheetId}/view`}
                 title="Worksheet"
                 separator=":: "
               >
@@ -232,7 +232,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <LinkedinShareButton
-                url={`https://sandbox.shikshaplatform.io/modules/worksheet/${worksheetId}/view`}
+                url={`https://sandbox.shikshaplatform.io/modules/worksheet/worksheet/${worksheetId}/view`}
               >
                 <HStack space="5">
                   <LinkedinIcon size={15} round />
