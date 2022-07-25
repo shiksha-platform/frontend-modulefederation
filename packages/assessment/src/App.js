@@ -89,7 +89,7 @@ function App() {
       routes={routes}
       AuthComponent={LoginComponent}
       basename={process.env.PUBLIC_URL}
-      _authComponent={{ swPath: "modules/assessment" }}
+      _authComponent={{ swPath: "/modules/assessment" }}
     />
   );
 }

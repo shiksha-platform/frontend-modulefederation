@@ -27,7 +27,7 @@ function App() {
       basename={process.env.PUBLIC_URL}
       routes={routes}
       AuthComponent={LoginComponent}
-      _authComponent={{ swPath: "modules/calendar" }}
+      _authComponent={{ swPath: "/modules/calendar" }}
     />
   );
 }
