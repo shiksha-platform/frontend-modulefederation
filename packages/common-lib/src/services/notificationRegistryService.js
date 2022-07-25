@@ -139,8 +139,6 @@ export const sendScheduledNotificationSearch = async (params = {}, header = {}) 
         }
     )
     if (result.data) {
-        console.log(result.data);
-        //return result.data
         const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
         return _.sortBy(data, 'name')
     } else {
