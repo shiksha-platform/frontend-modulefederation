@@ -33,7 +33,6 @@ export const allLogGet = async (params = {}, header = {}) => {
         headers
     })
     if (result.data.data) {
-        console.log(result.data.data);
         return result.data.data;
         // return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     } else {
@@ -77,11 +76,7 @@ export const sendNotificationSearch = async (params = {}, header = {}) => {
         }
     )
     if (result.data) {
-        console.log(result.data);
-        //return result.data
         const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-        console.log("data from service", data);
-        console.log("ssorted data from service", _.sortBy(data, 'name'));
         return _.sortBy(data, 'name')
     } else {
         return []
@@ -99,7 +94,6 @@ export const scheduledLogGet = async (params = {}, header = {}) => {
         headers
     })
     if (result.data.data) {
-        console.log(result.data.data);
         return result.data.data;
         // return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     } else {
@@ -122,8 +116,6 @@ export const sendScheduledNotificationPost = async (data, header = {}) => {
     const result = await post(manifest.api_url + '/scheduleNotification/scheduledSend', data,
         {
             params: data,
-            //headers: headers?.headers ? headers?.headers : {}
-            //Have to change the path 
             headers
         })
     if (result.data) {
@@ -150,8 +142,6 @@ export const sendScheduledNotificationSearch = async (params = {}, header = {}) 
         console.log(result.data);
         //return result.data
         const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-        console.log("data from service", data);
-        console.log("ssorted data from service", _.sortBy(data, 'name'));
         return _.sortBy(data, 'name')
     } else {
         return []
