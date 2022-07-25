@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 export default function SearchLayout({
   filters,
   minStringLenght,
+  searchPlaceholder,
   notFoundMessage,
   imageUrl,
   children,
@@ -50,6 +51,7 @@ export default function SearchLayout({
             <Input
               flex='1'
               variant='unstyled'
+              bg='gray.100'
               // InputRightElement={
               //   <React.Fragment>
               //     <IconByName
@@ -62,10 +64,12 @@ export default function SearchLayout({
               //     />
               //   </React.Fragment>
               // }
-              placeholder={`Type ${
-                minStringLenght ? 'min ' + minStringLenght : ''
-              } to search `}
-              onChange={(e) => setSearch(e.target.value)}
+              placeholder={
+                searchPlaceholder
+                  ? searchPlaceholder
+                  : `Type ${minStringLenght ? 'min ' + minStringLenght : ''}
+               to search `
+              }
             />
           </HStack>
         </Stack>

@@ -109,6 +109,7 @@ export default function Worksheet({ footerLinks, appName }) {
           search,
           setSearch,
           minStringLenght: 3,
+          searchPlaceholder: t("ENTER_TITLE_HINT"),
           notFoundMessage: t("TYPE_TO_START_SEARCHING_WORKSHEETS"),
           onCloseSearch: setSearchState,
         }}
