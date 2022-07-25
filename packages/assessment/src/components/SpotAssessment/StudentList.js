@@ -48,7 +48,8 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
     JSON.parse(localStorage.getItem("assessment-student")) || null
   );
   const [loading, setLoading] = React.useState(true);
-  const [chooseAssessmentTypeModal, setChooseAssessmentTypeModal] = useState(false);
+  const [chooseAssessmentTypeModal, setChooseAssessmentTypeModal] =
+    useState(false);
   const [assessmentTypes, setAssessmentTypes] = useState([
     "Oral Assessment",
     "Written Assessment",
@@ -63,32 +64,31 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
   const [chooseCompetenciesModal, setChooseCompetenciesModal] = useState(false);
   const [attendanceData, setAttendanceData] = useState({});
 
-
   const checkAttendance = async () => {
     // const date = moment().format("YYYY-MM-DD");
-    const date = moment('2022-07-21').format("YYYY-MM-DD");
-    const attendanceDetails = await assessmentRegistryService.getAttendanceDetailsByClass(classId, {
-      date,
-    });
+    const date = moment("2022-07-21").format("YYYY-MM-DD");
+    const attendanceDetails =
+      await assessmentRegistryService.getAttendanceDetailsByClass(classId, {
+        date,
+      });
 
-    if(attendanceDetails && attendanceDetails.length){
-      const presentStudents = attendanceDetails.filter((item)=> {
-        return item.attendance === 'Present'
+    if (attendanceDetails && attendanceDetails.length) {
+      const presentStudents = attendanceDetails.filter((item) => {
+        return item.attendance === "Present";
       }).length;
       setAttendanceData({
         present: presentStudents,
-        msg: null
-      })
+        msg: null,
+      });
       setStudentlist(attendanceDetails);
       setLoading(false);
-    }else{
+    } else {
       setAttendanceData({
         present: null,
-        msg: 'Attendance not marked yet, here is list of all students.'
-      })
+        msg: "Attendance not marked yet, here is list of all students.",
+      });
       getStudentsList();
     }
-
   };
   const getStudentsList = async () => {
     const list = await studentRegistryService.getAll({ classId });
@@ -181,19 +181,26 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
           <>
             <VStack>
               <H2>{t("Students List")}</H2>
-              {
-                attendanceData.msg ? <>
-                  <Caption color={colors.lightGray}>{attendanceData.msg}</Caption>
-                </> : <>
+              {attendanceData.msg ? (
+                <>
+                  <Caption color={colors.lightGray}>
+                    {attendanceData.msg}
+                  </Caption>
+                </>
+              ) : (
+                <>
                   <HStack alignItems={"center"}>
                     <Caption color={colors.gray}>
                       {t("Total ") + studentlist.length}
                     </Caption>{" "}
                     <Caption color={colors.lightGray}> ●</Caption>{" "}
-                    <Caption color={colors.gray}> {t("Present ") + attendanceData.present}</Caption>
+                    <Caption color={colors.gray}>
+                      {" "}
+                      {t("Present ") + attendanceData.present}
+                    </Caption>
                   </HStack>
                 </>
-              }
+              )}
             </VStack>
           </>
         }
@@ -208,19 +215,20 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
                     onPress={() => {
                       handleSelectedStudent(student);
                     }}
-                    isDisabled={student.attendance !== 'Present'}
-                    _disabled={{cursor: 'not-allowed'}}
+                    isDisabled={student.attendance !== "Present"}
+                    _disabled={{ cursor: "not-allowed" }}
                   >
                     <HStack alignItems="center" space={3}>
                       <Avatar
                         size="48px"
                         borderRadius="md"
                         source={{
-                          uri: student.image && student.image !== ""
-                            ? `${manifest.api_url}/files/${encodeURIComponent(
-                              student.image
-                            )}`
-                            : `https://via.placeholder.com/80x80.png`
+                          uri:
+                            student.image && student.image !== ""
+                              ? `${manifest.api_url}/files/${encodeURIComponent(
+                                  student.image
+                                )}`
+                              : `https://via.placeholder.com/80x80.png`,
                         }}
                       />
                       <VStack>

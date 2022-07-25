@@ -3,7 +3,10 @@ import {
   IconByName,
   Layout,
   assessmentRegistryService,
-  overrideColorTheme, H2, Loading, useWindowSize
+  overrideColorTheme,
+  H2,
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
@@ -29,7 +32,8 @@ export default function QumlTest() {
     );
     const classId = localStorage.getItem("assessment-class");
     const assessmentType = localStorage.getItem("assessment-type");
-    const studentId = JSON.parse(localStorage.getItem("assessment-student")).id || null;
+    const studentId =
+      JSON.parse(localStorage.getItem("assessment-student")).id || null;
     // const questionIds = JSON.parse(localStorage.getItem('assessment-questionIds'));
     // const qumlResult = JSON.parse(localStorage.getItem('assessment-quml-result'));
 
@@ -66,8 +70,7 @@ export default function QumlTest() {
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== "http://139.59.25.99:8090")
-          return;
+        if (event.origin !== "http://139.59.25.99:8090") return;
         localStorage.setItem(
           "assessment-quml-result",
           JSON.stringify(event.data)

@@ -104,7 +104,9 @@ const StudentDetailCard = ({ setSelectedStudent }) => {
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
           <Actionsheet.Item onPress={() => setNextOption("repeat")}>
-            <BodyLarge>Continue another type of test with same student</BodyLarge>
+            <BodyLarge>
+              Continue another type of test with same student
+            </BodyLarge>
           </Actionsheet.Item>
           <Actionsheet.Item onPress={() => setNextOption("repeat")}>
             <BodyLarge>Repeat test with another student</BodyLarge>

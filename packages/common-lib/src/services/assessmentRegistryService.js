@@ -152,9 +152,13 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await post(`${process.env.REACT_APP_API_URL}/trackassessment`, params, {
-    headers
-  })
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/trackassessment`,
+    params,
+    {
+      headers
+    }
+  )
 
   if (result.data && result.data.data) {
     return result.data.data
@@ -168,9 +172,12 @@ export const getAssessmentDetails = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${process.env.REACT_APP_API_URL}/trackassessment/${params}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/trackassessment/${params}`,
+    {
+      headers
+    }
+  )
 
   if (result.data && result.data.data) {
     return result.data.data
@@ -189,7 +196,8 @@ export const getAttendanceDetailsByClass = async (
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    `${process.env.REACT_APP_API_URL}/attendance/${groupId}/studentdetails`, {},
+    `${process.env.REACT_APP_API_URL}/attendance/${groupId}/studentdetails`,
+    {},
     {
       params,
       headers
