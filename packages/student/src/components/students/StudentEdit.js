@@ -47,6 +47,7 @@ export default function StudentEdit({
           "fathersName",
           "phoneNumber",
           "email",
+          "admissionNo",
           "gender",
         ];
   const parameter = {
@@ -56,6 +57,7 @@ export default function StudentEdit({
     fathersName: { placeholder: t("FATHERS_NAME") },
     phoneNumber: { placeholder: t("PHONE_NUMBER") },
     email: { placeholder: t("EMAIL"), type: "email" },
+    admissionNo: { placeholder: t("ADMISSION_NUMBER") },
     gender: {
       placeholder: t("GENDER"),
       type: "select",

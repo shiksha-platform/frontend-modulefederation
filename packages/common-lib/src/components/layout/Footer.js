@@ -14,12 +14,14 @@ export default function Footer({ menues, routeDynamics, ...props }) {
 
   useEffect(() => {
     let path = window?.location?.pathname.toString()
-    if (['/'].includes(path)) {
-      setSelected(0)
+    if (path.startsWith('/attendance') || path.startsWith('/class')) {
+      setSelected(1)
     } else if (path.startsWith('/worksheet')) {
       setSelected(3)
+    } else if (path.startsWith('/mylearning')) {
+      setSelected(4)
     } else {
-      setSelected(1)
+      setSelected(0)
     }
   }, [])
 

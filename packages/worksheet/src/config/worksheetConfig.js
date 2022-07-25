@@ -43,6 +43,7 @@ export const defaultInputs = [
   },
   {
     name: "Source",
+    required: true,
     attributeName: "source",
     data: ["source 1", "source 2"],
   },

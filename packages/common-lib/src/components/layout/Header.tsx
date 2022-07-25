@@ -18,7 +18,7 @@ export default function Header({
   return !isDisabledHeader ? (
     !customeComponent ? (
       <Box {..._box} py={7} px={5}>
-        <HStack justifyContent='space-between' alignItems='center'>
+        <HStack justifyContent='space-between' alignItems='center' space='1'>
           <VStack>
             {subHeadingComponent ? (
               subHeadingComponent

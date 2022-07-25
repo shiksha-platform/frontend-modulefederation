@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { IconByName, ProgressBar } from "@shiksha/common-lib";
 import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-  Divider,
-  Actionsheet,
-  Checkbox,
-} from "native-base";
+  IconByName,
+  ProgressBar,
+  overrideColorTheme,
+  BodyLarge,
+  Subtitle,
+  BodySmall,
+} from "@shiksha/common-lib";
+import { HStack, VStack, Box, Button, Divider } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const ExamScoresCard = ({ setPageName }) => {
   const navigate = useNavigate();
@@ -21,12 +19,12 @@ const ExamScoresCard = ({ setPageName }) => {
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: colors.successBarColor,
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: colors.pendingBarColor,
       value: 6,
     },
   ]);
@@ -63,42 +61,45 @@ const ExamScoresCard = ({ setPageName }) => {
   return (
     <>
       <VStack space={2}>
-        <Text>State Examinations</Text>
-        <Box borderRadius="md">
+        <BodyLarge>State Examinations</BodyLarge>
+        <Box
+          borderWidth="1"
+          borderColor={colors.borderColor}
+          borderRadius="10px"
+        >
           <VStack space="4">
-            <Box px="4" py={2} bg={"#F57B7B"} roundedTop="6">
+            <Box px="4" py={2} bg={colors.scoreCardIcon2} roundedTop="6">
               <HStack justifyContent={"center"} alignItems="center">
-                <IconByName name="TimeLineIcon" pr="0" color="white" />
-                <Text color="white" bold fontSize="xs">
+                <IconByName name="TimeLineIcon" pr="0" color={colors.white} />
+                <Subtitle color={colors.white}>
                   {" "}
                   4 Days left! Submit assessment scores now.
-                </Text>
+                </Subtitle>
               </HStack>
             </Box>
-            <Box px="4" bg={"#FFF8F7"}>
-              <Text bold mb="3">
-                Summative Assessment 1
-              </Text>
-              <Text mb="5" fontSize={"xs"} color={"muted.600"}>
+            <Box px="4">
+              <BodyLarge>Summative Assessment 1</BodyLarge>
+              <BodySmall py="2" color={colors.gray}>
                 Due Date - 27, May 2022
-              </Text>
+              </BodySmall>
               <VStack flex="auto" alignContent={"center"}>
                 <ProgressBar
                   isTextShow
                   legendType="separated"
                   h="35px"
-                  _bar={{ rounded: "md" }}
+                  _bar={{ rounded: "md", my: "3" }}
                   isLabelCountHide
                   data={progressAssessment}
                 />
               </VStack>
             </Box>
-            <Box p="4" bg={"#FCF3F3"} borderBottomRadius={6}>
+            <Divider my="1" mx="4" w="90%"></Divider>
+            <Box p="4" pt="4px" borderBottomRadius={6}>
               <Button
                 py={3}
                 colorScheme="button"
-                _text={{ color: "#fff" }}
-                onPress={() => navigate("/examscores")}
+                _text={{ color: colors.white }}
+                onPress={() => navigate("/assessment/examscores")}
               >
                 {t("continue")}
               </Button>
@@ -106,16 +107,9 @@ const ExamScoresCard = ({ setPageName }) => {
           </VStack>
         </Box>
       </VStack>
-      <Text
-        my={2}
-        textAlign={"center"}
-        color={"#F87558"}
-        fontSize={12}
-        bold
-        cursor={"pointer"}
-      >
+      <Subtitle my={2} textAlign={"center"} color={colors.primary}>
         {t("VIEW PAST ASSESSMENTS")}
-      </Text>
+      </Subtitle>
     </>
   );
 };

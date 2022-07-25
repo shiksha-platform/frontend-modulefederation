@@ -7,22 +7,19 @@ import {
   H2,
   H3,
   ProgressBar,
-  telemetryFactory,
-  capture,
+  overrideColorTheme,
+  BodyLarge,
+  Caption,
+  Subtitle,
 } from "@shiksha/common-lib";
-import {
-  Button,
-  Box,
-  VStack,
-  Text,
-  HStack,
-  Divider,
-  Avatar,
-} from "native-base";
+import { Button, Box, VStack, Text, HStack, Avatar } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
+
 export default function SuccessPublicationReport({
   handleBackButton,
   formObject,
@@ -33,12 +30,12 @@ export default function SuccessPublicationReport({
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: colors.successBarColor,
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: colors.pendingBarColor,
       value: 6,
     },
   ]);
@@ -58,8 +55,8 @@ export default function SuccessPublicationReport({
           ? handleBackButton
           : (e) => console.log(e),
         languages: manifest.languages,
-        color: "successAlertText.500",
-        _box: { bg: "successAlert.500" },
+        color: colors.success,
+        _box: { bg: colors.bgSuccessAlert },
       }}
     >
       <Loading
@@ -67,24 +64,18 @@ export default function SuccessPublicationReport({
         height={height - 230}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg="successAlert.500" pb="100px" pt="32px">
+            <VStack bg={colors.bgSuccessAlert} pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
                 name="CheckboxCircleFillIcon"
-                color="successAlertText.500"
+                color={colors.success}
                 _icon={{ size: 100 }}
               />
               <Box alignItems="center">
-                <H1
-                  fontSize="22px"
-                  fontWeight="600"
-                  color="successAlertText.500"
-                >
-                  Completed
-                </H1>
-                <Text color="successAlertText.500">
+                <H1 color={colors.success}>Completed</H1>
+                <BodyLarge color={colors.success}>
                   Your spot assessment successfully
-                </Text>
+                </BodyLarge>
               </Box>
             </VStack>
             <Box
@@ -92,56 +83,53 @@ export default function SuccessPublicationReport({
                 p: 4,
                 mt: -30,
                 position: "relative",
-                bg: "#FFCAAC",
+                bg: colors.reportDetailsSubheaderBg,
                 roundedTop: "20",
                 _text: { textTransform: "inherit" },
               }}
             >
-              <VStack mb={3}>
-                <H2 fontWeight="600">{t("Science")}</H2>
+              <VStack>
+                <H2>{t("Science")}</H2>
                 <HStack alignItems={"center"}>
-                  <Text color={"#373839"} fontSize={"xs"}>
-                    {t("Class VI")}
-                  </Text>{" "}
-                  <Text fontSize="5px" color="#373839">
-                    {" "}
-                    ●
-                  </Text>{" "}
-                  <Text color="#373839" fontSize={"xs"}>
-                    {" "}
-                    {t("Sec A")}
-                  </Text>
+                  <Caption color={colors.gray}>{t("Class VI")}</Caption>{" "}
+                  <Caption color={colors.lightGray0}> ●</Caption>{" "}
+                  <Caption color={colors.gray}> {t("Sec A")}</Caption>
                 </HStack>
               </VStack>
             </Box>
 
-            <Box bg={"#EFEFEF"}>
+            <Box>
               <VStack space={2}>
-                <Box p={4} bg={"white"}>
+                <Box p={4} bg={colors.white}>
                   <VStack space={2}>
-                    <H2 bold>Class Participation</H2>
+                    <H2>Class Participation</H2>
                     <Box borderRadius="md">
                       <VStack>
-                        <Box px="4" py={2} bg={"#F57B7B"} roundedTop="6">
+                        <Box
+                          px="4"
+                          py={2}
+                          bg={colors.scoreCardIcon2}
+                          roundedTop="6"
+                        >
                           <HStack alignItems="center">
                             <IconByName
                               name="EmotionSadLineIcon"
                               pr="0"
-                              color="white"
+                              color={colors.white}
                             />
-                            <Text color="white" bold fontSize="xs">
+                            <Subtitle color={colors.white}>
                               {" "}
                               Poor overall performance!
-                            </Text>
+                            </Subtitle>
                           </HStack>
                         </Box>
-                        <Box p="4" bg={"#FFF8F7"}>
+                        <Box p="4" bg={colors.QuationsBoxContentBg}>
                           <VStack flex="auto" alignContent={"center"}>
                             <ProgressBar
                               isTextShow
                               legendType="separated"
                               h="35px"
-                              _bar={{ rounded: "md" }}
+                              _bar={{ rounded: "md", mb: "2" }}
                               isLabelCountHide
                               data={progressAssessment}
                             />
@@ -149,30 +137,31 @@ export default function SuccessPublicationReport({
                         </Box>
                         <Box
                           p="4"
-                          bg={"#FEF1EE"}
+                          bg={colors.QuationsBoxBg}
                           borderBottomRadius={6}
                           textAlign="center"
                         >
-                          <Text>
-                            Average Class Score is <Text bold>18</Text> out of{" "}
-                            <Text bold>25</Text>
-                          </Text>
+                          <Subtitle>
+                            Average Class Score is <H2 bold>18</H2> out of{" "}
+                            <H2>25</H2>
+                          </Subtitle>
                         </Box>
                       </VStack>
                     </Box>
                   </VStack>
                 </Box>
-                <Box p={4} justifyContent="center" bg="white">
-                  <H2 mb={3}>20 Students Assessed</H2>
-                  <Text my={3}>
+                <Box p={4} justifyContent="center" bg={colors.white}>
+                  <H2>20 Students Assessed</H2>
+                  <Subtitle color={colors.gray} mb="4">
                     Assessment SMS will be sent to selected students
-                  </Text>
+                  </Subtitle>
 
-                  <Box>
+                  <Box py="2">
                     <HStack justifyContent={"space-between"}>
                       <Button
                         colorScheme="button"
                         variant="outline"
+                        w="45%"
                         // onPress={()=> setSelectedStudent()}
                       >
                         {t("View Message")}
@@ -180,8 +169,9 @@ export default function SuccessPublicationReport({
 
                       <Button
                         colorScheme="button"
+                        w="50%"
                         _text={{
-                          color: "#fff",
+                          color: colors.white,
                         }}
                         onPress={() => {
                           _handleSpotAssessmentNotificationSend();
@@ -192,66 +182,73 @@ export default function SuccessPublicationReport({
                     </HStack>
                   </Box>
                 </Box>
-                <Box p={4} bg="white">
-                  <H2 mb={3}>100% Achievers</H2>
-                  <HStack space={2} justifyContent="space-between">
-                    <Box textAlign={"center"}>
-                      <VStack space={1}>
-                        <Avatar
-                          size="48px"
-                          mx="auto"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <H3>Shivani Joshi</H3>
-                        <Text fontSize="xs" color={"#373839"}>
-                          Roll No 11
-                        </Text>
-                      </VStack>
-                    </Box>
+                <Box p={4} bg={colors.white}>
+                  <Box py="4" bg={colors.white}>
+                    <VStack space={4}>
+                      <H2 mb={3}>100% Achievers</H2>
+                      <Box p={4} bg={colors.achiverBoxBg} rounded="10">
+                        <HStack space={2} justifyContent="space-between">
+                          <Box textAlign={"center"}>
+                            <VStack space={1}>
+                              <Avatar
+                                size="48px"
+                                mx="auto"
+                                borderRadius="md"
+                                source={{
+                                  uri: "https://via.placeholder.com/50x50.png",
+                                }}
+                              />
+                              <H3>Shivani Joshi</H3>
+                              <Subtitle color={colors.gray}>
+                                Roll No 11
+                              </Subtitle>
+                            </VStack>
+                          </Box>
 
-                    <Box textAlign={"center"}>
-                      <VStack space={1}>
-                        <Avatar
-                          size="48px"
-                          mx="auto"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <H3>Shivani Joshi</H3>
-                        <Text fontSize="xs" color={"#373839"}>
-                          Roll No 11
-                        </Text>
-                      </VStack>
-                    </Box>
+                          <Box textAlign={"center"}>
+                            <VStack space={1}>
+                              <Avatar
+                                size="48px"
+                                mx="auto"
+                                borderRadius="md"
+                                source={{
+                                  uri: "https://via.placeholder.com/50x50.png",
+                                }}
+                              />
+                              <H3>Shivani Joshi</H3>
+                              <Subtitle color={colors.gray}>
+                                Roll No 11
+                              </Subtitle>
+                            </VStack>
+                          </Box>
 
-                    <Box textAlign={"center"}>
-                      <VStack space={1}>
-                        <Avatar
-                          size="48px"
-                          mx="auto"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <H3>Shivani Joshi</H3>
-                        <Text fontSize="xs" color={"#373839"}>
-                          Roll No 11
-                        </Text>
-                      </VStack>
-                    </Box>
-                  </HStack>
-
+                          <Box textAlign={"center"}>
+                            <VStack space={1}>
+                              <Avatar
+                                size="48px"
+                                mx="auto"
+                                borderRadius="md"
+                                source={{
+                                  uri: "https://via.placeholder.com/50x50.png",
+                                }}
+                              />
+                              <H3>Shivani Joshi</H3>
+                              <Subtitle color={colors.gray}>
+                                Roll No 11
+                              </Subtitle>
+                            </VStack>
+                          </Box>
+                        </HStack>
+                      </Box>
+                    </VStack>
+                  </Box>
                   <Box mt={4}>
                     <HStack justifyContent={"space-between"}>
                       <Button
                         colorScheme="button"
                         variant="outline"
+                        w="45%"
+                        mr="2"
                         // onPress={()=> setSelectedStudent()}
                       >
                         {t("Close")}
@@ -259,10 +256,14 @@ export default function SuccessPublicationReport({
 
                       <Button
                         colorScheme="button"
+                        w="50%"
+                        ml="2"
                         _text={{
-                          color: "#fff",
+                          color: colors.white,
                         }}
-                        onPress={() => navigate("/assessment-detailed-report")}
+                        onPress={() =>
+                          navigate("/assessment/assessment-detailed-report")
+                        }
                       >
                         {t("See full report")}
                       </Button>

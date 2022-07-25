@@ -25,6 +25,7 @@ export default function AppBar({
   onPressBackButton,
   rightIcon,
   isShowNotificationButton,
+  titleComponent,
   ...props
 }) {
   const [searchInput, setSearchInput] = useState(false)
@@ -119,6 +120,7 @@ export default function AppBar({
                 />
               )}
             </HStack>
+            {titleComponent ? { titleComponent } : <React.Fragment />}
             <HStack alignItems={'center'}>
               {!searchInput && isEnableSearchBtn ? (
                 <IconByName
@@ -142,6 +144,7 @@ export default function AppBar({
               )}
               <Stack px='3'>
                 <Menu
+                  right='100%'
                   w='190'
                   placement='bottom right'
                   trigger={(triggerProps) => {

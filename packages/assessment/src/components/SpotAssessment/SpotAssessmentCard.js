@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   capture,
   IconByName,
   ProgressBar,
   telemetryFactory,
+  overrideColorTheme,
+  BodyLarge,
+  BodySmall,
+  Subtitle,
+  H2,
+  H3,
+  assessmentRegistryService,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -19,24 +26,39 @@ import {
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const SpotAssessmentCard = ({ setPageName, appName }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
-  const [chooseCompetenciesModal, setChooseCompetenciesModal] = useState(false);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState(
+    localStorage.getItem("assessment-subject")
+  );
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: colors.successBarColor,
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: colors.pendingBarColor,
       value: 6,
     },
   ]);
+
+  const getSubjectsList = async () => {
+    const res = await assessmentRegistryService.getSubjectsList();
+    setSubjects(res);
+  };
+
+  const handleSubjectSelection = (subject) => {
+    setSelectedSubject(subject);
+    localStorage.setItem("assessment-subject", subject);
+  };
 
   const _handleSpotAssessmentStart = () => {
     setChooseSubjectModal(true);
@@ -48,106 +70,80 @@ const SpotAssessmentCard = ({ setPageName, appName }) => {
     capture("START", telemetryData);
   };
 
-  /*React.useEffect(() => {
-    const getData = async () => {
-      let params = {
-        fromDate: moment().format("YYYY-MM-DD"),
-        toDate: moment().format("YYYY-MM-DD"),
-      };
-      let attendanceData = await attendanceRegistryService.getAll(params);
-      let lengthAttendance = 0;
-      const data = [PRESENT, ABSENT, UNMARKED].map((item, index) => {
-        const attendance = getUniqAttendance(attendanceData, item, students);
-        let count = 0;
-        lengthAttendance += attendance.length;
-        if (item === UNMARKED) {
-          count = attendance.length + (students.length - lengthAttendance);
-        } else {
-          count = attendance.length;
-        }
-        return {
-          name: count + " " + item,
-          color: `attendance${item}.500`,
-          value: count,
-        };
-      });
-
-      setProgressAttendance(data);
-    };
-    getData();
-  }, [students]);*/
-
+  useEffect(() => {
+    getSubjectsList();
+  }, []);
   return (
     <>
       {/*========= box1 =============*/}
-      <VStack space={2}>
-        <Text>Spot Assessment</Text>
-        <Box borderWidth="1" borderColor={"#E2E2E2"} borderRadius="md">
+      <VStack space={4}>
+        <BodyLarge>Spot Assessment</BodyLarge>
+        <Box
+          borderWidth="1"
+          borderColor={colors.borderColor}
+          borderRadius="10px"
+        >
           <VStack space="4">
-            <Box p="4" roundedTop="6">
-              <VStack space={8}>
+            <Box p="4" pb="4px" roundedTop="6">
+              <VStack space={4}>
                 <Box>
-                  <Text bold fontSize="lg">
-                    {t("Spot Assessment 1")}
-                  </Text>
-                  <Text color="muted.600">27, May 2022</Text>
+                  <BodyLarge py="2">{t("Written Spot Assessment")}</BodyLarge>
+                  <BodySmall color={colors.gray}>27, May 2022</BodySmall>
                 </Box>
 
                 <ProgressBar
                   isTextShow
                   legendType="separated"
                   h="35px"
-                  _bar={{ rounded: "md" }}
+                  _bar={{ rounded: "md", mb: "2" }}
                   isLabelCountHide
                   data={progressAssessment}
                 />
-                {/*<HStack justifyContent={"space-between"} alignItems="center">
-                  <IconByName name="More2LineIcon" pr="0" />
-                </HStack>*/}
               </VStack>
-            </Box>
-            {/*<Box px="4">
-                <Text bold mb="3">Assessment 1</Text>
-                <HStack justifyContent={"space-between"} alignItems="center" py={3}>
-                  <Text flexGrow={1} flexBasis={'100px'} color="muted.600" fontSize={'xs'}>{t("students Assessed")}</Text>
-                  <ProgressBar
-                    flexGrow={2}
-                    flexBasis={'100px'}
-                    data={progressAssessment}
-                  />
-                </HStack>
-                <HStack justifyContent={"space-between"} alignItems="center" py={3}>
-                  <Text flexGrow={1}  flexBasis={'100px'} color="muted.600" fontSize={'xs'}>{t("Average Score")}</Text>
-                  <ProgressBar
-                    flexGrow={2}
-                    flexBasis={'100px'}
-                    data={progressAssessment}
-                  />
-                </HStack>
-              </Box>*/}
-            <Divider></Divider>
-            <Box p="4" pt="0">
-              <Button
-                py={3}
-                // colorScheme="button"
-                _text={{ color: "#fff" }}
-                onPress={_handleSpotAssessmentStart}
-              >
-                {t("Continue")}
-              </Button>
             </Box>
           </VStack>
         </Box>
-        <Text
-          my={2}
-          textAlign={"center"}
-          color={"#F87558"}
-          fontSize={12}
-          bold
-          cursor={"pointer"}
+
+        <Box
+          borderWidth="1"
+          borderColor={colors.borderColor}
+          borderRadius="10px"
         >
+          <VStack space="4">
+            <Box p="4" pb="4px" roundedTop="6">
+              <VStack space={4}>
+                <Box>
+                  <BodyLarge py="2">{t("Oral Spot Assessment")}</BodyLarge>
+                  <BodySmall color={colors.gray}>27, May 2022</BodySmall>
+                </Box>
+
+                <ProgressBar
+                  isTextShow
+                  legendType="separated"
+                  h="35px"
+                  _bar={{ rounded: "md", mb: "2" }}
+                  isLabelCountHide
+                  data={progressAssessment}
+                />
+              </VStack>
+            </Box>
+          </VStack>
+        </Box>
+
+        <Divider mx="4" w="90%"></Divider>
+        <Box p="4" pt="4px">
+          <Button
+            py={3}
+            // colorScheme="button"
+            _text={{ color: colors.white }}
+            onPress={_handleSpotAssessmentStart}
+          >
+            {t("Continue")}
+          </Button>
+        </Box>
+        <Subtitle my={2} textAlign={"center"} color={colors.primary}>
           {t("VIEW PAST ASSESSMENTS")}
-        </Text>
+        </Subtitle>
       </VStack>
 
       {/*========= drawer1 =============*/}
@@ -155,95 +151,53 @@ const SpotAssessmentCard = ({ setPageName, appName }) => {
         isOpen={chooseSubjectModal}
         onClose={() => setChooseSubjectModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Choose the subject")}
-              </Text>
+            <Stack p={5} pt={2} pb="15px">
+              <H2 textTransform="none">{t("Choose the subject")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"white"}
+              color={colors.cardCloseIcon}
               onPress={() => setChooseSubjectModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
-          <Actionsheet.Item>Mathematics</Actionsheet.Item>
-          <Actionsheet.Item>Science</Actionsheet.Item>
-          <Actionsheet.Item>English</Actionsheet.Item>
-          <Actionsheet.Item>History</Actionsheet.Item>
-          <Actionsheet.Item>Geography</Actionsheet.Item>
+        <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
+          {subjects && subjects.length ? (
+            subjects.map((subject) => {
+              return (
+                <Actionsheet.Item
+                  key={subject}
+                  onPress={() => {
+                    handleSubjectSelection(subject);
+                  }}
+                >
+                  <BodyLarge
+                    color={selectedSubject === subject ? "black" : colors.gray}
+                    textTransform="none"
+                  >
+                    {t(subject)}
+                  </BodyLarge>
+                </Actionsheet.Item>
+              );
+            })
+          ) : (
+            <>No Subjects</>
+          )}
 
-          <Divider my={4}></Divider>
-
-          <Box p="4" pt="0">
+          <Box p="4">
             <Button
               colorScheme="button"
               _text={{
-                color: "white",
+                color: colors.white,
               }}
               onPress={() => {
                 setChooseSubjectModal(false);
-                setChooseCompetenciesModal(true);
+                // setChooseAssessmentTypeModal(true);
+                setPageName("assessmentStudentList");
               }}
-            >
-              {t("Next")}
-            </Button>
-          </Box>
-        </Box>
-      </Actionsheet>
-
-      {/*========= drawer2 =============*/}
-      <Actionsheet
-        isOpen={chooseCompetenciesModal}
-        onClose={() => setChooseCompetenciesModal(false)}
-      >
-        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="25px">
-              <Text fontSize="16px" fontWeight={"600"}>
-                {t("Select the competencies")}
-              </Text>
-            </Stack>
-            <IconByName
-              name="CloseCircleLineIcon"
-              color={"white"}
-              onPress={(e) => setChooseCompetenciesModal(false)}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg="white">
-          <HStack justifyContent={"space-between"} p={4}>
-            <Text fontSize={16}>{t("Reasoning")}</Text>
-            <Checkbox colorScheme="orange" />
-          </HStack>
-
-          <HStack justifyContent={"space-between"} p={4}>
-            <Text fontSize={16}>{t("Cognitive")}</Text>
-            <Checkbox colorScheme="orange" />
-          </HStack>
-
-          <HStack justifyContent={"space-between"} p={4}>
-            <Text fontSize={16}>{t("Critical Thinking")}</Text>
-            <Checkbox colorScheme="orange" />
-          </HStack>
-
-          <HStack justifyContent={"space-between"} p={4}>
-            <Text fontSize={16}>{t("Enterprenurial")}</Text>
-            <Checkbox colorScheme="orange" />
-          </HStack>
-
-          <Divider my={4}></Divider>
-
-          <Box p="4" pt="0">
-            <Button
-              colorScheme="button"
-              _text={{
-                color: "white",
-              }}
-              onPress={() => setPageName("assessmentStudentList")}
+              isDisabled={!selectedSubject}
             >
               {t("Next")}
             </Button>

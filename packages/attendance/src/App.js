@@ -5,8 +5,6 @@ import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import Attendance from "pages/Attendance";
 import Report from "pages/reports/Report";
 import ReportDetail from "pages/reports/ReportDetail";
-import CompareReport from "pages/reports/CompareReport";
-import MessageHistory from "pages/sms/MessageHistory";
 import SendSMS from "pages/sms/SendSMS";
 import { navigationRoute } from "./services/routes";
 
@@ -30,16 +28,8 @@ function App() {
       component: ReportDetail,
     },
     {
-      path: navigationRoute.reportCompare,
-      component: CompareReport,
-    },
-    {
       path: navigationRoute.sendSms,
       component: SendSMS,
-    },
-    {
-      path: navigationRoute.sendSmsStudentId,
-      component: MessageHistory,
     },
     {
       path: navigationRoute.fourOfour,
@@ -54,6 +44,7 @@ function App() {
       basename={process.env.PUBLIC_URL}
       routes={routes}
       AuthComponent={LoginComponent}
+      _authComponent={{ swPath: "/modules/attendance" }}
     />
   );
 }

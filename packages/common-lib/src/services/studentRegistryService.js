@@ -25,7 +25,7 @@ const interfaceData = {
   singleGirl: 'singleGirl',
   socialCategory: 'socialCategory',
   admissionNo: 'refId1',
-  currentClassID: 'currentClassID',
+  currentClassID: 'classId',
   email: 'studentEmail',
   address: 'address',
   gender: 'gender'
@@ -39,7 +39,7 @@ export const getAll = async (params = {}, header = {}) => {
     ...header
   }
   const result = await get(
-    `${manifest.api_url}/group/${params?.classId}/participants?role=Student`,
+    `${process.env.REACT_APP_API_URL}/group/${params?.classId}/participants?role=Student`,
     {
       headers
     }
@@ -56,9 +56,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(manifest.api_url + '/student/' + filters.id, {
-    headers
-  })
+  const result = await get(
+    process.env.REACT_APP_API_URL + '/student/' + filters.id,
+    {
+      headers
+    }
+  )
   if (result?.data?.data) {
     let resultStudent = mapInterfaceData(result.data.data, interfaceData)
     resultStudent.id = resultStudent.id?.startsWith('1-')
@@ -82,7 +85,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    manifest.api_url + '/student/' + data.id,
+    process.env.REACT_APP_API_URL + '/student/' + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}

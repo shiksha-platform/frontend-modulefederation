@@ -7,26 +7,45 @@ import {
   Caption,
   Subtitle,
   likeRegistryService,
+  overrideColorTheme,
+  BodySmall,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import { Avatar, Box, HStack, Pressable, Stack, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import colorTheme from "../../colorTheme";
+import AttributeComponent from "components/AttributeComponent";
+const colors = overrideColorTheme(colorTheme);
 
 const DRAFT = "Draft";
+const AttributeData = [
+  { icon: "SurveyLineIcon", label: "SUBJECT", attribute: "subject" },
+  { icon: "BarChart2LineIcon", label: "LEVEL", attribute: "level" },
+  { icon: "QuestionLineIcon", label: "QUESTIONS", attribute: "questions" },
+  { icon: "AccountBoxFillIcon", label: "GRADE", attribute: "grade" },
+  { icon: "ArticleLineIcon", label: "TOPIC", attribute: "topic" },
+  { icon: "Download2LineIcon", label: "DOWNLOADS", attribute: "downloads" },
+];
 
 export default function WorksheetBox({
+  worksheetConfig,
   item,
   url,
-  canShare,
   canShowButtonArray,
   _addIconButton,
   appName,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const colors = ["lightBlue.800", "indigo.900", "fuchsia.700", "rose.600"];
+  const randomColors = [
+    "lightBlue.800",
+    "indigo.900",
+    "fuchsia.700",
+    "rose.600",
+  ];
   const [like, setLike] = React.useState({});
   const [likes, setLikes] = React.useState([]);
   const [showButtonArray, setShowButtonArray] = React.useState([]);
@@ -133,7 +152,8 @@ export default function WorksheetBox({
     let props = {
       name: "AddCircleFillIcon",
       _icon: { size: 30 },
-      color: "button.500",
+      color: colors.primary,
+      display: "none",
       p: "0",
       onPress: handleAddToTimeline,
       rounded: "full",
@@ -141,8 +161,9 @@ export default function WorksheetBox({
     if (item.state === DRAFT) {
       props = {
         ...props,
+        display: "",
         name: "EditBoxLineIcon",
-        color: "gray.500",
+        color: colors.gray,
         bg: colors.white,
         p: 1,
         _icon: { size: 20 },
@@ -152,22 +173,28 @@ export default function WorksheetBox({
   };
 
   return (
-    <Box p="5" borderWidth="1" borderColor="gray.300" rounded="lg">
+    <Box p="5" borderWidth="1" borderColor={colors.lightGray2} rounded="lg">
       <VStack space={4}>
         <HStack justifyContent="space-between" alignItems="flex-start">
           <Pressable onPress={() => (url ? navigate(url) : "")}>
             <HStack space={2} alignItems="center">
-              <Avatar bg={colors[random]} size="57" rounded="md">
-                <H2 color="white">{item.name?.toUpperCase().substr(0, 1)}</H2>
+              <Avatar bg={randomColors[random]} size="57" rounded="md">
+                <H2 color={colors.white}>
+                  {item.name?.toUpperCase().substr(0, 1)}
+                </H2>
               </Avatar>
               <Stack space="1">
-                <VStack space="1px">
-                  <H2>{item.name}</H2>
-                </VStack>
+                {worksheetConfig?.includes("name") || true ? (
+                  <VStack space="1px">
+                    <H2>{item.name}</H2>
+                  </VStack>
+                ) : (
+                  <React.Fragment />
+                )}
                 <HStack space={1} alignItems="center">
                   <IconByName
                     name="Heart3FillIcon"
-                    color="red.500"
+                    color={colors.eventError}
                     _icon={{ size: 12 }}
                     isDisabled
                   />
@@ -181,137 +208,69 @@ export default function WorksheetBox({
           </Pressable>
           <RightButton />
         </HStack>
-        <Subtitle
-          color="worksheetBoxText.500"
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "3",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {item.description}
-        </Subtitle>
-        <HStack space="2">
-          <VStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="SurveyLineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Subject: " + item.subject}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="BarChart2LineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Level: " + item.level}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="QuestionLineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Questions: " +
-                  (Array.isArray(item.questions)
-                    ? item.questions.length
-                    : item.questions)}
-              </Subtitle>
-            </HStack>
-          </VStack>
-          <VStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="AccountBoxFillIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Grade: " + item.grade}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="ArticleLineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {t("TOPIC") + ": " + item.topic}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName
-                name="Download2LineIcon"
-                _icon={{ size: 12 }}
-                color="worksheetBoxText.400"
-                p="0"
-              />
-              <Subtitle color="worksheetBoxText.400">
-                {"Downloads: " + item.downloads}
-              </Subtitle>
-            </HStack>
-          </VStack>
-        </HStack>
-        {canShare ? (
-          <HStack space="5">
-            {!showButtonArray || showButtonArray.includes("Like") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-                  _icon={{ size: 15 }}
-                  color="button.500"
-                  p="0"
-                  onPress={handleLike}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-            {!showButtonArray || showButtonArray.includes("Share") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  name="ShareLineIcon"
-                  _icon={{ size: 15 }}
-                  p="0"
-                  onPress={handleShare}
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-            {!showButtonArray || showButtonArray.includes("download") ? (
-              <Box shadow="2" p="2" rounded="full">
-                <IconByName
-                  onPress={handleDownload}
-                  name="DownloadLineIcon"
-                  _icon={{ size: 15 }}
-                  color="button.500"
-                  p="0"
-                />
-              </Box>
-            ) : (
-              ""
-            )}
-          </HStack>
+        {worksheetConfig?.includes("description") || true ? (
+          <BodyMedium
+            color={colors.worksheetText}
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: "3",
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {item.description}
+          </BodyMedium>
         ) : (
-          ""
+          <React.Fragment />
         )}
+        <AttributeComponent
+          data={AttributeData.filter((e) =>
+            worksheetConfig.includes(e.attribute)
+          )}
+          object={item}
+        />
+
+        <HStack space="5">
+          {!showButtonArray || showButtonArray.includes("Like") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+                _icon={{ size: 15 }}
+                color={colors.primary}
+                p="0"
+                onPress={handleLike}
+              />
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+          {!showButtonArray || showButtonArray.includes("Share") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                name="ShareLineIcon"
+                _icon={{ size: 15 }}
+                p="0"
+                onPress={handleShare}
+              />
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+          {!showButtonArray || showButtonArray.includes("Download") ? (
+            <Box shadow="2" p="2" rounded="full">
+              <IconByName
+                onPress={handleDownload}
+                name="DownloadLineIcon"
+                _icon={{ size: 15 }}
+                color={colors.primary}
+                p="0"
+              />
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+        </HStack>
       </VStack>
     </Box>
   );

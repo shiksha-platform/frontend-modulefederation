@@ -1,5 +1,13 @@
 {
   "YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS_MONTH": "आप इस महीने पूरे दिन मौजूद रहे हैं",
   "ABSENT_TODAY_POOR_THAN_LAST_WEEK": "अनुपस्थित है आज! पिछले सप्ताह की तुलना में खराब",
-  "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "पिछले महीने की तुलना में उम्र। सुधारा जा सकता है"
+  "AGERAGE_THAN_LAST_MONTH_CAN_BE_IMPROVED": "पिछले महीने की तुलना में उम्र। सुधारा जा सकता है",
+  "EMPLOYEE_CODE": "कर्मचारी कोड",
+  "DATE_FO_JOINING": "शामिल होने की तिथि",
+  "DATE_OF_BIRTH": "जन्म की तारीख",
+  "PERSONAL_DETAILS": "व्यक्तिगत विवरण",
+  "CONTACT_DETAILS": "सम्पर्क करने का विवरण",
+  "TURN_ON_DEVICE_LOCATION": "डिवाइस स्थान चालू करें",
+  "DEVICE_LOCATION_CANT_MARK_ATTENDANCE": "उपस्थिति अंकन के लिए आपके डिवाइस स्थान में लॉग इन करना आवश्यक है। स्थान के बिना, ऐप आपकी उपस्थिति को चिह्नित नहीं कर सकता है।",
+  "GO_BACK": "वापस जाओ"
 }

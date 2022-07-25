@@ -2,8 +2,10 @@ import React from "react";
 import { Box, HStack, VStack } from "native-base";
 import { colourPalette } from "constants/colours";
 import "../../App.css";
-import { BodyMedium } from "@shiksha/common-lib";
+import { BodyMedium, overrideColorTheme } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import colorTheme from "../../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const styles = { questionDiv: { display: "flex" } };
 
@@ -39,23 +41,19 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
         </HStack>
       </Box>
       {questionObject?.options ? (
-        <Box bg="#FFF8F7" p="4" roundedBottom={"xl"}>
+        <Box bg={colors.primaryLight1} p="4" roundedBottom={"xl"}>
           <VStack space="2">
             {questionObject.options?.map((item, index) => {
               return (
                 <HStack key={index} space="1" alignItems="baseline">
                   <BodyMedium
                     textTransform="inherit"
-                    color={
-                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
-                    }
+                    color={item.answer && !isAnswerHide ? colors.success : ""}
                   >
                     {alphabet[index] + ". "}
                   </BodyMedium>
                   <BodyMedium
-                    color={
-                      item.answer && !isAnswerHide ? "successAlertText.500" : ""
-                    }
+                    color={item.answer && !isAnswerHide ? colors.success : ""}
                   >
                     <div
                       dangerouslySetInnerHTML={createMarkup(item?.value?.body)}

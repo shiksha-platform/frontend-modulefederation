@@ -29,7 +29,7 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
 
-  const result = await get(manifest.api_url + '/attendance', {
+  const result = await get(process.env.REACT_APP_API_URL + '/attendance', {
     params: { ...params },
     headers
   })
@@ -70,9 +70,13 @@ export const create = async (data, headers = {}) => {
     onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/attendance', newData, {
-    headers: header
-  })
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/attendance',
+    newData,
+    {
+      headers: header
+    }
+  )
   if (result.data) {
     let { Attendance } = result.data?.data?.result
     return Attendance
@@ -95,7 +99,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    manifest.api_url + '/attendance/' + data.id,
+    process.env.REACT_APP_API_URL + '/attendance/' + data.id,
     newData,
     {
       headers: header
@@ -114,7 +118,7 @@ export const multipal = async (data = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    manifest.api_url + '/attendance/bulkAttendance',
+    process.env.REACT_APP_API_URL + '/attendance/bulkAttendance',
     data,
     { headers }
   )

@@ -37,22 +37,30 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
   // }
   return (
     <VStack>
-      <Box bg={bg} roundedTop={"xl"} py="10px" px="15px">
-        <HStack alignItems={"center"}>
-          <IconByName name={iconName} color={colors.white} />
-          <Subtitle textTransform="ingerit" color={colors.white}>
-            {title}
-          </Subtitle>
-        </HStack>
-      </Box>
+      {title !== "" ? (
+        <Box bg={bg} roundedTop={"xl"} py="10px" px="15px">
+          <HStack alignItems={"center"}>
+            <IconByName name={iconName} color={colors.white} />
+            <Subtitle textTransform="ingerit" color={colors.white}>
+              {title}
+            </Subtitle>
+          </HStack>
+        </Box>
+      ) : (
+        <React.Fragment />
+      )}
       <Box bg={colors.weekCardCompareBg} p="5">
         <HStack alignItems={"center"} justifyContent="space-around">
           <VStack alignItems="center">
-            <H1 color={colors.present}>{thisMonth}%</H1>
+            <H1 color={colors.present}>
+              {thisMonth ? Math.round(thisMonth) : 0}%
+            </H1>
             <BodySmall color={colors.gray}>{t("THIS_MONTH")}</BodySmall>
           </VStack>
           <VStack alignItems="center">
-            <H1 color={colors.presentCardCompareText}>{lastMonth}%</H1>
+            <H1 color={colors.presentCardCompareText}>
+              {lastMonth ? Math.round(lastMonth) : 0}%
+            </H1>
             <BodySmall color={colors.gray}>{t("LAST_MONTH")}</BodySmall>
           </VStack>
         </HStack>

@@ -17,13 +17,11 @@ import moment from "moment";
 import {
   IconByName,
   getStudentsPresentAbsent,
-  useWindowSize,
   capture,
   telemetryFactory,
   calendar,
   attendanceRegistryService,
   studentRegistryService,
-  H4,
   H2,
   BodySmall,
   Subtitle,
@@ -32,7 +30,6 @@ import {
   Caption,
   BodyMedium,
   overrideColorTheme,
-  getApiConfig,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import { useNavigate } from "react-router-dom";
@@ -115,11 +112,12 @@ export const MultipalAttendance = ({
   setIsEditDisabled,
   isWithEditButton,
   appName,
+  lastAttedance,
   manifest,
 }) => {
   const { t } = useTranslation();
-  const [showModal, setShowModal] = useState(false);
-  const [presentStudents, setPresentStudents] = useState([]);
+  const [showModal, setShowModal] = React.useState(false);
+  const [presentStudents, setPresentStudents] = React.useState([]);
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState();
   const holidays = [];
@@ -128,7 +126,7 @@ export const MultipalAttendance = ({
     if (showModal) setStartTime(moment());
   }, [showModal]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const getPresentStudents = async ({ students }) => {
       let weekdays = calendar(-1, "week");
       let workingDaysCount = weekdays.filter(
@@ -154,15 +152,14 @@ export const MultipalAttendance = ({
     getPresentStudents({ students });
   }, [students, attendance]);
 
-  const getLastAttedance = () => {
-    let dates = attendance.map((d) => moment(d.updatedAt));
-    let date = moment.max(dates);
-    return dates.length ? date.format("HH:MMA") : "N/A";
-  };
   const groupExists = (classObject) => classObject?.id;
   const markAllAttendance = async () => {
     setLoading(true);
-    if (typeof students === "object" && students.length > 0) {
+    if (
+      typeof students === "object" &&
+      students.length > 0 &&
+      moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]
+    ) {
       let student = students.find((e, index) => !index);
 
       const attendanceData = students.map((item, index) => {
@@ -234,7 +231,7 @@ export const MultipalAttendance = ({
             <VStack space={"15px"}>
               <VStack>
                 <Subtitle textTransform={"inherit"}>
-                  {t("LAST_UPDATED_AT") + " " + getLastAttedance()}
+                  {t("LAST_UPDATED_AT") + " " + lastAttedance}
                 </Subtitle>
                 <BodySmall textTransform={"inherit"}>
                   {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
@@ -303,8 +300,8 @@ export const MultipalAttendance = ({
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
+                    onPress={(e) => setShowModal(false)}
                     color={colors.white}
-                    onPress={(e) => modalClose()}
                   />
                 </HStack>
               </Actionsheet.Content>
@@ -347,7 +344,7 @@ export const MultipalAttendance = ({
                           <Subtitle color={colors.successAlertText}>
                             {fullName ? fullName : ""}
                             {" at "}
-                            {getLastAttedance()}
+                            {lastAttedance}
                           </Subtitle>
                         </HStack>
                       ),
@@ -390,7 +387,7 @@ export const MultipalAttendance = ({
                             type: "Attendance-Notification-View-Message",
                           });
                           capture("INTERACT", telemetryData);
-                          navigate("/notification/create");
+                          navigate("/notification/create?module=Attendance");
                         }}
                       >
                         {t("SEND_ANOTHER_MESSAGE")}
@@ -433,13 +430,9 @@ export const MultipalAttendance = ({
                         )}
                       </HStack>
                       {presentStudents?.length <= 0 ? (
-                        <Text
-                          fontWeight="500"
-                          fontSize="12px"
-                          textAlign={"center"}
-                        >
-                          No Student Has Achieved 100% Attendance This Week
-                        </Text>
+                        <Caption>
+                          {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
+                        </Caption>
                       ) : (
                         ""
                       )}
@@ -459,14 +452,14 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
                     </Caption>
                     <Button.Group width="100%">
-                      <Button
+                      {/* <Button
                         flex={1}
                         variant="outline"
                         colorScheme="button"
                         onPress={(e) => modalClose()}
                       >
                         {t("CLOSE")}
-                      </Button>
+                      </Button> */}
                       <Button
                         flex={1}
                         colorScheme="button"
@@ -509,6 +502,7 @@ export default function AttendanceComponent({
   _weekBox,
   appName,
   manifest,
+  setLastAttedance,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -561,49 +555,55 @@ export default function AttendanceComponent({
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
-    if (dataObject.attendanceId) {
-      attendanceRegistryService
-        .update(
-          {
-            id: dataObject.attendanceId,
-            attendance: dataObject.attendance,
-          },
-          {
-            onlyParameter: ["attendance", "id", "date", "classId"],
-          }
-        )
-        .then((e) => {
-          const newData = attendance.filter(
-            (e) =>
-              !(
-                e.date === dataObject.date &&
-                e.studentId === dataObject.studentId
-              )
-          );
+    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
+      if (dataObject.attendanceId) {
+        attendanceRegistryService
+          .update(
+            {
+              id: dataObject.attendanceId,
+              attendance: dataObject.attendance,
+            },
+            {
+              onlyParameter: ["attendance", "id", "date", "classId"],
+            }
+          )
+          .then((e) => {
+            const newData = attendance.filter(
+              (e) =>
+                !(
+                  e.date === dataObject.date &&
+                  e.studentId === dataObject.studentId
+                )
+            );
 
-          setAttendance([
-            ...newData,
-            { ...dataObject, id: dataObject.attendanceId },
-          ]);
-          setLoading({});
-          setShowModal(false);
-        });
+            setAttendance([
+              ...newData,
+              { ...dataObject, id: dataObject.attendanceId },
+            ]);
+            setLastAttedance(moment().format("hh:mma"));
+            setLoading({});
+            setShowModal(false);
+          });
+      } else {
+        attendanceRegistryService
+          .create({
+            studentId: student.id,
+            date: dataObject.date,
+            attendance: dataObject.attendance,
+            attendanceNote: "Test",
+            classId: student.currentClassID,
+            subjectId: "History",
+            teacherId: teacherId,
+          })
+          .then((e) => {
+            setAttendance([...attendance, dataObject]);
+            setLastAttedance(moment().format("hh:mma"));
+            setLoading({});
+            setShowModal(false);
+          });
+      }
     } else {
-      attendanceRegistryService
-        .create({
-          studentId: student.id,
-          date: dataObject.date,
-          attendance: dataObject.attendance,
-          attendanceNote: "Test",
-          classId: student.currentClassID,
-          subjectId: "History",
-          teacherId: teacherId,
-        })
-        .then((e) => {
-          setAttendance([...attendance, dataObject]);
-          setLoading({});
-          setShowModal(false);
-        });
+      setLoading({});
     }
   };
   return (
@@ -782,11 +782,7 @@ const CalendarComponent = ({
   const handleAttendaceData = (attendance, day) => {
     let isToday = moment().format("YYYY-MM-DD") === day.format("YYYY-MM-DD");
     let isAllowDay = false;
-    if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
-      isAllowDay = true;
-    } else if (
-      manifest?.["class_attendance.previous_attendance_edit"] === "true"
-    ) {
+    if (manifest?.["class_attendance.previous_attendance_edit"] === "true") {
       isAllowDay = day.format("YYYY-MM-DD") <= moment().format("YYYY-MM-DD");
     } else {
       isAllowDay = day.format("YYYY-MM-DD") === moment().format("YYYY-MM-DD");
