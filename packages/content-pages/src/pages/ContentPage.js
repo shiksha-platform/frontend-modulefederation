@@ -1,45 +1,23 @@
 import { Layout } from "@shiksha/common-lib";
 import { Link } from "react-router-dom";
 import { Box, HStack, Text, VStack } from "native-base";
+import CollapsibleBlockComponent from "components/CollapsibleBlockComponent";
+import ImageBlockComponent from "components/ImageBlockComponent";
+import RichtextBlockComponent from "components/RichtextBlockComponent";
 
-export default function ContentPage() {
+export default function ContentPage(
+
+) {
+  const collapsibleProps={
+    header: 'Sample question',
+    content: 'Sample answer'
+  }
+  const imageProps={
+    src: 'https://picsum.photos/600/400',
+    align: 'center',
+  }
   return (
     <Layout
-      _header={{
-        title: "Content Page",
-        isEnableSearchBtn: true,
-        subHeading: "Sub Heading of Sub Module",
-        iconComponent: (
-          <Link
-            to="/"
-            style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
-          >
-            <Box
-              rounded="full"
-              borderColor="button.500"
-              borderWidth="1"
-              _text={{ color: "button.500" }}
-              px={6}
-              py={2}
-            >
-              Button
-            </Box>
-          </Link>
-        ),
-      }}
-      subHeader={
-        <Link
-          to="/"
-          style={{ color: "rgb(63, 63, 70)", textDecoration: "none" }}
-        >
-          <HStack space="4" justifyContent="space-between">
-            <VStack>
-              <Text fontSize={"lg"}>Content Pages Module</Text>
-            </VStack>
-          </HStack>
-        </Link>
-      }
-      _subHeader={{ bg: "rgb(248, 117, 88)" }}
       _footer={{
         menues: [
           {
@@ -70,7 +48,10 @@ export default function ContentPage() {
         ],
       }}
     >
-      <h1>Content Pages Module</h1>
+      <h1>Sample title</h1>
+      <CollapsibleBlockComponent {...collapsibleProps}></CollapsibleBlockComponent>
+      <ImageBlockComponent {...imageProps}></ImageBlockComponent>
+      <RichtextBlockComponent {...imageProps}></RichtextBlockComponent>
     </Layout>
   );
 }
