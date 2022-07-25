@@ -29,7 +29,7 @@ import {
   overrideColorTheme,
   H1,
   notificationRegistryService,
-  FilterButton
+  FilterButton,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -45,11 +45,11 @@ const Outbox = ({ footerLinks }) => {
 
   const getDateFromCalendar = () => {
     setDate(moment().add(page, "days"));
-  }
+  };
 
   useEffect(() => {
     getDateFromCalendar();
-  }, [page])
+  }, [page]);
 
   return (
     <Layout
@@ -90,8 +90,28 @@ const Outbox = ({ footerLinks }) => {
       <Tab
         _box={{ bg: colors.white, p: 5 }}
         routes={[
-          { title: t("Scheduled"), component: <Schedule data={notificationInfo} page={page} setPage={setPage} date={date} /> },
-          { title: t("Sent"), component: <Send data={notificationInfo} page={page} setPage={setPage} date={date} /> },
+          {
+            title: t("Scheduled"),
+            component: (
+              <Schedule
+                data={notificationInfo}
+                page={page}
+                setPage={setPage}
+                date={date}
+              />
+            ),
+          },
+          {
+            title: t("Sent"),
+            component: (
+              <Send
+                data={notificationInfo}
+                page={page}
+                setPage={setPage}
+                date={date}
+              />
+            ),
+          },
         ]}
       />
       <Actionsheet
@@ -145,7 +165,7 @@ const Schedule = ({ data, page, setPage, date }) => {
   const [filterObject, setFilterObject] = useState({});
   const [refinedData, setRefinedData] = useState([]);
   const [currentUserNotifications, setCurrentUserNotifications] = useState([]);
-  const [adminNotifications, setAdminNotifications] = useState([])
+  const [adminNotifications, setAdminNotifications] = useState([]);
   const [showMoreAdmin, setShowMoreAdmin] = useState(false);
   const [showMoreUser, setShowMoreUser] = useState(false);
 
@@ -156,36 +176,39 @@ const Schedule = ({ data, page, setPage, date }) => {
     // const FilterDataWithUserDetails = {
     //   ...FilterData1, userType: "Admin"
     // }
-    const resp1 = await notificationRegistryService.sendScheduledNotificationSearch({
-      //limit: "8",
-      filters: FilterData1
-    })
+    const resp1 =
+      await notificationRegistryService.sendScheduledNotificationSearch({
+        //limit: "8",
+        filters: FilterData1,
+      });
     setAdminNotifications(resp1);
     return resp1;
-  }
+  };
 
   const GetNotificationsScheduledByCurrentUser = async () => {
     const FilterData1 = getFilterDetails();
     const FilterDataWithUserDetails = {
-      ...FilterData1, sentBy: {
-        "eq": localStorage.getItem("id")
-      }
-    }
-    const resp2 = await notificationRegistryService.sendScheduledNotificationSearch({
-      //limit: "8",
-      filters: FilterDataWithUserDetails
-    })
+      ...FilterData1,
+      sentBy: {
+        eq: localStorage.getItem("id"),
+      },
+    };
+    const resp2 =
+      await notificationRegistryService.sendScheduledNotificationSearch({
+        //limit: "8",
+        filters: FilterDataWithUserDetails,
+      });
     setCurrentUserNotifications(resp2);
     return resp2;
-  }
-
+  };
 
   const getFilterDetails = () => {
     let latestDate = moment(date).format("YYYY-MM-DD");
     let newFilterObject = {};
     const filterObject1 = {
-      ...filterObject, osCreatedAt: latestDate
-    }
+      ...filterObject,
+      osCreatedAt: latestDate,
+    };
     const keyarr = Object.keys(filterObject1);
     keyarr.forEach((item) => {
       newFilterObject = {
@@ -194,13 +217,13 @@ const Schedule = ({ data, page, setPage, date }) => {
       };
     });
     return newFilterObject;
-  }
+  };
 
   useEffect(() => {
     capture("PAGE");
     GetNotificationsScheduledByAdmin();
     GetNotificationsScheduledByCurrentUser();
-  }, [filterObject, date])
+  }, [filterObject, date]);
 
   return (
     <Stack space={1} mb="2">
@@ -228,12 +251,8 @@ const Schedule = ({ data, page, setPage, date }) => {
               name: "Module",
               attributeName: "module",
               type: "string",
-              data: [
-                "Lesson Plans",
-                "Attendance",
-                "Worksheet"
-              ]
-            }
+              data: ["Lesson Plans", "Attendance", "Worksheet"],
+            },
           ]}
         />
         <Box bg="white" p="5" roundedBottom={"xl"}>
@@ -251,8 +270,17 @@ const Schedule = ({ data, page, setPage, date }) => {
                 }}
               />
               <Box alignItems="center" p="3">
-                <Pressable alignItems="center" onPress={() => showMoreAdmin ? setShowMoreAdmin(false) : setShowMoreAdmin(true)}>
-                  <Text color="button.500" >{showMoreAdmin ? t("SHOW_LESS") : t("SHOW_MORE")}</Text>
+                <Pressable
+                  alignItems="center"
+                  onPress={() =>
+                    showMoreAdmin
+                      ? setShowMoreAdmin(false)
+                      : setShowMoreAdmin(true)
+                  }
+                >
+                  <Text color="button.500">
+                    {showMoreAdmin ? t("SHOW_LESS") : t("SHOW_MORE")}
+                  </Text>
                 </Pressable>
               </Box>
             </VStack>
@@ -274,8 +302,17 @@ const Schedule = ({ data, page, setPage, date }) => {
                 }}
               />
               <Box alignItems="center" p="3">
-                <Pressable alignItems="center" onPress={() => showMoreUser ? setShowMoreUser(false) : setShowMoreUser(true)}>
-                  <Text color="button.500" >{showMoreUser ? t("SHOW_LESS") : t("SHOW_MORE")}</Text>
+                <Pressable
+                  alignItems="center"
+                  onPress={() =>
+                    showMoreUser
+                      ? setShowMoreUser(false)
+                      : setShowMoreUser(true)
+                  }
+                >
+                  <Text color="button.500">
+                    {showMoreUser ? t("SHOW_LESS") : t("SHOW_MORE")}
+                  </Text>
                 </Pressable>
               </Box>
             </VStack>
@@ -348,16 +385,16 @@ const Schedule = ({ data, page, setPage, date }) => {
                   color={colors.cardCloseIcon}
                   isDisabled
                 />
-                <BodyLarge>
-                  {t("SCHEDULED_AT")}
-                </BodyLarge>
+                <BodyLarge>{t("SCHEDULED_AT")}</BodyLarge>
               </HStack>
             </VStack>
           </Box>
           <VStack p="5" space={6}>
             <H3>{t("NOTICE")}</H3>
             <BodyMedium textTransform={"inherit"}>
-              {notification?.content ? notification?.content : t("NO_CONTENT_AVAILABLE")}
+              {notification?.content
+                ? notification?.content
+                : t("NO_CONTENT_AVAILABLE")}
             </BodyMedium>
           </VStack>
           <Box p="5">
@@ -437,7 +474,7 @@ const Send = ({ data, page, setPage, date }) => {
   const [sendBy, setSendBy] = useState("admin");
   const [filterObject, setFilterObject] = useState({});
   const [currentUserNotifications, setCurrentUserNotifications] = useState([]);
-  const [adminNotifications, setAdminNotifications] = useState([])
+  const [adminNotifications, setAdminNotifications] = useState([]);
   const [showMoreAdmin, setShowMoreAdmin] = useState(false);
   const [showMoreUser, setShowMoreUser] = useState(false);
 
@@ -450,32 +487,33 @@ const Send = ({ data, page, setPage, date }) => {
     // }
     const resp1 = await notificationRegistryService.sendNotificationSearch({
       //limit: "8",
-      filters: FilterData1
-    })
+      filters: FilterData1,
+    });
     setAdminNotifications(resp1);
     return resp1;
-  }
+  };
 
   const GetNotificationsSentByCurrentUser = async () => {
     const FilterData1 = getFilterDetails();
     const FilterDataWithUserDetails = {
-      ...FilterData1, sentBy: { "eq": localStorage.getItem("id") }
-    }
+      ...FilterData1,
+      sentBy: { eq: localStorage.getItem("id") },
+    };
     const resp2 = await notificationRegistryService.sendNotificationSearch({
       //limit: "8",
-      filters: FilterDataWithUserDetails
-    })
+      filters: FilterDataWithUserDetails,
+    });
     setCurrentUserNotifications(resp2);
     return resp2;
-  }
-
+  };
 
   const getFilterDetails = () => {
     let latestDate = moment(date).format("YYYY-MM-DD");
     let newFilterObject = {};
     const filterObject1 = {
-      ...filterObject, osCreatedAt: latestDate
-    }
+      ...filterObject,
+      osCreatedAt: latestDate,
+    };
     const keyarr = Object.keys(filterObject1);
     keyarr.forEach((item) => {
       newFilterObject = {
@@ -484,13 +522,13 @@ const Send = ({ data, page, setPage, date }) => {
       };
     });
     return newFilterObject;
-  }
+  };
 
   useEffect(() => {
     capture("PAGE");
     GetNotificationsSentByAdmin();
     GetNotificationsSentByCurrentUser();
-  }, [filterObject, date])
+  }, [filterObject, date]);
 
   return (
     <Stack space={1} mb="2">
@@ -518,12 +556,8 @@ const Send = ({ data, page, setPage, date }) => {
               name: "Module",
               attributeName: "module",
               type: "string",
-              data: [
-                "Lesson Plans",
-                "Attendance",
-                "Worksheet"
-              ]
-            }
+              data: ["Lesson Plans", "Attendance", "Worksheet"],
+            },
           ]}
         />
         <Box bg="white" p="5" roundedBottom={"xl"}>
@@ -541,8 +575,17 @@ const Send = ({ data, page, setPage, date }) => {
                 }}
               />
               <Box alignItems="center" p="3">
-                <Pressable alignItems="center" onPress={() => showMoreAdmin ? setShowMoreAdmin(false) : setShowMoreAdmin(true)}>
-                  <Text color="button.500" >{showMoreAdmin ? t("SHOW_LESS") : t("SHOW_MORE")}</Text>
+                <Pressable
+                  alignItems="center"
+                  onPress={() =>
+                    showMoreAdmin
+                      ? setShowMoreAdmin(false)
+                      : setShowMoreAdmin(true)
+                  }
+                >
+                  <Text color="button.500">
+                    {showMoreAdmin ? t("SHOW_LESS") : t("SHOW_MORE")}
+                  </Text>
                 </Pressable>
               </Box>
             </VStack>
@@ -565,8 +608,17 @@ const Send = ({ data, page, setPage, date }) => {
                 }}
               />
               <Box alignItems="center" p="3">
-                <Pressable alignItems="center" onPress={() => showMoreUser ? setShowMoreUser(false) : setShowMoreUser(true)}>
-                  <Text color="button.500" >{showMoreUser ? t("SHOW_LESS") : t("SHOW_MORE")}</Text>
+                <Pressable
+                  alignItems="center"
+                  onPress={() =>
+                    showMoreUser
+                      ? setShowMoreUser(false)
+                      : setShowMoreUser(true)
+                  }
+                >
+                  <Text color="button.500">
+                    {showMoreUser ? t("SHOW_LESS") : t("SHOW_MORE")}
+                  </Text>
                 </Pressable>
               </Box>
             </VStack>
@@ -786,13 +838,20 @@ const Send = ({ data, page, setPage, date }) => {
   );
 };
 
-const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, textmsg }) => {
+const NotificationBox = ({
+  data,
+  onPressMore,
+  onPress,
+  showMore,
+  setShowMore,
+  textmsg,
+}) => {
   const line2style = {
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
-  const numberOfItems = showMore ? data?.length : 2
+  const numberOfItems = showMore ? data?.length : 2;
   return data?.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
@@ -844,7 +903,10 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, te
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>{textmsg}{moment.utc(value?.createdAt).local().format("LT")}</BodySmall>
+                <BodySmall>
+                  {textmsg}
+                  {moment.utc(value?.createdAt).local().format("LT")}
+                </BodySmall>
               </HStack>
             </HStack>
           </VStack>

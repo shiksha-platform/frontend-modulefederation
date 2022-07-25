@@ -46,13 +46,16 @@ export const getOne = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
 
-  const result = await get(manifest.api_url + `/attendance/usersegment/` + `${params.attendance}`, {
-    params: { ...params },
-    headers
-  })
+  const result = await get(
+    manifest.api_url + `/attendance/usersegment/` + `${params.attendance}`,
+    {
+      params: { ...params },
+      headers
+    }
+  )
   if (result.data) {
     //return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-    return result.data.data;
+    return result.data.data
   } else {
     return []
   }

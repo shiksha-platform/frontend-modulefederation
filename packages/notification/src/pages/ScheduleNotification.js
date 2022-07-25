@@ -12,7 +12,7 @@ import {
   H3,
   overrideColorTheme,
   notificationRegistryService,
-  configRegistryService
+  configRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import {
@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 export default function ScheduleNotification({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -50,29 +50,27 @@ export default function ScheduleNotification({ footerLinks, appName }) {
   const scheduleNotificationValidation = () => {
     if (dateTime.Date && dateTime.Time && dateTime.Month) {
       setShowSummaryModal({ ...dateTime, name: "View Summary" });
-    }
-    else {
+    } else {
       alert("Please select all the fields before proceeding");
     }
-  }
+  };
 
   const to24HrsFormat = (time) => {
     if (time) {
-      let hour = time.split(" ")[0].split(":")[0]
-      let mins = time.split(" ")[0].split(":")[1]
-      let code = time.split(" ")[1]
+      let hour = time.split(" ")[0].split(":")[0];
+      let mins = time.split(" ")[0].split(":")[1];
+      let code = time.split(" ")[1];
 
-      let newTime = ""
+      let newTime = "";
       if (code == "PM") {
-        let newHour = Number(hour) + 12
-        newTime = newHour + ":" + mins
+        let newHour = Number(hour) + 12;
+        newTime = newHour + ":" + mins;
       } else {
-        newTime = time.split(" ")[0]
+        newTime = time.split(" ")[0];
       }
       return newTime;
     }
-  }
-
+  };
 
   const NotificationObject = {
     Absent_Today: "Absentfortoday",
@@ -82,18 +80,24 @@ export default function ScheduleNotification({ footerLinks, appName }) {
     "100percent_present": "Present100percent",
     Attendance: "attendance",
     Lessonplans: "lessonplans",
-    Worksheet: "worksheet"
-  }
+    Worksheet: "worksheet",
+  };
 
   const NotificationSendRequest = async () => {
-    let ist = new Date(new Date().getFullYear(), dateTime.Month.substring(0, 2), dateTime.Date, to24HrsFormat(dateTime.Time).substring(0, 2), dateTime.Time.substring(3, 5));
+    let ist = new Date(
+      new Date().getFullYear(),
+      dateTime.Month.substring(0, 2),
+      dateTime.Date,
+      to24HrsFormat(dateTime.Time).substring(0, 2),
+      dateTime.Time.substring(3, 5)
+    );
     let utc = moment.utc(ist).format("YYYY-MM-DD HH:mm:ss ");
     let utcMin = utc.slice(14, 16);
     let utcHrs = utc.slice(11, 13);
     let utcDay = utc.slice(8, 10);
     let utcMon = utc.slice(5, 7);
-    const respp = await notificationRegistryService.sendScheduledNotificationPost(
-      {
+    const respp =
+      await notificationRegistryService.sendScheduledNotificationPost({
         module: NotificationObject[location.state.Module],
         eventTrigger: NotificationObject[location.state.Event],
         templateId: "57",
@@ -107,7 +111,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         taskName: Math.random().toString(27).substring(2, 8),
       });
     return respp;
-  }
+  };
 
   const handleTelemetry = () => {
     NotificationSendRequest();
@@ -116,10 +120,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
       type: "Notification-End",
       tag: "Send Later",
       studentCount: students.length,
-      date: new Date().toISOString().slice(0, 10)
+      date: new Date().toISOString().slice(0, 10),
     });
     capture("END", telemetryData);
-  }
+  };
 
   // useEffect(() => {
   //   setRecurringData([
@@ -161,7 +165,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             <Center mx="5">
               <H1 color="gray.500">{t("NOTIFICATION_SCHEDULED")}</H1>
               <BodyMedium textAlign="center" color="gray.500">
-                {`Attendance Notification has been scheduled for ${new Date().getFullYear()}/${dateTime.Month ? dateTime?.Month.substring(0, 2) : ""}/${dateTime.Date ? dateTime?.Date : ""} at ${dateTime.Time ? dateTime?.Time : " "}`}
+                {`Attendance Notification has been scheduled for ${new Date().getFullYear()}/${
+                  dateTime.Month ? dateTime?.Month.substring(0, 2) : ""
+                }/${dateTime.Date ? dateTime?.Date : ""} at ${
+                  dateTime.Time ? dateTime?.Time : " "
+                }`}
                 {/* /${dateTime?.Month.substring(0, 2)}/${dateTime?.Date} at ${dateTime?.Time} */}
               </BodyMedium>
               {/* <Button
@@ -205,12 +213,83 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         <FormInput
           {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
           data={[
-            { name: "Date", data: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"] },
-            { name: "Month", data: ['01. January', '02. February', '03. March', '04. April', '05. May', '06. June', '07. July', '08. August', '09. September', '10. October', '11. November', '12. December'] },
+            {
+              name: "Date",
+              data: [
+                "01",
+                "02",
+                "03",
+                "04",
+                "05",
+                "06",
+                "07",
+                "08",
+                "09",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14",
+                "15",
+                "16",
+                "17",
+                "18",
+                "19",
+                "20",
+                "21",
+                "22",
+                "23",
+                "24",
+                "25",
+                "26",
+                "27",
+                "28",
+                "29",
+                "30",
+                "31",
+              ],
+            },
+            {
+              name: "Month",
+              data: [
+                "01. January",
+                "02. February",
+                "03. March",
+                "04. April",
+                "05. May",
+                "06. June",
+                "07. July",
+                "08. August",
+                "09. September",
+                "10. October",
+                "11. November",
+                "12. December",
+              ],
+            },
             {
               name: "Time",
               buttonVariant: "outline",
-              data: ["09.00 AM", "09.30 AM", "10.00 AM", "10.30 AM", "11.00 AM", "11.30 AM", "12.00 PM", "12.30 PM", "01.00 PM", "01.30 PM", "02.00 PM", "02.30 PM", "03.00 PM", "03.30 PM", "04.00 PM", "04.30 PM", "05.00 PM", "05.30 PM", "06.00 PM"],
+              data: [
+                "09.00 AM",
+                "09.30 AM",
+                "10.00 AM",
+                "10.30 AM",
+                "11.00 AM",
+                "11.30 AM",
+                "12.00 PM",
+                "12.30 PM",
+                "01.00 PM",
+                "01.30 PM",
+                "02.00 PM",
+                "02.30 PM",
+                "03.00 PM",
+                "03.30 PM",
+                "04.00 PM",
+                "04.30 PM",
+                "05.00 PM",
+                "05.30 PM",
+                "06.00 PM",
+              ],
             },
           ]}
         />
@@ -251,7 +330,6 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               ml="5px"
               flex="1"
               onPress={() => scheduleNotificationValidation()}
-
             >
               {t("VIEW_SUMMARY")}
             </Button>
@@ -281,7 +359,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                     key={index}
                     p="5"
                     onPress={(e) => {
-                      setDateTime({ ...dateTime, [dateTimeData.name]: value })
+                      setDateTime({ ...dateTime, [dateTimeData.name]: value });
                     }}
                     bg={
                       dateTime[dateTimeData.name] === value
@@ -289,9 +367,8 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                         : ""
                     }
                   >
-                    <Text colorScheme="button" >{value}</Text>
+                    <Text colorScheme="button">{value}</Text>
                   </Pressable>
-
                 );
               })}
             <Box p="5" position="sticky" bottom="00">
@@ -299,7 +376,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {
-                  setDateTimeData({})
+                  setDateTimeData({});
                 }}
               >
                 {t("CONTINUE")}
@@ -355,7 +432,13 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                   isDisabled
                 />
                 <BodyLarge>
-                  {t(`Scheduled for ${new Date().getFullYear()}/${dateTime.Month ? dateTime?.Month.substring(0, 2) : ""}/${dateTime.Date ? dateTime?.Date : ""} at ${dateTime.Time ? dateTime?.Time : " "}`)}
+                  {t(
+                    `Scheduled for ${new Date().getFullYear()}/${
+                      dateTime.Month ? dateTime?.Month.substring(0, 2) : ""
+                    }/${dateTime.Date ? dateTime?.Date : ""} at ${
+                      dateTime.Time ? dateTime?.Time : " "
+                    }`
+                  )}
                   {/* / ${dateTime?.Month.substring(0, 2)}/${dateTime?.Date} at ${dateTime?.Time} */}
                 </BodyLarge>
               </HStack>
@@ -363,8 +446,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             <VStack p="5" space={6}>
               <H3>{t("NOTICE")}</H3>
               <BodyMedium textTransform={"inherit"}>
-                Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be Taken As Authentication That You Have Personally Verified And Overseen The Distribution Of Smartphone To The Mentioned Student ID Of Your School. Thank You! - Samagra Shiksha, Himachal Pradesh
-                View Recipient List
+                Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be
+                Taken As Authentication That You Have Personally Verified And
+                Overseen The Distribution Of Smartphone To The Mentioned Student
+                ID Of Your School. Thank You! - Samagra Shiksha, Himachal
+                Pradesh View Recipient List
               </BodyMedium>
             </VStack>
             <Box p="5">
@@ -424,7 +510,7 @@ const FormInput = ({
             />
           }
           onPress={(e) => {
-            setDateTimeData(item)
+            setDateTimeData(item);
           }}
         >
           {dateTime[item.name] ? dateTime[item.name] : `Select ${t(item.name)}`}

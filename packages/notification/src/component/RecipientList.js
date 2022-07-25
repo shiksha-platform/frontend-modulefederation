@@ -4,7 +4,7 @@ import {
   overrideColorTheme,
   BodyLarge,
   Caption,
-  attendanceRegistryService
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import { Box, Button, Stack, Text, VStack } from "native-base";
 import React, { Suspense } from "react";
@@ -18,22 +18,20 @@ export default function RecipientList({
   students,
   setStudents,
   appName,
-  dateTime
+  dateTime,
 }) {
   const { t } = useTranslation();
   const Card = React.lazy(() => import("students/Card"));
 
   const getRecipientList = async () => {
     let triggersArray = dateTime.Event.split("_");
-    const recipientList = await attendanceRegistryService.getOne(
-      {
-        groupId: dateTime.GroupId,
-        date: dateTime.Event.split("_").pop().toLowerCase(),
-        attendance: triggersArray[0]
-      }
-    )
+    const recipientList = await attendanceRegistryService.getOne({
+      groupId: dateTime.GroupId,
+      date: dateTime.Event.split("_").pop().toLowerCase(),
+      attendance: triggersArray[0],
+    });
     setStudents(recipientList);
-  }
+  };
 
   useEffect((e) => {
     getRecipientList();

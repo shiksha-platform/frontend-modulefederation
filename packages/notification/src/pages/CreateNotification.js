@@ -25,7 +25,7 @@ import {
   useWindowSize,
   overrideColorTheme,
   notificationRegistryService,
-  attendanceRegistryService
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -53,10 +53,10 @@ const CreateNotification = ({ footerLinks, appName }) => {
     "100percent_present": "Present100percent",
     Attendance: "attendance",
     Lessonplans: "lessonplans",
-    Worksheet: "worksheet"
-  }
+    Worksheet: "worksheet",
+  };
 
-  if (searchParams.get('module')) {
+  if (searchParams.get("module")) {
     dateTime.Module = "Attendance";
   }
 
@@ -84,14 +84,15 @@ const CreateNotification = ({ footerLinks, appName }) => {
         templateId: "57",
         groupId: dateTime.GroupId,
         channel: dateTime.Channel,
-        senderId: localStorage.getItem("id")
+        senderId: localStorage.getItem("id"),
       },
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
-      });
-  }
+      }
+    );
+  };
 
   const handleOnPressForSendMsg = () => {
     const telemetryData = telemetryFactory.interact({
@@ -99,12 +100,12 @@ const CreateNotification = ({ footerLinks, appName }) => {
       type: "Notification-End",
       tag: "send now",
       studentCount: students.length,
-      date: new Date().toISOString().slice(0, 10)
+      date: new Date().toISOString().slice(0, 10),
     });
-    capture("END", telemetryData)
+    capture("END", telemetryData);
     notificationSendRequest();
     setPageName("Success");
-  }
+  };
 
   if (pageName === "Success") {
     return (
@@ -114,7 +115,6 @@ const CreateNotification = ({ footerLinks, appName }) => {
           onPressBackButton: handleBackButton,
         }}
       >
-
         <Loading
           width={width}
           height={height - 60}
@@ -165,9 +165,13 @@ const CreateNotification = ({ footerLinks, appName }) => {
       {pageName === "StudentList" ? (
         <StudentList {...{ setPageName, students, setStudents, dateTime }} />
       ) : pageName === "RecipientList" ? (
-        <RecipientList {...{ setPageName, students, setStudents, appName, dateTime }} />
+        <RecipientList
+          {...{ setPageName, students, setStudents, appName, dateTime }}
+        />
       ) : (
-        <FormNotification {...{ setPageName, students, setStudents, dateTime, setDateTime }} />
+        <FormNotification
+          {...{ setPageName, students, setStudents, dateTime, setDateTime }}
+        />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
         <Actionsheet.Content
@@ -208,7 +212,10 @@ const CreateNotification = ({ footerLinks, appName }) => {
           <VStack p="5" space={6}>
             <H3>{t("NOTICE")}</H3>
             <BodyMedium textTransform={"inherit"}>
-              Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be Taken As Authentication That You Have Personally Verified And Overseen The Distribution Of Smartphone To The Mentioned Student ID Of Your School. Thank You! - Samagra Shiksha, Himachal Pradesh
+              Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be
+              Taken As Authentication That You Have Personally Verified And
+              Overseen The Distribution Of Smartphone To The Mentioned Student
+              ID Of Your School. Thank You! - Samagra Shiksha, Himachal Pradesh
               View Recipient List
             </BodyMedium>
           </VStack>

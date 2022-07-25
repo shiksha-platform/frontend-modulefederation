@@ -12,7 +12,7 @@ import {
   Actionsheet,
   Link,
   ScrollView,
-  useToast
+  useToast,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
@@ -34,7 +34,7 @@ import {
   Form,
   telemetryFactory,
   teacherRegistryService,
-  getAllForUser
+  getAllForUser,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -53,12 +53,12 @@ const Notification = ({ footerLinks, appName }) => {
   const [showModalInbox, setShowModalInbox] = useState(false);
   const [notificationInfo, setNotificationInfo] = useState([]);
   const [date, setDate] = useState({});
-  const [refinedData, setRefinedData] = useState('');
+  const [refinedData, setRefinedData] = useState("");
   const [filterObject, setFilterObject] = useState({});
   const [showMore, setShowMore] = useState(false);
   const [isTokenFound, setTokenFound] = useState(false);
-  const [validUsers, setValidUsers] = useState("")
-  const [show, setShow] = useState(false)
+  const [validUsers, setValidUsers] = useState("");
+  const [show, setShow] = useState(false);
   const toast = useToast();
   const { realm_access } = jwt_decode(localStorage.getItem("token"));
   const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
@@ -71,7 +71,7 @@ const Notification = ({ footerLinks, appName }) => {
 
   const getDateFromCalendar = () => {
     setDate(moment().add(page, "days"));
-  }
+  };
 
   const handleTelemetry = (notification) => {
     setShowModal(true);
@@ -80,31 +80,35 @@ const Notification = ({ footerLinks, appName }) => {
       appName,
       type: "Notification-Intaract",
       notificationLogId: notification.id,
-      module: notification.module
+      module: notification.module,
     });
     capture("INTERACT", telemetryData);
-  }
+  };
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
     //setConfigData(Response);
-    const ValidUsersResp = Array.isArray(Response["notification.configureWhoCanSendNotification"]) ? Response["notification.configureWhoCanSendNotification"] : JSON.parse(Response["notification.configureWhoCanSendNotification"])
+    const ValidUsersResp = Array.isArray(
+      Response["notification.configureWhoCanSendNotification"]
+    )
+      ? Response["notification.configureWhoCanSendNotification"]
+      : JSON.parse(Response["notification.configureWhoCanSendNotification"]);
     setValidUsers(ValidUsersResp);
-  }
+  };
 
   const GetAllNotifications = async () => {
     const resp1 = await getAllForUser({
       userId: localStorage.getItem("phoneNumber"),
       provider: "firebase",
       startDate: moment(date).format("DD-MM-YYYY"),
-      endDate: moment(date).format("DD-MM-YYYY")
-    })
+      endDate: moment(date).format("DD-MM-YYYY"),
+    });
     setNotificationInfo(resp1);
-  }
+  };
 
   useEffect(() => {
     getDateFromCalendar();
-  }, [page])
+  }, [page]);
 
   //CURRENTLY THERE ARE NO FILTERS SUPPORTED BY HISTORY API
   // const getFilterDetails = () => {
@@ -127,11 +131,11 @@ const Notification = ({ footerLinks, appName }) => {
   useEffect(() => {
     capture("PAGE");
     GetAllNotifications();
-  }, [filterObject, date])
+  }, [filterObject, date]);
 
   useEffect(() => {
     getConfigData();
-  }, [])
+  }, []);
 
   return (
     <Layout
@@ -193,12 +197,8 @@ const Notification = ({ footerLinks, appName }) => {
                 name: "Module",
                 attributeName: "module",
                 type: "string",
-                data: [
-                  "lessonPlans",
-                  "attendance",
-                  "worksheet"
-                ]
-              }
+                data: ["lessonPlans", "attendance", "worksheet"],
+              },
             ]}
           />
           <Box bg="white" p="5" roundedBottom={"xl"}>
@@ -213,13 +213,20 @@ const Notification = ({ footerLinks, appName }) => {
             />
           </Box>
           <Box alignItems="center" p="3">
-            <Pressable alignItems="center" onPress={() => showMore ? setShowMore(false) : setShowMore(true)}>
-              <Text color="button.500" >{showMore ? t("SHOW_LESS") : t("SHOW_MORE")}</Text>
+            <Pressable
+              alignItems="center"
+              onPress={() =>
+                showMore ? setShowMore(false) : setShowMore(true)
+              }
+            >
+              <Text color="button.500">
+                {showMore ? t("SHOW_LESS") : t("SHOW_MORE")}
+              </Text>
             </Pressable>
           </Box>
         </VStack>
-        {validUsers.includes(realm_access?.roles[2].toLowerCase()) &&
-          (<Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+        {validUsers.includes(realm_access?.roles[2].toLowerCase()) && (
+          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
             <Link href={"/notification/create"}>
               <Button
                 colorScheme="button"
@@ -230,7 +237,8 @@ const Notification = ({ footerLinks, appName }) => {
                 {t("CREATE_NEW")}
               </Button>
             </Link>
-          </Box>)}
+          </Box>
+        )}
         <Actionsheet
           isOpen={showModalMore}
           onClose={() => setShowModalMore(false)}
@@ -333,7 +341,9 @@ const Notification = ({ footerLinks, appName }) => {
             <VStack p="5" space={6}>
               <BodyLarge>{t("NOTICE")}</BodyLarge>
               <BodyMedium textTransform={"inherit"}>
-                {notification?.payload?.text ? notification?.payload?.text : "Dummy text"}
+                {notification?.payload?.text
+                  ? notification?.payload?.text
+                  : "Dummy text"}
               </BodyMedium>
             </VStack>
             <Box bg={colors.white} p="5" bottom="0" shadow="2">
@@ -401,13 +411,19 @@ const Notification = ({ footerLinks, appName }) => {
   );
 };
 
-const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore }) => {
+const NotificationBox = ({
+  data,
+  onPressMore,
+  onPress,
+  showMore,
+  setShowMore,
+}) => {
   const line2style = {
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
-  const numberOfItems = showMore ? data.length : 2
+  const numberOfItems = showMore ? data.length : 2;
   return data.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
@@ -460,7 +476,9 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore }) 
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>{moment.utc(value.timestamp).local().format("LT")}</BodySmall>
+                <BodySmall>
+                  {moment.utc(value.timestamp).local().format("LT")}
+                </BodySmall>
               </HStack>
             </HStack>
           </VStack>

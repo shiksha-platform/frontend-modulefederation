@@ -36,70 +36,86 @@ import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function FormNotification({ footerLinks, appName, setPageName, dateTime, setDateTime, students }) {
+export default function FormNotification({
+  footerLinks,
+  appName,
+  setPageName,
+  dateTime,
+  setDateTime,
+  students,
+}) {
   const { t } = useTranslation();
   const [dateTimeData, setDateTimeData] = useState({});
   const [configData, setConfigData] = useState({});
   const [showModalTemplate, setShowModalTemplate] = useState(false);
   const [classData, setClassData] = useState([]);
-  const [eTriggers, setETriggers] = useState([])
+  const [eTriggers, setETriggers] = useState([]);
   const navigate = useNavigate();
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
     //setConfigData(Response);
-    const triggers = Array.isArray(Response["attendance.event_triggers_to_send_attendance_notification"]) ? Response["attendance.event_triggers_to_send_attendance_notification"] : JSON.parse(Response["attendance.event_triggers_to_send_attendance_notification"])
+    const triggers = Array.isArray(
+      Response["attendance.event_triggers_to_send_attendance_notification"]
+    )
+      ? Response["attendance.event_triggers_to_send_attendance_notification"]
+      : JSON.parse(
+          Response["attendance.event_triggers_to_send_attendance_notification"]
+        );
     setETriggers([...triggers, "Absent_Today"]);
-  }
+  };
 
   const getClassData = async () => {
     const Response = await classRegistryService.getAllData({
       //limit: "",
-      filters: {}
-    }
-    )
+      filters: {},
+    });
     let GroupWithId = [];
     Response.forEach((e) => {
-      GroupWithId = [...GroupWithId, { ["title"]: e.title, ["id"]: e.id }]
-    })
+      GroupWithId = [...GroupWithId, { ["title"]: e.title, ["id"]: e.id }];
+    });
     setClassData(GroupWithId);
-  }
+  };
 
   const notificationFormValidation = (buttontype) => {
-    if (dateTime.Channel &&
+    if (
+      dateTime.Channel &&
       dateTime.Event &&
       dateTime.Group &&
       dateTime.GroupId &&
       dateTime.Module &&
-      buttontype === "sendnow") {
+      buttontype === "sendnow"
+    ) {
       setPageName("Popup");
-    }
-    else if (dateTime.Channel &&
+    } else if (
+      dateTime.Channel &&
       dateTime.Event &&
       dateTime.Group &&
       dateTime.GroupId &&
       dateTime.Module &&
-      buttontype === "sendlater") {
-      navigate("/notification/schedule", { state: { ...dateTime, studentCount: students.length } })
+      buttontype === "sendlater"
+    ) {
+      navigate("/notification/schedule", {
+        state: { ...dateTime, studentCount: students.length },
+      });
+    } else {
+      alert("Please select all the fields before proceeding");
     }
-    else {
-      alert("Please select all the fields before proceeding")
-    }
-  }
+  };
 
   const handleTelemetry = (fieldName, value) => {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Notification-Intaract",
-      fieldName: value
+      fieldName: value,
     });
     capture("INTERACT", telemetryData);
-  }
+  };
 
   useEffect(() => {
     getConfigData();
     getClassData();
-  }, [])
+  }, []);
 
   return (
     <Stack space={1} mb="2">
@@ -127,7 +143,10 @@ export default function FormNotification({ footerLinks, appName, setPageName, da
             </Button>
           </HStack>
           <BodySmall>
-            Kindly note your OTP @__123__@. Submission of the OTP will be taken as authentication that you have personally verified and overseen the distribution of smartphone to the mentioned student ID of your school. Thank you! - Samagra Shiksha, Himachal Pradesh
+            Kindly note your OTP @__123__@. Submission of the OTP will be taken
+            as authentication that you have personally verified and overseen the
+            distribution of smartphone to the mentioned student ID of your
+            school. Thank you! - Samagra Shiksha, Himachal Pradesh
           </BodySmall>
         </VStack>
       </Box>
@@ -147,7 +166,7 @@ export default function FormNotification({ footerLinks, appName, setPageName, da
             variant="outline"
             px="5"
             onPress={(e) => {
-              notificationFormValidation("sendlater")
+              notificationFormValidation("sendlater");
             }}
           >
             {t("SEND_LATER")}
@@ -238,15 +257,33 @@ export default function FormNotification({ footerLinks, appName, setPageName, da
                   p="5"
                   onPress={(e) => {
                     // { dateTimeData.name == "Group" ? setDateTime({ ...dateTime, [dateTimeData.name]: { ["id"]: value.id, ["title"]: value.title } }) : setDateTime({ ...dateTime, [dateTimeData.name]: value }) }
-                    { dateTimeData.name == "Group" ? setDateTime({ ...dateTime, [dateTimeData.name]: value.title, ["GroupId"]: value.id }) : setDateTime({ ...dateTime, [dateTimeData.name]: value }) }
+                    {
+                      dateTimeData.name == "Group"
+                        ? setDateTime({
+                            ...dateTime,
+                            [dateTimeData.name]: value.title,
+                            ["GroupId"]: value.id,
+                          })
+                        : setDateTime({
+                            ...dateTime,
+                            [dateTimeData.name]: value,
+                          });
+                    }
                     handleTelemetry(dateTimeData.name, value);
+                  }}
+                  bg={
+                    dateTime[dateTimeData.name] === value
+                      ? "gray.100"
+                      : dateTimeData.name === "Group" &&
+                        dateTime[dateTimeData.name] === value.title
+                      ? "gray.100"
+                      : ""
                   }
-                  }
-                  bg={dateTime[dateTimeData.name] === value ? "gray.100" : (dateTimeData.name === "Group" && dateTime[dateTimeData.name] === value.title) ? "gray.100" : ""}
                 >
-                  <Text colorScheme="button">{dateTimeData.name == "Group" ? t(value.title) : t(value)}</Text>
+                  <Text colorScheme="button">
+                    {dateTimeData.name == "Group" ? t(value.title) : t(value)}
+                  </Text>
                 </Pressable>
-
               );
             })}
           <Box p="5">
@@ -254,7 +291,7 @@ export default function FormNotification({ footerLinks, appName, setPageName, da
               colorScheme="button"
               _text={{ color: "white" }}
               onPress={(e) => {
-                setDateTimeData({})
+                setDateTimeData({});
               }}
             >
               {t("CONTINUE")}
@@ -263,7 +300,7 @@ export default function FormNotification({ footerLinks, appName, setPageName, da
         </Box>
       </Actionsheet>
     </Stack>
-  )
+  );
 }
 
 const FormInput = ({
@@ -305,10 +342,12 @@ const FormInput = ({
             />
           }
           onPress={(e) => {
-            setDateTimeData(item)
+            setDateTimeData(item);
           }}
         >
-          {dateTime[item.name] ? t(dateTime[item.name]) : `Select ${t(item.name)}`}
+          {dateTime[item.name]
+            ? t(dateTime[item.name])
+            : `Select ${t(item.name)}`}
         </Button>
       </HStack>
     ))
