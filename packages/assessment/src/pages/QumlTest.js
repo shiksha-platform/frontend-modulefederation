@@ -56,8 +56,8 @@ export default function QumlTest() {
     const id = result.result?.Trackassessment?.osid || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    console.log("assessmentDetails", assessmentDetails);
     localStorage.setItem("assessment-score", assessmentDetails.score);
+    localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
     setLoading(false);
     navigate("/assessment-result");
   };

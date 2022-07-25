@@ -42,7 +42,7 @@ const SpotAssessmentResult = ({ appName }) => {
   const [toDoNextModal, setToDoNextModal] = useState(false);
   const [similarTestModal, setSimilarTestModal] = useState(false);
   const [nextOption, setNextOption] = useState();
-  const scorePercent = Math.round((localStorage.getItem("assessment-score")/4)*100);
+  const scorePercent = Math.floor((localStorage.getItem("assessment-score")/localStorage.getItem("assessment-totalScore"))*100);
   const studentDetails = JSON.parse(localStorage.getItem('assessment-student'));
 
 
@@ -252,12 +252,12 @@ const SpotAssessmentResult = ({ appName }) => {
             <VStack>
               <Box p="4" alignItems="center">
                 <RoundedProgressBar
-                  values={[63, 28]}
+                  values={[scorePercent, 100 - scorePercent]}
                   colors={[
                     colors.scoreCardIcon1,
                     colors.circleProgressBarcolor,
                   ]}
-                  title={{ text: "63%", fontSize: "21px" }}
+                  title={{ text: `${scorePercent}%`, fontSize: "21px" }}
                   legend={{ text: "Total Score", fontSize: "14px" }}
                   cutout={"85%"}
                   size="80px"
@@ -340,12 +340,12 @@ const SpotAssessmentResult = ({ appName }) => {
             <VStack>
               <Box p="4" alignItems="center">
                 <RoundedProgressBar
-                  values={[32, 100 - 32]}
+                  values={[scorePercent, 100 - scorePercent]}
                   colors={[
                     colors.scoreCardIcon2,
                     colors.circleProgressBarcolor,
                   ]}
-                  title={{ text: "32%", fontSize: "21px" }}
+                  title={{ text: `${scorePercent}%`, fontSize: "21px" }}
                   legend={{ text: "Total Score", fontSize: "14px" }}
                   cutout={"85%"}
                   size="80px"
