@@ -38,8 +38,6 @@ import {
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
-import { onMessageListener } from "../firebase";
-import { getUserToken } from "../firebase";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
@@ -87,66 +85,26 @@ const Notification = ({ footerLinks, appName }) => {
     capture("INTERACT", telemetryData);
   }
 
-  const feedTokenToTeacher = async () => {
-    const tokenuser = await getUserToken("/modules/notification");
-    console.log(tokenuser);
-    console.log(isTokenFound);
-    // const resp = await teacherRegistryService.update({
-    //   teacherId: localStorage.getItem("id"),
-    //   tokenId: ''
-    // })
-    // return resp;
-  }
-
-  const gettingFirebaseNotification = () => {
-    onMessageListener().then(payload => {
-      console.log("Payload is from notification", payload);
-      setRefinedData({ title: payload.notification.title, body: payload.notification.body })
-      console.log(payload);
-      //GetAllNotifications();
-    }).catch(err => console.log('failed: ', err))
-  }
-
-  useEffect(() => {
-    feedTokenToTeacher();
-    console.log("hell");
-  }, [])
-
   const getConfigData = async () => {
-    console.log("config API called");
     const Response = await getApiConfig();
-    console.log("Response", Response);
     //setConfigData(Response);
     const ValidUsersResp = Array.isArray(Response["notification.configureWhoCanSendNotification"]) ? Response["notification.configureWhoCanSendNotification"] : JSON.parse(Response["notification.configureWhoCanSendNotification"])
-    console.log(ValidUsersResp);
     setValidUsers(ValidUsersResp);
   }
 
   const GetAllNotifications = async () => {
-    console.log("Notification API called");
-    // const FilterData1 = getFilterDetails();
-    // const resp1 = await notificationRegistryService.sendNotificationSearch({
-    //   //limit: "8",
-    //   filters: FilterData1
-    //   //"osCreatedAt": { "eq": moment(date).format("YYYY-MM-DD") }
-    // })
     const resp1 = await getAllForUser({
       userId: "7597185708",
       provider: "firebase",
       startDate: moment(date).format("DD-MM-YYYY"),
       endDate: moment(date).format("DD-MM-YYYY")
     })
-    console.log(resp1, "history");
     setNotificationInfo(resp1);
   }
 
   useEffect(() => {
     getDateFromCalendar();
   }, [page])
-
-  useEffect(() => {
-    gettingFirebaseNotification();
-  }, [refinedData])
 
   // const getFilterDetails = () => {
   //   let latestDate = moment(date).format("YYYY-MM-DD");

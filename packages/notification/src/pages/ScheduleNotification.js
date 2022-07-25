@@ -61,7 +61,6 @@ export default function ScheduleNotification({ footerLinks, appName }) {
       let hour = time.split(" ")[0].split(":")[0]
       let mins = time.split(" ")[0].split(":")[1]
       let code = time.split(" ")[1]
-      console.log(hour, code)
 
       let newTime = ""
       if (code == "PM") {
@@ -70,7 +69,6 @@ export default function ScheduleNotification({ footerLinks, appName }) {
       } else {
         newTime = time.split(" ")[0]
       }
-      console.log(newTime);
       return newTime;
     }
   }
@@ -116,7 +114,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Notification-End",
-      tag: "send later",
+      tag: "Send Later",
       studentCount: students.length,
       date: new Date().toISOString().slice(0, 10)
     });
@@ -377,16 +375,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                   NotificationSendRequest();
                   setSuccess(true);
                   setShowSummaryModal({});
-                  if (recurring) {
-                    const telemetryData = telemetryFactory.interact({
-                      appName,
-                      type: "Attendance-Notification-Recurring-Notifications",
-                      repeat: dateTime?.REPEAT,
-                      frequency: dateTime?.FREQUENCY,
-                      time: dateTime?.TIME,
-                    });
-                    capture("INTERACT", telemetryData);
-                  }
+                  handleTelemetry();
                 }}
               >
                 {t("SCHEDULE_MESSAGE")}
