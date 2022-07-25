@@ -94,7 +94,7 @@ const Notification = ({ footerLinks, appName }) => {
 
   const GetAllNotifications = async () => {
     const resp1 = await getAllForUser({
-      userId: "7597185708",
+      userId: localStorage.getItem("phoneNumber"),
       provider: "firebase",
       startDate: moment(date).format("DD-MM-YYYY"),
       endDate: moment(date).format("DD-MM-YYYY")
@@ -106,6 +106,7 @@ const Notification = ({ footerLinks, appName }) => {
     getDateFromCalendar();
   }, [page])
 
+  //CURRENTLY THERE ARE NO FILTERS SUPPORTED BY HISTORY API
   // const getFilterDetails = () => {
   //   let latestDate = moment(date).format("YYYY-MM-DD");
   //   let newFilterObject = {};
@@ -459,7 +460,7 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore }) 
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>{moment(value.timestamp).format("LT")}</BodySmall>
+                <BodySmall>{moment.utc(value.timestamp).local().format("LT")}</BodySmall>
               </HStack>
             </HStack>
           </VStack>

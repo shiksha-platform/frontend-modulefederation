@@ -91,6 +91,7 @@ export default function Login() {
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           localStorage.setItem("schoolId", resultTeacher.schoolId);
+          localStorage.setItem("phoneNumber", resultTeacher.phoneNumber);
           //window.location.reload();
 
           localStorage.setItem("token", token);

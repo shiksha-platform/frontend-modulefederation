@@ -844,7 +844,7 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, te
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>{textmsg}{moment(value.createdAt).format("LT")}</BodySmall>
+                <BodySmall>{textmsg}{moment.utc(value.createdAt).local().format("LT")}</BodySmall>
               </HStack>
             </HStack>
           </VStack>
