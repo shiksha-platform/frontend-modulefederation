@@ -313,5 +313,6 @@
   "DONT_HAVE_AN_ACCOUNT": "Don't have an account?",
   "LOADING": "Loading",
   "REMOVE_PHOTO": "Remove Photo",
-  "UPLOAD_PHPTP": "Upload Photo"
+  "UPLOAD_PHPTP": "Upload Photo",
+  "ENTER_TITLE_HINT": "Enter title hint"
 }

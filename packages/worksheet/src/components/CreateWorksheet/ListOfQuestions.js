@@ -8,6 +8,7 @@ import {
   Caption,
   overrideColorTheme,
   Subtitle,
+  H3,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {

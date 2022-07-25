@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 export default function SearchLayout({
   filters,
   minStringLenght,
+  searchPlaceholder,
   notFoundMessage,
   imageUrl,
   children,
@@ -50,22 +51,25 @@ export default function SearchLayout({
             <Input
               flex='1'
               variant='unstyled'
-              InputRightElement={
-                <React.Fragment>
-                  <IconByName
-                    _icon={{ size: '23' }}
-                    color='coolGray.500'
-                    w='1/8'
-                    name='MicLineIcon'
-                    pl='0'
-                    onPress={(e) => console.log('not found mic fuction')}
-                  />
-                </React.Fragment>
+              bg='gray.100'
+              // InputRightElement={
+              //   <React.Fragment>
+              //     <IconByName
+              //       _icon={{ size: '23' }}
+              //       color='coolGray.500'
+              //       w='1/8'
+              //       name='MicLineIcon'
+              //       pl='0'
+              //       onPress={(e) => console.log('not found mic fuction')}
+              //     />
+              //   </React.Fragment>
+              // }
+              placeholder={
+                searchPlaceholder
+                  ? searchPlaceholder
+                  : `Type ${minStringLenght ? 'min ' + minStringLenght : ''}
+               to search `
               }
-              placeholder={`Type ${
-                minStringLenght ? 'min ' + minStringLenght : ''
-              } to search `}
-              onChange={(e) => setSearch(e.target.value)}
             />
           </HStack>
         </Stack>
