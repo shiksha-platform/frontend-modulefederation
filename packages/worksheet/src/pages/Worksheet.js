@@ -9,6 +9,7 @@ import {
   overrideColorTheme,
   SearchLayout,
   getApiConfig,
+  H2,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, Stack, VStack } from "native-base";
@@ -41,6 +42,7 @@ export default function Worksheet({ footerLinks, appName }) {
   const [searchState, setSearchState] = React.useState(false);
   const [sortData, setSortData] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
+  const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
   const { state } = useParams();
 
   React.useEffect(async () => {
@@ -83,6 +85,15 @@ export default function Worksheet({ footerLinks, appName }) {
       : newManifest?.["worksheet.configureWorksheetSortOptions"]
       ? JSON.parse(newManifest?.["worksheet.configureWorksheetSortOptions"])
       : [];
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    setShowButtonArray([...showButtonArray, ...buttons]);
+
     setSortArray(sorts);
     setLoading(false);
   }, [filterObject, search.length >= 3, searchState]);
@@ -109,6 +120,7 @@ export default function Worksheet({ footerLinks, appName }) {
             setFilterObject,
             sortArray,
             worksheetConfig,
+            showButtonArray,
           }}
         />
       </SearchLayout>
@@ -137,7 +149,7 @@ export default function Worksheet({ footerLinks, appName }) {
         setSearch,
         setSearchState,
       }}
-      subHeader={<H2>{t("View all your worksheets")}</H2>}
+      subHeader={<H2 textTransform="none">{t("View all your worksheets")}</H2>}
       _subHeader={{ bg: colors.cardBg }}
       _footer={footerLinks}
     >
@@ -148,6 +160,7 @@ export default function Worksheet({ footerLinks, appName }) {
           setFilterObject,
           appName,
           worksheetConfig,
+          showButtonArray,
         }}
       />
     </Layout>
@@ -155,6 +168,8 @@ export default function Worksheet({ footerLinks, appName }) {
 }
 
 const ChildrenWorksheet = ({
+  worksheetConfig,
+  showButtonArray,
   worksheets,
   isHideCreateButton,
   setFilterObject,
@@ -198,6 +213,8 @@ const ChildrenWorksheet = ({
                 worksheets.map((item, index) => {
                   return (
                     <WorksheetBox
+                      canShowButtonArray={showButtonArray}
+                      worksheetConfig={worksheetConfig}
                       appName={appName}
                       canShare={true}
                       key={index}

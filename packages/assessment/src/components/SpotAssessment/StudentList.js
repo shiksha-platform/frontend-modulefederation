@@ -116,7 +116,7 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
       return question.questionId;
     });
     localStorage.setItem("assessment-questionIds", JSON.stringify(questionIds));
-    navigate("/quml-test");
+    navigate("/assessment/quml-test");
   };
 
   const getCompetenciesList = async (selectedSubject) => {

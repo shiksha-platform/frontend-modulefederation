@@ -261,7 +261,7 @@ export default function SuccessPublicationReport({
                         _text={{
                           color: colors.white,
                         }}
-                        onPress={() => navigate("/assessment-detailed-report")}
+                        onPress={() => navigate("/assessment/assessment-detailed-report")}
                       >
                         {t("See full report")}
                       </Button>

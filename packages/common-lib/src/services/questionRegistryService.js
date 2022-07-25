@@ -18,7 +18,7 @@ export const getAllQuestions = async (params = {}, header = {}) => {
     ...header
   }
   const result = await get(
-    `${manifest.api_url}/question/${params?.adapter}/search?server=dev`,
+    `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
     {
       params: params,
       headers

@@ -37,6 +37,7 @@ const StudentsList = ({ setHeaderDetails }) => {
   const [studentlist, setStudentlist] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState();
   const [activeStage, setActiveStage] = useState();
+  const questionType = "SA";
 
   React.useEffect(() => {
     setStudentlist([
@@ -252,13 +253,19 @@ const StudentsList = ({ setHeaderDetails }) => {
       return (
         <Box bg={colors.white} p={4}>
           <VStack space={4}>
-            <QuestionList />
+            <QuestionList questionType={questionType} />
             <Box py="4">
               <Button
                 colorScheme="button"
                 py={3}
                 _text={{ color: colors.white }}
-                onPress={() => setActiveStage(2)}
+                onPress={() => {
+                  if (questionType === "SA") {
+                    setActiveStage(2);
+                  } else {
+                    setActiveStage(3);
+                  }
+                }}
               >
                 {t("Save")}
               </Button>
@@ -392,7 +399,7 @@ const StudentsList = ({ setHeaderDetails }) => {
               colorScheme="button"
               py={3}
               _text={{ color: colors.white }}
-              onPress={() => navigate("/examscores")}
+              onPress={() => navigate("/assessment/examscores")}
             >
               {t("Save")}
             </Button>

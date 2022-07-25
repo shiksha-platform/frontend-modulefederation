@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   HStack,
-  Text,
   Button,
   Box,
   FormControl,
@@ -22,6 +21,7 @@ import {
   BodyMedium,
   Heading,
   Subtitle,
+  getUserToken,
 } from "@shiksha/common-lib";
 
 const styles = {
@@ -31,7 +31,7 @@ const styles = {
   },
 };
 
-export default function Login() {
+export default function Login({ swPath }) {
   const [credentials, setCredentials] = useState();
   const [errors, setErrors] = React.useState({});
   const { t } = useTranslation();
@@ -43,14 +43,14 @@ export default function Login() {
       typeof credentials?.username === "undefined" ||
       credentials?.username === ""
     ) {
-      arr = { ...arr, username: "Username is required" };
+      arr = { ...arr, username: t("USERNAME_IS_REQUIRED") };
     }
 
     if (
       typeof credentials?.password === "undefined" ||
       credentials?.password === ""
     ) {
-      arr = { ...arr, password: "Password is required" };
+      arr = { ...arr, password: t("PASSWORD_IS_REQUIRED") };
     }
 
     setErrors(arr);
@@ -62,6 +62,8 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (validate()) {
+      const fcmToken = await getUserToken(swPath);
+
       const result = await fetchToken(
         manifest.auth_url,
         credentials?.username,
@@ -72,16 +74,19 @@ export default function Login() {
             "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGRC0yV2pkaVJfQjV3OVZVc1Nsdjh6b21vMmN1ejlHalVSd1hUQzBDU3NZIn0.eyJleHAiOjE2NDYxNjUxMzMsImlhdCI6MTY0NjEyOTEzMywianRpIjoiNGExODhkMjQtODMyNS00M2NkLWE1ODgtMzNlZjA4ZTc4NzU2IiwiaXNzIjoiaHR0cHM6Ly9kZXYtc2hpa3NoYS51bml0ZWZyYW1ld29yay5pby9hdXRoL3JlYWxtcy9zdW5iaXJkLXJjIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjViMzRiMGE4LTUyMDktNDFiNi04ZWNhLTMzOWU3YzIwOTkzYSIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlZ2lzdHJ5LWZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjM0ZmE4OTJiLWI4MTMtNDg2Ni1hMmNkLTUzZDBlOTgwNjRlMyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYXR0ZW5kYW5jZS1tYW5hZ2VtZW50Iiwib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXN1bmJpcmQtcmMiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYXNod2luMkBnbWFpbC5jb20iLCJlbWFpbCI6ImFzaHdpbjJAZ21haWwuY29tIn0.S-YAVlsaiGQ8g8uVVTRdn9gTpA3xL5qh94DSfppuv28qLqCRbw7fmAJtBqK-TGO42vZwZWelOT49LN6znkEncTcvvcMe4iWSm1dU0cOqwn0piQt7lrMQ2RLPYGThPJK98ixHgcieODibWoWLK8tyeb6LJqfyw0gS0UCzxMJQn0R5ABFjRO7tThjBeuNZmP7b03WZIEi7aGQmB3XB9i6Ge9AaQHIUNbz9pCjqdkm0CjNG6qS3pgfX2dKHG1Y2T55ziSHWi5LySFzagAkRvveeh-4tghpxwPHvAXtepGSsOQWkEG8xnZCIyingjOt0snqDt0p1bF4thnTblIaq1LRGaQ"
           }
         }
-        */ if (result?.data) {
+        */
+      if (result?.data) {
         let token = result.data.access_token;
-        const resultTeacher = await teacherRegistryService.getOne(
-          {},
-          { Authorization: "Bearer " + token }
-        );
+        localStorage.setItem("token", token);
 
-        if (resultTeacher) {
-          let id = resultTeacher.id.replace("1-", "");
+        const resultTeacher = await teacherRegistryService.getOne();
+        if (resultTeacher.id) {
+          let { id } = resultTeacher;
           localStorage.setItem("id", id);
+          const updateTokenTeacher = await teacherRegistryService.update({
+            id,
+            fcmToken,
+          });
           localStorage.setItem(
             "fullName",
             resultTeacher.fullName
@@ -91,9 +96,15 @@ export default function Login() {
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           localStorage.setItem("schoolId", resultTeacher.schoolId);
+          try {
+            const fcmToken = await getUserToken(swPath);
+            await teacherRegistryService.update({ id, fcmToken });
+            localStorage.setItem("fcmToken", fcmToken);
+          } catch (e) {
+            console.log({ e });
+          }
           //window.location.reload();
 
-          localStorage.setItem("token", token);
           eventBus.publish("AUTH", {
             eventType: "LOGIN_SUCCESS",
             data: {
@@ -103,7 +114,7 @@ export default function Login() {
         }
       } else {
         localStorage.removeItem("token");
-        setErrors({ alert: "Please enter valid credentials" });
+        setErrors({ alert: t("PLEASE_ENTER_VALID_CREDENTIALS") });
       }
     }
   };
@@ -122,7 +133,7 @@ export default function Login() {
             <Box>
               <Heading>{t("SIGN_IN")}</Heading>
               <BodyMedium textTransform="inherit">
-                Hello, welcome back to our your account !
+                {t("WELCOME_BACK")}
               </BodyMedium>
             </Box>
             <VStack space={2}>
@@ -229,11 +240,11 @@ export default function Login() {
                   {t("SUBMIT")}
                 </Button>
                 <BodyMedium color="button.500" textAlign="center">
-                  Forgot Password?
+                  {t("FORGOT_PASSWORD")}
                 </BodyMedium>
                 <HStack alignItems="center" space="2">
                   <BodyMedium textTransform="inherit">
-                    Dont have an account?
+                    {t("DONT_HAVE_AN_ACCOUNT")}
                   </BodyMedium>
                   <BodyMedium color="button.500">{t("SIGN_UP")}</BodyMedium>
                 </HStack>

@@ -1,5 +1,4 @@
 import { get, post } from './RestClient'
-import manifest from '../manifest.json'
 import mapInterfaceData from './mapInterfaceData'
 const defaultAdapter = 'diksha'
 
@@ -113,7 +112,7 @@ export const getSubjectsList = async (params = {}, header = {}) => {
   }
   const adapter = params.adapter ? params.adapter : defaultAdapter
   const result = await get(
-    `${manifest.api_url}/question/${adapter}/subjectlist`,
+    `${process.env.REACT_APP_API_URL}/question/${adapter}/subjectlist`,
     params,
     {
       headers
@@ -134,7 +133,7 @@ export const getCompetenciesList = async (params = {}, header = {}) => {
   }
   const adapter = params.adapter ? params.adapter : defaultAdapter
   const result = await get(
-    `${manifest.api_url}/question/${adapter}/competencieslist`,
+    `${process.env.REACT_APP_API_URL}/question/${adapter}/competencieslist`,
     {
       params,
       headers
@@ -153,7 +152,7 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await post(`${manifest.api_url}/trackassessment`, params, {
+  const result = await post(`${process.env.REACT_APP_API_URL}/trackassessment`, params, {
     headers
   })
 
@@ -169,7 +168,7 @@ export const getAssessmentDetails = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/trackassessment/${params}`, {
+  const result = await get(`${process.env.REACT_APP_API_URL}/trackassessment/${params}`, {
     headers
   })
 
@@ -190,7 +189,7 @@ export const getAttendanceDetailsByClass = async (
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    `${manifest.api_url}/attendance/${groupId}/studentdetails`, {},
+    `${process.env.REACT_APP_API_URL}/attendance/${groupId}/studentdetails`, {},
     {
       params,
       headers

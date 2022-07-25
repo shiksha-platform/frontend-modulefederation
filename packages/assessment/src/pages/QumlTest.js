@@ -59,7 +59,7 @@ export default function QumlTest() {
     localStorage.setItem("assessment-score", assessmentDetails.score);
     localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
     setLoading(false);
-    navigate("/assessment-result");
+    navigate("/assessment/assessment-result");
   };
 
   React.useEffect(() => {

@@ -51,5 +51,6 @@
   "QUESTION_SELECTED": "Question Selected",
   "AUTO_GENERATE": "Auto Generate",
   "INCLUDE_ANSWER_KEY": "Include answer key in worksheet",
-  "PLEASE_SELECT_ATLIST_ONE_QUESTION": "Please select atlist one question"
+  "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "Please select at least one question",
+  "PLEASE_SELECT_SOURCE": "Please select source"
 }

@@ -81,7 +81,9 @@ export default function WorksheetTemplate({ onPress }) {
                 </Box>
                 <VStack p="5">
                   <H1>Template No. {index + 1}</H1>
-                  <H3>Worksheet with answers along with each question.</H3>
+                  <H3 textTransform="none">
+                    Worksheet with answers along with each question.
+                  </H3>
                 </VStack>
               </Pressable>
             );

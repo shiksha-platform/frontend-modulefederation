@@ -144,6 +144,7 @@ export default function WorksheetBox({
       name: "AddCircleFillIcon",
       _icon: { size: 30 },
       color: colors.primary,
+      display: "none",
       p: "0",
       onPress: handleAddToTimeline,
       rounded: "full",
@@ -245,7 +246,7 @@ export default function WorksheetBox({
             ) : (
               <React.Fragment />
             )}
-            {worksheetConfig?.includes("question") ? (
+            {worksheetConfig?.includes("questions") ? (
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="QuestionLineIcon"
@@ -295,7 +296,7 @@ export default function WorksheetBox({
             ) : (
               <React.Fragment />
             )}
-            {worksheetConfig?.includes("download") ? (
+            {worksheetConfig?.includes("downloads") ? (
               <HStack space="1" alignItems="center">
                 <IconByName
                   name="Download2LineIcon"

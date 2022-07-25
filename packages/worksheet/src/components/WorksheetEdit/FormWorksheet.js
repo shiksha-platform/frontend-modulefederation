@@ -90,6 +90,7 @@ const FormWorksheet = ({
   setFormObject,
   setQuestionObject,
   footerLinks,
+  worksheetConfig,
   appName,
 }) => {
   const { t } = useTranslation();
@@ -274,6 +275,7 @@ const FormWorksheet = ({
       </Box>
       <WorksheetActionsheet
         {...{
+          worksheetConfig,
           worksheet: formObject,
           showModuleWorksheet,
           setShowModuleWorksheet,

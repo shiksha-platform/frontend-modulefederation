@@ -26,7 +26,7 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await get(
-    `${manifest.api_url}/group/participant/${params.teacherId}?role=Teacher`,
+    `${process.env.REACT_APP_API_URL}/group/participant/${params.teacherId}?role=Teacher`,
     {
       ...params,
       headers
@@ -57,7 +57,7 @@ export const update = async (data = {}, header = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await coreUpdate(
-    manifest.api_url + '/group/' + data.id,
+    process.env.REACT_APP_API_URL + '/group/' + data.id,
     newData,
     {
       headers: headers ? headers : {}
@@ -76,7 +76,7 @@ export const updateImage = async (data = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await coreUpdate(
-    manifest.api_url + '/group/' + data.id,
+    process.env.REACT_APP_API_URL + '/group/' + data.id,
     data,
     {
       headers: headers ? headers : {}
@@ -94,9 +94,13 @@ export const getAllData = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await post(`${manifest.api_url}/group/search`, params, {
-    headers
-  })
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/group/search`,
+    params,
+    {
+      headers
+    }
+  )
 
   if (result.data) {
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
@@ -111,9 +115,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/group/${filters.id}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/group/${filters.id}`,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData)
   } else {

@@ -25,55 +25,55 @@ function App() {
   );*/
   const routes = [
     {
-      path: "/exam-list2",
+      path: "/assessment/exam-list2",
       component: QuestionList2,
     },
     {
-      path: "/exam-list3",
+      path: "/assessment/exam-list3",
       component: QuestionList3,
     },
     {
-      path: "/exam-list4",
+      path: "/assessment/exam-list4",
       component: QuestionList4,
     },
     {
-      path: "/exam-list5",
+      path: "/assessment/exam-list5",
       component: QuestionList5,
     },
     {
-      path: "/exam-list6",
+      path: "/assessment/exam-list6",
       component: QuestionList6,
     },
     {
-      path: "/exam-list7",
+      path: "/assessment/exam-list7",
       component: QuestionList7,
     },
     {
-      path: "/examscores",
+      path: "/assessment/examscores",
       component: ExamScores,
     },
     {
-      path: "/assessment-result",
+      path: "/assessment/assessment-result",
       component: SpotAssessmentResult,
     },
     {
-      path: "/assessment-result2",
+      path: "/assessment/assessment-result2",
       component: SpotAssessmentResult2,
     },
     {
-      path: "/assessment-result3",
+      path: "/assessment/assessment-result3",
       component: SpotAssessmentResult3,
     },
     {
-      path: "/assessment-success",
+      path: "/assessment/assessment-success",
       component: SuccessPublicationReport,
     },
     {
-      path: "/assessment-detailed-report",
+      path: "/assessment/assessment-detailed-report",
       component: ReportDetails,
     },
     {
-      path: "/quml-test",
+      path: "/assessment/quml-test",
       component: QumlTest,
     },
     {
@@ -84,7 +84,12 @@ function App() {
   const LoginComponent = React.lazy(() => import("core/Login"));
 
   return (
-    <AppShell theme={theme} routes={routes} AuthComponent={LoginComponent} />
+    <AppShell
+      theme={theme}
+      routes={routes}
+      AuthComponent={LoginComponent}
+      basename={process.env.PUBLIC_URL}
+    />
   );
 }
 

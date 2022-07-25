@@ -43,17 +43,27 @@ const interfaceData = {
   teacherAddress: 'teacherAddress',
   updatedAt: 'updatedAt',
   village: 'village',
+  fcmToken: 'fcmToken',
   mergeParameterWithValue: {
     title: 'fullName'
   }
 }
 
-export const getAll = async (
-  filters = {
-    filters: {}
+export const getAll = async (params = {}, header = {}) => {
+  let headers = {
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ...header
   }
-) => {
-  const result = await post(`${manifest.api_url}/teacher/search`, filters)
+
+  console.log(process.env)
+
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/teacher/search`,
+    params,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return result.data.map((e) => mapInterfaceData(e, interfaceData))
   } else {
@@ -61,14 +71,17 @@ export const getAll = async (
   }
 }
 
-export const getOne = async (filters = {}, header = {}) => {
+export const getOne = async (params = {}, header = {}) => {
   let headers = {
-    ...header,
-    Authorization: 'Bearer ' + localStorage.getItem('token')
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ...header
   }
-  const result = await get(`${manifest.api_url}/teacher`, { headers }).catch(
-    (error) => error
-  )
+
+  console.log(process.env)
+  const result = await get(`${process.env.REACT_APP_API_URL}/teacher`, {
+    params,
+    headers
+  }).catch((error) => error)
   if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData)
   } else {
@@ -76,7 +89,11 @@ export const getOne = async (filters = {}, header = {}) => {
   }
 }
 
-export const update = async (data = {}, headers = {}) => {
+export const update = async (data = {}, header = {}) => {
+  let headers = {
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ...header
+  }
   let newInterfaceData = interfaceData
   if (headers?.removeParameter || headers?.onlyParameter) {
     newInterfaceData = {
@@ -88,11 +105,9 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/teacher/' + data.id,
+    process.env.REACT_APP_API_URL + '/teacher/' + data.id,
     newData,
-    {
-      headers: headers?.headers ? headers?.headers : {}
-    }
+    { headers }
   )
   if (result?.data) {
     return result

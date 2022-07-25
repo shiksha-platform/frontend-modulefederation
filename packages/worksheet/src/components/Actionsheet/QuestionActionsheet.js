@@ -39,15 +39,11 @@ export default function Question({
       </Actionsheet.Content>
       <Box bg={colors.white} width={"100%"} p="5">
         <VStack space="5">
-          {metadataConfig?.includes("question") ? (
-            <BodyMedium color={colors.messageInfo} textTransform="inherit">
-              <div
-                dangerouslySetInnerHTML={{ __html: questionObject?.question }}
-              />
-            </BodyMedium>
-          ) : (
-            <React.Fragment />
-          )}
+          <BodyMedium color={colors.messageInfo} textTransform="inherit">
+            <div
+              dangerouslySetInnerHTML={{ __html: questionObject?.question }}
+            />
+          </BodyMedium>
           <VStack space="4">
             <HStack space="50px">
               <VStack space="4">

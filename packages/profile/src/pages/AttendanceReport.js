@@ -151,7 +151,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
         <VStack space={5} bg={colors.white} p="5">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
-              <H2>{t("MY_MONTHLY_ATTENDANCE")}</H2>
+              <H2 textTransform="none">{t("MY_MONTHLY_ATTENDANCE")}</H2>
             </Box>
           </HStack>
           <Box bg={colors.reportBoxBg} rounded="10px">
@@ -199,7 +199,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
               </VStack>
             </VStack>
           </Box>
-          <Button variant={"outline"}>{t("SEE_MORE")}</Button>
+          {/* <Button variant={"outline"}>{t("SEE_MORE")}</Button> */}
         </VStack>
       </VStack>
     </Layout>
