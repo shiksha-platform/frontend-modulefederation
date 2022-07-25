@@ -8,21 +8,22 @@ import H4 from '../layout/HeaderTags/H4'
 import React from 'react'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCnIWbUvAk2dhkxDGZiaTnU95JXYQX-G7g",
-  authDomain: "shiksha-d8cb0.firebaseapp.com",
-  projectId: "shiksha-d8cb0",
-  storageBucket: "shiksha-d8cb0.appspot.com",
-  messagingSenderId: "941486633409",
-  appId: "1:941486633409:web:c5183689f3e0ab2e90bf40",
-  measurementId: "G-S69RMSE553"
-};
+  apiKey: 'AIzaSyCnIWbUvAk2dhkxDGZiaTnU95JXYQX-G7g',
+  authDomain: 'shiksha-d8cb0.firebaseapp.com',
+  projectId: 'shiksha-d8cb0',
+  storageBucket: 'shiksha-d8cb0.appspot.com',
+  messagingSenderId: '941486633409',
+  appId: '1:941486633409:web:c5183689f3e0ab2e90bf40',
+  measurementId: 'G-S69RMSE553'
+}
 
 initializeApp(firebaseConfig)
 
 const firebaseApp = initializeApp(firebaseConfig)
 const messaging = getMessaging(firebaseApp)
 
-const publicKey = 'BFls0-nyyXAB7s9cuDx42ROIIoLD-N_pby0lh3clKxHgpsRdZtLpNRFD_n5Y5crh8o_6yiGPXgG60stW1xel2Hg'
+const publicKey =
+  'BFls0-nyyXAB7s9cuDx42ROIIoLD-N_pby0lh3clKxHgpsRdZtLpNRFD_n5Y5crh8o_6yiGPXgG60stW1xel2Hg'
 
 export const getUserToken = async (basePath = '') => {
   try {
@@ -41,7 +42,7 @@ export const getUserToken = async (basePath = '') => {
       })
     }
   } catch (e) {
-    console.log(e, "Error")
+    console.log(e, 'Error')
     return ''
   }
 }

@@ -17,7 +17,7 @@ const firebaseConfig = {
   storageBucket: "shiksha-d8cb0.appspot.com",
   messagingSenderId: "941486633409",
   appId: "1:941486633409:web:c5183689f3e0ab2e90bf40",
-  measurementId: "G-S69RMSE553"
+  measurementId: "G-S69RMSE553",
 };
 
 // eslint-disable-next-line no-undef
