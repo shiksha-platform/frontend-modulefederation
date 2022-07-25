@@ -792,8 +792,8 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, te
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
-  const numberOfItems = showMore ? data.length : 2
-  return data.slice(0, numberOfItems).map((value, index) => {
+  const numberOfItems = showMore ? data?.length : 2
+  return data?.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
         key={index}
@@ -828,7 +828,7 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, te
                 }}
               />
             </HStack> */}
-            <Subtitle {...line2style}>{value.content}</Subtitle>
+            <Subtitle {...line2style}>{value?.content}</Subtitle>
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -836,7 +836,7 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, te
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                <BodySmall>{value.module}</BodySmall>
+                <BodySmall>{value?.module}</BodySmall>
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -844,7 +844,7 @@ const NotificationBox = ({ data, onPressMore, onPress, showMore, setShowMore, te
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>{textmsg}{moment.utc(value.createdAt).local().format("LT")}</BodySmall>
+                <BodySmall>{textmsg}{moment.utc(value?.createdAt).local().format("LT")}</BodySmall>
               </HStack>
             </HStack>
           </VStack>
