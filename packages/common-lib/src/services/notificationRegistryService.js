@@ -29,7 +29,7 @@ export const allLogGet = async (params = {}, header = {}) => {
   }
   const { id } = params
   const result = await get(
-    manifest.api_url + '/instantNotification/log/' + `${id}`,
+    process.env.REACT_APP_API_URL + '/instantNotification/log/' + `${id}`,
     {
       params: { ...params },
       headers
@@ -52,7 +52,7 @@ export const sendNotificationPost = async (data, headers = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await post(
-    manifest.api_url + '/instantNotification/instantSend',
+    process.env.REACT_APP_API_URL + '/instantNotification/instantSend',
     data,
     {
       params: data,
@@ -74,7 +74,7 @@ export const sendNotificationSearch = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    manifest.api_url + '/instantNotification/log/search',
+    process.env.REACT_APP_API_URL + '/instantNotification/log/search',
     params,
     {
       headers
@@ -95,7 +95,7 @@ export const scheduledLogGet = async (params = {}, header = {}) => {
   }
   const { id } = params
   const result = await get(
-    manifest.api_url + '/scheduleNotification/log/' + `${id}`,
+    process.env.REACT_APP_API_URL + '/scheduleNotification/log/' + `${id}`,
     {
       params: { ...params },
       headers
@@ -122,7 +122,7 @@ export const sendScheduledNotificationPost = async (data, header = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await post(
-    manifest.api_url + '/scheduleNotification/scheduledSend',
+    process.env.REACT_APP_API_URL + '/scheduleNotification/scheduledSend',
     data,
     {
       params: data,
@@ -145,7 +145,7 @@ export const sendScheduledNotificationSearch = async (
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    manifest.api_url + '/scheduleNotification/search',
+    process.env.REACT_APP_API_URL + '/scheduleNotification/search',
     params,
     {
       headers

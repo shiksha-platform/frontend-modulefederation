@@ -24,7 +24,7 @@ export const getAllForUser = async (params, header = {}) => {
   }
 
   const result = await get(
-    manifest.api_url + '/inappnotification/userhistory',
+    process.env.REACT_APP_API_URL + '/inappnotification/userhistory',
     {
       params: params,
       headers
@@ -45,7 +45,7 @@ export const getAllForBot = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
 
-  const result = await get(manifest.api_url + 'inappnotification/bothistory', {
+  const result = await get(process.env.REACT_APP_API_URL + 'inappnotification/bothistory', {
     params: { ...params },
     headers
   })
