@@ -86,12 +86,11 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
     })
   );
   const [showFilterModal, setShowFilterModal] = React.useState(-1);
-  const [totalAnnouncements,setTotalAnnnouncements]=React.useState(0);
-  const [pageIndex,setPageIndex]=React.useState(0);
+  const [totalAnnouncements, setTotalAnnnouncements] = React.useState(0);
+  const [pageIndex, setPageIndex] = React.useState(0);
   const [filtered, setFiltered] = React.useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = React.useState({});
-  const [announcementsList, setAnnouncementsList] =
-    React.useState([]);
+  const [announcementsList, setAnnouncementsList] = React.useState([]);
   const [showMoreAnnouncements, setShowMoreAnnouncements] =
     React.useState(true);
 
@@ -100,25 +99,32 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
     fetchAnnouncements();
   }, []);
 
-
   //function to fetch announcements
   const fetchAnnouncements = () => {
-    console.log(totalAnnouncements,announcementsList.length);
-    if (totalAnnouncements>0 && announcementsList.length >= totalAnnouncements) {
+    console.log(totalAnnouncements, announcementsList.length);
+    if (
+      totalAnnouncements > 0 &&
+      announcementsList.length >= totalAnnouncements
+    ) {
       setShowMoreAnnouncements(false);
       return;
     }
-    const filters={...filterData,pageIndex:pageIndex*PAGE_SIZE,pageSize:PAGE_SIZE,isPinned:false}
+    const filters = {
+      ...filterData,
+      pageIndex: pageIndex * PAGE_SIZE,
+      pageSize: PAGE_SIZE,
+      isPinned: false,
+    };
     //fetch announcements from backend
-    announcementsRegistryService.getAnnouncementsSet(filters).then(
-      (res) => {
-        setAnnouncementsList((announcementsList)=> [...announcementsList,...res.data]);
-        console.log(announcementsList);
-        setTotalAnnnouncements(res.count);
-        setPageIndex(pageIndex+1);
-      }
-    );
-    
+    announcementsRegistryService.getAnnouncementsSet(filters).then((res) => {
+      setAnnouncementsList((announcementsList) => [
+        ...announcementsList,
+        ...res.data,
+      ]);
+      console.log(announcementsList);
+      setTotalAnnnouncements(res.count);
+      setPageIndex(pageIndex + 1);
+    });
   };
 
   const data = React.useMemo(() => announcementsList, [announcementsList]);
@@ -267,10 +273,21 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                 <Heading size="md">{selectedAnnouncement.title}</Heading>
               </HStack>
             </Box>
-            <HStack flexWrap={"wrap"} space="3" px="5" mb="3">
+            <HStack flexWrap="wrap" space="3" px="5">
+            <Badge
+                mb="2" fontSize="xs" rounded="4"
+                colorScheme="button"
+                variant="solid"
+              >
+                {selectedAnnouncement.author}
+              </Badge>
+
+            </HStack>
+            <HStack flexWrap={"wrap"} space="3" px="5" >
+             
               {selectedAnnouncement.additionalTags?.map((val, index) => {
                 return (
-                  <Badge key={index} mb="2" fontSize="xs" rounded="4">
+                  <Badge key={index} mb="2"  fontSize="xs" rounded="4" variant="outline" colorScheme="button">
                     {val}
                   </Badge>
                 );
@@ -390,7 +407,9 @@ const AnnouncementsBox = ({
                         name="TimeLineIcon"
                         isDisabled
                       />
-                      <BodySmall>{moment(value.dateModified).calendar()}</BodySmall>
+                      <BodySmall>
+                        {moment(value.dateModified).calendar()}
+                      </BodySmall>
                     </HStack>
                   </VStack>
                   <HStack space="2" alignItems="center">
