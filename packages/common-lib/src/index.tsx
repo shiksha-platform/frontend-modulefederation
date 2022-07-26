@@ -28,6 +28,7 @@ import FilterButton from './components/FilterButton'
 import * as teacherRegistryService from './services/teacherRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
+import * as announcementsRegistryService from './services/announcementsRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
 import * as worksheetRegistryService from './services/worksheetRegistryService'
 import * as questionRegistryService from './services/questionRegistryService'
@@ -57,6 +58,7 @@ export {
   teacherRegistryService,
   classRegistryService,
   attendanceRegistryService,
+  announcementsRegistryService,
   studentRegistryService,
   worksheetRegistryService,
   questionRegistryService,
