@@ -19,6 +19,7 @@ import {
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
+  announcementsRegistryService,
   BodyLarge,
   BodyMedium,
   BodySmall,
@@ -32,7 +33,6 @@ import moment from "moment";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 const colors = colorTheme;
 const announcementsData = [
   {
@@ -68,11 +68,12 @@ const announcementsData = [
     additionalTags: [{ name: "type", data: "App" }],
   },
 ];
+const PAGE_SIZE = 4;
 
 const filters = [
-  { name: "Type", data: ["Event", "General", "Shiksha"] },
-  { name: "Date modified", data: ["Last week", "Last 24 hours"] },
-  { name: "Author", data: ["Principal", "Teacher"] },
+  { name: "announcementType", data: ["event", "general"] },
+  { name: "dateModified", data: ["Last week", "Last 24 hours"] },
+  { name: "author", data: ["Principal", "Teacher"] },
 ];
 
 const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
@@ -85,40 +86,41 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
     })
   );
   const [showFilterModal, setShowFilterModal] = React.useState(-1);
+  const [totalAnnouncements,setTotalAnnnouncements]=React.useState(0);
+  const [pageIndex,setPageIndex]=React.useState(0);
   const [filtered, setFiltered] = React.useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = React.useState({});
   const [announcementsList, setAnnouncementsList] =
-    React.useState(announcementsData);
+    React.useState([]);
   const [showMoreAnnouncements, setShowMoreAnnouncements] =
     React.useState(true);
 
   React.useEffect(() => {
     capture("PAGE");
+    fetchAnnouncements();
   }, []);
 
-  //function to produce mock announcement data every 1 second
+
+  //function to fetch announcements
   const fetchAnnouncements = () => {
-    if (announcementsList.length > 10) {
+    console.log(totalAnnouncements,announcementsList.length);
+    if (totalAnnouncements>0 && announcementsList.length >= totalAnnouncements) {
       setShowMoreAnnouncements(false);
       return;
     }
-    setTimeout(() => {
-      setAnnouncementsList((announcementsList) => [
-        ...announcementsList,
-        {
-          name: "Celebration-Teachers Day",
-          dateTime: moment().add("2", "minute").calendar(),
-          type: "Event",
-          data: "Teacher's day will be celebrated in the school. No teaching will take place and school will get over at 11:30 AM. Buses will comply to the timings.",
-          additionalTags: [
-            { name: "type", data: "Event" },
-            { name: "time", data: "08:30 AM" },
-            { name: "venue", data: "Amphitheatre" },
-          ],
-        },
-      ]);
-    }, 1000);
+    const filters={...filterData,pageIndex:pageIndex*PAGE_SIZE,pageSize:PAGE_SIZE,isPinned:false}
+    //fetch announcements from backend
+    announcementsRegistryService.getAnnouncementsSet(filters).then(
+      (res) => {
+        setAnnouncementsList((announcementsList)=> [...announcementsList,...res.data]);
+        console.log(announcementsList);
+        setTotalAnnnouncements(res.count);
+        setPageIndex(pageIndex+1);
+      }
+    );
+    
   };
+
   const data = React.useMemo(() => announcementsList, [announcementsList]);
 
   //function to modify the filters
@@ -262,14 +264,14 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
           <Box bg={colors.white} width={"100%"}>
             <Box px="5">
               <HStack py="3" alignItems="center" space="1">
-                <Heading size="md">{selectedAnnouncement.name}</Heading>
+                <Heading size="md">{selectedAnnouncement.title}</Heading>
               </HStack>
             </Box>
             <HStack flexWrap={"wrap"} space="3" px="5" mb="3">
               {selectedAnnouncement.additionalTags?.map((val, index) => {
                 return (
                   <Badge key={index} mb="2" fontSize="xs" rounded="4">
-                    {val.data}
+                    {val}
                   </Badge>
                 );
               })}
@@ -320,6 +322,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                   }
                   onChange={(e) => {
                     modifyFilter(showFilterModal, value, e);
+                    console.log(filterData);
                   }}
                 >
                   {value}
@@ -379,7 +382,7 @@ const AnnouncementsBox = ({
                 >
                   <VStack space="2" flexGrow="1" overflowX="hidden">
                     <HStack alignItems="center" overflow="hidden">
-                      <H2>{value.name}</H2>
+                      <H2>{value.title}</H2>
                     </HStack>
                     <HStack space="2" alignItems="center">
                       <IconByName
@@ -387,12 +390,12 @@ const AnnouncementsBox = ({
                         name="TimeLineIcon"
                         isDisabled
                       />
-                      <BodySmall>{value.dateTime}</BodySmall>
+                      <BodySmall>{moment(value.dateModified).calendar()}</BodySmall>
                     </HStack>
                   </VStack>
                   <HStack space="2" alignItems="center">
                     <Badge rounded="5" colorScheme="warning" variant="outline">
-                      {value.type}
+                      {value.announcementType}
                     </Badge>
                   </HStack>
                 </HStack>
