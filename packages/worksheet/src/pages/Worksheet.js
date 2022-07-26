@@ -56,8 +56,8 @@ export default function Worksheet({ footerLinks, appName }) {
     );
     let params = state
       ? {
-          state: { eq: state },
-        }
+        state: { eq: state },
+      }
       : {};
 
     const arr = Object.keys(filterObject);
@@ -77,6 +77,7 @@ export default function Worksheet({ footerLinks, appName }) {
     } else {
       filterData = data.filter((e) => e.name);
     }
+    console.log("FilterData", filterData);
     setWorksheets(filterData);
     const sorts = Array.isArray(
       newManifest?.["worksheet.configureWorksheetSortOptions"]
@@ -97,7 +98,7 @@ export default function Worksheet({ footerLinks, appName }) {
     setSortArray(sorts);
     setLoading(false);
   }, [filterObject, search.length >= 3, searchState]);
-
+  console.log(filterObject);
   if (loading) {
     return <Loading />;
   }

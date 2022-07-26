@@ -94,6 +94,7 @@ import FullscreenLineIcon from 'remixicon-react/FullscreenLineIcon'
 import Settings4LineIcon from 'remixicon-react/Settings4LineIcon'
 import CameraSwitchLineIcon from 'remixicon-react/CameraSwitchLineIcon'
 import AwardFillIcon from 'remixicon-react/AwardFillIcon'
+import Compasses2LineIcon from 'remixicon-react/Compasses2LineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -849,6 +850,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<CameraSwitchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'Compasses2LineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<Compasses2LineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

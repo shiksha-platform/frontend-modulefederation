@@ -51,15 +51,15 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       Array.isArray(newManifest?.["question-bank.questionMetadata"])
         ? newManifest?.["question-bank.questionMetadata"]
         : newManifest?.["question-bank.questionMetadata"]
-        ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
-        : []
+          ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+          : []
     );
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
         : newManifest?.["worksheet.worksheetMetadata"]
-        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
-        : []
+          ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
+          : []
     );
     let buttons = [];
     if (newManifest["worksheet.allow-download-worksheet"] === "true") {
