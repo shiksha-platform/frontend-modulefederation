@@ -76,17 +76,17 @@ function App() {
   const QuestionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
   const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
   const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
-  // const SingleLessonPlanDetails = React.lazy(() => import("/lessons/SingleLessonPlan"));
-  // const LessonPlansDetails = React.lazy(() => import("/lessons/LessonPlansDetails"));
-  // const Lessonplans = React.lazy(() => import("/lessons/Lessonplans"));
+  // const SingleLessonPlanDetails = React.lazy(() => import("/lessonplans/SingleLessonPlan"));
+  // const LessonPlansDetails = React.lazy(() => import("/lessonplans/LessonPlansDetails"));
+  // const Lessonplans = React.lazy(() => import("/lessonplans/Lessonplans"));
 
   const routes = [
     // {
-    //   path: "/worksheet/lessons",
+    //   path: "/worksheet/lessonplans",
     //   component: LessonPlansDetails,
     // },
     // {
-    //   path: "/worksheet/lessons/list",
+    //   path: "/worksheet/lessonplans/list",
     //   component: Lessonplans,
     // },
     // {

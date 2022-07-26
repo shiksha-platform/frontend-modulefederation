@@ -1,7 +1,7 @@
 const { dependencies } = require("./package.json");
 
 module.exports = {
-  name: "lessons",
+  name: "lessonplans",
   exposes: {
     "./App": "./src/App",
     "./LessonPlanDetails": "./src/pages/LessonPlanDetails",

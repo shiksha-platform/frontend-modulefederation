@@ -61,7 +61,7 @@ export default function LessonPlansDetails({ footerLinks }) {
         <Button
           _text={{ color: "white" }}
           p="3"
-          onPress={(e) => navigate("/lessons/create")}
+          onPress={(e) => navigate("/lessonplans/create")}
         >
           {t("Create new")}
         </Button>
@@ -111,7 +111,7 @@ const LessonPlansMapping = ({
           variant="outline"
           colorScheme="button"
           rounded="lg"
-          onPress={(e) => navigate("/lessons/list")}
+          onPress={(e) => navigate("/lessonplans/list")}
         >
           {seeButtonText}
         </Button>
