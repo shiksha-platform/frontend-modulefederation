@@ -25,5 +25,8 @@
   },
   "assessment": {
     "url": "http://localhost:3009/modules/assessment"
+  },
+  "mylearning": {
+    "url": "http://localhost:3010/modules/mylearning"
   }
 }

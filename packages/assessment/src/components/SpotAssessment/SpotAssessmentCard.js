@@ -154,7 +154,7 @@ const SpotAssessmentCard = ({ setPageName, appName }) => {
         <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
-              <H2>{t("Choose the subject")}</H2>
+              <H2 textTransform="none">{t("Choose the subject")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"

@@ -11,12 +11,13 @@ importScripts(
 // Initialize the Firebase app in the service worker by passing the generated config
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDW2E975sqlALwHA2IwAITVCp95L8N2aS4",
-  authDomain: "demoparesh-3ac16.firebaseapp.com",
-  projectId: "demoparesh-3ac16",
-  storageBucket: "demoparesh-3ac16.appspot.com",
-  messagingSenderId: "459963173731",
-  appId: "1:459963173731:web:37d934b94b7c05bf912156",
+  apiKey: "AIzaSyCnIWbUvAk2dhkxDGZiaTnU95JXYQX-G7g",
+  authDomain: "shiksha-d8cb0.firebaseapp.com",
+  projectId: "shiksha-d8cb0",
+  storageBucket: "shiksha-d8cb0.appspot.com",
+  messagingSenderId: "941486633409",
+  appId: "1:941486633409:web:c5183689f3e0ab2e90bf40",
+  measurementId: "G-S69RMSE553",
 };
 
 // eslint-disable-next-line no-undef
