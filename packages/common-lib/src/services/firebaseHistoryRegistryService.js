@@ -45,10 +45,13 @@ export const getAllForBot = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
 
-  const result = await get(process.env.REACT_APP_API_URL + 'inappnotification/bothistory', {
-    params: { ...params },
-    headers
-  })
+  const result = await get(
+    process.env.REACT_APP_API_URL + 'inappnotification/bothistory',
+    {
+      params: { ...params },
+      headers
+    }
+  )
   if (result.data.records) {
     return result.data.records.map((e) => mapInterfaceData(e, interfaceData))
   } else {

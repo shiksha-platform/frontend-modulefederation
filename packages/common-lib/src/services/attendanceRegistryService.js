@@ -47,7 +47,9 @@ export const getOne = async (params = {}, header = {}) => {
   }
 
   const result = await get(
-    process.env.REACT_APP_API_URL + `/attendance/usersegment/` + `${params.attendance}`,
+    process.env.REACT_APP_API_URL +
+      `/attendance/usersegment/` +
+      `${params.attendance}`,
     {
       params: { ...params },
       headers
