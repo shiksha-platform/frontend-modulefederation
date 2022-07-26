@@ -1,12 +1,17 @@
 import * as React from "react";
 import { CompareReportHeading } from "components/simple/CompareReportHeading";
+import Wrapper from "stories/Wrapper";
 
 export default {
   title: "Attendance/simple/CompareReportHeading",
   component: CompareReportHeading,
 };
 
-const Template = (args) => <CompareReportHeading {...args} />;
+const Template = (args) => (
+  <Wrapper>
+    <CompareReportHeading {...args} />
+  </Wrapper>
+);
 
 export const Main = Template.bind({});
 Main.args = {

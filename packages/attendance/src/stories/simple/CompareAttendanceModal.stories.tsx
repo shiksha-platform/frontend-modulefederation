@@ -1,6 +1,7 @@
 // Lib
 import * as React from "react";
 import { CompareAttendanceModal } from "components/simple/CompareAttendanceModal";
+import Wrapper from "stories/Wrapper";
 
 export default {
   title: "Attendance/simple/CompareAttendanceModal",
@@ -12,11 +13,13 @@ const Template = (args) => {
   const [compare, setCompare] = React.useState<string>("week");
   const navigate = () => {};
   return (
-    <CompareAttendanceModal
-      {...args}
-      setCompare={setCompare}
-      navigate={navigate}
-    />
+    <Wrapper>
+      <CompareAttendanceModal
+        {...args}
+        setCompare={setCompare}
+        navigate={navigate}
+      />
+    </Wrapper>
   );
 };
 

@@ -3,6 +3,7 @@ import { PresentStudentsSummary } from "components/composite/PresentStudentsSumm
 
 // Mock data
 import { attendance, compareAttendance, students } from "../mockData";
+import Wrapper from "stories/Wrapper";
 
 export default {
   title: "Attendance/composite/PresentStudentsSummary",
@@ -16,7 +17,11 @@ const defaultArgs = {
   page: 0,
   presentCount: 7,
 };
-const Template = (args) => <PresentStudentsSummary {...args} />;
+const Template = (args) => (
+  <Wrapper>
+    <PresentStudentsSummary {...args} />
+  </Wrapper>
+);
 
 export const WeekSummary = Template.bind({});
 WeekSummary.args = {

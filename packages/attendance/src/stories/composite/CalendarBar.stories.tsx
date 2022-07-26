@@ -1,12 +1,16 @@
 import * as React from "react";
 import { CalendarBar } from "components/composite/CalendarBar";
 import { useState } from "@storybook/addons";
+import Wrapper from "stories/Wrapper";
 
 const Template = (args) => {
   const [page, setPage] = useState<number>(0);
-  return <CalendarBar {...args} page={page} setPage={setPage} />;
+  return (
+    <Wrapper>
+      <CalendarBar {...args} page={page} setPage={setPage} />;
+    </Wrapper>
+  );
 };
-
 export default {
   title: "Attendance/Composite/Calendar Bar",
   component: CalendarBar,
