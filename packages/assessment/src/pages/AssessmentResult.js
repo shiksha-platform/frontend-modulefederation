@@ -138,10 +138,10 @@ const AssessmentResult = ({
   useEffect(() => {
     _handleSpotAssessmentEnd();
 
-    return () => {
-      localStorage.removeItem("assessment-score");
-      localStorage.removeItem("assessment-totalScore");
-    };
+    // return () => {
+    //   localStorage.removeItem("assessment-score");
+    //   localStorage.removeItem("assessment-totalScore");
+    // };
   }, []);
 
   /*useEffect(() => {

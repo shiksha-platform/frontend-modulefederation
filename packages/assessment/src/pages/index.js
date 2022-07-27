@@ -34,10 +34,13 @@ import StudentsListPage from "./StudentsList";
 import Homepage from "./Homepage";
 import QumlTest from "./QumlTest";
 import AssessmentResult from "./AssessmentResult";
+// import { navigate } from "@storybook/addon-links";
+import { useNavigate } from "react-router-dom";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Assessment(props) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   let { classId } = useParams();
   // if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
   // if (!classId) classId = "9ccc0210-65c5-4af6-ac73-a12304f538c6";
@@ -55,15 +58,14 @@ export default function Assessment(props) {
   const teacherId = sessionStorage.getItem("id");
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
-  const [pageName, setPageName] = useState();
+  const [pageName, setPageName] = useState("assessmentResult");
   const [questionIds, setQuestionIds] = useState([]);
 
   // subject Modal states
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] =
-    useState();
-    // localStorage.getItem("assessment-subject")
+  const [selectedSubject, setSelectedSubject] = useState();
+  // localStorage.getItem("assessment-subject")
 
   // assessment type modal states
   const [chooseAssessmentTypeModal, setChooseAssessmentTypeModal] =
@@ -72,9 +74,8 @@ export default function Assessment(props) {
     "Oral Assessment",
     "Written Assessment",
   ]);
-  const [selectedAssessmentType, setSelectedAssessmentType] =
-    useState();
-    // localStorage.getItem("assessment-type")
+  const [selectedAssessmentType, setSelectedAssessmentType] = useState();
+  // localStorage.getItem("assessment-type")
   // competencies modal states
   const [chooseCompetenciesModal, setChooseCompetenciesModal] = useState(false);
   const [competencies, setCompetencies] = useState([]);
@@ -82,9 +83,8 @@ export default function Assessment(props) {
     []
     // JSON.parse(localStorage.getItem("assessment-competencies")) || []
   );
-  const [selectedStudent, setSelectedStudent] =
-    useState();
-    // JSON.parse(localStorage.getItem("assessment-student")) || null
+  const [selectedStudent, setSelectedStudent] = useState();
+  // JSON.parse(localStorage.getItem("assessment-student")) || null
   const [isRepeat, setIsRepeat] = useState(false);
   const [similarWithComp, setSimilarWithComp] = useState(false);
   const [similarWithoutComp, setSimilarWithoutComp] = useState(false);
@@ -92,6 +92,8 @@ export default function Assessment(props) {
   useEffect(() => {
     // localStorage.setItem("assessment-class", classId);
     getSubjectsList();
+    localStorage.removeItem("assessment-score");
+    localStorage.removeItem("assessment-totalScore");
   }, []);
 
   useEffect(() => {
@@ -201,6 +203,7 @@ export default function Assessment(props) {
     setSelectedCompetencies();
     setSelectedSubject();
     setPageName("");
+    navigate("/assessment-success");
   };
 
   const handleStartAssessment = async () => {
