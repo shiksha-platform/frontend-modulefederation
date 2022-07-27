@@ -12,7 +12,8 @@ import {
   telemetryFactory,
   capture,
   assessmentRegistryService,
-  H3, useWindowSize
+  H3,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -37,7 +38,16 @@ const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const StudentListCard = ({ classId, setPageName, students, setHeaderDetails, chooseAssessmentTypeModal, handleSelectedStudent, selectedStudent, handleStudentPageNext }) => {
+const StudentListCard = ({
+  classId,
+  setPageName,
+  students,
+  setHeaderDetails,
+  chooseAssessmentTypeModal,
+  handleSelectedStudent,
+  selectedStudent,
+  handleStudentPageNext,
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
@@ -81,7 +91,6 @@ const StudentListCard = ({ classId, setPageName, students, setHeaderDetails, cho
     setStudentlist(list);
     setLoading(false);
   };
-
 
   useEffect(() => {
     checkAttendance();

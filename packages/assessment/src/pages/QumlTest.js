@@ -15,7 +15,16 @@ import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function QumlTest({classId, setPageName, handleBackButton, selectedStudent, selectedAssessmentType, selectedCompetencies, selectedSubject, questionIds}) {
+export default function QumlTest({
+  classId,
+  setPageName,
+  handleBackButton,
+  selectedStudent,
+  selectedAssessmentType,
+  selectedCompetencies,
+  selectedSubject,
+  questionIds,
+}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
@@ -61,7 +70,7 @@ export default function QumlTest({classId, setPageName, handleBackButton, select
     localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
     setLoading(false);
     // navigate("/assessment/assessment-result");
-    setPageName('assessmentResult')
+    setPageName("assessmentResult");
   };
 
   React.useEffect(() => {

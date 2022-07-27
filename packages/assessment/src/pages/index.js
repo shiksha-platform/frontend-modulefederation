@@ -1,17 +1,31 @@
 import {
   assessmentRegistryService,
   BodyLarge,
-  BodyMedium, capture,
-  Collapsible, H2,
+  BodyMedium,
+  capture,
+  Collapsible,
+  H2,
   H3,
   IconByName,
   Layout,
-  overrideColorTheme, questionRegistryService, telemetryFactory
+  overrideColorTheme,
+  questionRegistryService,
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Box, HStack, Text, VStack, Stack, Avatar, Actionsheet, Button, Checkbox } from "native-base";
+import {
+  Box,
+  HStack,
+  Text,
+  VStack,
+  Stack,
+  Avatar,
+  Actionsheet,
+  Button,
+  Checkbox,
+} from "native-base";
 import SpotAssessmentCard from "../components/SpotAssessment/SpotAssessmentCard";
 import StudentListCard from "../components/SpotAssessment/StudentList";
 import ExamScoresCard from "../components/ExamScores/ExamScoresCard";
@@ -47,32 +61,33 @@ export default function Assessment(props) {
   // subject Modal states
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState(
+  const [selectedSubject, setSelectedSubject] =
+    useState();
     // localStorage.getItem("assessment-subject")
-  );
 
   // assessment type modal states
-  const [chooseAssessmentTypeModal, setChooseAssessmentTypeModal] = useState(false);
+  const [chooseAssessmentTypeModal, setChooseAssessmentTypeModal] =
+    useState(false);
   const [assessmentTypes, setAssessmentTypes] = useState([
     "Oral Assessment",
     "Written Assessment",
   ]);
-  const [selectedAssessmentType, setSelectedAssessmentType] = useState(
+  const [selectedAssessmentType, setSelectedAssessmentType] =
+    useState();
     // localStorage.getItem("assessment-type")
-  );
   // competencies modal states
   const [chooseCompetenciesModal, setChooseCompetenciesModal] = useState(false);
   const [competencies, setCompetencies] = useState([]);
-  const [selectedCompetencies, setSelectedCompetencies] = useState([]
+  const [selectedCompetencies, setSelectedCompetencies] = useState(
+    []
     // JSON.parse(localStorage.getItem("assessment-competencies")) || []
   );
-  const [selectedStudent, setSelectedStudent] = useState(
+  const [selectedStudent, setSelectedStudent] =
+    useState();
     // JSON.parse(localStorage.getItem("assessment-student")) || null
-  );
   const [isRepeat, setIsRepeat] = useState(false);
   const [similarWithComp, setSimilarWithComp] = useState(false);
   const [similarWithoutComp, setSimilarWithoutComp] = useState(false);
-
 
   useEffect(() => {
     // localStorage.setItem("assessment-class", classId);
@@ -119,19 +134,18 @@ export default function Assessment(props) {
     capture("START", telemetryData);
   };
 
-
   //student list page methods
   const handleStudentPageNext = () => {
-    if(isRepeat || similarWithoutComp){
+    if (isRepeat || similarWithoutComp) {
       handleStartAssessment();
       return;
     }
-    if(similarWithComp){
+    if (similarWithComp) {
       setChooseCompetenciesModal(true);
       return;
     }
     setChooseAssessmentTypeModal(true);
-  }
+  };
   const handleAssessmentTypeSelection = (assessmentType) => {
     setSelectedAssessmentType(assessmentType);
     // localStorage.setItem("assessment-type", assessmentType);
@@ -186,11 +200,11 @@ export default function Assessment(props) {
     setSelectedAssessmentType();
     setSelectedCompetencies();
     setSelectedSubject();
-    setPageName('');
-  }
+    setPageName("");
+  };
 
   const handleStartAssessment = async () => {
-    if(!isRepeat){
+    if (!isRepeat) {
       setFetchingQuestion(true);
       const limit = 2;
       let data = {
@@ -209,7 +223,7 @@ export default function Assessment(props) {
     // localStorage.setItem("assessment-questionIds", JSON.stringify(questionIds));
     // navigate("/assessment/quml-test");
     setChooseCompetenciesModal(false);
-    setPageName('QUMLTest');
+    setPageName("QUMLTest");
   };
 
   // render page layout based on pageName state
@@ -233,7 +247,16 @@ export default function Assessment(props) {
   }
   if (pageName === "QUMLTest") {
     return (
-      <QumlTest classId={classId} setPageName={setPageName} handleBackButton={handleBackButton} selectedStudent={selectedStudent} selectedAssessmentType={selectedAssessmentType} selectedCompetencies={selectedCompetencies} selectedSubject={selectedSubject} questionIds={questionIds} />
+      <QumlTest
+        classId={classId}
+        setPageName={setPageName}
+        handleBackButton={handleBackButton}
+        selectedStudent={selectedStudent}
+        selectedAssessmentType={selectedAssessmentType}
+        selectedCompetencies={selectedCompetencies}
+        selectedSubject={selectedSubject}
+        questionIds={questionIds}
+      />
     );
   }
   if (pageName === "assessmentStudentList") {
@@ -256,7 +279,9 @@ export default function Assessment(props) {
           <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="15px">
-                <H2 textTransform="none">{t("Choose the type of assessment")}</H2>
+                <H2 textTransform="none">
+                  {t("Choose the type of assessment")}
+                </H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -335,10 +360,7 @@ export default function Assessment(props) {
               competencies.map((competence) => {
                 return (
                   <React.Fragment key={competence}>
-                    <HStack
-                      justifyContent={"space-between"}
-                      py={4}
-                    >
+                    <HStack justifyContent={"space-between"} py={4}>
                       <BodyLarge>{t(competence)}</BodyLarge>
                       <Checkbox
                         colorScheme="button"
@@ -369,7 +391,8 @@ export default function Assessment(props) {
                   handleStartAssessment();
                 }}
                 isDisabled={
-                  (!(selectedCompetencies && selectedCompetencies.length)) || fetchingQuestion
+                  !(selectedCompetencies && selectedCompetencies.length) ||
+                  fetchingQuestion
                 }
               >
                 {fetchingQuestion ? t("Fetching...") : t("START ASSESSMENT")}
@@ -383,11 +406,11 @@ export default function Assessment(props) {
 
   return (
     <>
-    <Homepage
-      setPageName={setPageName}
-      isLayoutNotRequired={!!props.isLayoutNotRequired}
-      _handleSpotAssessmentStart={_handleSpotAssessmentStart}
-    />
+      <Homepage
+        setPageName={setPageName}
+        isLayoutNotRequired={!!props.isLayoutNotRequired}
+        _handleSpotAssessmentStart={_handleSpotAssessmentStart}
+      />
       {/*choose subject modal*/}
       <Actionsheet
         isOpen={chooseSubjectModal}
@@ -406,31 +429,29 @@ export default function Assessment(props) {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
-          {
-            loadingSubjects ? <>Loading Subjects...</> : (
-              subjects && subjects.length ? (
-                subjects.map((subject) => {
-                  return (
-                    <Actionsheet.Item
-                      key={subject}
-                      onPress={() => {
-                        handleSubjectSelection(subject);
-                      }}
-                    >
-                      <BodyLarge
-                        color={selectedSubject === subject ? "black" : colors.gray}
-                        textTransform="none"
-                      >
-                        {t(subject)}
-                      </BodyLarge>
-                    </Actionsheet.Item>
-                  );
-                })
-              ) : (
-                <>No Subjects</>
-              )
-            )
-          }
+          {loadingSubjects ? (
+            <>Loading Subjects...</>
+          ) : subjects && subjects.length ? (
+            subjects.map((subject) => {
+              return (
+                <Actionsheet.Item
+                  key={subject}
+                  onPress={() => {
+                    handleSubjectSelection(subject);
+                  }}
+                >
+                  <BodyLarge
+                    color={selectedSubject === subject ? "black" : colors.gray}
+                    textTransform="none"
+                  >
+                    {t(subject)}
+                  </BodyLarge>
+                </Actionsheet.Item>
+              );
+            })
+          ) : (
+            <>No Subjects</>
+          )}
           <Box p="4">
             <Button
               colorScheme="button"

@@ -29,7 +29,11 @@ import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const SpotAssessmentCard = ({ setPageName, appName, _handleSpotAssessmentStart }) => {
+const SpotAssessmentCard = ({
+  setPageName,
+  appName,
+  _handleSpotAssessmentStart,
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   // const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
@@ -49,7 +53,6 @@ const SpotAssessmentCard = ({ setPageName, appName, _handleSpotAssessmentStart }
       value: 6,
     },
   ]);
-
 
   return (
     <>

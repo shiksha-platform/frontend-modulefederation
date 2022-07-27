@@ -10,9 +10,18 @@ import {
   Loading,
   overrideColorTheme,
   telemetryFactory,
-  useWindowSize
+  useWindowSize,
 } from "@shiksha/common-lib";
-import { Actionsheet, Avatar, Box, Button, Divider, HStack, Stack, VStack } from "native-base";
+import {
+  Actionsheet,
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  HStack,
+  Stack,
+  VStack,
+} from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
@@ -25,7 +34,20 @@ const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedStudent, setIsRepeat, setSimilarWithComp, setSimilarWithoutComp, setSelectedCompetencies, handleAssessmentEnd, setChooseAssessmentTypeModal, setSelectedAssessmentType, selectedAssessmentType }) => {
+const AssessmentResult = ({
+  appName,
+  selectedStudent,
+  setPageName,
+  setSelectedStudent,
+  setIsRepeat,
+  setSimilarWithComp,
+  setSimilarWithoutComp,
+  setSelectedCompetencies,
+  handleAssessmentEnd,
+  setChooseAssessmentTypeModal,
+  setSelectedAssessmentType,
+  selectedAssessmentType,
+}) => {
   const [width, height] = useWindowSize();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -35,37 +57,34 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
   const scorePercent = Math.floor(
     (localStorage.getItem("assessment-score") /
       localStorage.getItem("assessment-totalScore")) *
-    100
+      100
   );
   const studentDetails = selectedStudent;
 
   const handleNextOption = () => {
     if (nextOption === "typeSelection") {
       setChooseAssessmentTypeModal(true);
-      if(selectedAssessmentType === "Oral Assessment")
+      if (selectedAssessmentType === "Oral Assessment")
         setSelectedAssessmentType("Written Assessment");
-      if(selectedAssessmentType === "Written Assessment") {
+      if (selectedAssessmentType === "Written Assessment") {
         setSelectedAssessmentType("Oral Assessment");
         setPageName("assessmentStudentList");
       }
-    }
-    else if (nextOption === "similar") {
+    } else if (nextOption === "similar") {
       setToDoNextModal(false);
-      if(selectedAssessmentType === "Oral Assessment"){
+      if (selectedAssessmentType === "Oral Assessment") {
         setSelectedStudent();
         setSelectedCompetencies([]);
         setIsRepeat(false);
         setSimilarWithoutComp(true);
         setSimilarWithComp(false);
         setPageName("assessmentStudentList");
-      }else{
+      } else {
         setSimilarTestModal(true);
       }
-    }
-    else if (nextOption === "repeat") {
+    } else if (nextOption === "repeat") {
       _handleSpotAssessmentRepeatTest();
-    }
-    else if (nextOption === "end") {
+    } else if (nextOption === "end") {
       handleAssessmentEnd();
     }
   };
@@ -90,7 +109,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
   const _handleSpotAssessmentRepeatTest = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "Spot-Assessment-Repeating-Test"
+      type: "Spot-Assessment-Repeating-Test",
     });
     capture("INTERACT", telemetryData);
     setSelectedStudent();
@@ -103,7 +122,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
   const _handleSpotAssessmentSimilarTest = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "Spot-Assessment-Similar-Test"
+      type: "Spot-Assessment-Similar-Test",
     });
     capture("INTERACT", telemetryData);
   };
@@ -111,7 +130,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
   const _handleSpotAssessmentEnd = () => {
     const telemetryData = telemetryFactory.end({
       appName,
-      type: "Spot-Assessment-End"
+      type: "Spot-Assessment-End",
     });
     capture("END", telemetryData);
   };
@@ -158,11 +177,13 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
                       source={{
                         // uri: "https://via.placeholder.com/80x80.png",
                         uri:
-                          studentDetails && studentDetails.image && studentDetails.image !== ""
+                          studentDetails &&
+                          studentDetails.image &&
+                          studentDetails.image !== ""
                             ? `${manifest.api_url}/files/${encodeURIComponent(
-                            studentDetails.image
-                            )}`
-                            : `https://via.placeholder.com/80x80.png`
+                                studentDetails.image
+                              )}`
+                            : `https://via.placeholder.com/80x80.png`,
                       }}
                     />
                   </Box>
@@ -184,7 +205,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
                     values={[scorePercent, 100 - scorePercent]}
                     colors={[
                       colors.scoreSuccessStarColor,
-                      colors.circleProgressBarcolor
+                      colors.circleProgressBarcolor,
                     ]}
                     title={{ text: `${scorePercent}%`, fontSize: "21px" }}
                     legend={{ text: "Total Score", fontSize: "14px" }}
@@ -229,7 +250,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white
+                  color: colors.white,
                 }}
                 onPress={() => setToDoNextModal(true)}
               >
@@ -273,9 +294,9 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
                         uri:
                           studentDetails.image && studentDetails.image !== ""
                             ? `${manifest.api_url}/files/${encodeURIComponent(
-                            studentDetails.image
-                            )}`
-                            : `https://via.placeholder.com/80x80.png`
+                                studentDetails.image
+                              )}`
+                            : `https://via.placeholder.com/80x80.png`,
                       }}
                     />
                   </Box>
@@ -297,7 +318,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
                     values={[scorePercent, 100 - scorePercent]}
                     colors={[
                       colors.scoreCardIcon1,
-                      colors.circleProgressBarcolor
+                      colors.circleProgressBarcolor,
                     ]}
                     title={{ text: `${scorePercent}%`, fontSize: "21px" }}
                     legend={{ text: "Total Score", fontSize: "14px" }}
@@ -322,7 +343,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white
+                  color: colors.white,
                 }}
                 onPress={() => setToDoNextModal(true)}
               >
@@ -364,11 +385,13 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
                       source={{
                         // uri: "https://via.placeholder.com/80x80.png",
                         uri:
-                          studentDetails && studentDetails.image && studentDetails.image !== ""
+                          studentDetails &&
+                          studentDetails.image &&
+                          studentDetails.image !== ""
                             ? `${manifest.api_url}/files/${encodeURIComponent(
-                            studentDetails.image
-                            )}`
-                            : `https://via.placeholder.com/80x80.png`
+                                studentDetails.image
+                              )}`
+                            : `https://via.placeholder.com/80x80.png`,
                       }}
                     />
                   </Box>
@@ -390,7 +413,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
                     values={[scorePercent, 100 - scorePercent]}
                     colors={[
                       colors.scoreCardIcon2,
-                      colors.circleProgressBarcolor
+                      colors.circleProgressBarcolor,
                     ]}
                     title={{ text: `${scorePercent}%`, fontSize: "21px" }}
                     legend={{ text: "Total Score", fontSize: "14px" }}
@@ -415,7 +438,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white
+                  color: colors.white,
                 }}
                 onPress={() => setToDoNextModal(true)}
               >
@@ -498,7 +521,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
             <Button
               colorScheme="button"
               _text={{
-                color: colors.white
+                color: colors.white,
               }}
               // onPress={()=> setSelectedStudent()}
               onPress={() => handleNextOption()}
@@ -539,9 +562,9 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white
+                  color: colors.white,
                 }}
-                onPress={()=> handleCompSelectionWithSimilarQuestion()}
+                onPress={() => handleCompSelectionWithSimilarQuestion()}
               >
                 {t("Continue with different COMPETENCIES")}
               </Button>
@@ -549,7 +572,7 @@ const AssessmentResult = ({ appName, selectedStudent, setPageName, setSelectedSt
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white
+                  color: colors.white,
                 }}
                 onPress={() => handleContinueWithSimilarQuestion()}
               >

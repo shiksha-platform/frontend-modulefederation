@@ -1,4 +1,11 @@
-import { BodyLarge, Collapsible, H3, IconByName, Layout, overrideColorTheme } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  Collapsible,
+  H3,
+  IconByName,
+  Layout,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { Avatar, HStack, Stack, Text, VStack } from "native-base";
@@ -9,10 +16,14 @@ import ExamScoresCard from "../components/ExamScores/ExamScoresCard";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function Homepage({setPageName, isLayoutNotRequired, _handleSpotAssessmentStart}) {
+export default function Homepage({
+  setPageName,
+  isLayoutNotRequired,
+  _handleSpotAssessmentStart,
+}) {
   const { t } = useTranslation();
 
-  if(isLayoutNotRequired){
+  if (isLayoutNotRequired) {
     return (
       <Stack space={1} mb="2" shadow={2}>
         <Collapsible
@@ -20,12 +31,15 @@ export default function Homepage({setPageName, isLayoutNotRequired, _handleSpotA
           header={<BodyLarge>{t("Assessment")}</BodyLarge>}
         >
           <VStack py="4" space={4}>
-            <SpotAssessmentCard setPageName={setPageName} _handleSpotAssessmentStart={_handleSpotAssessmentStart} />
+            <SpotAssessmentCard
+              setPageName={setPageName}
+              _handleSpotAssessmentStart={_handleSpotAssessmentStart}
+            />
             <ExamScoresCard setPageName={setPageName} />
           </VStack>
         </Collapsible>
       </Stack>
-    )
+    );
   }
 
   return (
@@ -90,7 +104,10 @@ export default function Homepage({setPageName, isLayoutNotRequired, _handleSpotA
           header={<BodyLarge>{t("Assessment")}</BodyLarge>}
         >
           <VStack py="4" space={4}>
-            <SpotAssessmentCard setPageName={setPageName} _handleSpotAssessmentStart={_handleSpotAssessmentStart} />
+            <SpotAssessmentCard
+              setPageName={setPageName}
+              _handleSpotAssessmentStart={_handleSpotAssessmentStart}
+            />
             <ExamScoresCard setPageName={setPageName} />
           </VStack>
         </Collapsible>
