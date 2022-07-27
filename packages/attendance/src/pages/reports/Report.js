@@ -1,7 +1,7 @@
 import { Box, Menu, Button, Text, VStack } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
+import CalendarBar from "../../components/CalendarBar/CalendarBar";
 import {
   IconByName,
   Layout,

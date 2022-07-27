@@ -22,7 +22,7 @@ import {
   studentRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
-import CalendarBar from "../../../components/CalendarBar";
+import CalendarBar from "../../../components/CalendarBar/CalendarBar";
 import manifest from "../../../manifest.json";
 import { sms } from "./assets";
 import CalendarComponent from "./Molecule/CalendarComponent";
