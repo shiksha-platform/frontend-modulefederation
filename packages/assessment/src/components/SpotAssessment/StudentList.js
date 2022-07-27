@@ -12,7 +12,7 @@ import {
   telemetryFactory,
   capture,
   assessmentRegistryService,
-  H3,
+  H3, useWindowSize
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -37,36 +37,22 @@ const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const StudentListCard = ({ classId, students, setHeaderDetails }) => {
+const StudentListCard = ({ classId, setPageName, students, setHeaderDetails, chooseAssessmentTypeModal, handleSelectedStudent, selectedStudent, handleStudentPageNext }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [width, height] = useWindowSize();
   // let { classId } = useParams();
   // if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
 
   const [studentlist, setStudentlist] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(
-    JSON.parse(localStorage.getItem("assessment-student")) || null
-  );
+
   const [loading, setLoading] = React.useState(true);
-  const [chooseAssessmentTypeModal, setChooseAssessmentTypeModal] =
-    useState(false);
-  const [assessmentTypes, setAssessmentTypes] = useState([
-    "Oral Assessment",
-    "Written Assessment",
-  ]);
-  const [selectedAssessmentType, setSelectedAssessmentType] = useState(
-    localStorage.getItem("assessment-type")
-  );
-  const [competencies, setCompetencies] = useState([]);
-  const [selectedCompetencies, setSelectedCompetencies] = useState(
-    JSON.parse(localStorage.getItem("assessment-competencies")) || []
-  );
-  const [chooseCompetenciesModal, setChooseCompetenciesModal] = useState(false);
+
   const [attendanceData, setAttendanceData] = useState({});
 
   const checkAttendance = async () => {
-    // const date = moment().format("YYYY-MM-DD");
-    const date = moment("2022-07-21").format("YYYY-MM-DD");
+    const date = moment().format("YYYY-MM-DD");
+    // const date = moment("2022-07-21").format("YYYY-MM-DD");
     const attendanceDetails =
       await assessmentRegistryService.getAttendanceDetailsByClass(classId, {
         date,
@@ -96,73 +82,6 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
     setLoading(false);
   };
 
-  const handleSelectedStudent = (student) => {
-    setSelectedStudent(student);
-    localStorage.setItem("assessment-student", JSON.stringify(student));
-  };
-
-  const handleStartAssessment = async () => {
-    const limit = 2;
-    let data = {
-      adapter: "diksha",
-      limit,
-      subject: localStorage.getItem("assessment-subject") || "English",
-      bloomsLevel:
-        JSON.parse(localStorage.getItem("assessment-competencies")) ||
-        "application",
-    };
-    const questions = await questionRegistryService.getAllQuestions(data);
-    let questionIds = questions.map((question) => {
-      return question.questionId;
-    });
-    localStorage.setItem("assessment-questionIds", JSON.stringify(questionIds));
-    navigate("/assessment/quml-test");
-  };
-
-  const getCompetenciesList = async (selectedSubject) => {
-    const res = await assessmentRegistryService.getCompetenciesList({
-      subject: selectedSubject,
-    });
-    setCompetencies(res);
-  };
-
-  const handleAssessmentTypeSelection = (assessmentType) => {
-    setSelectedAssessmentType(assessmentType);
-    localStorage.setItem("assessment-type", assessmentType);
-  };
-
-  const handleCompetenceSelection = (competence) => {
-    let assessmentCompetencies = JSON.parse(
-      localStorage.getItem("assessment-competencies")
-    );
-    if (assessmentCompetencies) {
-      if (assessmentCompetencies.includes(competence)) {
-        assessmentCompetencies = assessmentCompetencies.filter((item) => {
-          return item !== competence;
-        });
-      } else {
-        assessmentCompetencies = [...assessmentCompetencies, competence];
-      }
-      setSelectedCompetencies(assessmentCompetencies);
-      localStorage.setItem(
-        "assessment-competencies",
-        JSON.stringify(assessmentCompetencies)
-      );
-    } else {
-      setSelectedCompetencies([competence]);
-      localStorage.setItem(
-        "assessment-competencies",
-        JSON.stringify([competence])
-      );
-    }
-  };
-
-  useEffect(() => {
-    const selectedSubject = localStorage.getItem("assessment-subject");
-    if (selectedSubject) {
-      getCompetenciesList(selectedSubject);
-    }
-  }, []);
 
   useEffect(() => {
     checkAttendance();
@@ -170,7 +89,7 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
   }, []);
 
   if (loading) {
-    return <Loading />;
+    return <Loading height={height - height / 2} />;
   }
 
   return (
@@ -183,7 +102,7 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
               <H2>{t("Students List")}</H2>
               {attendanceData.msg ? (
                 <>
-                  <Caption color={colors.lightGray}>
+                  <Caption color={colors.lightGray} textTransform="none">
                     {attendanceData.msg}
                   </Caption>
                 </>
@@ -215,7 +134,8 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
                     onPress={() => {
                       handleSelectedStudent(student);
                     }}
-                    isDisabled={student.attendance !== "Present"}
+                    // isDisabled={student.attendance !== "Present"}
+                    isDisabled={student.attendance === "Absent"}
                     _disabled={{ cursor: "not-allowed" }}
                   >
                     <HStack alignItems="center" space={3}>
@@ -275,144 +195,13 @@ const StudentListCard = ({ classId, students, setHeaderDetails }) => {
             _text={{ color: colors.white }}
             px="5"
             // onPress={()=> {handleStartAssessment()}}
-            onPress={() => {
-              setChooseAssessmentTypeModal(true);
-            }}
+            onPress={handleStudentPageNext}
           >
             {/*{t("START ASSESSMENT")}*/}
             {t("Next")}
           </Button>
         </Button.Group>
       </Box>
-
-      {/*========= drawer2 =============*/}
-      <Actionsheet
-        isOpen={chooseAssessmentTypeModal}
-        onClose={() => setChooseAssessmentTypeModal(false)}
-      >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="15px">
-              <H2 textTransform="none">{t("Choose the type of assessment")}</H2>
-            </Stack>
-            <IconByName
-              name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
-              onPress={() => setChooseSubjectModal(false)}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
-          {assessmentTypes && assessmentTypes.length ? (
-            assessmentTypes.map((assessmentType) => {
-              return (
-                <Actionsheet.Item
-                  key={assessmentType}
-                  onPress={() => {
-                    handleAssessmentTypeSelection(assessmentType);
-                  }}
-                >
-                  <BodyLarge
-                    color={
-                      selectedAssessmentType === assessmentType
-                        ? "black"
-                        : colors.gray
-                    }
-                  >
-                    {assessmentType}
-                  </BodyLarge>
-                </Actionsheet.Item>
-              );
-            })
-          ) : (
-            <>No Subjects</>
-          )}
-
-          <Box p="4">
-            <Button
-              colorScheme="button"
-              _text={{
-                color: colors.white,
-              }}
-              onPress={() => {
-                setChooseAssessmentTypeModal(false);
-                if (selectedAssessmentType === "Written Assessment") {
-                  setChooseCompetenciesModal(true);
-                } else if (selectedAssessmentType === "Oral Assessment") {
-                  //code to navigate to google bolo
-                }
-              }}
-              isDisabled={!selectedAssessmentType}
-            >
-              {t("Next")}
-            </Button>
-          </Box>
-        </Box>
-      </Actionsheet>
-
-      {/*========= drawer3 =============*/}
-      <Actionsheet
-        isOpen={chooseCompetenciesModal}
-        onClose={() => setChooseCompetenciesModal(false)}
-      >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="15px">
-              <H2 textTransform="none">{t("Select the competencies")}</H2>
-            </Stack>
-            <IconByName
-              name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
-              onPress={(e) => setChooseCompetenciesModal(false)}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box w="100%" p={5} justifyContent="center" bg="white">
-          {competencies && competencies.length ? (
-            competencies.map((competence) => {
-              return (
-                <HStack
-                  justifyContent={"space-between"}
-                  py={4}
-                  key={competence}
-                >
-                  <BodyLarge>{t(competence)}</BodyLarge>
-                  <Checkbox
-                    colorScheme="button"
-                    borderColor={colors.primary}
-                    borderRadius="0"
-                    _text={{ color: colors.primary, fontSize: "14px" }}
-                    isChecked={selectedCompetencies.includes(competence)}
-                    onChange={() => {
-                      handleCompetenceSelection(competence);
-                    }}
-                  />
-                </HStack>
-              );
-            })
-          ) : (
-            <>No Competencies</>
-          )}
-
-          <Box p="5">
-            <Button
-              colorScheme="button"
-              _text={{
-                color: colors.white,
-              }}
-              // onPress={() => setPageName("assessmentStudentList")}
-              onPress={() => {
-                handleStartAssessment();
-              }}
-              isDisabled={
-                !(selectedCompetencies && selectedCompetencies.length)
-              }
-            >
-              {t("Next")}
-            </Button>
-          </Box>
-        </Box>
-      </Actionsheet>
     </>
   );
 };

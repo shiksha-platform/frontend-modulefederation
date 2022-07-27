@@ -29,10 +29,10 @@ import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const SpotAssessmentCard = ({ setPageName, appName }) => {
+const SpotAssessmentCard = ({ setPageName, appName, _handleSpotAssessmentStart }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
+  // const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(
     localStorage.getItem("assessment-subject")
@@ -50,29 +50,7 @@ const SpotAssessmentCard = ({ setPageName, appName }) => {
     },
   ]);
 
-  const getSubjectsList = async () => {
-    const res = await assessmentRegistryService.getSubjectsList();
-    setSubjects(res);
-  };
 
-  const handleSubjectSelection = (subject) => {
-    setSelectedSubject(subject);
-    localStorage.setItem("assessment-subject", subject);
-  };
-
-  const _handleSpotAssessmentStart = () => {
-    setChooseSubjectModal(true);
-
-    const telemetryData = telemetryFactory.start({
-      appName,
-      type: "Spot-Assessment-Start",
-    });
-    capture("START", telemetryData);
-  };
-
-  useEffect(() => {
-    getSubjectsList();
-  }, []);
   return (
     <>
       {/*========= box1 =============*/}
@@ -145,65 +123,6 @@ const SpotAssessmentCard = ({ setPageName, appName }) => {
           {t("VIEW PAST ASSESSMENTS")}
         </Subtitle>
       </VStack>
-
-      {/*========= drawer1 =============*/}
-      <Actionsheet
-        isOpen={chooseSubjectModal}
-        onClose={() => setChooseSubjectModal(false)}
-      >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
-          <HStack justifyContent={"space-between"}>
-            <Stack p={5} pt={2} pb="15px">
-              <H2 textTransform="none">{t("Choose the subject")}</H2>
-            </Stack>
-            <IconByName
-              name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
-              onPress={() => setChooseSubjectModal(false)}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
-          {subjects && subjects.length ? (
-            subjects.map((subject) => {
-              return (
-                <Actionsheet.Item
-                  key={subject}
-                  onPress={() => {
-                    handleSubjectSelection(subject);
-                  }}
-                >
-                  <BodyLarge
-                    color={selectedSubject === subject ? "black" : colors.gray}
-                    textTransform="none"
-                  >
-                    {t(subject)}
-                  </BodyLarge>
-                </Actionsheet.Item>
-              );
-            })
-          ) : (
-            <>No Subjects</>
-          )}
-
-          <Box p="4">
-            <Button
-              colorScheme="button"
-              _text={{
-                color: colors.white,
-              }}
-              onPress={() => {
-                setChooseSubjectModal(false);
-                // setChooseAssessmentTypeModal(true);
-                setPageName("assessmentStudentList");
-              }}
-              isDisabled={!selectedSubject}
-            >
-              {t("Next")}
-            </Button>
-          </Box>
-        </Box>
-      </Actionsheet>
     </>
   );
 };
