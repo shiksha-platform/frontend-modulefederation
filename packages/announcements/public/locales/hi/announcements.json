@@ -2,5 +2,18 @@
   "ANNOUNCEMENTS": "घोषनायें",
   "VIEW_LATEST_ANNOUNCEMENTS": "नवीनतम घोषणाएं देखें",
   "RESET_FILTERS": "फ़िल्टर रीसेट करें",
-  "SEARCH": "ढूंढे..."
+  "SEARCH": "ढूंढे...",
+  "CLOSE": "बंद करे",
+  "CONTINUE": "आगे बढ़े",
+  "FILTER": "फ़िल्टर",
+  "ALL_ANNOUNCEMENTS_LOADED": "सभी घोषणाओं को लोड किया गया है",
+  "ANNOUNCEMENT_TYPE": "घोषणा प्रकार",
+  "DATE_MODIFIED": "संशोधित दिनांक",
+  "AUTHOR": "घोषनाकारी",
+  "EVENT": "समारोह",
+  "GENERAL": "सामान्य",
+  "LAST_WEEK": "पिछले सप्ताह",
+  "LAST_DAY": "पिचले एक दिन",
+  "PRINCIPAL": "प्रमुख",
+  "TEACHER": "शिक्षक"
 }

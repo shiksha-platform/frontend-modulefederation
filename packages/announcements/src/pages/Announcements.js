@@ -31,6 +31,8 @@ import moment from "moment";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { convertToTranslationKey } from "../utils/announcementUtils";
+
 const colors = colorTheme;
 //page size to be used for showing data
 const PAGE_SIZE = 4;
@@ -42,7 +44,7 @@ const filters = [
   },
   {
     name: "dateModified",
-    data: ["last week", "last day"],
+    data: ["lastWeek", "lastDay"],
     allowMultiple: false,
   },
   {
@@ -96,10 +98,10 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
           //for date
           let startDate;
           switch (obj.data[0]) {
-            case "last week":
+            case "lastWeek":
               startDate = moment().utc().subtract(7, "days").toISOString();
               break;
-            case "last day":
+            case "lastDay":
               startDate = moment().utc().subtract(24, "hours").toISOString();
               break;
           }
@@ -172,7 +174,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
             borderColor={colors.primary}
             value={value}
           >
-            {value}
+            {t(convertToTranslationKey(value))}
           </Radio>
         </Box>
       ))}
@@ -193,7 +195,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
             onFilterChange(activeFilter, value);
           }}
         >
-          {value}
+          {t(convertToTranslationKey(value))}
         </Checkbox>
       </Box>
     ));
@@ -285,7 +287,9 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                           }
                         }}
                       >
-                        <Text color={colors.primary}>{value.name}</Text>
+                        <Text color={colors.primary}>
+                          {t(convertToTranslationKey(value.name))}
+                        </Text>
                       </Button>
                     );
                   })}
@@ -353,7 +357,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                 colorScheme="button"
                 variant="solid"
               >
-                {selectedAnnouncement.author}
+                {t(convertToTranslationKey(selectedAnnouncement.author))}
               </Badge>
             </HStack>
             <HStack flexWrap={"wrap"} space="3" px="5">
@@ -397,7 +401,9 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
           <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
-                <H2>{filters[activeFilter]?.name}</H2>
+                <H2>
+                  {t(convertToTranslationKey(filters[activeFilter]?.name))}
+                </H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -447,7 +453,7 @@ const AnnouncementsBox = ({
         loader={<Spinner color="warning.500" size="lg" />}
         height="50vh"
         endMessage={
-          <Box textAlign={"center"}>{t("ALL_ANNOUNCEMENTS_LOADED!")}</Box>
+          <Box textAlign={"center"}>{t("ALL_ANNOUNCEMENTS_LOADED")}</Box>
         }
       >
         {data.map((value, index) => {
@@ -466,10 +472,9 @@ const AnnouncementsBox = ({
                   justifyContent="flex-start"
                   alignItems="center"
                   flexWrap="nowrap"
-                  overflow="hidden"
                 >
-                  <VStack space="2" flexGrow="1" overflowX="hidden">
-                    <HStack alignItems="center" overflow="hidden">
+                  <VStack space="2" flexGrow="1">
+                    <HStack alignItems="center">
                       <H2>{value.title}</H2>
                     </HStack>
                     <HStack space="2" alignItems="center">
@@ -485,7 +490,7 @@ const AnnouncementsBox = ({
                   </VStack>
                   <HStack space="2" alignItems="center">
                     <Badge rounded="5" colorScheme="warning" variant="outline">
-                      {value.announcementType}
+                      {t(convertToTranslationKey(value.announcementType))}
                     </Badge>
                   </HStack>
                 </HStack>
