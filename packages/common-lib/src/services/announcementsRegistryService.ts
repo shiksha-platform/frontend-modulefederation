@@ -1,5 +1,5 @@
 import { get, post, update as coreUpdate } from './RestClient'
-import mapInterfaceData from './mapInterfaceData'
+import qs from 'qs'
 
 export const getAnnouncementsSet = async (params = {}, header = {}) => {
   let headers = {
@@ -9,6 +9,9 @@ export const getAnnouncementsSet = async (params = {}, header = {}) => {
 
   const result = await get('http://localhost:3000/api/v1' + '/announcements', {
     params: { ...params },
+    paramsSerializer: (params: any) => {
+      return qs.stringify(params)
+    },
     headers
   })
   if (result.data.data) {
