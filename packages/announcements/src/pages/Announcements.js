@@ -9,22 +9,20 @@ import {
   VStack,
   Stack,
   Actionsheet,
-  Link,
   ScrollView,
   Badge,
   Spinner,
   Input,
   Divider,
   Heading,
+  Radio,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
   announcementsRegistryService,
-  BodyLarge,
   BodyMedium,
   BodySmall,
   capture,
-  H1,
   H2,
   IconByName,
   Layout,
@@ -34,46 +32,24 @@ import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 import InfiniteScroll from "react-infinite-scroll-component";
 const colors = colorTheme;
-const announcementsData = [
-  {
-    name: "NTSE Result Declared!",
-    dateTime: moment().add("2", "minute").calendar(),
-    type: "General",
-    data: "NTSE result has been declared. It is a moment of pride that 40 students have cleared Level 1.Students can check it at NTSE official website.",
-    additionalTags: [{ name: "type", data: "General" }],
-  },
-  {
-    name: "Mock fire drill morrow",
-    dateTime: moment().add("2", "minute").calendar(),
-    type: "Event",
-    data: "Mock fire drill will be organised in the school from 12:30 PM to 1:30 PM at Vivekananda Hall. Attendance is compulsory.",
-    additionalTags: [
-      { name: "type", data: "Event" },
-      { name: "time", data: "12:30PM" },
-      { name: "venue", data: "Vivekananda Bhawan" },
-    ],
-  },
-  {
-    name: "New admissions security dues",
-    dateTime: moment().add("2", "minute").calendar(),
-    type: "General",
-    data: "New admission students are requested to deposit security dues latest by 20 July 2022.",
-    additionalTags: [{ name: "type", data: "General" }],
-  },
-  {
-    name: "Shiksha V2.0.1 Launched!",
-    dateTime: moment().add("2", "minute").calendar(),
-    type: "App",
-    data: "Shiksha V2.0.1 has been launched featuring cool new features like Announcements and landing pages.",
-    additionalTags: [{ name: "type", data: "App" }],
-  },
-];
+//page size to be used for showing data
 const PAGE_SIZE = 4;
-
 const filters = [
-  { name: "announcementType", data: ["event", "general"] },
-  { name: "dateModified", data: ["Last week", "Last 24 hours"] },
-  { name: "author", data: ["Principal", "Teacher"] },
+  {
+    name: "announcementType",
+    data: ["event", "general"],
+    allowMultiple: true,
+  },
+  {
+    name: "dateModified",
+    data: ["last week", "last day"],
+    allowMultiple: false,
+  },
+  {
+    name: "author",
+    data: ["principal", "teacher"],
+    allowMultiple: true,
+  },
 ];
 
 const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
@@ -85,7 +61,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
       return val;
     })
   );
-  const [showFilterModal, setShowFilterModal] = React.useState(-1);
+  const [activeFilter, setActiveFilter] = React.useState(-1);
   const [totalAnnouncements, setTotalAnnnouncements] = React.useState(0);
   const [pageIndex, setPageIndex] = React.useState(0);
   const [filtered, setFiltered] = React.useState(false);
@@ -93,15 +69,54 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
   const [announcementsList, setAnnouncementsList] = React.useState([]);
   const [showMoreAnnouncements, setShowMoreAnnouncements] =
     React.useState(true);
+  const [searchItem, setSearchItem] = React.useState("");
 
   React.useEffect(() => {
     capture("PAGE");
-    fetchAnnouncements();
   }, []);
+
+  //whenever announcement data is reset fetch announcements
+  React.useEffect(() => {
+    if (
+      showMoreAnnouncements === true &&
+      announcementsList.length === 0 &&
+      pageIndex === 0 &&
+      totalAnnouncements === 0
+    ) {
+      fetchAnnouncements();
+    }
+  }, [showMoreAnnouncements, announcementsList, pageIndex, totalAnnouncements]);
+
+  //function to convert filters into suitable format to send to backend
+  const refineFilters = () => {
+    const refinedFilters = {};
+    filterData.map(({ ...obj }) => {
+      if (obj.data.length > 0) {
+        if (obj.name === "dateModified") {
+          //for date
+          let startDate;
+          switch (obj.data[0]) {
+            case "last week":
+              startDate = moment().utc().subtract(7, "days").toISOString();
+              break;
+            case "last day":
+              startDate = moment().utc().subtract(24, "hours").toISOString();
+              break;
+          }
+
+          refinedFilters["startDate"] = startDate;
+          refinedFilters["endDate"] = moment().utc().toISOString();
+        } else {
+          refinedFilters[obj.name] = obj.data;
+        }
+      }
+    });
+
+    return refinedFilters;
+  };
 
   //function to fetch announcements
   const fetchAnnouncements = () => {
-    console.log(totalAnnouncements, announcementsList.length);
     if (
       totalAnnouncements > 0 &&
       announcementsList.length >= totalAnnouncements
@@ -109,40 +124,88 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
       setShowMoreAnnouncements(false);
       return;
     }
-    const filters = {
-      ...filterData,
-      pageIndex: pageIndex * PAGE_SIZE,
-      pageSize: PAGE_SIZE,
-      isPinned: false,
-    };
+    const refinedFilters = filtered ? refineFilters() : undefined;
     //fetch announcements from backend
-    announcementsRegistryService.getAnnouncementsSet(filters).then((res) => {
-      setAnnouncementsList((announcementsList) => [
-        ...announcementsList,
-        ...res.data,
-      ]);
-      console.log(announcementsList);
-      setTotalAnnnouncements(res.count);
-      setPageIndex(pageIndex + 1);
-    });
+    announcementsRegistryService
+      .getAnnouncementsSet({
+        ...refinedFilters,
+        pageIndex: pageIndex * PAGE_SIZE,
+        pageSize: PAGE_SIZE,
+        title: searchItem === "" ? undefined : searchItem,
+      })
+      .then((res) => {
+        if (res.data.length === 0) setShowMoreAnnouncements(false);
+        setAnnouncementsList((announcementsList) => [
+          ...announcementsList,
+          ...res.data,
+        ]);
+        setTotalAnnnouncements(res.count);
+        setPageIndex(pageIndex + 1);
+      });
   };
-
-  const data = React.useMemo(() => announcementsList, [announcementsList]);
 
   //function to modify the filters
-  const modifyFilter = (idx, val, isChecked) => {
-    let index = filterData[idx]?.data?.indexOf(val);
-    if (index === -1) {
-      setFilterData((filterData) => {
-        filterData[idx]?.data?.push(val);
-        return filterData;
-      });
+  const onFilterChange = (idx, val) => {
+    const f = filterData;
+    if (filterData[idx]?.allowMultiple === false) {
+      f[idx].data[0] = val;
     } else {
-      let f = filterData;
-      f[idx].data?.splice(index, 1);
-      setFilterData(f);
+      let index = filterData[idx]?.data?.indexOf(val);
+      if (index === -1) f[idx]?.data?.push(val);
+      else f[idx]?.data.splice(index, 1);
     }
+    setFilterData(f);
   };
+
+  //helper components for filters
+  const RadioGroup = () => (
+    <Radio.Group
+      defaultValue={filterData[activeFilter]?.data[0] ?? null}
+      onChange={(e) => {
+        onFilterChange(activeFilter, e);
+      }}
+    >
+      {filters[activeFilter]?.data?.map((value, index) => (
+        <Box p="5" key={index}>
+          <Radio
+            colorScheme="button"
+            borderColor={colors.primary}
+            value={value}
+          >
+            {value}
+          </Radio>
+        </Box>
+      ))}
+    </Radio.Group>
+  );
+
+  const CheckboxGroup = () =>
+    filters[activeFilter]?.data?.map((value, index) => (
+      <Box p="5" key={index}>
+        <Checkbox
+          colorScheme="button"
+          borderColor={colors.primary}
+          borderRadius="0"
+          defaultIsChecked={
+            filterData[activeFilter].data?.indexOf(value) !== -1
+          }
+          onChange={(e) => {
+            onFilterChange(activeFilter, value);
+          }}
+        >
+          {value}
+        </Checkbox>
+      </Box>
+    ));
+
+  //to reset announcements data (for every state change that requires new announcements to be fetched)
+  const resetAnnouncementsData = () => {
+    setTotalAnnnouncements(0);
+    setAnnouncementsList([]);
+    setPageIndex(0);
+    setShowMoreAnnouncements(true);
+  };
+
   return (
     <Layout
       _header={{
@@ -174,23 +237,31 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                 width="s"
                 variant="underlined"
                 borderColor={colors.primary}
+                onChangeText={(e) => {
+                  setSearchItem(e);
+                }}
                 InputRightElement={
                   <IconByName
                     name="SearchLineIcon"
                     color={colors.cardCloseIcon}
+                    onPress={() => {
+                      resetAnnouncementsData();
+                    }}
                   />
                 }
               />
-              <Button
-                rounded="full"
-                colorScheme="button"
-                variant="outline"
-                px="5"
-                _text={{ textTransform: "capitalize" }}
-                onPress={(e) => setFiltered(true)}
-              >
-                {t("FILTER")}
-              </Button>
+              {!filtered ? (
+                <Button
+                  rounded="full"
+                  colorScheme="button"
+                  variant="outline"
+                  px="5"
+                  _text={{ textTransform: "capitalize" }}
+                  onPress={(e) => setFiltered(true)}
+                >
+                  {t("FILTER")}
+                </Button>
+              ) : null}
             </HStack>
             {filtered ? (
               <Box justifyContent="end" width="100%">
@@ -210,7 +281,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                         }
                         onPress={(e) => {
                           if (value?.data && value?.data.length > 0) {
-                            setShowFilterModal(index);
+                            setActiveFilter(index);
                           }
                         }}
                       >
@@ -236,6 +307,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                         })
                       );
                       setFiltered(false);
+                      resetAnnouncementsData();
                     }}
                   >
                     {t("RESET_FILTERS")}
@@ -246,7 +318,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
           </VStack>
           <Divider my="4" />
           <AnnouncementsBox
-            data={data}
+            data={announcementsList}
             fetchAnnouncements={fetchAnnouncements}
             onPress={(announcement) => {
               setShowModal(true);
@@ -274,20 +346,27 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
               </HStack>
             </Box>
             <HStack flexWrap="wrap" space="3" px="5">
-            <Badge
-                mb="2" fontSize="xs" rounded="4"
+              <Badge
+                mb="2"
+                fontSize="xs"
+                rounded="4"
                 colorScheme="button"
                 variant="solid"
               >
                 {selectedAnnouncement.author}
               </Badge>
-
             </HStack>
-            <HStack flexWrap={"wrap"} space="3" px="5" >
-             
+            <HStack flexWrap={"wrap"} space="3" px="5">
               {selectedAnnouncement.additionalTags?.map((val, index) => {
                 return (
-                  <Badge key={index} mb="2"  fontSize="xs" rounded="4" variant="outline" colorScheme="button">
+                  <Badge
+                    key={index}
+                    mb="2"
+                    fontSize="xs"
+                    rounded="4"
+                    variant="outline"
+                    colorScheme="button"
+                  >
                     {val}
                   </Badge>
                 );
@@ -312,46 +391,34 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
         </Actionsheet>
 
         <Actionsheet
-          isOpen={showFilterModal !== -1}
-          onClose={() => setShowFilterModal(-1)}
+          isOpen={activeFilter !== -1}
+          onClose={() => setActiveFilter(-1)}
         >
           <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
-                <H2>{filters[showFilterModal]?.name}</H2>
+                <H2>{filters[activeFilter]?.name}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
                 color={colors.cardCloseIcon}
-                onPress={(e) => setShowFilterModal(-1)}
+                onPress={(e) => setActiveFilter(-1)}
               />
             </HStack>
           </Actionsheet.Content>
           <Box bg={colors.white} width={"100%"}>
-            {filters[showFilterModal]?.data?.map((value, index) => (
-              <Box p="5" key={index}>
-                <Checkbox
-                  colorScheme="button"
-                  borderColor={colors.primary}
-                  borderRadius="0"
-                  defaultIsChecked={
-                    filterData[showFilterModal].data?.indexOf(value) !== -1
-                  }
-                  onChange={(e) => {
-                    modifyFilter(showFilterModal, value, e);
-                    console.log(filterData);
-                  }}
-                >
-                  {value}
-                </Checkbox>
-              </Box>
-            ))}
+            {filters[activeFilter]?.allowMultiple ? (
+              <CheckboxGroup></CheckboxGroup>
+            ) : (
+              <RadioGroup></RadioGroup>
+            )}
             <Box p="5">
               <Button
                 colorScheme="button"
                 _text={{ color: "white" }}
                 onPress={(e) => {
-                  setShowFilterModal(-1);
+                  resetAnnouncementsData();
+                  setActiveFilter(-1);
                 }}
               >
                 {t("CONTINUE")}
@@ -370,6 +437,7 @@ const AnnouncementsBox = ({
   fetchAnnouncements,
   showMoreAnnouncements,
 }) => {
+  const { t } = useTranslation();
   return (
     <Box>
       <InfiniteScroll
@@ -378,6 +446,9 @@ const AnnouncementsBox = ({
         hasMore={showMoreAnnouncements}
         loader={<Spinner color="warning.500" size="lg" />}
         height="50vh"
+        endMessage={
+          <Box textAlign={"center"}>{t("ALL_ANNOUNCEMENTS_LOADED!")}</Box>
+        }
       >
         {data.map((value, index) => {
           return (
