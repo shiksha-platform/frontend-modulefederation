@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Draggable from "react-draggable";
+import { ResizableBox } from "react-resizable";
+import "react-resizable/css/styles.css";
+import VideoPlayer from "components/VideoPlayer";
 import jwt_decode from "jwt-decode";
 import {
     Layout,
@@ -261,17 +265,21 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
                     likeCount: likes?.length,
                 }}
             />
+            <Draggable>
+                <Box position="sticky" bottom="85" maxH="200px" maxW="300px">
+                    <HStack>
+                        <Box>
+                            <IconByName
+                                size='sm'
+                                name='CloseCircleLineIcon'
+                            //color={color ? color : ''}
+                            //onPress={(e) => console.log(e)}
+                            />
+                        </Box>
+                    </HStack>
+                    <VideoPlayer url={"http://techslides.com/demos/sample-videos/small.mp4"} />
+                </Box>
+            </Draggable>
         </Layout>
     );
 }
-
-//To get the videos
-{/* <Avatar
-    size="md"
-    bg="green.500"
-    source={{
-        uri: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c3R1ZHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
-    }}
->
-    AJ
-</Avatar> */}

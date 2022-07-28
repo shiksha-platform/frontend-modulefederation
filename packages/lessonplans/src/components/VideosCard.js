@@ -1,8 +1,10 @@
-import { IconByName, overrideColorTheme, H2, Subtitle } from "@shiksha/common-lib";
+import { IconByName, overrideColorTheme, H2, Subtitle, H4, Caption } from "@shiksha/common-lib";
 import {
     Avatar,
     Box,
+    Center,
     HStack,
+    Image,
     Pressable,
     Stack,
     Text,
@@ -29,56 +31,76 @@ export default function VideoCard({ item, index, url, canShare }) {
         setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
     }, [])
     return (
-        <Box
-            key={index}
-            borderWidth="1"
-            borderColor={colors.cardBgLight}
-            my="0"
-            p="0"
-            rounded="10"
-            background={"#FEF1EE"}
-        >
-            <HStack space={"5"}>
-                <Avatar
-                    size="2xl"
-                    bg="green.500"
-                    rounded={"5px"}
-                    source={{
-                        uri: item.url,
-                    }}
+        <HStack bg={colors.cardBgLight} rounded="10px" maxH={"140px"} space="5">
+            <Box flex={3 / 4}>
+                <Pressable
+                    onPress={() => (url ? navigate(url) : "")}
+                    width="100%"
+                    flex="1"
                 >
-                    AJ
-                </Avatar>
-                <Stack>
-                    <VStack space={"2"}>
-                        <H2 color="#373839" pt={"3"}>{item.title}</H2>
-                        <Subtitle color="#838BA8">{item.description}</Subtitle>
-                        <Subtitle color="#373839">Source: {item.source}</Subtitle>
-                        {canShare ? (
-                            <HStack space="4" pb={"3"}>
-                                <Box shadow="2" p="2" rounded="full" background="white">
-                                    <IconByName
-                                        name="Download2LineIcon"
-                                        _icon={{ size: 20 }}
-                                        color="warmGray.700"
-                                        p="0"
-                                    />
-                                </Box>
-                                <Box shadow="2" p="2" rounded="full" background="white">
-                                    <IconByName
-                                        name="ShareLineIcon"
-                                        _icon={{ size: 20 }}
-                                        color="warmGray.700"
-                                        p="0"
-                                    />
-                                </Box>
-                            </HStack>
-                        ) : (
-                            ""
-                        )}
-                    </VStack>
-                </Stack>
-            </HStack>
-        </Box>
+                    <Box flex={1} justifyContent="center" alignItems="center">
+                        <Image
+                            maxH={"140px"}
+                            rounded="10px"
+                            w={"100%"}
+                            h={"100%"}
+                            source={{
+                                uri: item.url,
+                            }}
+                            alt="image"
+                        />
+                        <Box bg={"rgba(0, 0, 0, 0.6)"} position="absolute" rounded="full">
+                            <IconByName name="PlayFillIcon" color={colors.white} />
+                        </Box>
+                    </Box>
+                </Pressable>
+                <Center
+                    bg={"rgba(0, 0, 0, 0.6)"}
+                    rounded="lg"
+                    position="absolute"
+                    bottom="8px"
+                    right="8px"
+                    px="3"
+                    py="1.5"
+                >
+                    03:00
+                </Center>
+            </Box>
+            <Stack flex="1">
+                <VStack space={"2"}>
+                    <Pressable
+                        onPress={() => (url ? navigate(url) : "")}
+                        width="100%"
+                        flex="1"
+                    >
+                        <H4 color="#373839" pt={"3"}>{item.title}</H4>
+                    </Pressable>
+                    <Caption color="#838BA8">{item.description}</Caption>
+                    <Caption color="#373839">Source: {item.source}</Caption>
+                    {canShare ? (
+                        <HStack space="4" pb={"3"}>
+                            <Box shadow="2" p="2" rounded="full" background="white">
+                                <IconByName
+                                    name="Download2LineIcon"
+                                    _icon={{ size: 16 }}
+                                    color="warmGray.700"
+                                    p="0"
+                                />
+                            </Box>
+                            <Box shadow="2" p="2" rounded="full" background="white">
+                                <IconByName
+                                    name="ShareLineIcon"
+                                    _icon={{ size: 16 }}
+                                    color="warmGray.700"
+                                    p="0"
+                                />
+                            </Box>
+                        </HStack>
+                    ) : (
+                        ""
+                    )}
+                </VStack>
+            </Stack>
+        </HStack>
     );
 }

@@ -122,7 +122,6 @@ export const create = async (data, header = {}) => {
     })
     if (result.data) {
         return true
-        // return result.data.map((e) => mapInterfaceData(e, interfaceData));
     } else {
         return false
     }

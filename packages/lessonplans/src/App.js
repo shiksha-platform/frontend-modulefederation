@@ -6,6 +6,7 @@ import LessonPlansDetails from "pages/LessonPlansDetails";
 import Lessonplans from './pages/Lessonplans'
 import SingleLessonPlan from "pages/SingleLessonPlan";
 import ExploreVideosList from "pages/ExploreVideosList";
+import VideoDetails from "pages/VideoDetails";
 // import Teaching from "pages/Teaching";
 // import TeachingDetail from "pages/TeachingDetail";
 // import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
@@ -25,6 +26,10 @@ function App() {
     {
       path: "/videos/list",
       component: ExploreVideosList,
+    },
+    {
+      path: "/video/:id",
+      component: VideoDetails,
     },
     // {
     //   path: "/worksheet/questionBank",
