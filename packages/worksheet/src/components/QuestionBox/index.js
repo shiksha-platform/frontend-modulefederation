@@ -9,12 +9,16 @@ const colors = overrideColorTheme(colorTheme);
 
 const styles = { questionDiv: { display: "flex" } };
 
-const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
-  const { t } = useTranslation();
-
+const HtmlPrint = ({ html }) => {
   const createMarkup = (markup) => {
     return { __html: markup };
   };
+  return <div dangerouslySetInnerHTML={createMarkup(html)} />;
+};
+
+const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
+  const { t } = useTranslation();
+
   const alphabet = ["a", "b", "c", "d", "e", "f"];
 
   return (
@@ -22,7 +26,8 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
       <Box
         bg={colourPalette.secondary}
         p="5"
-        {...(questionObject?.options
+        {...(questionObject?.options ||
+        (!questionObject?.options && questionObject?.answer)
           ? { roundedTop: "xl" }
           : { rounded: "xl" })}
         {..._box}
@@ -33,14 +38,16 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
           alignItems="flex-start"
         >
           <div style={styles.questionDiv}>
-            <div
-              dangerouslySetInnerHTML={createMarkup(questionObject?.question)}
-            />
+            <HtmlPrint html={questionObject?.question} />
           </div>
           {infoIcon}
         </HStack>
       </Box>
-      {questionObject?.options ? (
+      {!questionObject?.options && questionObject?.answer ? (
+        <Box bg={colors.primaryLight1} p="4" roundedBottom={"xl"}>
+          <HtmlPrint html={questionObject.answer} />
+        </Box>
+      ) : questionObject?.options ? (
         <Box bg={colors.primaryLight1} p="4" roundedBottom={"xl"}>
           <VStack space="2">
             {questionObject.options?.map((item, index) => {
@@ -55,9 +62,7 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
                   <BodyMedium
                     color={item.answer && !isAnswerHide ? colors.success : ""}
                   >
-                    <div
-                      dangerouslySetInnerHTML={createMarkup(item?.value?.body)}
-                    />
+                    <HtmlPrint html={item?.value?.body} />
                   </BodyMedium>
                 </HStack>
               );
@@ -65,7 +70,7 @@ const QuestionBox = ({ questionObject, isAnswerHide, infoIcon, _box }) => {
           </VStack>
         </Box>
       ) : (
-        ""
+        <React.Fragment />
       )}
     </Box>
   );

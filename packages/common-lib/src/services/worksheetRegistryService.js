@@ -12,6 +12,7 @@ const interfaceData = {
   grade: 'grade',
   level: 'level',
   topic: 'topic',
+  source: 'source',
   instructions: 'instructions',
   feedback: 'feedback',
   hints: 'hints',
