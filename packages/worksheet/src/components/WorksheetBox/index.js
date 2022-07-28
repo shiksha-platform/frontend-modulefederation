@@ -17,9 +17,18 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import colorTheme from "../../colorTheme";
+import AttributeComponent from "components/AttributeComponent";
 const colors = overrideColorTheme(colorTheme);
 
 const DRAFT = "Draft";
+const AttributeData = [
+  { icon: "SurveyLineIcon", label: "SUBJECT", attribute: "subject" },
+  { icon: "BarChart2LineIcon", label: "LEVEL", attribute: "level" },
+  { icon: "QuestionLineIcon", label: "QUESTIONS", attribute: "questions" },
+  { icon: "AccountBoxFillIcon", label: "GRADE", attribute: "grade" },
+  { icon: "ArticleLineIcon", label: "TOPIC", attribute: "topic" },
+  { icon: "Download2LineIcon", label: "DOWNLOADS", attribute: "downloads" },
+];
 
 export default function WorksheetBox({
   worksheetConfig,
@@ -152,6 +161,7 @@ export default function WorksheetBox({
     if (item.state === DRAFT) {
       props = {
         ...props,
+        display: "",
         name: "EditBoxLineIcon",
         color: colors.gray,
         bg: colors.white,
@@ -214,105 +224,12 @@ export default function WorksheetBox({
         ) : (
           <React.Fragment />
         )}
-        <HStack space="2">
-          <VStack>
-            {worksheetConfig?.includes("subject") ? (
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="SurveyLineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {"Subject: " + item.subject}
-                </BodyMedium>
-              </HStack>
-            ) : (
-              <React.Fragment />
-            )}
-            {worksheetConfig?.includes("level") ? (
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="BarChart2LineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {"Level: " + item.level}
-                </BodyMedium>
-              </HStack>
-            ) : (
-              <React.Fragment />
-            )}
-            {worksheetConfig?.includes("questions") ? (
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="QuestionLineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {"Questions: " +
-                    (Array.isArray(item.questions)
-                      ? item.questions.length
-                      : item.questions)}
-                </BodyMedium>
-              </HStack>
-            ) : (
-              <React.Fragment />
-            )}
-          </VStack>
-          <VStack>
-            {worksheetConfig?.includes("grade") ? (
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="AccountBoxFillIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {"Grade: " + item.grade}
-                </BodyMedium>
-              </HStack>
-            ) : (
-              <React.Fragment />
-            )}
-            {worksheetConfig?.includes("topic") ? (
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="ArticleLineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {t("TOPIC") + ": " + item.topic}
-                </BodyMedium>
-              </HStack>
-            ) : (
-              <React.Fragment />
-            )}
-            {worksheetConfig?.includes("downloads") ? (
-              <HStack space="1" alignItems="center">
-                <IconByName
-                  name="Download2LineIcon"
-                  _icon={{ size: 14 }}
-                  color={colors.worksheetBoxText}
-                  p="0"
-                />
-                <BodyMedium color={colors.worksheetBoxText}>
-                  {"Downloads: " + item.downloads}
-                </BodyMedium>
-              </HStack>
-            ) : (
-              <React.Fragment />
-            )}
-          </VStack>
-        </HStack>
+        <AttributeComponent
+          data={AttributeData.filter((e) =>
+            worksheetConfig.includes(e.attribute)
+          )}
+          object={item}
+        />
 
         <HStack space="5">
           {!showButtonArray || showButtonArray.includes("Like") ? (

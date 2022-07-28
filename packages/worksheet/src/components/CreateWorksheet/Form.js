@@ -331,7 +331,14 @@ const FormInput = ({
           alignItems="center"
           justifyContent="space-between"
         >
-          <BodyLarge>{t(item.name)}</BodyLarge>
+          <BodyLarge>
+            {t(item.name)}{" "}
+            {item.required ? (
+              <Text color={colors.primary}>*</Text>
+            ) : (
+              <React.Fragment />
+            )}
+          </BodyLarge>
           <Button
             {...(formObject[attributeName]
               ? { _text: { color: "white", textTransform: "inherit" } }

@@ -18,6 +18,8 @@ export default function Footer({ menues, routeDynamics, ...props }) {
       setSelected(1)
     } else if (path.startsWith('/worksheet')) {
       setSelected(3)
+    } else if (path.startsWith('/mylearning')) {
+      setSelected(4)
     } else {
       setSelected(0)
     }
