@@ -58,7 +58,7 @@ export default function Assessment(props) {
   const teacherId = sessionStorage.getItem("id");
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
-  const [pageName, setPageName] = useState("assessmentResult");
+  const [pageName, setPageName] = useState("");
   const [questionIds, setQuestionIds] = useState([]);
 
   // subject Modal states
