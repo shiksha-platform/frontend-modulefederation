@@ -87,6 +87,7 @@
     "@storybook/preset-create-react-app": "^4.0.1",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
+    "@types/react-native": "^0.69.3",
     "craco-module-federation": "^1.1.0",
     "external-remotes-plugin": "^1.0.0",
     "prettier": "^2.5.1",
