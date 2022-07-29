@@ -16,7 +16,7 @@ import manifest1 from "../manifest.json";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
-import { WeekWiesBar } from "components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
@@ -234,7 +234,8 @@ export default function Attendance({ footerLinks, appName }) {
       <Stack space={1}>
         <Box bg={colors.white} px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <WeekWiesBar
+            <CalendarBar
+              view="week"
               setPage={setWeekPage}
               page={weekPage}
               previousDisabled={
