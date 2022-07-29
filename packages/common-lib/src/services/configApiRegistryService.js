@@ -1,7 +1,5 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
-import { sortArray } from '../components/helper'
 
 const interfaceData = {
   id: 'configId',
@@ -17,7 +15,11 @@ export const getApiConfig = async (modules = []) => {
   const arr = await getAll()
   let object = {}
   arr.forEach((e) => {
-    object = { ...object, [e.key]: e.value }
+    if (modules.length === 0) {
+      object = { ...object, [e.key]: e.value }
+    } else if (modules.length > 0 && modules.includes(e.module)) {
+      object = { ...object, [e.key]: e.value }
+    }
   })
   return object
 }

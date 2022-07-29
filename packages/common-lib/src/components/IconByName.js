@@ -48,6 +48,7 @@ import EmotionSadLineIcon from 'remixicon-react/EmotionSadLineIcon'
 import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
 import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
+import UserUnfollowLineIcon from 'remixicon-react/UserUnfollowLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
 import BookLineIcon from 'remixicon-react/BookLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
@@ -490,6 +491,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<UserStarLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'UserUnfollowLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<UserUnfollowLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
