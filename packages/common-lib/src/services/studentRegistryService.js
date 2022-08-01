@@ -31,7 +31,7 @@ const interfaceData = {
   gender: 'gender'
 }
 
-export const getAll = async (params = {}, header = {}) => {
+export const getAll = async ({ sortBy, ...params }, header = {}) => {
   let headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     ContentType: 'application/json',
@@ -45,8 +45,20 @@ export const getAll = async (params = {}, header = {}) => {
     }
   )
   if (result?.data?.data && result.data.data.length) {
-    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-    return _.sortBy(data, 'admissionNo')
+    const studentData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    if (sortBy && sortBy !== '') {
+      return studentData.sort(function (oldItem, newItem) {
+        return oldItem[sortBy] === newItem[sortBy]
+          ? 0
+          : oldItem[sortBy] < newItem[sortBy]
+          ? -1
+          : 1
+      })
+    } else {
+      return studentData
+    }
   }
   return []
 }
