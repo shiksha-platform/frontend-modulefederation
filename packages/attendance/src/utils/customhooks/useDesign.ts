@@ -54,8 +54,9 @@ export const useDesign = ({
         setDesign({
           bg: colorTheme.success,
           iconName: "EmotionHappyLineIcon",
-          titleHeading:
-            t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
+          titleHeading: `${t(
+            "YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS"
+          )} ${calendarView}`,
         });
       } else if (percentage && percentage < 100 && percentage >= 50) {
         setDesign({
@@ -67,7 +68,7 @@ export const useDesign = ({
         setDesign({
           bg: colorTheme.danger,
           iconName: "EmotionSadLineIcon",
-          titleHeading: t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
+          titleHeading: `${t("ABSENT_TODAY_POOR_THAN_LAST")} ${calendarView}`,
         });
       }
     }
