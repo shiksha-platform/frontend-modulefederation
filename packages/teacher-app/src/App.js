@@ -48,6 +48,11 @@ function App() {
   const Profile = React.lazy(() => import("profile/Profile"));
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
+  const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
+  const CourseList = React.lazy(() => import("mylearning/CourseList"));
+  const CourseDetails = React.lazy(() => import("mylearning/CourseDetails"));
+  const VideoList = React.lazy(() => import("mylearning/VideoList"));
+  const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
   // Assessment Module Imports
   const Assessment = React.lazy(() => import("assessment/Assessment"));
   const ExamScores = React.lazy(() => import("assessment/ExamScores"));
@@ -137,6 +142,32 @@ function App() {
     { path: "/notification/outbox", component: Outbox },
     { path: "/profile", component: Profile },
     { path: "/profile/attendance", component: AttendanceReport },
+
+    { path: "/mylearning", component: MyLearning },
+    {
+      path: "/mylearning/list/:state",
+      component: CourseList,
+    },
+    {
+      path: "/mylearning/list",
+      component: CourseList,
+    },
+    {
+      path: "/mylearning/:id/view",
+      component: CourseDetails,
+    },
+    {
+      path: "/mylearning/video/list/:state",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/list",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/:id/view",
+      component: VideoDetails,
+    },
     // Asessment Routes
     {
       path: "/assessment/exam-list2",

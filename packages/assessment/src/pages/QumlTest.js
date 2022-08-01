@@ -4,6 +4,9 @@ import {
   Layout,
   assessmentRegistryService,
   overrideColorTheme,
+  H2,
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
@@ -15,12 +18,14 @@ const colors = overrideColorTheme(colorTheme);
 export default function QumlTest() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [headerDetails, setHeaderDetails] = useState();
+  const [loading, setLoading] = React.useState(false);
   const [questionIds, setQuestionIds] = useState(
     JSON.parse(localStorage.getItem("assessment-questionIds")) || []
   );
+  const [width, height] = useWindowSize();
 
   const startAssessment = async (qumlResult) => {
+    setLoading(true);
     const subject = localStorage.getItem("assessment-subject");
     const competencies = JSON.parse(
       localStorage.getItem("assessment-competencies")
@@ -55,18 +60,17 @@ export default function QumlTest() {
     const id = result.result?.Trackassessment?.osid || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    console.log("assessmentDetails", assessmentDetails);
     localStorage.setItem("assessment-score", assessmentDetails.score);
-    navigate("/assessment-result");
+    localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
+    setLoading(false);
+    navigate("/assessment/assessment-result");
   };
 
   React.useEffect(() => {
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== "http://139.59.25.99:8090")
-          // if (event.origin !== "http://192.168.0.123:4200")
-          return;
+        if (event.origin !== "http://139.59.25.99:8090") return;
         localStorage.setItem(
           "assessment-quml-result",
           JSON.stringify(event.data)
@@ -81,26 +85,21 @@ export default function QumlTest() {
     };
   }, []);
 
+  if (loading) {
+    return <Loading height={height} />;
+  }
+
   return (
     <Layout
       _header={{
-        title: "Test",
+        title: "Assessment",
       }}
       _appBar={{ languages: ["en"] }}
       subHeader={
         <VStack>
-          <Text fontSize={"lg"}>
-            {headerDetails && headerDetails.student
-              ? headerDetails.student.name
-              : "Attempt the questions"}
+          <Text fontSize={"lg"} textTransform="none">
+            {t("Attempt the questions")}
           </Text>
-          {headerDetails &&
-            headerDetails.student &&
-            headerDetails.student.fathersName && (
-              <Text fontSize={"xs"} color={"muted.600"}>
-                Mr. {headerDetails.student.fathersName}
-              </Text>
-            )}
         </VStack>
       }
       _subHeader={{ bg: colors.cardBg }}

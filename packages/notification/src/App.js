@@ -29,7 +29,7 @@ function App() {
       theme={theme}
       routes={routes}
       AuthComponent={LoginComponent}
-      _authComponent={{ swPath: "modules/notification" }}
+      _authComponent={{ swPath: "/modules/notification" }}
     />
   );
 }
