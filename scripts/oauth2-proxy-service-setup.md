@@ -1,5 +1,6 @@
-* Download Prebuilt Binary - https://github.com/oauth2-proxy/oauth2-proxy/releases and extract the file to folder  ```/usr/local/bin```
-* Create ```oauth2-proxy.cfg``` in ```/etc/oauth2-proxy``` 
+- Download Prebuilt Binary - https://github.com/oauth2-proxy/oauth2-proxy/releases and extract the file to folder `/usr/local/bin`
+- Create `oauth2-proxy.cfg` in `/etc/oauth2-proxy`
+
 ```
 ## OAuth2 Proxy Config File
 ## https://github.com/oauth2-proxy/oauth2-proxy
@@ -67,7 +68,7 @@ email_domains = "*"
 
 # redirect-url = "http://localhost:4180/oauth2/callback"
 # oidc-issuer-url="http://localhost:8080/auth/realms/shiksha"
-  
+
 
 ## Pass OAuth Access token to upstream via "X-Forwarded-Access-Token"
 # pass_access_token = false
@@ -116,9 +117,10 @@ email_domains = "*"
 # cookie_httponly = true
 
 ```
-*  Configure as serice
-Create file ```oauth2-proxy.service``` in folder ```/etc/systemd/system ```
-Reference - https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.service.example
+
+- Configure as serice
+  Create file `oauth2-proxy.service` in folder `/etc/systemd/system `
+  Reference - https://github.com/oauth2-proxy/oauth2-proxy/blob/master/contrib/oauth2-proxy.service.example
 
 ```
 [Unit]
@@ -142,19 +144,22 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-* Reload systemd with this new service unit file
+- Reload systemd with this new service unit file
+
 ```
 systemctl daemon-reload
 ```
 
-* Enable Service 
+- Enable Service
+
 ```
-systemctl enable oauth2-proxy.service 
+systemctl enable oauth2-proxy.service
 ```
 
-* Start Service 
+- Start Service
+
 ```
 systemctl start oauth2-proxy
 ```
 
-* Check service status 
+- Check service status
