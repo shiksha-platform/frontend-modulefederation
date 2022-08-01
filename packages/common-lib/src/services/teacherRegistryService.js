@@ -1,5 +1,4 @@
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
 import { get, post, update as updateRequest } from './RestClient'
 
 const interfaceData = {
@@ -55,8 +54,6 @@ export const getAll = async (params = {}, header = {}) => {
     ...header
   }
 
-  console.log(process.env)
-
   const result = await post(
     `${process.env.REACT_APP_API_URL}/teacher/search`,
     params,
@@ -77,7 +74,6 @@ export const getOne = async (params = {}, header = {}) => {
     ...header
   }
 
-  console.log(process.env)
   const result = await get(`${process.env.REACT_APP_API_URL}/teacher`, {
     params,
     headers

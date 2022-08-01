@@ -1,7 +1,6 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
-import { sortArray } from '../components/helper'
 
 const interfaceData = {
   id: 'groupId',
