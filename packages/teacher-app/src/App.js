@@ -253,10 +253,11 @@ function App() {
       //window.location.reload();
     }
   }, []);
+  console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
   if (
-    process.env.OAUTH_PROXY_ENABLED == undefined ||
-    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
   ) {
     return (
       <AppShell
