@@ -11,9 +11,11 @@ import {
   BodyLarge,
   Caption,
   Subtitle,
+  capture,
+  telemetryFactory
 } from "@shiksha/common-lib";
 import { Button, Box, VStack, Text, HStack, Avatar } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +23,7 @@ import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 export default function SuccessPublicationReport({
+  appName,
   // handleBackButton,
   formObject,
 }) {
@@ -41,12 +44,18 @@ export default function SuccessPublicationReport({
   ]);
 
   const _handleSpotAssessmentNotificationSend = () => {
-    /*const telemetryData = telemetryFactory.interact({
+    const telemetryData = telemetryFactory.interact({
       appName,
       type: "Spot-Assessment-Notification-Send",
     });
-    capture("INTERACT", telemetryData);*/
+    capture("INTERACT", telemetryData);
   };
+
+  const handleFullReportClick = () => {
+    _handleFullReportStartEvent();
+    navigate("/assessment-detailed-report");
+  }
+
 
   return (
     <Layout
@@ -261,9 +270,10 @@ export default function SuccessPublicationReport({
                         _text={{
                           color: colors.white,
                         }}
-                        onPress={() =>
+                        /*onPress={() =>
                           navigate("/assessment/assessment-detailed-report")
-                        }
+                        }*/
+                        onPress={handleFullReportClick}
                       >
                         {t("See full report")}
                       </Button>

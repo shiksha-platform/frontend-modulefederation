@@ -122,7 +122,7 @@ const SpotAssessmentCard = ({
             {t("Continue")}
           </Button>
         </Box>
-        <Subtitle my={2} textAlign={"center"} color={colors.primary}>
+        <Subtitle my={2} textAlign={"center"} color={colors.primary} onPress={()=> {navigate('/past-assessments')}}>
           {t("VIEW PAST ASSESSMENTS")}
         </Subtitle>
       </VStack>

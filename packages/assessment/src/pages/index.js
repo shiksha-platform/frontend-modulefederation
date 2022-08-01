@@ -36,6 +36,7 @@ import QumlTest from "./QumlTest";
 import AssessmentResult from "./AssessmentResult";
 // import { navigate } from "@storybook/addon-links";
 import { useNavigate } from "react-router-dom";
+import PastAssessmentList from "./PastAssessments";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Assessment(props) {
@@ -129,11 +130,6 @@ export default function Assessment(props) {
 
   const _handleSpotAssessmentStart = () => {
     setChooseSubjectModal(true);
-    const telemetryData = telemetryFactory.start({
-      appName: props.appName,
-      type: "Spot-Assessment-Start",
-    });
-    capture("START", telemetryData);
   };
 
   //student list page methods
@@ -251,6 +247,7 @@ export default function Assessment(props) {
   if (pageName === "QUMLTest") {
     return (
       <QumlTest
+        appName={props.appName}
         classId={classId}
         setPageName={setPageName}
         handleBackButton={handleBackButton}
@@ -275,71 +272,74 @@ export default function Assessment(props) {
           selectedStudent={selectedStudent}
         />
         {/*========= choose Assessment Type Modal =============*/}
-        <Actionsheet
-          isOpen={chooseAssessmentTypeModal}
-          onClose={() => setChooseAssessmentTypeModal(false)}
-        >
-          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
-            <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="15px">
-                <H2 textTransform="none">
-                  {t("Choose the type of assessment")}
-                </H2>
-              </Stack>
-              <IconByName
-                name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
-                onPress={() => setChooseSubjectModal(false)}
-              />
-            </HStack>
-          </Actionsheet.Content>
-          <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
-            {assessmentTypes && assessmentTypes.length ? (
-              assessmentTypes.map((assessmentType) => {
-                return (
-                  <Actionsheet.Item
-                    key={assessmentType}
-                    onPress={() => {
-                      handleAssessmentTypeSelection(assessmentType);
-                    }}
-                  >
-                    <BodyLarge
-                      color={
-                        selectedAssessmentType === assessmentType
-                          ? "black"
-                          : colors.gray
-                      }
+        {
+          chooseAssessmentTypeModal && <Actionsheet
+            isOpen={chooseAssessmentTypeModal}
+            onClose={() => setChooseAssessmentTypeModal(false)}
+          >
+            <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+              <HStack justifyContent={"space-between"}>
+                <Stack p={5} pt={2} pb="15px">
+                  <H2 textTransform="none">
+                    {t("Choose the type of assessment")}
+                  </H2>
+                </Stack>
+                <IconByName
+                  name="CloseCircleLineIcon"
+                  color={colors.cardCloseIcon}
+                  onPress={() => setChooseAssessmentTypeModal(false)}
+                />
+              </HStack>
+            </Actionsheet.Content>
+            <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
+              {assessmentTypes && assessmentTypes.length ? (
+                assessmentTypes.map((assessmentType) => {
+                  return (
+                    <Actionsheet.Item
+                      key={assessmentType}
+                      onPress={() => {
+                        handleAssessmentTypeSelection(assessmentType);
+                      }}
                     >
-                      {assessmentType}
-                    </BodyLarge>
-                  </Actionsheet.Item>
-                );
-              })
-            ) : (
-              <>No Subjects</>
-            )}
+                      <BodyLarge
+                        color={
+                          selectedAssessmentType === assessmentType
+                            ? "black"
+                            : colors.gray
+                        }
+                      >
+                        {assessmentType}
+                      </BodyLarge>
+                    </Actionsheet.Item>
+                  );
+                })
+              ) : (
+                <>No Subjects</>
+              )}
 
-            <Box p="4">
-              <Button
-                colorScheme="button"
-                _text={{
-                  color: colors.white,
-                }}
-                onPress={() => {
-                  setChooseAssessmentTypeModal(false);
-                  if (selectedAssessmentType === "Written Assessment") {
-                    setChooseCompetenciesModal(true);
-                  } else if (selectedAssessmentType === "Oral Assessment") {
-                    //code to navigate to google bolo
-                  }
-                }}
-                isDisabled={!selectedAssessmentType}
-              >
-                {t("Next")}
-              </Button>
+              <Box p="4">
+                <Button
+                  colorScheme="button"
+                  _text={{
+                    color: colors.white,
+                  }}
+                  onPress={() => {
+                    setChooseAssessmentTypeModal(false);
+                    if (selectedAssessmentType === "Written Assessment") {
+                      setChooseCompetenciesModal(true);
+                    } else if (selectedAssessmentType === "Oral Assessment") {
+                      //code to navigate to google bolo
+                    }
+                  }}
+                  isDisabled={!selectedAssessmentType}
+                >
+                  {t("Next")}
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        </Actionsheet>
+          </Actionsheet>
+        }
+
 
         {/*========= choose Competencies Modal =============*/}
         <Actionsheet
@@ -406,7 +406,20 @@ export default function Assessment(props) {
       </>
     );
   }
-
+  if (pageName === "pastAssessment") {
+    return (
+      <PastAssessmentList
+        classId={classId}
+        setPageName={setPageName}
+        handleBackButton={handleBackButton}
+        selectedStudent={selectedStudent}
+        selectedAssessmentType={selectedAssessmentType}
+        selectedCompetencies={selectedCompetencies}
+        selectedSubject={selectedSubject}
+        questionIds={questionIds}
+      />
+    );
+  }
   return (
     <>
       <Homepage

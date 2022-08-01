@@ -186,6 +186,26 @@ export const getAssessmentDetails = async (params = {}, header = {}) => {
   }
 }
 
+export const getAllAssessment = async (params = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/trackassessment/search`,
+    params,
+    {
+      headers
+    }
+  )
+
+  if (result.data && result.data.data) {
+    return result.data.data
+  } else {
+    return {}
+  }
+}
+
 export const getAttendanceDetailsByClass = async (
   groupId,
   params = {},

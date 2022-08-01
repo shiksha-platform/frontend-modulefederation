@@ -5,9 +5,9 @@ import {
   overrideColorTheme,
   BodyLarge,
   Subtitle,
-  BodySmall,
+  BodySmall, H2
 } from "@shiksha/common-lib";
-import { HStack, VStack, Box, Button, Divider } from "native-base";
+import { HStack, VStack, Box, Button, Divider, Actionsheet, Stack } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
@@ -28,6 +28,15 @@ const ExamScoresCard = ({ setPageName }) => {
       value: 6,
     },
   ]);
+
+  const [loadingExams, setLoadingExams] = useState(false);
+  const [chooseExamModal, setChooseExamModal] = useState(false);
+  const [exams, setExams] = useState(['State Exam', 'Semester Exam', 'Summative Assessment 1']);
+  const [selectedExam, setSelectedExam] = useState();
+
+  const handleExamSelection = (exam) => {
+    setSelectedExam(exam);
+  };
 
   /*React.useEffect(() => {
     const getData = async () => {
@@ -99,7 +108,7 @@ const ExamScoresCard = ({ setPageName }) => {
                 py={3}
                 colorScheme="button"
                 _text={{ color: colors.white }}
-                onPress={() => navigate("/assessment/examscores")}
+                onPress={() => setChooseExamModal(true)}
               >
                 {t("continue")}
               </Button>
@@ -107,9 +116,68 @@ const ExamScoresCard = ({ setPageName }) => {
           </VStack>
         </Box>
       </VStack>
-      <Subtitle my={2} textAlign={"center"} color={colors.primary}>
-        {t("VIEW PAST ASSESSMENTS")}
+      <Subtitle my={2} textAlign={"center"} color={colors.primary} onPress={()=> {navigate('/past-examinations')}}>
+        {t("VIEW PAST EXAMINATIONS")}
       </Subtitle>
+
+      {/*choose examination modal*/}
+      <Actionsheet
+        isOpen={chooseExamModal}
+        onClose={() => setChooseExamModal(false)}
+      >
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <HStack justifyContent={"space-between"}>
+            <Stack p={5} pt={2} pb="15px">
+              <H2 textTransform="none">{t("Choose the exam")}</H2>
+            </Stack>
+            <IconByName
+              name="CloseCircleLineIcon"
+              color={colors.cardCloseIcon}
+              onPress={() => setChooseExamModal(false)}
+            />
+          </HStack>
+        </Actionsheet.Content>
+        <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
+          {loadingExams ? (
+            <>Loading Exams...</>
+          ) : exams && exams.length ? (
+            exams.map((exam) => {
+              return (
+                <Actionsheet.Item
+                  key={exam}
+                  onPress={() => {
+                    handleExamSelection(exam);
+                  }}
+                >
+                  <BodyLarge
+                    color={selectedExam === exam ? "black" : colors.gray}
+                    textTransform="none"
+                  >
+                    {t(exam)}
+                  </BodyLarge>
+                </Actionsheet.Item>
+              );
+            })
+          ) : (
+            <>No Exams</>
+          )}
+          <Box p="4">
+            <Button
+              colorScheme="button"
+              _text={{
+                color: colors.white,
+              }}
+              onPress={() => {
+                setChooseExamModal(false);
+                navigate("/examscores")
+              }}
+              isDisabled={!selectedExam}
+            >
+              {t("Next")}
+            </Button>
+          </Box>
+        </Box>
+      </Actionsheet>
     </>
   );
 };

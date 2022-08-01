@@ -16,6 +16,8 @@ import QuestionList4 from "./components/ExamScores/QuestionLIst4";
 import QuestionList5 from "./components/ExamScores/QuestionLIst5";
 import QuestionList6 from "./components/ExamScores/QuestionLIst6";
 import QuestionList7 from "./components/ExamScores/QuestionLIst7";
+import PastAssessmentList from "./pages/PastAssessments";
+import PastExaminationsList from "./pages/PastExaminations";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -71,6 +73,14 @@ function App() {
     {
       path: "/assessment-detailed-report",
       component: ReportDetails,
+    },
+    {
+      path: "/past-assessments",
+      component: PastAssessmentList,
+    },
+    {
+      path: "/past-examinations",
+      component: PastExaminationsList,
     },
     {
       path: "/assessment/quml-test",
