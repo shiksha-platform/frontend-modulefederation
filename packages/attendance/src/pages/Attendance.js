@@ -72,7 +72,7 @@ export default function Attendance({ footerLinks, appName }) {
     let date = moment.max(dates);
     setLastAttedance(dates.length ? moment(date).format("hh:mma") : "N/A");
   }, [attendance, students]);
-  console.log(lastAttedance);
+
   useEffect(() => {
     const filterStudent = students.filter((e) =>
       e?.fullName?.toLowerCase().match(search?.toLowerCase())
@@ -85,27 +85,18 @@ export default function Attendance({ footerLinks, appName }) {
     async function getData() {
       const newManifest = await getApiConfig();
       setManifest(newManifest);
-      const studentData = await studentRegistryService.getAll({ classId });
+      let sortBy = "admissionNo";
       if (
-        newManifest?.["attendance_card.order_of_attendance_card"] ===
+        newManifest?.["attendance.order_of_attendance_card"] ===
         '"Alphabetically"'
       ) {
-        setStudents(
-          studentData.sort(function (oldItem, newItem) {
-            return oldItem.firstName === newItem.firstName
-              ? 0
-              : oldItem.firstName < newItem.firstName
-              ? -1
-              : 1;
-          })
-        );
-      } else {
-        setStudents(
-          studentData.sort(function (a, b) {
-            return a.admissionNo - b.admissionNo;
-          })
-        );
+        sortBy = "firstName";
       }
+      const studentData = await studentRegistryService.getAll({
+        classId,
+        sortBy,
+      });
+      setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)
         setClassObject(await classRegistryService.getOne({ id: classId }));
