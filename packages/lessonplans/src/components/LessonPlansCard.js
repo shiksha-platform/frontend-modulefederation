@@ -1,4 +1,4 @@
-import { IconByName, overrideColorTheme, H2, Subtitle, Caption, BodyMedium } from "@shiksha/common-lib";
+import { IconByName, overrideColorTheme, H2, Subtitle, Caption, BodyMedium, lessonPlansRegistryService } from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -22,12 +22,94 @@ const colors = overrideColorTheme(colorTheme);
 
 export default function LessonPlansCard({ item, url, canShare }) {
   const { t } = useTranslation();
+  const [like, setLike] = React.useState({});
+  const [likes, setLikes] = React.useState([]);
+  const [showButtonArray, setShowButtonArray] = React.useState([]);
+  const [comments, setComments] = React.useState([]);
   const navigate = useNavigate();
   const [random, setRandom] = React.useState();
+  const { sub } = jwt_decode(localStorage.getItem("token"));
 
   React.useEffect(async (e) => {
     setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
-  }, [])
+    await getLikes();
+    await getComments();
+    // if (item.state === DRAFT) {
+    //   setShowButtonArray(["Like"]);
+    // } else {
+    //   setShowButtonArray(canShowButtonArray);
+    // }
+    setShowButtonArray(["Like", "Share", "Download"])
+  }, []);
+
+  const getLikes = async () => {
+    const result = await lessonPlansRegistryService.getLessonPlansLikes(item.id);
+    const newData = result.find((e, index) => e.userId === sub);
+    setLikes(result ? result : []);
+    setLike(newData ? newData : {});
+  };
+
+  const getComments = async () => {
+    const result = await lessonPlansRegistryService.getLessonPlansComments(item.id);
+    setComments(result ? result : []);
+  };
+
+  const handleLike = async () => {
+    if (like.id) {
+      const result = await likeRegistryService.distory({
+        id: like.id,
+      });
+      setLike({});
+      const newData = likes.filter((e) => e.id !== like.id);
+      setLikes(newData);
+    } else {
+      let newData = {
+        contextId: item?.id,
+        context: "Lessonplan",
+        type: "like",
+      };
+      const { osid } = await likeRegistryService.create(newData);
+      const telemetryData = telemetryFactory.interact({
+        appName,
+        type: "Lessonplan-Like",
+        worksheetId: item?.id,
+        subject: item?.subject,
+        grade: item?.grade,
+        topic: item?.topic,
+      });
+      capture("INTERACT", telemetryData);
+      const newObject = { ...newData, id: osid };
+      setLike(newObject);
+      setLikes([...likes, newObject]);
+    }
+  };
+
+  const handleDownload = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Lessonplan-Download",
+      worksheetId: item?.id,
+      subject: item?.subject,
+      grade: item?.grade,
+      topic: item?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    navigate("/lessonplan/template");
+  };
+
+  const handleShare = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Lessonplan-Share",
+      worksheetId: item?.id,
+      subject: item?.subject,
+      grade: item?.grade,
+      topic: item?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    navigate(`/lessonplan/${item.id}/share`);
+  };
+
   return (
     <Box p="5" borderWidth="1" borderColor={colors.grayLight} rounded="lg">
       <VStack space={4}>
@@ -124,36 +206,47 @@ export default function LessonPlansCard({ item, url, canShare }) {
             </HStack>
           </VStack>
         </HStack>
-        {canShare ? (
-          <HStack space="2">
+        <HStack space="2">
+          {!showButtonArray || showButtonArray.includes("Like") ? (
             <Box shadow="2" p="2" rounded="full">
               <IconByName
-                name="Download2LineIcon"
+                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
                 _icon={{ size: 20 }}
-                color="warmGray.700"
+                color={colors.primary}
                 p="0"
+                onPress={handleLike}
               />
             </Box>
+          ) : (
+            <React.Fragment />
+          )}
+          {!showButtonArray || showButtonArray.includes("Share") ? (
             <Box shadow="2" p="2" rounded="full">
               <IconByName
                 name="ShareLineIcon"
                 _icon={{ size: 20 }}
                 color="warmGray.700"
                 p="0"
+                onPress={handleShare}
               />
             </Box>
+          ) : (
+            <React.Fragment />
+          )}
+          {!showButtonArray || showButtonArray.includes("Download") ? (
             <Box shadow="2" p="2" rounded="full">
               <IconByName
-                name="Heart3LineIcon"
+                onPress={handleDownload}
+                name="DownloadLineIcon"
                 _icon={{ size: 20 }}
-                color="button.500"
+                color="warmGray.700"
                 p="0"
               />
             </Box>
-          </HStack>
-        ) : (
-          ""
-        )}
+          ) : (
+            <React.Fragment />
+          )}
+        </HStack>
       </VStack>
     </Box>
   );

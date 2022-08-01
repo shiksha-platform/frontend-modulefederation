@@ -26,9 +26,11 @@ export default function VideoCard({ item, index, url, canShare }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [random, setRandom] = React.useState();
+    const [showButtonArray, setShowButtonArray] = React.useState([]);
 
     React.useEffect(async (e) => {
         setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
+        setShowButtonArray(["Like", "Share", "Download"])
     }, [])
     return (
         <HStack bg={colors.cardBgLight} rounded="10px" maxH={"140px"} space="5">
@@ -77,16 +79,16 @@ export default function VideoCard({ item, index, url, canShare }) {
                     </Pressable>
                     <Caption color="#838BA8">{item.description}</Caption>
                     <Caption color="#373839">Source: {item.source}</Caption>
-                    {canShare ? (
+                    {!showButtonArray || showButtonArray.includes("Share") ? (
                         <HStack space="4" pb={"3"}>
-                            <Box shadow="2" p="2" rounded="full" background="white">
+                            {/* <Box shadow="2" p="2" rounded="full" background="white">
                                 <IconByName
                                     name="Download2LineIcon"
                                     _icon={{ size: 16 }}
                                     color="warmGray.700"
                                     p="0"
                                 />
-                            </Box>
+                            </Box> */}
                             <Box shadow="2" p="2" rounded="full" background="white">
                                 <IconByName
                                     name="ShareLineIcon"

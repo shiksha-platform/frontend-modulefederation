@@ -24,7 +24,6 @@ const colors = overrideColorTheme(colorTheme);
 export default function LessonPlansDetails({ footerLinks }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  //const colors = overrideColorTheme(colorTheme);
 
   return (
     <Layout
@@ -57,15 +56,6 @@ export default function LessonPlansDetails({ footerLinks }) {
           />
         </Box>
       </VStack>
-      {/* <Box bg="white" p="5" position="sticky" bottom="0" shadow={2}>
-        <Button
-          _text={{ color: "white" }}
-          p="3"
-          onPress={(e) => navigate("/lessonplans/create")}
-        >
-          {t("Create new")}
-        </Button>
-      </Box> */}
     </Layout>
   );
 }
@@ -103,19 +93,6 @@ const LessonPlansMapping = ({
           );
         })}
       </VStack>
-      {/* {seeButton ? (
-        seeButton
-      ) : (
-        <Button
-          mt="2"
-          variant="outline"
-          colorScheme="button"
-          rounded="lg"
-          onPress={(e) => navigate("/lessonplans/list")}
-        >
-          {seeButtonText}
-        </Button>
-      )} */}
     </Stack>
   );
 };
