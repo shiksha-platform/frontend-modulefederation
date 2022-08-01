@@ -6,7 +6,9 @@ import {
   overrideColorTheme,
   H2,
   Loading,
-  useWindowSize, telemetryFactory, capture
+  useWindowSize,
+  telemetryFactory,
+  capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
@@ -79,20 +81,20 @@ export default function QumlTest({
     const telemetryData = telemetryFactory.start({
       appName: appName,
       type: "Spot-Assessment-Written-Start",
-      studentId: selectedStudent.id
+      studentId: selectedStudent.id,
     });
     capture("START", telemetryData);
-    setAssessmentStartTime(+ new Date());
+    setAssessmentStartTime(+new Date());
   };
 
   const _handleWrittenSpotAssessmentEnd = () => {
-    const endTime = + new Date();
-    const diff = (endTime - assessmentStartTime)/1000 || 0;
+    const endTime = +new Date();
+    const diff = (endTime - assessmentStartTime) / 1000 || 0;
     const telemetryData = telemetryFactory.end({
       appName,
       type: "Spot-Assessment-End",
       studentId: selectedStudent.id,
-      duration: diff
+      duration: diff,
     });
     capture("END", telemetryData);
   };
@@ -110,7 +112,7 @@ export default function QumlTest({
 
     return () => {
       window.removeEventListener("message", (val) => {});
-      _handleWrittenSpotAssessmentEnd()
+      _handleWrittenSpotAssessmentEnd();
     };
   }, []);
 
@@ -177,7 +179,9 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`https://quml.shikshaplatform.io/?questions=${questionIds.join(",")}`}
+          src={`https://quml.shikshaplatform.io/?questions=${questionIds.join(
+            ","
+          )}`}
           // src={`http://139.59.25.99:8090/?questions=${questionIds.join(",")}`}
           // src={`http://192.168.0.105:4200/?questions=${questionIds.join(',')}`}
           frameBorder="0"

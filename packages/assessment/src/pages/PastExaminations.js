@@ -9,7 +9,9 @@ import {
   ProgressBar,
   overrideColorTheme,
   Caption,
-  assessmentRegistryService, Loading, useWindowSize
+  assessmentRegistryService,
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -24,12 +26,13 @@ import {
   Actionsheet,
   Stack,
   Divider,
-  Avatar, Spacer
+  Avatar,
+  Spacer,
 } from "native-base";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastExaminationsList({classId}) {
+export default function PastExaminationsList({ classId }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
@@ -49,15 +52,17 @@ export default function PastExaminationsList({classId}) {
   ]);
 
   const getALlAssessment = async () => {
-    const data = await assessmentRegistryService.getAllAssessment({filters: {groupId: classId}});
+    const data = await assessmentRegistryService.getAllAssessment({
+      filters: { groupId: classId },
+    });
     console.log(data);
     setAllAssessments(data);
     setLoading(false);
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     getALlAssessment();
-  }, [])
+  }, []);
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -66,7 +71,7 @@ export default function PastExaminationsList({classId}) {
   return (
     <Layout
       _header={{
-        title: 'Past Assessments',
+        title: "Past Assessments",
       }}
       _appBar={{
         languages: ["en"],
@@ -125,8 +130,9 @@ export default function PastExaminationsList({classId}) {
       <Box p={4}>
         <>
           <VStack space={6}>
-            {
-              allAssessments && allAssessments.length > 0 && allAssessments.map((item) => {
+            {allAssessments &&
+              allAssessments.length > 0 &&
+              allAssessments.map((item) => {
                 return (
                   <Box
                     borderWidth="1"
@@ -137,8 +143,12 @@ export default function PastExaminationsList({classId}) {
                       <Box p="4" pb="4px" roundedTop="6">
                         <VStack space={4}>
                           <Box>
-                            <BodyLarge py="2">{t("Summative Assessment 1")}</BodyLarge>
-                            <BodySmall color={colors.gray}>27, May 2022</BodySmall>
+                            <BodyLarge py="2">
+                              {t("Summative Assessment 1")}
+                            </BodyLarge>
+                            <BodySmall color={colors.gray}>
+                              27, May 2022
+                            </BodySmall>
                           </Box>
 
                           <ProgressBar
@@ -153,9 +163,8 @@ export default function PastExaminationsList({classId}) {
                       </Box>
                     </VStack>
                   </Box>
-                )
-              })
-            }
+                );
+              })}
           </VStack>
         </>
       </Box>

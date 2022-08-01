@@ -12,7 +12,7 @@ import {
   Caption,
   Subtitle,
   capture,
-  telemetryFactory
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import { Button, Box, VStack, Text, HStack, Avatar } from "native-base";
 import React, { useEffect } from "react";
@@ -54,8 +54,7 @@ export default function SuccessPublicationReport({
   const handleFullReportClick = () => {
     _handleFullReportStartEvent();
     navigate("/assessment-detailed-report");
-  }
-
+  };
 
   return (
     <Layout

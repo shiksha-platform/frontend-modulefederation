@@ -65,7 +65,7 @@ export default function Assessment(props) {
   // subject Modal states
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
   const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState();
+  const [selectedSubject, setSelectedSubject] = useState("English");
   // localStorage.getItem("assessment-subject")
 
   // assessment type modal states
@@ -272,8 +272,8 @@ export default function Assessment(props) {
           selectedStudent={selectedStudent}
         />
         {/*========= choose Assessment Type Modal =============*/}
-        {
-          chooseAssessmentTypeModal && <Actionsheet
+        {chooseAssessmentTypeModal && (
+          <Actionsheet
             isOpen={chooseAssessmentTypeModal}
             onClose={() => setChooseAssessmentTypeModal(false)}
           >
@@ -338,8 +338,7 @@ export default function Assessment(props) {
               </Box>
             </Box>
           </Actionsheet>
-        }
-
+        )}
 
         {/*========= choose Competencies Modal =============*/}
         <Actionsheet

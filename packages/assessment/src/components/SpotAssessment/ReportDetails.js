@@ -77,26 +77,26 @@ export default function ReportDetails({ appName }) {
       type: "Spot-Assessment-Full-Report-Start",
     });
     capture("START", telemetryData);
-    setReportStartTime(+ new Date());
-  }
+    setReportStartTime(+new Date());
+  };
 
   const _handleFullReportEndEvent = () => {
-    const endTime = + new Date();
-    const diff = (endTime - reportStartTime)/1000 || 0;
+    const endTime = +new Date();
+    const diff = (endTime - reportStartTime) / 1000 || 0;
     const telemetryData = telemetryFactory.end({
       appName,
       type: "Spot-Assessment-Full-Report-End",
-      duration: diff
+      duration: diff,
     });
     capture("END", telemetryData);
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     _handleFullReportStartEvent();
     return () => {
       _handleFullReportEndEvent();
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <Layout
@@ -110,8 +110,14 @@ export default function ReportDetails({ appName }) {
         languages: ["en"],
         rightIcon: (
           <HStack>
-            <IconByName name="ShareLineIcon" onPress={_handleSpotAssessmentFullReportShare} />
-            <IconByName name="DownloadLineIcon" onPress={_handleSpotAssessmentFullReportDownload} />
+            <IconByName
+              name="ShareLineIcon"
+              onPress={_handleSpotAssessmentFullReportShare}
+            />
+            <IconByName
+              name="DownloadLineIcon"
+              onPress={_handleSpotAssessmentFullReportDownload}
+            />
           </HStack>
         ),
       }}
@@ -220,7 +226,8 @@ export default function ReportDetails({ appName }) {
                           textAlign="center"
                         >
                           <Subtitle>
-                            Average Class Score is <H2>18</H2> out of <H2>25</H2>
+                            Average Class Score is <H2>18</H2> out of{" "}
+                            <H2>25</H2>
                           </Subtitle>
                         </Box>
                       </VStack>
@@ -270,7 +277,8 @@ export default function ReportDetails({ appName }) {
                           textAlign="center"
                         >
                           <Subtitle>
-                            Average Class Score is <H2>18</H2> out of <H2>25</H2>
+                            Average Class Score is <H2>18</H2> out of{" "}
+                            <H2>25</H2>
                           </Subtitle>
                         </Box>
                       </VStack>
@@ -353,14 +361,14 @@ export default function ReportDetails({ appName }) {
               >
                 <Box>
                   <VStack pt={6} space={4}>
-                    <Box
-
-                    >
+                    <Box>
                       <VStack space={4}>
-                        <Box bg={colors.QuationsBoxContentBg}
-                             roundedTop="10px"
-                             px="4"
-                             py="2">
+                        <Box
+                          bg={colors.QuationsBoxContentBg}
+                          roundedTop="10px"
+                          px="4"
+                          py="2"
+                        >
                           <HStack
                             alignItems="center"
                             justifyContent="space-between"
@@ -427,9 +435,11 @@ export default function ReportDetails({ appName }) {
                           </HStack>
                         </Box>
 
-                        <Box borderWidth="1"
-                             borderColor={colors.borderColor}
-                             borderRadius="10px">
+                        <Box
+                          borderWidth="1"
+                          borderColor={colors.borderColor}
+                          borderRadius="10px"
+                        >
                           <HStack
                             alignItems="center"
                             justifyContent="space-between"
@@ -497,13 +507,18 @@ export default function ReportDetails({ appName }) {
                           </HStack>
                         </Box>
 
-                        <Box borderWidth="1"
-                             borderColor={colors.borderColor}
-                             borderRadius="10px" p={4}>
+                        <Box
+                          borderWidth="1"
+                          borderColor={colors.borderColor}
+                          borderRadius="10px"
+                          p={4}
+                        >
                           <VStack space={4}>
                             <H2>{t("Oral Assessment")}</H2>
-                            <HStack alignItems="center"
-                                    justifyContent="space-between">
+                            <HStack
+                              alignItems="center"
+                              justifyContent="space-between"
+                            >
                               <Box>
                                 <VStack>
                                   <Box position="relative">

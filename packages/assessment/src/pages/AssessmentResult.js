@@ -109,7 +109,7 @@ const AssessmentResult = ({
   const _handleSpotAssessmentRepeatTest = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "Spot-Assessment-Repeating-Test"
+      type: "Spot-Assessment-Repeating-Test",
     });
     capture("INTERACT", telemetryData);
     setSelectedStudent();
@@ -126,7 +126,6 @@ const AssessmentResult = ({
     });
     capture("INTERACT", telemetryData);
   };
-
 
   const SuccessComponent = () => {
     return (

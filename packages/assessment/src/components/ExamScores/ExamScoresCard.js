@@ -5,9 +5,18 @@ import {
   overrideColorTheme,
   BodyLarge,
   Subtitle,
-  BodySmall, H2
+  BodySmall,
+  H2,
 } from "@shiksha/common-lib";
-import { HStack, VStack, Box, Button, Divider, Actionsheet, Stack } from "native-base";
+import {
+  HStack,
+  VStack,
+  Box,
+  Button,
+  Divider,
+  Actionsheet,
+  Stack,
+} from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
@@ -31,7 +40,11 @@ const ExamScoresCard = ({ setPageName }) => {
 
   const [loadingExams, setLoadingExams] = useState(false);
   const [chooseExamModal, setChooseExamModal] = useState(false);
-  const [exams, setExams] = useState(['State Exam', 'Semester Exam', 'Summative Assessment 1']);
+  const [exams, setExams] = useState([
+    "State Exam",
+    "Semester Exam",
+    "Summative Assessment 1",
+  ]);
   const [selectedExam, setSelectedExam] = useState();
 
   const handleExamSelection = (exam) => {
@@ -116,7 +129,14 @@ const ExamScoresCard = ({ setPageName }) => {
           </VStack>
         </Box>
       </VStack>
-      <Subtitle my={2} textAlign={"center"} color={colors.primary} onPress={()=> {navigate('/past-examinations')}}>
+      <Subtitle
+        my={2}
+        textAlign={"center"}
+        color={colors.primary}
+        onPress={() => {
+          navigate("/past-examinations");
+        }}
+      >
         {t("VIEW PAST EXAMINATIONS")}
       </Subtitle>
 
@@ -169,7 +189,7 @@ const ExamScoresCard = ({ setPageName }) => {
               }}
               onPress={() => {
                 setChooseExamModal(false);
-                navigate("/examscores")
+                navigate("/examscores");
               }}
               isDisabled={!selectedExam}
             >

@@ -9,7 +9,9 @@ import {
   ProgressBar,
   overrideColorTheme,
   Caption,
-  assessmentRegistryService, Loading, useWindowSize
+  assessmentRegistryService,
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -24,12 +26,14 @@ import {
   Actionsheet,
   Stack,
   Divider,
-  Avatar, Spacer
+  Avatar,
+  Spacer,
 } from "native-base";
 import colorTheme from "../colorTheme";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastAssessmentList({classId}) {
+export default function PastAssessmentList({ classId, selectedSubject }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
@@ -48,16 +52,50 @@ export default function PastAssessmentList({classId}) {
     },
   ]);
 
+  const filteredAssessmentsData = [];
+
   const getALlAssessment = async () => {
-    const data = await assessmentRegistryService.getAllAssessment({filters: {groupId: classId}});
-    console.log(data);
+    const data = await assessmentRegistryService.getAllAssessment({
+      filters: { groupId: classId, subject: selectedSubject },
+    });
     setAllAssessments(data);
+    /*data.forEach((item)=> {
+      groupByDate(item);
+    })*/
+    data.forEach((item) => {
+      item.date = moment(item.createdAt).format("MM-DD-YYYY");
+    });
+    console.log("updated", data);
+    const groupedAssessments = groupBy(data, "date");
+    console.log("groupedAssessments", groupedAssessments);
     setLoading(false);
+  };
+
+  /*const groupByDate = (item) => {
+    if(filteredAssessmentsData.length > 0){
+      const isExist = filteredAssessmentsData.filter((data) => {
+        return data.date === item.createdAt;
+      });
+
+
+    }
+  }*/
+
+  function groupBy(objectArray, property) {
+    return objectArray.reduce((acc, obj) => {
+      const key = obj[property];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      // Add object to list for given key's value
+      acc[key].push(obj);
+      return acc;
+    }, {});
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     getALlAssessment();
-  }, [])
+  }, []);
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -66,7 +104,7 @@ export default function PastAssessmentList({classId}) {
   return (
     <Layout
       _header={{
-        title: 'Past Assessments',
+        title: "Past Assessments",
       }}
       _appBar={{
         languages: ["en"],
@@ -127,8 +165,9 @@ export default function PastAssessmentList({classId}) {
           <VStack space={12}>
             {/*  card  */}
 
-            {
-              allAssessments && allAssessments.length > 0 && allAssessments.map((item) => {
+            {allAssessments &&
+              allAssessments.length > 0 &&
+              allAssessments.map((item) => {
                 return (
                   <Box>
                     <BodyLarge mb={2}>27, July 2022</BodyLarge>
@@ -142,7 +181,9 @@ export default function PastAssessmentList({classId}) {
                           <Box p="4" pb="4px" roundedTop="6">
                             <VStack space={2}>
                               <Box>
-                                <BodyLarge py="2">{t("Written Spot Assessment")}</BodyLarge>
+                                <BodyLarge py="2">
+                                  {t("Written Spot Assessment")}
+                                </BodyLarge>
                               </Box>
 
                               <ProgressBar
@@ -167,7 +208,9 @@ export default function PastAssessmentList({classId}) {
                           <Box p="4" pb="4px" roundedTop="6">
                             <VStack space={2}>
                               <Box>
-                                <BodyLarge py="2">{t("Oral Spot Assessment")}</BodyLarge>
+                                <BodyLarge py="2">
+                                  {t("Oral Spot Assessment")}
+                                </BodyLarge>
                               </Box>
 
                               <ProgressBar
@@ -184,9 +227,8 @@ export default function PastAssessmentList({classId}) {
                       </Box>
                     </VStack>
                   </Box>
-                )
-              })
-            }
+                );
+              })}
           </VStack>
         </>
       </Box>
