@@ -6,6 +6,7 @@ import {
   H2,
   questionRegistryService,
   overrideColorTheme,
+  templateRegistryService,
   getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
@@ -14,7 +15,7 @@ import manifestLocal from "../manifest.json";
 import SuccessPage from "../components/CreateWorksheet/SuccessPage";
 import FormPage from "../components/CreateWorksheet/Form";
 import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage";
-import WorksheetTemplate from "../components/CreateWorksheet/WorksheetTemplate";
+import WorksheetTemplate from "../components/WorksheetTemplate";
 import ListOfQuestions from "../components/CreateWorksheet/ListOfQuestions";
 import { defaultInputs, autoGenerateInputs } from "../config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +34,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [worksheetStartTime, setWorksheetStartTime] = React.useState();
   const [manifest, setManifest] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
+  const [templates, setTemplates] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -97,6 +99,9 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           setAlertMessage();
         }
       }
+
+      const data = await templateRegistryService.getAll({ tag: "worksheet" });
+      setTemplates(data);
       setLoading(false);
     }
   }, [formObject, ["ListOfQuestions", "WorksheetTemplate"].includes(pageName)]);
@@ -192,7 +197,18 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         />
       ) : pageName === "WorksheetTemplate" && !alertMessage ? (
         questions.length > 0 ? (
-          <WorksheetTemplate onPress={handleWorksheetTemplateOnPress} />
+          <WorksheetTemplate
+            onPress={handleWorksheetTemplateOnPress}
+            {...{
+              templates,
+              _box: { bg: colors.cardBgLight },
+              _templateBox: {
+                activeColor: colors.cardBg,
+                bg: colors.white,
+                mb: 5,
+              },
+            }}
+          />
         ) : (
           ""
         )

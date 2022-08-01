@@ -214,7 +214,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
             )}
             {!showButtonArray || showButtonArray.includes("Download") ? (
               <IconByName
-                onPress={(e) => navigate("/worksheet/template")}
+                onPress={(e) => navigate("/worksheet/template/" + id)}
                 name="DownloadLineIcon"
               />
             ) : (

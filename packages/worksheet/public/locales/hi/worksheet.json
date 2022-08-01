@@ -50,5 +50,6 @@
   "INCLUDE_ANSWER_KEY": "वर्कशीट में उत्तर कुंजी शामिल करें",
   "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "कृपया एक प्रश्न को सूचीबद्ध करें चुनें",
   "PLEASE_SELECT_SOURCE": "कृपया स्रोत चुनें",
-  "ENTER_TITLE_HINT": "शीर्षक संकेत दर्ज करें"
+  "ENTER_TITLE_HINT": "शीर्षक संकेत दर्ज करें",
+  "TEMPLATE_NO": "खाका संख्या"
 }

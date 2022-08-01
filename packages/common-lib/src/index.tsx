@@ -1,14 +1,3 @@
-import * as React from 'react'
-import styles from './styles.module.css'
-
-interface Props {
-  text: string
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
-
 import AppBar from './components/layout/AppBar'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -34,6 +23,7 @@ import * as questionRegistryService from './services/questionRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
+import * as templateRegistryService from './services/templateRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import { getAllForUser } from './services/firebaseHistoryRegistryService'
@@ -66,6 +56,7 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
+  templateRegistryService,
   getApiConfig,
   notificationRegistryService,
   getAllForUser

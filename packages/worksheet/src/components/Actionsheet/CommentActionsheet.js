@@ -88,7 +88,7 @@ export default function Comment({
           />
         </HStack>
       </Actionsheet.Content>
-      <VStack width={"100%"} space="1px" h="80%">
+      <VStack width={"100%"} space="1px" maxH="80%">
         <ScrollView>
           <VStack space="1px">
             {comments.map((item, index) => (

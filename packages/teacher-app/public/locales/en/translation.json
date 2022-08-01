@@ -339,7 +339,6 @@
   "HOW_TO_MARK_OWN_ATTENDANCE_MESSAGE": "To mark your own attendance, tap on your profile picture, select an option according to your choice and mark attendance.",
   "TURN_ON": "Turn On",
   "GO_BACK": "Go back",
-  "WELCOME_BACK": "Hello, welcome back to our your account !",
   "PLEASE_ENTER_VALID_CREDENTIALS": "Please enter valid credentials",
   "USERNAME_IS_REQUIRED": "Username is required",
   "PASSWORD_IS_REQUIRED": "Password is required",
@@ -348,5 +347,6 @@
   "LOADING": "Loading",
   "REMOVE_PHOTO": "Remove Photo",
   "UPLOAD_PHPTP": "Upload Photo",
-  "ENTER_TITLE_HINT": "Enter title hint"
+  "ENTER_TITLE_HINT": "Enter title hint",
+  "TEMPLATE_NO": "Template No"
 }
