@@ -5,7 +5,7 @@ import { Box } from "native-base";
 import { IconByName } from "@shiksha/common-lib";
 import VideoPlayer from "./VideoPlayer";
 
-const FloatingVideoPlayer = ({ link = "", show = false }) => {
+const FloatingVideoPlayer = ({ link = "", show = true }) => {
     const [showVideo, setShowVideo] = useState(show)
     const [url, setUrl] = useState(link)
 

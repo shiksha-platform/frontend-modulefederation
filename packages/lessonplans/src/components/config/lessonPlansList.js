@@ -69,7 +69,7 @@ export const lessonPlansList = [
   // },
   {
     contentId: "c11cde6d-68b2-4a09-9a64-842dd947ef97",
-    name: "lessonplan1",
+    name: "History of Time",
     code: "lp1",
     status: "working",
     channel: "SMS",
@@ -148,7 +148,7 @@ export const lessonPlansList = [
   },
   {
     contentId: "1f60941c-641e-4e37-b493-7edc901a9b48",
-    name: "lessonplan1",
+    name: "Human Evolution",
     code: "lp1",
     status: "working",
     channel: "SMS",
@@ -227,7 +227,7 @@ export const lessonPlansList = [
   },
   {
     contentId: "865be8d6-f48a-464b-90ad-d9277d949849",
-    name: "lessonplan2",
+    name: "Indian Economy",
     code: "lp2",
     status: "working2",
     channel: "SMS",
@@ -306,7 +306,7 @@ export const lessonPlansList = [
   },
   {
     contentId: "b1a8b211-dcdc-41ce-bc06-806cf75646f8",
-    name: "lessonplan3",
+    name: "Geography",
     code: "lp3",
     status: "working3",
     channel: "SMS",
@@ -385,7 +385,7 @@ export const lessonPlansList = [
   },
   {
     contentId: "aa2e1612-72b3-43d6-b5aa-b2f3e398cae8",
-    name: "lessonplan4",
+    name: "Pythagorus Theorem",
     code: "lp4",
     status: "working4",
     channel: "SMS",

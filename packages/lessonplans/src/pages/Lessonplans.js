@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     capture,
     FilterButton,
@@ -30,6 +30,8 @@ import manifest from "../manifest.json";
 import LessonPlansCard from "components/LessonPlansCard";
 import { defaultInputs } from "../components/config/lessonPlansConfig";
 import { lessonPlansList } from "components/config/lessonPlansList";
+import FloatingVideoPlayer from "components/FloatingVideoPlayer";
+
 const sortArray = [
     {
         title: "By Difficulty",
@@ -68,7 +70,6 @@ const sortArray = [
 ];
 import colorTheme from "../colorTheme";
 
-//console.log(lessonPlansRegistryService.getLessonPlansLikes());
 const newDefaultInputs = defaultInputs.map((e) => {
     return {
         ...e,
@@ -81,7 +82,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function Worksheet({ footerLinks, appName }) {
+export default function Lessonplans({ footerLinks, appName }) {
     const { t } = useTranslation();
     const [filterObject, setFilterObject] = React.useState({});
     const [lessonPlans, setLessonPlans] = React.useState([]);
@@ -106,10 +107,9 @@ export default function Worksheet({ footerLinks, appName }) {
                     : params;
         });
 
-        //console.log("params", params);
         const data = await lessonPlansRegistryService.getAll(params);
         console.log(data);
-        //const data = lessonPlansList;
+
         let filterData = [];
         if (search && search.length >= 3 && searchState) {
             filterData = data.filter((e) =>
@@ -124,6 +124,13 @@ export default function Worksheet({ footerLinks, appName }) {
         setLoading(false);
     }, [filterObject, search.length >= 3, searchState]);
     console.log(filterObject);
+
+    React.useEffect(() => {
+        return () => {
+            //console.log("after the component got unmounted");
+            <FloatingVideoPlayer />
+        }
+    }, [])
 
     if (loading) {
         return <Loading />;
@@ -176,6 +183,7 @@ export default function Worksheet({ footerLinks, appName }) {
             _subHeader={{ bg: colors.cardBg }}
             _footer={footerLinks}
         >
+
             <ChildrenLessonPlans
                 {...{
                     lessonPlans,

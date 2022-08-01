@@ -34,7 +34,7 @@ export default function VideoCard({ item, index, url, canShare }) {
         <HStack bg={colors.cardBgLight} rounded="10px" maxH={"140px"} space="5">
             <Box flex={3 / 4}>
                 <Pressable
-                    onPress={() => (url ? navigate(url) : "")}
+                    onPress={() => (url ? navigate(url, { state: { videoURL: "https://www.shutterstock.com/video/clip-24689849-water-droplets-falling-on-green-plant-ultra-slow" } }) : "")}
                     width="100%"
                     flex="1"
                 >

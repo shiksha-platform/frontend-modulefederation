@@ -18,6 +18,7 @@ import { videoListData as videosData } from "components/config/VideoListData";
 import colorTheme from "../colorTheme";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
 
 const colors = overrideColorTheme(colorTheme);
@@ -27,10 +28,19 @@ export default function VideoDetails({ footerLinks, appName }) {
   const [video, setVideo] = React.useState({});
   const [showButtonArray, setShowButtonArray] = React.useState([]);
   const { id } = useParams();
+  const location = useLocation();
 
   React.useEffect(async () => {
     setVideo(videosData.find((e) => e.id == id));
   }, []);
+
+  console.log(location.state.videoURL, "url");
+
+  React.useEffect(() => {
+    return () => {
+      console.log("Hello");
+    }
+  })
 
   return (
     <Layout

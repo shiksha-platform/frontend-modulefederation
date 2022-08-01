@@ -179,8 +179,8 @@ export default function VideoPlayer({ url }) {
                     playerState.isMuted
                       ? "VolumeMuteLineIcon"
                       : playerState.volume > 50
-                      ? "VolumeUpLineIcon"
-                      : "VolumeDownLineIcon"
+                        ? "VolumeUpLineIcon"
+                        : "VolumeDownLineIcon"
                   }
                   color={colors.white}
                 />

@@ -37,6 +37,7 @@ import * as assessmentRegistryService from './services/assessmentRegistryService
 import * as lessonPlansRegistryService from './services/lessonPlansRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
+import FloatingVideoPlayer from './components/floatingPlayer/FloatingVideoPlayer'
 export {
   AppBar,
   Header,
@@ -66,7 +67,8 @@ export {
   commentRegistryService,
   assessmentRegistryService,
   lessonPlansRegistryService,
-  getApiConfig
+  getApiConfig,
+  FloatingVideoPlayer
 }
 
 export * from './services/Auth'

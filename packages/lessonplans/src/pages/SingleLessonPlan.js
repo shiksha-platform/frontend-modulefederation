@@ -27,8 +27,10 @@ import LikeActionSheet from "components/config/ActionSheets/LikeActionSheet";
 import { SingleLessonPlanDetails } from "components/config/SingleLessonPlanDetails";
 import { lessonPlansList } from "components/config/lessonPlansList";
 import { videoListData } from "components/config/VideoListData";
+import FloatingVideoPlayer from "components/FloatingVideoPlayer";
 import VideoCard from "components/VideosCard";
 import colorTheme from "colorTheme";
+
 const colors = overrideColorTheme(colorTheme);
 
 export default function SingleLessonPlan({ footerLinks, appName }) {
@@ -45,6 +47,11 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
     const navigate = useNavigate();
     const { sub } = jwt_decode(localStorage.getItem("token"));
     const [comments, setCommets] = React.useState([]);
+    const [showVideo, setShowVideo] = useState(true)
+
+    const handleOnClose = () => {
+        setShowVideo(false);
+    }
 
     React.useEffect(async () => {
         console.log("id", id);
@@ -265,21 +272,24 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
                     likeCount: likes?.length,
                 }}
             />
-            <Draggable>
-                <Box position="sticky" bottom="85" maxH="200px" maxW="300px">
-                    <HStack>
-                        <Box>
-                            <IconByName
-                                size='sm'
-                                name='CloseCircleLineIcon'
-                            //color={color ? color : ''}
-                            //onPress={(e) => console.log(e)}
-                            />
-                        </Box>
-                    </HStack>
-                    <VideoPlayer url={"http://techslides.com/demos/sample-videos/small.mp4"} />
-                </Box>
-            </Draggable>
+            {showVideo && (
+                <Draggable>
+                    <Box position="sticky" bottom="50" maxH="200px" maxW="300px">
+                        <HStack>
+                            <Box>
+                                <IconByName
+                                    size='sm'
+                                    name='CloseCircleLineIcon'
+                                    //color={color ? color : ''}
+                                    onPress={(e) => handleOnClose()}
+                                />
+                            </Box>
+                        </HStack>
+                        <VideoPlayer url={"http://techslides.com/demos/sample-videos/small.mp4"} />
+                    </Box>
+                </Draggable>
+            )}
+            {/* <FloatingVideoPlayer /> */}
         </Layout>
     );
 }

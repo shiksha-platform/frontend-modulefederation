@@ -52,11 +52,11 @@ export default function LessonPlansCard({ item, url, canShare }) {
                     isDisabled
                   />
                   <Caption>
-                    {item?.likes + " likes"}
+                    {item?.likes ? item?.likes + " likes" : "0 likes"}
                   </Caption>
 
                   <Caption>
-                    ({item?.comments + " comments"})
+                    ({item?.comments ? item?.comments + " comments" : "0 comments"})
                   </Caption>
                 </HStack>
               </Stack>
