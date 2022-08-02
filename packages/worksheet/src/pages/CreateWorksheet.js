@@ -6,7 +6,6 @@ import {
   H2,
   questionRegistryService,
   overrideColorTheme,
-  templateRegistryService,
   getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
@@ -15,7 +14,6 @@ import manifestLocal from "../manifest.json";
 import SuccessPage from "../components/CreateWorksheet/SuccessPage";
 import FormPage from "../components/CreateWorksheet/Form";
 import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage";
-import WorksheetTemplate from "../components/WorksheetTemplate";
 import ListOfQuestions from "../components/CreateWorksheet/ListOfQuestions";
 import { defaultInputs, autoGenerateInputs } from "../config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +32,6 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   const [worksheetStartTime, setWorksheetStartTime] = React.useState();
   const [manifest, setManifest] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
-  const [templates, setTemplates] = React.useState([]);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -52,7 +49,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     });
     capture("INTERACT", telemetryData);
 
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
@@ -64,7 +61,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   }, []);
 
   React.useEffect(async () => {
-    if (pageName === "ListOfQuestions" || pageName === "WorksheetTemplate") {
+    if (pageName === "ListOfQuestions" || pageName === "AddDescriptionPage") {
       setLoading(true);
       const newAttribute = [...defaultInputs, ...autoGenerateInputs];
       const attribute = newAttribute.map((e) =>
@@ -99,9 +96,6 @@ export default function CreateWorksheet({ footerLinks, appName }) {
           setAlertMessage();
         }
       }
-
-      const data = await templateRegistryService.getAll({ tag: "worksheet" });
-      setTemplates(data);
       setLoading(false);
     }
   }, [formObject, ["ListOfQuestions", "WorksheetTemplate"].includes(pageName)]);
@@ -118,7 +112,11 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       setLimit({});
       setCreateType("create");
     } else if (pageName === "AddDescriptionPage") {
-      setPageName("filterData");
+      if (createType === "auto") {
+        setPageName("");
+      } else {
+        setPageName("filterData");
+      }
     } else if (pageName === "filterData") {
       setPageName("ListOfQuestions");
     } else if (["ListOfQuestions", "WorksheetTemplate"].includes(pageName)) {
@@ -126,16 +124,6 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     } else {
       navigate(-1);
     }
-  };
-
-  const handleWorksheetTemplateOnPress = () => {
-    setFormObject({ ...formObject, state: "Publish" });
-    setPageName("AddDescriptionPage");
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Worksheet-Template-Choose",
-    });
-    capture("INTERACT", telemetryData);
   };
 
   if (pageName === "success") {
@@ -195,26 +183,10 @@ export default function CreateWorksheet({ footerLinks, appName }) {
             setFormObject,
           }}
         />
-      ) : pageName === "WorksheetTemplate" && !alertMessage ? (
-        questions.length > 0 ? (
-          <WorksheetTemplate
-            onPress={handleWorksheetTemplateOnPress}
-            {...{
-              templates,
-              _box: { bg: colors.cardBgLight },
-              _templateBox: {
-                activeColor: colors.cardBg,
-                bg: colors.white,
-                mb: 5,
-              },
-            }}
-          />
-        ) : (
-          ""
-        )
       ) : pageName === "AddDescriptionPage" && !alertMessage ? (
         <AddDescriptionPage
           {...{
+            manifest,
             appName,
             worksheetStartTime,
             createType,

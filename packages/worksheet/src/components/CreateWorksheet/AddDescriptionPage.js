@@ -13,7 +13,11 @@ import moment from "moment";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
+const getArray = (item) =>
+  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
+
 export default function AddDescriptionPage({
+  manifest,
   questions,
   setPageName,
   formObject,
@@ -33,12 +37,14 @@ export default function AddDescriptionPage({
       label: t("DESCRIPTION"),
     },
     ...defaultInputs.map((e) => {
+      const source = getArray(manifest?.["question-bank.questionResource"]);
       return {
         ...e,
         type: "select",
         ...(e.attributeName === "topic" ? { type: "multiselect" } : {}),
         attributeName:
           e.attributeName === "gradeLevel" ? "grade" : e.attributeName,
+        data: e.attributeName === "source" ? source : e.data,
       };
     }),
   ];

@@ -46,7 +46,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const [showButtonArray, setShowButtonArray] = React.useState([]);
 
   React.useEffect(async () => {
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     setQuestionConfig(
       Array.isArray(newManifest?.["question-bank.questionMetadata"])
         ? newManifest?.["question-bank.questionMetadata"]

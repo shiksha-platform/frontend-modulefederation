@@ -61,8 +61,9 @@ export default function TeachingDetail({ footerLinks, appName }) {
       state: { eq: "Draft" },
     });
     setWorksheetDrafts(draftsData);
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     let buttons = [];
+
     if (newManifest["worksheet.allow-download-worksheet"] === "true") {
       buttons = [...buttons, "Download"];
     }
