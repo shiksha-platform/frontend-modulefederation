@@ -116,7 +116,7 @@ export default function WorksheetBox({
       topic: item?.topic,
     });
     capture("INTERACT", telemetryData);
-    navigate("/worksheet/template");
+    navigate("/worksheet/template/" + item?.id);
   };
 
   const handleShare = () => {

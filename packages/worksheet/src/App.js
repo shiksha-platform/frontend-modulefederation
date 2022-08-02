@@ -52,7 +52,7 @@ function App() {
       component: CreateWorksheet,
     },
     {
-      path: "/worksheet/template",
+      path: "/worksheet/template/:worksheetId",
       component: WorksheetTemplate,
     },
     {

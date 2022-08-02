@@ -341,5 +341,6 @@
   "LOADING": "लोड हो रहा है",
   "REMOVE_PHOTO": "फोटो हटाएं",
   "UPLOAD_PHPTP": "फोटो अपलोड करें",
-  "ENETR_TITLE_HINT": "शीर्षक संकेत दर्ज करें"
+  "ENETR_TITLE_HINT": "शीर्षक संकेत दर्ज करें",
+  "TEMPLATE_NO": "खाका संख्या"
 }
