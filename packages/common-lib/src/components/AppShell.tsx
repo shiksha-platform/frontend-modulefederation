@@ -7,6 +7,7 @@ import { PushNotification } from './firebase/firebase'
 
 function AppShell({
   theme,
+  colors,
   routes,
   AuthComponent,
   basename,
@@ -57,7 +58,6 @@ function AppShell({
           }
         ]
       }
-
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
@@ -74,7 +74,7 @@ function AppShell({
       <NativeBaseProvider theme={theme}>
         <PushNotification />
         <React.Suspense fallback={<Loading />}>
-          <AuthComponent {..._authComponent} />
+          <AuthComponent {...{ colors }} {..._authComponent} />
         </React.Suspense>
       </NativeBaseProvider>
     )
@@ -95,7 +95,9 @@ function AppShell({
                 <Route
                   key={index}
                   path={item.path}
-                  element={<item.component {...{ footerLinks, appName }} />}
+                  element={
+                    <item.component {...{ footerLinks, appName, colors }} />
+                  }
                 />
               ))}
             </Routes>

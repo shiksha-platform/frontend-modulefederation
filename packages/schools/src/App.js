@@ -19,7 +19,7 @@ import TeacherVisitReport from "pages/TeacherVisitReport";
 import Question from "pages/Question";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   const routes = [
     {
       path: "/schools/new-visit",

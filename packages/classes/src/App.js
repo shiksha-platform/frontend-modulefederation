@@ -11,7 +11,7 @@ initializeI18n(
   `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
 );
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
 
   const routes = [
     {

@@ -9,7 +9,7 @@ import SendSMS from "pages/sms/SendSMS";
 import { navigationRoute } from "./services/routes";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   initializeI18n(
     ["attendance"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`

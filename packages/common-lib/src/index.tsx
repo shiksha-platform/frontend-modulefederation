@@ -7,7 +7,6 @@ import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
 import Menu, { SubMenu } from './components/Menu'
-import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
@@ -40,7 +39,6 @@ export {
   Collapsible,
   Menu,
   SubMenu,
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
   AppRoutesContainer,

@@ -7,7 +7,7 @@ import Student from "./pages/students";
 import { navigationRoute } from "services/routes";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   initializeI18n(
     ["student"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
