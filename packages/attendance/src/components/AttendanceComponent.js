@@ -362,6 +362,7 @@ export const MultipalAttendance = ({
                       <Button
                         variant="outline"
                         flex="1"
+                        wordBreak="break-word"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,

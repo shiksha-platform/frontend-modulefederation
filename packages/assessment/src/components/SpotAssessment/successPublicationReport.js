@@ -131,6 +131,7 @@ export default function SuccessPublicationReport({
                               h="35px"
                               _bar={{ rounded: "md", mb: "2" }}
                               isLabelCountHide
+                              _legendType={{ color: colors.gray }}
                               data={progressAssessment}
                             />
                           </VStack>
