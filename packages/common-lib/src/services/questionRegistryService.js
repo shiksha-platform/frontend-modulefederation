@@ -25,15 +25,19 @@ export const getAllQuestions = async (params = {}, header = {}) => {
     Accept: 'application/json',
     ...header
   }
-  const result = await get(
-    `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
-    {
-      params: params,
-      headers
+  try {
+    const result = await get(
+      `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
+      {
+        params: params,
+        headers
+      }
+    )
+    if (result?.data?.data && result.data.data.length) {
+      return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     }
-  )
-  if (result?.data?.data && result.data.data.length) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+  } catch (e) {
+    console.error(e)
   }
   return []
 }

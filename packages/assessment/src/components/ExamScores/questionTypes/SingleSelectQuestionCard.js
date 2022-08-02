@@ -14,11 +14,13 @@ const SingleSelectQuestionCard = ({ questionNumber, question }) => {
       name: "12 Assessed",
       color: colors.successBarColor,
       value: 12,
+      _legendType: { color: colors.gray },
     },
     {
       name: "6 pending",
       color: colors.pendingBarColor,
       value: 6,
+      _legendType: { color: colors.gray },
     },
   ]);
   return (

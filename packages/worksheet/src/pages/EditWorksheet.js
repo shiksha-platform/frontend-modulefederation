@@ -26,7 +26,7 @@ export default function EditWorksheet({ footerLinks, appName }) {
   const { id } = useParams();
 
   React.useEffect(async () => {
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     setQuestionConfig(
       Array.isArray(newManifest?.["question-bank.questionMetadata"])
         ? newManifest?.["question-bank.questionMetadata"]

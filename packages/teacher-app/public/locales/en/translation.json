@@ -181,6 +181,7 @@
   "RESET_TO_UNMARK": "Reset to Unmark",
   "RESET": "Reset",
   "MARK_PRESENT": "Mark Present",
+  "MARK_ON_LEAVE": "Mark on Leave",
   "MARK_SPECIAL_DUTY": "Mark Special Duty",
   "MARK_ABSENT": "Mark Absent",
   "SELECT_DUTY_TYPE": "Select Duty Type",
@@ -296,7 +297,6 @@
   "NEW_QUESTIONS_ADDED": "New Questions Added",
   "QUESTION_SELECTED": "Question Selected",
   "PLEASE_SELECT_ATLIST_ONE_QUESTION": "Please select atlist one question",
-  "WELCOME_BACK": "Hello, welcome back to our your account !",
   "MY_LEARNING": "My Learning",
   "MY_COURSES": "My Courses",
   "ACCESS_ALL_TRAINING_COURSES": "Access all your training courses here",
@@ -339,7 +339,6 @@
   "HOW_TO_MARK_OWN_ATTENDANCE_MESSAGE": "To mark your own attendance, tap on your profile picture, select an option according to your choice and mark attendance.",
   "TURN_ON": "Turn On",
   "GO_BACK": "Go back",
-  "WELCOME_BACK": "Hello, welcome back to our your account !",
   "PLEASE_ENTER_VALID_CREDENTIALS": "Please enter valid credentials",
   "USERNAME_IS_REQUIRED": "Username is required",
   "PASSWORD_IS_REQUIRED": "Password is required",
@@ -348,5 +347,6 @@
   "LOADING": "Loading",
   "REMOVE_PHOTO": "Remove Photo",
   "UPLOAD_PHPTP": "Upload Photo",
-  "ENTER_TITLE_HINT": "Enter title hint"
+  "ENTER_TITLE_HINT": "Enter title hint",
+  "TEMPLATE_NO": "Template No"
 }

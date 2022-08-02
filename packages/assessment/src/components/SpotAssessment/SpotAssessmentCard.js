@@ -78,6 +78,7 @@ const SpotAssessmentCard = ({
                   h="35px"
                   _bar={{ rounded: "md", mb: "2" }}
                   isLabelCountHide
+                  _legendType={{ color: colors.gray }}
                   data={progressAssessment}
                 />
               </VStack>
@@ -103,6 +104,7 @@ const SpotAssessmentCard = ({
                   legendType="separated"
                   h="35px"
                   _bar={{ rounded: "md", mb: "2" }}
+                  _legendType={{ color: colors.gray }}
                   isLabelCountHide
                   data={progressAssessment}
                 />

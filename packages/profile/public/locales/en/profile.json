@@ -9,5 +9,7 @@
   "CONTACT_DETAILS": "Contact Details",
   "TURN_ON_DEVICE_LOCATION": "Turn on device location",
   "DEVICE_LOCATION_CANT_MARK_ATTENDANCE": "Attendance marking requires to log in your device location. Without location, the app can't mark your attendance.",
-  "GO_BACK": "Go back"
+  "GO_BACK": "Go back",
+  "MARK_PRESENT": "Mark Present",
+  "MARK_ON_LEAVE": "Mark on Leave"
 }
