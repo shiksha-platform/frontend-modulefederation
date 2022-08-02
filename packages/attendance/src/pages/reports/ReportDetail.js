@@ -12,7 +12,7 @@ import {
 } from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";

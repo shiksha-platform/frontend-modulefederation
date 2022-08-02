@@ -53,5 +53,6 @@
   "INCLUDE_ANSWER_KEY": "Include answer key in worksheet",
   "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "Please select at least one question",
   "PLEASE_SELECT_SOURCE": "Please select source",
-  "ENTER_TITLE_HINT": "Enter title hint"
+  "ENTER_TITLE_HINT": "Enter title hint",
+  "TEMPLATE_NO": "Template No"
 }

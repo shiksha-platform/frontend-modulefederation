@@ -10,6 +10,7 @@ import {
   H2,
   H1,
   overrideColorTheme,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import {
   Actionsheet,
@@ -20,7 +21,8 @@ import {
   Modal,
   Pressable,
   Stack,
-  Text,
+  Toast,
+  useToast,
   VStack,
 } from "native-base";
 import React from "react";
@@ -33,6 +35,7 @@ import colorTheme from "../colorTheme";
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
+const ON_LEAVE = "Onleave";
 
 const colors = overrideColorTheme(colorTheme);
 const newMarkList = [
@@ -41,6 +44,7 @@ const newMarkList = [
     name: "MARK_PRESENT",
     attendance: PRESENT,
     color: "present",
+    value: "Present",
   },
   {
     icon: "AwardLineIcon",
@@ -48,12 +52,21 @@ const newMarkList = [
     attendance: PRESENT,
     rightIcon: "ArrowRightSLineIcon",
     color: "special_duty",
+    value: "Specialduty",
   },
   {
     icon: "CloseCircleLineIcon",
     name: "MARK_ABSENT",
     attendance: ABSENT,
     color: "absent",
+    value: "Absent",
+  },
+  {
+    icon: "UserUnfollowLineIcon",
+    name: "MARK_ON_LEAVE",
+    attendance: ON_LEAVE,
+    color: "absent",
+    value: "Onleave",
   },
 ];
 const newSpecialDutyList = [
@@ -62,36 +75,42 @@ const newSpecialDutyList = [
     name: "ELECTION",
     color: "special_duty",
     attendance: PRESENT,
+    value: "election",
   },
   {
     icon: "BookMarkLineIcon",
     name: "EVALUATION",
     color: "special_duty",
     attendance: PRESENT,
+    value: "evaluation",
   },
   {
     icon: "SearchEyeLineIcon",
     name: "INTERVIEW",
     color: "special_duty",
     attendance: PRESENT,
+    value: "interview",
   },
   {
     icon: "StarLineIcon",
     name: "INVIGILITION",
     color: "special_duty",
     attendance: PRESENT,
+    value: "invigilation",
   },
   {
     icon: "SpyLineIcon",
     name: "INSPECTION",
     color: "special_duty",
     attendance: PRESENT,
+    value: "inspection",
   },
   {
     icon: "StarLineIcon",
     name: "TRAINING",
     color: "special_duty",
     attendance: PRESENT,
+    value: "training",
   },
 ];
 
@@ -113,6 +132,7 @@ export default function SelfAttedanceSheet({
   const [width, height] = useWindowSize();
   const myRef = React.useRef(null);
   const [loding, setLoding] = React.useState(false);
+  const [config, setConfig] = React.useState({});
   const [selfAttendance, setSelfAttendance] = React.useState({});
   const navigate = useNavigate();
 
@@ -220,8 +240,26 @@ export default function SelfAttedanceSheet({
   React.useEffect(() => {
     let ignore = false;
     async function getData() {
-      setMarkList(newMarkList);
-      setSpecialDutyList(newSpecialDutyList);
+      let newConfig = await getApiConfig(["attendance"]);
+      console.log(newConfig);
+      setConfig(newConfig);
+      const status =
+        newConfig && newConfig["attendance_states_of_staff"]
+          ? newConfig["attendance_states_of_staff"]
+          : [];
+      const newData = newMarkList.filter((e) => {
+        return status.includes(e.value);
+      });
+      setMarkList(newData);
+
+      const specialDutyStatus =
+        newConfig && newConfig["specialDuties"]
+          ? newConfig["specialDuties"]
+          : [];
+      const newDataSpecialDuty = newSpecialDutyList.filter((e) => {
+        return specialDutyStatus.includes(e.value);
+      });
+      setSpecialDutyList(newDataSpecialDuty);
       const todayAttendanceResult = await attendanceRegistryService.getAll({
         fromDate: moment().format("YYYY-MM-DD"),
         toDate: moment().format("YYYY-MM-DD"),
@@ -299,7 +337,14 @@ export default function SelfAttedanceSheet({
       setCameraModal(false);
       handleMarkAttendance(selfAttendance);
     }
-    setLocationModal(true);
+    if (config && config["captureLocation"] === "true") {
+      setLocationModal(true);
+    } else if (config && config["capture_selfie"] === "true") {
+      setCameraModal(true);
+    } else {
+      setDone(true);
+      handleMarkAttendance(selfAttendance);
+    }
     setShowModal(false);
   };
 
@@ -316,6 +361,53 @@ export default function SelfAttedanceSheet({
       console.log("Geolocation is not supported by this browser.");
     }
   };
+
+  if (showModal && config && config["captureSelfAttendace"] === "false") {
+    return (
+      <>
+        {children}
+        <Modal safeAreaTop={true} isOpen={showModal}>
+          <Modal.Content
+            maxWidth="1024px"
+            position="fixed"
+            bottom="0"
+            w="92%"
+            mb="69px"
+          >
+            <VStack space={5} p="5">
+              <H1>{t("Can't mark self attendance")}</H1>
+              <Button.Group>
+                <Button
+                  flex="1"
+                  fontSize="12px"
+                  fontWeight="600"
+                  colorScheme="button"
+                  _text={{ color: "white", textTransform: "capitalize" }}
+                  onPress={(e) => {
+                    setShowModal(false);
+                  }}
+                >
+                  {t("CLOSE")}
+                </Button>
+                <Button
+                  flex="1"
+                  mr="5px"
+                  colorScheme="button"
+                  variant={"outline"}
+                  onPress={(e) => {
+                    navigate("/profile");
+                    setShowModal(false);
+                  }}
+                >
+                  {t("GO_TO_PROFILE")}
+                </Button>
+              </Button.Group>
+            </VStack>
+          </Modal.Content>
+        </Modal>
+      </>
+    );
+  }
 
   if (loding) {
     return (
@@ -424,7 +516,11 @@ export default function SelfAttedanceSheet({
                     onPress={() => {
                       getLocation();
                       setLocationModal(false);
-                      setCameraModal(true);
+                      if (config && config["capture_selfie"] === "true") {
+                        setCameraModal(true);
+                      } else {
+                        handleMarkAttendance(selfAttendance);
+                      }
                     }}
                   >
                     {t("TURN_ON")}

@@ -11,7 +11,7 @@ import {
   VStack,
 } from "native-base";
 import { GetAttendance } from "../../components/AttendanceComponent";
-import DayWiesBar from "../../components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import {
   IconByName,
   Layout,
@@ -140,7 +140,8 @@ export default function SendSMS({ footerLinks, appName }) {
       }}
       subHeader={
         <HStack space="4" justifyContent="space-between" alignItems="center">
-          <DayWiesBar
+          <CalendarBar
+            view="days"
             activeColor={colors.grayIndark}
             _box={{ p: 0, bg: "transparent" }}
             {...{ page: datePage, setPage: setDatePage }}
