@@ -36,7 +36,7 @@ import {
   teacherRegistryService,
   getAllForUser,
   sendReadReceipt,
-  H4
+  H4,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -433,7 +433,7 @@ const NotificationBox = ({
       destAdd: localStorage.getItem("phoneNumber"),
       fcmDestAdd: localStorage.getItem("fcmToken"),
     });
-  }
+  };
 
   const numberOfItems = showMore ? data.length : 2;
   return data.slice(0, numberOfItems).map((value, index) => {
@@ -446,17 +446,20 @@ const NotificationBox = ({
         p="5"
         rounded="10"
       >
-        <Pressable onPress={(e) => {
-          onPress(value);
-          if (value.messageState === "SENT") {
-            readReceipt(value.messageId)
-          }
-        }}>
-          <VStack space="3">
-            {value.messageState === "READ" ?
-              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
-              : <H4{...line2style}>{value?.payload?.text}</H4>
+        <Pressable
+          onPress={(e) => {
+            onPress(value);
+            if (value.messageState === "SENT") {
+              readReceipt(value.messageId);
             }
+          }}
+        >
+          <VStack space="3">
+            {value.messageState === "READ" ? (
+              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
+            ) : (
+              <H4 {...line2style}>{value?.payload?.text}</H4>
+            )}
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName

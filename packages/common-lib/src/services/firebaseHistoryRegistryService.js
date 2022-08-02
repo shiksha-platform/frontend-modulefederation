@@ -74,7 +74,7 @@ export const sendReadReceipt = async (params, header = {}) => {
       headers
     }
   )
-  if (result.message === "Ok") {
+  if (result.message === 'Ok') {
     return true
   } else {
     return false

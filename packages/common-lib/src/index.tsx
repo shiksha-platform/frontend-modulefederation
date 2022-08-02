@@ -26,7 +26,10 @@ import * as assessmentRegistryService from './services/assessmentRegistryService
 import * as templateRegistryService from './services/templateRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
-import { getAllForUser, sendReadReceipt } from './services/firebaseHistoryRegistryService'
+import {
+  getAllForUser,
+  sendReadReceipt
+} from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
 export {
   AppBar,
@@ -60,7 +63,7 @@ export {
   getAllForUser,
   sendReadReceipt,
   templateRegistryService,
-  notificationRegistryService,
+  notificationRegistryService
 }
 
 export * from './services/Auth'
@@ -71,4 +74,3 @@ export * from './services/Telemetry'
 export * from './components/calender'
 export * from './components/layout/HeaderTags/index'
 export * from './components/firebase/firebase'
-
