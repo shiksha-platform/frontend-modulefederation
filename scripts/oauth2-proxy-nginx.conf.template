@@ -1,15 +1,18 @@
+# APP_DOMAIN_NAME = proxy-sandbox.shikshaplatform.io
+# replace ${APP_DOMAIN_NAME} with application domain name
+
 server{
   listen 80;
   listen [::]:80;
   server_name
-    proxy-sandbox.shikshaplatform.io;
+    ${APP_DOMAIN_NAME};
 
-return 301 https://proxy-sandbox.shikshaplatform.io$request_uri;
+return 301 https://${APP_DOMAIN_NAME}$request_uri;
 }
 ################################################################################################################################################
 server {
    listen 443 ssl;
-    server_name proxy-sandbox.shikshaplatform.io;
+    server_name ${APP_DOMAIN_NAME};
 
   location /oauth2 {
     proxy_pass       http://localhost:4181;
@@ -34,7 +37,7 @@ server {
        proxy_pass http://127.0.0.1:4181;
 auth_request /oauth2/auth;
     error_page 401 = /oauth2/sign_in;
-      #  root         /var/www/proxy-sandbox.shikshaplatform.io/public;
+      #  root         /var/www/${APP_DOMAIN_NAME}/public;
      #   try_files $uri $uri/ /index.html;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -58,8 +61,8 @@ auth_request /oauth2/auth;
      }
 
 
-    ssl_certificate /etc/letsencrypt/live/proxy-sandbox.shikshaplatform.io/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/proxy-sandbox.shikshaplatform.io/privkey.pem; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/${APP_DOMAIN_NAME}/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/${APP_DOMAIN_NAME}/privkey.pem; # managed by Certbot
 }
 
 
@@ -68,7 +71,7 @@ server {
     listen 127.0.0.1:80;
     # 
 location / {
-        root         /var/www/proxy-sandbox.shikshaplatform.io/public;
+        root         /var/www/${APP_DOMAIN_NAME}/public;
         try_files $uri $uri/ /index.html;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
