@@ -33,7 +33,7 @@ import {
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
-import CalendarBar from "components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";

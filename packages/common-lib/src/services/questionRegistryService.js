@@ -6,7 +6,15 @@ const interfaceData = {
   questionId: 'questionId',
   body: 'body',
   question: 'body',
+  answer: 'answer',
   options: 'options',
+  class: 'class',
+  compatibilityLevel: 'compatibilityLevel',
+  language: 'language',
+  learningOutcome: 'learningOutcome',
+  maxScore: 'maxScore',
+  subject: 'subject',
+  topic: 'topic',
   type: 'type'
 }
 
