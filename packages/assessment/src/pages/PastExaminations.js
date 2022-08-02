@@ -32,12 +32,11 @@ import {
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastExaminationsList({ classId }) {
+export default function PastExaminationsList({ classId, selectedSubject, schoolDetails }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
-  const [loading, setLoading] = useState(true);
-  const [allAssessments, setAllAssessments] = useState();
+  const [loading, setLoading] = useState(false);
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
@@ -51,19 +50,6 @@ export default function PastExaminationsList({ classId }) {
     },
   ]);
 
-  const getALlAssessment = async () => {
-    const data = await assessmentRegistryService.getAllAssessment({
-      filters: { groupId: classId },
-    });
-    console.log(data);
-    setAllAssessments(data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getALlAssessment();
-  }, []);
-
   if (loading) {
     return <Loading height={height - height / 2} />;
   }
@@ -71,7 +57,7 @@ export default function PastExaminationsList({ classId }) {
   return (
     <Layout
       _header={{
-        title: "Past Assessments",
+        title: "Past Examinations",
       }}
       _appBar={{
         languages: ["en"],
@@ -79,10 +65,15 @@ export default function PastExaminationsList({ classId }) {
       }}
       subHeader={
         <VStack>
-          <H2>{t("Science")}</H2>
+          <H2>{selectedSubject}</H2>
           <HStack alignItems={"center"}>
-            <Caption color={colors.gray}>{t("Class VI")}</Caption>{" "}
-            <Caption color={colors.gray}> {t(" A")}</Caption>
+            <Caption color={colors.gray}>{
+              schoolDetails && schoolDetails.name
+            }</Caption>
+            {
+              schoolDetails && schoolDetails.section &&
+              <Caption color={colors.gray}> {schoolDetails.section}</Caption>
+            }
           </HStack>
         </VStack>
       }
@@ -130,41 +121,35 @@ export default function PastExaminationsList({ classId }) {
       <Box p={4}>
         <>
           <VStack space={6}>
-            {allAssessments &&
-              allAssessments.length > 0 &&
-              allAssessments.map((item) => {
-                return (
-                  <Box
-                    borderWidth="1"
-                    borderColor={colors.borderColor}
-                    borderRadius="10px"
-                  >
-                    <VStack space="4">
-                      <Box p="4" pb="4px" roundedTop="6">
-                        <VStack space={4}>
-                          <Box>
-                            <BodyLarge py="2">
-                              {t("Summative Assessment 1")}
-                            </BodyLarge>
-                            <BodySmall color={colors.gray}>
-                              27, May 2022
-                            </BodySmall>
-                          </Box>
+            <Box
+              borderWidth="1"
+              borderColor={colors.borderColor}
+              borderRadius="10px"
+            >
+              <VStack space="4">
+                <Box p="4" pb="4px" roundedTop="6">
+                  <VStack space={4}>
+                    <Box>
+                      <BodyLarge py="2">
+                        {t("Summative Assessment 1")}
+                      </BodyLarge>
+                      <BodySmall color={colors.gray}>
+                        27, May 2022
+                      </BodySmall>
+                    </Box>
 
-                          <ProgressBar
-                            isTextShow
-                            legendType="separated"
-                            h="35px"
-                            _bar={{ rounded: "md", mb: "2" }}
-                            isLabelCountHide
-                            data={progressAssessment}
-                          />
-                        </VStack>
-                      </Box>
-                    </VStack>
-                  </Box>
-                );
-              })}
+                    <ProgressBar
+                      isTextShow
+                      legendType="separated"
+                      h="35px"
+                      _bar={{ rounded: "md", mb: "2" }}
+                      isLabelCountHide
+                      data={progressAssessment}
+                    />
+                  </VStack>
+                </Box>
+              </VStack>
+            </Box>
           </VStack>
         </>
       </Box>

@@ -11,7 +11,7 @@ import {
   Caption,
   assessmentRegistryService,
   Loading,
-  useWindowSize,
+  useWindowSize, studentRegistryService
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -33,12 +33,15 @@ import colorTheme from "../colorTheme";
 import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastAssessmentList({ classId, selectedSubject }) {
+export default function PastAssessmentList({ classId, selectedSubject, schoolDetails }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
   const [loading, setLoading] = useState(true);
   const [allAssessments, setAllAssessments] = useState();
+  const [allGroupedAssessments, setAllGroupedAssessments] = useState({});
+  const [studentlist, setStudentlist] = useState([]);
+
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
@@ -52,34 +55,25 @@ export default function PastAssessmentList({ classId, selectedSubject }) {
     },
   ]);
 
-  const filteredAssessmentsData = [];
+
+  const getStudentsList = async () => {
+    const list = await studentRegistryService.getAll({ classId });
+    setStudentlist(list);
+    setLoading(false);
+  };
 
   const getALlAssessment = async () => {
     const data = await assessmentRegistryService.getAllAssessment({
       filters: { groupId: classId, subject: selectedSubject },
     });
     setAllAssessments(data);
-    /*data.forEach((item)=> {
-      groupByDate(item);
-    })*/
     data.forEach((item) => {
       item.date = moment(item.createdAt).format("MM-DD-YYYY");
     });
-    console.log("updated", data);
     const groupedAssessments = groupBy(data, "date");
-    console.log("groupedAssessments", groupedAssessments);
+    setAllGroupedAssessments(groupedAssessments);
     setLoading(false);
   };
-
-  /*const groupByDate = (item) => {
-    if(filteredAssessmentsData.length > 0){
-      const isExist = filteredAssessmentsData.filter((data) => {
-        return data.date === item.createdAt;
-      });
-
-
-    }
-  }*/
 
   function groupBy(objectArray, property) {
     return objectArray.reduce((acc, obj) => {
@@ -93,7 +87,104 @@ export default function PastAssessmentList({ classId, selectedSubject }) {
     }, {});
   }
 
+  const getCards = () => {
+    let content = [];
+    for (let key in allGroupedAssessments) {
+      let writtenAssessedStudents = allGroupedAssessments[key].filter((item) => {return item.type === 'Written Assessment'}).length;
+      let oralAssessedStudents = allGroupedAssessments[key].filter((item) => {return item.type === 'Oral Assessment'}).length;
+      content.push(
+        <Box>
+          {/*<BodyLarge mb={2}>{allGroupedAssessments[key][0].date}</BodyLarge>*/}
+          <BodyLarge mb={2}>{key}</BodyLarge>
+          <VStack space={4}>
+            <Box
+              borderWidth="1"
+              borderColor={colors.borderColor}
+              borderRadius="10px"
+            >
+              <VStack space="4">
+                <Box p="4" pb="4px" roundedTop="6">
+                  <VStack space={2}>
+                    <Box>
+                      <BodyLarge py="2">
+                        {t("Written Spot Assessment")}
+                      </BodyLarge>
+                    </Box>
+
+                    <ProgressBar
+                      isTextShow
+                      legendType="separated"
+                      h="35px"
+                      _bar={{ rounded: "md", mb: "2" }}
+                      isLabelCountHide
+                      data={
+                        [
+                          {
+                            name: `${writtenAssessedStudents} Assessed`,
+                            color: colors.successBarColor,
+                            value: writtenAssessedStudents,
+                          },
+                          {
+                            name: `${studentlist.length - writtenAssessedStudents} pending`,
+                            color: colors.pendingBarColor,
+                            value: studentlist.length - writtenAssessedStudents,
+                          },
+                        ]
+                      }
+                    />
+                  </VStack>
+                </Box>
+              </VStack>
+            </Box>
+
+            <Box
+              borderWidth="1"
+              borderColor={colors.borderColor}
+              borderRadius="10px"
+            >
+              <VStack space="4">
+                <Box p="4" pb="4px" roundedTop="6">
+                  <VStack space={2}>
+                    <Box>
+                      <BodyLarge py="2">
+                        {t("Oral Spot Assessment")}
+                      </BodyLarge>
+                    </Box>
+
+                    <ProgressBar
+                      isTextShow
+                      legendType="separated"
+                      h="35px"
+                      _bar={{ rounded: "md", mb: "2" }}
+                      isLabelCountHide
+                      data={
+                        [
+                          {
+                            name: `${oralAssessedStudents} Assessed`,
+                            color: colors.successBarColor,
+                            value: oralAssessedStudents,
+                          },
+                          {
+                            name: `${studentlist.length - oralAssessedStudents} pending`,
+                            color: colors.pendingBarColor,
+                            value: studentlist.length - oralAssessedStudents,
+                          },
+                        ]
+                      }
+                    />
+                  </VStack>
+                </Box>
+              </VStack>
+            </Box>
+          </VStack>
+        </Box>
+      );
+    }
+    return content;
+  };
+
   useEffect(() => {
+    getStudentsList();
     getALlAssessment();
   }, []);
 
@@ -112,10 +203,15 @@ export default function PastAssessmentList({ classId, selectedSubject }) {
       }}
       subHeader={
         <VStack>
-          <H2>{t("Science")}</H2>
+          <H2>{selectedSubject}</H2>
           <HStack alignItems={"center"}>
-            <Caption color={colors.gray}>{t("Class VI")}</Caption>{" "}
-            <Caption color={colors.gray}> {t(" A")}</Caption>
+            <Caption color={colors.gray}>{
+              schoolDetails && schoolDetails.name
+            }</Caption>
+            {
+              schoolDetails && schoolDetails.section &&
+              <Caption color={colors.gray}> {schoolDetails.section}</Caption>
+            }
           </HStack>
         </VStack>
       }
@@ -163,72 +259,9 @@ export default function PastAssessmentList({ classId, selectedSubject }) {
       <Box p={4}>
         <>
           <VStack space={12}>
-            {/*  card  */}
-
-            {allAssessments &&
-              allAssessments.length > 0 &&
-              allAssessments.map((item) => {
-                return (
-                  <Box>
-                    <BodyLarge mb={2}>27, July 2022</BodyLarge>
-                    <VStack space={4}>
-                      <Box
-                        borderWidth="1"
-                        borderColor={colors.borderColor}
-                        borderRadius="10px"
-                      >
-                        <VStack space="4">
-                          <Box p="4" pb="4px" roundedTop="6">
-                            <VStack space={2}>
-                              <Box>
-                                <BodyLarge py="2">
-                                  {t("Written Spot Assessment")}
-                                </BodyLarge>
-                              </Box>
-
-                              <ProgressBar
-                                isTextShow
-                                legendType="separated"
-                                h="35px"
-                                _bar={{ rounded: "md", mb: "2" }}
-                                isLabelCountHide
-                                data={progressAssessment}
-                              />
-                            </VStack>
-                          </Box>
-                        </VStack>
-                      </Box>
-
-                      <Box
-                        borderWidth="1"
-                        borderColor={colors.borderColor}
-                        borderRadius="10px"
-                      >
-                        <VStack space="4">
-                          <Box p="4" pb="4px" roundedTop="6">
-                            <VStack space={2}>
-                              <Box>
-                                <BodyLarge py="2">
-                                  {t("Oral Spot Assessment")}
-                                </BodyLarge>
-                              </Box>
-
-                              <ProgressBar
-                                isTextShow
-                                legendType="separated"
-                                h="35px"
-                                _bar={{ rounded: "md", mb: "2" }}
-                                isLabelCountHide
-                                data={progressAssessment}
-                              />
-                            </VStack>
-                          </Box>
-                        </VStack>
-                      </Box>
-                    </VStack>
-                  </Box>
-                );
-              })}
+            {
+              getCards()
+            }
           </VStack>
         </>
       </Box>

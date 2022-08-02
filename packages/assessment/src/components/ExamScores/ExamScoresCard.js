@@ -134,7 +134,7 @@ const ExamScoresCard = ({ setPageName }) => {
         textAlign={"center"}
         color={colors.primary}
         onPress={() => {
-          navigate("/past-examinations");
+          setPageName("pastExaminations");
         }}
       >
         {t("VIEW PAST EXAMINATIONS")}

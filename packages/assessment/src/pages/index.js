@@ -2,7 +2,7 @@ import {
   assessmentRegistryService,
   BodyLarge,
   BodyMedium,
-  capture,
+  capture, classRegistryService,
   Collapsible,
   H2,
   H3,
@@ -10,7 +10,7 @@ import {
   Layout,
   overrideColorTheme,
   questionRegistryService,
-  telemetryFactory,
+  telemetryFactory
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -37,6 +37,7 @@ import AssessmentResult from "./AssessmentResult";
 // import { navigate } from "@storybook/addon-links";
 import { useNavigate } from "react-router-dom";
 import PastAssessmentList from "./PastAssessments";
+import PastExaminationsList from "./PastExaminations";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Assessment(props) {
@@ -61,6 +62,7 @@ export default function Assessment(props) {
   const [search, setSearch] = useState();
   const [pageName, setPageName] = useState("");
   const [questionIds, setQuestionIds] = useState([]);
+  const [schoolDetails, setSchoolDetails] = useState();
 
   // subject Modal states
   const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
@@ -92,6 +94,7 @@ export default function Assessment(props) {
 
   useEffect(() => {
     // localStorage.setItem("assessment-class", classId);
+    fetchClassDetails();
     getSubjectsList();
     localStorage.removeItem("assessment-score");
     localStorage.removeItem("assessment-totalScore");
@@ -102,6 +105,11 @@ export default function Assessment(props) {
       getCompetenciesList(selectedSubject);
     }
   }, [selectedSubject]);
+
+  const fetchClassDetails = async () => {
+    const schoolDetails = await classRegistryService.getOne({ id: classId });
+    setSchoolDetails(schoolDetails);
+  };
 
   const handleBackButton = () => {
     if (pageName === "assessmentStudentList") {
@@ -416,9 +424,27 @@ export default function Assessment(props) {
         selectedCompetencies={selectedCompetencies}
         selectedSubject={selectedSubject}
         questionIds={questionIds}
+        schoolDetails={schoolDetails}
       />
     );
   }
+
+  if (pageName === "pastExaminations") {
+    return (
+      <PastExaminationsList
+        classId={classId}
+        setPageName={setPageName}
+        handleBackButton={handleBackButton}
+        selectedStudent={selectedStudent}
+        selectedAssessmentType={selectedAssessmentType}
+        selectedCompetencies={selectedCompetencies}
+        selectedSubject={selectedSubject}
+        questionIds={questionIds}
+        schoolDetails={schoolDetails}
+      />
+    );
+  }
+
   return (
     <>
       <Homepage
