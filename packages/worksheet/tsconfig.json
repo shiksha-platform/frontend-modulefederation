@@ -1,0 +1,13 @@
+{
+  "include": ["src"],
+  "exclude": ["node_modules", "*/**/*.json"],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "noImplicitAny": false,
+    "jsx": "react",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
