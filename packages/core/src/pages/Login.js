@@ -96,6 +96,7 @@ export default function Login({ swPath }) {
           localStorage.setItem("firstName", resultTeacher.firstName);
           localStorage.setItem("lastName", resultTeacher.lastName);
           localStorage.setItem("schoolId", resultTeacher.schoolId);
+          localStorage.setItem("phoneNumber", resultTeacher.phoneNumber);
           try {
             const fcmToken = await getUserToken(swPath);
             await teacherRegistryService.update({ id, fcmToken });

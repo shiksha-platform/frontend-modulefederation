@@ -21,7 +21,7 @@ import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 export default function SuccessPublicationReport({
-  handleBackButton,
+  // handleBackButton,
   formObject,
 }) {
   const [width, height] = useWindowSize();
@@ -51,9 +51,9 @@ export default function SuccessPublicationReport({
   return (
     <Layout
       _appBar={{
-        onPressBackButton: handleBackButton
-          ? handleBackButton
-          : (e) => console.log(e),
+        // onPressBackButton: handleBackButton
+        //   ? handleBackButton
+        //   : (e) => console.log(e),
         languages: manifest.languages,
         color: colors.success,
         _box: { bg: colors.bgSuccessAlert },
@@ -262,7 +262,9 @@ export default function SuccessPublicationReport({
                         _text={{
                           color: colors.white,
                         }}
-                        onPress={() => navigate("/assessment-detailed-report")}
+                        onPress={() =>
+                          navigate("/assessment/assessment-detailed-report")
+                        }
                       >
                         {t("See full report")}
                       </Button>

@@ -36,6 +36,7 @@ export default function AddDescriptionPage({
       return {
         ...e,
         type: "select",
+        ...(e.attributeName === "topic" ? { type: "multiselect" } : {}),
         attributeName:
           e.attributeName === "gradeLevel" ? "grade" : e.attributeName,
       };
@@ -66,7 +67,7 @@ export default function AddDescriptionPage({
       ["grade"]: formObject.grade?.[0],
       ["source"]: formObject.source?.[0],
       ["subject"]: formObject.subject?.[0],
-      ["topic"]: formObject.topic?.[0],
+      // ["topic"]: formObject.topic?.[0],
     });
   }, []);
 
@@ -101,7 +102,7 @@ export default function AddDescriptionPage({
       setPageName("success");
     }
   };
-
+  console.log(formData);
   return (
     <Box>
       {formInput.map((item, index) => {
@@ -120,6 +121,7 @@ export default function AddDescriptionPage({
                   placeholder={placeholder}
                   key={index + item.name}
                   selectedValue={formData[attribute]}
+                  {...(item?._formInput ? item?._formInput : {})}
                   onValueChange={(e) => {
                     setFormData({ ...formData, [attribute]: e });
                   }}
@@ -129,6 +131,45 @@ export default function AddDescriptionPage({
                       <Select.Item key={index} label={e} value={e} />
                     ))}
                 </Select>
+              ) : item.type === "multiselect" ? (
+                <select
+                  bg={colors.lightGray5}
+                  accessibilityLabel={placeholder}
+                  placeholder={placeholder}
+                  key={index + item.name}
+                  value={formData[attribute]}
+                  multiple={true}
+                  onChange={(e) => {
+                    let value = [];
+                    if (
+                      formData[attribute] &&
+                      formData[attribute].includes(e.target.value)
+                    ) {
+                      value = formData[attribute].filter(
+                        (item) => item !== e.target.value
+                      );
+                    } else {
+                      value = [
+                        ...(formData[attribute] ? formData[attribute] : []),
+                        e.target.value,
+                      ];
+                    }
+                    setFormData({
+                      ...formData,
+                      [attribute]: value,
+                    });
+                  }}
+                >
+                  {item?.data &&
+                    item?.data.map((e, index) => (
+                      <option
+                        key={index}
+                        label={e}
+                        value={e}
+                        style={{ padding: "10px" }}
+                      />
+                    ))}
+                </select>
               ) : (
                 <Input
                   bg={colors.lightGray5}

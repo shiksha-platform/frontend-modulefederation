@@ -19,7 +19,7 @@ let commentEntityAttributes = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   const result = await post(
-    manifest.api_url + '/like/search',
+    process.env.REACT_APP_API_URL + '/like/search',
     { filters: params, limit: limit },
     {
       headers: {
@@ -50,7 +50,7 @@ export const create = async (
     onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/like', newData, {
+  const result = await post(process.env.REACT_APP_API_URL + '/like', newData, {
     headers: header
   })
   if (result.data) {
@@ -78,7 +78,7 @@ export const update = async (
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/like/' + data.id,
+    process.env.REACT_APP_API_URL + '/like/' + data.id,
     newData,
     {
       headers: header
@@ -97,7 +97,7 @@ export const distory = async (data = {}, headers = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await distoryRequest(
-    manifest.api_url + '/like/' + data.id,
+    process.env.REACT_APP_API_URL + '/like/' + data.id,
     data,
     {
       headers: header

@@ -1,6 +1,6 @@
 import { get, post, update as updateRequest } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
+import * as teacherRegistryService from './teacherRegistryService'
 
 const interfaceData = {
   id: 'commentId',
@@ -10,14 +10,15 @@ const interfaceData = {
   comment: 'comment',
   parentId: 'parentId',
   status: 'status',
-  privacy: 'privacy'
+  privacy: 'privacy',
+  createdAt: 'createdAt'
 }
 
 let commentEntityAttributes = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   const result = await post(
-    manifest.api_url + '/comment/search',
+    process.env.REACT_APP_API_URL + '/comment/search',
     { filters: params, limit: limit },
     {
       headers: {
@@ -27,7 +28,10 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const newData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    return await getDataWithUser(newData)
   } else {
     return []
   }
@@ -44,12 +48,16 @@ export const create = async (
     onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/comment', newData, {
-    headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-      ...headers
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/comment',
+    newData,
+    {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+        ...headers
+      }
     }
-  })
+  )
   if (result.data) {
     let { Comment } = result.data?.data?.result
     return Comment
@@ -75,7 +83,7 @@ export const update = async (
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/comment/' + data.id,
+    process.env.REACT_APP_API_URL + '/comment/' + data.id,
     newData,
     {
       headers: header
@@ -86,4 +94,16 @@ export const update = async (
   } else {
     return {}
   }
+}
+
+const getDataWithUser = async (data) => {
+  return await Promise.all(
+    data.map(async (item) => {
+      let userData = {}
+      if (item.userType === 'Teacher' || true) {
+        userData = await teacherRegistryService.getOne({ id: item.userId })
+      }
+      return { ...item, userData }
+    })
+  )
 }

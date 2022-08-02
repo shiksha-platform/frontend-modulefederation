@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { extendTheme } from "native-base";
-import { DEFAULT_THEME, initializeI18n, AppShell } from "@shiksha/common-lib";
+import {
+  DEFAULT_THEME,
+  initializeI18n,
+  AppShell,
+  AppRoutesContainer,
+  teacherRegistryService,
+} from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
 
@@ -42,23 +48,34 @@ function App() {
   const Profile = React.lazy(() => import("profile/Profile"));
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
+  const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
+  const CourseList = React.lazy(() => import("mylearning/CourseList"));
+  const CourseDetails = React.lazy(() => import("mylearning/CourseDetails"));
+  const VideoList = React.lazy(() => import("mylearning/VideoList"));
+  const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
   // Assessment Module Imports
-  const Assessment = React.lazy("assessment/Assessment");
-  const ExamScores = React.lazy("assessment/ExamScores");
-  const SuccessPublicationReport = React.lazy(
-    "assessment/successPublicationReport"
+  const Assessment = React.lazy(() => import("assessment/Assessment"));
+  const ExamScores = React.lazy(() => import("assessment/ExamScores"));
+  const SuccessPublicationReport = React.lazy(() =>
+    import("assessment/successPublicationReport")
   );
-  const ReportDetails = React.lazy("assessment/ReportDetails");
-  const SpotAssessmentResult = React.lazy("assessment/SpotAssessmentResult");
-  const SpotAssessmentResult2 = React.lazy("assessment/SpotAssessmentResult2");
-  const SpotAssessmentResult3 = React.lazy("assessment/SpotAssessmentResult3");
-  const QumlTest = React.lazy("assessment/QumlTest");
-  const QuestionList2 = React.lazy("assessment/QuestionLIst2");
-  const QuestionList3 = React.lazy("assessment/QuestionLIst3");
-  const QuestionList4 = React.lazy("assessment/QuestionLIst4");
-  const QuestionList5 = React.lazy("assessment/QuestionLIst5");
-  const QuestionList6 = React.lazy("assessment/QuestionLIst6");
-  const QuestionList7 = React.lazy("assessment/QuestionLIst7");
+  const ReportDetails = React.lazy(() => import("assessment/ReportDetails"));
+  const SpotAssessmentResult = React.lazy(() =>
+    import("assessment/SpotAssessmentResult")
+  );
+  const SpotAssessmentResult2 = React.lazy(() =>
+    import("assessment/SpotAssessmentResult2")
+  );
+  const SpotAssessmentResult3 = React.lazy(() =>
+    import("assessment/SpotAssessmentResult3")
+  );
+  const QumlTest = React.lazy(() => import("assessment/QumlTest"));
+  const QuestionList2 = React.lazy(() => import("assessment/QuestionLIst2"));
+  const QuestionList3 = React.lazy(() => import("assessment/QuestionLIst3"));
+  const QuestionList4 = React.lazy(() => import("assessment/QuestionLIst4"));
+  const QuestionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
+  const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
+  const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
 
   const routes = [
     {
@@ -125,6 +142,32 @@ function App() {
     { path: "/notification/outbox", component: Outbox },
     { path: "/profile", component: Profile },
     { path: "/profile/attendance", component: AttendanceReport },
+
+    { path: "/mylearning", component: MyLearning },
+    {
+      path: "/mylearning/list/:state",
+      component: CourseList,
+    },
+    {
+      path: "/mylearning/list",
+      component: CourseList,
+    },
+    {
+      path: "/mylearning/:id/view",
+      component: CourseDetails,
+    },
+    {
+      path: "/mylearning/video/list/:state",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/list",
+      component: VideoList,
+    },
+    {
+      path: "/mylearning/video/:id/view",
+      component: VideoDetails,
+    },
     // Asessment Routes
     {
       path: "/assessment/exam-list2",
@@ -185,17 +228,57 @@ function App() {
     { path: "*", component: Home },
   ];
 
-  const LoginComponent = React.lazy(() => import("core/Login"));
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const searchParams = Object.fromEntries(urlSearchParams.entries());
 
-  return (
-    <AppShell
-      theme={theme}
-      basename={process.env.PUBLIC_URL}
-      routes={routes}
-      AuthComponent={LoginComponent}
-      isShowFooterLink={true}
-      appName="Teacher App"
-    />
-  );
+  useEffect(async () => {
+    const resultTeacher = await teacherRegistryService.getOne({}, {});
+
+    if (searchParams.token != undefined) {
+      localStorage.setItem("token", searchParams.token);
+    }
+
+    if (resultTeacher) {
+      let id = resultTeacher.id.replace("1-", "");
+      localStorage.setItem("id", id);
+      localStorage.setItem(
+        "fullName",
+        resultTeacher.fullName
+          ? resultTeacher.fullName
+          : `${resultTeacher.firstName} ${resultTeacher.lastName}`
+      );
+      localStorage.setItem("firstName", resultTeacher.firstName);
+      localStorage.setItem("lastName", resultTeacher.lastName);
+      localStorage.setItem("schoolId", resultTeacher.schoolId);
+      //window.location.reload();
+    }
+  }, []);
+  const LoginComponent = React.lazy(() => import("core/Login"));
+  if (
+    process.env.OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+  ) {
+    return (
+      <AppShell
+        theme={theme}
+        basename={process.env.PUBLIC_URL}
+        routes={routes}
+        AuthComponent={LoginComponent}
+        isShowFooterLink={true}
+        appName="Teacher App"
+      />
+    );
+  } else {
+    return (
+      <AppRoutesContainer
+        theme={theme}
+        basename={process.env.PUBLIC_URL}
+        routes={routes}
+        AuthComponent={LoginComponent}
+        isShowFooterLink={true}
+        appName="Teacher App"
+      />
+    );
+  }
 }
 export default App;

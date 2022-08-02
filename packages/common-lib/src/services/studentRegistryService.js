@@ -31,7 +31,7 @@ const interfaceData = {
   gender: 'gender'
 }
 
-export const getAll = async (params = {}, header = {}) => {
+export const getAll = async ({ sortBy, ...params }, header = {}) => {
   let headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     ContentType: 'application/json',
@@ -39,14 +39,26 @@ export const getAll = async (params = {}, header = {}) => {
     ...header
   }
   const result = await get(
-    `${manifest.api_url}/group/${params?.classId}/participants?role=Student`,
+    `${process.env.REACT_APP_API_URL}/group/${params?.classId}/participants?role=Student`,
     {
       headers
     }
   )
   if (result?.data?.data && result.data.data.length) {
-    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-    return _.sortBy(data, 'admissionNo')
+    const studentData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    if (sortBy && sortBy !== '') {
+      return studentData.sort(function (oldItem, newItem) {
+        return oldItem[sortBy] === newItem[sortBy]
+          ? 0
+          : oldItem[sortBy] < newItem[sortBy]
+          ? -1
+          : 1
+      })
+    } else {
+      return studentData
+    }
   }
   return []
 }
@@ -56,9 +68,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(manifest.api_url + '/student/' + filters.id, {
-    headers
-  })
+  const result = await get(
+    process.env.REACT_APP_API_URL + '/student/' + filters.id,
+    {
+      headers
+    }
+  )
   if (result?.data?.data) {
     let resultStudent = mapInterfaceData(result.data.data, interfaceData)
     resultStudent.id = resultStudent.id?.startsWith('1-')
@@ -82,7 +97,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    manifest.api_url + '/student/' + data.id,
+    process.env.REACT_APP_API_URL + '/student/' + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}

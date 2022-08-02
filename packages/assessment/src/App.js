@@ -49,7 +49,7 @@ function App() {
       component: QuestionList7,
     },
     {
-      path: "/assessment/examscores",
+      path: "/examscores",
       component: ExamScores,
     },
     {
@@ -65,11 +65,11 @@ function App() {
       component: SpotAssessmentResult3,
     },
     {
-      path: "/assessment/assessment-success",
+      path: "/assessment-success",
       component: SuccessPublicationReport,
     },
     {
-      path: "/assessment/assessment-detailed-report",
+      path: "/assessment-detailed-report",
       component: ReportDetails,
     },
     {
@@ -89,6 +89,7 @@ function App() {
       routes={routes}
       AuthComponent={LoginComponent}
       basename={process.env.PUBLIC_URL}
+      _authComponent={{ swPath: "/modules/assessment" }}
     />
   );
 }

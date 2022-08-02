@@ -16,7 +16,7 @@ import manifest1 from "../manifest.json";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
-import { WeekWiesBar } from "components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
@@ -72,7 +72,7 @@ export default function Attendance({ footerLinks, appName }) {
     let date = moment.max(dates);
     setLastAttedance(dates.length ? moment(date).format("hh:mma") : "N/A");
   }, [attendance, students]);
-  console.log(lastAttedance);
+
   useEffect(() => {
     const filterStudent = students.filter((e) =>
       e?.fullName?.toLowerCase().match(search?.toLowerCase())
@@ -85,27 +85,18 @@ export default function Attendance({ footerLinks, appName }) {
     async function getData() {
       const newManifest = await getApiConfig();
       setManifest(newManifest);
-      const studentData = await studentRegistryService.getAll({ classId });
+      let sortBy = "admissionNo";
       if (
-        newManifest?.["attendance_card.order_of_attendance_card"] ===
+        newManifest?.["attendance.order_of_attendance_card"] ===
         '"Alphabetically"'
       ) {
-        setStudents(
-          studentData.sort(function (oldItem, newItem) {
-            return oldItem.firstName === newItem.firstName
-              ? 0
-              : oldItem.firstName < newItem.firstName
-              ? -1
-              : 1;
-          })
-        );
-      } else {
-        setStudents(
-          studentData.sort(function (a, b) {
-            return a.admissionNo - b.admissionNo;
-          })
-        );
+        sortBy = "firstName";
       }
+      const studentData = await studentRegistryService.getAll({
+        classId,
+        sortBy,
+      });
+      setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)
         setClassObject(await classRegistryService.getOne({ id: classId }));
@@ -234,7 +225,8 @@ export default function Attendance({ footerLinks, appName }) {
       <Stack space={1}>
         <Box bg={colors.white} px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <WeekWiesBar
+            <CalendarBar
+              view="week"
               setPage={setWeekPage}
               page={weekPage}
               previousDisabled={

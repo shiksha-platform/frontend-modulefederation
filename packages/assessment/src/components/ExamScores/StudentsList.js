@@ -399,7 +399,7 @@ const StudentsList = ({ setHeaderDetails }) => {
               colorScheme="button"
               py={3}
               _text={{ color: colors.white }}
-              onPress={() => navigate("/examscores")}
+              onPress={() => navigate("/assessment/examscores")}
             >
               {t("Save")}
             </Button>

@@ -6,7 +6,15 @@ const interfaceData = {
   questionId: 'questionId',
   body: 'body',
   question: 'body',
+  answer: 'answer',
   options: 'options',
+  class: 'class',
+  compatibilityLevel: 'compatibilityLevel',
+  language: 'language',
+  learningOutcome: 'learningOutcome',
+  maxScore: 'maxScore',
+  subject: 'subject',
+  topic: 'topic',
   type: 'type'
 }
 
@@ -18,7 +26,7 @@ export const getAllQuestions = async (params = {}, header = {}) => {
     ...header
   }
   const result = await get(
-    `${manifest.api_url}/question/${params?.adapter}/search?server=dev`,
+    `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
     {
       params: params,
       headers

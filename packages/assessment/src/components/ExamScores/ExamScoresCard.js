@@ -100,7 +100,7 @@ const ExamScoresCard = ({ setPageName }) => {
                 py={3}
                 colorScheme="button"
                 _text={{ color: colors.white }}
-                onPress={() => navigate("/examscores")}
+                onPress={() => navigate("/assessment/examscores")}
               >
                 {t("continue")}
               </Button>

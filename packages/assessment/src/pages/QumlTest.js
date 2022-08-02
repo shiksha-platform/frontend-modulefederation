@@ -4,6 +4,9 @@ import {
   Layout,
   assessmentRegistryService,
   overrideColorTheme,
+  H2,
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
@@ -12,38 +15,46 @@ import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function QumlTest() {
+export default function QumlTest({
+  classId,
+  setPageName,
+  handleBackButton,
+  selectedStudent,
+  selectedAssessmentType,
+  selectedCompetencies,
+  selectedSubject,
+  questionIds,
+}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [headerDetails, setHeaderDetails] = useState();
-  const [questionIds, setQuestionIds] = useState(
+  const [loading, setLoading] = React.useState(false);
+  /*const [questionIds, setQuestionIds] = useState(
     JSON.parse(localStorage.getItem("assessment-questionIds")) || []
-  );
+  );*/
+  const [width, height] = useWindowSize();
 
   const startAssessment = async (qumlResult) => {
-    const subject = localStorage.getItem("assessment-subject");
-    const competencies = JSON.parse(
-      localStorage.getItem("assessment-competencies")
-    );
-    const classId = localStorage.getItem("assessment-class");
-    const assessmentType = localStorage.getItem("assessment-type");
-    const studentId =
-      JSON.parse(localStorage.getItem("assessment-student")).id || null;
+    setLoading(true);
+    // const subject = localStorage.getItem("assessment-subject");
+    // const competencies = JSON.parse(localStorage.getItem("assessment-competencies"));
+    // const classId = localStorage.getItem("assessment-class");
+    // const assessmentType = localStorage.getItem("assessment-type");
+    // const studentId = JSON.parse(localStorage.getItem("assessment-student")).id || null;
     // const questionIds = JSON.parse(localStorage.getItem('assessment-questionIds'));
     // const qumlResult = JSON.parse(localStorage.getItem('assessment-quml-result'));
 
     const params = {
-      subject,
-      competencies: competencies,
+      subject: selectedSubject,
+      competencies: selectedCompetencies,
       classId,
     };
     const data = {
       filter: JSON.stringify(params),
-      type: assessmentType,
+      type: selectedAssessmentType,
       questions: questionIds,
       source: "diksha",
       answersheet: JSON.stringify(qumlResult[0]),
-      studentId: studentId,
+      studentId: selectedStudent.id,
       teacherId:
         localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
     };
@@ -55,22 +66,22 @@ export default function QumlTest() {
     const id = result.result?.Trackassessment?.osid || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    console.log("assessmentDetails", assessmentDetails);
     localStorage.setItem("assessment-score", assessmentDetails.score);
-    navigate("/assessment-result");
+    localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
+    setLoading(false);
+    // navigate("/assessment/assessment-result");
+    setPageName("assessmentResult");
   };
 
   React.useEffect(() => {
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== "http://139.59.25.99:8090")
-          // if (event.origin !== "http://192.168.0.123:4200")
-          return;
-        localStorage.setItem(
+        if (event.origin !== "http://139.59.25.99:8090") return;
+        /*localStorage.setItem(
           "assessment-quml-result",
           JSON.stringify(event.data)
-        );
+        );*/
         startAssessment(event.data);
       },
       false
@@ -81,26 +92,24 @@ export default function QumlTest() {
     };
   }, []);
 
+  if (loading) {
+    return <Loading height={height} />;
+  }
+
   return (
     <Layout
       _header={{
-        title: "Test",
+        title: "Assessment",
       }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{
+        languages: ["en"],
+        onPressBackButton: handleBackButton,
+      }}
       subHeader={
         <VStack>
-          <Text fontSize={"lg"}>
-            {headerDetails && headerDetails.student
-              ? headerDetails.student.name
-              : "Attempt the questions"}
+          <Text fontSize={"lg"} textTransform="none">
+            {t("Attempt the questions")}
           </Text>
-          {headerDetails &&
-            headerDetails.student &&
-            headerDetails.student.fathersName && (
-              <Text fontSize={"xs"} color={"muted.600"}>
-                Mr. {headerDetails.student.fathersName}
-              </Text>
-            )}
         </VStack>
       }
       _subHeader={{ bg: colors.cardBg }}
@@ -147,7 +156,7 @@ export default function QumlTest() {
       {questionIds && (
         <iframe
           src={`http://139.59.25.99:8090/?questions=${questionIds.join(",")}`}
-          // src={`http://192.168.0.123:4200/?questions=${questionIds.join(',')}`}
+          // src={`http://192.168.0.105:4200/?questions=${questionIds.join(',')}`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />

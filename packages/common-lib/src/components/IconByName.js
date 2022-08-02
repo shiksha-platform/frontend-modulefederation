@@ -48,7 +48,9 @@ import EmotionSadLineIcon from 'remixicon-react/EmotionSadLineIcon'
 import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
 import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
+import UserUnfollowLineIcon from 'remixicon-react/UserUnfollowLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
+import BookLineIcon from 'remixicon-react/BookLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
 import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
@@ -58,6 +60,7 @@ import AddCircleFillIcon from 'remixicon-react/AddCircleFillIcon'
 import Heart3FillIcon from 'remixicon-react/Heart3FillIcon'
 import Heart3LineIcon from 'remixicon-react/Heart3LineIcon'
 import AccountBoxFillIcon from 'remixicon-react/AccountBoxFillIcon'
+import AccountBoxLineIcon from 'remixicon-react/AccountBoxLineIcon'
 import BarChart2LineIcon from 'remixicon-react/BarChart2LineIcon'
 import ArticleLineIcon from 'remixicon-react/ArticleLineIcon'
 import QuestionLineIcon from 'remixicon-react/QuestionLineIcon'
@@ -82,6 +85,15 @@ import StarHalfFillIcon from 'remixicon-react/StarHalfFillIcon'
 import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
+import GalleryUploadLineIcon from 'remixicon-react/GalleryUploadLineIcon'
+import DeleteBinFillIcon from 'remixicon-react/DeleteBinFillIcon'
+import ShieldStarLineIcon from 'remixicon-react/ShieldStarLineIcon'
+import PlayFillIcon from 'remixicon-react/PlayFillIcon'
+import PauseFillIcon from 'remixicon-react/PauseFillIcon'
+import VolumeUpLineIcon from 'remixicon-react/VolumeUpLineIcon'
+import VolumeDownLineIcon from 'remixicon-react/VolumeDownLineIcon'
+import VolumeMuteLineIcon from 'remixicon-react/VolumeMuteLineIcon'
+import FullscreenLineIcon from 'remixicon-react/FullscreenLineIcon'
 import Settings4LineIcon from 'remixicon-react/Settings4LineIcon'
 import CameraSwitchLineIcon from 'remixicon-react/CameraSwitchLineIcon'
 import AwardFillIcon from 'remixicon-react/AwardFillIcon'
@@ -482,11 +494,27 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'UserUnfollowLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<UserUnfollowLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'BookMarkLineIcon':
       icon = (
         <IconButton
           {...props}
           icon={<BookMarkLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'BookLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<BookLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -567,6 +595,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<AccountBoxFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'AccountBoxLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<AccountBoxLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -751,6 +787,79 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'GalleryUploadLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<GalleryUploadLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'DeleteBinFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<DeleteBinFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'ShieldStarLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<ShieldStarLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'PlayFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<PlayFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'PauseFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<PauseFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+
+    case 'VolumeUpLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<VolumeUpLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'VolumeMuteLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<VolumeMuteLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'VolumeDownLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<VolumeDownLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'FullscreenLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<FullscreenLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
