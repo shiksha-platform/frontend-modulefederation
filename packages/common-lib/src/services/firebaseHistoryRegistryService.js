@@ -10,6 +10,7 @@ const interfaceData = {
   channel: 'channel',
   ownerOrgId: 'ownerOrgId',
   id: 'id',
+  messageId: 'messageId',
   sessionId: 'sessionId',
   ownerId: 'ownerId',
   fromId: 'fromId',
@@ -56,5 +57,26 @@ export const getAllForBot = async (params = {}, header = {}) => {
     return result.data.records.map((e) => mapInterfaceData(e, interfaceData))
   } else {
     return []
+  }
+}
+
+export const sendReadReceipt = async (params, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/inappnotification/readreceipt',
+    params,
+    {
+      params,
+      headers
+    }
+  )
+  if (result.message === "Ok") {
+    return true
+  } else {
+    return false
   }
 }

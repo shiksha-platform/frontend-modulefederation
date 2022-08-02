@@ -35,6 +35,8 @@ import {
   telemetryFactory,
   teacherRegistryService,
   getAllForUser,
+  sendReadReceipt,
+  H4
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -423,43 +425,38 @@ const NotificationBox = ({
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
+
+  const readReceipt = async (id) => {
+    const resp1 = await sendReadReceipt({
+      eventType: "READ",
+      externalId: id,
+      destAdd: localStorage.getItem("phoneNumber"),
+      fcmDestAdd: localStorage.getItem("fcmToken"),
+    });
+  }
+
   const numberOfItems = showMore ? data.length : 2;
   return data.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
         key={index}
-        borderWidth="1"
+        borderWidth={value.messageState === "SENT" ? "3" : "1"}
         borderColor={colors.primary}
         my="2"
         p="5"
         rounded="10"
       >
-        <Pressable onPress={(e) => onPress(value)}>
+        <Pressable onPress={(e) => {
+          onPress(value);
+          if (value.messageState === "SENT") {
+            readReceipt(value.messageId)
+          }
+        }}>
           <VStack space="3">
-            {/* <HStack
-              space="2"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-               <HStack space="2" alignItems="center">
-                <IconByName
-                  _icon={{ size: "16" }}
-                  name="UserLineIcon"
-                  isDisabled
-                />
-                <H2>{value.name}</H2>
-                <H1 color={colors.primary}>•</H1>
-              </HStack>
-              <IconByName
-                _icon={{ size: "18" }}
-                p="0"
-                name="More2LineIcon"
-                onPress={(e) => {
-                  onPressMore();
-                }}
-              />
-            </HStack> */}
-            <Subtitle {...line2style}>{value.payload.text}</Subtitle>
+            {value.messageState === "READ" ?
+              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
+              : <H4{...line2style}>{value?.payload?.text}</H4>
+            }
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName
