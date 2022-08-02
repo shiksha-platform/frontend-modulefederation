@@ -11,7 +11,8 @@ import {
   Caption,
   assessmentRegistryService,
   Loading,
-  useWindowSize, studentRegistryService
+  useWindowSize,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -33,7 +34,11 @@ import colorTheme from "../colorTheme";
 import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastAssessmentList({ classId, selectedSubject, schoolDetails }) {
+export default function PastAssessmentList({
+  classId,
+  selectedSubject,
+  schoolDetails,
+}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
@@ -54,7 +59,6 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
       value: 6,
     },
   ]);
-
 
   const getStudentsList = async () => {
     const list = await studentRegistryService.getAll({ classId });
@@ -90,8 +94,14 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
   const getCards = () => {
     let content = [];
     for (let key in allGroupedAssessments) {
-      let writtenAssessedStudents = allGroupedAssessments[key].filter((item) => {return item.type === 'Written Assessment'}).length;
-      let oralAssessedStudents = allGroupedAssessments[key].filter((item) => {return item.type === 'Oral Assessment'}).length;
+      let writtenAssessedStudents = allGroupedAssessments[key].filter(
+        (item) => {
+          return item.type === "Written Assessment";
+        }
+      ).length;
+      let oralAssessedStudents = allGroupedAssessments[key].filter((item) => {
+        return item.type === "Oral Assessment";
+      }).length;
       content.push(
         <Box>
           {/*<BodyLarge mb={2}>{allGroupedAssessments[key][0].date}</BodyLarge>*/}
@@ -117,20 +127,20 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
                       h="35px"
                       _bar={{ rounded: "md", mb: "2" }}
                       isLabelCountHide
-                      data={
-                        [
-                          {
-                            name: `${writtenAssessedStudents} Assessed`,
-                            color: colors.successBarColor,
-                            value: writtenAssessedStudents,
-                          },
-                          {
-                            name: `${studentlist.length - writtenAssessedStudents} pending`,
-                            color: colors.pendingBarColor,
-                            value: studentlist.length - writtenAssessedStudents,
-                          },
-                        ]
-                      }
+                      data={[
+                        {
+                          name: `${writtenAssessedStudents} Assessed`,
+                          color: colors.successBarColor,
+                          value: writtenAssessedStudents,
+                        },
+                        {
+                          name: `${
+                            studentlist.length - writtenAssessedStudents
+                          } pending`,
+                          color: colors.pendingBarColor,
+                          value: studentlist.length - writtenAssessedStudents,
+                        },
+                      ]}
                     />
                   </VStack>
                 </Box>
@@ -146,9 +156,7 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
                 <Box p="4" pb="4px" roundedTop="6">
                   <VStack space={2}>
                     <Box>
-                      <BodyLarge py="2">
-                        {t("Oral Spot Assessment")}
-                      </BodyLarge>
+                      <BodyLarge py="2">{t("Oral Spot Assessment")}</BodyLarge>
                     </Box>
 
                     <ProgressBar
@@ -157,20 +165,20 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
                       h="35px"
                       _bar={{ rounded: "md", mb: "2" }}
                       isLabelCountHide
-                      data={
-                        [
-                          {
-                            name: `${oralAssessedStudents} Assessed`,
-                            color: colors.successBarColor,
-                            value: oralAssessedStudents,
-                          },
-                          {
-                            name: `${studentlist.length - oralAssessedStudents} pending`,
-                            color: colors.pendingBarColor,
-                            value: studentlist.length - oralAssessedStudents,
-                          },
-                        ]
-                      }
+                      data={[
+                        {
+                          name: `${oralAssessedStudents} Assessed`,
+                          color: colors.successBarColor,
+                          value: oralAssessedStudents,
+                        },
+                        {
+                          name: `${
+                            studentlist.length - oralAssessedStudents
+                          } pending`,
+                          color: colors.pendingBarColor,
+                          value: studentlist.length - oralAssessedStudents,
+                        },
+                      ]}
                     />
                   </VStack>
                 </Box>
@@ -205,13 +213,12 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
         <VStack>
           <H2>{selectedSubject}</H2>
           <HStack alignItems={"center"}>
-            <Caption color={colors.gray}>{
-              schoolDetails && schoolDetails.name
-            }</Caption>
-            {
-              schoolDetails && schoolDetails.section &&
+            <Caption color={colors.gray}>
+              {schoolDetails && schoolDetails.name}
+            </Caption>
+            {schoolDetails && schoolDetails.section && (
               <Caption color={colors.gray}> {schoolDetails.section}</Caption>
-            }
+            )}
           </HStack>
         </VStack>
       }
@@ -258,11 +265,7 @@ export default function PastAssessmentList({ classId, selectedSubject, schoolDet
     >
       <Box p={4}>
         <>
-          <VStack space={12}>
-            {
-              getCards()
-            }
-          </VStack>
+          <VStack space={12}>{getCards()}</VStack>
         </>
       </Box>
     </Layout>

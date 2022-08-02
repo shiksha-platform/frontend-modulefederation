@@ -2,7 +2,8 @@ import {
   assessmentRegistryService,
   BodyLarge,
   BodyMedium,
-  capture, classRegistryService,
+  capture,
+  classRegistryService,
   Collapsible,
   H2,
   H3,
@@ -10,7 +11,7 @@ import {
   Layout,
   overrideColorTheme,
   questionRegistryService,
-  telemetryFactory
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";

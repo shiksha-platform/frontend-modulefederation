@@ -32,7 +32,11 @@ import {
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastExaminationsList({ classId, selectedSubject, schoolDetails }) {
+export default function PastExaminationsList({
+  classId,
+  selectedSubject,
+  schoolDetails,
+}) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
@@ -67,13 +71,12 @@ export default function PastExaminationsList({ classId, selectedSubject, schoolD
         <VStack>
           <H2>{selectedSubject}</H2>
           <HStack alignItems={"center"}>
-            <Caption color={colors.gray}>{
-              schoolDetails && schoolDetails.name
-            }</Caption>
-            {
-              schoolDetails && schoolDetails.section &&
+            <Caption color={colors.gray}>
+              {schoolDetails && schoolDetails.name}
+            </Caption>
+            {schoolDetails && schoolDetails.section && (
               <Caption color={colors.gray}> {schoolDetails.section}</Caption>
-            }
+            )}
           </HStack>
         </VStack>
       }
@@ -133,9 +136,7 @@ export default function PastExaminationsList({ classId, selectedSubject, schoolD
                       <BodyLarge py="2">
                         {t("Summative Assessment 1")}
                       </BodyLarge>
-                      <BodySmall color={colors.gray}>
-                        27, May 2022
-                      </BodySmall>
+                      <BodySmall color={colors.gray}>27, May 2022</BodySmall>
                     </Box>
 
                     <ProgressBar
