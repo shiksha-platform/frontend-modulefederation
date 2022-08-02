@@ -18,7 +18,7 @@ import QuestionList6 from "./components/ExamScores/QuestionLIst6";
 import QuestionList7 from "./components/ExamScores/QuestionLIst7";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   /*initializeI18n(
     ["assessment"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`

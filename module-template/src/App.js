@@ -7,7 +7,7 @@ import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
 import Sample from "pages/Sample";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   const routes = [
     {
       path: "/",

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
 import {
   DEFAULT_THEME,
   initializeI18n,
@@ -10,12 +9,13 @@ import {
 } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
+import { extendTheme } from "native-base";
 
 //TODO: separate out the theme related code from App
 initializeI18n(["translation", "core", "attendance"]);
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
   const Attendance = React.lazy(() => import("attendance/Attendance"));
   const Report = React.lazy(() => import("attendance/Report"));

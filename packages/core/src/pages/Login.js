@@ -22,6 +22,7 @@ import {
   Heading,
   Subtitle,
   getUserToken,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 
 const styles = {
@@ -30,6 +31,8 @@ const styles = {
       "linear-gradient(135deg, #e2f2fc -10%, #faf6f3 35%, #faf6f3 60%,#faf6f3 70%, #e2f2fc 110%)",
   },
 };
+
+const colors = overrideColorTheme();
 
 export default function Login({ swPath }) {
   const [credentials, setCredentials] = useState();
@@ -59,7 +62,7 @@ export default function Login({ swPath }) {
     }
     return true;
   };
-
+  console.log({ colors });
   const handleLogin = async () => {
     if (validate()) {
       const fcmToken = await getUserToken(swPath);
@@ -124,7 +127,7 @@ export default function Login({ swPath }) {
     <Box style={styles.box}>
       <Center
         _text={{
-          color: "white",
+          color: colors?.white,
           fontWeight: "bold",
         }}
         height={Height}
@@ -148,11 +151,11 @@ export default function Login({ swPath }) {
                     >
                       <HStack space={2} flexShrink={1}>
                         <Alert.Icon mt="1" />
-                        <Subtitle color="coolGray.800">{errors.alert}</Subtitle>
+                        <Subtitle color={colors?.gray}>{errors.alert}</Subtitle>
                       </HStack>
                       <IconButton
                         variant="unstyled"
-                        icon={<CloseIcon size="3" color="coolGray.600" />}
+                        icon={<CloseIcon size="3" color={colors?.gray} />}
                         onPress={(e) => setErrors({})}
                       />
                     </HStack>
@@ -187,7 +190,7 @@ export default function Login({ swPath }) {
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: "error.500",
+                        color: colors?.error,
                         fontWeight: 500,
                       }}
                     >
@@ -222,7 +225,7 @@ export default function Login({ swPath }) {
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: "error.500",
+                        color: colors?.error,
                         fontWeight: 500,
                       }}
                     >
@@ -235,19 +238,21 @@ export default function Login({ swPath }) {
                 <Button
                   colorScheme="button"
                   p="3"
-                  _text={{ color: "white" }}
+                  _text={{ color: colors?.white }}
                   onPress={handleLogin}
                 >
                   {t("SUBMIT")}
                 </Button>
-                <BodyMedium color="button.500" textAlign="center">
+                <BodyMedium color={colors?.primary} textAlign="center">
                   {t("FORGOT_PASSWORD")}
                 </BodyMedium>
                 <HStack alignItems="center" space="2">
                   <BodyMedium textTransform="inherit">
                     {t("DONT_HAVE_AN_ACCOUNT")}
                   </BodyMedium>
-                  <BodyMedium color="button.500">{t("SIGN_UP")}</BodyMedium>
+                  <BodyMedium color={colors?.primary}>
+                    {t("SIGN_UP")}
+                  </BodyMedium>
                 </HStack>
               </VStack>
             </VStack>

@@ -1,5 +1,6 @@
 import React from 'react'
-import colorTheme from './colorTheme'
+import * as joyfull from '../theme/joyfull'
+import * as purple from '../theme/purple'
 
 export const maxWidth = '1080'
 export function useWindowSize() {
@@ -98,6 +99,16 @@ export const generateUUID = () => {
   })
 }
 
-export const overrideColorTheme = (colorObject = {}) => {
-  return { ...colorTheme, ...colorObject }
+export const overrideColorTheme = (colorObject = {}, theme = 'joyfull') => {
+  if (theme === 'purple') {
+    return { ...purple.colorTheme, ...colorObject }
+  }
+  return { ...joyfull.colorTheme, ...colorObject }
+}
+
+export const DEFAULT_THEME = (theme = 'joyfull') => {
+  if (theme === 'purple') {
+    return purple.theme
+  }
+  return joyfull.theme
 }

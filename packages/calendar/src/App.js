@@ -8,7 +8,7 @@ import TimeTableRoute from "pages/TimeTableRoute";
 import { navigationRoute } from "services/routes";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+  const theme = extendTheme(DEFAULT_THEME());
   initializeI18n(
     ["timeTable"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
