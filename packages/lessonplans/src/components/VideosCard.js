@@ -32,6 +32,20 @@ export default function VideoCard({ item, index, url, canShare }) {
         setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
         setShowButtonArray(["Like", "Share", "Download"])
     }, [])
+
+    const handleShare = () => {
+        const telemetryData = telemetryFactory.interact({
+            appName,
+            type: "Lessonplan-Video-Share",
+            worksheetId: item?.id,
+            subject: item?.subject,
+            grade: item?.grade,
+            topic: item?.topic,
+        });
+        capture("INTERACT", telemetryData);
+        navigate(`/video/${item.id}/share`);
+    };
+
     return (
         <HStack bg={colors.cardBgLight} rounded="10px" maxH={"140px"} space="5">
             <Box flex={3 / 4}>
@@ -95,6 +109,7 @@ export default function VideoCard({ item, index, url, canShare }) {
                                     _icon={{ size: 16 }}
                                     color="warmGray.700"
                                     p="0"
+                                    onPress={handleShare}
                                 />
                             </Box>
                         </HStack>
