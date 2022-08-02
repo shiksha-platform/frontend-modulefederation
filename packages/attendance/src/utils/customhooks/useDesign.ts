@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 // Utils
 import { isMoment, isMoment2DArray } from "../types/typeGuards";
 import { PRESENT } from "../functions/Constants";
-import { GetStudentsAttendance } from "utils/functions/GetStudentsAttendance";
+import { filterStudentsAttendance } from "utils/functions/FilterStudentsAttendance";
 
 export interface IUseDesign {
   attendance: Array<any>;
@@ -42,9 +42,8 @@ export const useDesign = ({
     }
     if (attendance[0]) {
       let percentage = 0;
-      let attendanceAll = GetStudentsAttendance({
+      let attendanceAll = filterStudentsAttendance({
         attendance: attendance[0],
-        type: "id",
       });
       let presentAttendanceCount = attendanceAll.filter(
         (e) => e.attendance && e.attendance !== PRESENT

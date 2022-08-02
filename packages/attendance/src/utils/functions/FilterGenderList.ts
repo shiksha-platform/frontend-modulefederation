@@ -1,12 +1,12 @@
 import { MALE, FEMALE } from "./Constants";
 
-export interface IHandleGenderList {
+export interface IFilterGenderList {
   (students: any, t: any): number[];
 }
 
 // Returns number of students
 // which belong to the specified gender
-export const HandleGenderList: IHandleGenderList = (students, t) => {
+export const filterGenderList: IFilterGenderList = (students, t) => {
   let genderList = [];
   genderList = [t("BOYS"), t("GIRLS")].filter((gender) => {
     return (

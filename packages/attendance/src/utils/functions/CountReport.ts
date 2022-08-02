@@ -1,6 +1,7 @@
 // Constants
 import { MALE, FEMALE } from "./Constants";
-import { GetStudentsAttendance } from "./GetStudentsAttendance";
+// Utilities
+import { filterStudentsAttendance } from "./FilterStudentsAttendance";
 
 export interface ICountReport {
   gender?: any;
@@ -16,7 +17,7 @@ export interface ICountReport {
 
 // Returns the data corresponding to a report depending on the
 // parameters passed
-export const CountReport = ({
+export const countReport = ({
   gender,
   isAverage,
   attendance,
@@ -27,7 +28,7 @@ export const CountReport = ({
   students,
   t,
 }: ICountReport) => {
-  let attendanceAll = GetStudentsAttendance({ attendance, type: "id" });
+  let attendanceAll = filterStudentsAttendance({ attendance });
   if (gender && [t("BOYS"), t("GIRLS")].includes(gender)) {
     studentIds = students
       .filter(

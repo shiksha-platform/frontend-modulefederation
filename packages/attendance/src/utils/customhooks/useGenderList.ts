@@ -2,7 +2,7 @@
 import * as React from "react";
 
 // Utilities
-import { HandleGenderList } from "utils/functions/HandleGenderList";
+import { filterGenderList } from "utils/functions/FilterGenderList";
 
 export interface IUseGenderList {
   students: Array<any>;
@@ -13,7 +13,7 @@ export interface IUseGenderList {
 export const useGenderList = ({ students, t }: IUseGenderList) => {
   const [genderList, setGenderList] = React.useState<Array<any>>([]);
   React.useEffect(() => {
-    const genderList = HandleGenderList(students, t);
+    const genderList = filterGenderList(students, t);
     setGenderList([...genderList, t("TOTAL")]);
   }, [students]);
 

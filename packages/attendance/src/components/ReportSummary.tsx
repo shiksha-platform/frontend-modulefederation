@@ -15,7 +15,7 @@ import { useDesign } from "utils/customhooks/useDesign";
 import { useWithoutHolidays } from "utils/customhooks/useWithoutHolidays";
 import { useGenderList } from "utils/customhooks/useGenderList";
 import { useAverage } from "utils/customhooks/useAverage";
-import { CountReport } from "utils/functions/CountReport";
+import { countReport } from "utils/functions/CountReport";
 
 export interface IReport {
   students: Array<any>;
@@ -87,7 +87,7 @@ const ReportSummary: React.FC<IReport> = ({
                           // @ts-ignore
                           <ProgressBar
                             data={status.map((subItem, subIndex) => {
-                              let statusCount = CountReport({
+                              let statusCount = countReport({
                                 isAverage,
                                 gender: item,
                                 attendanceType: subItem,
