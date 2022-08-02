@@ -1,5 +1,5 @@
 // Constants
-import { MALE, FEMALE } from "./Constants";
+import constants from "./Constants";
 // Utilities
 import { filterStudentsAttendance } from "./FilterStudentsAttendance";
 
@@ -34,7 +34,11 @@ export const countReport = ({
       .filter(
         (e: any) =>
           e.gender ===
-          (gender === t("BOYS") ? MALE : gender === t("GIRLS") ? FEMALE : "")
+          (gender === t("BOYS")
+            ? constants.MALE
+            : gender === t("GIRLS")
+            ? constants.FEMALE
+            : "")
       )
       .map((e: any) => e.id);
   }

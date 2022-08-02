@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 // Utils
 import { isMoment, isMoment2DArray } from "../types/typeGuards";
-import { PRESENT } from "../functions/Constants";
+import constants from "../functions/Constants";
 import { filterStudentsAttendance } from "utils/functions/FilterStudentsAttendance";
 
 export interface IUseDesign {
@@ -46,7 +46,7 @@ export const useDesign = ({
         attendance: attendance[0],
       });
       let presentAttendanceCount = attendanceAll.filter(
-        (e) => e.attendance && e.attendance !== PRESENT
+        (e) => e.attendance && e.attendance !== constants.PRESENT
       ).length;
       percentage = (presentAttendanceCount * 100) / daysWithoutHolidays.length;
       if (percentage && percentage >= 100) {

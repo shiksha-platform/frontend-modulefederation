@@ -9,7 +9,7 @@ import { ProgressBar, BodySmall, Subtitle, Caption } from "@shiksha/common-lib";
 
 // Utilities
 import { colorTheme } from "utils/functions/ColorTheme";
-import { PRESENT, ABSENT, UNMARKED } from "utils/functions/Constants";
+import constants from "utils/functions/Constants";
 import { useStudentIds } from "utils/customhooks/useStudentIds";
 import { useDesign } from "utils/customhooks/useDesign";
 import { useWithoutHolidays } from "utils/customhooks/useWithoutHolidays";
@@ -100,11 +100,11 @@ const ReportSummary: React.FC<IReport> = ({
                               return {
                                 name: subItem,
                                 color:
-                                  subItem === PRESENT
+                                  subItem === constants.PRESENT
                                     ? colorTheme.attendancePresent
-                                    : subItem === ABSENT
+                                    : subItem === constants.ABSENT
                                     ? colorTheme.attendanceAbsent
-                                    : subItem === UNMARKED
+                                    : subItem === constants.UNMARKED
                                     ? colorTheme.attendanceUnmarked
                                     : colorTheme.gray,
                                 value: statusCount,

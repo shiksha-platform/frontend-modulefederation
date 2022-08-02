@@ -1,4 +1,4 @@
-import { MALE, FEMALE } from "./Constants";
+import constants from "./Constants";
 
 export interface IFilterGenderList {
   (students: any, t: any): number[];
@@ -11,9 +11,9 @@ export const filterGenderList: IFilterGenderList = (students, t) => {
   genderList = [t("BOYS"), t("GIRLS")].filter((gender) => {
     return (
       (gender === t("BOYS") &&
-        students.filter((e: any) => e.gender === MALE).length) ||
+        students.filter((e: any) => e.gender === constants.MALE).length) ||
       (gender === t("GIRLS") &&
-        students.filter((e: any) => e.gender === FEMALE).length)
+        students.filter((e: any) => e.gender === constants.FEMALE).length)
     );
   });
   return genderList;
