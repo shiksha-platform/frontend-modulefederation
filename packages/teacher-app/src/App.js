@@ -232,12 +232,10 @@ function App() {
   const searchParams = Object.fromEntries(urlSearchParams.entries());
 
   useEffect(async () => {
-    
     if (searchParams.token != undefined) {
       localStorage.setItem("token", searchParams.token);
     }
     const resultTeacher = await teacherRegistryService.getOne({}, {});
-
 
     if (resultTeacher) {
       let id = resultTeacher.id.replace("1-", "");
