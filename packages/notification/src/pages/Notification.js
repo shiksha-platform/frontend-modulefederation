@@ -441,7 +441,9 @@ const NotificationBox = ({
       <Box
         key={index}
         borderWidth={value.messageState === "SENT" ? "2" : "1"}
-        borderColor={value.messageState === "SENT" ? colors.primary : colors.lightGray}
+        borderColor={
+          value.messageState === "SENT" ? colors.primary : colors.lightGray
+        }
         my="2"
         p="5"
         rounded="10"
@@ -467,9 +469,11 @@ const NotificationBox = ({
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                {value.messageState === "READ" ?
+                {value.messageState === "READ" ? (
                   <BodySmall>Attendance</BodySmall>
-                  : <Subtitle {...line2style}>Attendance</Subtitle>}
+                ) : (
+                  <Subtitle {...line2style}>Attendance</Subtitle>
+                )}
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -477,13 +481,15 @@ const NotificationBox = ({
                   name="TimeLineIcon"
                   isDisabled
                 />
-                {value.messageState === "READ" ?
+                {value.messageState === "READ" ? (
                   <BodySmall>
                     {moment.utc(value.timestamp).local().format("LT")}
                   </BodySmall>
-                  : <Subtitle>
+                ) : (
+                  <Subtitle>
                     {moment.utc(value.timestamp).local().format("LT")}
-                  </Subtitle>}
+                  </Subtitle>
+                )}
               </HStack>
             </HStack>
           </VStack>
