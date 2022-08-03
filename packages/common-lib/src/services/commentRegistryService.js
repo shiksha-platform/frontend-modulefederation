@@ -1,6 +1,6 @@
 import { get, post, update as updateRequest } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
+import * as teacherRegistryService from './teacherRegistryService'
 
 const interfaceData = {
   id: 'commentId',
@@ -10,7 +10,8 @@ const interfaceData = {
   comment: 'comment',
   parentId: 'parentId',
   status: 'status',
-  privacy: 'privacy'
+  privacy: 'privacy',
+  createdAt: 'createdAt'
 }
 
 let commentEntityAttributes = Object.keys(interfaceData)
@@ -27,7 +28,10 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const newData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    return await getDataWithUser(newData)
   } else {
     return []
   }
@@ -90,4 +94,16 @@ export const update = async (
   } else {
     return {}
   }
+}
+
+const getDataWithUser = async (data) => {
+  return await Promise.all(
+    data.map(async (item) => {
+      let userData = {}
+      if (item.userType === 'Teacher' || true) {
+        userData = await teacherRegistryService.getOne({ id: item.userId })
+      }
+      return { ...item, userData }
+    })
+  )
 }

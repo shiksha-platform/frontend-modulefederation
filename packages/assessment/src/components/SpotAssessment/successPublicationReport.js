@@ -21,7 +21,7 @@ import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 export default function SuccessPublicationReport({
-  handleBackButton,
+  // handleBackButton,
   formObject,
 }) {
   const [width, height] = useWindowSize();
@@ -51,9 +51,9 @@ export default function SuccessPublicationReport({
   return (
     <Layout
       _appBar={{
-        onPressBackButton: handleBackButton
-          ? handleBackButton
-          : (e) => console.log(e),
+        // onPressBackButton: handleBackButton
+        //   ? handleBackButton
+        //   : (e) => console.log(e),
         languages: manifest.languages,
         color: colors.success,
         _box: { bg: colors.bgSuccessAlert },
@@ -131,6 +131,7 @@ export default function SuccessPublicationReport({
                               h="35px"
                               _bar={{ rounded: "md", mb: "2" }}
                               isLabelCountHide
+                              _legendType={{ color: colors.gray }}
                               data={progressAssessment}
                             />
                           </VStack>

@@ -122,7 +122,8 @@ export default function Form({
           ? formObject.number_of_questions
           : null,
       });
-      setPageName("WorksheetTemplate");
+      setFormObject({ ...formObject, state: "Publish" });
+      setPageName("AddDescriptionPage");
       type = "Worksheet-Auto-Generate-Start";
     } else {
       setPageName("ListOfQuestions");

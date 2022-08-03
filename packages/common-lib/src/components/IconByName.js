@@ -48,6 +48,7 @@ import EmotionSadLineIcon from 'remixicon-react/EmotionSadLineIcon'
 import EmotionNormalLineIcon from 'remixicon-react/EmotionNormalLineIcon'
 import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
+import UserUnfollowLineIcon from 'remixicon-react/UserUnfollowLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
 import BookLineIcon from 'remixicon-react/BookLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
@@ -84,6 +85,8 @@ import StarHalfFillIcon from 'remixicon-react/StarHalfFillIcon'
 import StarFillIcon from 'remixicon-react/StarFillIcon'
 import MicLineIcon from 'remixicon-react/MicLineIcon'
 import FileSearchLineIcon from 'remixicon-react/FileSearchLineIcon'
+import GalleryUploadLineIcon from 'remixicon-react/GalleryUploadLineIcon'
+import DeleteBinFillIcon from 'remixicon-react/DeleteBinFillIcon'
 import ShieldStarLineIcon from 'remixicon-react/ShieldStarLineIcon'
 import PlayFillIcon from 'remixicon-react/PlayFillIcon'
 import PauseFillIcon from 'remixicon-react/PauseFillIcon'
@@ -493,6 +496,14 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'UserUnfollowLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<UserUnfollowLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
     case 'BookMarkLineIcon':
       icon = (
         <IconButton
@@ -778,6 +789,22 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<FileSearchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'GalleryUploadLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<GalleryUploadLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'DeleteBinFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<DeleteBinFillIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

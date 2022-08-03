@@ -46,7 +46,7 @@ export default function Worksheet({ footerLinks, appName }) {
   const { state } = useParams();
 
   React.useEffect(async () => {
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]

@@ -6,7 +6,15 @@ const interfaceData = {
   questionId: 'questionId',
   body: 'body',
   question: 'body',
+  answer: 'answer',
   options: 'options',
+  class: 'class',
+  compatibilityLevel: 'compatibilityLevel',
+  language: 'language',
+  learningOutcome: 'learningOutcome',
+  maxScore: 'maxScore',
+  subject: 'subject',
+  topic: 'topic',
   type: 'type'
 }
 
@@ -17,15 +25,19 @@ export const getAllQuestions = async (params = {}, header = {}) => {
     Accept: 'application/json',
     ...header
   }
-  const result = await get(
-    `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
-    {
-      params: params,
-      headers
+  try {
+    const result = await get(
+      `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
+      {
+        params: params,
+        headers
+      }
+    )
+    if (result?.data?.data && result.data.data.length) {
+      return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     }
-  )
-  if (result?.data?.data && result.data.data.length) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+  } catch (e) {
+    console.error(e)
   }
   return []
 }

@@ -40,7 +40,8 @@
     "workbox-range-requests": "^5.1.4",
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
+    "workbox-streams": "^5.1.4",
+    "firebase": "^9.9.0"
   },
   "homepage": "modules/worksheet",
   "scripts": {
@@ -92,6 +93,7 @@
     "craco-module-federation": "^1.1.0",
     "external-remotes-plugin": "^1.0.0",
     "prettier": "^2.5.1",
+    "typescript": "^4.7.4",
     "webpack": "^5.69.1"
   }
 }

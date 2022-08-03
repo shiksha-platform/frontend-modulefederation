@@ -1,5 +1,4 @@
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
 import { get, post, update as coreUpdate } from './RestClient'
 import * as likeRegistryService from './likeRegistryService'
 import * as commentRegistryService from './commentRegistryService'
@@ -12,6 +11,7 @@ const interfaceData = {
   grade: 'grade',
   level: 'level',
   topic: 'topic',
+  source: 'source',
   instructions: 'instructions',
   feedback: 'feedback',
   hints: 'hints',
@@ -130,6 +130,27 @@ export const update = async (data = {}, headers = {}) => {
   if (result.data) {
     return result
   } else {
+    return {}
+  }
+}
+
+export const downloadWorksheet = async ({ id, ...params }, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  try {
+    const result = await post(
+      `${process.env.REACT_APP_API_URL}/worksheet/${id}/pdf`,
+      null,
+      { headers, params: params }
+    )
+    if (result?.data?.data) {
+      return result?.data?.data
+    } else {
+      return {}
+    }
+  } catch {
     return {}
   }
 }
