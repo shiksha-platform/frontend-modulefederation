@@ -43,22 +43,8 @@ export default function PastAssessmentList({
   const navigate = useNavigate();
   const [width, height] = useWindowSize();
   const [loading, setLoading] = useState(true);
-  const [allAssessments, setAllAssessments] = useState();
   const [allGroupedAssessments, setAllGroupedAssessments] = useState({});
   const [studentlist, setStudentlist] = useState([]);
-
-  const [progressAssessment, setProgressAssessment] = React.useState([
-    {
-      name: "12 Assessed",
-      color: colors.successBarColor,
-      value: 12,
-    },
-    {
-      name: "6 pending",
-      color: colors.pendingBarColor,
-      value: 6,
-    },
-  ]);
 
   const getStudentsList = async () => {
     const list = await studentRegistryService.getAll({ classId });
@@ -66,11 +52,10 @@ export default function PastAssessmentList({
     setLoading(false);
   };
 
-  const getALlAssessment = async () => {
+  const getAllAssessment = async () => {
     const data = await assessmentRegistryService.getAllAssessment({
       filters: { groupId: classId, subject: selectedSubject },
     });
-    setAllAssessments(data);
     data.forEach((item) => {
       item.date = moment(item.createdAt).format("MM-DD-YYYY");
     });
@@ -193,7 +178,7 @@ export default function PastAssessmentList({
 
   useEffect(() => {
     getStudentsList();
-    getALlAssessment();
+    getAllAssessment();
   }, []);
 
   if (loading) {

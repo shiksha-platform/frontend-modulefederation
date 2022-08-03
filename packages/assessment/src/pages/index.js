@@ -39,6 +39,7 @@ import AssessmentResult from "./AssessmentResult";
 import { useNavigate } from "react-router-dom";
 import PastAssessmentList from "./PastAssessments";
 import PastExaminationsList from "./PastExaminations";
+import SuccessPublicationReport from "../components/SpotAssessment/successPublicationReport";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Assessment(props) {
@@ -155,7 +156,6 @@ export default function Assessment(props) {
   };
   const handleAssessmentTypeSelection = (assessmentType) => {
     setSelectedAssessmentType(assessmentType);
-    // localStorage.setItem("assessment-type", assessmentType);
   };
 
   const handleCompetenceSelection = (competence) => {
@@ -192,7 +192,6 @@ export default function Assessment(props) {
 
   const handleSelectedStudent = (student) => {
     setSelectedStudent(student);
-    // localStorage.setItem("assessment-student", JSON.stringify(student));
   };
 
   const getCompetenciesList = async (selectedSubject) => {
@@ -228,8 +227,6 @@ export default function Assessment(props) {
       setQuestionIds(questionIds);
       setFetchingQuestion(false);
     }
-    // localStorage.setItem("assessment-questionIds", JSON.stringify(questionIds));
-    // navigate("/assessment/quml-test");
     setChooseCompetenciesModal(false);
     setPageName("QUMLTest");
   };
@@ -433,6 +430,22 @@ export default function Assessment(props) {
   if (pageName === "pastExaminations") {
     return (
       <PastExaminationsList
+        classId={classId}
+        setPageName={setPageName}
+        handleBackButton={handleBackButton}
+        selectedStudent={selectedStudent}
+        selectedAssessmentType={selectedAssessmentType}
+        selectedCompetencies={selectedCompetencies}
+        selectedSubject={selectedSubject}
+        questionIds={questionIds}
+        schoolDetails={schoolDetails}
+      />
+    );
+  }
+
+  if (pageName === "assessmentSuccessReport") {
+    return (
+      <SuccessPublicationReport
         classId={classId}
         setPageName={setPageName}
         handleBackButton={handleBackButton}

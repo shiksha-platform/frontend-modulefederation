@@ -12,24 +12,30 @@ import {
   Caption,
   Subtitle,
   capture,
-  telemetryFactory,
+  telemetryFactory, assessmentRegistryService, studentRegistryService
 } from "@shiksha/common-lib";
 import { Button, Box, VStack, Text, HStack, Avatar } from "native-base";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
 export default function SuccessPublicationReport({
   appName,
-  // handleBackButton,
-  formObject,
+  classId,
+  selectedSubject,
+  schoolDetails,
 }) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [allGroupedAssessments, setAllGroupedAssessments] = useState({});
+  const [studentlist, setStudentlist] = useState([]);
+
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
@@ -43,18 +49,173 @@ export default function SuccessPublicationReport({
     },
   ]);
 
+  useEffect(()=> {
+    getStudentsList();
+    getAllAssessment();
+  }, [])
+
+
+  const getStudentsList = async () => {
+    const list = await studentRegistryService.getAll({ classId });
+    setStudentlist(list);
+    setLoading(false);
+  };
+
   const _handleSpotAssessmentNotificationSend = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Spot-Assessment-Notification-Send",
     });
     capture("INTERACT", telemetryData);
+    navigate("notification/create?module=Assessment")
   };
 
   const handleFullReportClick = () => {
-    _handleFullReportStartEvent();
+    // _handleFullReportStartEvent();
     navigate("/assessment-detailed-report");
   };
+
+  const getAllAssessment = async () => {
+    const data = await assessmentRegistryService.getAllAssessment({
+      filters: { groupId: classId, subject: selectedSubject },
+    });
+    data.forEach((item) => {
+      item.date = moment(item.createdAt).format("MM-DD-YYYY");
+    });
+    const groupedAssessments = groupBy(data, "date");
+    setAllGroupedAssessments(groupedAssessments);
+    setLoading(false);
+  };
+
+  function groupBy(objectArray, property) {
+    return objectArray.reduce((acc, obj) => {
+      const key = obj[property];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      // Add object to list for given key's value
+      acc[key].push(obj);
+      return acc;
+    }, {});
+  }
+
+  const getCard = (type) => {
+    let content = [];
+    for (let key in allGroupedAssessments) {
+      // if(key === moment().format('MM-DD-YYYY')){
+      if(key === '07-28-2022'){
+        let writtenAssessedStudents = allGroupedAssessments[key].filter(
+          (item) => {
+            return item.type === "Written Assessment";
+          }
+        ).length;
+        let oralAssessedStudents = allGroupedAssessments[key].filter((item) => {
+          return item.type === "Oral Assessment";
+        }).length;
+        content.push(
+          <FailureCard type={type} writtenAssessedStudents={writtenAssessedStudents} oralAssessedStudents={oralAssessedStudents} />
+        );
+      }
+    }
+    return content;
+  };
+
+  const FailureCard = ({type, oralAssessedStudents, writtenAssessedStudents}) => {
+    return (
+      <Box borderRadius="md">
+        <VStack>
+          <Box
+            px="4"
+            py={2}
+            bg={colors.scoreCardIcon2}
+            roundedTop="6"
+          >
+            <HStack alignItems="center">
+              <IconByName
+                name="EmotionSadLineIcon"
+                pr="0"
+                color={colors.white}
+              />
+              <Subtitle color={colors.white}>
+                {" "}
+                Poor overall performance!
+              </Subtitle>
+            </HStack>
+          </Box>
+          <Box p="4" bg={colors.QuationsBoxContentBg}>
+            <VStack flex="auto" alignContent={"center"}>
+              {
+                type === 'oral' ?
+                  <ProgressBar
+                    isTextShow
+                    legendType="separated"
+                    h="35px"
+                    _bar={{ rounded: "md", mb: "2" }}
+                    isLabelCountHide
+                    _legendType={{ color: colors.gray }}
+                    data={[
+                      {
+                        name: `${oralAssessedStudents} Assessed`,
+                        color: colors.successBarColor,
+                        value: oralAssessedStudents,
+                      },
+                      {
+                        name: `${
+                          studentlist.length - oralAssessedStudents
+                        } pending`,
+                        color: colors.pendingBarColor,
+                        value: studentlist.length - oralAssessedStudents,
+                      },
+                    ]}
+                  />
+                  :
+                  <ProgressBar
+                    isTextShow
+                    legendType="separated"
+                    h="35px"
+                    _bar={{ rounded: "md", mb: "2" }}
+                    isLabelCountHide
+                    _legendType={{ color: colors.gray }}
+                    data={[
+                      {
+                        name: `${writtenAssessedStudents} Assessed`,
+                        color: colors.successBarColor,
+                        value: writtenAssessedStudents,
+                      },
+                      {
+                        name: `${
+                          studentlist.length - writtenAssessedStudents
+                        } pending`,
+                        color: colors.pendingBarColor,
+                        value: studentlist.length - writtenAssessedStudents,
+                      },
+                    ]}
+                  />
+              }
+            </VStack>
+          </Box>
+          <Box
+            p="4"
+            bg={colors.QuationsBoxBg}
+            borderBottomRadius={6}
+            textAlign="center"
+          >
+            {
+              type === 'oral' ?
+                <Subtitle>
+                  Average correct words/minute is <H2>12</H2>
+                </Subtitle>
+                :
+                <Subtitle>
+                  Average Class Score is <H2 bold>18</H2> out of{" "}
+                  <H2>25</H2>
+                </Subtitle>
+            }
+          </Box>
+        </VStack>
+      </Box>
+    )
+  }
 
   return (
     <Layout
@@ -97,11 +258,17 @@ export default function SuccessPublicationReport({
               }}
             >
               <VStack>
-                <H2>{t("Science")}</H2>
+                <H2>{selectedSubject}</H2>
                 <HStack alignItems={"center"}>
-                  <Caption color={colors.gray}>{t("Class VI")}</Caption>{" "}
-                  <Caption color={colors.lightGray0}> ●</Caption>{" "}
-                  <Caption color={colors.gray}> {t("Sec A")}</Caption>
+                  <Caption color={colors.gray}>
+                    Class {schoolDetails && schoolDetails.name}
+                  </Caption>
+                  {schoolDetails && schoolDetails.section && (
+                    <>
+                      <Caption color={colors.lightGray0}> ●</Caption>{" "}
+                      <Caption color={colors.gray}> {schoolDetails.section}</Caption>
+                    </>
+                  )}
                 </HStack>
               </VStack>
             </Box>
@@ -109,56 +276,27 @@ export default function SuccessPublicationReport({
             <Box>
               <VStack space={2}>
                 <Box p={4} bg={colors.white}>
-                  <VStack space={2}>
-                    <H2>Class Participation</H2>
-                    <Box borderRadius="md">
-                      <VStack>
-                        <Box
-                          px="4"
-                          py={2}
-                          bg={colors.scoreCardIcon2}
-                          roundedTop="6"
-                        >
-                          <HStack alignItems="center">
-                            <IconByName
-                              name="EmotionSadLineIcon"
-                              pr="0"
-                              color={colors.white}
-                            />
-                            <Subtitle color={colors.white}>
-                              {" "}
-                              Poor overall performance!
-                            </Subtitle>
-                          </HStack>
-                        </Box>
-                        <Box p="4" bg={colors.QuationsBoxContentBg}>
-                          <VStack flex="auto" alignContent={"center"}>
-                            <ProgressBar
-                              isTextShow
-                              legendType="separated"
-                              h="35px"
-                              _bar={{ rounded: "md", mb: "2" }}
-                              isLabelCountHide
-                              _legendType={{ color: colors.gray }}
-                              data={progressAssessment}
-                            />
-                          </VStack>
-                        </Box>
-                        <Box
-                          p="4"
-                          bg={colors.QuationsBoxBg}
-                          borderBottomRadius={6}
-                          textAlign="center"
-                        >
-                          <Subtitle>
-                            Average Class Score is <H2 bold>18</H2> out of{" "}
-                            <H2>25</H2>
-                          </Subtitle>
-                        </Box>
+                  <VStack space={6}>
+                    <Box>
+                      <VStack space={2}>
+                        <H2>Class Participation in Oral Assessments</H2>
+                        {
+                          getCard('oral')
+                        }
+                      </VStack>
+                    </Box>
+
+                    <Box>
+                      <VStack space={2}>
+                        <H2>Class Participation in Written Assessments</H2>
+                        {
+                          getCard('written')
+                        }
                       </VStack>
                     </Box>
                   </VStack>
                 </Box>
+
                 <Box p={4} justifyContent="center" bg={colors.white}>
                   <H2>20 Students Assessed</H2>
                   <Subtitle color={colors.gray} mb="4">
@@ -171,7 +309,7 @@ export default function SuccessPublicationReport({
                         colorScheme="button"
                         variant="outline"
                         w="45%"
-                        // onPress={()=> setSelectedStudent()}
+                        onPress={()=> navigate("/notification?module=Assessment")}
                       >
                         {t("View Message")}
                       </Button>
