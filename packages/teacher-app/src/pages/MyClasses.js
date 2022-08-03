@@ -26,8 +26,7 @@ const MyClasses = ({ footerLinks }) => {
     <Layout
       _header={{
         title: t("MY_CLASS"),
-        subHeading: moment().format("hh:mm A"),
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
+        subHeading: moment().format("hh:mm A"),        
         avatar: true,
       }}
       _appBar={{ languages: manifest.languages }}

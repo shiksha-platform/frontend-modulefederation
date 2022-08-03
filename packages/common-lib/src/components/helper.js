@@ -101,7 +101,7 @@ export const generateUUID = () => {
 
 export const overrideColorTheme = (colorObject = {}, theme = 'joyfull') => {
   if (theme === 'purple') {
-    return { ...purple.colorTheme, ...colorObject }
+    return { ...colorObject, ...purple.colorTheme }
   }
   return { ...joyfull.colorTheme, ...colorObject }
 }

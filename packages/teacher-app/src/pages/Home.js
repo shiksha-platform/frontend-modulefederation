@@ -229,14 +229,13 @@ function Home({ footerLinks, appName }) {
           isShowNotificationButton: true,
         }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
-        _subHeader={{
-          bg: "white",
-          pt: "30px",
-          pb: "0px",
+        _subHeader={{          
+          pt: "20px",
+          pb: "20px",
         }}
         _footer={footerLinks}
       >
-        <Box bg="primary" roundedBottom={"2xl"} py={6} px={4} mb={5} shadow={3}>
+        <Box bg="white" roundedBottom={"2xl"} py={6} px={4} mb={5} shadow={3}>
           <Stack>
             <VStack space={6}>
               {widgetData.map((item, index) => {
