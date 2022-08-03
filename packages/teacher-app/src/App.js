@@ -6,7 +6,7 @@ import {
   initializeI18n,
   AppShell,
   AppRoutesContainer,
-  teacherRegistryService,
+  userRegistryService,
 } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
@@ -232,7 +232,7 @@ function App() {
   const searchParams = Object.fromEntries(urlSearchParams.entries());
 
   useEffect(async () => {
-    const resultTeacher = await teacherRegistryService.getOne({}, {});
+    const resultTeacher = await userRegistryService.getOne({}, {});
 
     if (searchParams.token != undefined) {
       localStorage.setItem("token", searchParams.token);
