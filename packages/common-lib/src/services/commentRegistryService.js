@@ -1,6 +1,6 @@
 import { get, post, update as updateRequest } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import * as teacherRegistryService from './teacherRegistryService'
+import * as userRegistryService from './userRegistryService'
 
 const interfaceData = {
   id: 'commentId',
@@ -101,7 +101,7 @@ const getDataWithUser = async (data) => {
     data.map(async (item) => {
       let userData = {}
       if (item.userType === 'Teacher' || true) {
-        userData = await teacherRegistryService.getOne({ id: item.userId })
+        userData = await userRegistryService.getOne({ id: item.userId })
       }
       return { ...item, userData }
     })

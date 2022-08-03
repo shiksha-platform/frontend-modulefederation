@@ -118,6 +118,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     } else {
       let newData = {
         contextId: id,
+        userId: localStorage.getItem("id"),
         context: "Worksheet",
         type: "like",
       };

@@ -14,7 +14,7 @@ import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
 import FilterButton from './components/FilterButton'
-import * as teacherRegistryService from './services/teacherRegistryService'
+import * as userRegistryService from './services/userRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
@@ -47,7 +47,7 @@ export {
   ProgressBar,
   Tab,
   Loading,
-  teacherRegistryService,
+  userRegistryService,
   classRegistryService,
   attendanceRegistryService,
   studentRegistryService,

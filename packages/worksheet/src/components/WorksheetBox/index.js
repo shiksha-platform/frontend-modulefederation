@@ -5,10 +5,8 @@ import {
   telemetryFactory,
   H2,
   Caption,
-  Subtitle,
   likeRegistryService,
   overrideColorTheme,
-  BodySmall,
   BodyMedium,
 } from "@shiksha/common-lib";
 import { Avatar, Box, HStack, Pressable, Stack, VStack } from "native-base";
@@ -87,6 +85,7 @@ export default function WorksheetBox({
     } else {
       let newData = {
         contextId: item?.id,
+        userId: localStorage.getItem("id"),
         context: "Worksheet",
         type: "like",
       };
