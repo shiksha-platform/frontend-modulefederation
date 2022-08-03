@@ -440,8 +440,8 @@ const NotificationBox = ({
     return (
       <Box
         key={index}
-        borderWidth={value.messageState === "SENT" ? "3" : "1"}
-        borderColor={colors.primary}
+        borderWidth={value.messageState === "SENT" ? "2" : "1"}
+        borderColor={value.messageState === "SENT" ? colors.primary : colors.lightGray}
         my="2"
         p="5"
         rounded="10"
@@ -456,9 +456,9 @@ const NotificationBox = ({
         >
           <VStack space="3">
             {value.messageState === "READ" ? (
-              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
+              <BodySmall {...line2style}>{value?.payload?.text}</BodySmall>
             ) : (
-              <H4 {...line2style}>{value?.payload?.text}</H4>
+              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
             )}
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
@@ -467,8 +467,9 @@ const NotificationBox = ({
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                <BodySmall>Attendance</BodySmall>
-                {/* <BodySmall>{value.module}</BodySmall> */}
+                {value.messageState === "READ" ?
+                  <BodySmall>Attendance</BodySmall>
+                  : <Subtitle {...line2style}>Attendance</Subtitle>}
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -476,9 +477,13 @@ const NotificationBox = ({
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>
-                  {moment.utc(value.timestamp).local().format("LT")}
-                </BodySmall>
+                {value.messageState === "READ" ?
+                  <BodySmall>
+                    {moment.utc(value.timestamp).local().format("LT")}
+                  </BodySmall>
+                  : <Subtitle>
+                    {moment.utc(value.timestamp).local().format("LT")}
+                  </Subtitle>}
               </HStack>
             </HStack>
           </VStack>
