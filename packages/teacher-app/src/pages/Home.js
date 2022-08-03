@@ -236,7 +236,7 @@ function Home({ footerLinks, appName }) {
         }}
         _footer={footerLinks}
       >
-        <Box bg="white" roundedBottom={"2xl"} py={6} px={4} mb={5} shadow={3}>
+        <Box bg="primary" roundedBottom={"2xl"} py={6} px={4} mb={5} shadow={3}>
           <Stack>
             <VStack space={6}>
               {widgetData.map((item, index) => {
