@@ -16,7 +16,7 @@ import { extendTheme } from "native-base";
 initializeI18n(["translation", "core", "attendance"]);
 
 function App() {  
-  const theme = extendTheme(DEFAULT_THEME("purple"));
+  const theme = extendTheme(DEFAULT_THEME("monochrome"));
   const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
   const Attendance = React.lazy(() => import("attendance/Attendance"));
   const Report = React.lazy(() => import("attendance/Report"));
