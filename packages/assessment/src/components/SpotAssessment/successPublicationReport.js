@@ -12,7 +12,9 @@ import {
   Caption,
   Subtitle,
   capture,
-  telemetryFactory, assessmentRegistryService, studentRegistryService
+  telemetryFactory,
+  assessmentRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { Button, Box, VStack, Text, HStack, Avatar } from "native-base";
 import React, { useEffect, useState } from "react";
@@ -49,11 +51,10 @@ export default function SuccessPublicationReport({
     },
   ]);
 
-  useEffect(()=> {
+  useEffect(() => {
     getStudentsList();
     getAllAssessment();
-  }, [])
-
+  }, []);
 
   const getStudentsList = async () => {
     const list = await studentRegistryService.getAll({ classId });
@@ -67,7 +68,7 @@ export default function SuccessPublicationReport({
       type: "Spot-Assessment-Notification-Send",
     });
     capture("INTERACT", telemetryData);
-    navigate("notification/create?module=Assessment")
+    navigate("notification/create?module=Assessment");
   };
 
   const handleFullReportClick = () => {
@@ -103,7 +104,7 @@ export default function SuccessPublicationReport({
     let content = [];
     for (let key in allGroupedAssessments) {
       // if(key === moment().format('MM-DD-YYYY')){
-      if(key === '07-28-2022'){
+      if (key === "07-28-2022") {
         let writtenAssessedStudents = allGroupedAssessments[key].filter(
           (item) => {
             return item.type === "Written Assessment";
@@ -113,23 +114,26 @@ export default function SuccessPublicationReport({
           return item.type === "Oral Assessment";
         }).length;
         content.push(
-          <FailureCard type={type} writtenAssessedStudents={writtenAssessedStudents} oralAssessedStudents={oralAssessedStudents} />
+          <FailureCard
+            type={type}
+            writtenAssessedStudents={writtenAssessedStudents}
+            oralAssessedStudents={oralAssessedStudents}
+          />
         );
       }
     }
     return content;
   };
 
-  const FailureCard = ({type, oralAssessedStudents, writtenAssessedStudents}) => {
+  const FailureCard = ({
+    type,
+    oralAssessedStudents,
+    writtenAssessedStudents,
+  }) => {
     return (
       <Box borderRadius="md">
         <VStack>
-          <Box
-            px="4"
-            py={2}
-            bg={colors.scoreCardIcon2}
-            roundedTop="6"
-          >
+          <Box px="4" py={2} bg={colors.scoreCardIcon2} roundedTop="6">
             <HStack alignItems="center">
               <IconByName
                 name="EmotionSadLineIcon"
@@ -144,54 +148,53 @@ export default function SuccessPublicationReport({
           </Box>
           <Box p="4" bg={colors.QuationsBoxContentBg}>
             <VStack flex="auto" alignContent={"center"}>
-              {
-                type === 'oral' ?
-                  <ProgressBar
-                    isTextShow
-                    legendType="separated"
-                    h="35px"
-                    _bar={{ rounded: "md", mb: "2" }}
-                    isLabelCountHide
-                    _legendType={{ color: colors.gray }}
-                    data={[
-                      {
-                        name: `${oralAssessedStudents} Assessed`,
-                        color: colors.successBarColor,
-                        value: oralAssessedStudents,
-                      },
-                      {
-                        name: `${
-                          studentlist.length - oralAssessedStudents
-                        } pending`,
-                        color: colors.pendingBarColor,
-                        value: studentlist.length - oralAssessedStudents,
-                      },
-                    ]}
-                  />
-                  :
-                  <ProgressBar
-                    isTextShow
-                    legendType="separated"
-                    h="35px"
-                    _bar={{ rounded: "md", mb: "2" }}
-                    isLabelCountHide
-                    _legendType={{ color: colors.gray }}
-                    data={[
-                      {
-                        name: `${writtenAssessedStudents} Assessed`,
-                        color: colors.successBarColor,
-                        value: writtenAssessedStudents,
-                      },
-                      {
-                        name: `${
-                          studentlist.length - writtenAssessedStudents
-                        } pending`,
-                        color: colors.pendingBarColor,
-                        value: studentlist.length - writtenAssessedStudents,
-                      },
-                    ]}
-                  />
-              }
+              {type === "oral" ? (
+                <ProgressBar
+                  isTextShow
+                  legendType="separated"
+                  h="35px"
+                  _bar={{ rounded: "md", mb: "2" }}
+                  isLabelCountHide
+                  _legendType={{ color: colors.gray }}
+                  data={[
+                    {
+                      name: `${oralAssessedStudents} Assessed`,
+                      color: colors.successBarColor,
+                      value: oralAssessedStudents,
+                    },
+                    {
+                      name: `${
+                        studentlist.length - oralAssessedStudents
+                      } pending`,
+                      color: colors.pendingBarColor,
+                      value: studentlist.length - oralAssessedStudents,
+                    },
+                  ]}
+                />
+              ) : (
+                <ProgressBar
+                  isTextShow
+                  legendType="separated"
+                  h="35px"
+                  _bar={{ rounded: "md", mb: "2" }}
+                  isLabelCountHide
+                  _legendType={{ color: colors.gray }}
+                  data={[
+                    {
+                      name: `${writtenAssessedStudents} Assessed`,
+                      color: colors.successBarColor,
+                      value: writtenAssessedStudents,
+                    },
+                    {
+                      name: `${
+                        studentlist.length - writtenAssessedStudents
+                      } pending`,
+                      color: colors.pendingBarColor,
+                      value: studentlist.length - writtenAssessedStudents,
+                    },
+                  ]}
+                />
+              )}
             </VStack>
           </Box>
           <Box
@@ -200,22 +203,20 @@ export default function SuccessPublicationReport({
             borderBottomRadius={6}
             textAlign="center"
           >
-            {
-              type === 'oral' ?
-                <Subtitle>
-                  Average correct words/minute is <H2>12</H2>
-                </Subtitle>
-                :
-                <Subtitle>
-                  Average Class Score is <H2 bold>18</H2> out of{" "}
-                  <H2>25</H2>
-                </Subtitle>
-            }
+            {type === "oral" ? (
+              <Subtitle>
+                Average correct words/minute is <H2>12</H2>
+              </Subtitle>
+            ) : (
+              <Subtitle>
+                Average Class Score is <H2 bold>18</H2> out of <H2>25</H2>
+              </Subtitle>
+            )}
           </Box>
         </VStack>
       </Box>
-    )
-  }
+    );
+  };
 
   return (
     <Layout
@@ -266,7 +267,10 @@ export default function SuccessPublicationReport({
                   {schoolDetails && schoolDetails.section && (
                     <>
                       <Caption color={colors.lightGray0}> ●</Caption>{" "}
-                      <Caption color={colors.gray}> {schoolDetails.section}</Caption>
+                      <Caption color={colors.gray}>
+                        {" "}
+                        {schoolDetails.section}
+                      </Caption>
                     </>
                   )}
                 </HStack>
@@ -280,18 +284,14 @@ export default function SuccessPublicationReport({
                     <Box>
                       <VStack space={2}>
                         <H2>Class Participation in Oral Assessments</H2>
-                        {
-                          getCard('oral')
-                        }
+                        {getCard("oral")}
                       </VStack>
                     </Box>
 
                     <Box>
                       <VStack space={2}>
                         <H2>Class Participation in Written Assessments</H2>
-                        {
-                          getCard('written')
-                        }
+                        {getCard("written")}
                       </VStack>
                     </Box>
                   </VStack>
@@ -309,7 +309,9 @@ export default function SuccessPublicationReport({
                         colorScheme="button"
                         variant="outline"
                         w="45%"
-                        onPress={()=> navigate("/notification?module=Assessment")}
+                        onPress={() =>
+                          navigate("/notification?module=Assessment")
+                        }
                       >
                         {t("View Message")}
                       </Button>
