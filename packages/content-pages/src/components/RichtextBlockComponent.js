@@ -2,7 +2,7 @@ import { Box } from "@shiksha/common-lib";
 import { useEffect, useState } from "react";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
-import { mock1,mock2 } from "./mock";
+import { mock1, mock2 } from "./mock";
 
 console.log(mock1);
 export default function RichtextBlockComponent() {
@@ -23,5 +23,5 @@ export default function RichtextBlockComponent() {
     }
   }, [convertedContent]);
 
-  return <div dangerouslySetInnerHTML={{__html:convertedContent}}></div>;
+  return <div dangerouslySetInnerHTML={{ __html: convertedContent }}></div>;
 }

@@ -6,7 +6,6 @@ const CollapsibleBlockComponent = ({ header, content }) => {
       header={header}
       children={<BodyMedium py="4">{content}</BodyMedium>}
       p="3"
-
     ></Collapsible>
   );
 };
