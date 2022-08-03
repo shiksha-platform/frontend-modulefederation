@@ -13,7 +13,7 @@ import Worksheet from "./pages/Worksheet";
 import WorksheetShare from "./pages/WorksheetShare";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME("purple"));
+  const theme = extendTheme(DEFAULT_THEME("monochrome"));
   initializeI18n(
     ["worksheet"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
