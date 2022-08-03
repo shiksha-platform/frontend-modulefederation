@@ -1,6 +1,9 @@
+import axios from 'axios'
 import React from 'react'
+import { getApiConfig } from '../services/configApiRegistryService'
 import * as joyfull from '../theme/joyfull'
 import * as monochrome from '../theme/monochrome'
+import { extendTheme } from 'native-base'
 
 export const maxWidth = '1080'
 export function useWindowSize() {
@@ -106,9 +109,14 @@ export const overrideColorTheme = (colorObject = {}, theme = 'joyfull') => {
   return { ...joyfull.colorTheme, ...colorObject }
 }
 
-export const DEFAULT_THEME = (theme = 'joyfull') => {
-  if (theme === 'monochrome') {
-    return monochrome.theme
+export const DEFAULT_THEME = async (theme = null) => {
+  if (!theme) {
+    const adminTheme = await getApiConfig(['theme'])
+    theme = JSON.parse(adminTheme['theme.forModules'])
   }
-  return joyfull.theme
+
+  if (theme === 'monochrome') {
+    return extendTheme(monochrome.theme)
+  }
+  return extendTheme(joyfull.theme)
 }

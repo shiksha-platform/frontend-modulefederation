@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
+import { DEFAULT_THEME } from './helper'
 
 function AppShell({
-  theme,
   colors,
   routes,
   AuthComponent,
@@ -17,6 +17,8 @@ function AppShell({
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
+  const [theme, setTheme] = React.useState<any>('')
+
   const footerLinks = !isShowFooterLink
     ? {}
     : {
@@ -59,6 +61,10 @@ function AppShell({
         ]
       }
   useEffect(() => {
+    const getTheme = async () => {
+      setTheme(await DEFAULT_THEME())
+    }
+    getTheme()
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
         setToken(localStorage.getItem('token'))
@@ -69,6 +75,9 @@ function AppShell({
     }
   }, [token])
 
+  if (!theme) {
+    return <React.Fragment />
+  }
   if (!token) {
     return (
       <NativeBaseProvider theme={theme}>
