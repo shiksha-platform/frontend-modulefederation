@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import Assessment from "pages";
 import ExamScores from "./pages/ExamScores";
 import SuccessPublicationReport from "./components/SpotAssessment/successPublicationReport";
@@ -18,7 +17,6 @@ import QuestionList6 from "./components/ExamScores/QuestionLIst6";
 import QuestionList7 from "./components/ExamScores/QuestionLIst7";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME());
   /*initializeI18n(
     ["assessment"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
@@ -85,7 +83,6 @@ function App() {
 
   return (
     <AppShell
-      theme={theme}
       routes={routes}
       AuthComponent={LoginComponent}
       basename={process.env.PUBLIC_URL}

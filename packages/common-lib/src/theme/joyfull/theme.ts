@@ -1,9 +1,27 @@
 const maxWidth = '1080'
 const fontFamily = localStorage.getItem('lang') === 'hi' ? "'Baloo 2'" : 'Inter'
 const fontSize = localStorage.getItem('lang') === 'hi' ? '20px' : ''
+import colorTheme from './colorTheme'
 
 const theme = {
   colors: {
+    ...colorTheme,
+    attendance: {
+      ...colorTheme,
+      primary: '#F87558'
+    },
+    student: {
+      ...colorTheme,
+      primary: '#F87558'
+    },
+    class: {
+      ...colorTheme,
+      primary: '#F87558'
+    },
+    worksheet: {
+      ...colorTheme,
+      primary: '#F87558'
+    },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

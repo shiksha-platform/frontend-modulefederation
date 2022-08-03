@@ -1,14 +1,12 @@
 import React from "react";
 
 import "./App.css";
-import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
+import { AppShell } from "@shiksha/common-lib";
 import Myvisits from "./pages/Myvisits";
 import Recommendedschools from "./pages/Recommended-schools";
 import Allocatedschools from "./pages/Allocated-schools";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME());
   const routes = [
     {
       path: "/",
@@ -31,7 +29,6 @@ function App() {
 
   return (
     <AppShell
-      theme={theme}
       routes={routes}
       AuthComponent={LoginComponent}
       basename={process.env.PUBLIC_URL}
