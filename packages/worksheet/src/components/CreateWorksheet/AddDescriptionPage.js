@@ -115,14 +115,14 @@ export default function AddDescriptionPage({
         let attribute = item.attributeName ? item.attributeName : item.name;
         let placeholder = item.placeholder ? item.placeholder : item.name;
         return (
-          <Box key={index + item.name} p="5" bg={colors.white}>
+          <Box key={index + item.name} p="5" bg={"worksheet.white"}>
             <FormControl isInvalid={attribute in errors}>
               <FormControl.Label>
                 <BodyLarge>{item.label ? item.label : item.name}</BodyLarge>
               </FormControl.Label>
               {item.type === "select" ? (
                 <Select
-                  bg={colors.lightGray5}
+                  bg={"worksheet.lightGray5"}
                   accessibilityLabel={placeholder}
                   placeholder={placeholder}
                   key={index + item.name}
@@ -139,7 +139,7 @@ export default function AddDescriptionPage({
                 </Select>
               ) : item.type === "multiselect" ? (
                 <select
-                  bg={colors.lightGray5}
+                  bg={"worksheet.lightGray5"}
                   accessibilityLabel={placeholder}
                   placeholder={placeholder}
                   key={index + item.name}
@@ -178,7 +178,7 @@ export default function AddDescriptionPage({
                 </select>
               ) : (
                 <Input
-                  bg={colors.lightGray5}
+                  bg={"worksheet.lightGray5"}
                   variant="filled"
                   p={2}
                   {...item}
@@ -193,7 +193,7 @@ export default function AddDescriptionPage({
                 <FormControl.ErrorMessage
                   _text={{
                     fontSize: "xs",
-                    color: colors.eventError,
+                    color: "worksheet.eventError",
                     fontWeight: 500,
                   }}
                 >
@@ -207,10 +207,10 @@ export default function AddDescriptionPage({
         );
       })}
 
-      <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+      <Box bg={"worksheet.white"} p="5" position="sticky" bottom="0" shadow={2}>
         <Button
           colorScheme="button"
-          _text={{ color: colors.white }}
+          _text={{ color: "worksheet.white" }}
           px="5"
           flex="1"
           onPress={handleSubmit}

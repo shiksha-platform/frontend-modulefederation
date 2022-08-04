@@ -109,7 +109,7 @@ export const overrideColorTheme = (colorObject = {}, theme = 'joyfull') => {
   return { ...joyfull.colorTheme, ...colorObject }
 }
 
-export const DEFAULT_THEME = async (theme = null) => {
+export const DEFAULT_THEME = async (theme) => {
   if (!theme) {
     const adminTheme = await getApiConfig(['theme'])
     theme = JSON.parse(adminTheme['theme.forModules'])

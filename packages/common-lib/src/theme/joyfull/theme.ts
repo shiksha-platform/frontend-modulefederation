@@ -20,7 +20,16 @@ const theme = {
     },
     worksheet: {
       ...colorTheme,
-      primary: '#F87558'
+      primary: '#F87558',
+      primaryLight: '#FFF8F7',
+      primaryDark: "#C79AB2",
+      cardBg: '#F9CCE4',
+      cardBgLight: "#FEF1F9",
+      secondary: '#feefeb'
+    },
+    notification: {
+      cardBg: "#D9F0FC",
+      notificationBg: "#FDDFD8"
     },
     widgetColor: {
       400: '#7F9DAC',

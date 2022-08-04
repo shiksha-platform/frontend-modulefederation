@@ -62,7 +62,11 @@ function AppShell({
       }
   useEffect(() => {
     const getTheme = async () => {
-      setTheme(await DEFAULT_THEME())
+      try {
+        setTheme(await DEFAULT_THEME())
+      } catch {
+        setTheme(DEFAULT_THEME('joyfull'))
+      }
     }
     getTheme()
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {

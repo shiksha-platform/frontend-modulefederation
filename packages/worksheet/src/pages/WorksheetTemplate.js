@@ -51,17 +51,17 @@ export default function WorksheetTemplate({ footerLinks, appName }) {
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={t("SELECT_TEMPLATE")}
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
       <WorksheetTemplateComponent
         onPress={handleWorksheet}
         {...{
           templates,
-          _box: { bg: colors.cardBgLight },
+          _box: { bg: "worksheet.cardBgLight" },
           _templateBox: {
-            activeColor: colors.cardBg,
-            bg: colors.white,
+            activeColor: "worksheet.cardBg",
+            bg: "worksheet.white",
             mb: 5,
           },
         }}

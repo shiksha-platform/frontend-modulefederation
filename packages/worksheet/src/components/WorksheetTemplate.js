@@ -45,7 +45,7 @@ export default function WorksheetTemplate({
 
   return (
     <Box>
-      <Box bg={colors.worksheetCardBg} p="5" {..._box}>
+      <Box bg={"worksheet.cardBg"} p="5" {..._box}>
         <Carousel
           showArrows={false}
           showThumbs={false}
@@ -58,7 +58,7 @@ export default function WorksheetTemplate({
                 name={
                   value ? "RecordCircleFillIcon" : "CheckboxBlankCircleLineIcon"
                 }
-                color={colors.primary}
+                color={"worksheet.primary"}
                 p="1"
               />
             );
@@ -91,13 +91,19 @@ export default function WorksheetTemplate({
             })}
         </Carousel>
       </Box>
-      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
+      <Box
+        bg={"worksheet.white"}
+        p="5"
+        position="sticky"
+        bottom="85"
+        shadow={2}
+      >
         <Button.Group>
           <Button
             isDisabled={selected >= 0 ? false : true}
             flex="1"
             colorScheme="button"
-            _text={{ color: colors.white }}
+            _text={{ color: "worksheet.white" }}
             px="5"
             onPress={handleContinue}
           >

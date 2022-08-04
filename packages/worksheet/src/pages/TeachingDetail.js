@@ -106,13 +106,13 @@ export default function TeachingDetail({ footerLinks, appName }) {
           classObject?.subjectName ? classObject?.subjectName : ""
         }`}</H2>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
       <VStack>
         {message ? (
           <HStack
-            bg={colors.viewNotificationDark}
+            bg={"worksheet.primaryLight"}
             p="5"
             justifyContent="space-between"
           >
@@ -123,14 +123,14 @@ export default function TeachingDetail({ footerLinks, appName }) {
             <IconByName
               p="0"
               name="CloseCircleLineIcon"
-              color={colors.worksheetCloseIcon}
+              color={"worksheet.cardCloseIcon"}
               onPress={(e) => setMessage(false)}
             />
           </HStack>
         ) : (
           ""
         )}
-        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box bg={"worksheet.white"} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
           <Tab
             routes={[
               {
@@ -172,9 +172,9 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
+      <Box bg={"worksheet.white"} p="5" position="sticky" bottom="85" shadow={2}>
         <Button
-          _text={{ color: colors.white }}
+          _text={{ color: "worksheet.white" }}
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
@@ -203,7 +203,7 @@ const Worksheets = ({
         {leftTitle ? <H2>{leftTitle}</H2> : ""}
         {rightTitle ? (
           <Button variant="ghost" onPress={(e) => navigate("/worksheet/list")}>
-            <BodyLarge color={colors.primary}>{rightTitle}</BodyLarge>
+            <BodyLarge color={"worksheet.primary"}>{rightTitle}</BodyLarge>
           </Button>
         ) : (
           ""
@@ -244,7 +244,7 @@ const Worksheets = ({
           my="5"
           alignItems={"center"}
           rounded="lg"
-          bg={colors.viewNotificationDark}
+          bg={"worksheet.secondary"}
         >
           {t("WORKSHEET_NOT_FOUND")}
         </Box>

@@ -1,4 +1,4 @@
-import { BodyMedium, H1, overrideColorTheme } from "@shiksha/common-lib";
+import { BodyMedium, H1 } from "@shiksha/common-lib";
 import {
   Actionsheet,
   Box,
@@ -8,9 +8,7 @@ import {
   Stack,
 } from "native-base";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import colorTheme from "../../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import { useTranslation } from "react-i18next";;
 
 export default function InputForm({
   showModule,
@@ -29,12 +27,12 @@ export default function InputForm({
 
   return (
     <Actionsheet isOpen={showModule} onClose={() => setShowModule(false)}>
-      <Actionsheet.Content alignItems={"left"} bg={colors.worksheetCardBg}>
+      <Actionsheet.Content alignItems={"left"} bg={"worksheet.cardBg"}>
         <Stack p={5} pt={1} pb="15px">
           <H1>{t("Enter Worksheet Details")}</H1>
         </Stack>
       </Actionsheet.Content>
-      <Box bg={colors.white} width={"100%"} p="5">
+      <Box bg={"worksheet.white"} width={"100%"} p="5">
         <FormControl isRequired>
           <FormControl.Label mb="10px">
             <BodyMedium>{t("NAME")}</BodyMedium>
@@ -42,7 +40,7 @@ export default function InputForm({
           <Input
             rounded="lg"
             height="48px"
-            bg={colors.white}
+            bg={"worksheet.white"}
             variant="unstyled"
             p={"10px"}
             placeholder={t("ENTER") + " " + t("NAME")}
@@ -62,7 +60,7 @@ export default function InputForm({
           </Button>
           <Button
             colorScheme="button"
-            _text={{ color: colors.white }}
+            _text={{ color: "worksheet.white" }}
             px="5"
             flex="1"
             onPress={handleSubmit}

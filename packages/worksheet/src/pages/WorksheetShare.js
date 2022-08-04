@@ -102,11 +102,11 @@ export default function WorksheetShare({ footerLinks, appName }) {
       }}
       _appBar={{ languages: manifest.languages }}
       subHeader={`class V`}
-      _subHeader={{ bg: colors.worksheetCardBg }}
+      _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
       <Stack>
-        <VStack bg={colors.white} space="2">
+        <VStack bg={"worksheet.white"} space="2">
           <Collapsible
             header={
               <VStack space="2" py="5">
@@ -119,10 +119,10 @@ export default function WorksheetShare({ footerLinks, appName }) {
               <Box
                 key={index}
                 borderBottomWidth="1"
-                borderColor={colors.lightGray5}
+                borderColor={"worksheet.lightGray5"}
                 p="10px"
               >
-                <Suspense fallback="logding">
+                <Suspense fallback="loading">
                   <Card
                     attendanceProp={[]}
                     item={item}
@@ -131,14 +131,14 @@ export default function WorksheetShare({ footerLinks, appName }) {
                       <VStack alignItems="center">
                         <BodyLarge>
                           <Text>{item.admissionNo}</Text>
-                          <Text color={colors.lightGray2}> • </Text>
+                          <Text color={"worksheet.lightGray2"}> • </Text>
                           <Text>{item.fullName}</Text>
                         </BodyLarge>
                       </VStack>
                     }
                     textSubTitle={
                       <VStack alignItems="center">
-                        <Caption color={colors.gray}>
+                        <Caption color={"worksheet.gray"}>
                           {item.fathersName}
                         </Caption>
                       </VStack>
@@ -146,7 +146,9 @@ export default function WorksheetShare({ footerLinks, appName }) {
                     rightComponent={
                       <IconByName
                         color={
-                          item?.isSelected ? colors.primary : colors.lightGray2
+                          item?.isSelected
+                            ? "worksheet.primary"
+                            : "worksheet.lightGray2"
                         }
                         name={
                           item?.isSelected
@@ -179,12 +181,12 @@ export default function WorksheetShare({ footerLinks, appName }) {
             ))}
           </Collapsible>
         </VStack>
-        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+        <Box bg={"worksheet.white"} p="5" position="sticky" bottom="0" shadow={2}>
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="5"
               onPress={(e) => setShowModal(true)}
             >
@@ -195,12 +197,12 @@ export default function WorksheetShare({ footerLinks, appName }) {
       </Stack>
       <Actionsheet
         isOpen={showModal}
-        _backdrop={{ opacity: "0.9", bg: colors.gray }}
+        _backdrop={{ opacity: "0.9", bg: "worksheet.gray" }}
       >
         <Actionsheet.Content
           p="0"
           alignItems={"left"}
-          bg={colors.worksheetCardBg}
+          bg={"worksheet.cardBg"}
         >
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
@@ -208,13 +210,13 @@ export default function WorksheetShare({ footerLinks, appName }) {
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.worksheetCardIcon}
+              color={"worksheet.primaryDark"}
               onPress={(e) => setShowModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
 
-        <Box w="100%" bg={colors.white}>
+        <Box w="100%" bg={"worksheet.white"}>
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <WhatsappShareButton
@@ -247,33 +249,39 @@ export default function WorksheetShare({ footerLinks, appName }) {
         isOpen={showSuccessModal}
         _backdrop={{ opacity: "0.9", bg: "gray.500" }}
       >
-        <Actionsheet.Content p="0" alignItems={"left"} bg={colors.successAlert}>
+        <Actionsheet.Content
+          p="0"
+          alignItems={"left"}
+          bg={"worksheet.successAlert"}
+        >
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Worksheet Sent")}</H2>
-              <H4 color={colors.darkGreen}>{moment().format("DD MMM, h:m")}</H4>
+              <H4 color={"worksheet.darkGreen"}>
+                {moment().format("DD MMM, h:m")}
+              </H4>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.worksheetCardIcon}
+              color={"worksheet.primaryDark"}
               onPress={handleSuccessModule}
             />
           </HStack>
         </Actionsheet.Content>
 
-        <Box w="100%" bg={colors.white}>
+        <Box w="100%" bg={"worksheet.white"}>
           <Box px="5">
             <HStack
               py="5"
               borderBottomWidth="1"
-              borderColor={colors.lightGray2}
+              borderColor={"worksheet.lightGray2"}
               alignItems="center"
               space="1"
             >
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"worksheet.cardCloseIcon"}
                 isDisabled
               />
               <BodyLarge>
@@ -293,7 +301,13 @@ export default function WorksheetShare({ footerLinks, appName }) {
               https://shiksha.edu/learningmadeeasy+1/eaSe89Js.
             </BodyMedium>
           </VStack>
-          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+          <Box
+            bg={"worksheet.white"}
+            p="5"
+            position="sticky"
+            bottom="0"
+            shadow={2}
+          >
             <Button.Group>
               <Button
                 flex="1"
@@ -307,7 +321,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
               <Button
                 flex="1"
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "worksheet.white" }}
                 px="5"
                 onPress={handleSuccessModule}
               >

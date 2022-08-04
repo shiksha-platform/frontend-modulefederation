@@ -54,10 +54,10 @@ export default function Teaching({ footerLinks, appName }) {
           )}
         </H2>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
-      <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg={"worksheet.white"} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
         <Tab
           routes={[
             {

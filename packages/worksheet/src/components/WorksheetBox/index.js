@@ -152,7 +152,7 @@ export default function WorksheetBox({
     let props = {
       name: "AddCircleFillIcon",
       _icon: { size: 30 },
-      color: colors.primary,
+      color: "worksheet.primary",
       display: "none",
       p: "0",
       onPress: handleAddToTimeline,
@@ -163,8 +163,8 @@ export default function WorksheetBox({
         ...props,
         display: "",
         name: "EditBoxLineIcon",
-        color: colors.gray,
-        bg: colors.white,
+        color: "worksheet.gray",
+        bg: "worksheet.white",
         p: 1,
         _icon: { size: 20 },
       };
@@ -173,13 +173,13 @@ export default function WorksheetBox({
   };
 
   return (
-    <Box p="5" borderWidth="1" borderColor={colors.lightGray2} rounded="lg">
+    <Box p="5" borderWidth="1" borderColor={"worksheet.lightGray2"} rounded="lg">
       <VStack space={4}>
         <HStack justifyContent="space-between" alignItems="flex-start">
           <Pressable onPress={() => (url ? navigate(url) : "")}>
             <HStack space={2} alignItems="center">
               <Avatar bg={randomColors[random]} size="57" rounded="md">
-                <H2 color={colors.white}>
+                <H2 color={"worksheet.white"}>
                   {item.name?.toUpperCase().substr(0, 1)}
                 </H2>
               </Avatar>
@@ -194,7 +194,7 @@ export default function WorksheetBox({
                 <HStack space={1} alignItems="center">
                   <IconByName
                     name="Heart3FillIcon"
-                    color={colors.eventError}
+                    color={"worksheet.eventError"}
                     _icon={{ size: 12 }}
                     isDisabled
                   />
@@ -210,7 +210,7 @@ export default function WorksheetBox({
         </HStack>
         {worksheetConfig?.includes("description") || true ? (
           <BodyMedium
-            color={colors.worksheetText}
+            color={"worksheet.darkGary4"}
             style={{
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -237,7 +237,7 @@ export default function WorksheetBox({
               <IconByName
                 name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
                 _icon={{ size: 15 }}
-                color={colors.primary}
+                color={"worksheet.primary"}
                 p="0"
                 onPress={handleLike}
               />
@@ -250,6 +250,7 @@ export default function WorksheetBox({
               <IconByName
                 name="ShareLineIcon"
                 _icon={{ size: 15 }}
+                color={"worksheet.primary"}
                 p="0"
                 onPress={handleShare}
               />
@@ -263,7 +264,7 @@ export default function WorksheetBox({
                 onPress={handleDownload}
                 name="DownloadLineIcon"
                 _icon={{ size: 15 }}
-                color={colors.primary}
+                color={"worksheet.primary"}
                 p="0"
               />
             </Box>
