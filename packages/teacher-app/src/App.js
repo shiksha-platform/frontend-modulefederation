@@ -232,11 +232,10 @@ function App() {
   const searchParams = Object.fromEntries(urlSearchParams.entries());
 
   useEffect(async () => {
-    const resultTeacher = await userRegistryService.getOne({}, {});
-
     if (searchParams.token != undefined) {
       localStorage.setItem("token", searchParams.token);
     }
+    const resultTeacher = await userRegistryService.getOne({}, {});
 
     if (resultTeacher) {
       let id = resultTeacher.id.replace("1-", "");
@@ -253,10 +252,11 @@ function App() {
       //window.location.reload();
     }
   }, []);
+  console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
   if (
-    process.env.OAUTH_PROXY_ENABLED == undefined ||
-    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
   ) {
     return (
       <AppShell
