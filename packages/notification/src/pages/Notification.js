@@ -33,7 +33,7 @@ import {
   FilterButton,
   Form,
   telemetryFactory,
-  teacherRegistryService,
+  userRegistryService,
   getAllForUser,
 } from "@shiksha/common-lib";
 import moment from "moment";

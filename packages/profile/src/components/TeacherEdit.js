@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import {
   H1,
   H3,
-  teacherRegistryService,
+  userRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
@@ -121,7 +121,7 @@ export default function TeacherEdit({
     if (validate()) {
       if (editChangeState && setTeacherObject) {
         let result = {};
-        result = await teacherRegistryService.update(object, {
+        result = await userRegistryService.update(object, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
