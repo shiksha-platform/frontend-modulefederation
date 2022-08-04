@@ -2,6 +2,9 @@ const maxWidth = '1080'
 const fontFamily = localStorage.getItem('lang') === 'hi' ? "'Baloo 2'" : 'Inter'
 const fontSize = localStorage.getItem('lang') === 'hi' ? '20px' : ''
 import colorTheme from './colorTheme'
+import colourConstant from './constants'
+
+const { dark, normal, light } = colourConstant()
 
 const theme = {
   colors: {
@@ -10,6 +13,7 @@ const theme = {
     student: colorTheme,
     class: colorTheme,
     worksheet: { ...colorTheme },
+    notification: { ...colorTheme, notificationBg: light },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',
@@ -46,9 +50,9 @@ const theme = {
     mono: fontFamily
   },
   components: {
-    Layout: {    
+    Layout: {
       _scollView: { bg: '#f8f8f9' },
-      _subHeader: { bg: '#E0DFF6', _text: { color: '#6461D2' } }
+      _subHeader: { bg: normal, _text: { color: dark } }
     },
     Text: {
       baseStyle: {

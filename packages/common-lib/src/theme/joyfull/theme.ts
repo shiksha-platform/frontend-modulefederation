@@ -27,6 +27,10 @@ const theme = {
       cardBgLight: "#FEF1F9",
       secondary: '#feefeb'
     },
+    notification: {
+      cardBg: "#D9F0FC",
+      notificationBg: "#FDDFD8"
+    },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

@@ -200,7 +200,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
       _appBar={{ languages: manifest.languages }}
       subHeader={t("PICK_DATE_AND_TIME")}
       _subHeader={{
-        bg: colors.cardBg,
+        bg: "notification.cardBg",
         _text: {
           fontSize: "16px",
           fontWeight: "500",
@@ -293,11 +293,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             },
           ]}
         />
-        {/*<Box bg={colors.white} p="5">
+        {/*<Box bg={"notification.white"} p="5">
           <Checkbox
             isChecked={recurring}
             colorScheme="button"
-            borderColor={colors.primary}
+            borderColor={"notification.primary"}
             borderRadius="0"
             onChange={(e) => setRecurring(!recurring)}
           >
@@ -312,7 +312,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         ) : (
           ""
         )}
-        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+        <Box bg={"notification.white"} p="5" position="sticky" bottom="0" shadow={2}>
           <Button.Group>
             <Button
               colorScheme="button"
@@ -325,7 +325,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             </Button>
             <Button
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: "notification.white" }}
               px="5"
               ml="5px"
               flex="1"
@@ -339,19 +339,19 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           isOpen={dateTimeData?.name}
           onClose={() => setDateTimeData({})}
         >
-          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t(`Select ${dateTimeData?.name}`)}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 onPress={(e) => setDateTimeData({})}
               />
             </HStack>
           </Actionsheet.Content>
-          <ScrollView maxH="80%" bg={colors.white} width={"100%"}>
+          <ScrollView maxH="80%" bg={"notification.white"} width={"100%"}>
             {dateTimeData?.data &&
               dateTimeData.data.map((value, index) => {
                 return (
@@ -363,7 +363,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                     }}
                     bg={
                       dateTime[dateTimeData.name] === value
-                        ? colors.coolGray
+                        ? "notification.lightGray3"
                         : ""
                     }
                   >
@@ -374,7 +374,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             <Box p="5" position="sticky" bottom="00">
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 onPress={(e) => {
                   setDateTimeData({});
                 }}
@@ -390,7 +390,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         >
           <Actionsheet.Content
             alignItems={"left"}
-            bg={colors.scheduleNotificationBg}
+            bg={"notification.successAlert"}
           >
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
@@ -398,18 +398,18 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 onPress={(e) => setShowSummaryModal({})}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"}>
+          <Box bg={"notification.white"} width={"100%"}>
             <Box px="5" pt="5">
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="CheckDoubleLineIcon"
-                  color={colors.cardCloseIcon}
+                  color={"notification.cardCloseIcon"}
                   isDisabled
                 />
                 <BodyLarge>
@@ -422,13 +422,13 @@ export default function ScheduleNotification({ footerLinks, appName }) {
               pt="5"
               pb="5"
               borderBottomWidth="1"
-              borderColor={colors.lightGray}
+              borderColor={"notification.lightGray2"}
             >
               <HStack alignItems="center" space="1">
                 <IconByName
                   _icon={{ size: "16" }}
                   name="TimeLineIcon"
-                  color={colors.cardCloseIcon}
+                  color={"notification.cardCloseIcon"}
                   isDisabled
                 />
                 <BodyLarge>
@@ -456,7 +456,7 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 onPress={(e) => {
                   NotificationSendRequest();
                   setSuccess(true);
@@ -487,7 +487,7 @@ const FormInput = ({
     data.map((item, index) => (
       <HStack
         key={index}
-        bg={colors.white}
+        bg={"notification.white"}
         p="5"
         alignItems="center"
         justifyContent="space-between"
@@ -500,11 +500,11 @@ const FormInput = ({
           rounded="full"
           colorScheme="button"
           px="5"
-          bg={colors.notificationCardBg}
+          bg={"notification.notificationBg"}
           _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName
-              color={item?.buttonVariant ? colors.primary : colors.primary}
+              color={item?.buttonVariant ? "notification.primary" : "notification.primary"}
               name="ArrowDownSLineIcon"
               isDisabled
             />
