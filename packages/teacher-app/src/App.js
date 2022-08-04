@@ -1,22 +1,18 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import {
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
   AppRoutesContainer,
   teacherRegistryService,
-  getApiConfig,
 } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
-import { extendTheme } from "native-base";
 
 //TODO: separate out the theme related code from App
 initializeI18n(["translation", "core", "attendance"]);
 
-function App() {  
-  const theme = extendTheme(DEFAULT_THEME("monochrome"));
+function App() {
   const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
   const Attendance = React.lazy(() => import("attendance/Attendance"));
   const Report = React.lazy(() => import("attendance/Report"));
@@ -261,7 +257,6 @@ function App() {
   ) {
     return (
       <AppShell
-        theme={theme}
         basename={process.env.PUBLIC_URL}
         routes={routes}
         AuthComponent={LoginComponent}
@@ -272,7 +267,6 @@ function App() {
   } else {
     return (
       <AppRoutesContainer
-        theme={theme}
         basename={process.env.PUBLIC_URL}
         routes={routes}
         AuthComponent={LoginComponent}

@@ -145,7 +145,7 @@ export default function Form({
         {...{ formObject, setFormObject, formData, setFormData }}
         data={inputs}
       />
-      <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
+      <Box bg={"worksheet.white"} p="5" position="sticky" bottom="84" shadow={2}>
         <Button.Group>
           {createType === "create" &&
           manifest &&
@@ -164,7 +164,7 @@ export default function Form({
           )}
           <Button
             colorScheme="button"
-            _text={{ color: colors.white }}
+            _text={{ color: "worksheet.white" }}
             px="5"
             flex="1"
             onPress={handelAddQuestion}
@@ -174,19 +174,19 @@ export default function Form({
         </Button.Group>
       </Box>
       <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content alignItems={"left"} bg={colors.worksheetCardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t(`Select ${formData?.name}`)}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
+              color={"worksheet.cardCloseIcon"}
               onPress={(e) => setFormData({})}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg={colors.white} width={"100%"}>
+        <Box bg={"worksheet.white"} width={"100%"}>
           {type === "array" ? (
             <Pressable
               p="3"
@@ -215,8 +215,8 @@ export default function Form({
                     formData?.data &&
                     valueArr &&
                     formData?.data?.length === valueArr?.length
-                      ? colors.primary
-                      : colors.lightGray2
+                      ? "worksheet.primary"
+                      : "worksheet.lightGray2"
                   }
                   name={
                     formData?.data &&
@@ -270,8 +270,8 @@ export default function Form({
                   bg={
                     (type !== "array" && valueArr === value) ||
                     (type === "stingValueArray" && valueArr.includes(value))
-                      ? colors.lightGray2
-                      : colors.white
+                      ? "worksheet.lightGray2"
+                      : "worksheet.white"
                   }
                 >
                   <HStack space="2" colorScheme="button" alignItems="center">
@@ -280,8 +280,8 @@ export default function Form({
                         isDisabled
                         color={
                           valueArr.includes(value)
-                            ? colors.primary
-                            : colors.lightGray2
+                            ? "worksheet.primary"
+                            : "worksheet.lightGray2"
                         }
                         name={
                           valueArr.includes(value)
@@ -300,7 +300,7 @@ export default function Form({
           <Box p="5">
             <Button
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               onPress={(e) => setFormData({})}
             >
               {t("SELECT")}
@@ -327,7 +327,7 @@ const FormInput = ({
       return (
         <HStack
           key={index}
-          bg={colors.white}
+          bg={"worksheet.white"}
           p="5"
           alignItems="center"
           justifyContent="space-between"
@@ -335,7 +335,7 @@ const FormInput = ({
           <BodyLarge>
             {t(item.name)}{" "}
             {item.required ? (
-              <Text color={colors.primary}>*</Text>
+              <Text color={"worksheet.primary"}>*</Text>
             ) : (
               <React.Fragment />
             )}
@@ -356,10 +356,10 @@ const FormInput = ({
               <IconByName
                 color={
                   formObject[attributeName]
-                    ? colors.white
+                    ? "worksheet.white"
                     : item?.buttonVariant
-                    ? colors.primary
-                    : colors.primary
+                    ? "worksheet.primary"
+                    : "worksheet.primary"
                 }
                 name="ArrowDownSLineIcon"
                 isDisabled

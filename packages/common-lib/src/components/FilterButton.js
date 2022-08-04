@@ -158,7 +158,7 @@ const FilterButton = ({
                 px='5'
                 rightIcon={
                   <IconByName
-                    color='button.500'
+                    color='primary'
                     name='ArrowRightSFillIcon'
                     isDisabled
                   />
@@ -173,7 +173,7 @@ const FilterButton = ({
                 {..._button}
                 {..._resetButton}
               >
-                <BodyLarge textTransform='inherit'>
+                <BodyLarge textTransform='inherit' color='primary'>
                   {resetButtonText ? resetButtonText : t('RESET_FILTER')}
                 </BodyLarge>
               </Button>

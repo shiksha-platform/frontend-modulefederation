@@ -229,7 +229,7 @@ function Home({ footerLinks, appName }) {
           isShowNotificationButton: true,
         }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
-        _subHeader={{          
+        _subHeader={{
           pt: "20px",
           pb: "20px",
         }}

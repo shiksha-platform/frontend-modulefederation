@@ -20,8 +20,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
 import manifestLocal from "../../manifest.json";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 const newDefaultInputs = defaultInputs.map((e) => {
   return {
@@ -117,7 +115,7 @@ export default function ListOfWorksheet({
       _appBar={{ languages: manifestLocal.languages }}
       subHeader={formObject.name}
       _subHeader={{
-        bg: colors.worksheetCardBg,
+        bg: "worksheet.cardBg",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -131,28 +129,28 @@ export default function ListOfWorksheet({
           <FilterButton
             getObject={setFormObject}
             object={formObject}
-            _actionSheet={{ bg: colors.worksheetCardBg }}
+            _actionSheet={{ bg: "worksheet.cardBg" }}
             _box={{ pt: 5, px: 5 }}
             _button={{ bg: "button.50", px: "15px", py: "2" }}
             _filterButton={{
               rightIcon: "",
-              bg: colors.white,
+              bg: "worksheet.white",
             }}
             resetButtonText={t("COLLAPSE")}
             filters={newDefaultInputs}
           />
-          <Box bg={colors.white} px="5">
+          <Box bg={"worksheet.white"} px="5">
             <ScrollView horizontal={true}>
               {selectData.map((item, index) => (
                 <Box key={index}>
                   <Box
-                    bg={colors.viewNotificationDark}
+                    bg={"worksheet.secondary"}
                     w="192px"
                     h="87px"
                     m="2"
                     p="3"
                     borderWidth="1"
-                    borderColor={colors.viewNotificationNormal}
+                    borderColor={"worksheet.primary"}
                     rounded="lg"
                     overflow="hidden"
                   >
@@ -173,7 +171,7 @@ export default function ListOfWorksheet({
                     top="0"
                     right="0"
                     p="0"
-                    color={colors.primary}
+                    color={"worksheet.primary"}
                     _icon={{ size: 24 }}
                     onPress={(e) => handelUnSelectQuestion(item)}
                   />
@@ -186,7 +184,7 @@ export default function ListOfWorksheet({
         <></>
       )}
 
-      <Box bg={colors.white} p="5">
+      <Box bg={"worksheet.white"} p="5">
         <VStack space="5">
           {showQuestions.map((item, index) => {
             const isExist = selectData.filter(
@@ -203,13 +201,15 @@ export default function ListOfWorksheet({
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color={colors.primary}
+                      color={"worksheet.primary"}
                       onPress={(e) => setQuestionObject(item)}
                     />
                     {!isSuccess ? (
                       <IconByName
                         p="1"
-                        color={isExist ? colors.primary : colors.lightGray2}
+                        color={
+                          isExist ? "worksheet.primary" : worksheet.lightGray2
+                        }
                         name={
                           isExist ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"
                         }
@@ -225,14 +225,16 @@ export default function ListOfWorksheet({
           })}
         </VStack>
       </Box>
-      <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
+      <Box bg={"worksheet.white"} p="5" position="sticky" bottom="84" shadow={2}>
         {!isSuccess ? (
           <>
             <Pressable onPress={(e) => setIsAnswerFilter(!isAnswerFilter)}>
               <HStack alignItems="center" space="1" pt="1" py="4">
                 <IconByName
                   isDisabled
-                  color={isAnswerFilter ? colors.primary : colors.lightGray2}
+                  color={
+                    isAnswerFilter ? "worksheet.primary" : worksheet.lightGray2
+                  }
                   name={
                     isAnswerFilter
                       ? "CheckboxLineIcon"
@@ -276,7 +278,7 @@ export default function ListOfWorksheet({
             </Button>
             <Button
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="5"
               flex="1"
               onPress={handelPublish}

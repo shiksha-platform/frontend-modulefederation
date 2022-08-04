@@ -1,8 +1,16 @@
+// #6461D2, #eeedff, #E0DFF6
+
+import colourConstant from './constants'
+
+const { dark, normal, light } = colourConstant()
 const colorTheme = {
-  primary: '#6461D2',
-  secondary: '#D9F0FC',
+  primary: dark,
+  primaryLight: light,
+  primaryDark: dark,
+  secondary: normal,
   text: '#383739',
-  cardBg: '#D9F0FC',
+  cardBg: normal,
+  cardBgLight: light,
   cardCloseIcon: '#7F9DAC',
   eventPoorPerformance: '#E04242',
   eventAbsent: '#F57B7B',
@@ -20,6 +28,7 @@ const colorTheme = {
   messageAlert: '#373839',
   messageInfo: '#7C7E82',
   green: '#0d911c',
+  darkGreen: '#5B7E5F',
   bodyText: '#373839',
   darkGary0: '#18181b',
   darkGary1: '#27272a',
@@ -35,7 +44,9 @@ const colorTheme = {
   lightGray4: '#f3f4f6',
   lightGray5: '#f4f4f5',
   lightGray6: '#f0f0f0',
-  white: '#FFFFFF'
+  white: '#FFFFFF',
+  successAlert: '#B9FBC0',
+  warningAlert: '#FFE5B3'
 }
 
 export default colorTheme

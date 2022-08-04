@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import QuestionBank from "pages/QuestionBank";
 import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";

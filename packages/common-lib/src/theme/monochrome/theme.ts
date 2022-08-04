@@ -9,7 +9,7 @@ const theme = {
     attendance: colorTheme,
     student: colorTheme,
     class: colorTheme,
-    worksheet: colorTheme,
+    worksheet: { ...colorTheme },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',
@@ -46,8 +46,7 @@ const theme = {
     mono: fontFamily
   },
   components: {
-    Layout: {
-      _layout: { bg: '', style: {} },
+    Layout: {    
       _scollView: { bg: '#f8f8f9' },
       _subHeader: { bg: '#E0DFF6', _text: { color: '#6461D2' } }
     },

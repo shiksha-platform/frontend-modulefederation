@@ -20,6 +20,7 @@ const colorTheme = {
   messageAlert: '#373839',
   messageInfo: '#7C7E82',
   green: '#0d911c',
+  darkGreen: '#5B7E5F',
   bodyText: '#373839',
   darkGary0: '#18181b',
   darkGary1: '#27272a',
@@ -35,7 +36,9 @@ const colorTheme = {
   lightGray4: '#f3f4f6',
   lightGray5: '#f4f4f5',
   lightGray6: '#f0f0f0',
-  white: '#FFFFFF'
+  white: '#FFFFFF',
+  successAlert: '#B9FBC0',
+  warningAlert: '#FFE5B3'
 }
 
 export default colorTheme
