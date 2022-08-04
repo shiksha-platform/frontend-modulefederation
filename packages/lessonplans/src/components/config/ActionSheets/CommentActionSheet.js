@@ -19,9 +19,11 @@ import {
     FormControl,
     InputGroup,
     InputRightAddon,
+    ScrollView
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
 export default function CommentActionSheet({
@@ -32,12 +34,14 @@ export default function CommentActionSheet({
     setCommets,
 }) {
     const { t } = useTranslation();
-    const [comment, setCommet] = React.useState("");
+    const [comment, setComment] = React.useState("");
     const [error, setError] = React.useState();
+    const firstName = localStorage.getItem("firstName");
+    const lastName = localStorage.getItem("lastName");
 
     const handleInput = (event) => {
         const value = event.target.value;
-        setCommet(value);
+        setComment(value);
         if (!value) {
             setError(t("ENTER_COMMENT"));
         } else {
@@ -53,12 +57,20 @@ export default function CommentActionSheet({
                 comment,
             };
             const { osid } = await commentRegistryService.create(newData);
-            setCommets([...comments, { ...newData, id: osid }]);
-            setCommet("");
+            setCommets([
+                ...comments,
+                {
+                    ...newData,
+                    id: osid,
+                    userData: { firstName, lastName, createdAt: moment() },
+                },
+            ]);
+            setComment("");
         } else {
             setError(t("ENTER_COMMENT"));
         }
     };
+    console.log(comments);
 
     return (
         <Actionsheet
@@ -77,27 +89,33 @@ export default function CommentActionSheet({
                     />
                 </HStack>
             </Actionsheet.Content>
-            <VStack width={"100%"} space="1px">
-                {comments.map((item, index) => (
-                    <Box bg="white" p="5" key={index}>
-                        <HStack space="2" alignItems="center">
-                            <Avatar
-                                size="md"
-                                bg="green.500"
-                                source={{
-                                    uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                }}
-                            >
-                                AJ
-                            </Avatar>
-                            <VStack>
-                                <BodyLarge>{t("Mrs. Jina Jain")}</BodyLarge>
-                                <Subtitle color="gray.400">{t("12 January, 4:00PM")}</Subtitle>
-                            </VStack>
-                        </HStack>
-                        <Subtitle p="5">{item.comment}</Subtitle>
-                    </Box>
-                ))}
+            <VStack width={"100%"} space="1px" maxH="80%">
+                <ScrollView>
+                    <VStack space="1px">
+                        {comments.map((item, index) => (
+                            <Box bg="white" p="5" key={index}>
+                                <HStack space="2" alignItems="center">
+                                    <Avatar
+                                        size="md"
+                                        bg="green.500"
+                                        source={{
+                                            uri: item?.userData?.image,
+                                        }}
+                                    >
+                                        {`${item?.userData?.firstName} ${item?.userData?.lastName}`
+                                            .toUpperCase()
+                                            .substring(0, 2)}
+                                    </Avatar>
+                                    <VStack>
+                                        <BodyLarge>{`${item?.userData?.firstName} ${item?.userData?.lastName}`}</BodyLarge>
+                                        <Subtitle color="gray.400">{moment(item?.createdAt).format("DD MMMM, hh:mma")}</Subtitle>
+                                    </VStack>
+                                </HStack>
+                                <Subtitle p="5">{item.comment}</Subtitle>
+                            </Box>
+                        ))}
+                    </VStack>
+                </ScrollView>
                 <Box bg="white" p="5">
                     <HStack space="2" alignItems="center" w={"100%"}>
                         <FormControl isInvalid={error}>

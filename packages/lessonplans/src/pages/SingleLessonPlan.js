@@ -16,9 +16,11 @@ import {
     H2,
     overrideColorTheme,
     Subtitle,
-    H4
+    H4,
+    telemetryFactory,
+    capture
 } from "@shiksha/common-lib";
-import { Button, Box, HStack, VStack, Text, Stack, Avatar, Pressable } from "native-base";
+import { Button, Box, HStack, VStack, Text, Stack, Avatar, Pressable, Link } from "native-base";
 import manifest from "../manifest.json";
 import { useNavigate, useParams } from "react-router-dom";
 import CommentActionSheet from "components/config/ActionSheets/CommentActionSheet";
@@ -55,15 +57,13 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
 
     React.useEffect(async () => {
         console.log("id", id);
-        //const lessonPlansData1 = await lessonPlansRegistryService.getOne({ id });
+        const lessonPlansData = await lessonPlansRegistryService.getOne({ id });
         // console.log(lessonPlansData1);
-        const lessonPlansData = lessonPlansList[4];
+        //const lessonPlansData = lessonPlansList[4];
         console.log("lessonPlansData", lessonPlansData);
         setLessonPlan(lessonPlansData);
         getLikes();
-        const data = await lessonPlansRegistryService.getLessonPlansComments(id, {
-            status: { eq: "Publish" },
-        });
+        const data = await lessonPlansRegistryService.getLessonPlansComments(id);
         setCommets(data);
         setLoading(false);
     }, []);
@@ -117,6 +117,19 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
         }
     };
 
+    const handleShare = () => {
+        const telemetryData = telemetryFactory.interact({
+            appName,
+            type: "Lessonplan-Share",
+            worksheetId: lessonPlan?.id,
+            subject: lessonPlan?.subject[0],
+            grade: lessonPlan?.gradeLevel[0],
+            topic: lessonPlan?.topic[0],
+        });
+        capture("INTERACT", telemetryData);
+        navigate(`/lessonplan/${lessonPlan.id}/share`);
+    };
+
     if (loading) {
         return <Loading />;
     }
@@ -132,14 +145,14 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
                             name="InformationLineIcon"
                             onPress={(e) => setShowModuleLessonPlan(true)}
                         />
-                        {state ? (
+                        {/* {state ? (
                             <IconByName
                                 name="EditBoxLineIcon"
                                 onPress={(e) => navigate(`/lessonplans/${lessonPlans?.id}/edit`)}
                             />
                         ) : (
                             <React.Fragment />
-                        )}
+                        )} */}
                     </HStack>
                 ),
             }}
@@ -153,11 +166,16 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
                             color={like.id ? "button.500" : "black.500"}
                             onPress={handleLike}
                         />
-                        <IconByName name="ShareLineIcon" />
                         <IconByName
-                            onPress={(e) => navigate("/lessonplan/template")}
-                            name="DownloadLineIcon"
+                            name="ShareLineIcon"
+                            onPress={handleShare}
                         />
+                        <Link href={"https://" + lessonPlan.downloadUrl} isExternal>
+                            <IconByName
+                                //onPress={(e) => navigate(lessonPlan.downloadUrl)}
+                                name="DownloadLineIcon"
+                            />
+                        </Link>
                     </HStack>
                 ) : (
                     <React.Fragment />

@@ -161,7 +161,7 @@ export const getLessonPlansLikes = async (id) => {
 export const getLessonPlansComments = async (id, filter = {}) => {
     return await commentRegistryService.getAll({
         contextId: { eq: id },
-        context: { eq: 'Lessonplans' },
+        context: { eq: 'Lessonplan' },
         ...filter
     })
 }

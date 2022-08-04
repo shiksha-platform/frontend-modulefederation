@@ -7,6 +7,7 @@ import Lessonplans from './pages/Lessonplans'
 import SingleLessonPlan from "pages/SingleLessonPlan";
 import ExploreVideosList from "pages/ExploreVideosList";
 import VideoDetails from "pages/VideoDetails";
+import LessonplanShare from "pages/LessonplanShare";
 // import Teaching from "pages/Teaching";
 // import TeachingDetail from "pages/TeachingDetail";
 // import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
@@ -31,18 +32,14 @@ function App() {
       path: "/video/:id",
       component: VideoDetails,
     },
-    // {
-    //   path: "/worksheet/questionBank",
-    //   component: QuestionBank,
-    // },
     {
       path: "/lessonplan/:id",
       component: SingleLessonPlan,
     },
-    // {
-    //   path: "/worksheet/create",
-    //   component: CreateWorksheet,
-    // },
+    {
+      path: "/lessonplan/:lessonplanId/share",
+      component: LessonplanShare,
+    },
     // {
     //   path: "/worksheet/template",
     //   component: WorksheetTemplate,

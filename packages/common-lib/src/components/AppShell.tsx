@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
-import FloatingVideoPlayer from './floatingPlayer/FloatingVideoPlayer'
+//import FloatingVideoPlayer from './floatingPlayer/FloatingVideoPlayer'
 
 function AppShell({
   theme,

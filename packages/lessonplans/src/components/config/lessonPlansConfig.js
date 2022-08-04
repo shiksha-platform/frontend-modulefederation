@@ -1,7 +1,7 @@
 export const defaultInputs = [
     {
-        name: "Topic",
-        attributeName: "topic",
+        name: "Subject",
+        attributeName: "subject",
         data: [
             "Social Science",
             "Science",

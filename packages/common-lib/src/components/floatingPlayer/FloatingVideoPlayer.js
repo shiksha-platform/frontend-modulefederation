@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Draggable from "react-draggable";
 import "react-resizable/css/styles.css";
 import { Box, HStack } from "native-base";
-import { IconByName } from "@shiksha/common-lib";
+import IconByName from "../IconByName";
 import VideoPlayer from "./VideoPlayer";
 
 const FloatingVideoPlayer = ({ link = "", show = true }) => {

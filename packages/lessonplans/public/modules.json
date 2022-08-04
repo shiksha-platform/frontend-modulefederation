@@ -30,6 +30,6 @@
     "url": "http://localhost:3010/modules/mylearning"
   },
   "lessonplans": {
-    "url": "http://localhost:3011/modules/lessonplans"
+    "url": "http://localhost:3016/modules/lessonplans"
   }
 }

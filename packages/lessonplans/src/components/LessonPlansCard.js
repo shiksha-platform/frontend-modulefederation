@@ -1,4 +1,4 @@
-import { IconByName, overrideColorTheme, H2, Subtitle, Caption, BodyMedium, lessonPlansRegistryService } from "@shiksha/common-lib";
+import { IconByName, overrideColorTheme, H2, Subtitle, Caption, BodyMedium, lessonPlansRegistryService, likeRegistryService, telemetryFactory, capture } from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -6,21 +6,23 @@ import {
   Pressable,
   Stack,
   Text,
-  VStack
+  VStack,
+  Link
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  LinkedinShareButton,
-  LinkedinIcon,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from "react-share";
+import jwt_decode from "jwt-decode";
+// import {
+//   LinkedinShareButton,
+//   LinkedinIcon,
+//   WhatsappIcon,
+//   WhatsappShareButton,
+// } from "react-share";
 import colorTheme from "colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function LessonPlansCard({ item, url, canShare }) {
+export default function LessonPlansCard({ item, url, canShare, appName }) {
   const { t } = useTranslation();
   const [like, setLike] = React.useState({});
   const [likes, setLikes] = React.useState([]);
@@ -94,7 +96,7 @@ export default function LessonPlansCard({ item, url, canShare }) {
       topic: item?.topic,
     });
     capture("INTERACT", telemetryData);
-    navigate("/lessonplan/template");
+    //navigate("/lessonplan/template");
   };
 
   const handleShare = () => {
@@ -134,11 +136,11 @@ export default function LessonPlansCard({ item, url, canShare }) {
                     isDisabled
                   />
                   <Caption>
-                    {item?.likes ? item?.likes + " likes" : "0 likes"}
+                    {(likes ? likes.length : 0) + " likes"}
                   </Caption>
 
                   <Caption>
-                    ({item?.comments ? item?.comments + " comments" : "0 comments"})
+                    ({(comments ? comments.length : 0) + " comments"})
                   </Caption>
                 </HStack>
               </Stack>
@@ -173,7 +175,7 @@ export default function LessonPlansCard({ item, url, canShare }) {
                 p="0"
               />
               <Subtitle>
-                {"Topic: " + item?.topic}
+                {"Subject: " + item?.subject[0]}
               </Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
@@ -235,19 +237,21 @@ export default function LessonPlansCard({ item, url, canShare }) {
           )}
           {!showButtonArray || showButtonArray.includes("Download") ? (
             <Box shadow="2" p="2" rounded="full">
-              <IconByName
-                onPress={handleDownload}
-                name="DownloadLineIcon"
-                _icon={{ size: 20 }}
-                color="warmGray.700"
-                p="0"
-              />
+              <Link href={"https://" + item.downloadUrl} isExternal>
+                <IconByName
+                  onPress={handleDownload}
+                  name="DownloadLineIcon"
+                  _icon={{ size: 20 }}
+                  color="warmGray.700"
+                  p="0"
+                />
+              </Link>
             </Box>
           ) : (
             <React.Fragment />
           )}
         </HStack>
       </VStack>
-    </Box>
+    </Box >
   );
 }

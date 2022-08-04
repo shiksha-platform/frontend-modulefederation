@@ -1,4 +1,7 @@
-import { H2, IconByName, overrideColorTheme } from "@shiksha/common-lib";
+//import { H2, IconByName, overrideColorTheme } from "@shiksha/common-lib";
+import { H2 } from "../layout/HeaderTags";
+import IconByName from "../IconByName";
+import { overrideColorTheme } from "../helper";
 import { Box, HStack, Slider } from "native-base";
 import React from "react";
 import colorTheme from "../colorTheme";
@@ -179,8 +182,8 @@ export default function VideoPlayer({ url }) {
                     playerState.isMuted
                       ? "VolumeMuteLineIcon"
                       : playerState.volume > 50
-                      ? "VolumeUpLineIcon"
-                      : "VolumeDownLineIcon"
+                        ? "VolumeUpLineIcon"
+                        : "VolumeDownLineIcon"
                   }
                   color={colors.white}
                 />

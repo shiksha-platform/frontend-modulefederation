@@ -115,7 +115,7 @@ export default function LessonPlansActionSheet({
                                     />
                                     <Caption>
                                         {/* {likeCount} {t("TEACHERS_LIKE_THIS")} */}
-                                        {Likes.length} {t("TEACHERS_LIKE_THIS")}
+                                        {likeCount} {t("TEACHERS_LIKE_THIS")}
                                     </Caption>
                                 </HStack>
                             </Pressable>

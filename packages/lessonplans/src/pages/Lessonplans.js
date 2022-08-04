@@ -30,7 +30,7 @@ import manifest from "../manifest.json";
 import LessonPlansCard from "components/LessonPlansCard";
 import { defaultInputs } from "../components/config/lessonPlansConfig";
 import { lessonPlansList } from "components/config/lessonPlansList";
-import FloatingVideoPlayer from "components/FloatingVideoPlayer";
+//import FloatingVideoPlayer from "components/FloatingVideoPlayer";
 
 const sortArray = [
     {
@@ -74,7 +74,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
     return {
         ...e,
         ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
-            ? "grade"
+            ? "gradeLevel"
             : e.attributeName,
         ["type"]: "sting",
     };
@@ -125,12 +125,12 @@ export default function Lessonplans({ footerLinks, appName }) {
     }, [filterObject, search.length >= 3, searchState]);
     console.log(filterObject);
 
-    React.useEffect(() => {
-        return () => {
-            //console.log("after the component got unmounted");
-            <FloatingVideoPlayer />
-        }
-    }, [])
+    // React.useEffect(() => {
+    //     return () => {
+    //         //console.log("after the component got unmounted");
+    //         <FloatingVideoPlayer />
+    //     }
+    // }, [])
 
     if (loading) {
         return <Loading />;
