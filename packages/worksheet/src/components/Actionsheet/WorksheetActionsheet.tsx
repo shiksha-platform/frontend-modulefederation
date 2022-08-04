@@ -1,3 +1,4 @@
+// Lib
 import {
   BodyMedium,
   Caption,
@@ -17,17 +18,15 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+
+// Components
+import AvatarGroup from "components/AvatarGroup";
+
+// Utils
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-
-const AttributeData = [
-  { icon: "SurveyLineIcon", label: "SUBJECT", attribute: "subject" },
-  { icon: "BarChart2LineIcon", label: "LEVEL", attribute: "level" },
-  { icon: "QuestionLineIcon", label: "QUESTIONS", attribute: "questions" },
-  { icon: "AccountBoxFillIcon", label: "GRADE", attribute: "grade" },
-  { icon: "ArticleLineIcon", label: "TOPIC", attribute: "topic" },
-  { icon: "Download2LineIcon", label: "DOWNLOADS", attribute: "downloads" },
-];
+import { avatarObjProps } from "constants/avatarsData/avatarsData";
+import { AttributeData } from "constants/attributeData/attributeData";
 
 export default function Worksheet({
   worksheetConfig,
@@ -49,6 +48,7 @@ export default function Worksheet({
         <Stack p={5} pt={2} pb="15px" textAlign="center">
           <H2>{worksheet?.name ? worksheet?.name : ""}</H2>
         </Stack>
+        {/* @ts-ignore */}
         <IconByName
           color={"worksheet.lightGray2"}
           position="absolute"
@@ -88,6 +88,7 @@ export default function Worksheet({
                 </Subtitle>
               </HStack>
               <Pressable
+                // @ts-ignore
                 onPress={(e) =>
                   handleCommentModuleOpen
                     ? handleCommentModuleOpen()
@@ -95,31 +96,8 @@ export default function Worksheet({
                 }
               >
                 <HStack alignItems="center">
-                  <Avatar.Group
-                    _avatar={{
-                      size: "md",
-                    }}
-                  >
-                    <Avatar
-                      size="xs"
-                      bg="green.500"
-                      source={{
-                        uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                      }}
-                    >
-                      AJ
-                    </Avatar>
-                    <Avatar
-                      size="xs"
-                      bg="cyan.500"
-                      source={{
-                        uri: "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-                      }}
-                    >
-                      TE
-                    </Avatar>
-                  </Avatar.Group>
-                  <Subtitle color={"worksheet.primary"}>
+                  <AvatarGroup avatarList={avatarObjProps} />
+                  <Subtitle color={colors.primary}>
                     {commentCount} {t("COMMENTS")}
                   </Subtitle>
                 </HStack>
