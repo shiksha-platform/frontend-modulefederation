@@ -83,7 +83,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
               data={progressAttendance}
             />
             <HStack justifyContent={"space-between"} alignItems="center">
-              {/* <Text>{t("GRADE") + ": " + t("GOOD")}</Text> */}
+              {/* <Text>{t("GRADE") + ": " + t("GOOD")}</Text>  */}
               <Text>
                 {t("TOTAL") + `: ${students?.length} ` + t("STUDENTS")}
               </Text>
