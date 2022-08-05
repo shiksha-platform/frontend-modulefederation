@@ -142,18 +142,18 @@ export default function SendSMS({ footerLinks, appName }) {
         <HStack space="4" justifyContent="space-between" alignItems="center">
           <CalendarBar
             view="days"
-            activeColor={colors.grayIndark}
+            activeColor={"attendance.darkGray"}
             _box={{ p: 0, bg: "transparent" }}
             {...{ page: datePage, setPage: setDatePage }}
           />
           <IconByName name={"ListUnorderedIcon"} isDisabled />
         </HStack>
       }
-      _subHeader={{ bg: colors.attendanceCardBg, mb: 1 }}
+      _subHeader={{ bg: "attendance.cardBg", mb: 1 }}
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg={colors.white} p="5">
+        <Box bg="white" p="5">
           <BodyLarge>
             {(classObject?.name ? "Class " + classObject?.name : "") +
               " • " +
@@ -164,7 +164,7 @@ export default function SendSMS({ footerLinks, appName }) {
             {attendance?.length}
           </Caption>
         </Box>
-        <Box bg={colors.white} p={4}>
+        <Box bg="white" p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -189,8 +189,8 @@ export default function SendSMS({ footerLinks, appName }) {
                     renderItem={({ item }) => (
                       <Box
                         borderWidth="1"
-                        borderColor={colors.presentCardBorder}
-                        bg={colors.presentCardBg}
+                        borderColor={"attendance.presentCardBorder"}
+                        bg={"attendance.presentCardBg"}
                         p="10px"
                         rounded="lg"
                         my="10px"
@@ -203,8 +203,10 @@ export default function SendSMS({ footerLinks, appName }) {
                             <VStack alignItems="center">
                               <H3 fontWeight="500">
                                 <Text>{item.fullName}</Text>
-                                <Text color={colors.lightGray}> • </Text>
-                                <Text color={colors.presentCardText}>100%</Text>
+                                <Text color={"attendance.lightGray"}> • </Text>
+                                <Text color={"attendance.presentCardText"}>
+                                  100%
+                                </Text>
                               </H3>
                             </VStack>
                           }
@@ -219,7 +221,7 @@ export default function SendSMS({ footerLinks, appName }) {
           </Stack>
         </Box>
 
-        <Box bg={colors.white} p={4} mb="4" roundedBottom={"2xl"}>
+        <Box bg="white" p={4} mb="4" roundedBottom={"2xl"}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -242,8 +244,8 @@ export default function SendSMS({ footerLinks, appName }) {
                     renderItem={({ item }) => (
                       <Box
                         borderWidth="1"
-                        borderColor={colors.absentCardBorder}
-                        bg={colors.absentCardBg}
+                        borderColor={"attendance.absentCardBorder"}
+                        bg={"attendance.absentCardBg"}
                         p="10px"
                         rounded="lg"
                         my="10px"
@@ -256,8 +258,8 @@ export default function SendSMS({ footerLinks, appName }) {
                             <VStack alignItems="center">
                               <H3 fontWeight="500">
                                 <Text>{item.fullName}</Text>
-                                <Text color={colors.lightGray}> • </Text>
-                                <Text color={colors.absentCardText}>
+                                <Text color={"attendance.lightGray"}> • </Text>
+                                <Text color={"attendance.absentCardText"}>
                                   3 {t("DAYS")}
                                 </Text>
                               </H3>
@@ -273,15 +275,15 @@ export default function SendSMS({ footerLinks, appName }) {
             </Collapsible>
           </Stack>
         </Box>
-        <Box bg={colors.white} p="5" position="sticky" shadow={2}>
+        <Box bg="white" p="5" position="sticky" shadow={2}>
           <VStack space={"15px"} alignItems={"center"}>
             <Subtitle
               py="5"
               px="10px"
-              color={colors.grayInLight}
+              color={"attendance.darkGray"}
               textTransform="inherit"
             >
-              <Text bold color={colors.darkGray}>
+              <Text bold color={"attendance.darkGray"}>
                 {t("NOTES") + ": "}
               </Text>
               {t("SMS_WILL_AUTOMATICALLY_SENT")}
@@ -293,7 +295,7 @@ export default function SendSMS({ footerLinks, appName }) {
               <Button
                 flex="1"
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "attendance.white" }}
                 onPress={(e) => {
                   const telemetryData = telemetryFactory.interact({
                     appName,

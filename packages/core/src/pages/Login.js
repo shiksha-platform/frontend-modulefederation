@@ -10,6 +10,7 @@ import {
   IconButton,
   CloseIcon,
   Center,
+  useTheme,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest";
@@ -31,8 +32,6 @@ const styles = {
       "linear-gradient(135deg, #e2f2fc -10%, #faf6f3 35%, #faf6f3 60%,#faf6f3 70%, #e2f2fc 110%)",
   },
 };
-
-const colors = overrideColorTheme();
 
 export default function Login({ swPath }) {
   const [credentials, setCredentials] = useState();
@@ -62,7 +61,7 @@ export default function Login({ swPath }) {
     }
     return true;
   };
-  console.log({ colors });
+
   const handleLogin = async () => {
     if (validate()) {
       const fcmToken = await getUserToken(swPath);
@@ -127,7 +126,7 @@ export default function Login({ swPath }) {
     <Box style={styles.box}>
       <Center
         _text={{
-          color: colors?.white,
+          color: "white",
           fontWeight: "bold",
         }}
         height={Height}
@@ -151,11 +150,11 @@ export default function Login({ swPath }) {
                     >
                       <HStack space={2} flexShrink={1}>
                         <Alert.Icon mt="1" />
-                        <Subtitle color={colors?.gray}>{errors.alert}</Subtitle>
+                        <Subtitle color={"gray"}>{errors.alert}</Subtitle>
                       </HStack>
                       <IconButton
                         variant="unstyled"
-                        icon={<CloseIcon size="3" color={colors?.gray} />}
+                        icon={<CloseIcon size="3" color={"gray"} />}
                         onPress={(e) => setErrors({})}
                       />
                     </HStack>
@@ -190,7 +189,7 @@ export default function Login({ swPath }) {
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: colors?.error,
+                        color: "error",
                         fontWeight: 500,
                       }}
                     >
@@ -225,7 +224,7 @@ export default function Login({ swPath }) {
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: colors?.error,
+                        color: "error",
                         fontWeight: 500,
                       }}
                     >
@@ -238,21 +237,19 @@ export default function Login({ swPath }) {
                 <Button
                   colorScheme="button"
                   p="3"
-                  _text={{ color: colors?.white }}
+                  _text={{ color: "white" }}
                   onPress={handleLogin}
                 >
                   {t("SUBMIT")}
                 </Button>
-                <BodyMedium color={colors?.primary} textAlign="center">
+                <BodyMedium color={"primary"} textAlign="center">
                   {t("FORGOT_PASSWORD")}
                 </BodyMedium>
                 <HStack alignItems="center" space="2">
                   <BodyMedium textTransform="inherit">
                     {t("DONT_HAVE_AN_ACCOUNT")}
                   </BodyMedium>
-                  <BodyMedium color={colors?.primary}>
-                    {t("SIGN_UP")}
-                  </BodyMedium>
+                  <BodyMedium color={"primary"}>{t("SIGN_UP")}</BodyMedium>
                 </HStack>
               </VStack>
             </VStack>

@@ -10,7 +10,6 @@ import {
   calendar,
   classRegistryService,
   studentRegistryService,
-  overrideColorTheme,
   H1,
   H2,
   Caption,
@@ -21,9 +20,6 @@ import { GetAttendance } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
 import { useNavigate } from "react-router-dom";
 import manifestLocal from "../../manifest.json";
-import colorTheme from "../../colorTheme";
-
-const colors = overrideColorTheme(colorTheme);
 
 export default function Report({ footerLinks }) {
   const { t } = useTranslation();
@@ -110,19 +106,10 @@ export default function Report({ footerLinks }) {
               return (
                 <Button
                   {...triggerProps}
-                  rounded="20"
-                  px={5}
-                  py="7px"
-                  _text={{
-                    color: colors.white,
-                    fontSize: "14px",
-                    lineHeight: "18px",
-                    fontWeight: "500",
-                    textTransform: "capitalize",
-                  }}
+                  variant="primaryRounded"
                   rightIcon={
                     <IconByName
-                      color={colors.white}
+                      color="white"
                       name="ArrowDownSLineIcon"
                       isDisabled
                       p="0"
@@ -168,20 +155,20 @@ export default function Report({ footerLinks }) {
       subHeader={
         <CalendarBar
           view={calendarView}
-          activeColor={colors.grayIndark}
+          activeColor={"attendance.darkGray"}
           _box={{ p: 0, bg: "transparent" }}
           {...{ page, setPage }}
         />
       }
-      _subHeader={{ bg: colors.reportCardBackg }}
+      _subHeader={{ bg: "attendance.reportCardBackg" }}
       _footer={footerLinks}
     >
-      <Box bg={colors.white} mb="4" roundedBottom={"xl"} shadow={2}>
+      <Box bg="white" mb="4" roundedBottom={"xl"} shadow={2}>
         {calsses.map((item, index) => (
           <Box
             key={index}
             borderBottomWidth={1}
-            borderBottomColor={colors.coolGray}
+            borderBottomColor={"attendance.coolGrayFaint"}
           >
             <Collapsible
               defaultCollapse={!index ? true : makeDefaultCollapse}
@@ -206,16 +193,14 @@ export default function Report({ footerLinks }) {
                       : [],
                   }}
                 />
-                <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                  <Text bold color={colors.darkGray}>
-                    {t("NOTES")}
-                    {": "}
+                <Subtitle py="5" px="10px" color={"attendance.gray"}>
+                  <Text bold color={"attendance.darkGray"}>
+                    {`${t("NOTES")}: `}
                   </Text>
                   {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
                 </Subtitle>
                 <Button
                   variant="outline"
-                  colorScheme={"button"}
                   onPress={(e) =>
                     navigate(
                       "/attendance/report/" +

@@ -200,7 +200,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </Caption>
         </Stack>
       }
-      _subHeader={{ bg: colors.reportCardBackg, mb: 1 }}
+      _subHeader={{ bg: "attendance.reportCardBg", mb: 1 }}
       _footer={footerLinks}
     >
       <VStack space="1">
@@ -215,7 +215,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </HStack>
         </Box>
         <Box bg="white" p="5">
-          <Box borderBottomWidth={1} borderBottomColor={colors.coolGray}>
+          <Box borderBottomWidth={1} borderBottomColor={"attendance.coolGray"}>
             <Collapsible
               defaultCollapse={true}
               header={
@@ -242,10 +242,9 @@ export default function ReportDetail({ footerLinks, appName }) {
                       calendarView,
                     }}
                   />
-                  <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                    <Text bold color={colors.darkGray}>
-                      {t("NOTES")}
-                      {": "}
+                  <Subtitle py="5" px="10px" color={"attendance.gray"}>
+                    <Text bold color={"attendance.darkGray"}>
+                      {`${t("NOTES")}: `}
                     </Text>
                     {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
                   </Subtitle>
@@ -254,7 +253,7 @@ export default function ReportDetail({ footerLinks, appName }) {
             />
           </Box>
         </Box>
-        <Box bg={colors.white} p={4}>
+        <Box bg="white" p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -282,8 +281,8 @@ export default function ReportDetail({ footerLinks, appName }) {
                         <Box
                           key={index}
                           borderWidth="1"
-                          borderColor={colors.presentCardBorder}
-                          bg={colors.presentCardBg}
+                          borderColor={"attendance.presentCardBorder"}
+                          bg={"attendance.presentCardBg"}
                           p="10px"
                           rounded="lg"
                           my="10px"
@@ -297,8 +296,11 @@ export default function ReportDetail({ footerLinks, appName }) {
                                 <VStack alignItems="center">
                                   <BodyLarge>
                                     <Text>{item.fullName}</Text>
-                                    <Text color={colors.lightGray}> • </Text>
-                                    <Text color={colors.presentCardText}>
+                                    <Text color={"attendance.lightGray"}>
+                                      {" "}
+                                      •{" "}
+                                    </Text>
+                                    <Text color={"attendance.presentCardText"}>
                                       100%
                                     </Text>
                                   </BodyLarge>
@@ -340,7 +342,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </Stack>
         </Box>
 
-        <Box bg={colors.white} p={4}>
+        <Box bg="white" p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -365,8 +367,8 @@ export default function ReportDetail({ footerLinks, appName }) {
                         <Box
                           key={index}
                           borderWidth="1"
-                          borderColor={colors.absentCardBorder}
-                          bg={colors.absentCardBg}
+                          borderColor={"attendance.absentCardBorder"}
+                          bg={"attendance.absentCardBg"}
                           p="10px"
                           rounded="lg"
                           my="10px"
@@ -379,9 +381,11 @@ export default function ReportDetail({ footerLinks, appName }) {
                               textTitle={
                                 <VStack alignItems="center">
                                   <BodyLarge>
-                                    <Text>{item.fullName}</Text>
-                                    <Text color={colors.lightGray}> • </Text>
-                                    <Text color={colors.absentCardText}>
+                                    <Text>{"item.fullName"}</Text>
+                                    <Text color={"attendance.lightGray"}>
+                                      {" • "}
+                                    </Text>
+                                    <Text color={"attendance.absentCardText"}>
                                       3 {t("DAYS")}
                                     </Text>
                                   </BodyLarge>
@@ -420,7 +424,7 @@ export default function ReportDetail({ footerLinks, appName }) {
           </Stack>
         </Box>
 
-        <Box bg={colors.white} p={4}>
+        <Box bg="white" p={4}>
           <Stack space={2}>
             <Collapsible
               defaultCollapse={true}
@@ -497,7 +501,7 @@ const Collapsible = ({
             <IconByName
               size="sm"
               isDisabled={true}
-              color={!collaps ? colors.grayInLight : colors.coolGraylight}
+              color={!collaps ? "attendance..lightGray" : "attendance.coolGray"}
               name={!collaps ? "ArrowDownSLineIcon" : "ArrowUpSLineIcon"}
             />
           </HStack>

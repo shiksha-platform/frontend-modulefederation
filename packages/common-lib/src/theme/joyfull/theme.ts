@@ -1,14 +1,22 @@
 const maxWidth = '1080'
 const fontFamily = localStorage.getItem('lang') === 'hi' ? "'Baloo 2'" : 'Inter'
 const fontSize = localStorage.getItem('lang') === 'hi' ? '20px' : ''
-import colorTheme from './colorTheme'
+import attendance from '../modules/attendanceColorTheme'
+import colorTheme from '../modules/colorTheme'
+
+const dark = '#F87558'
+const normal = '#F87558'
+const light = '#FEEFEB'
 
 const theme = {
   colors: {
     ...colorTheme,
+    primary: '#F87558',
     attendance: {
-      ...colorTheme,
-      primary: '#F87558'
+      ...attendance,
+      primary: '#F87558',
+      cardText: '#383739',
+      cardBg: '#C9AFF4'
     },
     student: {
       ...colorTheme,
@@ -22,14 +30,14 @@ const theme = {
       ...colorTheme,
       primary: '#F87558',
       primaryLight: '#FFF8F7',
-      primaryDark: "#C79AB2",
+      primaryDark: '#C79AB2',
       cardBg: '#F9CCE4',
-      cardBgLight: "#FEF1F9",
+      cardBgLight: '#FEF1F9',
       secondary: '#feefeb'
     },
     notification: {
-      cardBg: "#D9F0FC",
-      notificationBg: "#FDDFD8"
+      cardBg: '#D9F0FC',
+      notificationBg: '#FDDFD8'
     },
     widgetColor: {
       400: '#7F9DAC',
@@ -87,6 +95,36 @@ const theme = {
           textTransform: 'uppercase',
           fontSize: '12px',
           fontWeight: '600'
+        }
+      },
+      variants: {
+        outlineRounded: () => {
+          return {
+            borderWidth: 1,
+            borderColor: dark,
+            _text: { color: dark },
+            bg: `${light}`,
+            rounded: 'full',
+            style: {
+              paddingTop: '4px',
+              paddingBottom: '4px',
+              paddingRight: '20px',
+              paddingLeft: '20px'
+            }
+          }
+        },
+        primaryRounded: () => {
+          return {
+            _text: { color: 'white' },
+            bg: `${dark}`,
+            rounded: 'full',
+            style: {
+              paddingTop: '4px',
+              paddingBottom: '4px',
+              paddingRight: '20px',
+              paddingLeft: '20px'
+            }
+          }
         }
       }
     }
