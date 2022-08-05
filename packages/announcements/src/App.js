@@ -30,6 +30,7 @@ function App() {
       routes={routes}
       AuthComponent={LoginComponent}
       appName="announcements"
+      _authComponent={{ swPath: "/modules/announcements" }}
     />
   );
 }
