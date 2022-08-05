@@ -40,6 +40,7 @@ function App() {
     <AppShell
       routes={routes}
       AuthComponent={LoginComponent}
+      appName="notification"
       _authComponent={{ swPath: "/modules/notification" }}
     />
   );

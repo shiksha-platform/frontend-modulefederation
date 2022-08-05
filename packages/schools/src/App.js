@@ -102,6 +102,7 @@ function App() {
     <AppShell
       routes={routes}
       AuthComponent={LoginComponent}
+      appName="schools"
       basename={process.env.PUBLIC_URL}
     />
   );
