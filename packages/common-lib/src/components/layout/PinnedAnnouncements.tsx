@@ -16,10 +16,10 @@ export default function PinnedAnnouncements({ _pinnedAnnouncementsData }: any) {
       <VStack space='2'>
         {pinnedData?.map((val: any, index: number) => (
           <HStack
-            bg={val.color}
+            bg='green.100'
             space='4'
             px='5'
-            py={val.isDismissable ? '3.5' : '5'}
+            py={val?.pinnedAnnouncementProperties?.isDismissable ? '3.5' : '5'}
             key={index}
             alignItems='center'
             justifyContent='flex-start'
@@ -40,7 +40,7 @@ export default function PinnedAnnouncements({ _pinnedAnnouncementsData }: any) {
               <BodyMedium>{val.data}</BodyMedium>
             </HStack>
 
-            {val.isDismissable ? (
+            {val?.pinnedAnnouncementProperties?.isDismissable ? (
               <IconByName
                 _icon={{ size: '20' }}
                 name='CloseLineIcon'

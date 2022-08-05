@@ -15,13 +15,9 @@ export const getAnnouncementsSet = async (params = {}, header = {}) => {
     headers
   })
   if (result.data.data) {
-    console.log(result);
-    return result.data.data;
+    console.log(result)
+    return result.data.data
   } else {
     return {}
   }
 }
-
-
-
-
