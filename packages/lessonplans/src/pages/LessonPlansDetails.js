@@ -1,5 +1,5 @@
-import React from "react";
-import { IconByName, Layout, SubMenu, Tab, Collapsible, H2, overrideColorTheme } from "@shiksha/common-lib";
+import React, { useEffect, useState } from "react";
+import { IconByName, Layout, SubMenu, Tab, Collapsible, H2, overrideColorTheme, lessonPlansRegistryService } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
   Avatar,
@@ -13,7 +13,7 @@ import {
   Accordion,
   BodyLarge,
 } from "native-base";
-import { lessonPlansList } from "components/config/lessonPlansList";
+//import { lessonPlansList } from "components/config/lessonPlansList";
 //import { Chapters } from "components/config/Chapters";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
@@ -24,6 +24,17 @@ const colors = overrideColorTheme(colorTheme);
 export default function LessonPlansDetails({ footerLinks }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [lessonPlans, setLessonPlans] = useState([])
+
+  const getLessonPlanData = async () => {
+    const resp = await lessonPlansRegistryService.getAll({ gradeLevel: { eq: "Class V" } })
+    console.log(resp, "lessonplan ");
+    setLessonPlans(resp);
+  }
+
+  useEffect(() => {
+    getLessonPlanData();
+  }, [])
 
   return (
     <Layout
@@ -44,7 +55,7 @@ export default function LessonPlansDetails({ footerLinks }) {
                 component: (
                   <VStack>
                     <LessonPlansMapping
-                      data={lessonPlansList}
+                      data={lessonPlans}
                       leftTitle="LESSON_PLANS"
                       rightTitle="EXPLORE_LESSON_PLANS"
                       seeButtonText={t("SEE_ALL_LESSON_PLANS")}
