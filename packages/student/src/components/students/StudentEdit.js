@@ -16,7 +16,7 @@ import {
   IconByName,
   H1,
   H3,
-  teacherRegistryService,
+  userRegistryService,
   studentRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
@@ -123,7 +123,7 @@ export default function StudentEdit({
       if (editChangeState) {
         let result = {};
         if (type && type === "Teacher") {
-          result = await teacherRegistryService.update(object, {
+          result = await userRegistryService.update(object, {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },

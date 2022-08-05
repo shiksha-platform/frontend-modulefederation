@@ -33,7 +33,7 @@ import {
   FilterButton,
   Form,
   telemetryFactory,
-  teacherRegistryService,
+  userRegistryService,
   getAllForUser,
   sendReadReceipt,
   H4,
