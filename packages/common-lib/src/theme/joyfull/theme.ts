@@ -18,7 +18,7 @@ const theme = {
       ...colorTheme,
       cardBg: '#D9F0FC',
       girls: '#0ea5e9',
-      boys: 'a855f7'
+      boys: '#a855f7'
     },
     worksheet: {
       ...colorTheme,

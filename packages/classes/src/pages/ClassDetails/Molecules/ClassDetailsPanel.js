@@ -1,22 +1,14 @@
 import React from "react";
-import {
-  Collapsible,
-  IconByName,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
-import { HStack, Text, VStack, Box, Progress, useToken } from "native-base";
+import { Collapsible, IconByName } from "@shiksha/common-lib";
+import { HStack, Text, VStack, Box } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 Chart.register(ArcElement, Tooltip, Legend);
-import colorTheme from "../../../colorTheme";
-
-const colors = overrideColorTheme(colorTheme);
-
-const MALECOLOR = "classes.boys";
-const FEMALECOLOR = "classes.girls";
 
 const ClassDetailsPanel = ({ students }) => {
+  const MALECOLOR = "classes.boys";
+  const FEMALECOLOR = "classes.girls";
   const { t } = useTranslation();
   const fullName = localStorage.getItem("fullName");
   const maleCount = students.filter((e) => e.gender === "Male").length;
@@ -54,7 +46,7 @@ const ClassDetailsPanel = ({ students }) => {
                     </Text>
                   </HStack>
                   <HStack alignItems={"center"} space={1}>
-                    <Box bg={""} p="2" rounded={"full"} />
+                    <Box bg={"classes.boys"} p="2" rounded={"full"} />
                     <Text bold>{t("BOYS")}:</Text>
                     <Text>
                       {students.filter((e) => e.gender === "Male").length}

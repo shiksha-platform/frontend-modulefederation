@@ -11,7 +11,7 @@ const theme = {
     ...colorTheme,
     attendance: colorTheme,
     student: colorTheme,
-    classes: { ...colorTheme, girls: '#0ea5e9', boys: 'a855f7' },
+    classes: { ...colorTheme, girls: '#0ea5e9', boys: '#a855f7' },
     worksheet: { ...colorTheme },
     notification: { ...colorTheme, notificationBg: light },
     widgetColor: {

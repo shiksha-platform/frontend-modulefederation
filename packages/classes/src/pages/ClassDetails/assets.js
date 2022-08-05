@@ -1,18 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Collapsible,
-  H2,
-  IconByName,
-  classRegistryService,
-  overrideColorTheme,
-  H1,
-  BodySmall,
-} from "@shiksha/common-lib";
+import { Collapsible, H2, classRegistryService, H1 } from "@shiksha/common-lib";
 import { Stack, Box, VStack, HStack, Menu, Pressable } from "native-base";
-import colorTheme from "../../colorTheme";
-
-const colors = overrideColorTheme(colorTheme);
 
 export const routes = () => {
   const { t } = useTranslation();

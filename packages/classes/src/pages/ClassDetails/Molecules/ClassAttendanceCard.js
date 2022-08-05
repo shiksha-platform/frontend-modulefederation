@@ -29,7 +29,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
       };
       let attendanceData = await attendanceRegistryService.getAll(params);
       let lengthAttendance = 0;
-      const data = [PRESENT, ABSENT, UNMARKED].map((item, index) => {
+      const data = [PRESENT, ABSENT, UNMARKED].map((item) => {
         const attendance = getUniqAttendance(attendanceData, item, students);
         let count = 0;
         lengthAttendance += attendance.length;
@@ -71,7 +71,6 @@ const ClassAttendanceCard = ({ classId, students }) => {
               data={progressAttendance}
             />
             <HStack justifyContent={"space-between"} alignItems="center">
-              {/* <Text>{t("GRADE") + ": " + t("GOOD")}</Text> */}
               <Text>
                 {t("TOTAL") + `: ${students?.length} ` + t("STUDENTS")}
               </Text>
