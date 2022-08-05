@@ -104,6 +104,7 @@ export default function Login({ swPath }) {
           }
           try {
             const fcmToken = await getUserToken(swPath);
+            let id = localStorage.getItem("id");
             await userRegistryService.update({ id, fcmToken });
             localStorage.setItem("fcmToken", fcmToken);
           } catch (e) {
