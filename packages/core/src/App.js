@@ -7,14 +7,15 @@ import { initializeI18n } from "@shiksha/common-lib";
 import Sample from "pages/Sample";
 
 initializeI18n(["translation", "core"]);
-console.log("hello");
 function App() {
   const routes = [
     {
+      moduleName: "core",
       path: "/",
       component: Sample,
     },
     {
+      moduleName: "core",
       path: "*",
       component: Sample,
     },

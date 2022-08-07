@@ -18,42 +18,52 @@ function App() {
   );
   const routes = [
     {
+      moduleName: "worksheet",
       path: "/worksheet/list/:state",
       component: Worksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/list",
       component: Worksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:worksheetId/share",
       component: WorksheetShare,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/questionBank",
       component: QuestionBank,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:id",
       component: WorksheetQuestionBank,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:id/edit",
       component: EditWorksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/create",
       component: CreateWorksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/template/:worksheetId",
       component: WorksheetTemplate,
     },
     {
+      moduleName: "worksheet",
       path: "*",
       component: Teaching,
     },
