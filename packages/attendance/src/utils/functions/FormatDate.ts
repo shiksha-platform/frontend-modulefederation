@@ -5,8 +5,7 @@ interface IFormatDate {
   type?: string;
 }
 
-// TODO: Remove TSignore
-export const FormatDate: Function = ({ date, type }: IFormatDate) => {
+export const formatDate: Function = ({ date, type }: IFormatDate) => {
   if (!date) return "";
   if (type === "Month") {
     return moment(date[0]).format("MMMM Y");

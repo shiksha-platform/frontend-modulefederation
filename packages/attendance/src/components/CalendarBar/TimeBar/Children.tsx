@@ -7,7 +7,7 @@ import moment from "moment";
 
 // Utils
 import { MomentUnionType } from "utils/types/types";
-import { FormatDate } from "utils/functions/FormatDate";
+import { formatDate } from "utils/functions/FormatDate";
 
 export const Children: React.FC<{
   type: string;
@@ -19,7 +19,7 @@ export const Children: React.FC<{
     case type === "monthInDays":
       return (
         <VStack>
-          <FormatDate date={date} type="Month" />
+          <>{formatDate({ date: date, type: "Month" })}</>
           {/* <Text fontSize="10" fontWeight="300">
 			{t("THIS_MONTH")}
 		  </Text> */}
@@ -28,7 +28,7 @@ export const Children: React.FC<{
     case type === "week":
       return (
         <VStack>
-          <FormatDate date={date} type="Week" />
+          <>{formatDate({ date, type: "Week" })}</>
           <Caption>{t("THIS_WEEK")}</Caption>
         </VStack>
       );
@@ -46,7 +46,7 @@ export const Children: React.FC<{
                 moment(date).format("dddd")}
           </H2>
           <Caption>
-            <FormatDate date={date} />
+            <>{formatDate({ date: date })}</>
           </Caption>
         </VStack>
       );
