@@ -22,9 +22,11 @@ const theme = {
       ...colorTheme,
       primary: '#F87558'
     },
-    class: {
+    classes: {
       ...colorTheme,
-      primary: '#F87558'
+      cardBg: '#D9F0FC',
+      girls: '#0ea5e9',
+      boys: '#a855f7'
     },
     worksheet: {
       ...colorTheme,
