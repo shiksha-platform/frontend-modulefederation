@@ -1,9 +1,9 @@
 export const navigationRoute = {
-  attendance: "attendance",
+  attendance: "attendance/:classId",
   report: "attendance/report",
   attendanceReport: "attendance/report/:classId/:view",
   reportCompare: "attendance/reportCompare/:classId",
-  sendSms: "students/sendSms/:studentId",
+  sendSms: "/attendance/sendSms/:classId",
   sendSmsStudentId: "attendance/sendSms/:studentId",
   fourOfour: "*",
 };

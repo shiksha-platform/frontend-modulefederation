@@ -153,12 +153,8 @@ export default function ClassReportDetail({ footerLinks, appName }) {
         iconComponent: (
           <Box rounded={"full"} px="5" py="2" bg={colors.primary}>
             <HStack space="2">
-              <BodyLarge color={colors.white}>{lastTitle}</BodyLarge>
-              <IconByName
-                color={colors.white}
-                name="ArrowDownSLineIcon"
-                isDisabled
-              />
+              <BodyLarge color="white">{lastTitle}</BodyLarge>
+              <IconByName color="white" name="ArrowDownSLineIcon" isDisabled />
             </HStack>
           </Box>
         ),
@@ -172,12 +168,12 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           </Caption>
         </Stack>
       }
-      _subHeader={{ bg: colors.bgReportCard, mb: 1 }}
+      _subHeader={{ bg: colors.reportCardBg, mb: 1 }}
       _footer={footerLinks}
     >
       {compare ? (
         <VStack space="1">
-          <Box bg={colors.white} p="5">
+          <Box bg="white" p="5">
             <HStack
               space="4"
               justifyContent="space-between"
@@ -191,7 +187,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
               <IconByName name={"ListUnorderedIcon"} isDisabled />
             </HStack>
           </Box>
-          <Box bg={colors.white} p="5">
+          <Box bg="white" p="5">
             <Box>
               <Collapsible
                 defaultCollapse={true}
@@ -474,7 +470,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
             </HStack>
           </Actionsheet.Content>
 
-          <Box w="100%" bg={colors.white}>
+          <Box w="100%" bg="white">
             {[
               { name: t("PREVIOUS_WEEK"), value: "week" },
               { name: t("PREVIOUS_MONTH"), value: "monthInDays" },
