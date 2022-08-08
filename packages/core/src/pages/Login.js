@@ -17,7 +17,7 @@ import {
   fetchToken,
   eventBus,
   useWindowSize,
-  teacherRegistryService,
+  userRegistryService,
   BodyMedium,
   Heading,
   Subtitle,
@@ -82,29 +82,36 @@ export default function Login({ swPath }) {
         let token = result.data.access_token;
         localStorage.setItem("token", token);
 
-        const resultTeacher = await teacherRegistryService.getOne();
+        const resultTeacher = await userRegistryService.getOne();
         if (resultTeacher.id) {
-          let { id } = resultTeacher;
-          localStorage.setItem("id", id);
-          const updateTokenTeacher = await teacherRegistryService.update({
-            id,
-            fcmToken,
-          });
-          localStorage.setItem(
-            "fullName",
-            resultTeacher.fullName
-              ? resultTeacher.fullName
-              : `${resultTeacher.firstName} ${resultTeacher.lastName}`
-          );
-          localStorage.setItem("firstName", resultTeacher.firstName);
-          localStorage.setItem("lastName", resultTeacher.lastName);
-          localStorage.setItem("schoolId", resultTeacher.schoolId);
-          localStorage.setItem("phoneNumber", resultTeacher.phoneNumber);
+          try {
+            let { id } = resultTeacher;
+            localStorage.setItem("id", id);
+            const updateTokenTeacher = await userRegistryService.update({
+              id,
+              fcmToken,
+            });
+            localStorage.setItem(
+              "fullName",
+              resultTeacher.fullName
+                ? resultTeacher.fullName
+                : `${resultTeacher.firstName} ${resultTeacher.lastName}`
+            );
+            localStorage.setItem("firstName", resultTeacher.firstName);
+            localStorage.setItem("lastName", resultTeacher.lastName);
+            localStorage.setItem("schoolId", resultTeacher.schoolId);
+            localStorage.setItem("phoneNumber", resultTeacher.phoneNumber);
+          } catch (e) {
+            localStorage.setItem("token", "");
+            console.log({ e });
+          }
           try {
             const fcmToken = await getUserToken(swPath);
-            await teacherRegistryService.update({ id, fcmToken });
+            let id = localStorage.getItem("id");
+            await userRegistryService.update({ id, fcmToken });
             localStorage.setItem("fcmToken", fcmToken);
           } catch (e) {
+            localStorage.setItem("fcmToken", "");
             console.log({ e });
           }
           //window.location.reload();

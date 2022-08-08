@@ -4,7 +4,7 @@ import {
   initializeI18n,
   AppShell,
   AppRoutesContainer,
-  teacherRegistryService,
+  userRegistryService,
 } from "@shiksha/common-lib";
 import MyClasses from "pages/MyClasses";
 import Home from "./pages/Home";
@@ -229,11 +229,10 @@ function App() {
   const searchParams = Object.fromEntries(urlSearchParams.entries());
 
   useEffect(async () => {
-    const resultTeacher = await teacherRegistryService.getOne({}, {});
-
     if (searchParams.token != undefined) {
       localStorage.setItem("token", searchParams.token);
     }
+    const resultTeacher = await userRegistryService.getOne({}, {});
 
     if (resultTeacher) {
       let id = resultTeacher.id.replace("1-", "");
@@ -250,10 +249,11 @@ function App() {
       //window.location.reload();
     }
   }, []);
+  console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
   if (
-    process.env.OAUTH_PROXY_ENABLED == undefined ||
-    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
   ) {
     return (
       <AppShell

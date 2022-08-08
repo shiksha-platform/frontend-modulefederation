@@ -10,7 +10,7 @@ import {
   telemetryFactory,
   ProgressBar,
   calendar,
-  teacherRegistryService,
+  userRegistryService,
   attendanceRegistryService,
   overrideColorTheme,
   H2,
@@ -48,7 +48,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
     let ignore = false;
     const getData = async () => {
       if (!ignore) {
-        const resultTeacher = await teacherRegistryService.getOne(
+        const resultTeacher = await userRegistryService.getOne(
           { id: teacherId },
           { Authorization: "Bearer " + token }
         );
