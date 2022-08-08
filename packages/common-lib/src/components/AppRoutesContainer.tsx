@@ -13,7 +13,7 @@ const AppRoutesContainer = ({
   appName,
   ...otherProps
 }: any) => {
-  const user = useAuthFlow();
+  const user = useAuthFlow()
   const footerLinks = !isShowFooterLink
     ? {}
     : {

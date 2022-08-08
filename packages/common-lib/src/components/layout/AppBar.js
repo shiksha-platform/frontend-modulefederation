@@ -35,13 +35,12 @@ export default function AppBar({
   const navigate = useNavigate()
   const setLang = (e) => {
     if (e === 'logout') {
-      localStorage.setItem('token', '');
-      localStorage.clear();
-      eventBus.publish("AUTH", {
-        eventType: "LOGOUT",
-        data: {
-        },
-      });
+      localStorage.setItem('token', '')
+      localStorage.clear()
+      eventBus.publish('AUTH', {
+        eventType: 'LOGOUT',
+        data: {}
+      })
     } else {
       localStorage.setItem('lang', e)
       window.location.reload()

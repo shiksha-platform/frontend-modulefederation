@@ -5,24 +5,24 @@ import SendSMS from "pages/sms/SendSMS";
 import { navigationRoute } from "./services/routes";
 
 export const routes = [
-    {
-      path: navigationRoute.attendance,
-      component: Attendance,
-    },
-    {
-      path: navigationRoute.report,
-      component: Report,
-    },
-    {
-      path: navigationRoute.attendanceReport,
-      component: ReportDetail,
-    },
-    {
-      path: navigationRoute.sendSms,
-      component: SendSMS,
-    },
-    {
-      path: navigationRoute.fourOfour,
-      component: Attendance,
-    },
-  ];
+  {
+    path: navigationRoute.attendance,
+    component: Attendance,
+  },
+  {
+    path: navigationRoute.report,
+    component: Report,
+  },
+  {
+    path: navigationRoute.attendanceReport,
+    component: ReportDetail,
+  },
+  {
+    path: navigationRoute.sendSms,
+    component: SendSMS,
+  },
+  {
+    path: navigationRoute.fourOfour,
+    component: Attendance,
+  },
+];

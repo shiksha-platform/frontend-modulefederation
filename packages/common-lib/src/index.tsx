@@ -31,7 +31,7 @@ import {
   sendReadReceipt
 } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
-import {useAuthFlow} from './hooks/useAuthFlow'
+import { useAuthFlow } from './hooks/useAuthFlow'
 export {
   AppBar,
   Header,

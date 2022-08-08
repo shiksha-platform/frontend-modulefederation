@@ -23,9 +23,11 @@ function App() {
     { path: "*", component: Notification },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
-  const skipLogin = !(process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
-    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false);
-  
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
+
   return (
     <AppShell
       theme={theme}

@@ -14,21 +14,21 @@ function AppShell({
   isShowFooterLink,
   appName,
   _authComponent,
-  skipLogin=false,
+  skipLogin = false,
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const searchParams = Object.fromEntries(urlSearchParams.entries());
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    const searchParams = Object.fromEntries(urlSearchParams.entries())
     if (searchParams.token != undefined) {
-      localStorage.setItem("token", searchParams.token);
-      skipLogin = true;
+      localStorage.setItem('token', searchParams.token)
+      skipLogin = true
     }
-  }, []);
-  const user = useAuthFlow();
-  
+  }, [])
+  const user = useAuthFlow()
+
   const footerLinks = !isShowFooterLink
     ? {}
     : {
@@ -73,11 +73,11 @@ function AppShell({
 
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
-      if ((data.eventType == 'LOGIN_SUCCESS')) {
+      if (data.eventType == 'LOGIN_SUCCESS') {
         setToken(localStorage.getItem('token'))
-      } else if ((data.eventType == 'LOGOUT' && skipLogin)) {
-        setTimeout(()=>{
-          window.location.href = "/oauth2/sign_out?rd=/";
+      } else if (data.eventType == 'LOGOUT' && skipLogin) {
+        setTimeout(() => {
+          window.location.href = '/oauth2/sign_out?rd=/'
         }, 1)
       }
     })

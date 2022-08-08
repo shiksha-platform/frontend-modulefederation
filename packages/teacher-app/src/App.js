@@ -7,7 +7,7 @@ import {
   AppShell,
   AppRoutesContainer,
   userRegistryService,
-  useAuthFlow
+  useAuthFlow,
 } from "@shiksha/common-lib";
 
 import { routes } from "./Routes";
@@ -20,18 +20,22 @@ function App() {
 
   console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
-  const skipLogin = !(process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
-    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false);
-  
-  return (<AppShell
-    theme={theme}
-    basename={process.env.PUBLIC_URL}
-    routes={routes}
-    AuthComponent={LoginComponent}
-    isShowFooterLink={true}
-    appName="Teacher App"
-    skipLogin={skipLogin}
-  />)
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
+
+  return (
+    <AppShell
+      theme={theme}
+      basename={process.env.PUBLIC_URL}
+      routes={routes}
+      AuthComponent={LoginComponent}
+      isShowFooterLink={true}
+      appName="Teacher App"
+      skipLogin={skipLogin}
+    />
+  );
   /*  
   if (
     process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
