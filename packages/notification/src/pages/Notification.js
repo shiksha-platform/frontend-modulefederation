@@ -228,7 +228,13 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </VStack>
         {validUsers.includes(realm_access?.roles[2].toLowerCase()) && (
-          <Box bg={"notification.white"} p="5" position="sticky" bottom="0" shadow={2}>
+          <Box
+            bg={"notification.white"}
+            p="5"
+            position="sticky"
+            bottom="0"
+            shadow={2}
+          >
             <Link href={"/notification/create"}>
               <Button
                 colorScheme="button"
@@ -440,15 +446,10 @@ const NotificationBox = ({
     return (
       <Box
         key={index}
-<<<<<<< HEAD
-        borderWidth="1"
-        borderColor={"notification.primary"}
-=======
         borderWidth={value.messageState === "SENT" ? "2" : "1"}
         borderColor={
           value.messageState === "SENT" ? colors.primary : colors.lightGray
         }
->>>>>>> 940b9ea8a670187e4dc79b071f5662f838e25d77
         my="2"
         p="5"
         rounded="10"
@@ -462,38 +463,11 @@ const NotificationBox = ({
           }}
         >
           <VStack space="3">
-<<<<<<< HEAD
-            {/* <HStack
-              space="2"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-               <HStack space="2" alignItems="center">
-                <IconByName
-                  _icon={{ size: "16" }}
-                  name="UserLineIcon"
-                  isDisabled
-                />
-                <H2>{value.name}</H2>
-                <H1 color={"notification.primary"}>•</H1>
-              </HStack>
-              <IconByName
-                _icon={{ size: "18" }}
-                p="0"
-                name="More2LineIcon"
-                onPress={(e) => {
-                  onPressMore();
-                }}
-              />
-            </HStack> */}
-            <Subtitle {...line2style}>{value.payload.text}</Subtitle>
-=======
             {value.messageState === "READ" ? (
               <BodySmall {...line2style}>{value?.payload?.text}</BodySmall>
             ) : (
               <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
             )}
->>>>>>> 940b9ea8a670187e4dc79b071f5662f838e25d77
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName

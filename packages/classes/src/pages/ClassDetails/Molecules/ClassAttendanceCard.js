@@ -52,7 +52,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
         }
         return {
           name: count + " " + item,
-          color: `attendance${item}.500`,
+          color: `attendance.${item.toLowerCase()}`,
           value: count,
         };
       });
