@@ -131,7 +131,7 @@ export default function MessageHistory({ footerLinks }) {
                 </HStack>
               </Actionsheet.Content>
 
-              <Box w="100%" bg="white">
+              <Box w="100%" bg={colors.white}>
                 {[
                   { name: t("TODAY_VIEW"), value: "day" },
                   { name: t("WEEK_VIEW"), value: "week" },
@@ -162,12 +162,12 @@ export default function MessageHistory({ footerLinks }) {
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg="white" p="5" py="30">
+        <Box bg={colors.white} p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <H2>{studentObject.fullName}</H2>
           </HStack>
         </Box>
-        <Box bg="white">
+        <Box bg={colors.white}>
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box p="5">
               <H2>{t("SEND_MESSAGE")}</H2>
@@ -207,7 +207,7 @@ export default function MessageHistory({ footerLinks }) {
                 />
               </HStack>
             </Actionsheet.Content>
-            <Box bg="white" w="100%">
+            <Box bg={colors.white} w="100%">
               <Message item={smsObject} isDisableRetry />
               <Button.Group p="5">
                 <Button

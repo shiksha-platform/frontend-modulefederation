@@ -250,7 +250,6 @@ function Home({ footerLinks, appName }) {
           onClose={() => setPopupModal(false)}
         >
           <Modal.Content
-            bg="white"
             maxWidth="1024px"
             position="fixed"
             bottom="0"

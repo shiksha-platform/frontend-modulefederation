@@ -12,12 +12,10 @@ initializeI18n(
 function App() {
   const routes = [
     {
-      moduleName: "classes",
       path: navigationRoutes.myClasses,
       component: ClassDetails,
     },
     {
-      moduleName: "classes",
       path: navigationRoutes.fourOfour,
       component: MyClassRoute,
     },

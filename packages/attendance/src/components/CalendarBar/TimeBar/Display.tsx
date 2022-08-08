@@ -26,14 +26,15 @@ export const Display: React.FC<any> = ({
           {
             // @ts-ignore
             <IconByName
+              size="50"
               color={
                 typeof previousDisabled === "undefined" ||
                 previousDisabled === false
                   ? activeColor
                     ? activeColor
-                    : "primary"
+                    : colors.primary
                   : // @ts-ignore
-                    "coolGrayDark"
+                    colors.grayInLight
               }
               name="ArrowLeftSLineIcon"
               onPress={(e) => {
@@ -58,6 +59,7 @@ export const Display: React.FC<any> = ({
           {
             // @ts-ignore
             <IconByName
+              size="50"
               color={
                 typeof nextDisabled === "undefined" || nextDisabled === false
                   ? activeColor

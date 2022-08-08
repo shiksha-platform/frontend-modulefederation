@@ -1,4 +1,4 @@
-import colorTheme from '../modules/colorTheme'
+import colorTheme from './colorTheme'
 import theme from './theme'
 
 export { colorTheme, theme }

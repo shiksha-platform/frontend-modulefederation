@@ -11,12 +11,10 @@ function App() {
   );
   const routes = [
     {
-      moduleName: "profile",
       path: "/profile/attendance",
       component: AttendanceReport,
     },
     {
-      moduleName: "profile",
       path: "*",
       component: Profile,
     },

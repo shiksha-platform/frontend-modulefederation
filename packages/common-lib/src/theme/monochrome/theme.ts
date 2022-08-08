@@ -1,16 +1,15 @@
 const maxWidth = '1080'
 const fontFamily = localStorage.getItem('lang') === 'hi' ? "'Baloo 2'" : 'Inter'
 const fontSize = localStorage.getItem('lang') === 'hi' ? '20px' : ''
-import colorTheme from '../modules/colorTheme'
-import colourConstant from '../modules/constants'
-import attendance from '../modules/attendanceColorTheme'
+import colorTheme from './colorTheme'
+import colourConstant from './constants'
 
 const { dark, normal, light } = colourConstant()
 
 const theme = {
   colors: {
     ...colorTheme,
-    attendance: { ...attendance, cardBg: normal },
+    attendance: colorTheme,
     student: colorTheme,
     classes: { ...colorTheme, girls: '#0ea5e9', boys: '#a855f7' },
     worksheet: { ...colorTheme },
@@ -40,7 +39,7 @@ const theme = {
       400: '#504ccc',
       500: '#6461D2',
       600: '#2a288b',
-      700: '#1e1c63',
+      7600: '#1e1c63',
       800: '#12113c',
       900: '#060614'
     }
@@ -78,36 +77,6 @@ const theme = {
           textTransform: 'uppercase',
           fontSize: '12px',
           fontWeight: '600'
-        }
-      },
-      variants: {
-        outlineRounded: () => {
-          return {
-            borderWidth: 1,
-            borderColor: dark,
-            _text: { color: dark },
-            bg: `${light}`,
-            rounded: 'full',
-            style: {
-              paddingTop: '4px',
-              paddingBottom: '4px',
-              paddingRight: '20px',
-              paddingLeft: '20px'
-            }
-          }
-        },
-        primaryRounded: () => {
-          return {
-            _text: { color: 'white' },
-            bg: `${dark}`,
-            rounded: 'full',
-            style: {
-              paddingTop: '4px',
-              paddingBottom: '4px',
-              paddingRight: '20px',
-              paddingLeft: '20px'
-            }
-          }
         }
       }
     }

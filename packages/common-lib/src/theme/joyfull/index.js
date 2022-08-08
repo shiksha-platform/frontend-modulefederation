@@ -1,3 +1,4 @@
+import colorTheme from './colorTheme'
 import theme from './theme'
 
-export { theme }
+export { colorTheme, theme }

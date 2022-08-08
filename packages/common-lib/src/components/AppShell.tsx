@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
-import { getAppshellData } from './helper'
-import jwt_decode from 'jwt-decode'
+import { DEFAULT_THEME } from './helper'
 
 function AppShell({
   colors,
@@ -18,32 +17,58 @@ function AppShell({
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
-  const [theme, setTheme] = React.useState<any>({})
-  const [accessRoutes, setAccessRoutes] = React.useState<any>([])
-  const [footerLinks, setFooterLinks] = React.useState<any>([])
+  const [theme, setTheme] = React.useState<any>('')
 
+  const footerLinks = !isShowFooterLink
+    ? {}
+    : {
+        menues: [
+          {
+            title: 'HOME',
+            icon: 'Home4LineIcon',
+            module: 'Registry',
+            route: '/',
+            routeparameters: {}
+          },
+          {
+            title: 'CLASSES',
+            icon: 'TeamLineIcon',
+            module: 'Registry',
+            route: '/classes',
+            routeparameters: {}
+          },
+          {
+            title: 'SCHOOL',
+            icon: 'GovernmentLineIcon',
+            module: 'Registry',
+            route: '/',
+            routeparameters: {}
+          },
+          {
+            title: 'TEACHING',
+            icon: 'BookOpenLineIcon',
+            module: 'Registry',
+            route: '/worksheet',
+            routeparameters: {}
+          },
+          {
+            title: 'MY_LEARNING',
+            icon: 'UserLineIcon',
+            module: 'Registry',
+            route: '/mylearning',
+            routeparameters: {}
+          }
+        ]
+      }
   useEffect(() => {
-    const getData = async () => {
-      let role = ''
-      if (token) {
-        let jwt: any = jwt_decode(`${token}`)
-        const roles = jwt.realm_access.roles
-        role = roles.find((e: any) =>
-          ['Teacher', 'Mentor', 'Monitor'].includes(e)
-        )
+    const getTheme = async () => {
+      try {
+        setTheme(await DEFAULT_THEME())
+      } catch {
+        setTheme(DEFAULT_THEME('joyfull'))
       }
-      const { newTheme, newRoutes, newFooterLinks } = await getAppshellData(
-        routes,
-        role.toLowerCase()
-      )
-      if (isShowFooterLink) {
-        setFooterLinks({ menues: newFooterLinks })
-      }
-      setAccessRoutes(newRoutes)
-      setTheme(newTheme)
     }
-
-    getData()
+    getTheme()
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
         setToken(localStorage.getItem('token'))
@@ -54,13 +79,12 @@ function AppShell({
     }
   }, [token])
 
-  if (!Object.keys(theme).length) {
+  if (!theme) {
     return <React.Fragment />
   }
-
   if (!token) {
     return (
-      <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
+      <NativeBaseProvider theme={theme}>
         <PushNotification />
         <React.Suspense fallback={<Loading />}>
           <AuthComponent {...{ colors }} {..._authComponent} />
@@ -69,7 +93,7 @@ function AppShell({
     )
   } else {
     return (
-      <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
+      <NativeBaseProvider theme={theme}>
         <PushNotification />
         <Suspense
           fallback={
@@ -80,7 +104,7 @@ function AppShell({
         >
           <Router basename={basename}>
             <Routes>
-              {accessRoutes.map((item: any, index: number) => (
+              {routes.map((item: any, index: number) => (
                 <Route
                   key={index}
                   path={item.path}

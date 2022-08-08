@@ -75,258 +75,168 @@ function App() {
   const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
 
   const routes = [
-    // worksheet
     {
-      moduleName: "worksheet",
       path: "/worksheet/list/:state",
       component: Worksheet,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/list",
       component: Worksheet,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/:worksheetId/share",
       component: WorksheetShare,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/questionBank",
       component: QuestionBank,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/:id",
       component: WorksheetQuestionBank,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/:id/edit",
       component: EditWorksheet,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/create",
       component: CreateWorksheet,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet/template/:worksheetId",
       component: WorksheetTemplate,
     },
     {
-      moduleName: "worksheet",
       path: "/worksheet",
       component: Teaching,
     },
-    // classess
     {
-      moduleName: "classes",
       path: "classes",
       component: MyClasses,
     },
     {
-      moduleName: "classes",
       path: "/classes/:classId",
       component: ClassDetails,
     },
+    { path: "/class/students/:classId", component: Student },
+    { path: "/attendance/:classId", component: Attendance },
+    { path: "/attendance/report", component: Report },
+    { path: "/class/students/:classId", component: Student },
     {
-      moduleName: "classes",
-      path: "/class/students/:classId",
-      component: Student,
-    },
-    // attendance
-    {
-      moduleName: "attendance",
-      path: "/attendance/:classId",
-      component: Attendance,
-    },
-    {
-      moduleName: "attendance",
-      path: "/attendance/report",
-      component: Report,
-    },
-    {
-      moduleName: "attendance",
       path: "/attendance/report/:classId/:view",
       component: ReportDetail,
     },
+    { path: "/attendance/sendSms/:classId", component: SendSMS },
+    { path: "/students/:studentId", component: StudentDetails },
+    { path: "/notification", component: Notification },
+    { path: "/notification/create", component: CreateNotification },
+    { path: "/notification/schedule", component: ScheduleNotification },
+    { path: "/notification/outbox", component: Outbox },
+    { path: "/profile", component: Profile },
+    { path: "/profile/attendance", component: AttendanceReport },
+
+    { path: "/mylearning", component: MyLearning },
     {
-      moduleName: "attendance",
-      path: "/attendance/sendSms/:classId",
-      component: SendSMS,
-    },
-    // students
-    {
-      moduleName: "student",
-      path: "/students/:studentId",
-      component: StudentDetails,
-    },
-    // notification
-    {
-      moduleName: "notification",
-      path: "/notification",
-      component: Notification,
-    },
-    {
-      moduleName: "notification",
-      path: "/notification/create",
-      component: CreateNotification,
-    },
-    {
-      moduleName: "notification",
-      path: "/notification/schedule",
-      component: ScheduleNotification,
-    },
-    {
-      moduleName: "notification",
-      path: "/notification/outbox",
-      component: Outbox,
-    },
-    // profile
-    {
-      moduleName: "profile",
-      path: "/profile",
-      component: Profile,
-    },
-    {
-      moduleName: "profile",
-      path: "/profile/attendance",
-      component: AttendanceReport,
-    },
-    // mylearning
-    {
-      moduleName: "mylearning",
-      path: "/mylearning",
-      component: MyLearning,
-    },
-    {
-      moduleName: "mylearning",
       path: "/mylearning/list/:state",
       component: CourseList,
     },
     {
-      moduleName: "mylearning",
       path: "/mylearning/list",
       component: CourseList,
     },
     {
-      moduleName: "mylearning",
       path: "/mylearning/:id/view",
       component: CourseDetails,
     },
     {
-      moduleName: "mylearning",
       path: "/mylearning/video/list/:state",
       component: VideoList,
     },
     {
-      moduleName: "mylearning",
       path: "/mylearning/video/list",
       component: VideoList,
     },
     {
-      moduleName: "mylearning",
       path: "/mylearning/video/:id/view",
       component: VideoDetails,
     },
     // Asessment Routes
     {
-      moduleName: "assessment",
       path: "/assessment/exam-list2",
       component: QuestionList2,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/exam-list3",
       component: QuestionList3,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/exam-list4",
       component: QuestionList4,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/exam-list5",
       component: QuestionList5,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/exam-list6",
       component: QuestionList6,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/exam-list7",
       component: QuestionList7,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/examscores",
       component: ExamScores,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/assessment-result",
       component: SpotAssessmentResult,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/assessment-result2",
       component: SpotAssessmentResult2,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/assessment-result3",
       component: SpotAssessmentResult3,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/assessment-success",
       component: SuccessPublicationReport,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/assessment-detailed-report",
       component: ReportDetails,
     },
     {
-      moduleName: "assessment",
       path: "/assessment/quml-test",
       component: QumlTest,
     },
     {
-      moduleName: "assessment",
       path: "/assessment",
       component: Assessment,
     },
-    {
-      moduleName: "teacher-app",
-      path: "*",
-      component: Home,
-    },
+    { path: "*", component: Home },
   ];
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const searchParams = Object.fromEntries(urlSearchParams.entries());
 
   useEffect(async () => {
-    const resultTeacher = await teacherRegistryService.getOne();
+    const resultTeacher = await teacherRegistryService.getOne({}, {});
 
     if (searchParams.token != undefined) {
       localStorage.setItem("token", searchParams.token);
     }
 
-    if (resultTeacher.id) {
-      let id = resultTeacher?.id;
+    if (resultTeacher) {
+      let id = resultTeacher.id.replace("1-", "");
       localStorage.setItem("id", id);
       localStorage.setItem(
         "fullName",
