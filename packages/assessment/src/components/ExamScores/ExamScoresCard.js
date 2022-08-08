@@ -88,6 +88,7 @@ const ExamScoresCard = ({ setPageName }) => {
                   legendType="separated"
                   h="35px"
                   _bar={{ rounded: "md", my: "3" }}
+                  _legendType={{ color: colors.gray }}
                   isLabelCountHide
                   data={progressAssessment}
                 />

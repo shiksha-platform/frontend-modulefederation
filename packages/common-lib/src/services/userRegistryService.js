@@ -2,7 +2,7 @@ import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as updateRequest } from './RestClient'
 
 const interfaceData = {
-  id: 'teacherId',
+  id: 'userId',
   fullName: 'fullName',
   firstName: 'firstName',
   lastName: 'lastName',
@@ -39,7 +39,7 @@ const interfaceData = {
   stateId: 'stateId',
   status: 'status',
   subjectIds: 'subjectIds',
-  teacherAddress: 'teacherAddress',
+  address: 'address',
   updatedAt: 'updatedAt',
   village: 'village',
   fcmToken: 'fcmToken',
@@ -55,7 +55,7 @@ export const getAll = async (params = {}, header = {}) => {
   }
 
   const result = await post(
-    `${process.env.REACT_APP_API_URL}/teacher/search`,
+    `${process.env.REACT_APP_API_URL}/user/search`,
     params,
     {
       headers
@@ -74,7 +74,7 @@ export const getOne = async (params = {}, header = {}) => {
     ...header
   }
 
-  const result = await get(`${process.env.REACT_APP_API_URL}/teacher`, {
+  const result = await get(`${process.env.REACT_APP_API_URL}/user`, {
     params,
     headers
   }).catch((error) => error)
@@ -101,7 +101,7 @@ export const update = async (data = {}, header = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    process.env.REACT_APP_API_URL + '/teacher/' + data.id,
+    process.env.REACT_APP_API_URL + '/user/' + data.id,
     newData,
     { headers }
   )

@@ -19,7 +19,7 @@ import {
   Layout,
   Menu,
   telemetryFactory,
-  teacherRegistryService,
+  userRegistryService,
   attendanceRegistryService,
   H4,
   H1,
@@ -48,7 +48,7 @@ export default function Profile({ footerLinks, appName }) {
 
     const getData = async () => {
       if (!ignore) {
-        const resultTeacher = await teacherRegistryService.getOne();
+        const resultTeacher = await userRegistryService.getOne();
         setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),

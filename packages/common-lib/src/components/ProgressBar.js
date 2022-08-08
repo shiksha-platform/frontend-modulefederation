@@ -12,6 +12,7 @@ export default function ProgressBar({
   _labelCount,
   _textInBar,
   legendType,
+  _legendType,
   ...props
 }) {
   let total = data.reduce((a, b) => a + b['value'], 0)
@@ -90,7 +91,12 @@ export default function ProgressBar({
       data.map(function (item, i) {
         if (item.value > 0) {
           return (
-            <Text key={i} color={item.color}>
+            <Text
+              key={i}
+              color={item.color}
+              {..._legendType}
+              {...(item?._legendType ? item?._legendType : {})}
+            >
               {!legendType && <Text fontSize='25px'>●</Text>}
               <Text>{item.name}</Text>
             </Text>
