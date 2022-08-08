@@ -28,6 +28,7 @@ import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import { getAllForUser } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
+import {useAuthFlow} from './hooks/useAuthFlow'
 export {
   AppBar,
   Header,
@@ -59,7 +60,8 @@ export {
   templateRegistryService,
   getApiConfig,
   notificationRegistryService,
-  getAllForUser
+  getAllForUser,
+  useAuthFlow,
 }
 
 export * from './services/Auth'

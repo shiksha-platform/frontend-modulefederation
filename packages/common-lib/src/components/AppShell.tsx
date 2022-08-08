@@ -1,9 +1,10 @@
-import React, { Suspense, useEffect, useState } from 'react'
-import { Center, NativeBaseProvider } from 'native-base'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { NativeBaseProvider } from 'native-base'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
+import AppRoutesContainer from './AppRoutesContainer'
+import { useAuthFlow } from '../hooks/useAuthFlow'
 
 function AppShell({
   theme,
@@ -13,9 +14,21 @@ function AppShell({
   isShowFooterLink,
   appName,
   _authComponent,
+  skipLogin=false,
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
+
+  useEffect(() => {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const searchParams = Object.fromEntries(urlSearchParams.entries());
+    if (searchParams.token != undefined) {
+      localStorage.setItem("token", searchParams.token);
+      skipLogin = true;
+    }
+  }, []);
+  const user = useAuthFlow();
+  
   const footerLinks = !isShowFooterLink
     ? {}
     : {
@@ -60,16 +73,20 @@ function AppShell({
 
   useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
-      if ((data.eventType = 'LOGIN_SUCCESS')) {
+      if ((data.eventType == 'LOGIN_SUCCESS')) {
         setToken(localStorage.getItem('token'))
+      } else if ((data.eventType == 'LOGOUT' && skipLogin)) {
+        setTimeout(()=>{
+          window.location.href = "/oauth2/sign_out?rd=/";
+        }, 1)
       }
     })
     return () => {
       eventBus.unsubscribe(subscription)
     }
-  }, [token])
+  }, [])
 
-  if (!token) {
+  if (!token && !skipLogin) {
     return (
       <NativeBaseProvider theme={theme}>
         <PushNotification />
@@ -80,28 +97,13 @@ function AppShell({
     )
   } else {
     return (
-      <NativeBaseProvider theme={theme}>
-        <PushNotification />
-        <Suspense
-          fallback={
-            <Center>
-              <Loading />
-            </Center>
-          }
-        >
-          <Router basename={basename}>
-            <Routes>
-              {routes.map((item: any, index: number) => (
-                <Route
-                  key={index}
-                  path={item.path}
-                  element={<item.component {...{ footerLinks, appName }} />}
-                />
-              ))}
-            </Routes>
-          </Router>
-        </Suspense>
-      </NativeBaseProvider>
+      <AppRoutesContainer
+        theme={theme}
+        basename={basename}
+        routes={routes}
+        isShowFooterLink={true}
+        appName='Teacher App'
+      />
     )
   }
 }

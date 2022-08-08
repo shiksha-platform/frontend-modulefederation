@@ -11,8 +11,10 @@ import {
   InputGroup,
   InputRightAddon
 } from 'native-base'
+
 import { useNavigate } from 'react-router-dom'
 import IconByName from '../IconByName'
+import { eventBus } from '../../services/EventBus'
 
 export default function AppBar({
   isEnableHamburgerMenuButton,
@@ -33,11 +35,17 @@ export default function AppBar({
   const navigate = useNavigate()
   const setLang = (e) => {
     if (e === 'logout') {
-      localStorage.setItem('token', '')
+      localStorage.setItem('token', '');
+      localStorage.clear();
+      eventBus.publish("AUTH", {
+        eventType: "LOGOUT",
+        data: {
+        },
+      });
     } else {
       localStorage.setItem('lang', e)
+      window.location.reload()
     }
-    window.location.reload()
   }
 
   const handleSeachState = (boolean) => {
