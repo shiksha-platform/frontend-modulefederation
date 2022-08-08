@@ -15,11 +15,11 @@ export default function Footer({ menues, routeDynamics, ...props }) {
   useEffect(() => {
     let path = window?.location?.pathname.toString()
     if (path.startsWith('/attendance') || path.startsWith('/class')) {
-      setSelected(1)
+      setSelected("class")
     } else if (path.startsWith('/worksheet')) {
-      setSelected(3)
+      setSelected("worksheet")
     } else if (path.startsWith('/mylearning')) {
-      setSelected(4)
+      setSelected("mylearning")
     } else {
       setSelected(0)
     }

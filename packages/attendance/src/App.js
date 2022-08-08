@@ -14,22 +14,27 @@ function App() {
   );
   const routes = [
     {
+      moduleName: "attendance",
       path: navigationRoute.attendance,
       component: Attendance,
     },
     {
+      moduleName: "attendance",
       path: navigationRoute.report,
       component: Report,
     },
     {
+      moduleName: "attendance",
       path: navigationRoute.attendanceReport,
       component: ReportDetail,
     },
     {
+      moduleName: "attendance",
       path: navigationRoute.sendSms,
       component: SendSMS,
     },
     {
+      moduleName: "attendance",
       path: navigationRoute.fourOfour,
       component: Attendance,
     },
