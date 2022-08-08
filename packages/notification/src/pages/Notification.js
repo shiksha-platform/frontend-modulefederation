@@ -35,6 +35,8 @@ import {
   telemetryFactory,
   userRegistryService,
   getAllForUser,
+  sendReadReceipt,
+  H4,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -423,43 +425,43 @@ const NotificationBox = ({
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
+
+  const readReceipt = async (id) => {
+    const resp1 = await sendReadReceipt({
+      eventType: "READ",
+      externalId: id,
+      destAdd: localStorage.getItem("phoneNumber"),
+      fcmDestAdd: localStorage.getItem("fcmToken"),
+    });
+  };
+
   const numberOfItems = showMore ? data.length : 2;
   return data.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
         key={index}
-        borderWidth="1"
-        borderColor={colors.primary}
+        borderWidth={value.messageState === "SENT" ? "2" : "1"}
+        borderColor={
+          value.messageState === "SENT" ? colors.primary : colors.lightGray
+        }
         my="2"
         p="5"
         rounded="10"
       >
-        <Pressable onPress={(e) => onPress(value)}>
+        <Pressable
+          onPress={(e) => {
+            onPress(value);
+            if (value.messageState === "SENT") {
+              readReceipt(value.messageId);
+            }
+          }}
+        >
           <VStack space="3">
-            {/* <HStack
-              space="2"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-               <HStack space="2" alignItems="center">
-                <IconByName
-                  _icon={{ size: "16" }}
-                  name="UserLineIcon"
-                  isDisabled
-                />
-                <H2>{value.name}</H2>
-                <H1 color={colors.primary}>•</H1>
-              </HStack>
-              <IconByName
-                _icon={{ size: "18" }}
-                p="0"
-                name="More2LineIcon"
-                onPress={(e) => {
-                  onPressMore();
-                }}
-              />
-            </HStack> */}
-            <Subtitle {...line2style}>{value.payload.text}</Subtitle>
+            {value.messageState === "READ" ? (
+              <BodySmall {...line2style}>{value?.payload?.text}</BodySmall>
+            ) : (
+              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
+            )}
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -467,8 +469,11 @@ const NotificationBox = ({
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                <BodySmall>Attendance</BodySmall>
-                {/* <BodySmall>{value.module}</BodySmall> */}
+                {value.messageState === "READ" ? (
+                  <BodySmall>Attendance</BodySmall>
+                ) : (
+                  <Subtitle {...line2style}>Attendance</Subtitle>
+                )}
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -476,9 +481,15 @@ const NotificationBox = ({
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>
-                  {moment.utc(value.timestamp).local().format("LT")}
-                </BodySmall>
+                {value.messageState === "READ" ? (
+                  <BodySmall>
+                    {moment.utc(value.timestamp).local().format("LT")}
+                  </BodySmall>
+                ) : (
+                  <Subtitle>
+                    {moment.utc(value.timestamp).local().format("LT")}
+                  </Subtitle>
+                )}
               </HStack>
             </HStack>
           </VStack>
