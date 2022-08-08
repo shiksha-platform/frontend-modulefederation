@@ -4,6 +4,7 @@ module.exports = {
   name: "core",
   exposes: {
     "./App": "./src/App",
+    "./AppShell": "./src/components/AppShell",
     "./Login": "./src/pages/Login",
   },
   filename: "moduleEntry.js",

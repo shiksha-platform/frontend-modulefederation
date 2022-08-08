@@ -9,22 +9,18 @@ import Allocatedschools from "./pages/Allocated-schools";
 function App() {
   const routes = [
     {
-      moduleName: "visits",
       path: "/",
       component: Myvisits,
     },
     {
-      moduleName: "visits",
       path: "/visits/recommended-schools",
       component: Recommendedschools,
     },
     {
-      moduleName: "visits",
       path: "/visits/allocated-schools",
       component: Allocatedschools,
     },
     {
-      moduleName: "visits",
       path: "*",
       component: Myvisits,
     },

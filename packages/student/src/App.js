@@ -12,17 +12,14 @@ function App() {
   );
   const routes = [
     {
-      moduleName: "student",
       path: navigationRoute.student,
       component: Student,
     },
     {
-      moduleName: "student",
       path: navigationRoute.studentDetails,
       component: StudentDetails,
     },
     {
-      moduleName: "student",
       path: navigationRoute.fourOfour,
       component: Student,
     },

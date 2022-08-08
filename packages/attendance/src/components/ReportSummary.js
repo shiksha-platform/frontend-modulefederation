@@ -94,20 +94,20 @@ export default function Report({
             (presentAttendanceCount * 100) / daysWithoutHolidays.length;
           if (percentage && percentage >= 100) {
             setDesign({
-              bg: "attendance.success",
+              bg: colors.success,
               iconName: "EmotionHappyLineIcon",
               titleHeading:
                 t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
             });
           } else if (percentage && percentage < 100 && percentage >= 50) {
             setDesign({
-              bg: "attendance.warning",
+              bg: colors.warning,
               iconName: "EmotionNormalLineIcon",
               titleHeading: t("AGERAGE_CAN_BE_IMPROVED"),
             });
           } else {
             setDesign({
-              bg: "attendance.danger",
+              bg: colors.danger,
               iconName: "EmotionSadLineIcon",
               titleHeading:
                 t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
@@ -206,7 +206,7 @@ export default function Report({
           </Text> */}
         </HStack>
       </Box>
-      <Box bg={"attendance.reportBoxBg"}>
+      <Box bg={colors.reportBoxBg}>
         {attendance && attendance.length ? (
           <FlatList
             data={genderList}
@@ -215,7 +215,7 @@ export default function Report({
                 p="5"
                 space={3}
                 borderBottomWidth="1"
-                borderBottomColor={"attendance.reportBorder"}
+                borderBottomColor={colors.reportBorder}
               >
                 {attendance.length > 1 ? <Subtitle>{item}</Subtitle> : ""}
                 <VStack space={3}>
@@ -246,12 +246,12 @@ export default function Report({
                               name: subItem,
                               color:
                                 subItem === PRESENT
-                                  ? "attendance.present"
+                                  ? colors.attendancePresent
                                   : subItem === ABSENT
-                                  ? "attendance.absent"
+                                  ? colors.attendanceAbsent
                                   : subItem === UNMARKED
-                                  ? "attendance.unmarked"
-                                  : "attendance.gray",
+                                  ? colors.attendanceUnmarked
+                                  : colors.gray,
                               value: statusCount,
                             };
                           })}
@@ -268,7 +268,7 @@ export default function Report({
           ""
         )}
       </Box>
-      <Box roundedBottom={"xl"} p="5" bg={"attendance.reportBoxBg"}>
+      <Box roundedBottom={"xl"} p="5" bg={colors.reportBoxBg}>
         {footer ? (
           footer
         ) : (

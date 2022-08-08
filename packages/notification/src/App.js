@@ -12,31 +12,11 @@ function App() {
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
   );
   const routes = [
-    {
-      moduleName: "notification",
-      path: "/notification",
-      component: Notification,
-    },
-    {
-      moduleName: "notification",
-      path: "/notification/create",
-      component: CreateNotification,
-    },
-    {
-      moduleName: "notification",
-      path: "/notification/schedule",
-      component: ScheduleNotification,
-    },
-    {
-      moduleName: "notification",
-      path: "/notification/outbox",
-      component: Outbox,
-    },
-    {
-      moduleName: "notification",
-      path: "*",
-      component: Notification,
-    },
+    { path: "/notification", component: Notification },
+    { path: "/notification/create", component: CreateNotification },
+    { path: "/notification/schedule", component: ScheduleNotification },
+    { path: "/notification/outbox", component: Outbox },
+    { path: "*", component: Notification },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
 

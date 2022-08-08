@@ -367,7 +367,6 @@ export default function SelfAttedanceSheet({
         {children}
         <Modal safeAreaTop={true} isOpen={showModal}>
           <Modal.Content
-            bg="white"
             maxWidth="1024px"
             position="fixed"
             bottom="0"
