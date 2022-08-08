@@ -312,7 +312,13 @@ export default function ScheduleNotification({ footerLinks, appName }) {
         ) : (
           ""
         )}
-        <Box bg={"notification.white"} p="5" position="sticky" bottom="0" shadow={2}>
+        <Box
+          bg={"notification.white"}
+          p="5"
+          position="sticky"
+          bottom="0"
+          shadow={2}
+        >
           <Button.Group>
             <Button
               colorScheme="button"
@@ -504,7 +510,11 @@ const FormInput = ({
           _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName
-              color={item?.buttonVariant ? "notification.primary" : "notification.primary"}
+              color={
+                item?.buttonVariant
+                  ? "notification.primary"
+                  : "notification.primary"
+              }
               name="ArrowDownSLineIcon"
               isDisabled
             />

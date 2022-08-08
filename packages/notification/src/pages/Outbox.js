@@ -421,7 +421,11 @@ const Schedule = ({ data, page, setPage, date }) => {
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg={"notification.white"} width={"100%"} justifyContent="space-between">
+        <Box
+          bg={"notification.white"}
+          width={"100%"}
+          justifyContent="space-between"
+        >
           <Box p="5">
             <Checkbox
               colorScheme="button"
@@ -703,7 +707,11 @@ const Send = ({ data, page, setPage, date }) => {
           </VStack>
           {sendBy === "teacher" ? (
             <VStack>
-              <Box p="5" borderBottomWidth="1" borderColor={"notification.lightGray2"}>
+              <Box
+                p="5"
+                borderBottomWidth="1"
+                borderColor={"notification.lightGray2"}
+              >
                 <HStack alignItems="center" justifyContent="space-between">
                   <HStack alignItems="center" space="1">
                     <IconByName
@@ -722,7 +730,11 @@ const Send = ({ data, page, setPage, date }) => {
                   />
                 </HStack>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor={"notification.lightGray2"}>
+              <Box
+                p="5"
+                borderBottomWidth="1"
+                borderColor={"notification.lightGray2"}
+              >
                 <HStack alignItems="center" justifyContent="space-between">
                   <HStack alignItems="center" space="1">
                     <IconByName
@@ -741,12 +753,20 @@ const Send = ({ data, page, setPage, date }) => {
                   />
                 </HStack>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor={"notification.lightGray2"}>
+              <Box
+                p="5"
+                borderBottomWidth="1"
+                borderColor={"notification.lightGray2"}
+              >
                 <Button colorScheme="button" variant="outline">
                   {t("RESEND")}
                 </Button>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor={"notification.lightGray2"}>
+              <Box
+                p="5"
+                borderBottomWidth="1"
+                borderColor={"notification.lightGray2"}
+              >
                 <HStack alignItems="center" space="1">
                   <IconByName
                     _icon={{ size: "16" }}
@@ -757,7 +777,11 @@ const Send = ({ data, page, setPage, date }) => {
                   <BodyLarge>"Sent - 23rd April, 2022."</BodyLarge>
                 </HStack>
               </Box>
-              <Box p="5" borderBottomWidth="1" borderColor={"notification.lightGray2"}>
+              <Box
+                p="5"
+                borderBottomWidth="1"
+                borderColor={"notification.lightGray2"}
+              >
                 <HStack alignItems="center" space="1">
                   <IconByName
                     _icon={{ size: "16" }}
@@ -793,7 +817,7 @@ const Send = ({ data, page, setPage, date }) => {
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"notification.cardBg"}
+              color={"notification.cardCloseIcon"}
               onPress={(e) => setFilterData()}
             />
           </HStack>

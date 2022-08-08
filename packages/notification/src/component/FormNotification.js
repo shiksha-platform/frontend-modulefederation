@@ -1,6 +1,6 @@
 import {
   capture,
-  IconByName,  
+  IconByName,
   H2,
   classRegistryService,
   getApiConfig,
@@ -20,7 +20,7 @@ import {
   Box,
   Pressable,
   Checkbox,
-  VStack  
+  VStack,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -151,7 +151,13 @@ export default function FormNotification({
           </HStack>
         </Pressable>
       </Box>
-      <Box bg={"notification.white"} p="5" position="sticky" bottom="0" shadow={2}>
+      <Box
+        bg={"notification.white"}
+        p="5"
+        position="sticky"
+        bottom="0"
+        shadow={2}
+      >
         <Button.Group>
           <Button
             flex="1"

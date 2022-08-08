@@ -64,59 +64,17 @@ export default function Recommendedschools() {
     <Layout
       _header={{
         title: "Recommended Schools",
-        _heading: { color: colors.white },
         isEnableSearchBtn: true,
-        subHeading: t("See all your recommended schools for visits here"),
-        _subHeading: { color: colors.white, textTransform: "none" },
       }}
+      subHeader={
+        <H2 textTransform="inherit">
+          See all your recommended schools for visits here
+        </H2>
+      }
       _appBar={{ languages: ["en"] }}
       _subHeader={{ bg: colors.lightPurple }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitelaize",
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/visits",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-        ],
-      }}
     >
-      <Box p={6}>
+      <Box p={6} bg={colors.white}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>

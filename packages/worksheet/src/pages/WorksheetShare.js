@@ -181,7 +181,13 @@ export default function WorksheetShare({ footerLinks, appName }) {
             ))}
           </Collapsible>
         </VStack>
-        <Box bg={"worksheet.white"} p="5" position="sticky" bottom="0" shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          position="sticky"
+          bottom="0"
+          shadow={2}
+        >
           <Button.Group>
             <Button
               flex="1"
@@ -199,11 +205,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
         isOpen={showModal}
         _backdrop={{ opacity: "0.9", bg: "worksheet.gray" }}
       >
-        <Actionsheet.Content
-          p="0"
-          alignItems={"left"}
-          bg={"worksheet.cardBg"}
-        >
+        <Actionsheet.Content p="0" alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2 fontWeight={"600"}>{t("SELECT_VIEW")}</H2>
@@ -249,17 +251,11 @@ export default function WorksheetShare({ footerLinks, appName }) {
         isOpen={showSuccessModal}
         _backdrop={{ opacity: "0.9", bg: "gray.500" }}
       >
-        <Actionsheet.Content
-          p="0"
-          alignItems={"left"}
-          bg={"worksheet.successAlert"}
-        >
+        <Actionsheet.Content p="0" alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Worksheet Sent")}</H2>
-              <H4 color={"worksheet.darkGreen"}>
-                {moment().format("DD MMM, h:m")}
-              </H4>
+              <H4>{moment().format("DD MMM, h:m")}</H4>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
