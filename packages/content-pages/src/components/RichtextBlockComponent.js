@@ -5,15 +5,15 @@ import draftToHtml from "draftjs-to-html";
 import { mock1, mock2 } from "./mock";
 
 console.log(mock1);
-export default function RichtextBlockComponent() {
+export default function RichtextBlockComponent({initialData}) {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [convertedContent, setConvertedContent] = useState(null);
 
   useEffect(() => {
-    if (mock2) {
-      const rawContent = convertFromRaw(mock2);
+    if (initialData) {
+      const rawContent = convertFromRaw(initialData);
       console.log(rawContent, editorState);
       setEditorState(EditorState.createWithContent(rawContent));
       let currentContentAsHTML = draftToHtml(

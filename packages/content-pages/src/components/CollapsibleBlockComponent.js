@@ -1,10 +1,10 @@
 import { BodyMedium, Collapsible } from "@shiksha/common-lib";
 
-const CollapsibleBlockComponent = ({ header, content }) => {
+const CollapsibleBlockComponent = ({ collapsibleHeader, collapsibleContent }) => {
   return (
     <Collapsible
-      header={header}
-      children={<BodyMedium py="4">{content}</BodyMedium>}
+      header={collapsibleHeader}
+      children={<BodyMedium py="4">{collapsibleContent}</BodyMedium>}
       p="3"
     ></Collapsible>
   );

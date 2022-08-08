@@ -1,14 +1,27 @@
 import { Layout } from "@shiksha/common-lib";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack } from "native-base";
 import CollapsibleBlockComponent from "components/CollapsibleBlockComponent";
 import ImageBlockComponent from "components/ImageBlockComponent";
 import RichtextBlockComponent from "components/RichtextBlockComponent";
+import { useEffect, useState } from "react";
+import {contentPagesRegistryService} from "@shiksha/common-lib";
 
 export default function ContentPage() {
+  const { slug } = useParams();
+  console.log(slug);
+
+  const [pageData,setPageData]=useState([]);
+
+  useEffect(()=>{
+    contentPagesRegistryService.getContentPageData(slug).then((res)=>{
+      setPageData(res[0]);
+      console.log(res[0]);
+    })
+  },[]);
   const collapsibleProps = {
-    header: "Sample question",
-    content: "Sample answer",
+    collapsibleHeader: "Sample question",
+    collapsibleContent: "Sample answer",
   };
   const imageProps = {
     src: "https://picsum.photos/600/400",
@@ -46,12 +59,21 @@ export default function ContentPage() {
         ],
       }}
     >
-      <h1>Sample title</h1>
-      <CollapsibleBlockComponent
-        {...collapsibleProps}
-      ></CollapsibleBlockComponent>
-      <ImageBlockComponent {...imageProps}></ImageBlockComponent>
-      <RichtextBlockComponent {...imageProps}></RichtextBlockComponent>
+      <h1>{pageData?.title}</h1>
+      {
+
+        pageData?.blocks?.map((val,idx)=>{
+
+          switch(val?.blockType){
+            case 'richtext':
+              return <RichtextBlockComponent initialData={JSON.parse(val?.blockData?.richtextData)}></RichtextBlockComponent>
+            case 'image':
+              return <ImageBlockComponent src={val?.blockData?.imgSrc}></ImageBlockComponent>
+            case 'collapsible':
+              return <CollapsibleBlockComponent {...val?.blockData}></CollapsibleBlockComponent>
+          }
+        })
+      }
     </Layout>
   );
 }
