@@ -184,13 +184,8 @@ export default function Attendance({ footerLinks, appName }) {
         subHeading: t("ATTENDANCE_REGISTER"),
         iconComponent: (
           <Button
-            variant="outline"
-            rounded="full"
-            px={5}
-            py={1}
-            bg={colors.reportbtnBg}
+            variant="outlineRounded"
             textTransform="capitalize"
-            alignItems="center"
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => navigate("/attendance/report")}
           >
@@ -219,11 +214,11 @@ export default function Attendance({ footerLinks, appName }) {
           />
         </HStack>
       }
-      _subHeader={{ bg: colors.attendanceCardBg }}
+      _subHeader={{ bg: "attendance.cardBg" }}
       _footer={footerLinks}
     >
       <Stack space={1}>
-        <Box bg={colors.white} px="4" py="30">
+        <Box bg="white" px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <CalendarBar
               view="week"
@@ -291,7 +286,7 @@ export default function Attendance({ footerLinks, appName }) {
           </HStack>
         </Box>
       </Stack>
-      <Box bg={colors.white} py="10px" px="5">
+      <Box bg="white" py="10px" px="5">
         <FlatList
           data={searchStudents}
           renderItem={({ item, index }) => (

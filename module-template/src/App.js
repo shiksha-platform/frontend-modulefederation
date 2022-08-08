@@ -7,10 +7,12 @@ import Sample from "pages/Sample";
 function App() {
   const routes = [
     {
+      moduleName: "module-template",
       path: "/",
       component: Sample,
     },
     {
+      moduleName: "module-template",
       path: "*",
       component: Sample,
     },

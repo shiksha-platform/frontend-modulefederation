@@ -13,6 +13,7 @@ function App() {
   );
   const routes = [
     {
+      moduleName: "calendar",
       path: navigationRoute.fourOfour,
       component: TimeTableRoute,
     },

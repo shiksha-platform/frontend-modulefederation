@@ -29,12 +29,9 @@ import {
   BodyLarge,
   Caption,
   BodyMedium,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import ReportSummary from "./ReportSummary";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 const Card = React.lazy(() => import("students/Card"));
 const PRESENT = "Present";
@@ -51,49 +48,49 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
   switch (status) {
     case "Present":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancePresent}>
+        <Box {..._box} color={color ? color : "attendance.present"}>
           <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Absent":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceAbsent}>
+        <Box {..._box} color={color ? color : "attendance.absent"}>
           <IconByName name="CloseCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Late":
       icon = (
-        <Box {..._box} color={color ? color : colors.checkBlankcircle}>
+        <Box {..._box} color={color ? color : "attendance.warning"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarkedLight}>
+        <Box {..._box} color={color ? color : "attendance.lightGray"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Unmarked":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "attendance.unmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Today":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "attendance.lightGray"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     default:
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancedefault}>
+        <Box {..._box} color={color ? color : "attendance.lightGray"}>
           <IconByName name={status} {...iconProps} />
         </Box>
       );
@@ -288,40 +285,40 @@ export const MultipalAttendance = ({
           </Box>
           <Actionsheet isOpen={showModal} onClose={() => modalClose()}>
             <Stack width={"100%"} maxH={"100%"}>
-              <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+              <Actionsheet.Content alignItems={"left"} bg="attendance.cardBg">
                 <HStack justifyContent={"space-between"}>
                   <Stack p={5} pt={2} pb="25px">
-                    <H2 color={colors.white}>
+                    <H2 color="attendance.cardBgText">
                       {t("ATTENDANCE_SUMMARY_REPORT")}
                     </H2>
-                    <BodySmall color={colors.white}>
+                    <BodySmall color="attendance.cardBgText">
                       {classObject?.title ?? ""}
                     </BodySmall>
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
                     onPress={(e) => setShowModal(false)}
-                    color={colors.white}
+                    color="white"
                   />
                 </HStack>
               </Actionsheet.Content>
-              <ScrollView width={"100%"} space="1" bg={colors.coolGray}>
-                <Box bg={colors.bgSuccessAlert} px={5} py={10}>
+              <ScrollView width={"100%"} space="1" bg="attendance.coolGray">
+                <Box bg="attendance.bgSuccessAlert" px={5} py={10}>
                   <VStack alignItems="center" space="2">
                     <IconByName
-                      color={colors.successAlertText}
+                      color="attendance.successAlertText"
                       name="CheckboxCircleFillIcon"
                       _icon={{
                         size: "70",
                       }}
                       isDisabled
                     />
-                    <H1 color={colors.successAlertText}>
+                    <H1 color="attendance.successAlertText">
                       {t("ATTENDANCE_SUBMITTED")}
                     </H1>
                   </VStack>
                 </Box>
-                <Box bg={colors.white} p={5}>
+                <Box bg="white" p={5}>
                   <HStack
                     justifyContent="space-between"
                     alignItems="center"
@@ -341,7 +338,7 @@ export const MultipalAttendance = ({
                       footer: (
                         <HStack justifyContent={"space-between"}>
                           <Subtitle>{t("ATTENDANCE_TAKEN_BY")}</Subtitle>
-                          <Subtitle color={colors.successAlertText}>
+                          <Subtitle color="attendance.successAlertText">
                             {fullName ? fullName : ""}
                             {" at "}
                             {lastAttedance}
@@ -351,7 +348,7 @@ export const MultipalAttendance = ({
                     }}
                   />
                 </Box>
-                <Box bg={colors.white} p="5" textAlign={"center"}>
+                <Box bg="white" p="5" textAlign={"center"}>
                   <VStack space={2}>
                     <BodyLarge>
                       {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
@@ -380,7 +377,7 @@ export const MultipalAttendance = ({
                         {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
                       </Button>
                       <Button
-                        _text={{ color: colors.white }}
+                        _text={{ color: "attendance.white" }}
                         flex="1"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
@@ -396,8 +393,8 @@ export const MultipalAttendance = ({
                     </Button.Group>
                   </VStack>
                 </Box>
-                <Box bg={colors.white} p={5}>
-                  <Box bg={colors.bgReportCard} rounded={"md"} p="4">
+                <Box bg="white" p={5}>
+                  <Box bg="attendance.reportCardBgLight" rounded={"md"} p="4">
                     <VStack space={5}>
                       <HStack
                         justifyContent={"space-between"}
@@ -447,7 +444,7 @@ export const MultipalAttendance = ({
                     </VStack>
                   </Box>
                 </Box>
-                <Box p="2" py="5" bg={colors.white}>
+                <Box p="2" py="5" bg="white">
                   <VStack space={"15px"} alignItems={"center"}>
                     <Caption textAlign={"center"}>
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
@@ -464,7 +461,7 @@ export const MultipalAttendance = ({
                       <Button
                         flex={1}
                         colorScheme="button"
-                        _text={{ color: colors.white }}
+                        _text={{ color: "attendance.white" }}
                         onPress={(e) =>
                           navigate(
                             "/attendance/report/" +
@@ -652,7 +649,11 @@ export default function AttendanceComponent({
           ""
         )}
         {type !== "day" ? (
-          <Box borderWidth={1} borderColor={colors.coolGray} rounded="xl">
+          <Box
+            borderWidth={1}
+            borderColor="attendance.coolGrayFaint"
+            rounded="xl"
+          >
             {days.map((day, index) => (
               <CalendarComponent
                 manifest={manifest}
@@ -678,19 +679,22 @@ export default function AttendanceComponent({
           <></>
         )}
         <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg={colors.bgMarkAttendance}>
+          <Actionsheet.Content
+            alignItems={"left"}
+            bg="attendance.bgMarkAttendance"
+          >
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
-                <H2 color={colors.white}>{t("MARK_ATTENDANCE")}</H2>
+                <H2 color="white">{t("MARK_ATTENDANCE")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.white}
+                color="white"
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+          <Box w="100%" p={4} justifyContent="center" bg="white">
             {status.map((item) => {
               return (
                 <Pressable
@@ -709,7 +713,7 @@ export default function AttendanceComponent({
                 >
                   <HStack alignItems="center" space={2}>
                     <GetIcon status={item} _box={{ p: 2 }} />
-                    <Text color={colors.darkGray} bold fontSize="lg">
+                    <Text color="attendance.darkGray" bold fontSize="lg">
                       {t(item)}
                     </Text>
                   </HStack>
@@ -722,7 +726,7 @@ export default function AttendanceComponent({
           isOpen={smsShowModal}
           onClose={() => setSmsShowModal(false)}
         >
-          <Actionsheet.Content alignItems={"left"}>
+          <Actionsheet.Content alignItems={"left"} bg="white">
             {/* <HStack justifyContent={"end"}>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -730,11 +734,11 @@ export default function AttendanceComponent({
               />
             </HStack> */}
             <VStack space={5} alignItems="center" p="5">
-              <Subtitle color={colors.messageSent}>
+              <Subtitle color="attendance.messageSent">
                 Message Sent to Parent
               </Subtitle>
-              <Subtitle color={colors.messageAlert}>Absent alert</Subtitle>
-              <BodyMedium color={colors.messageInfo} textAlign="center">
+              <Subtitle color="attendance.messageAlert">Absent alert</Subtitle>
+              <BodyMedium color="attendance.messageInfo" textAlign="center">
                 Hello Mr. B.K. Chaudhary, this is to inform you that your ward
                 Sheetal is absent in school on Wednesday, 12th of January 2022.
               </BodyMedium>
@@ -858,7 +862,7 @@ const CalendarComponent = ({
       borderBottomWidth={
         monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
       }
-      borderBottomColor={colors.lightGray}
+      borderBottomColor="attendance.lightGray"
       {...(type === "day" ? { px: "2" } : { p: "2" })}
       {..._weekBox}
     >
@@ -873,13 +877,12 @@ const CalendarComponent = ({
           attendanceIconProp,
           attendanceType,
         ] = handleAttendaceData(attendance, day);
-
         return (
           <VStack
             key={subIndex}
             alignItems="center"
             borderWidth={isToday ? "1" : ""}
-            borderColor={isToday ? colors.calendarBtn : ""}
+            borderColor={isToday ? "attendance.lightGray" : ""}
             p={type === "day" ? "1" : "0"}
             rounded="lg"
             opacity={
@@ -891,13 +894,13 @@ const CalendarComponent = ({
             }
             bg={
               smsDay?.type && isEditDisabled
-                ? smsDay?.type.toLowerCase() + ".50"
+                ? `attendance.${smsDay?.type.toLowerCase()}Light`
                 : ""
             }
           >
             {smsDay?.type && isEditDisabled ? (
               <Badge
-                bg={smsDay?.type.toLowerCase() + ".500"}
+                bg={`attendance.${smsDay?.type.toLowerCase()}`}
                 rounded="full"
                 p="0"
                 w="2"
@@ -917,13 +920,15 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <BodySmall pb="1" color={colors.dateText}>
+                    <BodySmall pb="1" color="attendance.gray">
                       {day.format("ddd")}
                     </BodySmall>
                   ) : (
                     ""
                   )}
-                  <BodySmall color={colors.date}>{day.format("DD")}</BodySmall>
+                  <BodySmall color="attendance.gray">
+                    {day.format("DD")}
+                  </BodySmall>
                 </VStack>
               ) : (
                 <HStack alignItems={"center"} space={1}>
@@ -964,7 +969,7 @@ const CalendarComponent = ({
                   <GetIcon
                     {...attendanceIconProp}
                     status="Loader4LineIcon"
-                    color={colors.primary}
+                    color="attendance.primary"
                     isDisabled
                     _icon={{ _fontawesome: { spin: true } }}
                   />
@@ -980,9 +985,8 @@ const CalendarComponent = ({
                   p="5px"
                   rounded="full"
                   name="MailFillIcon"
-                  bg={smsDay?.type.toLowerCase() + ".100"}
-                  colorScheme={smsDay?.type.toLowerCase()}
-                  color={smsDay?.type.toLowerCase() + ".500"}
+                  bg={`attendance.${smsDay?.type.toLowerCase()}Light`}
+                  color={`attendance.${smsDay?.type.toLowerCase()}`}
                   _icon={{ size: "14" }}
                   onPress={(e) => setSmsShowModal(true)}
                 />

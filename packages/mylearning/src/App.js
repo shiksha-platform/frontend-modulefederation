@@ -14,34 +14,42 @@ function App() {
   );
   const routes = [
     {
+      moduleName: "mylearning",
       path: "/mylearning/list/:state",
       component: CourseList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/list",
       component: CourseList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/:id/view",
       component: CourseDetails,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/video/list/:state",
       component: VideoList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/video/list",
       component: VideoList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/video/:id/view",
       component: VideoDetails,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning",
       component: MyLearning,
     },
     {
+      moduleName: "mylearning",
       path: "*",
       component: MyLearning,
     },
