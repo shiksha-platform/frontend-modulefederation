@@ -173,7 +173,12 @@ export default function WorksheetBox({
   };
 
   return (
-    <Box p="5" borderWidth="1" borderColor={"worksheet.lightGray2"} rounded="lg">
+    <Box
+      p="5"
+      borderWidth="1"
+      borderColor={"worksheet.lightGray2"}
+      rounded="lg"
+    >
       <VStack space={4}>
         <HStack justifyContent="space-between" alignItems="flex-start">
           <Pressable onPress={() => (url ? navigate(url) : "")}>
@@ -194,7 +199,7 @@ export default function WorksheetBox({
                 <HStack space={1} alignItems="center">
                   <IconByName
                     name="Heart3FillIcon"
-                    color={"worksheet.eventError"}
+                    color={"worksheet.error"}
                     _icon={{ size: 12 }}
                     isDisabled
                   />

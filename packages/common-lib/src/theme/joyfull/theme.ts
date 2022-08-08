@@ -18,18 +18,26 @@ const theme = {
       ...colorTheme,
       primary: '#F87558'
     },
+    calendar: {
+      ...colorTheme,
+      timeTableFlashIcon: '#BDB3E7',
+      timeTablemiddle: '#A1D6B6',
+      timeTablecellborder: '#FFDFD6',
+      specialDuty: '#06D6A0',
+      activeClass: '#10b981'
+    },
     worksheet: {
       ...colorTheme,
       primary: '#F87558',
       primaryLight: '#FFF8F7',
-      primaryDark: "#C79AB2",
+      primaryDark: '#C79AB2',
       cardBg: '#F9CCE4',
-      cardBgLight: "#FEF1F9",
+      cardBgLight: '#FEF1F9',
       secondary: '#feefeb'
     },
     notification: {
-      cardBg: "#D9F0FC",
-      notificationBg: "#FDDFD8"
+      cardBg: '#D9F0FC',
+      notificationBg: '#FDDFD8'
     },
     widgetColor: {
       400: '#7F9DAC',

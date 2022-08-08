@@ -17,7 +17,7 @@ const colorTheme = {
   warning: '#FFC369',
   present: '#2BB639',
   absent: '#F57B7B',
-  
+
   unmarked: '#B5B5C8',
   holiDay: '#F0F0F4',
   defaultMark: '#d3d3e5',

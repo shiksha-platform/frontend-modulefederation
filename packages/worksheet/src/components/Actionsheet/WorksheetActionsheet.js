@@ -79,7 +79,7 @@ export default function Worksheet({
               <HStack alignItems="center">
                 <IconByName
                   name="Heart3FillIcon"
-                  color={"worksheet.eventError"}
+                  color={"worksheet.error"}
                   _icon={{ size: 12 }}
                   isDisabled
                 />
