@@ -11,7 +11,6 @@ const theme = {
     ...colorTheme,
     attendance: colorTheme,
     student: colorTheme,
-    class: colorTheme,
     calendar: {
       ...colorTheme,
       timeTableFlashIcon: '#BDB3E7',
@@ -20,6 +19,7 @@ const theme = {
       specialDuty: '#06D6A0',
       activeClass: '#10b981'
     },
+    classes: { ...colorTheme, girls: '#0ea5e9', boys: '#a855f7' },
     worksheet: { ...colorTheme },
     notification: { ...colorTheme, notificationBg: light },
     widgetColor: {

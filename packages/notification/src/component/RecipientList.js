@@ -61,7 +61,7 @@ export default function RecipientList({
                   <VStack alignItems="center">
                     <BodyLarge>
                       <Text>{item.name}</Text>
-                      <Text color={"notification.lightGray1"}> • </Text>                      
+                      <Text color={"notification.lightGray1"}> • </Text>
                     </BodyLarge>
                   </VStack>
                 }

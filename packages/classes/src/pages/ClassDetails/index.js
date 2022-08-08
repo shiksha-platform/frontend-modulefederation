@@ -91,7 +91,7 @@ const ClassDetails = ({ footerLinks }) => {
       }
       _subHeader={{
         bottom: "15px",
-        bg: colors.cardBg,
+        bg: "classes.cardBg",
       }}
       _footer={footerLinks}
     >

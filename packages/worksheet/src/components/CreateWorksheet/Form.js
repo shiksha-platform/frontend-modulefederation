@@ -145,7 +145,13 @@ export default function Form({
         {...{ formObject, setFormObject, formData, setFormData }}
         data={inputs}
       />
-      <Box bg={"worksheet.white"} p="5" position="sticky" bottom="84" shadow={2}>
+      <Box
+        bg={"worksheet.white"}
+        p="5"
+        position="sticky"
+        bottom="84"
+        shadow={2}
+      >
         <Button.Group>
           {createType === "create" &&
           manifest &&

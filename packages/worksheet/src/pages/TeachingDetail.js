@@ -130,7 +130,13 @@ export default function TeachingDetail({ footerLinks, appName }) {
         ) : (
           ""
         )}
-        <Box bg={"worksheet.white"} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          mb="4"
+          roundedBottom={"xl"}
+          shadow={2}
+        >
           <Tab
             routes={[
               {
@@ -172,7 +178,13 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg={"worksheet.white"} p="5" position="sticky" bottom="85" shadow={2}>
+      <Box
+        bg={"worksheet.white"}
+        p="5"
+        position="sticky"
+        bottom="85"
+        shadow={2}
+      >
         <Button
           _text={{ color: "worksheet.white" }}
           p="3"
