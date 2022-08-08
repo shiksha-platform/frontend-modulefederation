@@ -26,7 +26,10 @@ import * as assessmentRegistryService from './services/assessmentRegistryService
 import * as templateRegistryService from './services/templateRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
-import { getAllForUser } from './services/firebaseHistoryRegistryService'
+import {
+  getAllForUser,
+  sendReadReceipt
+} from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
 import {useAuthFlow} from './hooks/useAuthFlow'
 export {
@@ -57,11 +60,12 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
-  templateRegistryService,
   getApiConfig,
-  notificationRegistryService,
   getAllForUser,
-  useAuthFlow,
+  sendReadReceipt,
+  templateRegistryService,
+  notificationRegistryService,
+  useAuthFlow
 }
 
 export * from './services/Auth'
