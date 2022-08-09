@@ -107,8 +107,6 @@ export default function Recommendedschools() {
                   getObject={callBackFilterObject}
                   object={filterObject}
                   _actionSheet={{ bg: colors.lightGray }}
-                  _box={{ pt: 5 }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2", mr: "4" }}
                   _filterButton={{
                     rightIcon: "",
                     bg: colors.white,

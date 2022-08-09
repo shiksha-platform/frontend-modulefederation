@@ -78,6 +78,7 @@ function AppShell({
             </Center>
           }
         >
+          {console.log(accessRoutes)}
           <Router basename={basename}>
             <Routes>
               {accessRoutes.map((item: any, index: number) => (

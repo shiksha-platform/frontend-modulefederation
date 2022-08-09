@@ -28,5 +28,11 @@
   },
   "mylearning": {
     "url": "http://localhost:3010/modules/mylearning"
+  },
+  "visits": {
+    "url": "http://localhost:3011/modules/visits"
+  },
+  "schools": {
+    "url": "http://localhost:3012/modules/schools"
   }
 }

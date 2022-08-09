@@ -89,7 +89,7 @@ const FilterButton = ({
             {..._button}
             {..._filterButton}
           >
-            <BodyLarge textTransform='inherit'>
+            <BodyLarge textTransform='inherit' color={'primary'}>
               {filterButtonText ? filterButtonText : t('FILTER')}
             </BodyLarge>
           </Button>
