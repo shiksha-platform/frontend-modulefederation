@@ -24,6 +24,7 @@ import {
 } from "native-base";
 import React from "react";
 import { Likes } from "../Likes";
+import moment from "moment";
 import { useTranslation } from "react-i18next";
 const colors = overrideColorTheme(colorTheme);
 
@@ -58,11 +59,19 @@ export default function LikeActionSheet({
                 {likes.map((item, index) => (
                     <Box bg="white" p="5" key={index}>
                         <HStack space="2" alignItems="center">
-                            <Avatar bg="green.500" size="md">
-                                <H2 color="white">{item?.toUpperCase().substr(0, 1)}</H2>
+                            <Avatar
+                                size="md"
+                                bg="blue.500"
+                                source={{
+                                    uri: item?.userData?.image,
+                                }}
+                            >
+                                {`${item?.userData?.firstName} ${item?.userData?.lastName}`
+                                    .toUpperCase()
+                                    .substring(0, 2)}
                             </Avatar>
                             <VStack>
-                                <HStack><BodyLarge>{t(item.firstName)}</BodyLarge><Text>{t("LIKED_THIS")}</Text></HStack>
+                                <HStack><BodyLarge>{item.userId === localStorage.getItem('id') ? "You" : `${item?.userData?.firstName} ${item?.userData?.lastName}`}</BodyLarge><Text>{t("LIKED_THIS")}</Text></HStack>
                                 <Subtitle color="gray.400">{moment(item?.createdAt).format("DD MMMM, hh:mma")}</Subtitle>
                             </VStack>
                         </HStack>

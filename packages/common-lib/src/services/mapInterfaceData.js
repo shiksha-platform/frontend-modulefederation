@@ -16,6 +16,7 @@ export default function interfaceData(
           data[mvKey1] = element[mvValue1]
         }
       } else {
+        if (key1 === "userId") { console.log(element[value1], "Value", key1); }
         data[key1] = element[value1]
       }
     } else {

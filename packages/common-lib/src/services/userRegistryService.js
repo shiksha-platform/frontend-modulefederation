@@ -78,9 +78,14 @@ export const getOne = async (params = {}, header = {}) => {
     params,
     headers
   }).catch((error) => error)
-  if (result.data) {
+  if (result.data && params.id) {
+    console.log(result.data.data);
+    return mapInterfaceData(result.data.data, interfaceData)
+  }
+  else if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData)
-  } else {
+  }
+  else {
     return {}
   }
 }

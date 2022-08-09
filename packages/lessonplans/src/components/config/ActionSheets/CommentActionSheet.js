@@ -50,16 +50,6 @@ export default function CommentActionSheet({
         }
     };
 
-    // const getUserName = async (id) => {
-    //     const resp = await userRegistryService.getOne({ id: id })
-    //     const { firstName: FirstName, lastName: LastName } = resp;
-    //     return FirstName, LastName;
-    // }
-
-    // useEffect(() => {
-    //     console.log(getUserName("590b7ece-a1fb-4468-a9dc-341aecdf216a"));
-    // }, [])
-
     const handleSubmit = async () => {
         if (comment && comment !== "") {
             let newData = {
@@ -119,7 +109,7 @@ export default function CommentActionSheet({
                                             .substring(0, 2)}
                                     </Avatar>
                                     <VStack>
-                                        <BodyLarge>{item?.firstName} {item?.lastName}</BodyLarge>
+                                        <BodyLarge>{item.userId === localStorage.getItem('id') ? t("You") : `${item?.userData?.firstName} ${item?.userData?.lastName}`}</BodyLarge>
                                         <Subtitle color="gray.400">{moment(item?.createdAt).format("DD MMMM, hh:mma")}</Subtitle>
                                     </VStack>
                                 </HStack>
