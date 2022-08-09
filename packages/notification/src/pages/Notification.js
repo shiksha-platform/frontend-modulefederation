@@ -78,6 +78,15 @@ const Notification = ({ footerLinks, appName }) => {
   const handleTelemetry = (notification) => {
     setShowModal(true);
     setNotification(notification);
+    setNotificationInfo(notificationInfo.map((item) => {
+      if (item.id === notification.id) {
+        return { ...item, messageState: "READ" }
+      }
+      else {
+        return item;
+      }
+    }));
+
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Notification-Intaract",
@@ -227,20 +236,20 @@ const Notification = ({ footerLinks, appName }) => {
             </Pressable>
           </Box>
         </VStack>
-        {validUsers.includes(realm_access?.roles[2].toLowerCase()) && (
-          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
-            <Link href={"/notification/create"}>
-              <Button
-                colorScheme="button"
-                _text={{ color: "white" }}
-                px="5"
-                flex="1"
-              >
-                {t("CREATE_NEW")}
-              </Button>
-            </Link>
-          </Box>
-        )}
+        {/* {validUsers.includes(realm_access?.roles[2].toLowerCase()) && ( */}
+        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+          <Link href={"/notification/create"}>
+            <Button
+              colorScheme="button"
+              _text={{ color: "white" }}
+              px="5"
+              flex="1"
+            >
+              {t("CREATE_NEW")}
+            </Button>
+          </Link>
+        </Box>
+        {/* )} */}
         <Actionsheet
           isOpen={showModalMore}
           onClose={() => setShowModalMore(false)}

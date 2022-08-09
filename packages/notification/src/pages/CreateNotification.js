@@ -42,6 +42,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
   const [students, setStudents] = useState([]);
   const [width, height] = useWindowSize();
   const [dateTime, setDateTime] = useState({});
+  const [template, setTemplate] = useState("")
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -81,7 +82,8 @@ const CreateNotification = ({ footerLinks, appName }) => {
       {
         module: NotificationObject[dateTime.Module],
         eventTrigger: NotificationObject[dateTime.Event],
-        templateId: "57",
+        //templateId: "57",
+        templateId: dateTime.TemplateId,
         groupId: dateTime.GroupId,
         channel: dateTime.Channel,
         senderId: localStorage.getItem("id"),
@@ -170,7 +172,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
         />
       ) : (
         <FormNotification
-          {...{ setPageName, students, setStudents, dateTime, setDateTime }}
+          {...{ setPageName, students, setStudents, dateTime, setDateTime, template, setTemplate }}
         />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
@@ -212,11 +214,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
           <VStack p="5" space={6}>
             <H3>{t("NOTICE")}</H3>
             <BodyMedium textTransform={"inherit"}>
-              Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be
-              Taken As Authentication That You Have Personally Verified And
-              Overseen The Distribution Of Smartphone To The Mentioned Student
-              ID Of Your School. Thank You! - Samagra Shiksha, Himachal Pradesh
-              View Recipient List
+              {dateTime?.Template}
             </BodyMedium>
           </VStack>
           <Box p="5">

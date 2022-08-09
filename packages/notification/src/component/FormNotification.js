@@ -12,6 +12,7 @@ import {
   overrideColorTheme,
   BodyLarge,
   BodySmall,
+  templateRegistryService
 } from "@shiksha/common-lib";
 import moment from "moment";
 import {
@@ -43,6 +44,8 @@ export default function FormNotification({
   dateTime,
   setDateTime,
   students,
+  template,
+  setTemplate
 }) {
   const { t } = useTranslation();
   const [dateTimeData, setDateTimeData] = useState({});
@@ -50,20 +53,26 @@ export default function FormNotification({
   const [showModalTemplate, setShowModalTemplate] = useState(false);
   const [classData, setClassData] = useState([]);
   const [eTriggers, setETriggers] = useState([]);
+  const [templates, setTemplates] = useState([]);
+  //const [template, setTemplate] = useState("")
   const navigate = useNavigate();
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
-    //setConfigData(Response);
     const triggers = Array.isArray(
       Response["attendance.event_triggers_to_send_attendance_notification"]
     )
       ? Response["attendance.event_triggers_to_send_attendance_notification"]
       : JSON.parse(
-          Response["attendance.event_triggers_to_send_attendance_notification"]
-        );
+        Response["attendance.event_triggers_to_send_attendance_notification"]
+      );
     setETriggers([...triggers, "Absent_Today"]);
   };
+
+  const getTemplates = async () => {
+    const resp = await templateRegistryService.getAll({ tag: "allDayPresent" })
+    setTemplates(resp);
+  }
 
   const getClassData = async () => {
     const Response = await classRegistryService.getAllData({
@@ -117,6 +126,10 @@ export default function FormNotification({
     getClassData();
   }, []);
 
+  useEffect(() => {
+    getTemplates()
+  }, [dateTime.Event])
+
   return (
     <Stack space={1} mb="2">
       <FormInput
@@ -125,8 +138,6 @@ export default function FormNotification({
           { name: "Group", data: classData },
           { name: "Channel", data: ["SMS", "WhatsApp"] },
           { name: "Module", data: ["Attendance", "Lessonplans", "Worksheet"] },
-          //{ name: "Channel", data: channels },
-          //Channels are coming as string from backend instead of an array, hence using hardcode instead of 100
           { name: "Event", data: eTriggers },
         ]}
       />
@@ -136,17 +147,14 @@ export default function FormNotification({
             <Text fontSize="16" fontWeight="600">
               {t("MESSAGE")}
             </Text>
-            <Button variant="ghost" onPress={(e) => console.log(e)}>
+            <Button variant="ghost" onPress={(e) => setShowModalTemplate(true)}>
               <BodyLarge fontSize="14" fontWeight="500" color="button.500">
                 {t("USE_ANOTHER_TEMPLATE")}
               </BodyLarge>
             </Button>
           </HStack>
           <BodySmall>
-            Kindly note your OTP @__123__@. Submission of the OTP will be taken
-            as authentication that you have personally verified and overseen the
-            distribution of smartphone to the mentioned student ID of your
-            school. Thank you! - Samagra Shiksha, Himachal Pradesh
+            {dateTime?.Template}
           </BodySmall>
         </VStack>
       </Box>
@@ -201,24 +209,34 @@ export default function FormNotification({
           </HStack>
         </Actionsheet.Content>
         <Box bg={colors.white} width={"100%"}>
-          {[
-            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
-            "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
-            "Learners should be able to use strategies that will support their understanding during their own reading",
-            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking..",
-          ].map((value, index) => {
-            return (
-              <Box p="5" key={index}>
-                <Checkbox
-                  colorScheme="button"
-                  borderColor={colors.primary}
-                  borderRadius="0"
-                >
-                  {value}
-                </Checkbox>
-              </Box>
-            );
-          })}
+          {
+            templates?.map((value, index) => {
+              return (
+                <Box p="5" key={index}>
+                  <Pressable
+                    key={index}
+                    p="5"
+                    onPress={(e) => {
+                      //setTemplate(value.body)
+                      setDateTime({
+                        ...dateTime,
+                        ["TemplateId"]: value.id,
+                        ["Template"]: value.body
+                      })
+                    }}
+                    bg={
+                      value.body === dateTime["Template"]
+                        ? "gray.100"
+                        : ""
+                    }
+                  >
+                    <Text colorScheme="button">
+                      {t(value.body)}
+                    </Text>
+                  </Pressable>
+                </Box>
+              );
+            })}
           <Box p="5">
             <Button
               colorScheme="button"
@@ -260,14 +278,14 @@ export default function FormNotification({
                     {
                       dateTimeData.name == "Group"
                         ? setDateTime({
-                            ...dateTime,
-                            [dateTimeData.name]: value.title,
-                            ["GroupId"]: value.id,
-                          })
+                          ...dateTime,
+                          [dateTimeData.name]: value.title,
+                          ["GroupId"]: value.id,
+                        })
                         : setDateTime({
-                            ...dateTime,
-                            [dateTimeData.name]: value,
-                          });
+                          ...dateTime,
+                          [dateTimeData.name]: value,
+                        });
                     }
                     handleTelemetry(dateTimeData.name, value);
                   }}
@@ -276,8 +294,8 @@ export default function FormNotification({
                       ? "gray.100"
                       : dateTimeData.name === "Group" &&
                         dateTime[dateTimeData.name] === value.title
-                      ? "gray.100"
-                      : ""
+                        ? "gray.100"
+                        : ""
                   }
                 >
                   <Text colorScheme="button">
