@@ -178,7 +178,6 @@ function Home({ footerLinks, appName }) {
         _header={{
           title: t("HOME"),
           subHeading: moment().format("hh:mm A"),
-          _subHeading: { fontWeight: 500, textTransform: "uppercase" },
           iconComponent: (
             <Pressable onPress={(e) => setShowModal(true)}>
               {cameraUrl ? (
@@ -231,9 +230,8 @@ function Home({ footerLinks, appName }) {
         }}
         subHeader={t("THIS_IS_HOW_YOUR_DAY_LOOKS")}
         _subHeader={{
-          bg: "white",
-          pt: "30px",
-          pb: "0px",
+          pt: "20px",
+          pb: "20px",
         }}
         _footer={footerLinks}
       >

@@ -166,7 +166,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         </H2>
       }
       _subHeader={{
-        bg: colors.cardBg,
+        bg: "worksheet.cardBg",
       }}
       _footer={footerLinks}
     >

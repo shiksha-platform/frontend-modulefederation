@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
-import { Box, Center, Stack } from 'native-base'
+import { Box, Center, Stack, useTheme } from 'native-base'
 import AppBar from './AppBar'
 import { useWindowSize } from '../helper'
 import HeightWidth from '../HeightWidth'
@@ -18,10 +18,12 @@ export default function Layout({
 }) {
   const [width, Height] = useWindowSize()
   const [refFoot, serRefFoot] = React.useState({})
+  const { components } = useTheme()
+  const { Layout } = components
 
   return (
     <Center>
-      <HeightWidth>
+      <HeightWidth _scollView={Layout?._scollView}>
         <Stack
           width={'100%'}
           style={{
@@ -32,14 +34,26 @@ export default function Layout({
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover'
           }}
+          {...(Layout?._layout ? Layout?._layout : {})}
           space={5}
         >
           {!isDisabledAppBar ? (
-            <AppBar color={imageUrl ? 'white' : ''} {..._appBar} />
+            <AppBar
+              color={imageUrl ? 'white' : ''}
+              {...(Layout?._appBar ? Layout?._appBar : {})}
+              {..._appBar}
+            />
           ) : (
             <React.Fragment />
           )}
-          {_header ? <Header {..._header} /> : <React.Fragment />}
+          {_header ? (
+            <Header
+              {...(Layout?._header ? Layout?._header : {})}
+              {..._header}
+            />
+          ) : (
+            <React.Fragment />
+          )}
         </Stack>
         {subHeader ? (
           <Box
@@ -51,6 +65,7 @@ export default function Layout({
               roundedTop: '20'
             }}
             {..._subHeader}
+            {...(Layout?._subHeader ? Layout?._subHeader : {})}
           >
             {subHeader}
           </Box>
@@ -61,7 +76,7 @@ export default function Layout({
         <Box minH={refFoot?.clientHeight ? refFoot?.clientHeight : 85}></Box>
       </HeightWidth>
       <Box w={width} ref={(e) => serRefFoot(e)}>
-        <Footer {..._footer} />
+        <Footer {...(Layout?._footer ? Layout?._footer : {})} {..._footer} />
       </Box>
     </Center>
   )
