@@ -134,7 +134,6 @@ export default function Allocatedschools() {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
-          {/*<Actionsheet.Item>Mathematics</Actionsheet.Item>*/}
           <Box pt="0">
             <BodyMedium fontSize={12} color={colors.subtitle}>
               By last visited

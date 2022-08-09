@@ -3,18 +3,15 @@ import {
   IconByName,
   Layout,
   FilterButton,
-  DEFAULT_THEME,
   overrideColorTheme,
   BodyMedium,
   BodyLarge,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import {
   Box,
   HStack,
-  Text,
   VStack,
   Button,
   Actionsheet,
@@ -22,7 +19,6 @@ import {
   Divider,
 } from "native-base";
 import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
-import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 const defaultInputs = [
@@ -94,10 +90,6 @@ export default function Recommendedschools() {
                     }}
                   >
                     Sort
-                    {/* <IconByName
-                      name="ArrowDownSLineIcon"
-                      color={colors.primary}
-                    /> */}
                   </Button>
                 </HStack>
               </Box>
@@ -139,7 +131,6 @@ export default function Recommendedschools() {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
-          {/*<Actionsheet.Item>Mathematics</Actionsheet.Item>*/}
           <Box pt="0">
             <BodyMedium color={colors.subtitle}>By last visited</BodyMedium>
             <Actionsheet.Item>

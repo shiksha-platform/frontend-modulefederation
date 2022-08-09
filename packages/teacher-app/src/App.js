@@ -105,9 +105,9 @@ function App() {
   const Question = React.lazy(() => import("schools/Question"));
   const Myvisits = React.lazy(() => import("visits/Myvisits"));
   const Recommendedschools = React.lazy(() =>
-    import("visits/Recommended-schools")
+    import("visits/Recommendedschools")
   );
-  const Allocatedschools = React.lazy(() => import("visits/Allocated-schools"));
+  const Allocatedschools = React.lazy(() => import("visits/Allocatedschools"));
 
   const routes = [
     // worksheet
