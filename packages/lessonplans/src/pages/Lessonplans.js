@@ -33,23 +33,23 @@ import { lessonPlansList } from "components/config/lessonPlansList";
 //import FloatingVideoPlayer from "components/FloatingVideoPlayer";
 
 const sortArray = [
-    {
-        title: "By Difficulty",
-        data: [
-            {
-                attribute: "difficulty",
-                value: "low_high",
-                name: "Low to High",
-                icon: "ArrowRightUpLineIcon",
-            },
-            {
-                attribute: "difficulty",
-                value: "high_low",
-                name: "High To Low",
-                icon: "ArrowRightDownLineIcon",
-            },
-        ],
-    },
+    // {
+    //     title: "By Difficulty",
+    //     data: [
+    //         {
+    //             attribute: "difficulty",
+    //             value: "low_high",
+    //             name: "Low to High",
+    //             icon: "ArrowRightUpLineIcon",
+    //         },
+    //         {
+    //             attribute: "difficulty",
+    //             value: "high_low",
+    //             name: "High To Low",
+    //             icon: "ArrowRightDownLineIcon",
+    //         },
+    //     ],
+    // },
     {
         title: "By Popularity",
         data: [
@@ -123,14 +123,7 @@ export default function Lessonplans({ footerLinks, appName }) {
         //setLessonPlans(lessonPlansList)
         setLoading(false);
     }, [filterObject, search.length >= 3, searchState]);
-    console.log(filterObject);
-
-    // React.useEffect(() => {
-    //     return () => {
-    //         //console.log("after the component got unmounted");
-    //         <FloatingVideoPlayer />
-    //     }
-    // }, [])
+    //console.log(filterObject);
 
     if (loading) {
         return <Loading />;

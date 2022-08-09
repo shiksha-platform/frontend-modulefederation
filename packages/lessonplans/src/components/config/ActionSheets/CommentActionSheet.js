@@ -6,6 +6,7 @@ import {
     BodyLarge,
     Subtitle,
     H2,
+    userRegistryService
 } from "@shiksha/common-lib";
 import colorTheme from "colorTheme";
 import {
@@ -21,7 +22,7 @@ import {
     InputRightAddon,
     ScrollView
 } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
@@ -48,6 +49,17 @@ export default function CommentActionSheet({
             setError();
         }
     };
+
+    // const getUserName = async (id) => {
+    //     const resp = await userRegistryService.getOne({ id: id })
+    //     const { firstName: FirstName, lastName: LastName } = resp;
+    //     return FirstName, LastName;
+    // }
+
+    // useEffect(() => {
+    //     console.log(getUserName("590b7ece-a1fb-4468-a9dc-341aecdf216a"));
+    // }, [])
+
     const handleSubmit = async () => {
         if (comment && comment !== "") {
             let newData = {
@@ -92,12 +104,12 @@ export default function CommentActionSheet({
             <VStack width={"100%"} space="1px" maxH="80%">
                 <ScrollView>
                     <VStack space="1px">
-                        {comments.map((item, index) => (
+                        {comments?.map((item, index) => (
                             <Box bg="white" p="5" key={index}>
                                 <HStack space="2" alignItems="center">
                                     <Avatar
                                         size="md"
-                                        bg="green.500"
+                                        bg="blue.500"
                                         source={{
                                             uri: item?.userData?.image,
                                         }}
@@ -107,7 +119,7 @@ export default function CommentActionSheet({
                                             .substring(0, 2)}
                                     </Avatar>
                                     <VStack>
-                                        <BodyLarge>{`${item?.userData?.firstName} ${item?.userData?.lastName}`}</BodyLarge>
+                                        <BodyLarge>{item?.firstName} {item?.lastName}</BodyLarge>
                                         <Subtitle color="gray.400">{moment(item?.createdAt).format("DD MMMM, hh:mma")}</Subtitle>
                                     </VStack>
                                 </HStack>

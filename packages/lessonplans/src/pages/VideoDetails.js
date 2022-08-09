@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import {
   BodySmall,
   H2,
@@ -11,6 +11,7 @@ import {
   BodyLarge,
   Caption,
   H4,
+  FloatingVideoPlayer,
 } from "@shiksha/common-lib";
 import { Avatar, Box, HStack, Pressable, VStack } from "native-base";
 import manifestLocal from "../manifest.json";
@@ -20,6 +21,7 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
+//import FloatingVideoPlayer from "@shiksha/common-lib";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -29,18 +31,23 @@ export default function VideoDetails({ footerLinks, appName }) {
   const [showButtonArray, setShowButtonArray] = React.useState([]);
   const { id } = useParams();
   const location = useLocation();
+  const [videoLink, setVideoLink] = useState("")
+  const [showFloating, setShowFloating] = useState(false);
+  const VideoContext = createContext();
 
   React.useEffect(async () => {
     setVideo(videosData.find((e) => e.id == id));
   }, []);
 
-  console.log(location.state.videoURL, "url");
+  //console.log(location.state.videoURL, "url");
 
-  React.useEffect(() => {
-    return () => {
-      console.log("Hello");
-    }
-  })
+  // React.useEffect(() => {
+  //   return () => {
+  //     <VideoContext.Provider value={videoLink}>
+  //       <FloatingVideoPlayer />
+  //     </VideoContext.Provider>
+  //   }
+  // })
 
   return (
     <Layout

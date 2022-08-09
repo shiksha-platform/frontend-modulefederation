@@ -6,6 +6,7 @@ import {
 } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import manifest from '../manifest.json'
+import { getDataWithUser } from './commentRegistryService'
 
 const interfaceData = {
   id: 'likeId',
@@ -29,7 +30,8 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const newData = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    return await getDataWithUser(newData)
   } else {
     return []
   }

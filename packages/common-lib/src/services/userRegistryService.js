@@ -74,7 +74,7 @@ export const getOne = async (params = {}, header = {}) => {
     ...header
   }
 
-  const result = await get(`${process.env.REACT_APP_API_URL}/user`, {
+  const result = await get(`${process.env.REACT_APP_API_URL}/user/${params.id}`, {
     params,
     headers
   }).catch((error) => error)

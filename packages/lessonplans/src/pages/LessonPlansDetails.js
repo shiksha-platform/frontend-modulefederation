@@ -25,6 +25,8 @@ export default function LessonPlansDetails({ footerLinks }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [lessonPlans, setLessonPlans] = useState([])
+  const [search, setSearch] = useState()
+  const [searchLessonPlans, setSearchLessonPlans] = useState([])
 
   const getLessonPlanData = async () => {
     const resp = await lessonPlansRegistryService.getAll({ gradeLevel: { eq: "Class V" } })
@@ -36,12 +38,19 @@ export default function LessonPlansDetails({ footerLinks }) {
     getLessonPlanData();
   }, [])
 
+  useEffect(() => {
+    const filterStudent = lessonPlans.filter((e) =>
+      e?.name?.toLowerCase().match(search?.toLowerCase())
+    );
+    setSearchLessonPlans(filterStudent);
+  }, [search, lessonPlans]);
+
   return (
     <Layout
       _header={{
         title: t("LESSON_PLANS"),
       }}
-      _appBar={{ languages: manifest.languages, isEnableSearchBtn: true, setSearch: (e) => { console.log(e); } }}
+      _appBar={{ languages: manifest.languages, isEnableSearchBtn: true, setSearch: setSearch }}
       subHeader={t("CHOOSE_A_LESSON_FOR_CLASS_V_A")}
       _subHeader={{ bg: "worksheetCard.500" }}
       _footer={footerLinks}
@@ -55,7 +64,7 @@ export default function LessonPlansDetails({ footerLinks }) {
                 component: (
                   <VStack>
                     <LessonPlansMapping
-                      data={lessonPlans}
+                      data={searchLessonPlans}
                       leftTitle="LESSON_PLANS"
                       rightTitle="EXPLORE_LESSON_PLANS"
                       seeButtonText={t("SEE_ALL_LESSON_PLANS")}

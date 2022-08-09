@@ -1,6 +1,7 @@
 import { H2, IconByName, overrideColorTheme } from "@shiksha/common-lib";
-import { Box, HStack, Slider } from "native-base";
-import React from "react";
+import { use } from "i18next";
+import { Box, Button, HStack, Slider } from "native-base";
+import React, { useEffect, useState } from "react";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
@@ -8,6 +9,8 @@ export default function VideoPlayer({ url }) {
   const videoElement = React.useRef();
   const [showControls, setShowControls] = React.useState(true);
   const [showVolume, setShowVolume] = React.useState(false);
+  //const [showFloatingStat, setShowFloatingStat] = useState(<IconByName name="PictureInPicture2LineIcon" color="white" />)
+  const [showFloatingStat, setShowFloatingStat] = useState("Show")
   const [playerState, setPlayerState] = React.useState({
     isPlaying: false,
     progress: 0,
@@ -121,6 +124,77 @@ export default function VideoPlayer({ url }) {
     );
   };
 
+  const video = document.querySelector("#localvideo")
+
+  const canPIP = () =>
+    "pictureInPictureEnabled" in document &&
+    document.pictureInPictureEnabled;
+
+  const isInPIP = () => Boolean(document.pictureInPictureElement);
+
+  const supportsModernPIP = () => {
+    const video = document.querySelector("#localvideo")
+    return (
+      canPIP() &&
+      video.requestPictureInPicture() &&
+      typeof video.requestPictureInPicture === "function"
+    )
+  };
+
+  const openPIP = async (video) => {
+    if (isInPIP()) return;
+    if (supportsModernPIP()) {
+      try {
+        await video.requestPictureInPicture();
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  video?.addEventListener("enterpictureinpicture", e => {
+    setShowFloatingStat("Close")
+  })
+
+  video?.addEventListener("leavepictureinpicture", e => {
+    setShowFloatingStat("Show")
+  })
+
+  const closePIP = async (video) => {
+    if (!isInPIP()) return;
+    if (supportsModernPIP()) {
+      try {
+        await document?.exitPictureInPicture();
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  document.addEventListener("visibilitychange", async () => {
+    const video = document.querySelector("#localvideo");
+    if (document.visibilityState === "visible") {
+      console.log("visible");
+      try {
+        await closePIP(video);
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
+    else {
+      console.log("hidden");
+      try {
+        await openPIP(video);
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
+  });
+
   const gettimeFormate = (time) => {
     if (time) {
       const s = String(parseInt(time % 60)).padStart(2, "0");
@@ -130,6 +204,13 @@ export default function VideoPlayer({ url }) {
       return "00:00";
     }
   };
+
+  // useEffect(() => {
+  //   localStorage.setItem("video", document.querySelector("#localvideo"));
+  //   return () => {
+  //     openPIP(localStorage.getItem("video"));
+  //   }
+  // }, [])
 
   React.useEffect(() => {
     playerState.isMuted
@@ -142,11 +223,13 @@ export default function VideoPlayer({ url }) {
       <video
         src={url}
         ref={videoElement}
+        id={"localvideo"}
         onTimeUpdate={handleOnTimeUpdate}
         onLoadedData={onloadedData}
         onClick={(e) => toggleControls()}
         width="100%"
         height="100%"
+      //autoPictureInPicture={true}
       />
       {showControls ? (
         <>
@@ -213,6 +296,7 @@ export default function VideoPlayer({ url }) {
             </HStack>
             <HStack
               justifyContent="space-between"
+              alignItems="center"
               width="100%"
               flex={1}
               space="2"
@@ -239,6 +323,11 @@ export default function VideoPlayer({ url }) {
               <H2 color={colors.white}>
                 {playerState?.duration ? playerState?.duration : "00:00"}
               </H2>
+              <IconByName
+                color="white"
+                name={showFloatingStat === "Show" ? "PictureInPicture2LineIcon" : "PictureInPictureExitLineIcon"}
+                onPress={isInPIP() ? closePIP : openPIP}
+              />
             </HStack>
           </Box>
         </>

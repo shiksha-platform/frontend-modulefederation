@@ -6,6 +6,7 @@ import {
     BodyLarge,
     Subtitle,
     H2,
+    userRegistryService,
 } from "@shiksha/common-lib";
 import colorTheme from "colorTheme";
 import {
@@ -35,6 +36,7 @@ export default function LikeActionSheet({
     const { t } = useTranslation();
     console.log("ShowModulelikes", showModuleLikes);
     console.log("setter", setShowModuleLikes);
+
     return (
         <Actionsheet
             isOpen={showModuleLikes}
@@ -53,24 +55,17 @@ export default function LikeActionSheet({
                 </HStack>
             </Actionsheet.Content>
             <VStack width={"100%"} space="1px">
-                {Likes.map((item, index) => (
+                {likes.map((item, index) => (
                     <Box bg="white" p="5" key={index}>
                         <HStack space="2" alignItems="center">
-                            <Avatar
-                                size="md"
-                                bg="green.500"
-                                source={{
-                                    uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                                }}
-                            >
-                                AJ
+                            <Avatar bg="green.500" size="md">
+                                <H2 color="white">{item?.toUpperCase().substr(0, 1)}</H2>
                             </Avatar>
                             <VStack>
-                                <HStack><BodyLarge>{t(item)}</BodyLarge><Text>{t(" LIKED_THIS")}</Text></HStack>
-                                <Subtitle color="gray.400">{t("12 January, 4:00PM")}</Subtitle>
+                                <HStack><BodyLarge>{t(item.firstName)}</BodyLarge><Text>{t("LIKED_THIS")}</Text></HStack>
+                                <Subtitle color="gray.400">{moment(item?.createdAt).format("DD MMMM, hh:mma")}</Subtitle>
                             </VStack>
                         </HStack>
-                        {/* <Subtitle p="5">{item.comment}</Subtitle> */}
                     </Box>
                 ))}
             </VStack>

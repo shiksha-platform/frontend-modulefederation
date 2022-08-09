@@ -95,7 +95,8 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
 
     const getLikes = async () => {
         const result = await lessonPlansRegistryService.getLessonPlansLikes(id);
-        const newData = result.find((e, index) => e.userId === sub);
+        // const newData = result.find((e, index) => e.userId === sub);
+        const newData = result.find((e, index) => e.userId === localStorage.getItem("id"));
         setLike(newData ? newData : {});
         setLikes(result);
     };
@@ -290,7 +291,7 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
                     likeCount: likes?.length,
                 }}
             />
-            {showVideo && (
+            {/* {showVideo && (
                 <Draggable>
                     <Box position="sticky" bottom="50" maxH="200px" maxW="300px">
                         <HStack>
@@ -306,7 +307,7 @@ export default function SingleLessonPlan({ footerLinks, appName }) {
                         <VideoPlayer url={"http://techslides.com/demos/sample-videos/small.mp4"} />
                     </Box>
                 </Draggable>
-            )}
+            )} */}
             {/* <FloatingVideoPlayer /> */}
         </Layout>
     );
