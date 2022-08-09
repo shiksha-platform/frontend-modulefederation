@@ -45,7 +45,7 @@ const defaultInputs = [
   },
 ];
 
-export default function Recommendedschools() {
+export default function Recommendedschools({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [sortModal, setSortModal] = useState(false);
@@ -69,6 +69,7 @@ export default function Recommendedschools() {
       }
       _appBar={{ languages: ["en"] }}
       _subHeader={{ bg: colors.lightPurple }}
+      _footer={footerLinks}
     >
       <Box p={6} bg={colors.white}>
         <VStack space={6}>
