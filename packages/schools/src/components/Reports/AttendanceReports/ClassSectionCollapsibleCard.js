@@ -95,11 +95,21 @@ function ClassSectionCollapsibleCard() {
                       <BodyMedium mx={2}>Present</BodyMedium>
                     </HStack>
                     <HStack alignItems="center">
-                      <Box bg={"schools.absent"} w="15px" h="15px" rounded={4} />
+                      <Box
+                        bg={"schools.absent"}
+                        w="15px"
+                        h="15px"
+                        rounded={4}
+                      />
                       <BodyMedium mx={2}>Absent</BodyMedium>
                     </HStack>
                     <HStack alignItems="center">
-                      <Box bg={"schools.unmarked"} w="15px" h="15px" rounded={4} />
+                      <Box
+                        bg={"schools.unmarked"}
+                        w="15px"
+                        h="15px"
+                        rounded={4}
+                      />
                       <BodyMedium mx={2}>Unmarked</BodyMedium>
                     </HStack>
                   </HStack>
