@@ -26,7 +26,7 @@ import {
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const TeacherAttendanceReport = () => {
+const TeacherAttendanceReport = ({ footerLinks }) => {
   const [progressData, setProgressData] = React.useState([
     {
       name: "22 Present",
@@ -76,6 +76,7 @@ const TeacherAttendanceReport = () => {
       }
       _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{ languages: ["en"] }}
+      _footer={footerLinks}
     >
       <Box p={5} bg={"schools.white"}>
         <Collapsible

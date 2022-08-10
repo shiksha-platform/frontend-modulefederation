@@ -27,7 +27,7 @@ import TeacherTile from "../components/TeacherTile";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function Myvisitspage() {
+export default function Myvisitspage({ footerLinks }) {
   const { t } = useTranslation();
   const [teacherDetailModal, setTeacherDetailModal] = useState(false);
   const navigate = useNavigate();
@@ -76,6 +76,7 @@ export default function Myvisitspage() {
       _appBar={{ languages: ["en"] }}
       subHeader={<H2 textTransform="inherit">View all teachers</H2>}
       _subHeader={{ bg: "schools.cardBg" }}
+      _footer={footerLinks}
     >
       <Box p={6} bg={"schools.white"}>
         <VStack space={6}>

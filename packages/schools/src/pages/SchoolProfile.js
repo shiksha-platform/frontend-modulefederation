@@ -15,7 +15,7 @@ export default function SchoolProfile({ footerLinks }) {
 
   return (
     <Layout
-      imageUrl={`${window.location.pathname}/school.png`}
+      imageUrl={`${window.location.origin}/school.png`}
       _header={{
         title: "Delhi Public School, Ghaziabad",
         _heading: { color: "schools.white" },

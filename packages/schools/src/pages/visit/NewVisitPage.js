@@ -15,7 +15,7 @@ import colorTheme from "../../colorTheme";
 const colors0 = overrideColorTheme(colorTheme);
 let colors = DEFAULT_THEME;
 
-export default function NewVisitPage() {
+export default function NewVisitPage({ footerLinks }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
@@ -60,6 +60,7 @@ export default function NewVisitPage() {
         languages: ["en"],
         isEnableSearchBtn: true,
       }}
+      _footer={footerLinks}
     >
       <Box rounded={10} bg={"schools.white"} shadow="md">
         <VStack>
