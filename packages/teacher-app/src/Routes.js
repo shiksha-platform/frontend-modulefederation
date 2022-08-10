@@ -2,214 +2,427 @@ import Home from "./pages/Home";
 import React from "react";
 import MyClasses from "pages/MyClasses";
 
-const classDetails = React.lazy(() => import("classes/ClassDetails"));
-const attendance = React.lazy(() => import("attendance/Attendance"));
-const report = React.lazy(() => import("attendance/Report"));
-const reportDetail = React.lazy(() => import("attendance/ReportDetail"));
-const sendSMS = React.lazy(() => import("attendance/SendSMS"));
-const teachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
-const worksheetShare = React.lazy(() => import("worksheet/WorksheetShare"));
-const questionBank = React.lazy(() => import("worksheet/QuestionBank"));
-const worksheet = React.lazy(() => import("worksheet/Worksheet"));
-const worksheetQuestionBank = React.lazy(() =>
-  import("worksheet/WorksheetQuestionBank")
-);
-const createWorksheet = React.lazy(() => import("worksheet/CreateWorksheet"));
-const editWorksheet = React.lazy(() => import("worksheet/EditWorksheet"));
-const worksheetTemplate = React.lazy(() =>
-  import("worksheet/WorksheetTemplate")
-);
-const teaching = React.lazy(() => import("worksheet/Teaching"));
-const student = React.lazy(() => import("students/Student"));
-const studentDetails = React.lazy(() => import("students/StudentDetails"));
+  const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
+  const Attendance = React.lazy(() => import("attendance/Attendance"));
+  const Report = React.lazy(() => import("attendance/Report"));
+  const ReportDetail = React.lazy(() => import("attendance/ReportDetail"));
+  const SendSMS = React.lazy(() => import("attendance/SendSMS"));
+  const TeachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
+  const WorksheetShare = React.lazy(() => import("worksheet/WorksheetShare"));
+  const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
+  const Worksheet = React.lazy(() => import("worksheet/Worksheet"));
+  const WorksheetQuestionBank = React.lazy(() =>
+    import("worksheet/WorksheetQuestionBank")
+  );
+  const CreateWorksheet = React.lazy(() => import("worksheet/CreateWorksheet"));
+  const EditWorksheet = React.lazy(() => import("worksheet/EditWorksheet"));
+  const WorksheetTemplate = React.lazy(() =>
+    import("worksheet/WorksheetTemplate")
+  );
+  const Teaching = React.lazy(() => import("worksheet/Teaching"));
+  const Student = React.lazy(() => import("students/Student"));
+  const StudentDetails = React.lazy(() => import("students/StudentDetails"));
 
-const notification = React.lazy(() => import("notification/Notification"));
-const createNotification = React.lazy(() =>
-  import("notification/CreateNotification")
-);
-const scheduleNotification = React.lazy(() =>
-  import("notification/ScheduleNotification")
-);
-const outbox = React.lazy(() => import("notification/Outbox"));
-const profile = React.lazy(() => import("profile/Profile"));
-const attendanceReport = React.lazy(() => import("profile/AttendanceReport"));
+  const Notification = React.lazy(() => import("notification/Notification"));
+  const CreateNotification = React.lazy(() =>
+    import("notification/CreateNotification")
+  );
+  const ScheduleNotification = React.lazy(() =>
+    import("notification/ScheduleNotification")
+  );
+  const Outbox = React.lazy(() => import("notification/Outbox"));
+  const Profile = React.lazy(() => import("profile/Profile"));
+  const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
 
-const myLearning = React.lazy(() => import("mylearning/MyLearning"));
-const courseList = React.lazy(() => import("mylearning/CourseList"));
-const courseDetails = React.lazy(() => import("mylearning/CourseDetails"));
-const videoList = React.lazy(() => import("mylearning/VideoList"));
-const videoDetails = React.lazy(() => import("mylearning/VideoDetails"));
-// Assessment Module Imports
-const assessment = React.lazy(() => import("assessment/Assessment"));
-const examScores = React.lazy(() => import("assessment/ExamScores"));
-const successPublicationReport = React.lazy(() =>
-  import("assessment/successPublicationReport")
-);
-const reportDetails = React.lazy(() => import("assessment/ReportDetails"));
-const spotAssessmentResult = React.lazy(() =>
-  import("assessment/SpotAssessmentResult")
-);
-const spotAssessmentResult2 = React.lazy(() =>
-  import("assessment/SpotAssessmentResult2")
-);
-const spotAssessmentResult3 = React.lazy(() =>
-  import("assessment/SpotAssessmentResult3")
-);
-const qumlTest = React.lazy(() => import("assessment/QumlTest"));
-const questionList2 = React.lazy(() => import("assessment/QuestionLIst2"));
-const questionList3 = React.lazy(() => import("assessment/QuestionLIst3"));
-const questionList4 = React.lazy(() => import("assessment/QuestionLIst4"));
-const questionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
-const questionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
-const questionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
+  const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
+  const CourseList = React.lazy(() => import("mylearning/CourseList"));
+  const CourseDetails = React.lazy(() => import("mylearning/CourseDetails"));
+  const VideoList = React.lazy(() => import("mylearning/VideoList"));
+  const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
+  // Assessment Module Imports
+  const Assessment = React.lazy(() => import("assessment/Assessment"));
+  const ExamScores = React.lazy(() => import("assessment/ExamScores"));
+  const SuccessPublicationReport = React.lazy(() =>
+    import("assessment/successPublicationReport")
+  );
+  const ReportDetails = React.lazy(() => import("assessment/ReportDetails"));
+  const SpotAssessmentResult = React.lazy(() =>
+    import("assessment/SpotAssessmentResult")
+  );
+  const SpotAssessmentResult2 = React.lazy(() =>
+    import("assessment/SpotAssessmentResult2")
+  );
+  const SpotAssessmentResult3 = React.lazy(() =>
+    import("assessment/SpotAssessmentResult3")
+  );
+  const QumlTest = React.lazy(() => import("assessment/QumlTest"));
+  const QuestionList2 = React.lazy(() => import("assessment/QuestionLIst2"));
+  const QuestionList3 = React.lazy(() => import("assessment/QuestionLIst3"));
+  const QuestionList4 = React.lazy(() => import("assessment/QuestionLIst4"));
+  const QuestionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
+  const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
+  const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
+  const SchoolProfile = React.lazy(() => import("schools/SchoolProfile"));
+  const MyVisitsPage = React.lazy(() => import("schools/MyVisitsPage"));
+  const AttendanceReportDashboard = React.lazy(() =>
+    import("schools/AttendanceReportDashboard")
+  );
+  const AttendanceSectionWiseReport = React.lazy(() =>
+    import("schools/AttendanceSectionWiseReport")
+  );
+  const AttendanceDetailedReport = React.lazy(() =>
+    import("schools/AttendanceDetailedReport")
+  );
+  const AssessmentReportDashboard = React.lazy(() =>
+    import("schools/AssessmentReportDashboard")
+  );
+  const AssessmentSectionWiseReport = React.lazy(() =>
+    import("schools/AssessmentSectionWiseReport")
+  );
+  const AssessmentDetailedReport = React.lazy(() =>
+    import("schools/AssessmentDetailedReport")
+  );
+  const TeacherDetails = React.lazy(() => import("schools/TeacherDetails"));
+  const TeacherAttendanceReport = React.lazy(() =>
+    import("schools/TeacherAttendanceReport")
+  );
+  const NewVisitPage = React.lazy(() => import("schools/NewVisitPage"));
+  const VisitSubmit = React.lazy(() => import("schools/VisitSubmit"));
+  const TeacherVisitReport = React.lazy(() =>
+    import("schools/TeacherVisitReport")
+  );
+  const Question = React.lazy(() => import("schools/Question"));
+  const Myvisits = React.lazy(() => import("visits/Myvisits"));
+  const Recommendedschools = React.lazy(() =>
+    import("visits/Recommendedschools")
+  );
+  const Allocatedschools = React.lazy(() => import("visits/Allocatedschools"));
 
-export const routes = [
-  {
-    path: "/worksheet/list/:state",
-    component: worksheet,
-  },
-  {
-    path: "/worksheet/list",
-    component: worksheet,
-  },
-  {
-    path: "/worksheet/:classId/view",
-    component: teachingDetail,
-  },
-  {
-    path: "/worksheet/:worksheetId/share",
-    component: worksheetShare,
-  },
-  {
-    path: "/worksheet/questionBank",
-    component: questionBank,
-  },
-  {
-    path: "/worksheet/:id",
-    component: worksheetQuestionBank,
-  },
-  {
-    path: "/worksheet/:id/edit",
-    component: editWorksheet,
-  },
-  {
-    path: "/worksheet/create",
-    component: createWorksheet,
-  },
-  {
-    path: "/worksheet/template/:worksheetId",
-    component: worksheetTemplate,
-  },
-  {
-    path: "/worksheet",
-    component: teaching,
-  },
-  {
-    path: "classes",
-    component: MyClasses,
-  },
-  {
-    path: "/classes/:classId",
-    component: classDetails,
-  },
-  { path: "/class/students/:classId", component: student },
-  { path: "/attendance/:classId", component: attendance },
-  { path: "/attendance/report", component: report },
-  { path: "/class/students/:classId", component: student },
-  {
-    path: "/attendance/report/:classId/:view",
-    component: reportDetail,
-  },
-  { path: "/attendance/sendSms/:classId", component: sendSMS },
-  { path: "/students/:studentId", component: studentDetails },
-  { path: "/notification", component: notification },
-  { path: "/notification/create", component: createNotification },
-  { path: "/notification/schedule", component: scheduleNotification },
-  { path: "/notification/outbox", component: outbox },
-  { path: "/profile", component: profile },
-  { path: "/profile/attendance", component: attendanceReport },
-
-  { path: "/mylearning", component: myLearning },
-  {
-    path: "/mylearning/list/:state",
-    component: courseList,
-  },
-  {
-    path: "/mylearning/list",
-    component: courseList,
-  },
-  {
-    path: "/mylearning/:id/view",
-    component: courseDetails,
-  },
-  {
-    path: "/mylearning/video/list/:state",
-    component: videoList,
-  },
-  {
-    path: "/mylearning/video/list",
-    component: videoList,
-  },
-  {
-    path: "/mylearning/video/:id/view",
-    component: videoDetails,
-  },
-  // Asessment Routes
-  {
-    path: "/assessment/exam-list2",
-    component: questionList2,
-  },
-  {
-    path: "/assessment/exam-list3",
-    component: questionList3,
-  },
-  {
-    path: "/assessment/exam-list4",
-    component: questionList4,
-  },
-  {
-    path: "/assessment/exam-list5",
-    component: questionList5,
-  },
-  {
-    path: "/assessment/exam-list6",
-    component: questionList6,
-  },
-  {
-    path: "/assessment/exam-list7",
-    component: questionList7,
-  },
-  {
-    path: "/assessment/examscores",
-    component: examScores,
-  },
-  {
-    path: "/assessment/assessment-result",
-    component: spotAssessmentResult,
-  },
-  {
-    path: "/assessment/assessment-result2",
-    component: spotAssessmentResult2,
-  },
-  {
-    path: "/assessment/assessment-result3",
-    component: spotAssessmentResult3,
-  },
-  {
-    path: "/assessment/assessment-success",
-    component: successPublicationReport,
-  },
-  {
-    path: "/assessment/assessment-detailed-report",
-    component: reportDetails,
-  },
-  {
-    path: "/assessment/quml-test",
-    component: qumlTest,
-  },
-  {
-    path: "/assessment",
-    component: assessment,
-  },
-  { path: "*", component: Home },
-];
+  export const routes = [
+    // worksheet
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/list/:state",
+      component: Worksheet,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/list",
+      component: Worksheet,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/:classId/view",
+      component: TeachingDetail,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/:worksheetId/share",
+      component: WorksheetShare,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/questionBank",
+      component: QuestionBank,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/:id",
+      component: WorksheetQuestionBank,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/:id/edit",
+      component: EditWorksheet,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/create",
+      component: CreateWorksheet,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet/template/:worksheetId",
+      component: WorksheetTemplate,
+    },
+    {
+      moduleName: "worksheet",
+      path: "/worksheet",
+      component: Teaching,
+    },
+    // classess
+    {
+      moduleName: "classes",
+      path: "classes",
+      component: MyClasses,
+    },
+    {
+      moduleName: "classes",
+      path: "/classes/:classId",
+      component: ClassDetails,
+    },
+    {
+      moduleName: "classes",
+      path: "/class/students/:classId",
+      component: Student,
+    },
+    // attendance
+    {
+      moduleName: "attendance",
+      path: "/attendance/:classId",
+      component: Attendance,
+    },
+    {
+      moduleName: "attendance",
+      path: "/attendance/report",
+      component: Report,
+    },
+    {
+      moduleName: "attendance",
+      path: "/attendance/report/:classId/:view",
+      component: ReportDetail,
+    },
+    {
+      moduleName: "attendance",
+      path: "/attendance/sendSms/:classId",
+      component: SendSMS,
+    },
+    // students
+    {
+      moduleName: "student",
+      path: "/students/:studentId",
+      component: StudentDetails,
+    },
+    // notification
+    {
+      moduleName: "notification",
+      path: "/notification",
+      component: Notification,
+    },
+    {
+      moduleName: "notification",
+      path: "/notification/create",
+      component: CreateNotification,
+    },
+    {
+      moduleName: "notification",
+      path: "/notification/schedule",
+      component: ScheduleNotification,
+    },
+    {
+      moduleName: "notification",
+      path: "/notification/outbox",
+      component: Outbox,
+    },
+    // profile
+    {
+      moduleName: "profile",
+      path: "/profile",
+      component: Profile,
+    },
+    {
+      moduleName: "profile",
+      path: "/profile/attendance",
+      component: AttendanceReport,
+    },
+    // mylearning
+    {
+      moduleName: "mylearning",
+      path: "/mylearning",
+      component: MyLearning,
+    },
+    {
+      moduleName: "mylearning",
+      path: "/mylearning/list/:state",
+      component: CourseList,
+    },
+    {
+      moduleName: "mylearning",
+      path: "/mylearning/list",
+      component: CourseList,
+    },
+    {
+      moduleName: "mylearning",
+      path: "/mylearning/:id/view",
+      component: CourseDetails,
+    },
+    {
+      moduleName: "mylearning",
+      path: "/mylearning/video/list/:state",
+      component: VideoList,
+    },
+    {
+      moduleName: "mylearning",
+      path: "/mylearning/video/list",
+      component: VideoList,
+    },
+    {
+      moduleName: "mylearning",
+      path: "/mylearning/video/:id/view",
+      component: VideoDetails,
+    },
+    // Asessment Routes
+    {
+      moduleName: "assessment",
+      path: "/assessment/exam-list2",
+      component: QuestionList2,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/exam-list3",
+      component: QuestionList3,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/exam-list4",
+      component: QuestionList4,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/exam-list5",
+      component: QuestionList5,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/exam-list6",
+      component: QuestionList6,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/exam-list7",
+      component: QuestionList7,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/examscores",
+      component: ExamScores,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/assessment-result",
+      component: SpotAssessmentResult,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/assessment-result2",
+      component: SpotAssessmentResult2,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/assessment-result3",
+      component: SpotAssessmentResult3,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/assessment-success",
+      component: SuccessPublicationReport,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/assessment-detailed-report",
+      component: ReportDetails,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/quml-test",
+      component: QumlTest,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment",
+      component: Assessment,
+    },
+    // Schools Routes
+    {
+      moduleName: "schools",
+      path: "/schools/new-visit",
+      component: NewVisitPage,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/visit-submit",
+      component: VisitSubmit,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-visit-report",
+      component: TeacherVisitReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-report",
+      component: AssessmentReportDashboard,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-section-report",
+      component: AssessmentSectionWiseReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-detailed-report",
+      component: AssessmentDetailedReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-report",
+      component: AttendanceReportDashboard,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-section-report",
+      component: AttendanceSectionWiseReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-detailed-report",
+      component: AttendanceDetailedReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/my-visits",
+      component: MyVisitsPage,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools",
+      component: SchoolProfile,
+    },
+    ,
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-details",
+      component: TeacherDetails,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-attendance-report",
+      component: TeacherAttendanceReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/questionnaire",
+      component: Question,
+    },
+    // Visits Routes
+    {
+      moduleName: "visits",
+      path: "/visits/recommended-schools",
+      component: Recommendedschools,
+    },
+    {
+      moduleName: "visits",
+      path: "/visits/allocated-schools",
+      component: Allocatedschools,
+    },
+    {
+      moduleName: "visits",
+      path: "/visits",
+      component: Myvisits,
+    },
+    {
+      moduleName: "teacher-app",
+      path: "*",
+      component: Home,
+    },
+  ];

@@ -2,7 +2,7 @@ import { ScrollView } from 'native-base'
 import React from 'react'
 
 export const maxWidth = '1080'
-export default function HeghtWidth({ children }) {
+export default function HeghtWidth({ children, _scollView }) {
   const [size, setSize] = React.useState({ width: '', Height: '' })
   React.useLayoutEffect(() => {
     function updateSize() {
@@ -19,7 +19,12 @@ export default function HeghtWidth({ children }) {
     return () => window.removeEventListener('resize', updateSize)
   }, [])
   return (
-    <ScrollView minH={size.Height} maxH={size.Height} w={size.width}>
+    <ScrollView
+      {..._scollView}
+      minH={size.Height}
+      maxH={size.Height}
+      w={size.width}
+    >
       {children}
     </ScrollView>
   )

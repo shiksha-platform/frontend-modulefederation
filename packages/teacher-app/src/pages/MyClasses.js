@@ -1,9 +1,16 @@
 import React from "react";
 import { Text, Box, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
-import { capture, Layout, Tab } from "@shiksha/common-lib";
+import {
+  capture,
+  Layout,
+  Tab,
+  overrideColorTheme,
+  H3,
+} from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
+const colors = overrideColorTheme();
 
 const MyClassRoute = React.lazy(() => import("classes/MyClassRoute"));
 const TimeTableRoute = React.lazy(() => import("calendar/TimeTableRoute"));
@@ -20,13 +27,12 @@ const MyClasses = ({ footerLinks }) => {
       _header={{
         title: t("MY_CLASS"),
         subHeading: moment().format("hh:mm A"),
-        _subHeading: { fontWeight: 500, textTransform: "uppercase" },
         avatar: true,
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={t("THE_CLASS_YOU_TAKE")}
+      subHeader={<H3 textTransform="none">{t("THE_CLASS_YOU_TAKE")}</H3>}
       _subHeader={{
-        bg: "classCard.500",
+        bg: colors?.cardBg,
         _text: {
           fontSize: "16px",
           fontWeight: "600",

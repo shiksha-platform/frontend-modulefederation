@@ -1,9 +1,6 @@
 import {
   capture,
   IconByName,
-  Layout,
-  Loading,
-  H1,
   H2,
   classRegistryService,
   getApiConfig,
@@ -20,14 +17,10 @@ import {
   Button,
   Text,
   Actionsheet,
-  FormControl,
-  Input,
-  Divider,
   Box,
   Pressable,
   Checkbox,
   VStack,
-  Center,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -130,7 +123,7 @@ export default function FormNotification({
           { name: "Event", data: eTriggers },
         ]}
       />
-      <Box bg="white" p="5">
+      <Box bg="notification.white" p="5">
         <VStack space="2">
           <HStack justifyContent="space-between">
             <Text fontSize="16" fontWeight="600">
@@ -150,7 +143,7 @@ export default function FormNotification({
           </BodySmall>
         </VStack>
       </Box>
-      <Box bg={colors.white} p="5">
+      <Box bg={"notification.white"} p="5">
         <Pressable onPress={(e) => setPageName("RecipientList")}>
           <HStack justifyContent="space-between" alignItems="center">
             <Text>{t("VIEW_RECIPIENTS_LIST")}</Text>
@@ -158,7 +151,13 @@ export default function FormNotification({
           </HStack>
         </Pressable>
       </Box>
-      <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+      <Box
+        bg={"notification.white"}
+        p="5"
+        position="sticky"
+        bottom="0"
+        shadow={2}
+      >
         <Button.Group>
           <Button
             flex="1"
@@ -174,7 +173,7 @@ export default function FormNotification({
           <Button
             flex="1"
             colorScheme="button"
-            _text={{ color: colors.white }}
+            _text={{ color: "notification.white" }}
             px="5"
             onPress={(e) => {
               notificationFormValidation("sendnow");
@@ -188,19 +187,19 @@ export default function FormNotification({
         isOpen={showModalTemplate}
         onClose={() => setShowModalTemplate(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <H2 fontWeight="500">{t("SELECT_TEMPLATE")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
+              color={"notification.cardCloseIcon"}
               onPress={(e) => setShowModalTemplate(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg={colors.white} width={"100%"}>
+        <Box bg={"notification.white"} width={"100%"}>
           {[
             "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
             "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
@@ -211,7 +210,7 @@ export default function FormNotification({
               <Box p="5" key={index}>
                 <Checkbox
                   colorScheme="button"
-                  borderColor={colors.primary}
+                  borderColor={"notification.primary"}
                   borderRadius="0"
                 >
                   {value}
@@ -222,7 +221,7 @@ export default function FormNotification({
           <Box p="5">
             <Button
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: "notification.white" }}
               onPress={(e) => setShowModalTemplate(false)}
             >
               {t("CONTINUE")}
@@ -234,7 +233,7 @@ export default function FormNotification({
         isOpen={dateTimeData?.name}
         onClose={() => setDateTimeData({})}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg="notification.cardBg">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <Text fontSize="16px" fontWeight={"600"}>
@@ -243,12 +242,12 @@ export default function FormNotification({
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="classCard.900"
+              color="notification.cardBg"
               onPress={(e) => setDateTimeData({})}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg="notification.white" width={"100%"}>
           {dateTimeData?.data &&
             dateTimeData.data.map((value, index) => {
               return (
@@ -289,7 +288,7 @@ export default function FormNotification({
           <Box p="5">
             <Button
               colorScheme="button"
-              _text={{ color: "white" }}
+              _text={{ color: "notification.white" }}
               onPress={(e) => {
                 setDateTimeData({});
               }}
@@ -316,7 +315,7 @@ const FormInput = ({
     data.map((item, index) => (
       <HStack
         key={index}
-        bg="white"
+        bg="notification.white"
         p="5"
         alignItems="center"
         justifyContent="space-between"

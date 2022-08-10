@@ -19,7 +19,7 @@ function RecommendedVisitsCard({ isVisited }) {
   return (
     <>
       <VStack space={6}>
-        <Box bg={isVisited ? "#C5DCC3" : "white"} borderRadius={10}>
+        <Box bg={isVisited ? "#C5DCC3" : "lightGray5"} borderRadius={10}>
           <Box p={4}>
             <VStack space={6}>
               <HStack alignItems="center">

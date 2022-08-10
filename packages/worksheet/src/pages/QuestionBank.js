@@ -43,18 +43,18 @@ export default function QuestionBank({ footerLinks, appName }) {
         title: translationCheck("MY_CLASSES", "Question Bank"),
         avatar: true,
       }}
-      bg={colors.white}
+      bg={"worksheet.white"}
       _appBar={{ languages: ["en"] }}
       subHeader={<H2 textTransform="inherit">{t("THE_CLASSES_YOU_TAKE")}</H2>}
       _subHeader={{
-        bg: colors.cardBg,
+        bg: "worksheet.cardBg",
       }}
       _footer={footerLinks}
     >
       <FilterButton
         getObject={setFilterObject}
         _box={{ p: 5 }}
-        _actionSheet={{ bg: colors.cardBg }}
+        _actionSheet={{ bg: "worksheet.cardBg" }}
         filters={[
           {
             name: "Subject",
@@ -100,9 +100,8 @@ export default function QuestionBank({ footerLinks, appName }) {
           },
         ]}
       />
-      {/* <QuestionHeading text="Fill in the blanks" /> */}
       <ScrollView maxH={Height}>
-        <Box bg={colors.white} p="5">
+        <Box bg={"worksheet.white"} p="5">
           <VStack space="5">
             {questions &&
               questions.map((question, index) => (

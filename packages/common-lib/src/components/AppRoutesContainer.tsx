@@ -56,7 +56,7 @@ const AppRoutesContainer = ({
         ]
       }
   return (
-    <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
       <PushNotification />
       <Suspense
         fallback={
