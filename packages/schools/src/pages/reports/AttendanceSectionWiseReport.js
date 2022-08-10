@@ -165,7 +165,7 @@ export default function AttendanceReportDashboard() {
                           key={index}
                           p="5"
                           borderBottomWidth={1}
-                          borderBottomColor={colors.gray}
+                          borderBottomColor={"schools.gray"}
                           onPress={(e) => {
                             setCalendarView(item.value);
                             setShowModal(false);
@@ -192,7 +192,7 @@ export default function AttendanceReportDashboard() {
         isOpen={teacherDetailModal}
         onClose={() => setTeacherDetailModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={"schools.lightGray"}>
           <HStack justifyContent={"space-between"} alignItems="center">
             <Stack p={5} pt={2} pb="15px">
               <Box>
@@ -206,14 +206,14 @@ export default function AttendanceReportDashboard() {
                   />
                   <VStack>
                     <H3
-                      color={colors.bodyText}
+                      color={"schools.bodyText"}
                       _dark={{
                         color: "warmGray.50",
                       }}
                     >
                       Rahul
                     </H3>
-                    <BodyLarge color={colors.subtitle}>
+                    <BodyLarge color={"schools.gray"}>
                       Class Teacher: VI A
                     </BodyLarge>
                   </VStack>
@@ -223,28 +223,28 @@ export default function AttendanceReportDashboard() {
             <Stack pb="15px">
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.primary}
+                color={"schools.primary"}
                 onPress={() => setTeacherDetailModal(false)}
               />
             </Stack>
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
           <VStack space={6}>
             <Box>
-              <H3 color={colors.subtitle}>Designation</H3>
+              <H3 color={"schools.gray"}>Designation</H3>
               <BodyLarge>Assistant Officer</BodyLarge>
             </Box>
             <Box>
-              <H3 color={colors.subtitle}>Qualifications</H3>
+              <H3 color={"schools.gray"}>Qualifications</H3>
               <BodyLarge>B.Com. Hons</BodyLarge>
             </Box>
             <Box>
-              <H3 color={colors.subtitle}>Phone</H3>
+              <H3 color={"schools.gray"}>Phone</H3>
               <BodyLarge>+91 1234 567 890</BodyLarge>
             </Box>
             <Box>
-              <H3 color={colors.subtitle}>Date of Joining</H3>
+              <H3 color={"schools.gray"}>Date of Joining</H3>
               <BodyLarge>10 Aug, 2013</BodyLarge>
             </Box>
           </VStack>

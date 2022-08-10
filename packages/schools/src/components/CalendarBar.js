@@ -62,7 +62,7 @@ export function DayWiesBar({
   useEffect(() => {
     setDate(moment().add(page, "days"));
     if (setActiveColor) {
-      setActiveColor(page === 0 ? colors.primary : colors.gray);
+      setActiveColor(page === 0 ? "schools.primary" : "schools.gray");
     }
   }, [page, setActiveColor]);
 
@@ -112,7 +112,7 @@ export function WeekWiesBar({
   useEffect(() => {
     setWeekDays(calendar(page, "week"));
     if (setActiveColor) {
-      setActiveColor(page === 0 ? colors.primary : colors.gray);
+      setActiveColor(page === 0 ? "schools.primary" : "schools.gray");
     }
   }, [page, setActiveColor]);
 
@@ -154,7 +154,7 @@ export function MonthWiesBar({
   useEffect(() => {
     setMonthDays(calendar(page, "monthInDays"));
     if (setActiveColor) {
-      setActiveColor(page === 0 ? colors.primary : colors.gray);
+      setActiveColor(page === 0 ? "schools.primary" : "schools.gray");
     }
   }, [page, setActiveColor]);
 
@@ -205,8 +205,8 @@ const Display = ({
               previousDisabled === false
                 ? activeColor
                   ? activeColor
-                  : colors.primary
-                : colors.grayInLight
+                  : "schools.primary"
+                : "schools.lightGray1"
             }
             name="ArrowLeftSLineIcon"
             onPress={(e) => {
@@ -233,8 +233,8 @@ const Display = ({
               typeof nextDisabled === "undefined" || nextDisabled === false
                 ? activeColor
                   ? activeColor
-                  : colors.gray
-                : colors.garyIndark
+                  : "schools.gray"
+                : "schools.darkGary3"
             }
             name="ArrowRightSLineIcon"
             onPress={(e) => {

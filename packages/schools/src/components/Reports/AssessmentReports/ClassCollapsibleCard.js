@@ -80,12 +80,12 @@ function ClassCollapsibleCard() {
   const [progressData2, setProgressData2] = React.useState([
     {
       name: "16 Assessed",
-      color: colors.green,
+      color: "schools.green",
       value: 16,
     },
     {
       name: "4 Pending",
-      color: colors.gray,
+      color: "schools.gray",
       value: 4,
     },
   ]);

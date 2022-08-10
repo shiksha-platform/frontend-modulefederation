@@ -44,7 +44,10 @@ const colorTheme = {
   lightGray6: '#f0f0f0',
   white: '#FFFFFF',
   successAlert: '#B9FBC0',
-  warningAlert: '#FFE5B3'
+  warningAlert: '#FFE5B3',
+  dangerAlert: '#F9DEDE',
+  girls: '#0ea5e9',
+  boys: '#a855f7'
 }
 
 export default colorTheme

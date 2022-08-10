@@ -1,11 +1,4 @@
-import {
-  H2,
-  IconByName,
-  Layout,
-  SearchLayout,
-  overrideColorTheme,
-  BodyLarge,
-} from "@shiksha/common-lib";
+import { Layout, Menu } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -15,66 +8,46 @@ import SchoolAdminDetailCard from "../components/SchoolAdminDetailCard";
 import SchoolAcademicDetailCard from "../components/SchoolAcademicDetailCard";
 import TeacherListCard from "../components/TeacherListCard";
 import PastVisitCard from "../components/PastVisitCard";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
-export default function SchoolProfile() {
+export default function SchoolProfile({ footerLinks }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   return (
     <Layout
-      imageUrl={
-        "https://via.placeholder.com/728x90.png?text=Visit+WhoIsHostingThis.com+Buyers+Guide"
-      }
+      imageUrl={`${window.location.pathname}/school.png`}
       _header={{
         title: "Delhi Public School, Ghaziabad",
-        subHeading: (
-          <VStack>
-            <BodyLarge color={colors.white}>
-              {t("Ghaziabad, Uttar Pradesh")}
-            </BodyLarge>
-            <HStack>
-              <IconByName
-                name="CameraLineIcon"
-                color={colors.white}
-                // onPress={() => setSortModal(false)}
-              />
-              <IconByName
-                name="MapPinLineIcon"
-                color={colors.white}
-                // onPress={() => setSortModal(false)}
-              />
-            </HStack>
-          </VStack>
-        ),
-        _subHeading: { color: colors.white },
+        _heading: { color: "schools.white" },
       }}
       _appBar={{
         languages: ["en"],
       }}
       subHeader={
-        <Box px={2}>
-          <HStack alignItems="center" justifyContent="space-between">
-            <Button
-              leftIcon={<IconByName name="ArrowRightSFillIcon" p={0} />}
-              onPress={() => {
-                navigate("/schools/new-visit");
-              }}
-            >
-              Start a Visit
-            </Button>
-            <Button
-              variant="outline"
-              leftIcon={<IconByName name="CalendarEventLineIcon" p={0} />}
-            >
-              See Calendar
-            </Button>
-          </HStack>
-        </Box>
+        <Menu
+          routeDynamics={true}
+          _icon={{ isDisabled: true }}
+          items={[
+            {
+              keyId: 1,
+              title: "Start a Visit",
+              _text: { minW: "115px" },
+              onPress: (e) => navigate("/schools/new-visit"),
+            },
+            {
+              keyId: 2,
+              title: "See Calendar",
+              _text: { minW: "115px" },
+              onPress: (e) => navigate("/schools/new-visit"),
+            },
+          ]}
+          type={"vertical"}
+        />
       }
+      _subHeader={{ bg: "schools.cardBg" }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg={"schools.white"}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>
@@ -83,7 +56,6 @@ export default function SchoolProfile() {
               <SchoolAcademicDetailCard />
               <TeacherListCard />
               <PastVisitCard />
-
               <Box>
                 <Button variant="outline">See All Allocated Teachers</Button>
               </Box>

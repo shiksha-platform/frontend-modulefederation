@@ -43,10 +43,10 @@ const StudentTile = ({ index, student, dataFor }) => {
     return (
       <React.Fragment>
         <Box
-          bg={colors.lightGreen}
+          bg={"schools.successAlert"}
           p={4}
           rounded={5}
-          borderColor={colors.green}
+          borderColor={"schools.green"}
           borderWidth={1}
         >
           <HStack alignItems="center" space={3}>
@@ -59,13 +59,13 @@ const StudentTile = ({ index, student, dataFor }) => {
             />
             <VStack>
               <HStack alignItems="center">
-                <BodyMedium color={colors.subtitle}>{student.name}</BodyMedium>
-                <Text fontSize="8px" color={colors.subtitle} mx={2}>
+                <BodyMedium color={"schools.gray"}>{student.name}</BodyMedium>
+                <Text fontSize="8px" color={"schools.gray"} mx={2}>
                   ●
                 </Text>
-                <Text color={colors.green}>100%</Text>
+                <Text color={"schools.green"}>100%</Text>
               </HStack>
-              <BodyMedium color={colors.subtitle}>
+              <BodyMedium color={"schools.gray"}>
                 Roll No: {student.rollNo}
               </BodyMedium>
             </VStack>
@@ -77,10 +77,10 @@ const StudentTile = ({ index, student, dataFor }) => {
     return (
       <React.Fragment>
         <Box
-          bg={colors.redLight}
+          bg={"schools.dangerAlert"}
           p={4}
           rounded={5}
-          borderColor={colors.absent}
+          borderColor={"schools.absent"}
           borderWidth={1}
         >
           <HStack alignItems="center" space={3}>
@@ -93,13 +93,13 @@ const StudentTile = ({ index, student, dataFor }) => {
             />
             <VStack>
               <HStack alignItems="center">
-                <BodyMedium color={colors.subtitle}>{student.name}</BodyMedium>
-                <Text fontSize="8px" color={colors.subtitle} mx={2}>
+                <BodyMedium color={"schools.gray"}>{student.name}</BodyMedium>
+                <Text fontSize="8px" color={"schools.gray"} mx={2}>
                   ●
                 </Text>
-                <Text color={colors.absent}>14 days</Text>
+                <Text color={"schools.absent"}>14 days</Text>
               </HStack>
-              <BodyMedium color={colors.subtitle}>
+              <BodyMedium color={"schools.gray"}>
                 Roll No: {student.rollNo}
               </BodyMedium>
             </VStack>
@@ -110,7 +110,7 @@ const StudentTile = ({ index, student, dataFor }) => {
   } else {
     return (
       <React.Fragment>
-        <Box bg={colors.white} py={1}>
+        <Box bg={"schools.white"} py={1}>
           <HStack alignItems="center" space={3}>
             <Avatar
               size="48px"
@@ -120,8 +120,8 @@ const StudentTile = ({ index, student, dataFor }) => {
               }}
             />
             <VStack>
-              <BodyMedium color={colors.subtitle}>{student.name}</BodyMedium>
-              <BodyMedium color={colors.subtitle} fontSize={"xs"}>
+              <BodyMedium color={"schools.gray"}>{student.name}</BodyMedium>
+              <BodyMedium color={"schools.gray"} fontSize={"xs"}>
                 Roll No: {student.rollNo}
               </BodyMedium>
             </VStack>

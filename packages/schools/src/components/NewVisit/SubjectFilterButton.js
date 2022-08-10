@@ -45,7 +45,7 @@ export default function SubjectFilterButton({
           px="5"
           rightIcon={
             <IconByName
-              color={colors.primary}
+              color={"schools.primary"}
               name="ArrowDownSLineIcon"
               isDisabled
             />
@@ -57,14 +57,14 @@ export default function SubjectFilterButton({
           }}
           {..._button}
         >
-          <Text color={colors.primary}>
+          <Text color={"schools.primary"}>
             {selectData && selectData.length ? selectData[0] : "Subject"}
           </Text>
         </Button>
         <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
           <Actionsheet.Content
             alignItems={"left"}
-            bg={colors.lightGray}
+            bg={"schools.lightGray"}
             {..._actionSheet}
           >
             <HStack justifyContent={"space-between"}>
@@ -74,11 +74,11 @@ export default function SubjectFilterButton({
               <IconByName
                 name="CloseCircleLineIcon"
                 onPress={(e) => setFilterData()}
-                color={colors.primary}
+                color={"schools.primary"}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"} pt={4}>
+          <Box bg={"schools.white"} width={"100%"} pt={4}>
             <VStack space={4}>
               {filterData?.data &&
                 filterData?.data.map((value, index) => (
@@ -95,7 +95,7 @@ export default function SubjectFilterButton({
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "schools.white" }}
                 onPress={() => {
                   setFilterData({});
                   if (getObject) getObject(selectData);

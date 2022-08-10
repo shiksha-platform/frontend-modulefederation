@@ -16,9 +16,7 @@ const theme = {
     },
     classes: {
       ...colorTheme,
-      cardBg: '#D9F0FC',
-      girls: '#0ea5e9',
-      boys: '#a855f7'
+      cardBg: '#D9F0FC'
     },
     calendar: {
       ...colorTheme,
@@ -38,8 +36,13 @@ const theme = {
       secondary: '#feefeb'
     },
     notification: {
+      ...colorTheme,
       cardBg: '#D9F0FC',
       notificationBg: '#FDDFD8'
+    },
+    schools: {
+      ...colorTheme,
+      cardBg: '#CDECF6'
     },
     widgetColor: {
       400: '#7F9DAC',
