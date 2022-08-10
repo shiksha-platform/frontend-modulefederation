@@ -53,18 +53,18 @@ function AttendanceSuccessFailureCard({ dataFor }) {
           {dataFor === "success" && (
             <>
               <H2>100% This Week</H2>
-              <BodyMedium color={colors.subtitle}>3 Students</BodyMedium>
+              <BodyMedium color={"schools.gray"}>3 Students</BodyMedium>
             </>
           )}
           {dataFor === "failure" && (
             <>
               <H2>Absent Consecutive 3 Days</H2>
               <HStack alignItems="center">
-                <BodyMedium color={colors.subtitle}>3 Students</BodyMedium>
-                <Text fontSize="8px" color={colors.subtitle} mx={2}>
+                <BodyMedium color={"schools.gray"}>3 Students</BodyMedium>
+                <Text fontSize="8px" color={"schools.gray"} mx={2}>
                   ●
                 </Text>
-                <BodyMedium color={colors.absent}>Less than 45%</BodyMedium>
+                <BodyMedium color={"schools.absent"}>Less than 45%</BodyMedium>
               </HStack>
             </>
           )}

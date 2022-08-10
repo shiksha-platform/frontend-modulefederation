@@ -29,29 +29,29 @@ function ClassParticipationCard() {
   const [progressData, setProgressData] = React.useState([
     {
       name: "22 Present",
-      color: colors.green,
+      color: "schools.green",
       value: 22,
     },
     {
       name: "4 Absent",
-      color: colors.absent,
+      color: "schools.absent",
       value: 4,
     },
     {
       name: "1 Unmarked",
-      color: colors.unmarked,
+      color: "schools.unmarked",
       value: 1,
     },
   ]);
   const [progressData2, setProgressData2] = React.useState([
     {
       name: "16 Assessed",
-      color: colors.green,
+      color: "schools.green",
       value: 16,
     },
     {
       name: "4 Pending",
-      color: colors.gray,
+      color: "schools.gray",
       value: 4,
     },
   ]);
@@ -71,21 +71,21 @@ function ClassParticipationCard() {
               {/*row 1 box*/}
               <Box>
                 <VStack space={6}>
-                  <Box bg={colors.redLight} rounded={5} p={2}>
+                  <Box bg={"schools.dangerAlert"} rounded={5} p={2}>
                     <HStack alignItems={"center"}>
                       <IconByName
                         name="EmotionSadLineIcon"
-                        color={colors.absent}
+                        color={"schools.absent"}
                         // onPress={() => setSortModal(false)}
                       />
                       <Box
                         borderLeftWidth={2}
-                        borderLeftColor={colors.absent}
+                        borderLeftColor={"schools.absent"}
                         pl={2}
                       >
                         <VStack>
-                          <H3 color={colors.absent}>Very Bad</H3>
-                          <BodyMedium color={colors.absent}>
+                          <H3 color={"schools.absent"}>Very Bad</H3>
+                          <BodyMedium color={"schools.absent"}>
                             Below average performance
                           </BodyMedium>
                         </VStack>
@@ -107,22 +107,22 @@ function ClassParticipationCard() {
 
                   <HStack alignItems="center" justifyContent="space-between">
                     <HStack alignItems="center">
-                      <Box bg={colors.green} w="15px" h="15px" rounded={4} />
+                      <Box bg={"schools.green"} w="15px" h="15px" rounded={4} />
                       <BodyMedium mx={2}>Present</BodyMedium>
                     </HStack>
                     <HStack alignItems="center">
-                      <Box bg={colors.absent} w="15px" h="15px" rounded={4} />
+                      <Box bg={"schools.absent"} w="15px" h="15px" rounded={4} />
                       <BodyMedium mx={2}>Absent</BodyMedium>
                     </HStack>
                     <HStack alignItems="center">
-                      <Box bg={colors.unmarked} w="15px" h="15px" rounded={4} />
+                      <Box bg={"schools.unmarked"} w="15px" h="15px" rounded={4} />
                       <BodyMedium mx={2}>Unmarked</BodyMedium>
                     </HStack>
                   </HStack>
 
                   <Text>
                     <Text bold>Note:</Text>{" "}
-                    <BodyMedium color={colors.subtitle}>
+                    <BodyMedium color={"schools.gray"}>
                       Monthly Report will be generated on the last day of every
                       month.
                     </BodyMedium>

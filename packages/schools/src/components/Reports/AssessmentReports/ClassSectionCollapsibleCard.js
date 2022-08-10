@@ -82,10 +82,10 @@ function ClassSectionCollapsibleCard() {
           <H2>
             <HStack align="middle">
               <H2>Class I</H2>
-              <Text fontSize="8px" color={colors.subtitle} mx={2}>
+              <Text fontSize="8px" color={"schools.gray"} mx={2}>
                 ●
               </Text>
-              <BodyLarge color={colors.subtitle}>Sec A</BodyLarge>
+              <BodyLarge color={"schools.gray"}>Sec A</BodyLarge>
             </HStack>
           </H2>
         </Box>

@@ -1,24 +1,11 @@
-import {
-  Collapsible,
-  H2,
-  IconByName,
-  Layout,
-  BodyLarge,
-  DEFAULT_THEME,
-  overrideColorTheme,
-  H3,
-} from "@shiksha/common-lib";
+import { Collapsible, H2, Layout, BodyLarge, H3 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import {
   Box,
   HStack,
   Text,
   VStack,
-  Button,
-  Actionsheet,
-  Stack,
   Divider,
   Avatar,
   Spacer,
@@ -27,10 +14,7 @@ import {
 import TeacherTile from "../components/TeacherTile";
 import DayWiseBar from "../components/DayWiseBar";
 import moment from "moment";
-import colorTheme from "../colorTheme";
-const colors0 = overrideColorTheme(colorTheme);
 
-const colors = DEFAULT_THEME;
 const weekDates = (currentDate = moment()) => {
   let weekStart = currentDate.clone().startOf("isoWeek");
   let days = [];
@@ -40,7 +24,7 @@ const weekDates = (currentDate = moment()) => {
   return days;
 };
 
-export default function TeacherVisitReport() {
+export default function TeacherVisitReport({ footerLinks }) {
   const { t } = useTranslation();
   const [teacherlist, setTeacherList] = useState([]);
   const [page, setPage] = React.useState(0);
@@ -98,10 +82,10 @@ export default function TeacherVisitReport() {
                 }}
               />
               <VStack>
-                <Text color={colors0.white} fontSize={"xs"}>
+                <Text color={"schools.white"} fontSize={"xs"}>
                   Past Visit Records
                 </Text>
-                <Text color={colors0.white} bold>
+                <Text color={"schools.white"} bold>
                   Mr. Dhananjay Tripathi
                 </Text>
               </VStack>
@@ -112,45 +96,7 @@ export default function TeacherVisitReport() {
         _heading: { color: "white" },
       }}
       _appBar={{ languages: ["en"] }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/my-visits",
-            routeparameters: {},
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Collapsible
         defaultCollapse={true}
@@ -179,17 +125,17 @@ export default function TeacherVisitReport() {
                   key={key}
                 >
                   <Box
-                    bg={isToday ? colors0.primary : ""}
+                    bg={isToday ? "schools.primary" : ""}
                     px="3"
                     py="10px"
                     rounded="8px"
                   >
                     <VStack alignItems="center" space="2">
-                      <BodyLarge color={isToday ? colors0.white : "#999999"}>
+                      <BodyLarge color={isToday ? "schools.white" : "#999999"}>
                         {date.format("ddd")}
                       </BodyLarge>
                       <BodyLarge
-                        color={isToday ? colors0.white : colors0.bodyText}
+                        color={isToday ? "schools.white" : "schools.bodyText"}
                       >
                         {date.format("DD")}
                       </BodyLarge>
@@ -204,7 +150,7 @@ export default function TeacherVisitReport() {
         <Box py={4}>
           <VStack space={8}>
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q1. Is the teacher aware of nipun lakshyas for their respective
                 subejct & grades?
               </H3>
@@ -212,14 +158,14 @@ export default function TeacherVisitReport() {
             </Box>
 
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q2. Does the classroom have NIPUN Lakshya charts pasted on
                 walls?
               </H3>
               <BodyLarge>Answer as in ODK</BodyLarge>
             </Box>
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q1. Is the teacher aware of nipun lakshyas for their respective
                 subejct & grades?
               </H3>
@@ -227,14 +173,14 @@ export default function TeacherVisitReport() {
             </Box>
 
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q2. Does the classroom have NIPUN Lakshya charts pasted on
                 walls?
               </H3>
               <BodyLarge>Answer as in ODK</BodyLarge>
             </Box>
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q1. Is the teacher aware of nipun lakshyas for their respective
                 subejct & grades?
               </H3>
@@ -242,14 +188,14 @@ export default function TeacherVisitReport() {
             </Box>
 
             <Box>
-              <H3 bold color={colors0.bodyText}>
+              <H3 bold color={"schools.bodyText"}>
                 Q2. Does the classroom have NIPUN Lakshya charts pasted on
                 walls?
               </H3>
               <BodyLarge>Answer as in ODK</BodyLarge>
             </Box>
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q1. Is the teacher aware of nipun lakshyas for their respective
                 subejct & grades?
               </H3>
@@ -257,7 +203,7 @@ export default function TeacherVisitReport() {
             </Box>
 
             <Box>
-              <H3 color={colors0.bodyText}>
+              <H3 color={"schools.bodyText"}>
                 Q2. Does the classroom have NIPUN Lakshya charts pasted on
                 walls?
               </H3>
