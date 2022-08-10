@@ -118,6 +118,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
     } else {
       let newData = {
         contextId: id,
+        userId: localStorage.getItem("id"),
         context: "Worksheet",
         type: "like",
       };
@@ -192,7 +193,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </HStack>
         ),
       }}
-      bg={colors.white}
+      bg={"worksheet.white"}
       _appBar={{
         onPressBackButton: handleBackButton,
         languages: manifestLocal.languages,
@@ -201,7 +202,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
             {!showButtonArray || showButtonArray.includes("Like") ? (
               <IconByName
                 name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-                color={like.id ? colors.primary : colors.black}
+                color={like.id ? "worksheet.primary" : worksheet.black}
                 onPress={handleLike}
               />
             ) : (
@@ -227,7 +228,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      <Box bg={colors.white} p="5">
+      <Box bg={"worksheet.white"} p="5">
         <VStack space="5">
           {questions && questions.length > 0 ? (
             questions.map((question, index) => (
@@ -240,7 +241,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color={colors.primary}
+                      color={"worksheet.primary"}
                       onPress={(e) => setQuestionObject(question)}
                     />
                   </HStack>
@@ -253,7 +254,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               my="5"
               alignItems={"center"}
               rounded="lg"
-              bg={colors.viewNotificationDark}
+              bg={"worksheet.secondary"}
             >
               Question Not Found
             </Box>
@@ -261,12 +262,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         </VStack>
       </Box>
       {!state ? (
-        <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          position="sticky"
+          bottom="84"
+          shadow={2}
+        >
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="5"
               onPress={(e) => console.log(e)}
             >

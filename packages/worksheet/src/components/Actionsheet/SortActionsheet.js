@@ -49,7 +49,7 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
         rounded="full"
         colorScheme="button"
         variant="outline"
-        bg={colors.primaryLight}
+        bg={"worksheet.primaryLight"}
         px={5}
         py={1}
         rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
@@ -58,14 +58,14 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
         <BodyLarge textTransform="capitalize">{t("SORT")}</BodyLarge>
       </Button>
       <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="25px">
               <H2>{t("SORT")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.primaryDark}
+              color={"worksheet.primaryDark"}
               onPress={(e) => setShowModal(false)}
             />
           </HStack>
@@ -78,13 +78,13 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
                 <Pressable
                   key={index}
                   p="5"
-                  bg={isSelected ? colors.grayLight : ""}
+                  bg={isSelected ? "worksheet.lightGray2" : ""}
                   onPress={(e) => handleSort(item)}
                 >
                   <HStack space="2" colorScheme="button" alignItems="center">
                     <IconByName
                       isDisabled
-                      color={isSelected ? colors.primary : ""}
+                      color={isSelected ? "worksheet.primary" : ""}
                       name={
                         item === "low-to-high"
                           ? "ArrowRightUpLineIcon"

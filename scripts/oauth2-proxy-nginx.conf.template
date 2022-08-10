@@ -1,0 +1,83 @@
+# APP_DOMAIN_NAME = proxy-sandbox.shikshaplatform.io
+# replace ${APP_DOMAIN_NAME} with application domain name
+
+server{
+  listen 80;
+  listen [::]:80;
+  server_name
+    ${APP_DOMAIN_NAME};
+
+return 301 https://${APP_DOMAIN_NAME}$request_uri;
+}
+################################################################################################################################################
+server {
+   listen 443 ssl;
+    server_name ${APP_DOMAIN_NAME};
+
+  location /oauth2 {
+    proxy_pass       http://localhost:4181;
+    proxy_set_header Host                    $host;
+    proxy_set_header X-Real-IP               $remote_addr;
+    proxy_set_header X-Scheme                $scheme;
+    proxy_set_header X-Auth-Request-Redirect $request_uri;
+    # or, if you are handling multiple domains:
+    # proxy_set_header X-Auth-Request-Redirect $scheme://$host$request_uri;
+  }
+  location = /oauth2/auth {
+    proxy_pass       http://localhost:4181;
+    proxy_set_header Host             $host;
+    proxy_set_header X-Real-IP        $remote_addr;
+    proxy_set_header X-Scheme         $scheme;
+    # nginx auth_request includes headers but not body
+    proxy_set_header Content-Length   "";
+    proxy_pass_request_body           off;
+  }
+
+    location / {
+       proxy_pass http://127.0.0.1:4181;
+auth_request /oauth2/auth;
+    error_page 401 = /oauth2/sign_in;
+      #  root         /var/www/${APP_DOMAIN_NAME}/public;
+     #   try_files $uri $uri/ /index.html;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Port 443;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+     }
+    location /api {
+      proxy_pass http://localhost:4181;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Port 443;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header    X-Forwarded-Host   $host;
+      proxy_set_header    X-Forwarded-Server $host;
+      proxy_set_header    X-Forwarded-Port   $server_port;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection ‘upgrade’;
+     }
+
+
+    ssl_certificate /etc/letsencrypt/live/${APP_DOMAIN_NAME}/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/${APP_DOMAIN_NAME}/privkey.pem; # managed by Certbot
+}
+
+
+
+server {
+    listen 127.0.0.1:80;
+    # 
+location / {
+        root         /var/www/${APP_DOMAIN_NAME}/public;
+        try_files $uri $uri/ /index.html;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Port 443;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+     }
+}

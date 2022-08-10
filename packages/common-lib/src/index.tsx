@@ -7,14 +7,13 @@ import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
 import Menu, { SubMenu } from './components/Menu'
-import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
 import FilterButton from './components/FilterButton'
-import * as teacherRegistryService from './services/teacherRegistryService'
+import * as userRegistryService from './services/userRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
@@ -26,7 +25,10 @@ import * as assessmentRegistryService from './services/assessmentRegistryService
 import * as templateRegistryService from './services/templateRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
-import { getAllForUser } from './services/firebaseHistoryRegistryService'
+import {
+  getAllForUser,
+  sendReadReceipt
+} from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
 export {
   AppBar,
@@ -40,14 +42,13 @@ export {
   Collapsible,
   Menu,
   SubMenu,
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
   AppRoutesContainer,
   ProgressBar,
   Tab,
   Loading,
-  teacherRegistryService,
+  userRegistryService,
   classRegistryService,
   attendanceRegistryService,
   studentRegistryService,
@@ -56,10 +57,11 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
-  templateRegistryService,
   getApiConfig,
-  notificationRegistryService,
-  getAllForUser
+  getAllForUser,
+  sendReadReceipt,
+  templateRegistryService,
+  notificationRegistryService
 }
 
 export * from './services/Auth'

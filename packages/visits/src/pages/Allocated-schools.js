@@ -24,7 +24,7 @@ import {
 import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
 import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
-const colors0 = overrideColorTheme(colorTheme);
+const colors = overrideColorTheme(colorTheme);
 
 const defaultInputs = [
   {
@@ -49,8 +49,7 @@ const defaultInputs = [
     ],
   },
 ];
-let colors = DEFAULT_THEME;
-export default function Allocatedschools() {
+export default function Allocatedschools({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [sortModal, setSortModal] = useState(false);
@@ -65,54 +64,18 @@ export default function Allocatedschools() {
     <Layout
       _header={{
         title: "Allocated Schools",
-        _heading: { color: "white" },
         isEnableSearchBtn: true,
-        subHeading: t("See all your allocated schools for visits here."),
-        _subHeading: { color: colors0.white, textTransform: "none" },
       }}
+      subHeader={
+        <H2 textTransform="inherit">
+          See all your allocated schools for visits here
+        </H2>
+      }
       _appBar={{ languages: ["en"] }}
-      _subHeader={{ bg: colors0.lightPurple }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _subHeader={{ bg: colors.lightPurple }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg={colors.white}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>
@@ -126,7 +89,7 @@ export default function Allocatedschools() {
                   </Box>
                   <Button
                     variant="outline"
-                    bg={colors0.white}
+                    bg={colors.white}
                     onPress={() => {
                       setSortModal(true);
                     }}
@@ -139,12 +102,10 @@ export default function Allocatedschools() {
                 <FilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: colors0.lightGray }}
-                  _box={{ pt: 5 }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2", mr: "4" }}
+                  _actionSheet={{ bg: colors.lightGray }}
                   _filterButton={{
                     rightIcon: "",
-                    bg: colors0.white,
+                    bg: colors.white,
                   }}
                   resetButtonText={t("COLLAPSE")}
                   filters={defaultInputs}
@@ -161,22 +122,21 @@ export default function Allocatedschools() {
       </Box>
 
       <Actionsheet isOpen={sortModal} onClose={() => setSortModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg={colors0.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Sort")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors0.primary}
+              color={colors.primary}
               onPress={() => setSortModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors0.white}>
-          {/*<Actionsheet.Item>Mathematics</Actionsheet.Item>*/}
+        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
           <Box pt="0">
-            <BodyMedium fontSize={12} color={colors0.subtitle}>
+            <BodyMedium fontSize={12} color={colors.subtitle}>
               By last visited
             </BodyMedium>
             <Actionsheet.Item>
@@ -184,7 +144,7 @@ export default function Allocatedschools() {
                 <IconByName
                   size="sm"
                   name="ArrowRightUpLineIcon"
-                  color={colors0.bodyText}
+                  color={colors.bodyText}
                 />
                 <BodyLarge>Latest to Oldest</BodyLarge>
               </HStack>
@@ -194,7 +154,7 @@ export default function Allocatedschools() {
                 <IconByName
                   size="sm"
                   name="ArrowRightDownLineIcon"
-                  color={colors0.bodyText}
+                  color={colors.bodyText}
                 />
                 <BodyLarge>Oldest to Latest</BodyLarge>
               </HStack>
@@ -204,13 +164,13 @@ export default function Allocatedschools() {
           <Divider my={4}></Divider>
 
           <Box pt="0">
-            <BodyMedium color={colors0.subtitle}>By Completed</BodyMedium>
+            <BodyMedium color={colors.subtitle}>By Completed</BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
                   size="sm"
                   name="ArrowRightUpLineIcon"
-                  color={colors0.bodyText}
+                  color={colors.bodyText}
                 />
                 <BodyLarge>Visited</BodyLarge>
               </HStack>
@@ -220,7 +180,7 @@ export default function Allocatedschools() {
                 <IconByName
                   size="sm"
                   name="ArrowRightDownLineIcon"
-                  color={colors0.bodyText}
+                  color={colors.bodyText}
                 />
                 <BodyLarge>Not Visited</BodyLarge>
               </HStack>

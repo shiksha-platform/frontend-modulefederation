@@ -1,5 +1,10 @@
+import axios from 'axios'
 import React from 'react'
-import colorTheme from './colorTheme'
+import { getApiConfig } from '../services/configApiRegistryService'
+import * as joyfull from '../theme/joyfull'
+import * as monochrome from '../theme/monochrome'
+import { extendTheme } from 'native-base'
+import footerLinks from '../config/footerLinks'
 
 export const maxWidth = '1080'
 export function useWindowSize() {
@@ -98,6 +103,42 @@ export const generateUUID = () => {
   })
 }
 
-export const overrideColorTheme = (colorObject = {}) => {
-  return { ...colorTheme, ...colorObject }
+export const overrideColorTheme = (colorObject = {}, theme = 'joyfull') => {
+  if (theme === 'monochrome') {
+    return { ...colorObject, ...monochrome.colorTheme }
+  }
+  return { ...joyfull.colorTheme, ...colorObject }
+}
+
+export const DEFAULT_THEME = async (theme) => {
+  if (!theme) {
+    const adminTheme = await getApiConfig(['theme'])
+    theme = JSON.parse(adminTheme['theme.forModules'])
+  }
+
+  if (theme === 'monochrome') {
+    return extendTheme(monochrome.theme)
+  }
+  return extendTheme(joyfull.theme)
+}
+
+export const getAppshellData = async (routes = [], role = 'teacher') => {
+  try {
+    const adminTheme = await getApiConfig(['theme', 'roles'])
+    const themeName = JSON.parse(adminTheme['theme.forModules'])
+    const teacher = adminTheme[`roles.${role}`]
+    const newRoutes = routes.filter((item) => teacher.includes(item.moduleName))
+    const newFooterLinks = footerLinks.filter((item) =>
+      teacher.includes(item.moduleName)
+    )
+    const newTheme = await DEFAULT_THEME(themeName)
+    return { newTheme, newRoutes, newFooterLinks }
+  } catch (e) {
+    console.log('eror', e.message)
+    return {
+      newTheme: await DEFAULT_THEME('joyFull'),
+      newRoutes: [],
+      newFooterLinks: []
+    }
+  }
 }

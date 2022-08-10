@@ -241,7 +241,6 @@ export default function SelfAttedanceSheet({
     let ignore = false;
     async function getData() {
       let newConfig = await getApiConfig(["attendance"]);
-      console.log(newConfig);
       setConfig(newConfig);
       const status =
         newConfig && newConfig["attendance_states_of_staff"]
