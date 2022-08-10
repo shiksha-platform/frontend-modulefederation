@@ -17,7 +17,7 @@ export default [
     title: 'SCHOOL',
     icon: 'GovernmentLineIcon',
     moduleName: 'school',
-    route: '/school',
+    route: '/schools',
     routeparameters: {}
   },
   {
