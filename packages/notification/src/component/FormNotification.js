@@ -55,6 +55,7 @@ export default function FormNotification({
   const [eTriggers, setETriggers] = useState([]);
   const [templates, setTemplates] = useState([]);
   //const [template, setTemplate] = useState("")
+  const [channels, setChannels] = useState([])
   const navigate = useNavigate();
 
   const getConfigData = async () => {
@@ -66,7 +67,16 @@ export default function FormNotification({
       : JSON.parse(
         Response["attendance.event_triggers_to_send_attendance_notification"]
       );
+    const communicationChannels = Array.isArray(
+      Response["attendance.channels_of_communication"]
+    )
+      ? Response["attendance.channels_of_communication"]
+      : JSON.parse(
+        Response["attendance.channels_of_communication"]
+      );
+
     setETriggers([...triggers, "Absent_Today"]);
+    setChannels(communicationChannels);
   };
 
   const getTemplates = async () => {
@@ -127,8 +137,15 @@ export default function FormNotification({
   }, []);
 
   useEffect(() => {
-    getTemplates()
+    getTemplates();
   }, [dateTime.Event])
+
+  useEffect(() => {
+    if (templates.length > 0) {
+      console.log("in template");
+      dateTime["Template"] = templates[0].body;
+    }
+  }, [])
 
   return (
     <Stack space={1} mb="2">
@@ -136,7 +153,7 @@ export default function FormNotification({
         {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
         data={[
           { name: "Group", data: classData },
-          { name: "Channel", data: ["SMS", "WhatsApp"] },
+          { name: "Channel", data: channels },
           { name: "Module", data: ["Attendance", "Lessonplans", "Worksheet"] },
           { name: "Event", data: eTriggers },
         ]}

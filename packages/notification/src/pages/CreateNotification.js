@@ -58,7 +58,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
   };
 
   if (searchParams.get("module")) {
-    dateTime.Module = "Attendance";
+    dateTime.Module = searchParams.get("module");
   }
 
   useEffect(() => {

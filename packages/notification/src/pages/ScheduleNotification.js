@@ -55,6 +55,14 @@ export default function ScheduleNotification({ footerLinks, appName }) {
     }
   };
 
+  const leapYear = (year) => {
+    return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+  }
+
+  //console.log(leapYear(2010));
+
+  const Day31Months = ["01. January", "03. March", "05. May", "07. July", "08. August", "10. October", "12. December"]
+  const Day30Months = ["04. April", "06. June", "09. September", "11. November",]
   const to24HrsFormat = (time) => {
     if (time) {
       let hour = time.split(" ")[0].split(":")[0];
@@ -217,42 +225,6 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
           data={[
             {
-              name: "Date",
-              data: [
-                "01",
-                "02",
-                "03",
-                "04",
-                "05",
-                "06",
-                "07",
-                "08",
-                "09",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20",
-                "21",
-                "22",
-                "23",
-                "24",
-                "25",
-                "26",
-                "27",
-                "28",
-                "29",
-                "30",
-                "31",
-              ],
-            },
-            {
               name: "Month",
               data: [
                 "01. January",
@@ -268,6 +240,16 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 "11. November",
                 "12. December",
               ],
+            },
+            {
+              name: "Date",
+              data: leapYear(new Date().getFullYear()) && dateTime.Month === "02. February"
+                ? ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29"]
+                : dateTime.Month === "02. February"
+                  ? ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28",]
+                  : Day31Months.includes(dateTime.Month)
+                    ? ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31",]
+                    : ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",]
             },
             {
               name: "Time",

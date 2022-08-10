@@ -62,5 +62,13 @@
   "VIEW_RECIPIENTS_LIST": "View recipient list",
   "REVIEW_AND_SEND_NOW": "Review & Send Now",
   "SELECT_TEMPLATE": "Select Template",
-  "RECIPIENT_LIST": "Recipient List"
+  "RECIPIENT_LIST": "Recipient List",
+  "Choose Group": "Choose Group",
+  "Choose Module": "Choose Module",
+  "Choose Event": "Choose Event",
+  "Choose Channel": "Choose Channel",
+  "Select Group": "Select Group",
+  "Select Module": "Select Module",
+  "Select Event": "Select Event",
+  "Select Channel": "Select Channel"
 }
