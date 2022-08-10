@@ -23,13 +23,13 @@ function App() {
 
   return (
     <AppShell
-        basename={process.env.PUBLIC_URL}
-        routes={routes}
-        AuthComponent={LoginComponent}
-        isShowFooterLink={true}
-        appName="Teacher App"
-        skipLogin={skipLogin}
-      />
+      basename={process.env.PUBLIC_URL}
+      routes={routes}
+      AuthComponent={LoginComponent}
+      isShowFooterLink={true}
+      appName="Teacher App"
+      skipLogin={skipLogin}
+    />
   );
 }
 export default App;

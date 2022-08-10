@@ -60,14 +60,14 @@ function AppShell({
       if (data.eventType == 'LOGIN_SUCCESS') {
         setToken(localStorage.getItem('token'))
       } else if (data.eventType == 'LOGOUT') {
-        if(skipLogin){
+        if (skipLogin) {
           setTimeout(() => {
             window.location.href = '/oauth2/sign_out?rd=/'
-          }, 1);
+          }, 1)
         } else {
           setTimeout(() => {
             window.location.href = ''
-          }, 1);
+          }, 1)
         }
       }
     })
@@ -75,7 +75,6 @@ function AppShell({
       eventBus.unsubscribe(subscription)
     }
   }, [token])
-
 
   if (!Object.keys(theme).length) {
     return <React.Fragment />
