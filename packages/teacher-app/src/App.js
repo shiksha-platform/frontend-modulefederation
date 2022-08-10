@@ -432,7 +432,7 @@ function App() {
       component: Myvisits,
     },
     {
-      moduleName: "teacher-app",
+      moduleName: "app",
       path: "*",
       component: Home,
     },
@@ -462,7 +462,6 @@ function App() {
       //window.location.reload();
     }
   }, []);
-  console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
   if (
     process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||

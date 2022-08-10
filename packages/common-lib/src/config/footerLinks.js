@@ -2,7 +2,7 @@ export default [
   {
     title: 'HOME',
     icon: 'Home4LineIcon',
-    moduleName: 'teacher-app',
+    moduleName: 'app',
     route: '/',
     routeparameters: {}
   },
@@ -16,7 +16,7 @@ export default [
   {
     title: 'SCHOOL',
     icon: 'GovernmentLineIcon',
-    moduleName: 'school',
+    moduleName: 'schools',
     route: '/school',
     routeparameters: {}
   },
