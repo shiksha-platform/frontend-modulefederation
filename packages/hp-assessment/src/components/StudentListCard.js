@@ -79,20 +79,21 @@ const TileBasedOnStatus = ({status, children, setSelectedStudent, student}) => {
 }
 
 const StudentListCard = ({
-  classId,
-  setPageName,
-  students,
-  setHeaderDetails,
-  chooseAssessmentTypeModal,
-  handleSelectedStudent,
-  handleStudentPageNext,
-}) => {
+                           classId,
+                           setPageName,
+                           student,
+                           setHeaderDetails,
+                           chooseAssessmentTypeModal,
+                           handleSelectedStudent,
+                           handleStudentPageNext,
+                           studentList
+                         }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
 
   const [selectedStudent, setSelectedStudent] = useState();
-  const [studentlist, setStudentlist] = useState([
+  /*const [studentList, setStudentlist] = useState([
     {
       id: 1,
       firstName: 'Manoj',
@@ -141,7 +142,7 @@ const StudentListCard = ({
       lastName: '',
       fathersName: 'xyz'
     }
-  ]);
+  ]);*/
 
   const [loading, setLoading] = React.useState(false);
 
@@ -152,53 +153,22 @@ const StudentListCard = ({
   }
 
   return (
-    <VStack space={4}>
-      <Box>
-        <VStack>
-          <H2>{t("Students List")}</H2>
-          {attendanceData.msg ? (
-            <>
-              <Caption color={colors.lightGray} textTransform="none">
-                {attendanceData.msg}
-              </Caption>
-            </>
-          ) : (
-            <>
-              <HStack alignItems={"center"}>
-                <Caption color={colors.gray}>
-                  {t("Total Students for Evaluation ") + studentlist.length}
-                </Caption>{" "}
-                <Caption color={colors.lightGray}> ●</Caption>{" "}
-                <Caption color={colors.gray}>
-                  {" "}
-                  {t("Present ") + 0}
-                </Caption>
-              </HStack>
-            </>
-          )}
-        </VStack>
-      </Box>
-      <Box>
-        <VStack space={4}>
-          {studentlist && studentlist.length ? (
-            studentlist.map((student, index) => {
-              return (
-                <TileBasedOnStatus key={student.id} status={index === 0 ? 'complete' : index === 1 ? 'ongoing' : index === 2 ? 'completeWithNipun' : 'pending'} setSelectedStudent={setSelectedStudent} student={student}>
-                  <HStack alignItems="center" justifyContent="space-between">
-                    <Box>
-                      <HStack alignItems="center" space={3}>
-                        <Avatar
-                          size="48px"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <VStack>
-                          <BodyLarge>
-                            {student.firstName}
-                          </BodyLarge>
-                          {/*<Checkbox
+    <TileBasedOnStatus setSelectedStudent={setSelectedStudent} student={student}>
+      <HStack alignItems="center" justifyContent="space-between">
+        <Box>
+          <HStack alignItems="center" space={3}>
+            <Avatar
+              size="48px"
+              borderRadius="md"
+              source={{
+                uri: "https://via.placeholder.com/50x50.png",
+              }}
+            />
+            <VStack>
+              <BodyLarge>
+                {student.firstName}
+              </BodyLarge>
+              {/*<Checkbox
                             colorScheme="button"
                             borderColor={colors.primary}
                             borderRadius="0"
@@ -206,25 +176,17 @@ const StudentListCard = ({
                             {""}
                             <BodyLarge>{t("Absent")}</BodyLarge>
                           </Checkbox>*/}
-                        </VStack>
-                      </HStack>
-                    </Box>
-                    {
-                      index === 2 &&
-                      <Box>
-                        <img src={nipun_badge} alt="nipun" style={{maxWidth: '35px'}} />
-                      </Box>
-                    }
-                  </HStack>
-                </TileBasedOnStatus>
-              );
-            })
-          ) : (
-            <>No students found</>
-          )}
-        </VStack>
-      </Box>
-    </VStack>
+            </VStack>
+          </HStack>
+        </Box>
+        {/*{
+          index === 2 &&
+          <Box>
+            <img src={nipun_badge} alt="nipun" style={{maxWidth: '35px'}} />
+          </Box>
+        }*/}
+      </HStack>
+    </TileBasedOnStatus>
   );
 };
 

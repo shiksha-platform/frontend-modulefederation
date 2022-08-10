@@ -1,4 +1,4 @@
-import React from "react";
+import Reacttra from "react";
 import { Layout, H2, IconByName, Caption, overrideColorTheme } from "@shiksha/common-lib";
 import { Link } from "react-router-dom";
 import { Box, HStack, Text, VStack, Button } from "native-base";
@@ -7,7 +7,7 @@ import colorTheme from "../colorTheme";
 import { useTranslation } from "react-i18next";
 const colors = overrideColorTheme(colorTheme);
 
-export default function MySchools() {
+export default function AllocatedSchools() {
   const { t } = useTranslation();
   return (
     <Layout

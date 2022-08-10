@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { extendTheme, NativeBaseProvider } from "native-base";
 import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
-import Sample from "pages/Sample";
-import MySchools from "./pages/MySchools";
+import AllocatedSchools from "./pages/AllocatedSchools";
 import SchoolProfile from "./pages/SchoolProfile";
 import ClassDetails from "./pages/ClassDetails";
 import StudentsListPage from "./pages/StudentsList";
@@ -52,11 +51,11 @@ function App() {
     },
     {
       path: "/",
-      component: MySchools,
+      component: AllocatedSchools,
     },
     {
       path: "*",
-      component: Sample,
+      component: AllocatedSchools,
     },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));

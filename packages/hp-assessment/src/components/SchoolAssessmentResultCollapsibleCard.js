@@ -44,7 +44,7 @@ export default function SchoolAssessmentResultCollapsibleCard() {
                       // onPress={()=> {navigate('/school-report')}}
                       onPress={()=> {navigate('/school-nipun-certificate')}}
                     >
-                      {t('DOWNLOAD CERTIFICATE')}
+                      {t('View Results')}
                     </Button>
                   </Box>
                 </VStack>

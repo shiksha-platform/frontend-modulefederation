@@ -1,15 +1,18 @@
 import {
-  classRegistryService,
+  assessmentRegistryService, BodyLarge, Caption,
+  classRegistryService, H2,
   H3,
-  Layout,
-  overrideColorTheme,
+  Layout, Loading,
+  overrideColorTheme, studentRegistryService, useWindowSize
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
-import { Avatar, Stack, Box, Button, HStack } from "native-base";
+import { Avatar, Stack, Box, Button, HStack, Pressable, VStack, Spacer, Divider } from "native-base";
 import StudentListCard from "../components/StudentListCard";
 import colorTheme from "../colorTheme";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import manifest from "assessment/src/manifest.json";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -25,6 +28,56 @@ export default function StudentsListPage({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [title, setTitle] = useState();
+  const [width, height] = useWindowSize();
+  // let { classId } = useParams();
+  if (!classId) classId = "ce045222-52a8-4a0a-8266-9220f63baba7";
+
+  const [studentList, setStudentlist] = useState([]);
+
+  const [loading, setLoading] = React.useState(true);
+
+  const [attendanceData, setAttendanceData] = useState({});
+
+  const checkAttendance = async () => {
+    // const date = moment().format("YYYY-MM-DD");
+    const date = moment("2022-07-21").format("YYYY-MM-DD");
+    const attendanceDetails =
+      await assessmentRegistryService.getAttendanceDetailsByClass(classId, {
+        date,
+      });
+
+    if (attendanceDetails && attendanceDetails.length) {
+      const presentStudents = attendanceDetails.filter((item) => {
+        return item.attendance === "Present";
+      }).length;
+      setAttendanceData({
+        present: presentStudents,
+        msg: null,
+      });
+      setStudentlist(attendanceDetails);
+      setLoading(false);
+    } else {
+      setAttendanceData({
+        present: null,
+        msg: "Attendance not marked yet, here is list of all students.",
+      });
+      getStudentsList();
+    }
+  };
+  const getStudentsList = async () => {
+    const list = await studentRegistryService.getAll({ classId });
+    setStudentlist(list);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    checkAttendance();
+    // getStudentsList();
+  }, []);
+
+  if (loading) {
+    return <Loading height={height - height / 2} />;
+  }
 
   return (
     <Layout
@@ -65,13 +118,55 @@ export default function StudentsListPage({
       }}
     >
       <Box p={4}>
-        <StudentListCard
-          classId={classId}
-          setPageName={setPageName}
-          chooseAssessmentTypeModal={chooseAssessmentTypeModal}
-          handleSelectedStudent={handleSelectedStudent}
-          handleStudentPageNext={handleStudentPageNext}
-        />
+        <VStack space={4}>
+          <Box>
+            <VStack>
+              <H2>{t("Students List")}</H2>
+              {attendanceData.msg ? (
+                <>
+                  <Caption color={colors.lightGray} textTransform="none">
+                    {attendanceData.msg}
+                  </Caption>
+                </>
+              ) : (
+                <>
+                  <HStack alignItems={"center"}>
+                    <Caption color={colors.gray}>
+                      {t("Total Students for Evaluation ")}
+                    </Caption>{" "}
+                    <Caption color={colors.lightGray}> ●</Caption>{" "}
+                    <Caption color={colors.gray}>
+                      {" "}
+                      {t("Present ") + 0}
+                    </Caption>
+                  </HStack>
+                </>
+              )}
+            </VStack>
+          </Box>
+          <Box>
+            <VStack space={4}>
+              {studentList && studentList.length ? (
+                studentList.map((student, index) => {
+                  return (
+                    <StudentListCard
+                      student={student}
+                      key={student.id}
+                      classId={classId}
+                      setPageName={setPageName}
+                      chooseAssessmentTypeModal={chooseAssessmentTypeModal}
+                      handleSelectedStudent={handleSelectedStudent}
+                      handleStudentPageNext={handleStudentPageNext}
+                    />
+                  );
+                })
+              ) : (
+                <>No students found</>
+              )}
+            </VStack>
+          </Box>
+        </VStack>
+
       </Box>
       <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
         <HStack justifyContent={"space-between"}>
