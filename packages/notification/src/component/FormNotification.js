@@ -60,13 +60,14 @@ export default function FormNotification({
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
-    const triggers = Array.isArray(
-      Response["attendance.event_triggers_to_send_attendance_notification"]
-    )
-      ? Response["attendance.event_triggers_to_send_attendance_notification"]
-      : JSON.parse(
-        Response["attendance.event_triggers_to_send_attendance_notification"]
-      );
+    setConfigData(Response);
+    // const triggers = Array.isArray(
+    //   Response["attendance.event_triggers_to_send_attendance_notification"]
+    // )
+    //   ? Response["attendance.event_triggers_to_send_attendance_notification"]
+    //   : JSON.parse(
+    //     Response["attendance.event_triggers_to_send_attendance_notification"]
+    //   );
     const communicationChannels = Array.isArray(
       Response["attendance.channels_of_communication"]
     )
@@ -75,7 +76,7 @@ export default function FormNotification({
         Response["attendance.channels_of_communication"]
       );
 
-    setETriggers([...triggers, "Absent_Today"]);
+    // setETriggers([...triggers, "Absent_Today"]);
     setChannels(communicationChannels);
   };
 
@@ -122,6 +123,13 @@ export default function FormNotification({
     }
   };
 
+  const checkJSON = (value) => {
+    const result = Array.isArray(value)
+      ? value
+      : JSON.parse(value)
+    return result;
+  }
+
   const handleTelemetry = (fieldName, value) => {
     const telemetryData = telemetryFactory.interact({
       appName,
@@ -130,6 +138,18 @@ export default function FormNotification({
     });
     capture("INTERACT", telemetryData);
   };
+
+  const getTriggerEvents = (moduleName) => {
+    console.log(moduleName, "ModuleName");
+    const moduleSmall = moduleName.toLowerCase();
+    const eventConfig = configData[`${moduleSmall}.event_triggers_to_send_attendance_notification`]
+    const triggers = eventConfig !== undefined
+      ? checkJSON(eventConfig)
+      : []
+    setETriggers([...triggers, "Absent_Today"]);
+  }
+
+  console.log(eTriggers, "ETriggers");
 
   useEffect(() => {
     getConfigData();
@@ -143,9 +163,15 @@ export default function FormNotification({
   useEffect(() => {
     if (templates.length > 0) {
       console.log("in template");
-      dateTime["Template"] = templates[0].body;
+      setDateTime({ ...dateTime, "Template": templates[0].body });
     }
-  }, [])
+  }, [templates])
+
+  useEffect(() => {
+    if (dateTime.Module) {
+      getTriggerEvents(dateTime.Module)
+    }
+  }, [dateTime.Module])
 
   return (
     <Stack space={1} mb="2">
