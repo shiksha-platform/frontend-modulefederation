@@ -12,9 +12,9 @@ function Home({ footerLinks, appName }) {
   }, []);
 
   if (role && role.toLowerCase() === "teacher") {
-    return <TeacherHome />;
+    return <TeacherHome {...{ footerLinks, appName }} />;
   } else if (role && ["mentore", "moniter"].includes(role.toLowerCase())) {
-    return <MentoreMoniterHome />;
+    return <MentoreMoniterHome {...{ footerLinks, appName }} />;
   }
   return <></>;
 }
