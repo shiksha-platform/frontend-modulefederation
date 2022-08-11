@@ -20,5 +20,9 @@ const colorTheme = {
   dateText: "#9C9EA0",
   specialDuty: "#06D6A0",
   isActive: "#545454",
+  formSubtitle: "#B5B5C8",
+  teacherBackground: "#E5E5E5",
+  teacherBackground2: "#F4F4F4",
+  seeButton: "#F87558"
 };
 export default colorTheme;

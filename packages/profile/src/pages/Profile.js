@@ -8,6 +8,7 @@ import {
   HStack,
   Pressable,
   PresenceTransition,
+  Avatar,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,7 @@ import {
   H1,
   H3,
   overrideColorTheme,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
@@ -33,7 +35,6 @@ import colorTheme from "../colorTheme";
 import TeacherEdit from "../components/TeacherEdit";
 
 const colors = overrideColorTheme(colorTheme);
-// Start editing here, save and see your changes.
 export default function Profile({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [teacherObject, setTeacherObject] = useState({});
@@ -126,7 +127,7 @@ export default function Profile({ footerLinks, appName }) {
       }}
     >
       <Layout
-        imageUrl={`${window.location.origin}/class.png`}
+        //imageUrl={`${process.env.PUBLIC_URL}/class.png`}
         _appBar={{ languages: manifest.languages }}
         _header={{
           title: t("MY_CLASSES"),
@@ -134,7 +135,7 @@ export default function Profile({ footerLinks, appName }) {
             <Box minH={"150px"}>
               <Box
                 position={"absolute"}
-                bg={colors.cardBgTransparent}
+                //bg={colors.teacherBackground2}
                 bottom={0}
                 p={5}
                 pb={8}
@@ -142,15 +143,27 @@ export default function Profile({ footerLinks, appName }) {
               >
                 <HStack alignItems="center" justifyContent="space-between">
                   <VStack>
-                    <H4 color={colors.white}>{t("MY_PROFILE")}</H4>
-                    <H1 color={colors.white}>
+                    <H4 color={colors.date}>{t("MY_PROFILE")}</H4>
+                    <H1 color={colors.date}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
+                    <BodyLarge color={colors.date}>Assistant Teacher, RSKV Kanya Vidyalaya</BodyLarge>
                   </VStack>
                   {/* <HStack>
                     <IconByName color={colors.white} name="CameraLineIcon" />
                     <IconByName color={colors.white} name="ShareLineIcon" />
                   </HStack> */}
+                  <Avatar
+                    size="48px"
+                    bg="amber.500"
+                    source={{
+                      uri: teacherObject?.image
+                    }}
+                  >
+                    {`${teacherObject?.firstName} ${teacherObject?.lastName}`
+                      .toUpperCase()
+                      .substr(0, 2)}
+                  </Avatar>
                 </HStack>
               </Box>
             </Box>
@@ -179,7 +192,7 @@ export default function Profile({ footerLinks, appName }) {
         }}
         _footer={footerLinks}
       >
-        <Stack space={1}>
+        <Stack space={2}>
           <Section title={t("ATTENDANCE")} />
           <Section>
             <Stack space={5}>
@@ -199,10 +212,17 @@ export default function Profile({ footerLinks, appName }) {
             header={t("PERSONAL_DETAILS")}
             teacherObject={teacherObject}
             onlyParameterProp={[
-              "employeeCode",
-              "joiningDate",
-              "birthDate",
+              "aadhar_number",
+              "residential_address",
+              "district",
+              "block",
+              "pincode",
+              "date_of_birth",
               "gender",
+              "social_category",
+              "blood_group",
+              "marital_status",
+              "disability"
             ]}
             isEditable={false}
           />
@@ -211,6 +231,42 @@ export default function Profile({ footerLinks, appName }) {
             teacherObject={teacherObject}
             setTeacherObject={setTeacherObject}
             onlyParameterProp={["phoneNumber", "email"]}
+          />
+          <TeacherEdit
+            header={t("Past_Positions_and_Transfer_History")}
+            teacherObject={teacherObject}
+            nestedCollapse={true}
+            nestedHeader={["11 August 2019 - 26 July 2020", "23 August 2020 - Present"]}
+            onlyParameterProp={[
+              "designation",
+              "cadre",
+              "transfer_order_number",
+              "date_of_order",
+              "place_of_posting",
+              "mode_of_posting"
+            ]}
+            isEditable={false}
+          />
+          <TeacherEdit
+            header={t("Employment Details")}
+            teacherObject={teacherObject}
+            //nestedCollapse={}
+            onlyParameterProp={[
+              "employee_code",
+              "employment_address",
+              "district",
+              "block",
+              "pincode",
+              "employment_type",
+              "present_designation/cadre",
+              "qualifications",
+              "teacher_category",
+              "subjects / subject ids",
+              "date_of_joining",
+              "reporting_officer",
+              "place_of_current_posting"
+            ]}
+            isEditable={false}
           />
         </Stack>
       </Layout>

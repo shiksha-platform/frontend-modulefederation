@@ -10,6 +10,7 @@ import {
   HStack,
   VStack,
   Select,
+  Pressable,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,6 +18,12 @@ import {
   H3,
   userRegistryService,
   overrideColorTheme,
+  Collapsible,
+  H2,
+  BodyLarge,
+  BodyMedium,
+  Subtitle,
+  H4,
 } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -28,6 +35,8 @@ export default function TeacherEdit({
   onlyParameterProp,
   isEditable,
   header,
+  nestedHeader,
+  nestedCollapse
 }) {
   const { t } = useTranslation("student");
   const [object, setObject] = useState({});
@@ -39,17 +48,17 @@ export default function TeacherEdit({
     onlyParameterProp?.length > "0"
       ? onlyParameterProp
       : [
-          "address",
-          "firstName",
-          "lastName",
-          "fathersName",
-          "phoneNumber",
-          "email",
-          "gender",
-        ];
+        "address",
+        "firstName",
+        "lastName",
+        "fathersName",
+        "phoneNumber",
+        "email",
+        "gender",
+      ];
   const parameter = {
     employeeCode: { placeholder: t("EMPLOYEE_CODE") },
-    joiningDate: { placeholder: t("DATE_FO_JOINING") },
+    joiningDate: { placeholder: t("DATE_OF_JOINING") },
     birthDate: { placeholder: t("DATE_OF_BIRTH") },
     firstName: { placeholder: t("FIRST_NAME"), required: true },
     lastName: { placeholder: t("LAST_NAME") },
@@ -171,7 +180,10 @@ export default function TeacherEdit({
 
   return (
     <Section
+      //_box={{ bg: "transparent" }}
       title={header ? header : t("DETAILS")}
+      nestedTitle={nestedHeader}
+      nestedDropdown={nestedCollapse}
       button={
         isEditable !== false ? (
           editState ? (
@@ -205,21 +217,21 @@ export default function TeacherEdit({
         )
       }
     >
-      <VStack>
+      <VStack space={1}>
         {formInputs.map((item, index) => {
           return (
-            <Stack
-              p="4"
+            <Box
+              pt="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
-              borderColor={colors.coolGraylight}
+              borderColor={colors.teacherBackground2}
               key={index}
             >
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3 color={colors.labelColor} textTransform={"uppercase"}>
+                    <BodyLarge color={colors.formSubtitle} textTransform={"uppercase"}>
                       {item.placeholder}
-                    </H3>
+                    </BodyLarge>
                   </FormControl.Label>
                   {item.type === "select" ? (
                     <Select
@@ -258,39 +270,63 @@ export default function TeacherEdit({
                 </FormControl>
               ) : (
                 <>
-                  <H3
-                    fontWeight="500"
-                    color={colors.labelColor}
-                    textTransform={"uppercase"}
-                    pb="2"
-                  >
+                  <BodyLarge color={colors.formSubtitle} textTransform={"uppercase"} alignItems={"center"}>
                     {item.placeholder}
-                  </H3>
+                  </BodyLarge>
                   {item.value ? (
-                    <Text p={2} textTransform="inherit">
+                    <BodyMedium textTransform="inherit" color={colors.date}>
                       {item.value}
-                    </Text>
+                    </BodyMedium>
                   ) : (
-                    <Text italic p={2}>
+                    <BodyMedium italic>
                       {t("NOT_ENTERED")}
-                    </Text>
+                    </BodyMedium>
                   )}
                 </>
               )}
-            </Stack>
+            </Box>
           );
         })}
+        <Box alignItems="center" p="3">
+          <Pressable
+            alignItems="center"
+          // onPress={() =>
+          //   showMore ? setShowMore(false) : setShowMore(true)
+          // }
+          >
+            <Subtitle color={colors.seeButton}>
+              {/* {showMore ? t("SHOW_LESS") : t("SHOW_MORE")} */}
+              SEE MORE
+            </Subtitle>
+          </Pressable>
+        </Box>
       </VStack>
     </Section>
   );
 }
 
-const Section = ({ title, button, children, _box }) => (
-  <Box bg={colors.white} p="5" {..._box}>
-    <HStack alignItems={"center"} justifyContent={"space-between"}>
-      <H3>{title}</H3>
-      {button}
-    </HStack>
-    {children}
-  </Box>
+const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box }) => (
+  <Collapsible _header={{ height: "79px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
+    {nestedDropdown ?
+      (nestedTitle.map((item, index) => {
+        console.log(item, "item");
+        return (
+          <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
+            <Collapsible key={index} _header={{ height: "56px", borderBottomWidth: "1", borderColor: "#F4F4F4" }} header={<H4 color={colors.date} pl={1}>{item}</H4>}>
+              <HStack alignItems={"center"} justifyContent={"space-between"}>
+                {button}
+              </HStack>
+              <Stack pl={1}>
+                {children}
+              </Stack>
+            </Collapsible>
+          </Stack>)
+      }))
+      : <Box bg={colors.white} p="5" {..._box}>
+        <HStack alignItems={"center"} justifyContent={"space-between"}>
+          {button}
+        </HStack>
+        {children}
+      </Box>}
+  </Collapsible>
 );
