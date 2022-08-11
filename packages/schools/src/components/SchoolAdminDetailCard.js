@@ -1,23 +1,7 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  VStack,
-  Text,
-  HStack,
-  Avatar,
-  Divider,
-} from "native-base";
-import {
-  DEFAULT_THEME,
-  H2,
-  IconByName,
-  Collapsible,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
+import { Box, VStack, Divider } from "native-base";
+import { H2, Collapsible } from "@shiksha/common-lib";
 import SchoolAdminTile from "./SchoolAdminTile";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 function SchoolAdminDetailCard() {
   return (
@@ -30,10 +14,8 @@ function SchoolAdminDetailCard() {
       }
     >
       <>
-        <VStack space={0}>
-          <Divider />
+        <VStack space={0} bg={"schools.lightGray5"} p={4} rounded={10}>
           <SchoolAdminTile title={"275 Students"} />
-
           <Divider />
           <SchoolAdminTile title={"08 Teachers"} />
         </VStack>

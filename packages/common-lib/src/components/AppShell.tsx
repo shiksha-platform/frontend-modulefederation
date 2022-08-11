@@ -6,7 +6,6 @@ import { PushNotification } from './firebase/firebase'
 import AppRoutesContainer from './AppRoutesContainer'
 import { useAuthFlow } from '../hooks/useAuthFlow'
 import { getAppshellData } from './helper'
-import jwt_decode from 'jwt-decode'
 
 function AppShell({
   colors,
@@ -36,17 +35,8 @@ function AppShell({
 
   useEffect(() => {
     const getData = async () => {
-      let role = ''
-      if (token) {
-        let jwt: any = jwt_decode(`${token}`)
-        const roles = jwt.realm_access.roles
-        role = roles.find((e: any) =>
-          ['Teacher', 'Mentor', 'Monitor'].includes(e)
-        )
-      }
       const { newTheme, newRoutes, newFooterLinks } = await getAppshellData(
-        routes,
-        role.toLowerCase()
+        routes
       )
       if (isShowFooterLink) {
         setFooterLinks({ menues: newFooterLinks })

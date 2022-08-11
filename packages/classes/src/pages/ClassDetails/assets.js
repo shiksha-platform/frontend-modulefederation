@@ -157,48 +157,6 @@ export const _header = (data) => {
               <H2 color={"classes.white"}>{data?.name}</H2>
               <H1 color={"classes.white"}>{t("CLASS_DETAILS")}</H1>
             </VStack>
-            {/* <HStack alignItems="center">
-              <Box px="3">
-                <Menu
-                  right="100%"
-                  width="150"
-                  trigger={(triggerProps) => {
-                    return (
-                      <Pressable {...triggerProps}>
-                        <IconByName
-                          isDisabled
-                          color={"classes.white"}
-                          name="CameraLineIcon"
-                        />
-                      </Pressable>
-                    );
-                  }}
-                >
-                  {/* <Menu.Item>
-                    <Pressable onPress={onFileUpload}>
-                      <BodySmall>{t("REMOVE_PHOTO")}</BodySmall>
-                    </Pressable>
-                  </Menu.Item> */}
-            {/* <Menu.Item>
-                    <BodySmall>{t("UPLOAD_PHPTP")}</BodySmall>
-                    <input
-                      type="file"
-                      style={{
-                        opacity: 0,
-                        width: "100%",
-                        position: "absolute",
-                        padding: "5px",
-                        zIndex: "10",
-                        top: "5px",
-                        left: "0",
-                      }}
-                      onChange={onFileUpload}
-                    />
-                  </Menu.Item> */}
-            {/* </Menu> */}
-            {/* </Box>
-              <IconByName color={"classes.white"} name="ShareLineIcon" />}
-            </HStack> } */}
           </HStack>
         </Box>
       </Box>

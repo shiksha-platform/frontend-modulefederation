@@ -6,9 +6,6 @@ import {
   useWindowSize,
   H2,
   H3,
-  ProgressBar,
-  telemetryFactory,
-  capture,
   overrideColorTheme,
   BodyLarge,
   BodyMedium,
@@ -36,42 +33,34 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: colors.green,
+      color: "schools.green",
       value: 12,
     },
     {
       name: "6 pending",
-      color: colors.gray,
+      color: "schools.gray",
       value: 6,
     },
   ]);
 
-  const _handleSpotAssessmentNotificationSend = () => {
-    /*const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Spot-Assessment-Notification-Send",
-    });
-    capture("INTERACT", telemetryData);*/
-  };
-
   return (
-    <Layout isDisabledAppBar={true} pageBgColor={colors.lightGreen}>
+    <Layout isDisabledAppBar={true} pageBgColor={"schools.successAlert"}>
       <Loading
         width={width}
         height={height}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg={colors.lightGreen} pb="100px" pt="32px">
+            <VStack bg={"schools.successAlert"} pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
                 name="CheckboxCircleFillIcon"
-                color={colors.green}
+                color={"schools.green"}
                 _icon={{ size: 40 }}
               />
 
               <Box alignItems="center">
-                <H1 color={colors.green}>Submitted</H1>
-                <H4 color={colors.green} mt={4}>
+                <H1 color={"schools.green"}>Submitted</H1>
+                <H4 color={"schools.green"} mt={4}>
                   Your visit details has been sent successfully
                 </H4>
               </Box>
@@ -90,7 +79,7 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
                   <Box alignItems="center">
                     <H3>Chandan KrishnaKumar Pandit</H3>
                     <HStack align="middle">
-                      <BodyMedium color={colors.bodyText}>VI A</BodyMedium>
+                      <BodyMedium color={"schools.bodyText"}>VI A</BodyMedium>
                       <BodyMedium
                         fontSize="8px"
                         color={colors.attendanceUnmarked}
@@ -98,7 +87,7 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
                       >
                         ●
                       </BodyMedium>
-                      <BodyMedium color={colors.bodyText}>Maths</BodyMedium>
+                      <BodyMedium color={"schools.bodyText"}>Maths</BodyMedium>
                     </HStack>
                   </Box>
                 </VStack>
@@ -106,7 +95,7 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
             </VStack>
 
             <Box px={4}>
-              <Box bg={colors.bodyText} p={4} rounded={10} pb={100}>
+              <Box bg={"schools.bodyText"} p={4} rounded={10} pb={100}>
                 <>
                   <Text bold fontSize={"sm"}>
                     <Box py={4}>
@@ -121,19 +110,19 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
                         {/*row 1 box*/}
                         <Box>
                           <VStack space={6}>
-                            <Box bg={colors.redLight} rounded={5} p={2}>
+                            <Box bg={"schools.dangerAlert"} rounded={5} p={2}>
                               <HStack alignItems={"center"}>
                                 <IconByName
                                   name="EmotionSadLineIcon"
-                                  color={colors.red}
+                                  color={"schools.error"}
                                   // onPress={() => setSortModal(false)}
                                 />
                                 <Box
                                   borderLeftWidth={2}
-                                  borderLeftColor={colors.red}
+                                  borderLeftColor={"schools.error"}
                                   pl={2}
                                 >
-                                  <BodySmall color={colors.red}>
+                                  <BodySmall color={"schools.error"}>
                                     You spent only 10 minutes on this visit!
                                   </BodySmall>
                                 </Box>
@@ -201,7 +190,7 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
                                 <BodyLarge>Answer as in ODK</BodyLarge>
                               </Box>
                             </VStack>
-                            <Box bg={colors.white} p="5" shadow={2}>
+                            <Box bg={"schools.white"} p="5" shadow={2}>
                               <HStack justifyContent={"space-between"}>
                                 <Button
                                   colorScheme="button"
@@ -218,7 +207,7 @@ export default function VisitSubmit({ handleBackButton, formObject }) {
                                 <Button
                                   colorScheme="button"
                                   _text={{
-                                    color: colors.white,
+                                    color: "schools.white",
                                     fontSize: "14px",
                                     p: "1",
                                   }}

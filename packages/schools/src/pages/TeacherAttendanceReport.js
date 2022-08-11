@@ -26,21 +26,21 @@ import {
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const TeacherAttendanceReport = () => {
+const TeacherAttendanceReport = ({ footerLinks }) => {
   const [progressData, setProgressData] = React.useState([
     {
       name: "22 Present",
-      color: colors.green,
+      color: "schools.green",
       value: 22,
     },
     {
       name: "4 Absent",
-      color: colors.absent,
+      color: "schools.absent",
       value: 4,
     },
     {
       name: "1 Unmarked",
-      color: colors.unmarked,
+      color: "schools.unmarked",
       value: 1,
     },
   ]);
@@ -67,15 +67,18 @@ const TeacherAttendanceReport = () => {
     <Layout
       _header={{
         title: "Attendance Report",
-        _heading: { color: colors.white },
       }}
+      subHeader={
+        <Box>
+          <H2>Chandan Pandit</H2>
+          <BodyLarge color={"schools.gray"}>Class VI . Sec A</BodyLarge>
+        </Box>
+      }
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{ languages: ["en"] }}
+      _footer={footerLinks}
     >
-      <Box p={5} bg={"gray.100"}>
-        <H2>Chandan Pandit</H2>
-        <BodyLarge color={colors.date}>Class VI . Sec A</BodyLarge>
-      </Box>
-      <Box p={5} bg={"gray.100"}>
+      <Box p={5} bg={"schools.white"}>
         <Collapsible
           defaultCollapse={true}
           header={
@@ -93,7 +96,7 @@ const TeacherAttendanceReport = () => {
           />
         </Collapsible>
       </Box>
-      <Box px={5} bg={"gray.100"}>
+      <Box px={5} bg={"schools.white"} mt={4}>
         <Collapsible
           defaultCollapse={true}
           header={
@@ -103,7 +106,7 @@ const TeacherAttendanceReport = () => {
           }
         >
           <Divider mb={4} />
-          <VStack space={6}>
+          <VStack space={6} pt={3}>
             <HStack alignItems="center" justifyContent="space-between">
               <BodyMedium w={"20%"}>Jan 2022</BodyMedium>
               <Box w={"80%"} pr={3}>
@@ -124,11 +127,11 @@ const TeacherAttendanceReport = () => {
             </HStack>
             <HStack alignItems="center" justifyContent="space-between">
               <HStack alignItems="center">
-                <Box bg={colors.green} w="15px" h="15px" rounded={4} />
+                <Box bg={"schools.green"} w="15px" h="15px" rounded={4} />
                 <Text mx={2}>Present</Text>
               </HStack>
               <HStack alignItems="center">
-                <Box bg={colors.absent} w="15px" h="15px" rounded={4} />
+                <Box bg={"schools.absent"} w="15px" h="15px" rounded={4} />
                 <Text mx={2}>Absent</Text>
               </HStack>
               <HStack alignItems="center">
@@ -247,7 +250,7 @@ const CalendarComponent = ({
                   <GetIcon
                     {...smsIconProp}
                     status="Present"
-                    color={colors.primary}
+                    color={"schools.primary"}
                     isDisabled
                     _icon={{ _fontawesome: { spin: true } }}
                   />

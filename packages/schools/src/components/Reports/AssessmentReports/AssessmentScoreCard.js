@@ -54,7 +54,7 @@ const AssessmentScoreCard = () => {
   ]);
 
   return (
-    <Box borderColor={colors.borderSeprator} borderWidth={1} rounded={10}>
+    <Box borderColor={"schools.lightGray3"} borderWidth={1} rounded={10}>
       <Box p={4}>
         <HStack alignItems="center" justifyContent="space-between">
           <Box>
@@ -71,7 +71,7 @@ const AssessmentScoreCard = () => {
                 <VStack>
                   <H2>Shah Rukh Khan</H2>
                   <HStack alignItems={"center"}>
-                    <BodyLarge color={colors.bodyText}>
+                    <BodyLarge color={"schools.bodyText"}>
                       {t("Roll No. 23")}{" "}
                     </BodyLarge>
                   </HStack>
@@ -90,7 +90,7 @@ const AssessmentScoreCard = () => {
         </HStack>
       </Box>
       <Divider />
-      <Box borderColor={colors.borderSeprator} borderRadius={10} p={4}>
+      <Box borderColor={"schools.lightGray3"} borderRadius={10} p={4}>
         <HStack justifyContent="space-between" flexWrap="wrap">
           {questions &&
             questions.length &&
@@ -103,7 +103,7 @@ const AssessmentScoreCard = () => {
                     space={2}
                   >
                     <Box>
-                      <BodyMedium color={colors.subtitle}>
+                      <BodyMedium color={"schools.gray"}>
                         Q-{index + 1}
                       </BodyMedium>
                     </Box>
@@ -111,7 +111,7 @@ const AssessmentScoreCard = () => {
                       w={"24px"}
                       h={"24px"}
                       rounded={5}
-                      bg={colors.lightGray}
+                      bg={"schools.lightGray"}
                     >
                       <Text style={{ lineHeight: "24px" }}>1</Text>
                     </Box>

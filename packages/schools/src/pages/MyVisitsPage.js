@@ -27,7 +27,7 @@ import TeacherTile from "../components/TeacherTile";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function Myvisitspage() {
+export default function Myvisitspage({ footerLinks }) {
   const { t } = useTranslation();
   const [teacherDetailModal, setTeacherDetailModal] = useState(false);
   const navigate = useNavigate();
@@ -70,21 +70,16 @@ export default function Myvisitspage() {
 
   return (
     <Layout
-      imageUrl={
-        "https://via.placeholder.com/728x90.png?text=Visit+WhoIsHostingThis.com+Buyers+Guide"
-      }
       _header={{
         title: "My Visits",
-        _heading: { color: colors.white },
       }}
       _appBar={{ languages: ["en"] }}
+      subHeader={<H2 textTransform="inherit">View all teachers</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg={"schools.white"}>
         <VStack space={6}>
-          <Box>
-            <H2>Teacher’s List</H2>
-            <BodyLarge>View all teachers</BodyLarge>
-          </Box>
           <VStack space={6}>
             {teacherlist &&
               teacherlist.length &&
@@ -106,7 +101,7 @@ export default function Myvisitspage() {
         isOpen={teacherDetailModal}
         onClose={() => setTeacherDetailModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
           <HStack justifyContent={"space-between"} alignItems="center">
             <Stack p={5} pt={2} pb="15px">
               <Box>
@@ -120,14 +115,14 @@ export default function Myvisitspage() {
                   />
                   <VStack>
                     <H3
-                      color={colors.bodyText}
+                      color={"schools.bodyText"}
                       _dark={{
-                        color: "warmGray.50",
+                        color: "schools.darkGray2",
                       }}
                     >
                       Rahul
                     </H3>
-                    <BodyMedium color={colors.subtitle}>
+                    <BodyMedium color={"schools.gray"}>
                       Class Teacher: VI A
                     </BodyMedium>
                   </VStack>
@@ -137,34 +132,34 @@ export default function Myvisitspage() {
             <Stack pb="15px">
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.primary}
+                color={"schools.darkGray2"}
                 onPress={() => setTeacherDetailModal(false)}
               />
             </Stack>
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
           <VStack space={6}>
             <Box>
-              <H4 color={colors.subtitle}>Qualifications</H4>
+              <H4 color={"schools.gray"}>Qualifications</H4>
               <BodyLarge>Assistant Officer</BodyLarge>
             </Box>
             <Box>
-              <H4 color={colors.subtitle}>Qualifications</H4>
+              <H4 color={"schools.gray"}>Qualifications</H4>
               <BodyLarge>B.Com. Hons</BodyLarge>
             </Box>
             <Box>
-              <H4 color={colors.subtitle}>Phone</H4>
+              <H4 color={"schools.gray"}>Phone</H4>
               <BodyLarge>+91 1234 567 890</BodyLarge>
             </Box>
             <Box>
-              <H4 color={colors.subtitle}>Date of Joining</H4>
+              <H4 color={"schools.gray"}>Date of Joining</H4>
               <BodyLarge>10 Aug, 2013</BodyLarge>
             </Box>
           </VStack>
           <Divider marginTop={6} />
           <Button
-            width="100%"
+            variant={"outline"}
             marginTop={6}
             onPress={(e) => navigate("/schools/teacher-details")}
           >

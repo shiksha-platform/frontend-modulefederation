@@ -23,8 +23,9 @@ import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
-import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
+import * as roleRegistryService from './services/roleRegistryService'
+import { getApiConfig } from './services/configApiRegistryService'
 import {
   getAllForUser,
   sendReadReceipt
@@ -63,7 +64,8 @@ export {
   sendReadReceipt,
   templateRegistryService,
   notificationRegistryService,
-  useAuthFlow
+  useAuthFlow,
+  roleRegistryService
 }
 
 export * from './services/Auth'
