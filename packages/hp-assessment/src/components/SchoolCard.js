@@ -17,7 +17,7 @@ const colors = overrideColorTheme(colorTheme);
 
 const CardBasedOnStatus = ({status, children}) => {
   if(status === 'ongoing'){
-    return <Box bg={'#ffc3694d'} borderRadius={10}>{children}</Box>
+    return <Box bg={'#ffebd0'} borderRadius={10}>{children}</Box>
   }
   if(status === 'complete' || status === 'completeWithNipun'){
     return <Box bg={"#ECF7EB"} borderRadius={10}>{children}</Box>
@@ -62,7 +62,7 @@ function SchoolCard({ status }) {
                   }
                 </HStack>
               </Box>
-              <Divider bg={status === 'ongoing' ? '#ffc369' : (status === 'complete' || status === 'completeWithNipun' ? '#C5DCC3' : '#EEEEEE')} />
+              <Divider bg={status === 'ongoing' ? colors.warning : (status === 'complete' || status === 'completeWithNipun' ? '#C5DCC3' : '#EEEEEE')} />
               <Box p={4}>
                 <HStack
                   alignItems={"center"}
@@ -72,7 +72,7 @@ function SchoolCard({ status }) {
                   <Box w={'50%'}>
                     <VStack>
                       <HStack alignItems="center">
-                        <IconByName size="12px" mr={2} name="MapPinLineIcon" />
+                        <IconByName size="12px" mr={2} ml="-7px" name="MapPinLineIcon" />
                         <Text color="#666" fontSize="12">
                           District
                         </Text>
@@ -84,7 +84,7 @@ function SchoolCard({ status }) {
                   <Box w={'50%'}>
                     <VStack>
                       <HStack alignItems="center">
-                        <IconByName size="12px" mr={2} name="GovernmentLineIcon" />
+                        <IconByName size="12px" mr={2} ml="-7px" name="GovernmentLineIcon" />
                         <Text color="#666" fontSize="12">
                           Block
                         </Text>
@@ -99,6 +99,7 @@ function SchoolCard({ status }) {
                         <IconByName
                           size="12px"
                           mr={2}
+                          ml="-7px"
                           name="CalendarEventLineIcon"
                         />
                         <Text color="#666" fontSize="12">
@@ -115,6 +116,7 @@ function SchoolCard({ status }) {
                         <IconByName
                           size="12px"
                           mr={2}
+                          ml="-7px"
                           name="CalendarEventLineIcon"
                         />
                         <Text color="#666" fontSize="12">
@@ -131,6 +133,7 @@ function SchoolCard({ status }) {
                         <IconByName
                           size="12px"
                           mr={2}
+                          ml="-7px"
                           name="CalendarEventLineIcon"
                         />
                         <Text color="#666" fontSize="12">

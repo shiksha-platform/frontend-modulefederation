@@ -1,10 +1,11 @@
 import Reacttra from "react";
-import { Layout, H2, IconByName, Caption, overrideColorTheme } from "@shiksha/common-lib";
+import { Layout, H2, IconByName, Caption, overrideColorTheme, H1, BodyLarge } from "@shiksha/common-lib";
 import { Link } from "react-router-dom";
 import { Box, HStack, Text, VStack, Button } from "native-base";
 import SchoolCard from "../components/SchoolCard";
 import colorTheme from "../colorTheme";
 import { useTranslation } from "react-i18next";
+import React from "react";
 const colors = overrideColorTheme(colorTheme);
 
 export default function AllocatedSchools() {
@@ -12,14 +13,20 @@ export default function AllocatedSchools() {
   return (
     <Layout
       _header={{
-        title: "My Schools",
+        // title: "My Schools",
+        // subHeading: "View your schools for Nipun Vidalaya Evaluation",
+        title: (
+          <VStack>
+            <H1>My Schools</H1>
+            <BodyLarge>{t("View your schools for Nipun Vidalaya Evaluation")}</BodyLarge>
+          </VStack>
+        ),
         isEnableSearchBtn: true,
-        subHeading: "View your schools for Nipun Vidalaya Evaluation",
       }}
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <Text fontSize={"lg"}>Allocated Schools</Text>
+            <Text fontSize={"lg"} bold>Allocated Schools</Text>
             <HStack alignItems={"center"}>
               <Caption>
                 {t("Total Schools for Evaluation ") + 5}

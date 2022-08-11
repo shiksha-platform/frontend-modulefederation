@@ -75,7 +75,7 @@ export default function SchoolAcademicDetailCard() {
         }
       >
         <>
-          <Divider mb={4} />
+          {/*<Divider mb={4} />*/}
           <VStack space={4}>
             <TileBasedOnStatus status={'pending'}>
               <HStack alignItems="center" justifyContent="space-between">

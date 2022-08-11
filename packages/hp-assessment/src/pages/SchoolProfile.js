@@ -19,7 +19,7 @@ export default function SchoolProfile() {
         title: "Delhi Public School",
         subHeading: 'Ghaziabad, Uttar Pradesh',
         iconComponent: (
-          <img src={nipun_badge} alt="nipun" style={{maxWidth: '30px'}} />
+          <img src={nipun_badge} alt="nipun" style={{maxWidth: '75px'}} />
         ),
         /*subHeading: (
           <VStack>

@@ -33,7 +33,7 @@ export default function SchoolAssessmentResultCollapsibleCard() {
           <Box>
             <VStack space={4}>
               <SchoolAssessmentProgressBox />
-              <Divider />
+              {/*<Divider />*/}
               <Box>
                 <VStack space={4}>
                   <Box>

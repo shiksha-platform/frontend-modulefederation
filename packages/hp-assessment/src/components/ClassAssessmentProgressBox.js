@@ -29,7 +29,7 @@ export default function SchoolAssessmentProgressBox() {
     },
     {
       name: "1 pending",
-      color: colors.pendingBarColor,
+      color: colors.unmarked,
       value: 1,
     },
   ]);
@@ -78,7 +78,7 @@ export default function SchoolAssessmentProgressBox() {
               <Text>Completed</Text>
             </HStack>
             <HStack alignItems="center" >
-              <Box w='15px' h="15px" mr={2} bg={colors.pendingBarColor} rounded={4}></Box>
+              <Box w='15px' h="15px" mr={2} bg={colors.unmarked} rounded={4}></Box>
               <Text>Not Assessed</Text>
             </HStack>
           </HStack>

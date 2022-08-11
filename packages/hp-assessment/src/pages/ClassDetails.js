@@ -18,7 +18,7 @@ export default function ClassDetails() {
     <Layout
       _header={{
         title: "Class Details",
-        subHeading: 'Grade I',
+        subHeading: ' Grade I',
       }}
       _appBar={{
         languages: ["en"],

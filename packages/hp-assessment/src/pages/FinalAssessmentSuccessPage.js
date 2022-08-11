@@ -81,7 +81,7 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                   <Divider />
                   <Box p={4}>
                     <HStack justifyContent="space-around">
-                      <Box w="100px" h="100px">
+                      <Box w="125px" h="125px">
                         <CircularProgressbarWithChildren
                           value={24}
                           maxValue={60}
@@ -99,13 +99,13 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                                 </Text>
                                 <Text fontSize={15}>60</Text>
                               </Text>
-                              <Text fontSize={10}>Correct  Words/Minute</Text>
+                              <Text fontSize={10}>Correct <br/>  Words/Minute</Text>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
                       </Box>
 
-                      <Box w="100px" h="100px">
+                      <Box w="125px" h="125px">
                         <CircularProgressbarWithChildren
                           value={7}
                           maxValue={14}
@@ -142,7 +142,7 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                   <Divider />
                   <Box>
                     <HStack justifyContent="space-around" p={4}>
-                      <Box w="100px" h="100px">
+                      <Box w="125px" h="125px">
                         <CircularProgressbarWithChildren
                           value={24}
                           maxValue={60}
@@ -160,13 +160,13 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                                 </Text>
                                 <Text fontSize={15}>60</Text>
                               </Text>
-                              <Text fontSize={10}>Correct  Numbers Read</Text>
+                              <Text fontSize={10}>Correct <br/>  Numbers Read</Text>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
                       </Box>
 
-                      <Box w="100px" h="100px">
+                      <Box w="125px" h="125px">
                         <CircularProgressbarWithChildren
                           value={7}
                           maxValue={14}
