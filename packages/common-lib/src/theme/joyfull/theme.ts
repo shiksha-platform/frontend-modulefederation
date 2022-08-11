@@ -16,7 +16,6 @@ const theme = {
     },
     classes: {
       ...colorTheme,
-      cardBg: '#D9F0FC',
       girls: '#0ea5e9',
       boys: '#a855f7'
     },
@@ -28,6 +27,11 @@ const theme = {
       specialDuty: '#06D6A0',
       activeClass: '#10b981'
     },
+    notification: {
+      ...colorTheme,
+      cardBg: '#D9F0FC',
+      notificationBg: '#FDDFD8'
+    },
     worksheet: {
       ...colorTheme,
       primary: '#F87558',
@@ -36,10 +40,6 @@ const theme = {
       cardBg: '#F9CCE4',
       cardBgLight: '#FEF1F9',
       secondary: '#feefeb'
-    },
-    notification: {
-      cardBg: '#D9F0FC',
-      notificationBg: '#FDDFD8'
     },
     widgetColor: {
       400: '#7F9DAC',
