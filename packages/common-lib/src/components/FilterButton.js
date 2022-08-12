@@ -89,7 +89,7 @@ const FilterButton = ({
             {..._button}
             {..._filterButton}
           >
-            <BodyLarge textTransform='inherit'>
+            <BodyLarge textTransform='inherit' color={'primary'}>
               {filterButtonText ? filterButtonText : t('FILTER')}
             </BodyLarge>
           </Button>
@@ -190,7 +190,7 @@ const FilterButton = ({
           <HStack justifyContent={'space-between'}>
             <Stack p={5} pt={2} pb='15px'>
               <H2>
-                {`${t('SELECT')} ${formData?.name ? formData?.name : ''}`}
+                {`${t('Select')} ${formData?.name ? formData?.name : ''}`}
               </H2>
             </Stack>
             <IconByName

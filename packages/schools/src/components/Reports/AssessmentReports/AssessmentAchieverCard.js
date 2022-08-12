@@ -48,15 +48,15 @@ function AssessmentAchieverCard({ dataFor }) {
   ]);
 
   return (
-    <Box bg={colors.white} p={4} rounded={10}>
+    <Box bg={"schools.white"} p={4} rounded={10}>
       <Box py={4}>
         <H2>100% Achievers</H2>
         <HStack alignItems="center">
-          <BodyMedium color={colors.subtitle}>SubText-1</BodyMedium>
-          <Caption color={colors.subtitle} mx={2}>
+          <BodyMedium color={"schools.gray"}>SubText-1</BodyMedium>
+          <Caption color={"schools.gray"} mx={2}>
             ●
           </Caption>
-          <BodyMedium color={colors.subtitle}>SubText-2</BodyMedium>
+          <BodyMedium color={"schools.gray"}>SubText-2</BodyMedium>
         </HStack>
       </Box>
       <>

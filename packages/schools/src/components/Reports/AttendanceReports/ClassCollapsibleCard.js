@@ -28,17 +28,17 @@ function ClassCollapsibleCard() {
   const [progressData, setProgressData] = React.useState([
     {
       name: "22 Present",
-      color: colors.green,
+      color: "schools.green",
       value: 22,
     },
     {
       name: "4 Absent",
-      color: colors.absent,
+      color: "schools.absent",
       value: 4,
     },
     {
       name: "1 Unmarked",
-      color: colors.unmarked,
+      color: "schools.unmarked",
       value: 1,
     },
   ]);
@@ -83,22 +83,32 @@ function ClassCollapsibleCard() {
 
                   <HStack alignItems="center" justifyContent="space-between">
                     <HStack alignItems="center">
-                      <Box bg={colors.green} w="15px" h="15px" rounded={4} />
+                      <Box bg={"schools.green"} w="15px" h="15px" rounded={4} />
                       <BodyMedium mx={2}>Present</BodyMedium>
                     </HStack>
                     <HStack alignItems="center">
-                      <Box bg={colors.absent} w="15px" h="15px" rounded={4} />
+                      <Box
+                        bg={"schools.absent"}
+                        w="15px"
+                        h="15px"
+                        rounded={4}
+                      />
                       <BodyMedium mx={2}>Absent</BodyMedium>
                     </HStack>
                     <HStack alignItems="center">
-                      <Box bg={colors.unmarked} w="15px" h="15px" rounded={4} />
+                      <Box
+                        bg={"schools.unmarked"}
+                        w="15px"
+                        h="15px"
+                        rounded={4}
+                      />
                       <BodyMedium mx={2}>Unmarked</BodyMedium>
                     </HStack>
                   </HStack>
 
                   <Text>
                     <BodyMedium bold>Note:</BodyMedium>{" "}
-                    <BodyMedium color={colors.bodyText}>
+                    <BodyMedium color={"schools.bodyText"}>
                       Monthly Report will be generated on the last day of every
                       month.
                     </BodyMedium>

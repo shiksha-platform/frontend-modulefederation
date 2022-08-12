@@ -44,42 +44,44 @@ export default function SchoolAcademicDetailCard() {
           <VStack space={6}>
             <Box
               p={6}
-              borderColor={colors.borderSeprator}
+              borderColor={"schools.lightGray3"}
+              bg={"schools.lightGray5"}
               borderWidth={1}
               rounded={10}
             >
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
-                    <H3 color={colors.bodyText}>Class I</H3>
-                    <BodyMedium color={colors.subtitle}>65 Students</BodyMedium>
+                    <H3 color={"schools.bodyText"}>Class I</H3>
+                    <BodyMedium color={"schools.gray"}>65 Students</BodyMedium>
                   </VStack>
                 </Box>
                 <IconByName
                   name="ArrowRightSLineIcon"
                   onPress={() => setAcademicDetailModal(true)}
-                  color={colors.lightGray}
+                  color={"schools.lightGray"}
                 />
               </HStack>
             </Box>
 
             <Box
               p={6}
-              borderColor={colors.borderSeprator}
+              borderColor={"schools.lightGray3"}
+              bg={"schools.lightGray5"}
               borderWidth={1}
               rounded={10}
             >
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
-                    <H3 color={colors.bodyText}>Class II</H3>
-                    <BodyMedium color={colors.subtitle}>69 Students</BodyMedium>
+                    <H3 color={"schools.bodyText"}>Class II</H3>
+                    <BodyMedium color={"schools.gray"}>69 Students</BodyMedium>
                   </VStack>
                 </Box>
                 <IconByName
                   name="ArrowRightSLineIcon"
                   onPress={() => setAcademicDetailModal(true)}
-                  color={colors.lightGray}
+                  color={"schools.lightGray"}
                 />
               </HStack>
             </Box>
@@ -90,19 +92,19 @@ export default function SchoolAcademicDetailCard() {
         isOpen={academicDetailModal}
         onClose={() => setAcademicDetailModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Select Academic Details")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.primary}
+              color={"schools.darkGray"}
               onPress={() => setAcademicDetailModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
           <Actionsheet.Item
             onPress={() => navigate("/schools/attendance-report")}
           >

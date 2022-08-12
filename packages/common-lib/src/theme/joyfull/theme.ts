@@ -41,6 +41,10 @@ const theme = {
       cardBgLight: '#FEF1F9',
       secondary: '#feefeb'
     },
+    schools: {
+      ...colorTheme,
+      cardBg: '#CDECF6'
+    },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

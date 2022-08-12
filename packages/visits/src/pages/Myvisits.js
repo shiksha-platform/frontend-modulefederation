@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function Myvisits() {
+export default function Myvisits({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [searchState, setSearchState] = React.useState(false);
@@ -65,6 +65,7 @@ export default function Myvisits() {
         setSearchState,
       }}
       _subHeader={{ bg: colors.lightPurple }}
+      _footer={footerLinks}
     >
       <Box p={6} bg={colors.white}>
         <VStack space={6}>

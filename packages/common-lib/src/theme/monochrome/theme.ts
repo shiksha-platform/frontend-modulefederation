@@ -29,6 +29,7 @@ const theme = {
       ...colorTheme,
       notificationBg: '#E0DFF6'
     },
+    schools: { ...colorTheme },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

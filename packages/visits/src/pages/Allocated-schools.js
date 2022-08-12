@@ -49,7 +49,7 @@ const defaultInputs = [
     ],
   },
 ];
-export default function Allocatedschools() {
+export default function Allocatedschools({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [sortModal, setSortModal] = useState(false);
@@ -73,6 +73,7 @@ export default function Allocatedschools() {
       }
       _appBar={{ languages: ["en"] }}
       _subHeader={{ bg: colors.lightPurple }}
+      _footer={footerLinks}
     >
       <Box p={6} bg={colors.white}>
         <VStack space={6}>
@@ -102,8 +103,6 @@ export default function Allocatedschools() {
                   getObject={callBackFilterObject}
                   object={filterObject}
                   _actionSheet={{ bg: colors.lightGray }}
-                  _box={{ pt: 5 }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2", mr: "4" }}
                   _filterButton={{
                     rightIcon: "",
                     bg: colors.white,
@@ -136,7 +135,6 @@ export default function Allocatedschools() {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
-          {/*<Actionsheet.Item>Mathematics</Actionsheet.Item>*/}
           <Box pt="0">
             <BodyMedium fontSize={12} color={colors.subtitle}>
               By last visited

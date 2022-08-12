@@ -73,6 +73,41 @@ function App() {
   const QuestionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
   const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
   const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
+  const SchoolProfile = React.lazy(() => import("schools/SchoolProfile"));
+  const MyVisitsPage = React.lazy(() => import("schools/MyVisitsPage"));
+  const AttendanceReportDashboard = React.lazy(() =>
+    import("schools/AttendanceReportDashboard")
+  );
+  const AttendanceSectionWiseReport = React.lazy(() =>
+    import("schools/AttendanceSectionWiseReport")
+  );
+  const AttendanceDetailedReport = React.lazy(() =>
+    import("schools/AttendanceDetailedReport")
+  );
+  const AssessmentReportDashboard = React.lazy(() =>
+    import("schools/AssessmentReportDashboard")
+  );
+  const AssessmentSectionWiseReport = React.lazy(() =>
+    import("schools/AssessmentSectionWiseReport")
+  );
+  const AssessmentDetailedReport = React.lazy(() =>
+    import("schools/AssessmentDetailedReport")
+  );
+  const TeacherDetails = React.lazy(() => import("schools/TeacherDetails"));
+  const TeacherAttendanceReport = React.lazy(() =>
+    import("schools/TeacherAttendanceReport")
+  );
+  const NewVisitPage = React.lazy(() => import("schools/NewVisitPage"));
+  const VisitSubmit = React.lazy(() => import("schools/VisitSubmit"));
+  const TeacherVisitReport = React.lazy(() =>
+    import("schools/TeacherVisitReport")
+  );
+  const Question = React.lazy(() => import("schools/Question"));
+  const Myvisits = React.lazy(() => import("visits/Myvisits"));
+  const Recommendedschools = React.lazy(() =>
+    import("visits/Recommendedschools")
+  );
+  const Allocatedschools = React.lazy(() => import("visits/Allocatedschools"));
 
   const routes = [
     // worksheet
@@ -308,8 +343,96 @@ function App() {
       path: "/assessment",
       component: Assessment,
     },
+    // Schools Routes
     {
-      moduleName: "teacher-app",
+      moduleName: "schools",
+      path: "/schools/new-visit",
+      component: NewVisitPage,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/visit-submit",
+      component: VisitSubmit,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-visit-report",
+      component: TeacherVisitReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-report",
+      component: AssessmentReportDashboard,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-section-report",
+      component: AssessmentSectionWiseReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-detailed-report",
+      component: AssessmentDetailedReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-report",
+      component: AttendanceReportDashboard,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-section-report",
+      component: AttendanceSectionWiseReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-detailed-report",
+      component: AttendanceDetailedReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/my-visits",
+      component: MyVisitsPage,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools",
+      component: SchoolProfile,
+    },
+    ,
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-details",
+      component: TeacherDetails,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-attendance-report",
+      component: TeacherAttendanceReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/questionnaire",
+      component: Question,
+    },
+    // Visits Routes
+    {
+      moduleName: "visits",
+      path: "/visits/recommended-schools",
+      component: Recommendedschools,
+    },
+    {
+      moduleName: "visits",
+      path: "/visits/allocated-schools",
+      component: Allocatedschools,
+    },
+    {
+      moduleName: "visits",
+      path: "/visits",
+      component: Myvisits,
+    },
+    {
+      moduleName: "app",
       path: "*",
       component: Home,
     },
@@ -339,7 +462,6 @@ function App() {
       //window.location.reload();
     }
   }, []);
-  console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
   if (
     process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
