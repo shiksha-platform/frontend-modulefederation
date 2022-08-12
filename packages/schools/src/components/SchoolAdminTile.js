@@ -97,7 +97,7 @@ function SchoolAdminTile({ title }) {
               <HStack alignItems="center">
                 <HStack alignItems="center">
                   <Box
-                    bg={colors.blue}
+                    bg={"schools.girls"}
                     style={{ width: "12px", height: "12px" }}
                   ></Box>
                   <BodyLarge mx={2}>Boys:</BodyLarge>
@@ -105,7 +105,7 @@ function SchoolAdminTile({ title }) {
                 </HStack>
                 <HStack ml={4} alignItems="center">
                   <Box
-                    bg={colors.purple}
+                    bg={"schools.boys"}
                     style={{ width: "12px", height: "12px" }}
                   ></Box>
                   <BodyLarge mx={2}>Girls:</BodyLarge>
@@ -164,19 +164,19 @@ function SchoolAdminTile({ title }) {
         isOpen={academicDetailModal}
         onClose={() => setAcademicDetailModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("View By")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.primary}
+              color={"schools.darkGray"}
               onPress={() => setAcademicDetailModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
           <Actionsheet.Item
             onPress={() => {
               setViewBy("grade");

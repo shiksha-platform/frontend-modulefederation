@@ -42,7 +42,7 @@ export default function ExaminationTypeFilterButton({
         px="5"
         rightIcon={
           <IconByName
-            color={colors.white}
+            color={"schools.white"}
             name="ArrowDownSLineIcon"
             isDisabled
           />
@@ -54,14 +54,14 @@ export default function ExaminationTypeFilterButton({
         }}
         {..._button}
       >
-        <Text color={colors.white}>
+        <Text color={"schools.white"}>
           {selectData && selectData.length ? selectData[0] : "Class"}
         </Text>
       </Button>
       <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
         <Actionsheet.Content
           alignItems={"left"}
-          bg={colors.lightGray}
+          bg={"schools.lightGray"}
           {..._actionSheet}
         >
           <HStack justifyContent={"space-between"}>
@@ -71,7 +71,7 @@ export default function ExaminationTypeFilterButton({
             <IconByName
               name="CloseCircleLineIcon"
               onPress={(e) => setFilterData()}
-              color={colors.lightPurple}
+              color={"schools.cardBg"}
             />
           </HStack>
         </Actionsheet.Content>
