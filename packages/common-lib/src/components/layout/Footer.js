@@ -23,7 +23,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
     } else if (path.startsWith('/schools')) {
       setSelected('schools')
     } else {
-      setSelected('teacher-app')
+      setSelected('app')
     }
   }, [])
 
