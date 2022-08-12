@@ -44,6 +44,7 @@ const theme = {
       ...colorTheme,
       cardBg: '#CDECF6'
     },
+    mylearning: { ...colorTheme, cardBg: '#F9CCE4' },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

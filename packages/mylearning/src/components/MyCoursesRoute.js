@@ -6,14 +6,12 @@ import {
   telemetryFactory,
   capture,
   BodySmall,
+  coursetrackingRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { VStack } from "native-base";
 import { useNavigate } from "react-router-dom";
 import MyCoursesComponent from "./MyCoursesComponent";
-import colorTheme from "../colorTheme";
-import { courses as coursesData } from "../config/mylearning";
-const colors = overrideColorTheme(colorTheme);
 
 const ONGOING = "Ongoing";
 const ASSIGNED = "Assigned";
@@ -26,11 +24,29 @@ export default function MyCoursesRoute({ appName }) {
   const [learningOngoing, setLearningOngoing] = React.useState([]);
   const [learningAssigned, setLearningAssigned] = React.useState([]);
   const [learningCompleted, setLearningCompleted] = React.useState([]);
-
+  const userId = localStorage.getItem("id");
   React.useEffect(async () => {
-    setLearningOngoing(coursesData.filter((e) => e.state === ONGOING));
-    setLearningAssigned(coursesData.filter((e) => e.state === ASSIGNED));
-    setLearningCompleted(coursesData.filter((e) => e.state === COMPLETED));
+    setLearningOngoing(
+      await coursetrackingRegistryService.getAll({
+        limit: 2,
+        userId,
+        status: ONGOING,
+      })
+    );
+    setLearningAssigned(
+      await coursetrackingRegistryService.getAll({
+        limit: 2,
+        userId,
+        status: ASSIGNED,
+      })
+    );
+    setLearningCompleted(
+      await coursetrackingRegistryService.getAll({
+        limit: 2,
+        userId,
+        status: COMPLETED,
+      })
+    );
     setLoading(false);
   }, []);
 
@@ -50,7 +66,7 @@ export default function MyCoursesRoute({ appName }) {
   return (
     <VStack space={2}>
       <MyCoursesComponent
-        _box={{ bg: colors.white, p: "5" }}
+        _box={{ bg: "white", p: "5" }}
         appName={appName}
         data={learningOngoing}
         leftTitle={
@@ -70,7 +86,7 @@ export default function MyCoursesRoute({ appName }) {
       />
       {learningAssigned.length > 0 ? (
         <MyCoursesComponent
-          _box={{ bg: colors.white, p: "5" }}
+          _box={{ bg: "white", p: "5" }}
           appName={appName}
           data={learningAssigned}
           leftTitle={
@@ -91,7 +107,7 @@ export default function MyCoursesRoute({ appName }) {
         <React.Fragment />
       )}
       <MyCoursesComponent
-        _box={{ bg: colors.white, p: "5" }}
+        _box={{ bg: "white", p: "5" }}
         appName={appName}
         data={learningCompleted}
         leftTitle={

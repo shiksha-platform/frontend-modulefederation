@@ -9,9 +9,10 @@ import {
   BodySmall,
   BodyMedium,
   ProgressBar,
+  coursetrackingRegistryService,
 } from "@shiksha/common-lib";
 import { Avatar, Box, HStack, Pressable, Stack, VStack } from "native-base";
-import React from "react";
+import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -53,25 +54,35 @@ export default function LearningBox({
   const [comments, setComments] = React.useState([]);
   const [random, setRandom] = React.useState();
   const { sub } = jwt_decode(localStorage.getItem("token"));
+  const authUserId = localStorage.getItem("id");
 
   React.useEffect(async (e) => {
-    setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
-    await getLikes();
-    await getComments();
-    if (item.state === "DRAFT") {
-      setShowButtonArray(["Like"]);
-    } else {
-      setShowButtonArray(canShowButtonArray);
+    let isMounted = true;
+    if (isMounted) {
+      setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
+      await getLikes();
+      await getComments();
+      if (item.state === "DRAFT") {
+        setShowButtonArray(["Like"]);
+      } else {
+        setShowButtonArray(canShowButtonArray);
+      }
     }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const getLikes = async () => {
-    setLikes([]);
-    setLike({});
+    const result = await coursetrackingRegistryService.getLikes(item.id);
+    const newData = result.find((e, index) => e.userId === authUserId);
+    setLikes(result ? result : []);
+    setLike(newData ? newData : {});
   };
 
   const getComments = async () => {
-    setComments([]);
+    const result = await coursetrackingRegistryService.getComments(item.id);
+    setComments(result ? result : []);
   };
 
   const handleLike = async () => {
@@ -85,7 +96,7 @@ export default function LearningBox({
     } else {
       let newData = {
         contextId: item?.id,
-        context: "MyLearning",
+        context: "CourseTracking",
         type: "like",
       };
       const { osid } = await likeRegistryService.create(newData);
@@ -159,11 +170,23 @@ export default function LearningBox({
           <HStack justifyContent="space-between" alignItems="flex-start">
             <Pressable onPress={() => (url ? navigate(url) : "")}>
               <HStack space={2} alignItems="center">
-                <Avatar bg={randomColors[random]} size="57" rounded="md">
-                  <H2 color={colors.white}>
-                    {item.name?.toUpperCase().substr(0, 1)}
-                  </H2>
-                </Avatar>
+                {item.posterImage ? (
+                  <Avatar
+                    bg={randomColors[random]}
+                    size="57"
+                    rounded="md"
+                    source={{
+                      uri: item.posterImage,
+                    }}
+                    style={{ borderRadius: "6px" }}
+                  />
+                ) : (
+                  <Avatar bg={randomColors[random]} size="57" rounded="md">
+                    <H2 color="white">
+                      {item.name?.toUpperCase().trim().substr(0, 2)}
+                    </H2>
+                  </Avatar>
+                )}
                 <Stack space="1">
                   <VStack space="1px">
                     <H2>{item.name}</H2>

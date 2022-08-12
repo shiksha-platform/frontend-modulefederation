@@ -120,7 +120,7 @@ export default function MyCoursesComponent({
           item: course,
           setShowModuleComments: handleCommentModuleClose,
           showModuleComments,
-          context: "MyLearning",
+          context: "CourseTracking",
           comments,
           setCommets,
         }}

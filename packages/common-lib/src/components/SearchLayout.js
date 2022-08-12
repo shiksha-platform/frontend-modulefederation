@@ -3,6 +3,7 @@ import { Box, Center, HStack, Stack, Input } from 'native-base'
 import { useWindowSize } from './helper'
 import IconByName from './IconByName'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function SearchLayout({
   filters,
@@ -15,6 +16,7 @@ export default function SearchLayout({
   setSearch,
   onCloseSearch
 }) {
+  const { t } = useTranslation()
   const [width, Height] = useWindowSize()
   const [refSearchBar, setRefSearchBar] = React.useState({})
   const navigate = useNavigate()
@@ -65,10 +67,7 @@ export default function SearchLayout({
               //   </React.Fragment>
               // }
               placeholder={
-                searchPlaceholder
-                  ? searchPlaceholder
-                  : `Type ${minStringLenght ? 'min ' + minStringLenght : ''}
-               to search `
+                searchPlaceholder ? searchPlaceholder : t(`ENTER_TITLE_HINT`)
               }
             />
           </HStack>

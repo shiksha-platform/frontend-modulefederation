@@ -8,10 +8,10 @@ import {
   Loading,
   telemetryFactory,
   H2,
-  overrideColorTheme,
   BodyLarge,
   SearchLayout,
   BodySmall,
+  coursetrackingRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
@@ -28,8 +28,6 @@ import {
 import { useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import { defaultInputs } from "config/mylearningConfig";
-import { courses as coursesData } from "../config/mylearning";
-import colorTheme from "../colorTheme";
 import MyCoursesComponent from "components/MyCoursesComponent";
 
 const sortArray = [
@@ -100,8 +98,6 @@ const ONGOING = "Ongoing";
 const ASSIGNED = "Assigned";
 const COMPLETED = "Completed";
 
-const colors = overrideColorTheme(colorTheme);
-
 export default function MyLearning({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [filterObject, setFilterObject] = React.useState({});
@@ -111,11 +107,19 @@ export default function MyLearning({ footerLinks, appName }) {
   const [searchState, setSearchState] = React.useState(false);
   const [showModalSort, setShowModalSort] = React.useState(false);
   const { state } = useParams();
+  const userId = localStorage.getItem("id");
 
   React.useEffect(async () => {
-    setCourses(coursesData.filter((e) => (state ? e.state === state : true)));
+    setCourses(
+      await coursetrackingRegistryService.getAll({
+        ...filterObject,
+        limit: 10,
+        userId,
+        status: state,
+      })
+    );
     setLoading(false);
-  }, []);
+  }, [filterObject]);
 
   const getTitle = () => {
     if (state === ONGOING) {
@@ -171,7 +175,7 @@ export default function MyLearning({ footerLinks, appName }) {
           <Button
             rounded="full"
             variant="outline"
-            bg={colors.primaryLight}
+            bg={"mylearning.primaryLight"}
             px={4}
             py={1}
             rightIcon={
@@ -183,7 +187,7 @@ export default function MyLearning({ footerLinks, appName }) {
             }
             onPress={(e) => setShowModalSort(true)}
           >
-            <BodyLarge textTransform="capitalize" color={colors.primary}>
+            <BodyLarge textTransform="capitalize" color={"mylearning.primary"}>
               {t("SORT")}
             </BodyLarge>
           </Button>
@@ -196,7 +200,7 @@ export default function MyLearning({ footerLinks, appName }) {
         setSearchState,
       }}
       subHeader={<H2 textTransform="inherit">{getSubTitle()}</H2>}
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "mylearning.cardBg" }}
       _footer={footerLinks}
     >
       <Children
@@ -260,20 +264,13 @@ const Children = ({
       <FilterButton
         getObject={handleFilter}
         _box={{ pt: 5, px: 5 }}
-        _actionSheet={{ bg: colors.cardBg }}
-        _button={{ bg: colors.primaryLight, px: "15px", py: "2" }}
-        _filterButton={{
-          rightIcon: "",
-          bg: colors.white,
-          color: colors.primary,
-        }}
+        _actionSheet={{ bg: "mylearning.cardBg" }}
         resetButtonText={t("COLLAPSE")}
-        color={colors.primary}
         filters={newDefaultInputs}
       />
       <VStack>
         <Box
-          bg={colors.white}
+          bg={"mylearning.white"}
           pt="0"
           p="5"
           mb="4"
@@ -304,24 +301,24 @@ const Children = ({
         onClose={() => setShowModalSort(false)}
       >
         <Stack width={"100%"} maxH={"100%"}>
-          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <Actionsheet.Content alignItems={"left"} bg={"mylearning.cardBg"}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="15px">
                 <H2>{t("SORT")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"mylearning.cardCloseIcon"}
                 onPress={(e) => setShowModalSort(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <ScrollView width={"100%"} space="1" bg={colors.coolGray}>
-            <VStack bg={colors.white} width={"100%"} space="1">
+          <ScrollView width={"100%"} space="1" bg={"mylearning.coolGray"}>
+            <VStack bg={"mylearning.white"} width={"100%"} space="1">
               {sortArray.map((value, index) => (
                 <Box key={index}>
                   <Box px="5" py="4">
-                    <H3 color={colors.grayLight}>{value?.title}</H3>
+                    <H3 color={"mylearning.grayLight"}>{value?.title}</H3>
                   </Box>
                   {value?.data &&
                     value.data.map((item, subIndex) => {
@@ -332,7 +329,7 @@ const Children = ({
                         <Pressable
                           key={subIndex}
                           p="5"
-                          bg={isSelected ? colors.grayLight : ""}
+                          bg={isSelected ? "mylearning.grayLight" : ""}
                           onPress={(e) => handleSort(item)}
                         >
                           <HStack
@@ -342,7 +339,7 @@ const Children = ({
                           >
                             <IconByName
                               isDisabled
-                              color={isSelected ? colors.primary : ""}
+                              color={isSelected ? "mylearning.primary" : ""}
                               name={item.icon}
                             />
                             <Text>{item.name}</Text>
@@ -355,7 +352,7 @@ const Children = ({
               <Box p="5">
                 <Button
                   colorScheme="button"
-                  _text={{ color: colors.white }}
+                  _text={{ color: "mylearning.white" }}
                   onPress={(e) => setShowModalSort(false)}
                 >
                   {t("CONTINUE")}

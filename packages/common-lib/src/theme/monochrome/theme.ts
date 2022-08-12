@@ -23,6 +23,7 @@ const theme = {
     worksheet: { ...colorTheme },
     notification: { ...colorTheme, notificationBg: light },
     schools: { ...colorTheme },
+    mylearning: { ...colorTheme },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

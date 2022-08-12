@@ -7,7 +7,8 @@ import {
   ScrollView,
   Stack,
   Text,
-  Tooltip
+  Tooltip,
+  VStack
 } from 'native-base'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -200,7 +201,7 @@ const FilterButton = ({
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg='white' width={'100%'}>
+        <VStack width={'100%'} space='1px' maxH='80%' bg='white'>
           {type === 'array' ? (
             <Pressable
               p='3'
@@ -246,41 +247,43 @@ const FilterButton = ({
           ) : (
             ''
           )}
-          {formData?.data &&
-            formData?.data.map((value, index) => {
-              return (
-                <Pressable
-                  p='3'
-                  key={index}
-                  onPress={(e) => handleSelectVlaue(value)}
-                  bg={
-                    (type !== 'array' && valueArr === value) ||
-                    (type === 'stingValueArray' && valueArr.includes(value))
-                      ? 'gray.200'
-                      : 'white'
-                  }
-                >
-                  <HStack space='2' colorScheme='button' alignItems='center'>
-                    {type === 'array' ? (
-                      <IconByName
-                        isDisabled
-                        color={
-                          valueArr.includes(value) ? 'button.500' : 'gray.300'
-                        }
-                        name={
-                          valueArr.includes(value)
-                            ? 'CheckboxLineIcon'
-                            : 'CheckboxBlankLineIcon'
-                        }
-                      />
-                    ) : (
-                      ''
-                    )}
-                    <Text>{value}</Text>
-                  </HStack>
-                </Pressable>
-              )
-            })}
+          <ScrollView>
+            {formData?.data &&
+              formData?.data.map((value, index) => {
+                return (
+                  <Pressable
+                    p='3'
+                    key={index}
+                    onPress={(e) => handleSelectVlaue(value)}
+                    bg={
+                      (type !== 'array' && valueArr === value) ||
+                      (type === 'stingValueArray' && valueArr.includes(value))
+                        ? 'gray'
+                        : 'white'
+                    }
+                  >
+                    <HStack space='2' colorScheme='button' alignItems='center'>
+                      {type === 'array' ? (
+                        <IconByName
+                          isDisabled
+                          color={
+                            valueArr.includes(value) ? 'button.500' : 'gray.300'
+                          }
+                          name={
+                            valueArr.includes(value)
+                              ? 'CheckboxLineIcon'
+                              : 'CheckboxBlankLineIcon'
+                          }
+                        />
+                      ) : (
+                        ''
+                      )}
+                      <Text>{value}</Text>
+                    </HStack>
+                  </Pressable>
+                )
+              })}
+          </ScrollView>
           <Box p='5'>
             <Button
               colorScheme='button'
@@ -295,7 +298,7 @@ const FilterButton = ({
               {t('SELECT')}
             </Button>
           </Box>
-        </Box>
+        </VStack>
       </Actionsheet>
     </Box>
   )

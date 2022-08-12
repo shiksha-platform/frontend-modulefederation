@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import {
   BodyMedium,
   H2,
@@ -61,11 +61,12 @@ export default function CourseActionsheet({
           >
             {course?.description}
           </BodyMedium>
-          <AttributeComponent
-            data={AttributeData.filter((e) => config.includes(e.attribute))}
-            object={course}
-          />
-
+          <Suspense fallback="...">
+            <AttributeComponent
+              data={AttributeData.filter((e) => config.includes(e.attribute))}
+              object={course}
+            />
+          </Suspense>
           {!footer ? (
             <HStack space={5} alignItems="center">
               <Pressable
