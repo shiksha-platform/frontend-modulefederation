@@ -12,7 +12,19 @@ const theme = {
     },
     student: {
       ...colorTheme,
-      primary: '#F87558'
+      studentAvtarBg: '#f59e0b',
+      studentName: '#1f2937',
+      starIconBg: '#FFC326',
+      starIconColor: '#E78D12'
+    },
+    profile: {
+      ...colorTheme,
+      primaryLight: '#FFF8F7',
+      presentText: '#FA8129',
+      specialDuty: '#06D6A0',
+      activeClass: '#10b981',
+      reportBoxBg: '#FFF8F7',
+      cardBgTransparent: '#18181b66'
     },
     classes: {
       ...colorTheme,

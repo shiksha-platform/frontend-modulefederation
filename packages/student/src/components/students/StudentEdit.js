@@ -143,13 +143,13 @@ export default function StudentEdit({
             render: () => {
               return (
                 <Box
-                  bg={colors.studentHeadingBg}
+                  bg={"student.activeClass"}
                   px="3"
                   py="2"
                   rounded="sm"
                   mb={5}
                 >
-                  <H1 color={colors.coolGray}>
+                  <H1 color={"student.lightGray4"}>
                     {result.data?.params?.status
                       ? result.data?.params?.status
                       : "successful"}
@@ -217,13 +217,13 @@ export default function StudentEdit({
             <Stack
               p="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
-              borderColor={colors.coolGraylight}
+              borderColor={"student.lightGray3"}
               key={index}
             >
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3 color={colors.labelColor} textTransform={"uppercase"}>
+                    <H3 color={"student.unmarked"} textTransform={"uppercase"}>
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
@@ -252,7 +252,7 @@ export default function StudentEdit({
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: colors.error,
+                        color: "student.error",
                         fontWeight: 500,
                       }}
                     >
@@ -266,7 +266,7 @@ export default function StudentEdit({
                 <>
                   <H3
                     fontWeight="500"
-                    color={colors.labelColor}
+                    color={"student.unmarked"}
                     textTransform={"uppercase"}
                     pb="2"
                   >
@@ -292,7 +292,7 @@ export default function StudentEdit({
 }
 
 const Section = ({ title, button, children, _box }) => (
-  <Box bg={colors.white} p="5" {..._box}>
+  <Box bg={"student.white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
       <H3>{title}</H3>
       {button}

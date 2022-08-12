@@ -6,6 +6,7 @@ import {
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import { Box, HStack, Text, VStack } from "native-base";
+import Profile from "pages/Profile";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -40,8 +41,8 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
       {title !== "" ? (
         <Box bg={bg} roundedTop={"xl"} py="10px" px="15px">
           <HStack alignItems={"center"}>
-            <IconByName name={iconName} color={colors.white} />
-            <Subtitle textTransform="ingerit" color={colors.white}>
+            <IconByName name={iconName} color={"profile.white"} />
+            <Subtitle textTransform="ingerit" color={"profile.white"}>
               {title}
             </Subtitle>
           </HStack>
@@ -49,19 +50,19 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
       ) : (
         <React.Fragment />
       )}
-      <Box bg={colors.weekCardCompareBg} p="5">
+      <Box bg={"profile.primaryLight"} p="5">
         <HStack alignItems={"center"} justifyContent="space-around">
           <VStack alignItems="center">
-            <H1 color={colors.present}>
+            <H1 color={"profile.present"}>
               {thisMonth ? Math.round(thisMonth) : 0}%
             </H1>
-            <BodySmall color={colors.gray}>{t("THIS_MONTH")}</BodySmall>
+            <BodySmall color={"profile.gray"}>{t("THIS_MONTH")}</BodySmall>
           </VStack>
           <VStack alignItems="center">
-            <H1 color={colors.presentCardCompareText}>
+            <H1 color={"profile.presentText"}>
               {lastMonth ? Math.round(lastMonth) : 0}%
             </H1>
-            <BodySmall color={colors.gray}>{t("LAST_MONTH")}</BodySmall>
+            <BodySmall color={"profile.gray"}>{t("LAST_MONTH")}</BodySmall>
           </VStack>
         </HStack>
       </Box>

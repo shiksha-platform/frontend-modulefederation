@@ -87,14 +87,14 @@ export default function StudentDetails({ footerLinks, appName }) {
             bold: false,
             fontWeight: "400",
             fontSize: "12px",
-            color: colors.studentNametext,
+            color: "student.lightGray2",
           }}
           type="card"
           item={studentObject}
           hidePopUpButton={true}
         />
       }
-      _subHeader={{ bg: colors.studentBg }}
+      _subHeader={{ bg: "student.successAlert" }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
@@ -113,7 +113,7 @@ export default function StudentDetails({ footerLinks, appName }) {
               },
             ]}
           />
-          <Box bg={colors.white} py="5">
+          <Box bg={"student.white"} py="5">
             <Collapsible
               defaultCollapse
               isDisableCollapse
@@ -180,15 +180,24 @@ export default function StudentDetails({ footerLinks, appName }) {
           }
         >
           {[
-            { title: t("RESULTS"), value: "Best in class" },
-            { title: t("COMPETENCY"), value: "Creative" },
-            { title: t("AWARDS"), value: "No awards yet" },
+            {
+              title: t("RESULTS"),
+              value: "Best in class",
+            },
+            {
+              title: t("COMPETENCY"),
+              value: "Creative",
+            },
+            {
+              title: t("AWARDS"),
+              value: "No awards yet",
+            },
           ].map((item, index) => (
             <Box
               key={index}
               p="5"
               borderBottomWidth="1"
-              borderColor={colors.coolGraylight}
+              borderColor={"student.lightGray3"}
             >
               <Collapsible defaultCollapse header={item.title}>
                 <Box pt="18px">

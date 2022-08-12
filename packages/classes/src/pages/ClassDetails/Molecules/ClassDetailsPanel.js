@@ -1,14 +1,15 @@
 import React from "react";
 import { Collapsible, IconByName } from "@shiksha/common-lib";
-import { HStack, Text, VStack, Box } from "native-base";
+import { HStack, Text, VStack, Box, useTheme } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Pie } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 Chart.register(ArcElement, Tooltip, Legend);
 
 const ClassDetailsPanel = ({ students }) => {
-  const MALECOLOR = "classes.boys";
-  const FEMALECOLOR = "classes.girls";
+  const { colors } = useTheme();
+  const MALECOLOR = colors?.["classes"]?.["boys"];
+  const FEMALECOLOR = colors?.["classes"]?.["girls"];
   const { t } = useTranslation();
   const fullName = localStorage.getItem("fullName");
   const maleCount = students.filter((e) => e.gender === "Male").length;
