@@ -43,8 +43,6 @@ const colorTheme = {
   dangerAlert: '#F9DEDE',
   girls: '#0ea5e9',
   boys: '#a855f7',
-  dateText: '#9C9EA0',
-  warningAlert: '#FFE5B3',
   activeClass: '#10b981'
 }
 
