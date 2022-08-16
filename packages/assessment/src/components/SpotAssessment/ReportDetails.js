@@ -11,6 +11,7 @@ import {
   BodyLarge,
   Caption,
   Subtitle,
+  assessmentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -20,6 +21,7 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import colorTheme from "../../colorTheme";
 import RoundedProgressBar from "components/RoundedProgressBar";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -91,7 +93,22 @@ export default function ReportDetails({ appName }) {
     capture("END", telemetryData);
   };
 
+  const getAssessments = async () => {
+    const fromDate = moment().format("YYYY-MM-DD");
+    const toDate = moment().format("YYYY-MM-DD");
+
+    const param = {
+      fromDate,
+      toDate,
+      groupId: "ce045222-52a8-4a0a-8266-9220f63baba7",
+      subject: "English",
+    };
+
+    const data = await assessmentRegistryService.getFilteredAssessments(param);
+  };
+
   useEffect(() => {
+    getAssessments();
     _handleFullReportStartEvent();
     return () => {
       _handleFullReportEndEvent();
@@ -341,6 +358,7 @@ export default function ReportDetails({ appName }) {
                 </Box>
               </VStack>
             </Box>
+
             <Box p={4} px="0px" bg={colors.white}>
               <Collapsible
                 defaultCollapse={true}
@@ -363,6 +381,9 @@ export default function ReportDetails({ appName }) {
                   <VStack pt={6} space={4}>
                     <Box>
                       <VStack space={4}>
+                        {
+                          //code comes here
+                        }
                         <Box
                           bg={colors.QuationsBoxContentBg}
                           roundedTop="10px"
