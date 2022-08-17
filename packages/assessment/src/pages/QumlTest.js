@@ -72,7 +72,10 @@ export default function QumlTest({
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
     localStorage.setItem("assessment-score", assessmentDetails[0].score);
-    localStorage.setItem("assessment-totalScore", assessmentDetails[0].totalScore);
+    localStorage.setItem(
+      "assessment-totalScore",
+      assessmentDetails[0].totalScore
+    );
     setLoading(false);
     // navigate("/assessment/assessment-result");
     setPageName("assessmentResult");
