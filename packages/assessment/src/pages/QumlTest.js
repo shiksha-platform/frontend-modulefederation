@@ -67,11 +67,12 @@ export default function QumlTest({
   };
 
   const getAssessmentData = async (result) => {
-    const id = result.result?.Trackassessment?.osid || "";
+    // const id = result.result?.Trackassessment?.osid || "";
+    const id = result.data?.insert_trackassessment_one?.trackAssessmentId || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    localStorage.setItem("assessment-score", assessmentDetails.score);
-    localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
+    localStorage.setItem("assessment-score", assessmentDetails[0].score);
+    localStorage.setItem("assessment-totalScore", assessmentDetails[0].totalScore);
     setLoading(false);
     // navigate("/assessment/assessment-result");
     setPageName("assessmentResult");

@@ -167,14 +167,15 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
   }
 }
 
-export const getAssessmentDetails = async (params = {}, header = {}) => {
+export const getAssessmentDetails = async (id, params = {}, header = {}) => {
   const headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await get(
-    `${process.env.REACT_APP_API_URL}/trackassessment/${params}`,
+    `${process.env.REACT_APP_API_URL}/trackassessment/${id}`,
     {
+      params,
       headers
     }
   )
