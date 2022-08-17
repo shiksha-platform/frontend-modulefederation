@@ -242,8 +242,13 @@ export default function ReportDetail({ footerLinks, appName }) {
                       calendarView,
                     }}
                   />
-                  <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                    <Text bold color={colors.darkGray}>
+                  <Subtitle
+                    py="5"
+                    px="10px"
+                    color={colors.grayInLight}
+                    textTransform="inherit"
+                  >
+                    <Text bold color={colors.darkGray} textTransform="inherit">
                       {t("NOTES")}
                       {": "}
                     </Text>
@@ -314,7 +319,7 @@ export default function ReportDetail({ footerLinks, appName }) {
                       )
                     )}
                     {presentStudents?.length <= 0 ? (
-                      <Caption p="4">
+                      <Caption p="4" textTransform="inherit">
                         {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
                       </Caption>
                     ) : (
@@ -348,7 +353,7 @@ export default function ReportDetail({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <Text bold fontSize={"md"}>
+                    <Text bold fontSize={"md"} textTransform="inherit">
                       {t("ABSENT_CONSECUTIVE_3_DAYS")}
                     </Text>
                     <Text fontSize={"xs"}>
@@ -397,7 +402,9 @@ export default function ReportDetail({ footerLinks, appName }) {
                       )
                     )}
                     {absentStudents?.length <= 0 ? (
-                      <Caption p="4">{t("NO_STUDENT_HAS_BEEN_ABSENT")}</Caption>
+                      <Caption p="4" textTransform="inherit">
+                        {t("NO_STUDENT_HAS_BEEN_ABSENT")}
+                      </Caption>
                     ) : (
                       <React.Fragment />
                     )}
@@ -428,7 +435,7 @@ export default function ReportDetail({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <Text bold fontSize={"md"}>
+                    <Text bold fontSize={"md"} textTransform="inherit">
                       {t("STUDENT_WISE_ATTENDANCE")}
                     </Text>
                     <Text fontSize={"xs"}>

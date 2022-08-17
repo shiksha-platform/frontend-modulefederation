@@ -86,7 +86,9 @@ const ClassDetailsPanel = ({ students }) => {
               </HStack>
               <HStack space="2" alignItems="center">
                 <Text>
-                  <Text bold>{t("MATHS")}: </Text>
+                  <Text bold textTransform="inherit">
+                    {t("MATHS")}:{" "}
+                  </Text>
                   {fullName}
                 </Text>
                 <Box
@@ -105,7 +107,9 @@ const ClassDetailsPanel = ({ students }) => {
               </HStack>
               <HStack space="2" alignItems="center">
                 <Text>
-                  <Text bold>{t("ENGLISH")}: </Text>
+                  <Text bold textTransform="inherit">
+                    {t("ENGLISH")}:{" "}
+                  </Text>
                   {fullName}
                 </Text>
                 <Box
@@ -124,7 +128,9 @@ const ClassDetailsPanel = ({ students }) => {
               </HStack>
               <HStack space="2" alignItems="center">
                 <Text>
-                  <Text bold>{t("SCIENCE")}: </Text>
+                  <Text bold textTransform="inherit">
+                    {t("SCIENCE")}:{" "}
+                  </Text>
                   {fullName}
                 </Text>
                 <Box

@@ -163,7 +163,7 @@ export default function StudentDetails({ footerLinks, appName }) {
           </Box>
         </Section>
 
-        <Section
+        {/* <Section
           title={t("LEARNING")}
           button={
             <ButtonWrapper
@@ -231,7 +231,7 @@ export default function StudentDetails({ footerLinks, appName }) {
               </Box>
             </Collapsible>
           </Box>
-        </Section>
+        </Section> */}
       </Stack>
     </Layout>
   );

@@ -206,8 +206,13 @@ export default function Report({ footerLinks }) {
                       : [],
                   }}
                 />
-                <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                  <Text bold color={colors.darkGray}>
+                <Subtitle
+                  py="5"
+                  px="10px"
+                  color={colors.grayInLight}
+                  textTransform="inherit"
+                >
+                  <Text bold color={colors.darkGray} textTransform="inherit">
                     {t("NOTES")}
                     {": "}
                   </Text>

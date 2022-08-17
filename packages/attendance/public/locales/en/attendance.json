@@ -34,7 +34,7 @@
   "PRESENT": "present",
   "SUMMARY": "Summary",
   "NOTES": "Notes",
-  "MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH": "Monthly Report will be generated on the last day of every month.",
+  "MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH": "Monthly report will be generated on the last day of every month.",
   "SEE_MORE": "See more",
   "ABSENT_CONSECUTIVE_3_DAYS": "Absent Consecutive 3 Days",
   "DAYS": "Days",
@@ -62,7 +62,7 @@
   "FAILED": "Failed",
   "RETRY": "Retry",
   "DONE": "Done",
-  "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "No Student Has Achieved 100% Attendance This Week",
+  "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "No student has achieved 100% attendance this week",
   "NO_STUDENT_HAS_BEEN_ABSENT": "No student has been absent for more than 3 days",
   "SEND_ANOTHER_MESSAGE": "Send another message",
   "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "View messages being sent by admin"

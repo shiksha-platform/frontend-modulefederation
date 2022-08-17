@@ -455,7 +455,7 @@ export default function SelfAttedanceSheet({
               }}
             />
             <H1 color={"profile.present"}>{t("ATTENDANCE_MARKED")}</H1>
-            <BodyMedium textAlign="center">
+            <BodyMedium textAlign="center" textTransform="inherit">
               {selfAttendance.attendance === PRESENT &&
               selfAttendance.name !== selfAttendance.remark
                 ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")

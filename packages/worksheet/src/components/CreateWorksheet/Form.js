@@ -183,7 +183,7 @@ export default function Form({
         <Actionsheet.Content alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
-              <H2>{t(`Select ${formData?.name}`)}</H2>
+              <H2 textTransform="inherit">{t(`Select ${formData?.name}`)}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
