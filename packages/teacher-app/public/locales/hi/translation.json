@@ -342,5 +342,6 @@
   "REMOVE_PHOTO": "फोटो हटाएं",
   "UPLOAD_PHPTP": "फोटो अपलोड करें",
   "ENETR_TITLE_HINT": "शीर्षक संकेत दर्ज करें",
-  "TEMPLATE_NO": "खाका संख्या"
+  "TEMPLATE_NO": "खाका संख्या",
+  "REPORT_CONFIG_TYPE_NOT_FOUND": "रिपोर्ट कॉन्फ़िगरेशन प्रकार नहीं मिला"
 }

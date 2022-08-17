@@ -1,6 +1,6 @@
 import {
-  capture,
-  telemetryFactory,
+  studentRegistryService,
+  classRegistryService,
   Layout,
   Collapsible,
   H2,
@@ -25,66 +25,38 @@ import {
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import {
-  LinkedinShareButton,
-  LinkedinIcon,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from "react-share";
+import { WhatsappIcon, WhatsappShareButton } from "react-share";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const newStudents = [
-  {
-    fullName: "Shah Rukh Khan",
-    admissionNo: "1",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Rahul Patil",
-    admissionNo: "2",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Sandhya Shankar",
-    admissionNo: "3",
-    fathersName: "Mr. Fathers Name",
-    days: "3",
-  },
-  {
-    fullName: "Jatin Agarwal",
-    admissionNo: "4",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Rehan Orpe",
-    admissionNo: "5",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Siddharth Kabra",
-    admissionNo: "6",
-    fathersName: "Mr. Fathers Name",
-    days: "3",
-  },
-];
-
 export default function WorksheetShare({ footerLinks, appName }) {
   const { t } = useTranslation();
   const Card = React.lazy(() => import("students/Card"));
+  const [classes, setClasses] = React.useState([]);
+  const [classObject, setClassObject] = React.useState([]);
+  const teacherId = localStorage.getItem("id");
   const [students, setStudents] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const { worksheetId } = useParams();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
+    const data = await classRegistryService.getAll({
+      teacherId: teacherId,
+      type: "class",
+      role: "teacher",
+    });
+    setClasses(data);
+    setClassObject(data?.[0]);
+    console.log({ data });
+    const newStudents = await studentRegistryService.getAll({
+      sortBy: "Alphabetically",
+      classId: data?.[0]?.id,
+    });
+    console.log({ newStudents });
     setStudents(newStudents);
   }, []);
 
@@ -97,11 +69,11 @@ export default function WorksheetShare({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("Class VI A"),
+        title: classObject.name,
         subHeading: "Select Student",
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={`class V`}
+      subHeader={classObject.name}
       _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
@@ -235,6 +207,18 @@ export default function WorksheetShare({ footerLinks, appName }) {
           </Box>
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
+              <HStack space="5">
+                <IconByName
+                  name="MailLineIcon"
+                  isDisabled
+                  _icon={{ size: 15 }}
+                />
+                <Text>{"SMS"}</Text>
+              </HStack>
+            </Pressable>
+          </Box>
+          {/* <Box shadow="2" p="5">
+            <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <LinkedinShareButton
                 url={`https://sandbox.shikshaplatform.io/modules/worksheet/worksheet/${worksheetId}/view`}
               >
@@ -244,7 +228,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
                 </HStack>
               </LinkedinShareButton>
             </Pressable>
-          </Box>
+          </Box> */}
         </Box>
       </Actionsheet>
       <Actionsheet

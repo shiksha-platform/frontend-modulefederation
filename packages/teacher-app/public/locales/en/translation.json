@@ -348,5 +348,6 @@
   "REMOVE_PHOTO": "Remove Photo",
   "UPLOAD_PHPTP": "Upload Photo",
   "ENTER_TITLE_HINT": "Enter title hint",
-  "TEMPLATE_NO": "Template No"
+  "TEMPLATE_NO": "Template No",
+  "REPORT_CONFIG_TYPE_NOT_FOUND": "Report config type not found"
 }
