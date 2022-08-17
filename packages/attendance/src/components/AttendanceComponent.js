@@ -316,10 +316,7 @@ export const MultipalAttendance = ({
                       }}
                       isDisabled
                     />
-                    <H1
-                      color={colors.successAlertText}
-                      textTransform="inherit"
-                    >
+                    <H1 color={colors.successAlertText} textTransform="inherit">
                       {t("ATTENDANCE_SUBMITTED")}
                     </H1>
                   </VStack>
