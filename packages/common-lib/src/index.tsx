@@ -27,6 +27,8 @@ import * as notificationRegistryService from './services/notificationRegistrySer
 import * as roleRegistryService from './services/roleRegistryService'
 import * as courseRegistryService from './services/courseRegistryService'
 import * as coursetrackingRegistryService from './services/coursetrackingRegistryService'
+import * as filterDataRegistryService from './services/filterDataRegistryService'
+
 import { getApiConfig } from './services/configApiRegistryService'
 import {
   getAllForUser,
@@ -67,7 +69,8 @@ export {
   notificationRegistryService,
   roleRegistryService,
   courseRegistryService,
-  coursetrackingRegistryService
+  coursetrackingRegistryService,
+  filterDataRegistryService
 }
 
 export * from './services/Auth'

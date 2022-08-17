@@ -1,7 +1,5 @@
 import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as coreUpdate } from './RestClient'
-import * as likeRegistryService from './likeRegistryService'
-import * as commentRegistryService from './commentRegistryService'
 
 const interfaceData = {
   roleId: 'id',

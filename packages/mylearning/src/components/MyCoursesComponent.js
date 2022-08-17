@@ -1,5 +1,12 @@
 import React from "react";
-import { BodyLarge, H2, overrideColorTheme } from "@shiksha/common-lib";
+import {
+  BodyLarge,
+  H2,
+  overrideColorTheme,
+  coursetrackingRegistryService,
+  telemetryFactory,
+  capture,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, HStack, Stack, VStack } from "native-base";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +15,7 @@ import colorTheme from "../colorTheme";
 import CourseActionsheet from "./Actionsheet/CourseActionsheet";
 import CommentActionsheet from "./Actionsheet/CommentActionsheet";
 import LikeActionsheet from "./Actionsheet/LikeActionsheet";
+import moment from "moment";
 
 const colors = overrideColorTheme(colorTheme);
 
@@ -26,22 +34,61 @@ export default function MyCoursesComponent({
   const navigate = useNavigate();
   const [course, setCourse] = React.useState({});
   const [showModuleComments, setShowModuleComments] = React.useState(false);
-  const [comments, setCommets] = React.useState([]);
+  const [likes, setLikes] = React.useState([]);
+  const [comments, setComments] = React.useState([]);
   const [showModuleLike, setShowModuleLike] = React.useState(false);
+  const [commentStartTime, setCommentStartTime] = React.useState();
 
-  const handleLikeModuleOpen = () => {
+  const handleLikeModuleOpen = async () => {
+    const result = await coursetrackingRegistryService.getLikes(course.id);
+    setLikes(result ? result : []);
     setShowModuleLike(true);
   };
   const handleLikeModuleClose = () => {
     setShowModuleLike(false);
   };
 
-  const handleCommentModuleOpen = () => {
+  const handleModuleOpen = async (item) => {
+    setCourse(item);
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Course-Exploring-Info",
+      courseId: item?.courseId,
+      source: item.source,
+      subject: item?.subject,
+    });
+    capture("INTERACT", telemetryData);
+  };
+
+  const handleCommentModuleOpen = async () => {
+    const result = await coursetrackingRegistryService.getComments(course.id);
+    setComments(result ? result : []);
     setShowModuleComments(true);
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Course-Comment-Exploring-Start",
+      courseId: course?.courseId,
+      source: course.source,
+      subject: course?.subject,
+    });
+    capture("START", telemetryData);
+    setCommentStartTime(moment());
   };
 
   const handleCommentModuleClose = () => {
     setShowModuleComments(false);
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Course-Comment-Exploring-End",
+      courseId: course?.courseId,
+      source: course.source,
+      subject: course?.subject,
+      duration: commentStartTime
+        ? moment().diff(commentStartTime, "seconds")
+        : 0,
+    });
+    capture("END", telemetryData);
+    setCommentStartTime();
   };
 
   return (
@@ -62,7 +109,7 @@ export default function MyCoursesComponent({
             {data.map((item, index) => {
               return (
                 <CourseBox
-                  _addIconButton={{ onPress: (e) => setCourse(item) }}
+                  _addIconButton={{ onPress: (e) => handleModuleOpen(item) }}
                   appName={appName}
                   canShare={true}
                   key={index}
@@ -112,7 +159,7 @@ export default function MyCoursesComponent({
         {...{
           setShowModuleLike: handleLikeModuleClose,
           showModuleLike,
-          likeUsers: ["1", "2", "3", "4"],
+          likeUsers: likes,
         }}
       />
       <CommentActionsheet
@@ -122,7 +169,8 @@ export default function MyCoursesComponent({
           showModuleComments,
           context: "CourseTracking",
           comments,
-          setCommets,
+          setComments,
+          _actionSheetContent: { bg: "mylearning.cardBg" },
         }}
       />
     </Box>

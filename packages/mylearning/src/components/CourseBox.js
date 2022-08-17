@@ -102,11 +102,10 @@ export default function LearningBox({
       const { osid } = await likeRegistryService.create(newData);
       const telemetryData = telemetryFactory.interact({
         appName,
-        type: "MyLearning-Like",
-        MyLearningId: item?.id,
+        type: "Course-Like",
+        courseId: item?.courseId,
+        source: item.source,
         subject: item?.subject,
-        grade: item?.grade,
-        topic: item?.topic,
       });
       capture("INTERACT", telemetryData);
       const newObject = { ...newData, id: osid };
@@ -118,30 +117,13 @@ export default function LearningBox({
   const handleShare = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "MyLearning-Share",
-      myLearningId: item?.id,
+      type: "Course-Share",
+      courseId: item?.courseId,
+      source: item.source,
       subject: item?.subject,
-      grade: item?.grade,
-      topic: item?.topic,
     });
     capture("INTERACT", telemetryData);
     // navigate(`/mylearning/${item.id}/share`);
-  };
-
-  const handleAddToTimeline = () => {
-    if (item.state === "DRAFT") {
-      // navigate(`/mylearning/${item.id}/edit`);
-    } else {
-      const telemetryData = telemetryFactory.interact({
-        appName,
-        type: "MyLearning-Add-To-Timeline",
-        myLearningId: item?.id,
-        subject: item?.subject,
-        grade: item?.grade,
-        topic: item?.topic,
-      });
-      capture("INTERACT", telemetryData);
-    }
   };
 
   const RightButton = () => {
@@ -150,7 +132,6 @@ export default function LearningBox({
       _icon: { size: 25 },
       bg: colors.white,
       p: 1,
-      onPress: handleAddToTimeline,
       rounded: "full",
     };
 

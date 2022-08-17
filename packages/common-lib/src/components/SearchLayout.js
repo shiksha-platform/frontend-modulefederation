@@ -66,6 +66,7 @@ export default function SearchLayout({
               //     />
               //   </React.Fragment>
               // }
+              onChange={(e) => setSearch(e.target.value)}
               placeholder={
                 searchPlaceholder ? searchPlaceholder : t(`ENTER_TITLE_HINT`)
               }

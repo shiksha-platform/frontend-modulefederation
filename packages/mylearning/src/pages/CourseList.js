@@ -12,6 +12,7 @@ import {
   SearchLayout,
   BodySmall,
   coursetrackingRegistryService,
+  filterDataRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import {
@@ -29,6 +30,7 @@ import { useParams } from "react-router-dom";
 import manifest from "../manifest.json";
 import { defaultInputs } from "config/mylearningConfig";
 import MyCoursesComponent from "components/MyCoursesComponent";
+import moment from "moment";
 
 const sortArray = [
   {
@@ -84,16 +86,6 @@ const sortArray = [
   },
 ];
 
-const newDefaultInputs = defaultInputs.map((e) => {
-  return {
-    ...e,
-    ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
-      ? "grade"
-      : e.attributeName,
-    ["type"]: "sting",
-  };
-});
-
 const ONGOING = "Ongoing";
 const ASSIGNED = "Assigned";
 const COMPLETED = "Completed";
@@ -106,10 +98,58 @@ export default function MyLearning({ footerLinks, appName }) {
   const [search, setSearch] = React.useState(true);
   const [searchState, setSearchState] = React.useState(false);
   const [showModalSort, setShowModalSort] = React.useState(false);
+  const [courseStartTime, setCourseStartTime] = React.useState();
+  const [filters, setFilters] = React.useState();
+
   const { state } = useParams();
   const userId = localStorage.getItem("id");
 
+  const handleSearchState = (item) => {
+    setSearchState(item);
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Course-search",
+    });
+    capture("INTERACT", telemetryData);
+  };
+
+  const leavePageCaptureEvent = () => {
+    if (courseStartTime) {
+      const telemetryData = telemetryFactory.interact({
+        appName,
+        type: "Course-Exploring-End",
+        state,
+        duration: courseStartTime
+          ? moment().diff(courseStartTime, "seconds")
+          : 0,
+      });
+      capture("END", telemetryData);
+    }
+  };
+
+  const handleBackButton = () => {
+    leavePageCaptureEvent();
+    navigate(-1);
+  };
+
   React.useEffect(async () => {
+    const subjectData = await filterDataRegistryService.getSubjects({
+      adapter: "diksha",
+    });
+    setFilters(
+      defaultInputs.map((e) => {
+        return {
+          ...e,
+          ["data"]: ["subject"].includes(e.attributeName)
+            ? subjectData
+            : e.data,
+          ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
+            ? "grade"
+            : e.attributeName,
+          ["type"]: "sting",
+        };
+      })
+    );
     setCourses(
       await coursetrackingRegistryService.getAll({
         ...filterObject,
@@ -119,6 +159,17 @@ export default function MyLearning({ footerLinks, appName }) {
       })
     );
     setLoading(false);
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Course-Exploring-Start",
+      state,
+    });
+    capture("START", telemetryData);
+    setCourseStartTime(moment());
+
+    return () => {
+      leavePageCaptureEvent();
+    };
   }, [filterObject]);
 
   const getTitle = () => {
@@ -161,7 +212,13 @@ export default function MyLearning({ footerLinks, appName }) {
         }}
       >
         <Children
-          {...{ courses, isHideCreateButton: true, setFilterObject, state }}
+          {...{
+            courses,
+            isHideCreateButton: true,
+            setFilterObject,
+            state,
+            filters,
+          }}
         />
       </SearchLayout>
     );
@@ -197,7 +254,8 @@ export default function MyLearning({ footerLinks, appName }) {
         languages: manifest.languages,
         isEnableSearchBtn: true,
         setSearch,
-        setSearchState,
+        setSearchState: handleSearchState,
+        onPressBackButton: handleBackButton,
       }}
       subHeader={<H2 textTransform="inherit">{getSubTitle()}</H2>}
       _subHeader={{ bg: "mylearning.cardBg" }}
@@ -211,6 +269,7 @@ export default function MyLearning({ footerLinks, appName }) {
           setShowModalSort,
           appName,
           state,
+          filters,
         }}
       />
     </Layout>
@@ -224,6 +283,7 @@ const Children = ({
   showModalSort,
   setShowModalSort,
   appName,
+  filters,
 }) => {
   const { t } = useTranslation();
   const [sortData, setSortData] = React.useState();
@@ -232,7 +292,7 @@ const Children = ({
     const newSort = { [obejct.attribute]: obejct.value };
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "MyLearnings-Sort",
+      type: "Course-Sort",
       sortType: newSort,
     });
     capture("INTERACT", telemetryData);
@@ -242,7 +302,7 @@ const Children = ({
   const handleFilter = (obejct) => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "MyLearnings-Filter",
+      type: "Course-Filter",
       filterObject: obejct,
     });
     capture("INTERACT", telemetryData);
@@ -266,7 +326,7 @@ const Children = ({
         _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: "mylearning.cardBg" }}
         resetButtonText={t("COLLAPSE")}
-        filters={newDefaultInputs}
+        filters={filters}
       />
       <VStack>
         <Box
