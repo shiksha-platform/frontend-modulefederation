@@ -1,5 +1,11 @@
 import React from 'react'
-import colorTheme from './colorTheme'
+import { getApiConfig } from '../services/configApiRegistryService'
+import * as roleRegistryService from '../services/roleRegistryService'
+import * as joyfull from '../theme/joyfull'
+import * as monochrome from '../theme/monochrome'
+import { extendTheme } from 'native-base'
+import footerLinks from '../config/footerLinks'
+import jwt_decode from 'jwt-decode'
 
 export const maxWidth = '1080'
 export function useWindowSize() {
@@ -98,6 +104,68 @@ export const generateUUID = () => {
   })
 }
 
-export const overrideColorTheme = (colorObject = {}) => {
-  return { ...colorTheme, ...colorObject }
+export const overrideColorTheme = (colorObject = {}, theme = 'joyfull') => {
+  if (theme === 'monochrome') {
+    return { ...colorObject, ...monochrome.colorTheme }
+  }
+  return { ...joyfull.colorTheme, ...colorObject }
+}
+
+export const DEFAULT_THEME = async (theme) => {
+  if (!theme) {
+    const adminTheme = await getApiConfig(['theme'])
+    theme = JSON.parse(adminTheme['theme.forModules'])
+  }
+
+  if (theme === 'monochrome') {
+    return extendTheme(monochrome.theme)
+  }
+  return extendTheme(joyfull.theme)
+}
+
+export const getAppshellData = async (routes = [], role = '') => {
+  try {
+    if (role === '') {
+      role = await getRole()
+    }
+    const adminTheme = await getApiConfig(['theme', 'roles'])
+    const themeName = JSON.parse(adminTheme['theme.forModules'])
+    const modules = adminTheme[`roles.${role?.toLowerCase()}`]
+    const newRoutes = routes.filter((item) =>
+      modules?.includes(item.moduleName)
+    )
+    const newFooterLinks = footerLinks.filter((item) =>
+      modules?.includes(item.moduleName)
+    )
+    const newTheme = await DEFAULT_THEME(themeName)
+    return { newTheme, newRoutes, newFooterLinks }
+  } catch (e) {
+    console.error('Catch-error:', e.message)
+    return {
+      newTheme: await DEFAULT_THEME('joyFull'),
+      newRoutes: [],
+      newFooterLinks: []
+    }
+  }
+}
+
+export const getRole = async () => {
+  const jwt = getTokernUserInfo()
+  const roles = jwt?.realm_access?.roles ? jwt?.realm_access?.roles : []
+  const resultRoles = await roleRegistryService.getAll()
+  const apiRoles = resultRoles?.map((e) => e.title)
+  return roles.find((e) => apiRoles?.includes(e))
+}
+
+export const getTokernUserInfo = (token = '') => {
+  if (token === '') {
+    const newToken = localStorage.getItem('token')
+    if (newToken) {
+      return jwt_decode(`${newToken}`)
+    } else if (token) {
+      return jwt_decode(`${token}`)
+    } else {
+      return {}
+    }
+  }
 }

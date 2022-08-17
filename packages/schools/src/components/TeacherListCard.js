@@ -1,26 +1,19 @@
 import React, { useState } from "react";
-import {
-  BodyMedium,
-  Collapsible,
-  H3,
-  H4,
-  IconByName,
-} from "@shiksha/common-lib";
+import { BodyMedium, Collapsible, H3, IconByName } from "@shiksha/common-lib";
 import {
   HStack,
-  Text,
   VStack,
   Box,
   Divider,
   Avatar,
   Pressable,
+  Button,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { H2, overrideColorTheme } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-// import StudentDetailCard from "./StudentDetail";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -65,7 +58,7 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
         teacherlist.map((teacher, index) => {
           return (
             <React.Fragment key={`student${index}`}>
-              <Box py="2">
+              <Box borderColor={"schools.lightGray3"} p={4}>
                 <Pressable
                   onPress={() => navigate("/schools/assessment-result")}
                 >
@@ -81,14 +74,14 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
                         />
                         <VStack>
                           <H3
-                            color={colors.bodyText}
+                            color={"schools.bodyText"}
                             _dark={{
                               color: "warmGray.50",
                             }}
                           >
                             {index + 1} . {teacher.name}
                           </H3>
-                          <BodyMedium color={colors.subtitle}>
+                          <BodyMedium color={"schools.gray"}>
                             Class Teacher: {teacher.class}
                           </BodyMedium>
                         </VStack>
@@ -99,13 +92,13 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
                         <IconByName
                           _icon={{ size: "22" }}
                           borderRadius="full"
-                          bg={colors.avatarBackground}
-                          color={colors.white}
+                          bg={"schools.primary"}
+                          color={"schools.white"}
                           name="UserLineIcon"
                         />
                         <IconByName
                           _icon={{ size: "18" }}
-                          color={colors.cheveron}
+                          color={"schools.darkGray"}
                           name="ArrowRightSLineIcon"
                         />
                       </HStack>
@@ -119,12 +112,12 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
           );
         })}
       <Box pt={4} textAlign="center">
-        <Link
-          to="/schools/my-visits"
-          style={{ color: colors.primary, textDecoration: "none" }}
+        <Button
+          variant="outline"
+          onPress={() => navigate("/schools/my-visits")}
         >
           Load More
-        </Link>
+        </Button>
       </Box>
     </Collapsible>
   );

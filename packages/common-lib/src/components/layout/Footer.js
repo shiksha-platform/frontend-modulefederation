@@ -15,13 +15,15 @@ export default function Footer({ menues, routeDynamics, ...props }) {
   useEffect(() => {
     let path = window?.location?.pathname.toString()
     if (path.startsWith('/attendance') || path.startsWith('/class')) {
-      setSelected(1)
+      setSelected('classes')
     } else if (path.startsWith('/worksheet')) {
-      setSelected(3)
+      setSelected('worksheet')
     } else if (path.startsWith('/mylearning')) {
-      setSelected(4)
+      setSelected('mylearning')
+    } else if (path.startsWith('/schools')) {
+      setSelected('schools')
     } else {
-      setSelected(0)
+      setSelected('app')
     }
   }, [])
 
@@ -54,12 +56,16 @@ export default function Footer({ menues, routeDynamics, ...props }) {
               item={item}
               key={index}
               cursor='pointer'
-              opacity={selected === index ? 1 : 0.5}
+              opacity={selected === item.moduleName ? 1 : 0.5}
               py='3'
               flex={1}
-              onPress={() => setSelected(0)}
+              onPress={() => setSelected(item.moduleName)}
             >
-              <Text color={selected === index ? 'button.500' : 'coolGray.400'}>
+              <Text
+                color={
+                  selected === item.moduleName ? 'button.500' : 'coolGray.400'
+                }
+              >
                 <Center>
                   <IconByName name={item.icon} />
                   <Text fontSize='12'>{t(item.title)}</Text>

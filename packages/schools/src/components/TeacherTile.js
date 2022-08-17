@@ -42,7 +42,7 @@ const TeacherTile = ({ index, teacher, setTeacherDetailModal }) => {
   return (
     <React.Fragment>
       <Pressable onPress={() => setTeacherDetailModal(true)}>
-        <Box bg={"white"} p={4} rounded={10}>
+        <Box bg={"schools.lightGray5"} p={4} rounded={10}>
           <HStack alignItems="center" justifyContent="space-between">
             <Box>
               <HStack alignItems="center" space={3}>
@@ -55,14 +55,14 @@ const TeacherTile = ({ index, teacher, setTeacherDetailModal }) => {
                 />
                 <VStack>
                   <H3
-                    color={colors.bodyText}
+                    color={"schools.bodyText"}
                     _dark={{
                       color: "warmGray.50",
                     }}
                   >
                     {index + 1} . {teacher.name}
                   </H3>
-                  <BodyMedium color={colors.subtitle}>
+                  <BodyMedium color={"schools.gray"}>
                     Class Teacher: {teacher.class}
                   </BodyMedium>
                 </VStack>
@@ -71,7 +71,7 @@ const TeacherTile = ({ index, teacher, setTeacherDetailModal }) => {
 
             <IconByName
               name="ArrowRightSLineIcon"
-              color={colors.lightGray}
+              color={"schools.lightGray"}
               // onPress={() => setSortModal(false)}
             />
           </HStack>

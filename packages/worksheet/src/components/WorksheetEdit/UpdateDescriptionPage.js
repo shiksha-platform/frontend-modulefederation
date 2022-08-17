@@ -1,22 +1,8 @@
-import {
-  Button,
-  Text,
-  Box,
-  FormControl,
-  Input,
-  Select,
-  HStack,
-} from "native-base";
+import { Button, Box, FormControl, Input, Select } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
-import {
-  IconByName,
-  Layout,
-  worksheetRegistryService,
-  overrideColorTheme,
-  BodyLarge,
-} from "@shiksha/common-lib";
+import { Layout, overrideColorTheme, BodyLarge } from "@shiksha/common-lib";
 import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -101,7 +87,7 @@ export default function UpdateDescriptionPage({
       _appBar={{ languages: manifest.languages }}
       subHeader={t("Enter Worksheet Details")}
       _subHeader={{
-        bg: colors.worksheetCardBg,
+        bg: "worksheet.cardBg",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -122,7 +108,7 @@ export default function UpdateDescriptionPage({
                 </FormControl.Label>
                 {item.type === "select" ? (
                   <Select
-                    bg={colors.lightGray4}
+                    bg={"worksheet.lightGray4"}
                     accessibilityLabel={placeholder}
                     placeholder={placeholder}
                     key={index + item.name}
@@ -138,7 +124,7 @@ export default function UpdateDescriptionPage({
                   </Select>
                 ) : (
                   <Input
-                    bg={colors.lightGray4}
+                    bg={"worksheet.lightGray4"}
                     variant="filled"
                     p={2}
                     {...item}
@@ -153,7 +139,7 @@ export default function UpdateDescriptionPage({
                   <FormControl.ErrorMessage
                     _text={{
                       fontSize: "xs",
-                      color: colors.eventError,
+                      color: "worksheet.eventError",
                       fontWeight: 500,
                     }}
                   >
@@ -167,10 +153,16 @@ export default function UpdateDescriptionPage({
           );
         })}
 
-        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          position="sticky"
+          bottom="0"
+          shadow={2}
+        >
           <Button
             colorScheme="button"
-            _text={{ color: colors.white }}
+            _text={{ color: "worksheet.white" }}
             px="5"
             flex="1"
             onPress={handleFormSubmit}
