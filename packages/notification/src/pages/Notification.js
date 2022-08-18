@@ -124,6 +124,8 @@ const Notification = ({ footerLinks, appName }) => {
     getDateFromCalendar();
   }, [page]);
 
+  console.log(realm_access?.roles[1].toLowerCase());
+
   //CURRENTLY THERE ARE NO FILTERS SUPPORTED BY HISTORY API
   // const getFilterDetails = () => {
   //   let latestDate = moment(date).format("YYYY-MM-DD");
@@ -239,20 +241,20 @@ const Notification = ({ footerLinks, appName }) => {
             </Pressable>
           </Box>
         </VStack>
-        {/* {validUsers.includes(realm_access?.roles[2].toLowerCase()) && ( */}
-        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
-          <Link href={"/notification/create"}>
-            <Button
-              colorScheme="button"
-              _text={{ color: "white" }}
-              px="5"
-              flex="1"
-            >
-              {t("CREATE_NEW")}
-            </Button>
-          </Link>
-        </Box>
-        {/* )} */}
+        {validUsers.includes(realm_access?.roles[1].toLowerCase()) && (
+          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+            <Link href={"/notification/create"}>
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                px="5"
+                flex="1"
+              >
+                {t("CREATE_NEW")}
+              </Button>
+            </Link>
+          </Box>
+        )}
         <Actionsheet
           isOpen={showModalMore}
           onClose={() => setShowModalMore(false)}
