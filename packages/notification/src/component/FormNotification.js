@@ -61,13 +61,6 @@ export default function FormNotification({
   const getConfigData = async () => {
     const Response = await getApiConfig();
     setConfigData(Response);
-    // const triggers = Array.isArray(
-    //   Response["attendance.event_triggers_to_send_attendance_notification"]
-    // )
-    //   ? Response["attendance.event_triggers_to_send_attendance_notification"]
-    //   : JSON.parse(
-    //     Response["attendance.event_triggers_to_send_attendance_notification"]
-    //   );
     const communicationChannels = Array.isArray(
       Response["attendance.channels_of_communication"]
     )
@@ -81,7 +74,7 @@ export default function FormNotification({
   };
 
   const getTemplates = async () => {
-    const resp = await templateRegistryService.getAll({ tag: "allDayPresent" })
+    const resp = await templateRegistryService.getAll({ tag: dateTime.Event })
     setTemplates(resp);
   }
 
@@ -146,7 +139,7 @@ export default function FormNotification({
     const triggers = eventConfig !== undefined
       ? checkJSON(eventConfig)
       : []
-    setETriggers([...triggers, "Absent_Today"]);
+    setETriggers(triggers);
   }
 
   console.log(eTriggers, "ETriggers");
@@ -163,7 +156,7 @@ export default function FormNotification({
   useEffect(() => {
     if (templates.length > 0) {
       console.log("in template");
-      setDateTime({ ...dateTime, "Template": templates[0].body });
+      setDateTime({ ...dateTime, "Template": templates[0].body, "TemplateId": templates[0].id });
     }
   }, [templates])
 

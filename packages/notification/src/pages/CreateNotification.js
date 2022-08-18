@@ -47,11 +47,12 @@ const CreateNotification = ({ footerLinks, appName }) => {
   const [searchParams] = useSearchParams();
 
   const NotificationObject = {
-    Absent_Today: "Absentfortoday",
-    Absent_For_LastWeek: "Absentforlastweek",
-    absent_for_last_3_days: "Absentfor3days",
-    absent_yesterday: "Absentyesterday",
-    "100percent_present": "Present100percent",
+    Absent_Today: "Absent_Today",
+    Absent_Lastweek: "Absent_Lastweek",
+    Present_Everyday: "Present_Everyday",
+    Absent_ForLast3Days: "Absent_ForLast3Days",
+    Absent_Yesterday: "Absent_Yesterday",
+    Present_Lastweek: "Present_Lastweek",
     Attendance: "attendance",
     Lessonplans: "lessonplans",
     Worksheet: "worksheet",
