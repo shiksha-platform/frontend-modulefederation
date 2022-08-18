@@ -18,17 +18,17 @@ export default function ClassParticipationCollapsibleCard() {
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
-      name: "22 Nipun",
+      name: "22 Present",
       color: colors.successBarColor,
       value: 22,
     },
     {
-      name: "4 Completed",
+      name: "4 Absent",
       color: '#DF5B5B',
       value: 4,
     },
     {
-      name: "1 pending",
+      name: "1 Unmarked",
       color: colors.unmarked,
       value: 1,
     },
@@ -70,15 +70,15 @@ export default function ClassParticipationCollapsibleCard() {
               <HStack alignItems="center" justifyContent="space-between">
                 <HStack alignItems="center" >
                   <Box w='15px' h="15px" mr={2} bg={colors.successBarColor} rounded={4}></Box>
-                  <Text>Nipun</Text>
+                  <Text>Present</Text>
                 </HStack>
                 <HStack alignItems="center" >
                   <Box w='15px' h="15px" mr={2} bg={'#DF5B5B'} rounded={4}></Box>
-                  <Text>Completed</Text>
+                  <Text>Absent</Text>
                 </HStack>
                 <HStack alignItems="center" >
                   <Box w='15px' h="15px" mr={2} bg={colors.unmarked} rounded={4}></Box>
-                  <Text>Not Assessed</Text>
+                  <Text>Unmarked</Text>
                 </HStack>
               </HStack>
             </VStack>

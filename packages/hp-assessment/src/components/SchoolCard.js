@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -9,7 +9,7 @@ import {
   Divider,
   Pressable
 } from "native-base";
-import { DEFAULT_THEME, H2, IconByName, overrideColorTheme } from "@shiksha/common-lib";
+import { DEFAULT_THEME, H2, hpAssessmentRegistryService, IconByName, overrideColorTheme } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 import nipun_badge from "../stories/assets/nipun_badge.svg"
@@ -25,12 +25,28 @@ const CardBasedOnStatus = ({status, children}) => {
   return <Box bg={"white"} borderRadius={10}>{children}</Box>
 }
 
-function SchoolCard({ status }) {
+function SchoolCard({ schoolId }) {
   const navigate = useNavigate();
+  const [schoolDetail, setSchoolDetail] = useState({});
+
+  const getSchoolDetail = async (id) => {
+    const detail = await hpAssessmentRegistryService.getSchoolDetail(id);
+    setSchoolDetail(detail);
+  }
+
+  const _handleSchoolSelect = () => {
+    localStorage.setItem('hp-assessment-school', JSON.stringify(schoolDetail));
+    navigate('/school-profile');
+  }
+
+  useEffect(() => {
+    getSchoolDetail(schoolId);
+  }, []);
+
   return (
     <>
       <VStack space={6}>
-        <Pressable onPress={()=> {navigate('/school-profile')}}>
+        <Pressable onPress={_handleSchoolSelect}>
           <CardBasedOnStatus status={status}>
             <>
               <Box p={4}>
@@ -47,22 +63,22 @@ function SchoolCard({ status }) {
                       />
                       <VStack>
                         <Text bold fontSize={14}>
-                          Delhi Public School, Ghaziabad
+                          {schoolDetail?.schoolName}
                         </Text>
                         <Text bold fontSize={12} color="#666">
-                          Ghaziabad, Uttar Pradesh
+                          {schoolDetail?.district}
                         </Text>
                       </VStack>
                     </HStack>
                   </Box>
                   {
-                    status === 'completeWithNipun' && <Box alignItems='end'>
+                    schoolDetail?.status === 'completeWithNipun' && <Box alignItems='end'>
                       <img src={nipun_badge} alt="nipun" style={{maxWidth: '45px'}} />
                     </Box>
                   }
                 </HStack>
               </Box>
-              <Divider bg={status === 'ongoing' ? colors.warning : (status === 'complete' || status === 'completeWithNipun' ? '#C5DCC3' : '#EEEEEE')} />
+              <Divider bg={schoolDetail?.status === 'ongoing' ? colors.warning : (schoolDetail?.status === 'complete' || schoolDetail?.status === 'completeWithNipun' ? '#C5DCC3' : '#EEEEEE')} />
               <Box p={4}>
                 <HStack
                   alignItems={"center"}
@@ -77,7 +93,7 @@ function SchoolCard({ status }) {
                           District
                         </Text>
                       </HStack>
-                      <Text fontSize="12">Ghaziabad</Text>
+                      <Text fontSize="12">{schoolDetail?.district}</Text>
                     </VStack>
                   </Box>
 
@@ -89,7 +105,7 @@ function SchoolCard({ status }) {
                           Block
                         </Text>
                       </HStack>
-                      <Text fontSize="12">Not Available</Text>
+                      <Text fontSize="12">{schoolDetail?.block}</Text>
                     </VStack>
                   </Box>
 

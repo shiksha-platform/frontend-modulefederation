@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   HStack,
@@ -9,13 +9,14 @@ import {
   DEFAULT_THEME,
   H2,
   IconByName,
-  Collapsible, ProgressBar, overrideColorTheme
+  Collapsible, ProgressBar, overrideColorTheme, assessmentRegistryService
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 export default function ClassAssessmentResultCollapsibleCard() {
   const { t } = useTranslation();
+  const [assessmentsData, setAssessmentsData] = React.useState([]);
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "22 Nipun",
@@ -33,6 +34,21 @@ export default function ClassAssessmentResultCollapsibleCard() {
       value: 1,
     },
   ]);
+
+  const getFilteredAssessments = async () => {
+    const params = {
+      // fromDate: '',
+      // toDate: '',
+      groupId: localStorage.getItem('hp-assessment-groupId') || '300bd6a6-ee1f-424a-a763-9db8b08a19e9'
+    }
+    const data = await assessmentRegistryService.getFilteredAssessments(params);
+    setAssessmentsData(data);
+  }
+
+  useEffect(()=> {
+    getFilteredAssessments();
+  }, [])
+
   return (
     <>
       <Collapsible

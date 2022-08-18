@@ -49,62 +49,6 @@ const studentInterfaceData = {
   attendance: 'attendance'
 }
 
-export const getAllQuestions = async (filter, request) => {
-  const questionList = await post(
-    'https://vdn.diksha.gov.in/action/composite/v3/search',
-    {
-      request: {
-        filters: {
-          objectType: 'Question',
-          status: ['Live'],
-          ...filter
-        },
-        ...request
-      }
-    }
-  )
-
-  if (questionList.data && questionList?.data?.result.count > 0) {
-    return getQuestionByIds(questionList?.data?.result?.Question, 'identifier')
-  } else {
-    return []
-  }
-}
-
-export const getQuestionByIds = (questions, subParam) => {
-  const data = questions.map(
-    async (question) =>
-      await readQuestion(subParam ? question[subParam] : question)
-  )
-  return Promise.all(data).then((values) => values)
-}
-
-const readQuestion = async (questionId) => {
-  const question = await get(
-    `https://vdn.diksha.gov.in/action/question/v1/read/${questionId}`,
-    {
-      params: {
-        fields:
-          'body,instructions,primaryCategory,mimeType,qType,answer,responseDeclaration,interactionTypes,interactions,name,solutions,editorState,media,name,board,medium,gradeLevel,subject,topic,learningOutcome,marks,bloomsLevel,author,copyright,license'
-      }
-    }
-  )
-  if (question.data) {
-    const { editorState, subject, topic, gradeLevel, qType, identifier } =
-      question.data.result.question
-    return {
-      ...editorState,
-      subject,
-      topic,
-      class: gradeLevel,
-      qType,
-      questionId: identifier
-    }
-  } else {
-    return []
-  }
-}
-
 export const getSubjectsList = async (params = {}, header = {}) => {
   const headers = {
     ...header,
@@ -167,15 +111,14 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
   }
 }
 
-export const getAssessmentDetails = async (id, params = {}, header = {}) => {
+export const getAssessmentDetails = async (params = {}, header = {}) => {
   const headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await get(
-    `${process.env.REACT_APP_API_URL}/trackassessment/${id}`,
+    `${process.env.REACT_APP_API_URL}/trackassessment/${params}`,
     {
-      params,
       headers
     }
   )
@@ -235,18 +178,36 @@ export const getAttendanceDetailsByClass = async (
   }
 }
 
-export const getFilteredAssessments = async (params = {}, header = {}) => {
+// hp assessment apis
+
+export const getAllAllocatedSchools = async (params = {}, header = {}) => {
   const headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(
-    `${process.env.REACT_APP_API_URL}/trackassessment/`,
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/monitortracking/search`,
+    params,
     {
-      params,
       headers
     }
   )
+
+  if (result.data && result.data.data) {
+    return result.data.data
+  } else {
+    return {}
+  }
+}
+
+export const getSchoolDetail = async (id, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(`${process.env.REACT_APP_API_URL}/school/${id}`, {
+    headers
+  })
 
   if (result.data && result.data.data) {
     return result.data.data

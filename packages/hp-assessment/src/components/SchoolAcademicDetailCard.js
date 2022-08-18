@@ -20,10 +20,14 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+const _handleGradeSelect = () => {
+  localStorage.setItem('hp-assessment-groupId', '300bd6a6-ee1f-424a-a763-9db8b08a19e9');
+}
+
 const TileBasedOnStatus = ({status, children}) => {
   const navigate = useNavigate();
   if(status === 'ongoing'){
-    return <Pressable onPress={() => navigate('/class-details')}>
+    return <Pressable onPress={() => {_handleGradeSelect(); navigate('/class-details');}}>
       <Box
         bg={'#ffc3694d'}
         p={4}
@@ -36,7 +40,7 @@ const TileBasedOnStatus = ({status, children}) => {
     </Pressable>
   }
   if(status === 'complete' || status === 'completeWithNipun'){
-    return <Pressable onPress={() => navigate('/class-details')}>
+    return <Pressable onPress={() => {_handleGradeSelect(); navigate('/class-details');}}>
       <Box
         bg={"#ECF7EB"}
         p={4}
@@ -48,7 +52,7 @@ const TileBasedOnStatus = ({status, children}) => {
       </Box>
     </Pressable>
   }
-  return <Pressable onPress={() => navigate('/class-details')}>
+  return <Pressable onPress={() => {_handleGradeSelect(); navigate('/class-details');}}>
     <Box
       p={4}
       borderColor={"#eee"}

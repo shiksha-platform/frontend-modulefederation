@@ -1,6 +1,6 @@
 import { H2, IconByName, Layout, ProgressBar, overrideColorTheme } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Button } from "native-base";
 import SchoolAcademicDetailCard from "../components/SchoolAcademicDetailCard";
@@ -12,12 +12,18 @@ const colors = overrideColorTheme(colorTheme);
 export default function SchoolProfile() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [schoolDetail, setSchoolDetail] = useState({});
+
+  useEffect(() => {
+    const detail = JSON.parse(localStorage.getItem('hp-assessment-school'));
+    setSchoolDetail(detail);
+  }, [])
 
   return (
     <Layout
       _header={{
-        title: "Delhi Public School",
-        subHeading: 'Ghaziabad, Uttar Pradesh',
+        title: schoolDetail?.schoolName,
+        subHeading: schoolDetail?.district,
         iconComponent: (
           <img src={nipun_badge} alt="nipun" style={{maxWidth: '75px'}} />
         ),
