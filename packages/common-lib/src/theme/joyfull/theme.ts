@@ -12,11 +12,24 @@ const theme = {
     },
     student: {
       ...colorTheme,
-      primary: '#F87558'
+      studentAvtarBg: '#f59e0b',
+      studentName: '#1f2937',
+      starIconBg: '#FFC326',
+      starIconColor: '#E78D12'
+    },
+    profile: {
+      ...colorTheme,
+      primaryLight: '#FFF8F7',
+      presentText: '#FA8129',
+      specialDuty: '#06D6A0',
+      activeClass: '#10b981',
+      reportBoxBg: '#FFF8F7',
+      cardBgTransparent: '#18181b66'
     },
     classes: {
       ...colorTheme,
-      cardBg: '#D9F0FC'
+      girls: '#0ea5e9',
+      boys: '#a855f7'
     },
     calendar: {
       ...colorTheme,
@@ -26,6 +39,11 @@ const theme = {
       specialDuty: '#06D6A0',
       activeClass: '#10b981'
     },
+    notification: {
+      ...colorTheme,
+      cardBg: '#D9F0FC',
+      notificationBg: '#FDDFD8'
+    },
     worksheet: {
       ...colorTheme,
       primary: '#F87558',
@@ -34,11 +52,6 @@ const theme = {
       cardBg: '#F9CCE4',
       cardBgLight: '#FEF1F9',
       secondary: '#feefeb'
-    },
-    notification: {
-      ...colorTheme,
-      cardBg: '#D9F0FC',
-      notificationBg: '#FDDFD8'
     },
     schools: {
       ...colorTheme,

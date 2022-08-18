@@ -97,50 +97,7 @@ export default function Home({ footerLinks, appName }) {
         _heading: { color: colors.white },
       }}
       _appBar={{ languages: ["en"], isShowNotificationButton: true }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/visits",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Box p={6}>
         <VStack space={6}>

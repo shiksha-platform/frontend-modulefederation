@@ -10,7 +10,13 @@ const theme = {
   colors: {
     ...colorTheme,
     attendance: colorTheme,
-    student: colorTheme,
+    student: {
+      ...colorTheme,
+      studentAvtarBg: '#f59e0b',
+      studentName: '#1f2937',
+      starIconBg: '#FFC326',
+      starIconColor: '#E78D12'
+    },
     calendar: {
       ...colorTheme,
       timeTableFlashIcon: '#BDB3E7',
@@ -19,9 +25,25 @@ const theme = {
       specialDuty: '#06D6A0',
       activeClass: '#10b981'
     },
-    classes: { ...colorTheme },
+    classes: {
+      ...colorTheme,
+      girls: '#0ea5e9',
+      boys: '#a855f7'
+    },
+    profile: {
+      ...colorTheme,
+      primaryLight: '#FFF8F7',
+      presentText: '#FA8129',
+      specialDuty: '#06D6A0',
+      activeClass: '#10b981',
+      reportBoxBg: '#FFF8F7',
+      cardBgTransparent: '#18181b66'
+    },
     worksheet: { ...colorTheme },
-    notification: { ...colorTheme, notificationBg: light },
+    notification: {
+      ...colorTheme,
+      notificationBg: '#E0DFF6'
+    },
     schools: { ...colorTheme },
     mylearning: { ...colorTheme },
     widgetColor: {

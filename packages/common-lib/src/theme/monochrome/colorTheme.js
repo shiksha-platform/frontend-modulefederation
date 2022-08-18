@@ -21,6 +21,7 @@ const colorTheme = {
   holiDay: '#F0F0F4',
   defaultMark: '#d3d3e5',
   lateMark: '#FFEB3B',
+  specialDuty: '#06D6A0',
   error: '#D91414',
   messageSent: '#B1B1BF',
   messageAlert: '#373839',
@@ -47,7 +48,8 @@ const colorTheme = {
   warningAlert: '#FFE5B3',
   dangerAlert: '#F9DEDE',
   girls: '#0ea5e9',
-  boys: '#a855f7'
+  boys: '#a855f7',
+  activeClass: '#10b981'
 }
 
 export default colorTheme

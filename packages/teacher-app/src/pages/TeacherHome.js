@@ -33,7 +33,7 @@ const SelfAttedanceSheet = React.lazy(() =>
 function Home({ footerLinks, appName }) {
   const { t } = useTranslation();
   const [showModal, setShowModal] = React.useState(false);
-  const [popupModal, setPopupModal] = React.useState(true);
+  const [popupModal, setPopupModal] = React.useState(false);
   let newAvatar = localStorage.getItem("firstName");
   const [selfAttendance, setSelfAttendance] = React.useState({});
   const navigate = useNavigate();
@@ -163,6 +163,10 @@ function Home({ footerLinks, appName }) {
 
   React.useEffect(() => {
     capture("PAGE");
+    if (!localStorage.getItem("howToMarkAttendance")) {
+      setPopupModal(true);
+      localStorage.setItem("howToMarkAttendance", "true");
+    }
   }, []);
 
   return (

@@ -11,6 +11,7 @@ import {
   BodyLarge,
   Caption,
   Subtitle,
+  assessmentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -20,6 +21,7 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import colorTheme from "../../colorTheme";
 import RoundedProgressBar from "components/RoundedProgressBar";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -37,6 +39,7 @@ export default function ReportDetails({ appName }) {
   const [search, setSearch] = useState();
   const [pageName, setPageName] = useState();
   const [headerDetails, setHeaderDetails] = useState();
+  const [reportStartTime, setReportStartTime] = useState();
   const [questionList, setQuestionList] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ]);
@@ -53,21 +56,6 @@ export default function ReportDetails({ appName }) {
       value: 6,
     },
   ]);
-  const _handleSpotAssessmentFullReportStart = () => {
-    const telemetryData = telemetryFactory.start({
-      appName,
-      type: "Spot-Assessment-End",
-    });
-    capture("START", telemetryData);
-  };
-
-  const _handleSpotAssessmentFullReportEnd = () => {
-    const telemetryData = telemetryFactory.end({
-      appName,
-      type: "Spot-Assessment-End",
-    });
-    capture("END", telemetryData);
-  };
 
   const _handleSpotAssessmentFullReportShare = () => {
     const telemetryData = telemetryFactory.interact({
@@ -84,12 +72,48 @@ export default function ReportDetails({ appName }) {
     });
     capture("INTERACT", telemetryData);
   };
-  /*useEffect(() => {
 
+  const _handleFullReportStartEvent = () => {
+    const telemetryData = telemetryFactory.start({
+      appName,
+      type: "Spot-Assessment-Full-Report-Start",
+    });
+    capture("START", telemetryData);
+    setReportStartTime(+new Date());
+  };
+
+  const _handleFullReportEndEvent = () => {
+    const endTime = +new Date();
+    const diff = (endTime - reportStartTime) / 1000 || 0;
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Spot-Assessment-Full-Report-End",
+      duration: diff,
+    });
+    capture("END", telemetryData);
+  };
+
+  const getAssessments = async () => {
+    const fromDate = moment().format("YYYY-MM-DD");
+    const toDate = moment().format("YYYY-MM-DD");
+
+    const param = {
+      fromDate,
+      toDate,
+      groupId: "ce045222-52a8-4a0a-8266-9220f63baba7",
+      subject: "English",
+    };
+
+    const data = await assessmentRegistryService.getFilteredAssessments(param);
+  };
+
+  useEffect(() => {
+    getAssessments();
+    _handleFullReportStartEvent();
     return () => {
-      console.log('page leaved');
-    }
-  }, []);*/
+      _handleFullReportEndEvent();
+    };
+  }, []);
 
   return (
     <Layout
@@ -97,14 +121,20 @@ export default function ReportDetails({ appName }) {
         title: "Report Details",
         isEnableSearchBtn: true,
         // setSearch: setSearch,
-        subHeading: <BodyLarge py="2">{t("Summative Assessment 1")}</BodyLarge>,
+        subHeading: <BodyLarge py="2">{t("Spot Assessment")}</BodyLarge>,
       }}
       _appBar={{
         languages: ["en"],
         rightIcon: (
           <HStack>
-            <IconByName name="ShareLineIcon" />
-            <IconByName name="DownloadLineIcon" />
+            <IconByName
+              name="ShareLineIcon"
+              onPress={_handleSpotAssessmentFullReportShare}
+            />
+            <IconByName
+              name="DownloadLineIcon"
+              onPress={_handleSpotAssessmentFullReportDownload}
+            />
           </HStack>
         ),
       }}
@@ -165,55 +195,110 @@ export default function ReportDetails({ appName }) {
             <Box p={4} bg={colors.white}>
               <HStack alignItems="center" justifyContent="space-between">
                 <H2>15, January 2022</H2>
-                <IconByName name="ListUnorderedIcon" pr="0" />
+                {/*<IconByName name="ListUnorderedIcon" pr="0" />*/}
               </HStack>
             </Box>
 
             <Box p={4} bg={colors.white}>
-              <VStack space={2}>
-                <H2>Class Participation</H2>
-                <Box borderRadius="md">
-                  <VStack>
-                    <Box
-                      px="4"
-                      py={2}
-                      bg={colors.scoreCardIcon2}
-                      roundedTop="6"
-                    >
-                      <HStack alignItems="center">
-                        <IconByName
-                          name="EmotionSadLineIcon"
-                          pr="0"
-                          color={colors.white}
-                        />
-                        <Subtitle color={colors.white}>
-                          {" "}
-                          Poor overall performance!
-                        </Subtitle>
-                      </HStack>
-                    </Box>
-                    <Box p="4" bg={colors.QuationsBoxContentBg}>
-                      <VStack flex="auto" alignContent={"center"}>
-                        <ProgressBar
-                          isTextShow
-                          legendType="separated"
-                          h="35px"
-                          _bar={{ rounded: "md", mb: "2" }}
-                          isLabelCountHide
-                          _legendType={{ color: colors.gray }}
-                          data={progressAssessment}
-                        />
+              <VStack space={6}>
+                <Box>
+                  <VStack space={2}>
+                    <H2>Class Participation in Oral Assessments</H2>
+                    <Box borderRadius="md">
+                      <VStack>
+                        <Box
+                          px="4"
+                          py={2}
+                          bg={colors.scoreCardIcon2}
+                          roundedTop="6"
+                        >
+                          <HStack alignItems="center">
+                            <IconByName
+                              name="EmotionSadLineIcon"
+                              pr="0"
+                              color={colors.white}
+                            />
+                            <Subtitle color={colors.white}>
+                              {" "}
+                              Poor overall performance!
+                            </Subtitle>
+                          </HStack>
+                        </Box>
+                        <Box p="4" bg={colors.QuationsBoxContentBg}>
+                          <VStack flex="auto" alignContent={"center"}>
+                            <ProgressBar
+                              isTextShow
+                              legendType="separated"
+                              h="35px"
+                              _bar={{ rounded: "md", mb: "2" }}
+                              isLabelCountHide
+                              data={progressAssessment}
+                            />
+                          </VStack>
+                        </Box>
+                        <Box
+                          p="4"
+                          bg={colors.QuationsBoxBg}
+                          borderBottomRadius={6}
+                          textAlign="center"
+                        >
+                          <Subtitle>
+                            Average Class Score is <H2>18</H2> out of{" "}
+                            <H2>25</H2>
+                          </Subtitle>
+                        </Box>
                       </VStack>
                     </Box>
-                    <Box
-                      p="4"
-                      bg={colors.QuationsBoxBg}
-                      borderBottomRadius={6}
-                      textAlign="center"
-                    >
-                      <Subtitle>
-                        Average Class Score is <H2>18</H2> out of <H2>25</H2>
-                      </Subtitle>
+                  </VStack>
+                </Box>
+
+                <Box>
+                  <VStack space={2}>
+                    <H2>Class Participation in Written Assessments</H2>
+                    <Box borderRadius="md">
+                      <VStack>
+                        <Box
+                          px="4"
+                          py={2}
+                          bg={colors.scoreCardIcon2}
+                          roundedTop="6"
+                        >
+                          <HStack alignItems="center">
+                            <IconByName
+                              name="EmotionSadLineIcon"
+                              pr="0"
+                              color={colors.white}
+                            />
+                            <Subtitle color={colors.white}>
+                              {" "}
+                              Poor overall performance!
+                            </Subtitle>
+                          </HStack>
+                        </Box>
+                        <Box p="4" bg={colors.QuationsBoxContentBg}>
+                          <VStack flex="auto" alignContent={"center"}>
+                            <ProgressBar
+                              isTextShow
+                              legendType="separated"
+                              h="35px"
+                              _bar={{ rounded: "md", mb: "2" }}
+                              isLabelCountHide
+                              data={progressAssessment}
+                            />
+                          </VStack>
+                        </Box>
+                        <Box
+                          p="4"
+                          bg={colors.QuationsBoxBg}
+                          borderBottomRadius={6}
+                          textAlign="center"
+                        >
+                          <Subtitle>
+                            Average Class Score is <H2>18</H2> out of{" "}
+                            <H2>25</H2>
+                          </Subtitle>
+                        </Box>
+                      </VStack>
                     </Box>
                   </VStack>
                 </Box>
@@ -273,6 +358,7 @@ export default function ReportDetails({ appName }) {
                 </Box>
               </VStack>
             </Box>
+
             <Box p={4} px="0px" bg={colors.white}>
               <Collapsible
                 defaultCollapse={true}
@@ -293,14 +379,17 @@ export default function ReportDetails({ appName }) {
               >
                 <Box>
                   <VStack pt={6} space={4}>
-                    <Box
-                      bg={colors.QuationsBoxContentBg}
-                      rounded="10px"
-                      px="4"
-                      py="2"
-                    >
+                    <Box>
                       <VStack space={4}>
-                        <Box>
+                        {
+                          //code comes here
+                        }
+                        <Box
+                          bg={colors.QuationsBoxContentBg}
+                          roundedTop="10px"
+                          px="4"
+                          py="2"
+                        >
                           <HStack
                             alignItems="center"
                             justifyContent="space-between"
@@ -367,7 +456,47 @@ export default function ReportDetails({ appName }) {
                           </HStack>
                         </Box>
 
-                        <Box borderColor="#EFEFEF" borderRadius={10} p={4}>
+                        <Box
+                          borderWidth="1"
+                          borderColor={colors.borderColor}
+                          borderRadius="10px"
+                        >
+                          <HStack
+                            alignItems="center"
+                            justifyContent="space-between"
+                            p={4}
+                          >
+                            <H2>Written Assessment</H2>
+                            <Box>
+                              <VStack>
+                                <Box position="relative">
+                                  <RoundedProgressBar
+                                    values={[18, 6]}
+                                    colors={[
+                                      colors.successBarColor,
+                                      colors.circleProgressBarcolor,
+                                    ]}
+                                    // legend={{ text: "Total Score", fontSize: "14px" }}
+                                    cutout={"80%"}
+                                    size="45px"
+                                  />
+                                  <Text
+                                    position="absolute"
+                                    top="50%"
+                                    left="50%"
+                                    style={{
+                                      transform: "translate(-50%, -25%)",
+                                    }}
+                                  >
+                                    18
+                                  </Text>
+                                </Box>
+                                <Caption color={colors.lightGray0}>
+                                  Total Score
+                                </Caption>
+                              </VStack>
+                            </Box>
+                          </HStack>
                           <HStack
                             justifyContent="space-between"
                             flexWrap="wrap"
@@ -397,6 +526,80 @@ export default function ReportDetails({ appName }) {
                                 );
                               })}
                           </HStack>
+                        </Box>
+
+                        <Box
+                          borderWidth="1"
+                          borderColor={colors.borderColor}
+                          borderRadius="10px"
+                          p={4}
+                        >
+                          <VStack space={4}>
+                            <H2>{t("Oral Assessment")}</H2>
+                            <HStack
+                              alignItems="center"
+                              justifyContent="space-between"
+                            >
+                              <Box>
+                                <VStack>
+                                  <Box position="relative">
+                                    <RoundedProgressBar
+                                      values={[18, 6]}
+                                      colors={[
+                                        colors.successBarColor,
+                                        colors.circleProgressBarcolor,
+                                      ]}
+                                      // legend={{ text: "Total Score", fontSize: "14px" }}
+                                      cutout={"80%"}
+                                      size="45px"
+                                    />
+                                    <Text
+                                      position="absolute"
+                                      top="50%"
+                                      left="50%"
+                                      style={{
+                                        transform: "translate(-50%, -25%)",
+                                      }}
+                                    >
+                                      18
+                                    </Text>
+                                  </Box>
+                                  <Caption color={colors.lightGray0}>
+                                    Words Read
+                                  </Caption>
+                                </VStack>
+                              </Box>
+                              <Box>
+                                <VStack>
+                                  <Box position="relative">
+                                    <RoundedProgressBar
+                                      values={[18, 6]}
+                                      colors={[
+                                        colors.successBarColor,
+                                        colors.circleProgressBarcolor,
+                                      ]}
+                                      // legend={{ text: "Total Score", fontSize: "14px" }}
+                                      cutout={"80%"}
+                                      size="45px"
+                                    />
+                                    <Text
+                                      position="absolute"
+                                      top="50%"
+                                      left="50%"
+                                      style={{
+                                        transform: "translate(-50%, -25%)",
+                                      }}
+                                    >
+                                      18
+                                    </Text>
+                                  </Box>
+                                  <Caption color={colors.lightGray0}>
+                                    Numbers Read
+                                  </Caption>
+                                </VStack>
+                              </Box>
+                            </HStack>
+                          </VStack>
                         </Box>
                       </VStack>
                     </Box>

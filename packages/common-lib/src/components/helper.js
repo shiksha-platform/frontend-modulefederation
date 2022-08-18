@@ -169,3 +169,6 @@ export const getTokernUserInfo = (token = '') => {
     }
   }
 }
+
+export const getArray = (item) =>
+  Array.isArray(item) ? item : item ? JSON.parse(item) : []
