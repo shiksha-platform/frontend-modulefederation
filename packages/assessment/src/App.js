@@ -15,6 +15,8 @@ import QuestionList4 from "./components/ExamScores/QuestionLIst4";
 import QuestionList5 from "./components/ExamScores/QuestionLIst5";
 import QuestionList6 from "./components/ExamScores/QuestionLIst6";
 import QuestionList7 from "./components/ExamScores/QuestionLIst7";
+import PastAssessmentList from "./pages/PastAssessments";
+import PastExaminationsList from "./pages/PastExaminations";
 
 function App() {
   /*initializeI18n(
@@ -81,6 +83,16 @@ function App() {
       moduleName: "assessment",
       path: "/assessment-detailed-report",
       component: ReportDetails,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/past-assessments",
+      component: PastAssessmentList,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/past-examinations",
+      component: PastExaminationsList,
     },
     {
       moduleName: "assessment",
