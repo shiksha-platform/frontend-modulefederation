@@ -86,14 +86,16 @@ function App() {
     },
     {
       moduleName: "assessment",
-      path: "/past-assessments",
+      path: "/assessment/past-assessments",
       component: PastAssessmentList,
     },
     {
-      path: "/past-examinations",
+      moduleName: "assessment",
+      path: "/assessment/past-examinations",
       component: PastExaminationsList,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/quml-test",
       component: QumlTest,
     },

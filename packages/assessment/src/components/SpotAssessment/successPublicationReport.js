@@ -73,7 +73,7 @@ export default function SuccessPublicationReport({
 
   const handleFullReportClick = () => {
     // _handleFullReportStartEvent();
-    navigate("/assessment-detailed-report");
+    navigate("/assessment/assessment-detailed-report");
   };
 
   const getAllAssessment = async () => {

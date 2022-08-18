@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import colorTheme from "../colorTheme";
+import { QUMLBaseURL } from "assets/constants";
 const colors = overrideColorTheme(colorTheme);
 
 export default function QumlTest({
@@ -183,20 +184,11 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`https://quml.shikshaplatform.io/?questions=${questionIds.join(
-            ","
-          )}`}
-          // src={`http://139.59.25.99:8090/?questions=${questionIds.join(",")}`}
-          // src={`http://192.168.0.105:4200/?questions=${questionIds.join(',')}`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds.join(",")}`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
       )}
-      {/*<iframe
-        src="http://139.59.25.99:8090/?questions=do_431353902437642240011003,do_431353902009694617611001,do_431353902575100723211006"
-        frameBorder="0"
-        style={{ height: "calc(100vh - 315px)" }}
-      />*/}
     </Layout>
   );
 }

@@ -161,8 +161,8 @@ const ExamScoresCard = ({ setPageName }) => {
         <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
           {loadingExams ? (
             <>Loading Exams...</>
-          ) : exams && exams.length ? (
-            exams.map((exam) => {
+          ) : exams?.length ? (
+            exams?.map((exam) => {
               return (
                 <Actionsheet.Item
                   key={exam}
@@ -190,7 +190,7 @@ const ExamScoresCard = ({ setPageName }) => {
               }}
               onPress={() => {
                 setChooseExamModal(false);
-                navigate("/examscores");
+                navigate("/assessment/examscores");
               }}
               isDisabled={!selectedExam}
             >

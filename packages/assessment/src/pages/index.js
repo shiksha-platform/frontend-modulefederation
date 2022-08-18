@@ -207,7 +207,7 @@ export default function Assessment(props) {
     setSelectedCompetencies();
     setSelectedSubject();
     setPageName("");
-    navigate("/assessment-success");
+    navigate("/assessment/assessment-success");
   };
 
   const handleStartAssessment = async () => {
