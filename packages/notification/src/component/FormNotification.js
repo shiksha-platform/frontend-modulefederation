@@ -288,7 +288,7 @@ export default function FormNotification({
         isOpen={dateTimeData?.name}
         onClose={() => setDateTimeData({})}
       >
-        <Actionsheet.Content alignItems={"left"} bg="classCard.500">
+        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <Text fontSize="16px" fontWeight={"600"}>
@@ -302,7 +302,7 @@ export default function FormNotification({
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="white" width={"100%"}>
+        <Box bg="notification.white" width={"100%"}>
           {dateTimeData?.data &&
             dateTimeData.data.map((value, index) => {
               return (
@@ -327,10 +327,10 @@ export default function FormNotification({
                   }}
                   bg={
                     dateTime[dateTimeData.name] === value
-                      ? "gray.100"
+                      ? "#ebebf0"
                       : dateTimeData.name === "Group" &&
                         dateTime[dateTimeData.name] === value.title
-                        ? "gray.100"
+                        ? "#ebebf0"
                         : ""
                   }
                 >
@@ -370,7 +370,7 @@ const FormInput = ({
     data.map((item, index) => (
       <HStack
         key={index}
-        bg="white"
+        bg="#FFFFFF"
         p="5"
         alignItems="center"
         justifyContent="space-between"
@@ -381,12 +381,12 @@ const FormInput = ({
         <Button
           {...(item?.buttonVariant
             ? { variant: item.buttonVariant }
-            : { _text: { color: "black" } })}
+            : { _text: { color: "#000000" } })}
           rounded="full"
           colorScheme="button"
           px="5"
           py="1"
-          bg="viewNotification.500"
+          bg="#FCC6BA"
           _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName
