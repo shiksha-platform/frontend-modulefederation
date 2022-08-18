@@ -1,7 +1,7 @@
 import React from "react";
 import { Center, Heading, Spinner, Text, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
-import { useWindowSize } from "@shiksha/common-lib";
+import { H1, useWindowSize } from "@shiksha/common-lib";
 
 const Loader = ({ success, fail }) => {
   const { t } = useTranslation();
@@ -19,20 +19,16 @@ const Loader = ({ success, fail }) => {
         <VStack space={2} alignItems={"center"}>
           <VStack space={10} alignItems="center">
             <Spinner
-              color={"button.500"}
+              color={"attendance.primary"}
               accessibilityLabel="Loading posts"
-              size="50"
+              size="lg"
             />
             <VStack alignItems="center" space={2}>
-              <Text fontSize="22px" color="button.500">
-                {success ? success : ""}
-              </Text>
-              <Text fontSize="22px" color="button.500">
-                {fail ? fail : ""}
-              </Text>
-              <Heading color="button.500" fontSize="22px">
+              <H1 color="attendance.primary">{success ? success : ""}</H1>
+              <H1 color="attendance.primary">{fail ? fail : ""}</H1>
+              <H1 color="attendance.primary">
                 {t("MARKING_ALL_STUDENTS_PRESENT")}
-              </Heading>
+              </H1>
             </VStack>
           </VStack>
         </VStack>

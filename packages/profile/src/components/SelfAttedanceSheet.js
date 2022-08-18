@@ -31,6 +31,7 @@ import { useNavigate } from "react-router-dom";
 import Camera from "./Camera";
 import moment from "moment";
 import colorTheme from "../colorTheme";
+import Profile from "pages/Profile";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -43,7 +44,7 @@ const newMarkList = [
     icon: "CheckboxCircleLineIcon",
     name: "MARK_PRESENT",
     attendance: PRESENT,
-    color: "present",
+    color: "profile.present",
     value: "Present",
   },
   {
@@ -51,21 +52,21 @@ const newMarkList = [
     name: "MARK_SPECIAL_DUTY",
     attendance: PRESENT,
     rightIcon: "ArrowRightSLineIcon",
-    color: "special_duty",
+    color: "profile.specialDuty",
     value: "Specialduty",
   },
   {
     icon: "CloseCircleLineIcon",
     name: "MARK_ABSENT",
     attendance: ABSENT,
-    color: "absent",
+    color: "profile.absent",
     value: "Absent",
   },
   {
     icon: "UserUnfollowLineIcon",
     name: "MARK_ON_LEAVE",
     attendance: ON_LEAVE,
-    color: "absent",
+    color: "profile.absent",
     value: "Onleave",
   },
 ];
@@ -73,42 +74,42 @@ const newSpecialDutyList = [
   {
     icon: "UserStarLineIcon",
     name: "ELECTION",
-    color: "special_duty",
+    color: "profile.specialDuty",
     attendance: PRESENT,
     value: "election",
   },
   {
     icon: "BookMarkLineIcon",
     name: "EVALUATION",
-    color: "special_duty",
+    color: "profile.specialDuty",
     attendance: PRESENT,
     value: "evaluation",
   },
   {
     icon: "SearchEyeLineIcon",
     name: "INTERVIEW",
-    color: "special_duty",
+    color: "profile.specialDuty",
     attendance: PRESENT,
     value: "interview",
   },
   {
     icon: "StarLineIcon",
     name: "INVIGILITION",
-    color: "special_duty",
+    color: "profile.specialDuty",
     attendance: PRESENT,
     value: "invigilation",
   },
   {
     icon: "SpyLineIcon",
     name: "INSPECTION",
-    color: "special_duty",
+    color: "profile.specialDuty",
     attendance: PRESENT,
     value: "inspection",
   },
   {
     icon: "StarLineIcon",
     name: "TRAINING",
-    color: "special_duty",
+    color: "profile.specialDuty",
     attendance: PRESENT,
     value: "training",
   },
@@ -381,7 +382,10 @@ export default function SelfAttedanceSheet({
                   fontSize="12px"
                   fontWeight="600"
                   colorScheme="button"
-                  _text={{ color: "white", textTransform: "capitalize" }}
+                  _text={{
+                    color: "profile.white",
+                    textTransform: "capitalize",
+                  }}
                   onPress={(e) => {
                     setShowModal(false);
                   }}
@@ -414,7 +418,7 @@ export default function SelfAttedanceSheet({
         position="fixed"
         zIndex={100}
         {...{ width, height }}
-        bg={colors.white}
+        bg={"profile.white"}
         justifyContent="center"
         p="5"
       >
@@ -428,7 +432,7 @@ export default function SelfAttedanceSheet({
         position="fixed"
         zIndex={100}
         {...{ width, height }}
-        bg={colors.white}
+        bg={"profile.white"}
         justifyContent="center"
         p="5"
       >
@@ -445,20 +449,20 @@ export default function SelfAttedanceSheet({
           <VStack space="3" alignItems="center">
             <IconByName
               name="CheckboxCircleLineIcon"
-              color={colors.present}
+              color={"profile.present"}
               _icon={{
                 size: "47px",
               }}
             />
-            <H1 color={colors.present}>{t("ATTENDANCE_MARKED")}</H1>
-            <BodyMedium textAlign="center">
+            <H1 color={"profile.present"}>{t("ATTENDANCE_MARKED")}</H1>
+            <BodyMedium textAlign="center" textTransform="inherit">
               {selfAttendance.attendance === PRESENT &&
               selfAttendance.name !== selfAttendance.remark
                 ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
                 : ""}
             </BodyMedium>
           </VStack>
-          <Button _text={{ color: colors.white }} onPress={handleGoBack}>
+          <Button _text={{ color: "profile.white" }} onPress={handleGoBack}>
             {t("GO_BACK")}
           </Button>
         </VStack>
@@ -489,7 +493,7 @@ export default function SelfAttedanceSheet({
                   alignSelf="center"
                   name="MapPinLineIcon"
                   isDisabled
-                  color={colors.primary}
+                  color={"profile.primary"}
                   _icon={{
                     size: "60px",
                   }}
@@ -511,7 +515,7 @@ export default function SelfAttedanceSheet({
                   </Button>
                   <Button
                     flex={1}
-                    _text={{ color: colors.white }}
+                    _text={{ color: "profile.white" }}
                     onPress={() => {
                       getLocation();
                       setLocationModal(false);
@@ -536,7 +540,7 @@ export default function SelfAttedanceSheet({
     <>
       {children}
       <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"profile.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="10px">
               <H2>{t("ATTENDANCE")}</H2>
@@ -544,23 +548,27 @@ export default function SelfAttedanceSheet({
             <IconByName
               name="CloseCircleLineIcon"
               onPress={(e) => setShowModal(false)}
-              color={colors.cardCloseIcon}
+              color={"profile.cardCloseIcon"}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" justifyContent="center" bg={colors.white}>
+        <Box w="100%" justifyContent="center" bg={"profile.white"}>
           {markList.map((item, index) => {
             let isActive =
               selfAttendance?.name === t(item.name) ||
               (specialDutyList.some(
                 (e) => t(e.name) === selfAttendance?.name
               ) &&
-                item.color === "special_duty");
+                item.color === "profile.specialDuty");
             return (
               <Pressable
                 key={index}
                 p={3}
-                bg={selfAttendance?.name === t(item.name) ? "gray.100" : ""}
+                bg={
+                  selfAttendance?.name === t(item.name)
+                    ? "profile.lightGray5"
+                    : ""
+                }
                 onPress={(e) => {
                   if (item.name === "RESET_TO_UNMARK") {
                     handleResetToUnmarkTelemetry(item);
@@ -589,9 +597,9 @@ export default function SelfAttedanceSheet({
                       mt="1"
                       p="5px"
                       rounded="full"
-                      bg={isActive ? item.color + ".500" : colors.white}
-                      colorScheme={isActive ? item.color : colors.gray}
-                      color={isActive ? colors.white : colors.isActive}
+                      bg={isActive ? item.color : "profile.white"}
+                      colorScheme={isActive ? item.color : "profile.gray"}
+                      color={isActive ? "profile.white" : "profile.isActive"}
                       _icon={{ size: "18" }}
                     />
                     <BodyLarge>{t(item.name)}</BodyLarge>
@@ -626,12 +634,12 @@ export default function SelfAttedanceSheet({
               flex="1"
               ml="5px"
               colorScheme={
-                selfAttendance?.attendance ? "button" : colors.primaryColorgray
+                selfAttendance?.attendance ? "button" : "profile.lightGray6"
               }
               isDisabled={selfAttendance?.attendance ? false : true}
               _text={{
                 textTransform: "uppercase",
-                color: selfAttendance?.attendance ? colors.white : "",
+                color: selfAttendance?.attendance ? "profile.white" : "",
               }}
               onPress={setAttendanceMark}
             >
@@ -644,28 +652,32 @@ export default function SelfAttedanceSheet({
         isOpen={specialDutyModal}
         onClose={() => setSpecialDutyModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"profile.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <HStack pt={2} pb="5px" alignItems="center">
               <IconByName
                 name="ArrowLeftSLineIcon"
                 onPress={(e) => setSpecialDutyModal(false)}
-                color={colors.cardCloseIcon}
+                color={"profile.cardCloseIcon"}
               />
               <H2>{t("SELECT_DUTY_TYPE")}</H2>
             </HStack>
             <IconByName
               name="CloseCircleLineIcon"
               onPress={(e) => setSpecialDutyModal(false)}
-              color={colors.cardCloseIcon}
+              color={"profile.cardCloseIcon"}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" justifyContent="center" bg="white">
+        <Box w="100%" justifyContent="center" bg="profile.white">
           {specialDutyList.map((item, index) => (
             <Pressable
               key={index}
-              bg={selfAttendance?.name === t(item.name) ? "gray.100" : ""}
+              bg={
+                selfAttendance?.name === t(item.name)
+                  ? "profile.lightGray5"
+                  : ""
+              }
               p={3}
               onPress={(e) => {
                 if (item.name === "RESET_TO_UNMARK") {
@@ -695,18 +707,18 @@ export default function SelfAttedanceSheet({
                     rounded="full"
                     bg={
                       selfAttendance?.name === t(item.name)
-                        ? item.color + ".500"
-                        : "gray.100"
+                        ? item.color
+                        : "profile.lightGray5"
                     }
                     colorScheme={
                       selfAttendance?.name === t(item.name)
                         ? item.color
-                        : "gray"
+                        : "profile.lightGray0"
                     }
                     color={
                       selfAttendance?.name === t(item.name)
-                        ? colors.white
-                        : "gray.500"
+                        ? "profile.white"
+                        : "profile.lightGray0"
                     }
                     _icon={{ size: "18" }}
                   />
@@ -736,7 +748,7 @@ export default function SelfAttedanceSheet({
               flex="1"
               ml="5px"
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "profile.white" }}
               onPress={(e) => setSpecialDutyModal(false)}
             >
               {t("MARK")}
