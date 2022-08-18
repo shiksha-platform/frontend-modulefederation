@@ -350,9 +350,6 @@
   "UPLOAD_PHPTP": "Upload Photo",
   "ENTER_TITLE_HINT": "Enter title hint",
   "TEMPLATE_NO": "Template No",
-<<<<<<< HEAD
-  "TYPE_TO_START_SEARCHING_LEARNING": "Type to start searching learning"
-=======
+  "TYPE_TO_START_SEARCHING_LEARNING": "Type to start searching learning",
   "REPORT_CONFIG_TYPE_NOT_FOUND": "Report config type not found"
->>>>>>> fbfe1d35d71e9d57accaee1f9f006eec09dc6897
 }
