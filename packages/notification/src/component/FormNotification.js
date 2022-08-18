@@ -12,7 +12,7 @@ import {
   overrideColorTheme,
   BodyLarge,
   BodySmall,
-  templateRegistryService
+  templateRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import {
@@ -45,7 +45,7 @@ export default function FormNotification({
   setDateTime,
   students,
   template,
-  setTemplate
+  setTemplate,
 }) {
   const { t } = useTranslation();
   const [dateTimeData, setDateTimeData] = useState({});
@@ -55,7 +55,7 @@ export default function FormNotification({
   const [eTriggers, setETriggers] = useState([]);
   const [templates, setTemplates] = useState([]);
   //const [template, setTemplate] = useState("")
-  const [channels, setChannels] = useState([])
+  const [channels, setChannels] = useState([]);
   const navigate = useNavigate();
 
   const getConfigData = async () => {
@@ -65,18 +65,16 @@ export default function FormNotification({
       Response["attendance.channels_of_communication"]
     )
       ? Response["attendance.channels_of_communication"]
-      : JSON.parse(
-        Response["attendance.channels_of_communication"]
-      );
+      : JSON.parse(Response["attendance.channels_of_communication"]);
 
     // setETriggers([...triggers, "Absent_Today"]);
     setChannels(communicationChannels);
   };
 
   const getTemplates = async () => {
-    const resp = await templateRegistryService.getAll({ tag: dateTime.Event })
+    const resp = await templateRegistryService.getAll({ tag: dateTime.Event });
     setTemplates(resp);
-  }
+  };
 
   const getClassData = async () => {
     const Response = await classRegistryService.getAllData({
@@ -117,11 +115,9 @@ export default function FormNotification({
   };
 
   const checkJSON = (value) => {
-    const result = Array.isArray(value)
-      ? value
-      : JSON.parse(value)
+    const result = Array.isArray(value) ? value : JSON.parse(value);
     return result;
-  }
+  };
 
   const handleTelemetry = (fieldName, value) => {
     const telemetryData = telemetryFactory.interact({
@@ -135,12 +131,13 @@ export default function FormNotification({
   const getTriggerEvents = (moduleName) => {
     console.log(moduleName, "ModuleName");
     const moduleSmall = moduleName.toLowerCase();
-    const eventConfig = configData[`${moduleSmall}.event_triggers_to_send_attendance_notification`]
-    const triggers = eventConfig !== undefined
-      ? checkJSON(eventConfig)
-      : []
+    const eventConfig =
+      configData[
+        `${moduleSmall}.event_triggers_to_send_attendance_notification`
+      ];
+    const triggers = eventConfig !== undefined ? checkJSON(eventConfig) : [];
     setETriggers(triggers);
-  }
+  };
 
   console.log(eTriggers, "ETriggers");
 
@@ -151,20 +148,24 @@ export default function FormNotification({
 
   useEffect(() => {
     getTemplates();
-  }, [dateTime.Event])
+  }, [dateTime.Event]);
 
   useEffect(() => {
     if (templates.length > 0) {
       console.log("in template");
-      setDateTime({ ...dateTime, "Template": templates[0].body, "TemplateId": templates[0].id });
+      setDateTime({
+        ...dateTime,
+        Template: templates[0].body,
+        TemplateId: templates[0].id,
+      });
     }
-  }, [templates])
+  }, [templates]);
 
   useEffect(() => {
     if (dateTime.Module) {
-      getTriggerEvents(dateTime.Module)
+      getTriggerEvents(dateTime.Module);
     }
-  }, [dateTime.Module])
+  }, [dateTime.Module]);
 
   return (
     <Stack space={1} mb="2">
@@ -189,9 +190,7 @@ export default function FormNotification({
               </BodyLarge>
             </Button>
           </HStack>
-          <BodySmall>
-            {dateTime?.Template}
-          </BodySmall>
+          <BodySmall>{dateTime?.Template}</BodySmall>
         </VStack>
       </Box>
       <Box bg={colors.white} p="5">
@@ -245,34 +244,27 @@ export default function FormNotification({
           </HStack>
         </Actionsheet.Content>
         <Box bg={colors.white} width={"100%"}>
-          {
-            templates?.map((value, index) => {
-              return (
-                <Box p="5" key={index}>
-                  <Pressable
-                    key={index}
-                    p="5"
-                    onPress={(e) => {
-                      //setTemplate(value.body)
-                      setDateTime({
-                        ...dateTime,
-                        ["TemplateId"]: value.id,
-                        ["Template"]: value.body
-                      })
-                    }}
-                    bg={
-                      value.body === dateTime["Template"]
-                        ? "gray.100"
-                        : ""
-                    }
-                  >
-                    <Text colorScheme="button">
-                      {t(value.body)}
-                    </Text>
-                  </Pressable>
-                </Box>
-              );
-            })}
+          {templates?.map((value, index) => {
+            return (
+              <Box p="5" key={index}>
+                <Pressable
+                  key={index}
+                  p="5"
+                  onPress={(e) => {
+                    //setTemplate(value.body)
+                    setDateTime({
+                      ...dateTime,
+                      ["TemplateId"]: value.id,
+                      ["Template"]: value.body,
+                    });
+                  }}
+                  bg={value.body === dateTime["Template"] ? "gray.100" : ""}
+                >
+                  <Text colorScheme="button">{t(value.body)}</Text>
+                </Pressable>
+              </Box>
+            );
+          })}
           <Box p="5">
             <Button
               colorScheme="button"
@@ -314,14 +306,14 @@ export default function FormNotification({
                     {
                       dateTimeData.name == "Group"
                         ? setDateTime({
-                          ...dateTime,
-                          [dateTimeData.name]: value.title,
-                          ["GroupId"]: value.id,
-                        })
+                            ...dateTime,
+                            [dateTimeData.name]: value.title,
+                            ["GroupId"]: value.id,
+                          })
                         : setDateTime({
-                          ...dateTime,
-                          [dateTimeData.name]: value,
-                        });
+                            ...dateTime,
+                            [dateTimeData.name]: value,
+                          });
                     }
                     handleTelemetry(dateTimeData.name, value);
                   }}
@@ -330,8 +322,8 @@ export default function FormNotification({
                       ? "#ebebf0"
                       : dateTimeData.name === "Group" &&
                         dateTime[dateTimeData.name] === value.title
-                        ? "#ebebf0"
-                        : ""
+                      ? "#ebebf0"
+                      : ""
                   }
                 >
                   <Text colorScheme="button">

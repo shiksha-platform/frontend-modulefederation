@@ -41,7 +41,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
   const [students, setStudents] = useState([]);
   const [width, height] = useWindowSize();
   const [dateTime, setDateTime] = useState({});
-  const [template, setTemplate] = useState("")
+  const [template, setTemplate] = useState("");
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -172,7 +172,15 @@ const CreateNotification = ({ footerLinks, appName }) => {
         />
       ) : (
         <FormNotification
-          {...{ setPageName, students, setStudents, dateTime, setDateTime, template, setTemplate }}
+          {...{
+            setPageName,
+            students,
+            setStudents,
+            dateTime,
+            setDateTime,
+            template,
+            setTemplate,
+          }}
         />
       )}
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>

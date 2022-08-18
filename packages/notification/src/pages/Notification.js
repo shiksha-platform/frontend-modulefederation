@@ -78,14 +78,15 @@ const Notification = ({ footerLinks, appName }) => {
   const handleTelemetry = (notification) => {
     setShowModal(true);
     setNotification(notification);
-    setNotificationInfo(notificationInfo.map((item) => {
-      if (item.id === notification.id) {
-        return { ...item, messageState: "READ" }
-      }
-      else {
-        return item;
-      }
-    }));
+    setNotificationInfo(
+      notificationInfo.map((item) => {
+        if (item.id === notification.id) {
+          return { ...item, messageState: "READ" };
+        } else {
+          return item;
+        }
+      })
+    );
 
     const telemetryData = telemetryFactory.interact({
       appName,
@@ -104,7 +105,9 @@ const Notification = ({ footerLinks, appName }) => {
       Response["attendance.allowed_role_to_send_attendance_notification"]
     )
       ? Response["attendance.allowed_role_to_send_attendance_notification"]
-      : JSON.parse(Response["attendance.allowed_role_to_send_attendance_notification"]);
+      : JSON.parse(
+          Response["attendance.allowed_role_to_send_attendance_notification"]
+        );
     setValidUsers(ValidUsersResp);
   };
 
