@@ -92,7 +92,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
           <Suspense fallback="loading">
             <CalendarBar
               view="monthInDays"
-              activeColor="gray.900"
+              activeColor="profile.darkGary0"
               setPage={setWeekPage}
               page={weekPage}
               _box={{ p: 2, bg: "transparent" }}
@@ -100,17 +100,17 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </Suspense>
         </HStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "profile.cardBg" }}
       _appBar={{ onPressBackButton: handleBackButton }}
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg={colors.white} p="5" py="30">
+        <Box bg={"profile.white"} p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <H2>{t("MY_ATTENDANCE")}</H2>
           </HStack>
         </Box>
-        <Box bg={colors.white}>
+        <Box bg={"profile.white"}>
           <VStack py="5">
             <CalendarComponent
               monthDays={weekDays}
@@ -121,20 +121,20 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </VStack>
           <Actionsheet
             isOpen={attendanceObject?.attendance}
-            _backdrop={{ opacity: "0.9", bg: colors.gray }}
+            _backdrop={{ opacity: "0.9", bg: "profile.gray" }}
           >
             <Actionsheet.Content
               p="0"
               alignItems={"left"}
-              bg={colors.white}
+              bg={"profile.white"}
             ></Actionsheet.Content>
-            <Box bg="white" w="100%" p="5">
+            <Box bg="profile.white" w="100%" p="5">
               <VStack space="5" textAlign="center">
-                <Subtitle color={colors.gray}>
+                <Subtitle color={"profile.gray"}>
                   {t("ATTENDANCE_DETAILS")}
                 </Subtitle>
                 <H2>{attendanceObject?.type}</H2>
-                <BodyLarge color={colors.gray}>
+                <BodyLarge color={"profile.gray"}>
                   {attendanceObject.mess2age}
                 </BodyLarge>
                 <Button
@@ -148,13 +148,13 @@ export default function AttendanceReport({ footerLinks, appName }) {
             </Box>
           </Actionsheet>
         </Box>
-        <VStack space={5} bg={colors.white} p="5">
+        <VStack space={5} bg={"profile.white"} p="5">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
               <H2 textTransform="none">{t("MY_MONTHLY_ATTENDANCE")}</H2>
             </Box>
           </HStack>
-          <Box bg={colors.reportBoxBg} rounded="10px">
+          <Box bg={"profile.reportBoxBg"} rounded="10px">
             <VStack p="5" space={3}>
               <VStack space={"30px"}>
                 {[
@@ -178,12 +178,12 @@ export default function AttendanceReport({ footerLinks, appName }) {
                             name: month.format("Y MMM"),
                             color:
                               status === "Present"
-                                ? colors.attendancePresent
+                                ? "profile.present"
                                 : status === "Absent"
-                                ? colors.attendanceAbsent
+                                ? "profile.absent"
                                 : status === "Unmarked"
-                                ? colors.attendanceUnmarked
-                                : "special_duty.500",
+                                ? "profile.unmarked"
+                                : "profile.specialDuty",
                             value: attendance.filter(
                               (e) =>
                                 e.attendance === status &&
@@ -224,7 +224,7 @@ const CalendarComponent = ({
       borderBottomWidth={
         monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
       }
-      borderBottomColor={"coolGray.300"}
+      borderBottomColor={"profile.lightGray2"}
       p={"2"}
       {...(_weekBox?.[index] ? _weekBox[index] : {})}
     >
@@ -293,13 +293,13 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <Text pb="1" color={colors.dateLight}>
+                    <Text pb="1" color={"profile.lightGray0"}>
                       {day.format("ddd")}
                     </Text>
                   ) : (
                     ""
                   )}
-                  <Text color={colors.date}>{day.format("DD")}</Text>
+                  <Text color={"profile.bodyText"}>{day.format("DD")}</Text>
                 </VStack>
               ) : (
                 <HStack alignItems={"center"} space={1}>
@@ -319,7 +319,7 @@ const CalendarComponent = ({
                   <GetIcon
                     {...smsIconProp}
                     status="Loader4LineIcon"
-                    color={colors.primary}
+                    color={"profile.primary"}
                     isDisabled
                     _icon={{ _fontawesome: { spin: true } }}
                   />
@@ -341,49 +341,49 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
   switch (status) {
     case "Present":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancePresent}>
+        <Box {..._box} color={color ? color : "profile.present"}>
           <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Absent":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceAbsent}>
+        <Box {..._box} color={color ? color : "profile.absent"}>
           <IconByName name="CloseCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "SpecialDuty":
       icon = (
-        <Box {..._box} color={color ? color : colors.specialDuty}>
+        <Box {..._box} color={color ? color : "profile.specialDuty"}>
           <IconByName name="AwardLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : colors.holiDay}>
+        <Box {..._box} color={color ? color : "profile.holiDay"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Unmarked":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "profile.unnmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Today":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "profile.unnmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     default:
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancedefault}>
+        <Box {..._box} color={color ? color : "profile.defaultMark"}>
           <IconByName name={status} {...iconProps} />
         </Box>
       );

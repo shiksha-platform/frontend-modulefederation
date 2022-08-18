@@ -7,7 +7,6 @@ import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
 import Menu, { SubMenu } from './components/Menu'
-import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
@@ -24,8 +23,9 @@ import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
-import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
+import * as roleRegistryService from './services/roleRegistryService'
+import { getApiConfig } from './services/configApiRegistryService'
 import {
   getAllForUser,
   sendReadReceipt
@@ -43,7 +43,6 @@ export {
   Collapsible,
   Menu,
   SubMenu,
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
   AppRoutesContainer,
@@ -63,7 +62,8 @@ export {
   getAllForUser,
   sendReadReceipt,
   templateRegistryService,
-  notificationRegistryService
+  notificationRegistryService,
+  roleRegistryService
 }
 
 export * from './services/Auth'

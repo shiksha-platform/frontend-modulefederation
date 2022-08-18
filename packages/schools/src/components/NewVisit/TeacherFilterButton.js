@@ -52,7 +52,7 @@ export default function TeacherFilterButton({
           px="5"
           rightIcon={
             <IconByName
-              color={colors.primary}
+              color={"schools.primary"}
               name="ArrowDownSLineIcon"
               isDisabled
             />
@@ -64,14 +64,14 @@ export default function TeacherFilterButton({
           }}
           {..._button}
         >
-          <Text color={colors.primary}>
+          <Text color={"schools.primary"}>
             {selectData && selectData.length ? selectData[0] : "Teacher"}
           </Text>
         </Button>
         <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
           <Actionsheet.Content
             alignItems={"left"}
-            bg={colors.lightGray}
+            bg={"schools.lightGray"}
             {..._actionSheet}
           >
             <HStack justifyContent={"space-between"}>
@@ -81,11 +81,11 @@ export default function TeacherFilterButton({
               <IconByName
                 name="CloseCircleLineIcon"
                 onPress={(e) => setFilterData()}
-                color={colors.primary}
+                color={"schools.primary"}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"} pt={4}>
+          <Box bg={"schools.white"} width={"100%"} pt={4}>
             <VStack space={4}>
               {filterData?.data &&
                 filterData?.data.map((value, index) => (
@@ -96,7 +96,7 @@ export default function TeacherFilterButton({
                       setSelectData([value]);
                     }}
                   >
-                    <Box bg={colors.white}>
+                    <Box bg={"schools.white"}>
                       <HStack
                         alignItems="center"
                         justifyContent="space-between"
@@ -112,14 +112,14 @@ export default function TeacherFilterButton({
                             />
                             <VStack>
                               <H3
-                                color={colors.bodyText}
+                                color={"schools.bodyText"}
                                 _dark={{
                                   color: "warmGray.50",
                                 }}
                               >
                                 {value}
                               </H3>
-                              <BodyMedium color={colors.subtitle}>
+                              <BodyMedium color={"schools.gray"}>
                                 Class Teacher: Vi A
                               </BodyMedium>
                             </VStack>
@@ -138,7 +138,7 @@ export default function TeacherFilterButton({
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "schools.white" }}
                 onPress={() => {
                   setFilterData({});
                   if (getObject) getObject(selectData);

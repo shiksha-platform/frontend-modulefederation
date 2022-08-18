@@ -25,7 +25,6 @@ import {
   useWindowSize,
   overrideColorTheme,
   notificationRegistryService,
-  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -124,8 +123,8 @@ const CreateNotification = ({ footerLinks, appName }) => {
           icon={<IconByName name="MailSendLineIcon" _icon={{ size: 100 }} />}
           message={
             <Center>
-              <H1 color={colors.coolGraylight}>{t("NOTIFICATION_SENT")}</H1>
-              <BodyMedium color={colors.coolGraylight}>
+              <H1 color={"notification.darkGary2"}>{t("NOTIFICATION_SENT")}</H1>
+              <BodyMedium color={"notification.darkGary2"}>
                 {`Attendance Notification has been sent to ${students.length} parents`}
               </BodyMedium>
               {/* <Button
@@ -155,7 +154,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
       }}
       subHeader={t("ADD_NEW_NOTIFICATION")}
       _subHeader={{
-        bg: colors.cardBg,
+        bg: "notification.cardBg",
         _text: {
           fontSize: "16px",
           fontWeight: "500",
@@ -179,32 +178,27 @@ const CreateNotification = ({ footerLinks, appName }) => {
       <Actionsheet isOpen={pageName === "Popup"} onClose={() => setPageName()}>
         <Actionsheet.Content
           alignItems={"left"}
-          bg={colors.createNotificationCardBg}
+          bg={"notification.successAlert"}
         >
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="15px">
               <H2>{t("VIEW_NOTIFICATION")}</H2>
             </Stack>
-            {/* <IconByName
-              name="CloseCircleLineIcon"
-              color="classCard.900"
-              onPress={(e) => setPageName()}
-            /> */}
           </HStack>
         </Actionsheet.Content>
-        <Box bg={colors.white} width={"100%"}>
+        <Box bg={"notification.white"} width={"100%"}>
           <Box px="5">
             <HStack
               py="5"
               borderBottomWidth="1"
-              borderColor={colors.lightGray}
+              borderColor={"notification.lightGray2"}
               alignItems="center"
               space="1"
             >
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 isDisabled
               />
               <BodyLarge>
@@ -233,7 +227,7 @@ const CreateNotification = ({ footerLinks, appName }) => {
               <Button
                 flex="1"
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 px="5"
                 ml="5px"
                 onPress={(e) => handleOnPressForSendMsg()}

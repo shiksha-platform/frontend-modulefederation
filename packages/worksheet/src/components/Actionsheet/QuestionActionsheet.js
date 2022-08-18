@@ -35,12 +35,12 @@ export default function Question({
       isOpen={questionObject?.questionId}
       onClose={() => setQuestionObject({})}
     >
-      <Actionsheet.Content bg={colors.white} alignItems={"left"}>
+      <Actionsheet.Content bg={"worksheet.white"} alignItems={"left"}>
         <Stack p={5} pt={2} pb="15px" textAlign="center">
-          <H2 color={colors.gray}>{t("Question")}</H2>
+          <H2 color={"worksheet.gray"}>{t("Question")}</H2>
         </Stack>
         <IconByName
-          color={colors.lightGray2}
+          color={"worksheet.lightGray2"}
           position="absolute"
           top="10px"
           right="10px"
@@ -49,9 +49,9 @@ export default function Question({
         />
       </Actionsheet.Content>
       {console.log(questionObject)}
-      <Box bg={colors.white} width={"100%"} p="5">
+      <Box bg={"worksheet.white"} width={"100%"} p="5">
         <VStack space="5">
-          <BodyMedium color={colors.messageInfo} textTransform="inherit">
+          <BodyMedium color={"worksheet.messageInfo"} textTransform="inherit">
             <div
               dangerouslySetInnerHTML={{ __html: questionObject?.question }}
             />

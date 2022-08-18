@@ -79,7 +79,7 @@ const SubCard = ({
       {typeof img === "undefined" || img === true ? (
         <Avatar
           size="40px"
-          bg={item?.avatarUrl ? "" : colors.studentCardBg}
+          bg={item?.avatarUrl ? "" : "profile.studentAvtarBg"}
           {...(item?.avatarUrl ? { source: { uri: item.avatarUrl } } : {})}
           rounded="lg"
         >
@@ -91,7 +91,7 @@ const SubCard = ({
       <VStack alignItems={"center"}>
         <BodySmall
           fontSize={"12px"}
-          color={colors.studentNametext}
+          color={"student.studentName"}
           {..._textTitle}
         >
           {textTitle ? (
@@ -102,7 +102,7 @@ const SubCard = ({
             <Text italic>{t("NOT_ENTERED")}</Text>
           )}
         </BodySmall>
-        <Caption color={colors.labelColor} {..._textSubTitle}>
+        <Caption color={"student.lightGray1"} {..._textSubTitle}>
           <HStack space={1}>
             <Text>{t("ROLL_NUMBER")}:</Text>
             {item.admissionNo ? (
@@ -130,7 +130,7 @@ const SubCard = ({
       )}
       <VStack>
         <HStack alignItems="center" space="2">
-          <Text color={colors.studentNametext} bold {..._textTitle}>
+          <Text color={"student.studentName"} bold {..._textTitle}>
             {textTitle ? (
               textTitle
             ) : item?.fullName ? (
@@ -142,7 +142,7 @@ const SubCard = ({
                     ) : (
                       <Text italic>{t("NOT_ENTERED")}</Text>
                     )}
-                    <Text color={colors.studentCardsubText}>{" • "}</Text>
+                    <Text color={"student.lightGray2"}>{" • "}</Text>
                   </HStack>
                 ) : (
                   <></>
@@ -156,12 +156,12 @@ const SubCard = ({
           {attendance &&
           workingDaysCount &&
           attendance.length >= workingDaysCount ? (
-            <Box bg={colors.starIconBg} rounded="full">
+            <Box bg={"student.starIconBg"} rounded="full">
               <IconByName
                 p="1px"
                 name="StarSFillIcon"
                 _icon={{ size: 16 }}
-                color={colors.starIconColor}
+                color={"student.starIconColor"}
               />
             </Box>
           ) : (
@@ -175,7 +175,7 @@ const SubCard = ({
             ) : (
               <Text italic>{t("NOT_ENTERED")}</Text>
             )}
-            <Text color={colors.labelColor}>{" • "}</Text>
+            <Text color={"student.lightGray1"}>{" • "}</Text>
             <Text>{t("ROLL_NUMBER") + "."} </Text>
             {item.admissionNo ? (
               <Text>{item.admissionNo.toString().padStart(2, "0")}</Text>
@@ -184,7 +184,7 @@ const SubCard = ({
             )}
           </HStack>
         ) : type === "rollFather" ? (
-          <Text color={colors.labelColor} fontSize={"xs"} {..._textSubTitle}>
+          <Text color={"student.lightGray1"} fontSize={"xs"} {..._textSubTitle}>
             {textSubTitle ? (
               textSubTitle
             ) : (
@@ -205,7 +205,7 @@ const SubCard = ({
             )}
           </Text>
         ) : (
-          <Text color={colors.labelColor} fontSize={"xs"} {..._textSubTitle}>
+          <Text color={"student.lightGray1"} fontSize={"xs"} {..._textSubTitle}>
             {textSubTitle ? (
               textSubTitle
             ) : (
@@ -298,12 +298,15 @@ export default function Card({
           <IconByName
             onPress={(e) => handalOpenPoup(item)}
             size="sm"
-            color={colors.downIconColor}
+            color={"student.darkGary0s"}
             name="ArrowDownSLineIcon"
             {..._arrow}
           />
           <Actionsheet isOpen={open} onClose={(e) => setOpen(false)}>
-            <Actionsheet.Content bg={colors.studentBg} alignItems="inherit">
+            <Actionsheet.Content
+              bg={"student.successAlerts"}
+              alignItems="inherit"
+            >
               <HStack justifyContent={"space-between"}>
                 <Box px="3" py="4" pt="0">
                   <SubCard
@@ -325,7 +328,7 @@ export default function Card({
                 />
               </HStack>
             </Actionsheet.Content>
-            <Box bg={colors.white} width={"100%"}>
+            <Box bg={"student.white"} width={"100%"}>
               <Stack space={5}>
                 <StudentEdit
                   {...{
@@ -352,7 +355,7 @@ export default function Card({
                         {t("EDIT")}
                       </Button>
                     </HStack>
-                    <Box bg={colors.lightGray} rounded={"md"} p="4">
+                    <Box bg={"student.lightGray5"} rounded={"md"} p="4">
                       <HStack
                         justifyContent={"space-between"}
                         alignItems="center"
@@ -366,9 +369,9 @@ export default function Card({
                   <Link href={"/students/" + item.id}>
                     <Box
                       rounded="lg"
-                      borderColor={colors.primary}
+                      borderColor={"student.primary"}
                       borderWidth="1"
-                      _text={{ color: colors.primary }}
+                      _text={{ color: "student.primary" }}
                       px={6}
                       py={2}
                     >

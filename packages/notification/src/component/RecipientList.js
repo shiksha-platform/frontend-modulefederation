@@ -39,7 +39,7 @@ export default function RecipientList({
 
   return (
     <Stack>
-      <VStack bg={colors.white} p="5" space="2">
+      <VStack bg={"notification.white"} p="5" space="2">
         <Box pb="2">
           <BodyLarge>{t("Recipient List")}</BodyLarge>
         </Box>
@@ -47,8 +47,8 @@ export default function RecipientList({
           <Box
             key={index}
             borderWidth="1"
-            borderColor={colors.primary}
-            bg={colors.absentCardBg}
+            borderColor={"notification.primary"}
+            bg={"notification.absentCardBg"}
             p="10px"
             rounded="lg"
           >
@@ -61,10 +61,7 @@ export default function RecipientList({
                   <VStack alignItems="center">
                     <BodyLarge>
                       <Text>{item.name}</Text>
-                      <Text color={colors.grayInLight}> • </Text>
-                      {/* <Text color={colors.absentCardText}>
-                        {item.days} {t("DAYS")}
-                      </Text> */}
+                      <Text color={"notification.lightGray1"}> • </Text>
                     </BodyLarge>
                   </VStack>
                 }
@@ -95,7 +92,7 @@ export default function RecipientList({
         ))}
       </VStack>
       <Box
-        bg={colors.white}
+        bg={"notification.white"}
         p="5"
         pt="0"
         position="sticky"
@@ -123,7 +120,7 @@ export default function RecipientList({
           <Button
             flex="1"
             colorScheme="button"
-            _text={{ color: "white" }}
+            _text={{ color: "notification.white" }}
             px="5"
             ml="5px"
             onPress={(e) => setPageName("FormNotification")}
