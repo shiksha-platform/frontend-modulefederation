@@ -14,6 +14,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.24.0",
     "expo-font": "^10.0.3",
+    "firebase": "^9.9.0",
     "i18next": "^21.6.7",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
@@ -40,8 +41,7 @@
     "workbox-range-requests": "^5.1.4",
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4",
-    "firebase": "^9.9.0"
+    "workbox-streams": "^5.1.4"
   },
   "homepage": "modules/worksheet",
   "scripts": {
@@ -90,6 +90,7 @@
     "@storybook/preset-create-react-app": "^4.0.1",
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
+    "@types/react-native": "^0.69.5",
     "craco-module-federation": "^1.1.0",
     "external-remotes-plugin": "^1.0.0",
     "prettier": "^2.5.1",

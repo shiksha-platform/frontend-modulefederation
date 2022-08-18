@@ -54,6 +54,7 @@ export default function InputForm({
             px="5"
             flex="1"
             variant="outline"
+            // @ts-ignore
             onPress={handleSubmit}
           >
             {t("Skip")}
@@ -63,6 +64,7 @@ export default function InputForm({
             _text={{ color: "worksheet.white" }}
             px="5"
             flex="1"
+            // @ts-ignore
             onPress={handleSubmit}
           >
             {t("Save")}

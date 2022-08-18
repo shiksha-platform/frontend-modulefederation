@@ -1,3 +1,5 @@
+// Lib
+import React from "react";
 import {
   IconByName,
   commentRegistryService,
@@ -7,7 +9,6 @@ import {
   Subtitle,
   H2,
 } from "@shiksha/common-lib";
-import colorTheme from "../../colorTheme";
 import {
   Actionsheet,
   HStack,
@@ -21,9 +22,11 @@ import {
   InputRightAddon,
   ScrollView,
 } from "native-base";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+
+// Utils
+import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Comment({
@@ -31,21 +34,21 @@ export default function Comment({
   showModuleComments,
   worksheet,
   comments,
-  setCommets,
+  setComments,
 }) {
   const { t } = useTranslation();
-  const [comment, setCommet] = React.useState("");
-  const [error, setError] = React.useState();
+  const [comment, setComment] = React.useState("");
+  const [error, setError] = React.useState(null);
   const firstName = localStorage.getItem("firstName");
   const lastName = localStorage.getItem("lastName");
 
   const handleInput = (event) => {
     const value = event.target.value;
-    setCommet(value);
+    setComment(value);
     if (!value) {
       setError(t("ENTER_COMMENT"));
     } else {
-      setError();
+      setError(null);
     }
   };
   const handleSubmit = async () => {
@@ -58,7 +61,7 @@ export default function Comment({
         comment,
       };
       const { osid } = await commentRegistryService.create(newData);
-      setCommets([
+      setComments([
         ...comments,
         {
           ...newData,
@@ -66,7 +69,7 @@ export default function Comment({
           userData: { firstName, lastName, createdAt: moment() },
         },
       ]);
-      setCommet("");
+      setComment("");
     } else {
       setError(t("ENTER_COMMENT"));
     }
@@ -83,6 +86,7 @@ export default function Comment({
             <H2>{t("Comments")}</H2>
           </Stack>
           <IconByName
+            _icon={{}}
             name="CloseCircleLineIcon"
             color={"worksheet.primaryDark"}
             onPress={(e) => setShowModuleComments(false)}

@@ -1,3 +1,4 @@
+// Lib
 import React from "react";
 import {
   Actionsheet,
@@ -14,11 +15,12 @@ import {
   H2,
   IconByName,
   overrideColorTheme,
-  capture,
-  telemetryFactory,
   BodyLarge,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+
+// Utils
+import sortSheet from "utils/functions/SortSheet";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
@@ -27,22 +29,13 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
   const [showModal, setShowModal] = React.useState(false);
   const [sortObject, setSortObject] = React.useState({});
 
-  const handleSort = (obejct) => {
-    const newSort = { ["name"]: obejct };
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Worksheet-Sort",
-      sortType: newSort,
-    });
-    capture("INTERACT", telemetryData);
-    setSortObject(newSort);
-  };
-
-  const handalClose = () => {
+  const handleClose = () => {
     setSortData(sortObject);
     setShowModal(false);
   };
-
+  const handleSort = (object) => {
+    setSortObject(sortSheet(object, appName));
+  };
   return (
     <Box>
       <Button
@@ -52,7 +45,10 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
         bg={"worksheet.primaryLight"}
         px={5}
         py={1}
-        rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
+        rightIcon={
+          <IconByName _icon={{}} name="ArrowDownSLineIcon" isDisabled />
+        }
+        // @ts-ignore
         onPress={(e) => setShowModal(true)}
       >
         <BodyLarge textTransform="capitalize">{t("SORT")}</BodyLarge>
@@ -64,6 +60,7 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
               <H2>{t("SORT")}</H2>
             </Stack>
             <IconByName
+              _icon={{}}
               name="CloseCircleLineIcon"
               color={"worksheet.primaryDark"}
               onPress={(e) => setShowModal(false)}
@@ -79,10 +76,13 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
                   key={index}
                   p="5"
                   bg={isSelected ? "worksheet.lightGray2" : ""}
+                  // @ts-ignore
                   onPress={(e) => handleSort(item)}
                 >
+                  {/*@ts-ignore */}
                   <HStack space="2" colorScheme="button" alignItems="center">
                     <IconByName
+                      _icon={{}}
                       isDisabled
                       color={isSelected ? "worksheet.primary" : ""}
                       name={
@@ -100,7 +100,8 @@ export default function SortActionsheet({ appName, sortArray, setSortData }) {
             <Button
               colorScheme="button"
               _text={{ color: "white" }}
-              onPress={handalClose}
+              // @ts-ignore
+              onPress={handleClose}
             >
               {t("CONTINUE")}
             </Button>

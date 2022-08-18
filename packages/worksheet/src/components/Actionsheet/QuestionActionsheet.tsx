@@ -39,6 +39,7 @@ export default function Question({
         <Stack p={5} pt={2} pb="15px" textAlign="center">
           <H2 color={"worksheet.gray"}>{t("Question")}</H2>
         </Stack>
+        {/* @ts-ignore*/}
         <IconByName
           color={"worksheet.lightGray2"}
           position="absolute"
