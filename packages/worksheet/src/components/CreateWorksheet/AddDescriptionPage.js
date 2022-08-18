@@ -8,13 +8,11 @@ import {
   worksheetRegistryService,
   overrideColorTheme,
   BodyLarge,
+  getArray,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-
-const getArray = (item) =>
-  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
 
 export default function AddDescriptionPage({
   manifest,
