@@ -98,14 +98,17 @@ const Notification = ({ footerLinks, appName }) => {
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
+    console.log(Response);
     //setConfigData(Response);
     const ValidUsersResp = Array.isArray(
-      Response["notification.configureWhoCanSendNotification"]
+      Response["attendance.allowed_role_to_send_attendance_notification"]
     )
-      ? Response["notification.configureWhoCanSendNotification"]
-      : JSON.parse(Response["notification.configureWhoCanSendNotification"]);
+      ? Response["attendance.allowed_role_to_send_attendance_notification"]
+      : JSON.parse(Response["attendance.allowed_role_to_send_attendance_notification"]);
     setValidUsers(ValidUsersResp);
   };
+
+  console.log(validUsers);
 
   const GetAllNotifications = async () => {
     const resp1 = await getAllForUser({
