@@ -1,13 +1,29 @@
 import {
-  assessmentRegistryService, BodyLarge, Caption,
-  classRegistryService, H2,
+  assessmentRegistryService,
+  BodyLarge,
+  Caption,
+  classRegistryService,
+  H2,
   H3,
-  Layout, Loading,
-  overrideColorTheme, studentRegistryService, useWindowSize
+  Layout,
+  Loading,
+  overrideColorTheme,
+  studentRegistryService,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
-import { Avatar, Stack, Box, Button, HStack, Pressable, VStack, Spacer, Divider } from "native-base";
+import {
+  Avatar,
+  Stack,
+  Box,
+  Button,
+  HStack,
+  Pressable,
+  VStack,
+  Spacer,
+  Divider,
+} from "native-base";
 import StudentListCard from "../components/StudentListCard";
 import colorTheme from "../colorTheme";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +98,7 @@ export default function StudentsListPage({
   return (
     <Layout
       _header={{
-        title: "Grade I"
+        title: "Grade I",
       }}
       _appBar={{
         languages: ["en"],
@@ -135,10 +151,7 @@ export default function StudentsListPage({
                       {t("Total Students for Evaluation ")}
                     </Caption>{" "}
                     <Caption color={colors.lightGray}> ●</Caption>{" "}
-                    <Caption color={colors.gray}>
-                      {" "}
-                      {t("Present ") + 0}
-                    </Caption>
+                    <Caption color={colors.gray}> {t("Present ") + 0}</Caption>
                   </HStack>
                 </>
               )}
@@ -166,7 +179,6 @@ export default function StudentsListPage({
             </VStack>
           </Box>
         </VStack>
-
       </Box>
       <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
         <HStack justifyContent={"space-between"}>
@@ -187,9 +199,7 @@ export default function StudentsListPage({
             _text={{
               color: colors.white,
             }}
-            onPress={() =>
-              navigate("/oral-assessment-success")
-            }
+            onPress={() => navigate("/oral-assessment-success")}
           >
             {t("Continue Assessment")}
           </Button>

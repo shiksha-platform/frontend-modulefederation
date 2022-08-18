@@ -1,10 +1,16 @@
-import { H2, IconByName, Layout, ProgressBar, overrideColorTheme } from "@shiksha/common-lib";
+import {
+  H2,
+  IconByName,
+  Layout,
+  ProgressBar,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Button } from "native-base";
 import SchoolAcademicDetailCard from "../components/SchoolAcademicDetailCard";
-import nipun_badge from "../stories/assets/nipun_badge.svg"
+import nipun_badge from "../stories/assets/nipun_badge.svg";
 import colorTheme from "../colorTheme";
 import SchoolAssessmentResultCollapsibleCard from "../components/SchoolAssessmentResultCollapsibleCard";
 const colors = overrideColorTheme(colorTheme);
@@ -15,9 +21,9 @@ export default function SchoolProfile() {
   const [schoolDetail, setSchoolDetail] = useState({});
 
   useEffect(() => {
-    const detail = JSON.parse(localStorage.getItem('hp-assessment-school'));
+    const detail = JSON.parse(localStorage.getItem("hp-assessment-school"));
     setSchoolDetail(detail);
-  }, [])
+  }, []);
 
   return (
     <Layout
@@ -25,7 +31,7 @@ export default function SchoolProfile() {
         title: schoolDetail?.schoolName,
         subHeading: schoolDetail?.district,
         iconComponent: (
-          <img src={nipun_badge} alt="nipun" style={{maxWidth: '75px'}} />
+          <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
         ),
         /*subHeading: (
           <VStack>

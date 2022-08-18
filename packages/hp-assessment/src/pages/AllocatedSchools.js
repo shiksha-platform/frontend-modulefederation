@@ -8,7 +8,8 @@ import {
   H1,
   BodyLarge,
   hpAssessmentRegistryService,
-  Loading, useWindowSize
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { Link } from "react-router-dom";
 import { Box, HStack, Text, VStack, Button } from "native-base";
@@ -29,15 +30,15 @@ export default function AllocatedSchools() {
     const list = await hpAssessmentRegistryService.getAllAllocatedSchools();
     setTackingList(list);
     const pendingSchools = list.filter((item) => {
-      return item.status === 'pending'
+      return item.status === "pending";
     }).length;
     setPendingSchools(pendingSchools);
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     getAllAllocatedSchools();
-  }, [])
+  }, []);
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -51,7 +52,9 @@ export default function AllocatedSchools() {
         title: (
           <VStack>
             <H1>My Schools</H1>
-            <BodyLarge>{t("View your schools for Nipun Vidalaya Evaluation")}</BodyLarge>
+            <BodyLarge>
+              {t("View your schools for Nipun Vidalaya Evaluation")}
+            </BodyLarge>
           </VStack>
         ),
         isEnableSearchBtn: true,
@@ -59,16 +62,15 @@ export default function AllocatedSchools() {
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <Text fontSize={"lg"} bold>Allocated Schools</Text>
+            <Text fontSize={"lg"} bold>
+              Allocated Schools
+            </Text>
             <HStack alignItems={"center"}>
               <Caption>
                 {t("Total Schools for Evaluation ") + trackingList.length}
               </Caption>{" "}
               <Caption fontSize={2}> •</Caption>{" "}
-              <Caption>
-                {" "}
-                {t("Pending ") + pendingSchools}
-              </Caption>
+              <Caption> {t("Pending ") + pendingSchools}</Caption>
             </HStack>
           </VStack>
         </HStack>
@@ -106,12 +108,12 @@ export default function AllocatedSchools() {
     >
       <Box p={4}>
         <VStack space={4}>
-          {
-            trackingList && trackingList.length && trackingList.map((item) => {
+          {trackingList &&
+            trackingList.length &&
+            trackingList.map((item) => {
               // const schoolDetail = getSchoolDetail(item?.monitorTrackingId);
-              return <SchoolCard schoolId={item?.schoolId} />
-            })
-          }
+              return <SchoolCard schoolId={item?.schoolId} />;
+            })}
           {/*<SchoolCard status={'pending'} />
           <SchoolCard status={'ongoing'} />
           <SchoolCard status={'complete'} />

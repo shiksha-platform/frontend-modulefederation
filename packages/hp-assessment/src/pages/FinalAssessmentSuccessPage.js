@@ -4,14 +4,25 @@ import {
   Layout,
   Loading,
   useWindowSize,
-  H2, H3, ProgressBar, overrideColorTheme
+  H2,
+  H3,
+  ProgressBar,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
-import { Button, Box, VStack, Text, HStack, Divider, Avatar } from "native-base";
+import {
+  Button,
+  Box,
+  VStack,
+  Text,
+  HStack,
+  Divider,
+  Avatar,
+} from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import nipun_badge from "../stories/assets/nipun_badge.svg"
-import nipun_kids from "../stories/assets/nipun_kids.svg"
+import nipun_badge from "../stories/assets/nipun_badge.svg";
+import nipun_kids from "../stories/assets/nipun_kids.svg";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
@@ -21,7 +32,10 @@ import colorTheme from "../colorTheme";
 import { useNavigate } from "react-router-dom";
 const colors = overrideColorTheme(colorTheme);
 
-export default function FinalAssessmentSuccessPage({ handleBackButton, formObject }) {
+export default function FinalAssessmentSuccessPage({
+  handleBackButton,
+  formObject,
+}) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -35,29 +49,40 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
       name: "6 pending",
       color: "#DDDDDD",
       value: 6,
-    }
+    },
   ]);
 
   return (
-    <Layout
-      isDisabledAppBar={true}
-    >
+    <Layout isDisabledAppBar={true}>
       <Loading
         width={width}
         height={height - 230}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg="successAlert.500" pb="100px" pt="32px" alignItems="center">
-              <img src={nipun_badge} alt="nipun badge" style={{maxWidth: '150px', width: '30%'}} />
-              <img src={nipun_kids} alt="nipun kids" style={{maxWidth: '170px', width: '35%'}} />
+            <VStack
+              bg="successAlert.500"
+              pb="100px"
+              pt="32px"
+              alignItems="center"
+            >
+              <img
+                src={nipun_badge}
+                alt="nipun badge"
+                style={{ maxWidth: "150px", width: "30%" }}
+              />
+              <img
+                src={nipun_kids}
+                alt="nipun kids"
+                style={{ maxWidth: "170px", width: "35%" }}
+              />
             </VStack>
             <Box
               {...{
-                mx:'auto',
-                mt:'-40px',
-                textAlign: 'center',
-                position: 'relative',
-                _text: { textTransform: 'inherit'}
+                mx: "auto",
+                mt: "-40px",
+                textAlign: "center",
+                position: "relative",
+                _text: { textTransform: "inherit" },
               }}
             >
               <VStack>
@@ -76,7 +101,7 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
               <VStack space={4}>
                 <Box bg="white" rounded={10}>
                   <Box p={4} textAlign="center">
-                    <H2>{t('Language')}</H2>
+                    <H2>{t("Language")}</H2>
                   </Box>
                   <Divider />
                   <Box p={4}>
@@ -99,7 +124,9 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                                 </Text>
                                 <Text fontSize={15}>60</Text>
                               </Text>
-                              <Text fontSize={10}>Correct <br/>  Words/Minute</Text>
+                              <Text fontSize={10}>
+                                Correct <br />  Words/Minute
+                              </Text>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
@@ -137,7 +164,7 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                 </Box>
                 <Box bg="white" rounded={10}>
                   <Box p={4} textAlign="center">
-                    <H2>{t('Numeracy')}</H2>
+                    <H2>{t("Numeracy")}</H2>
                   </Box>
                   <Divider />
                   <Box>
@@ -160,7 +187,9 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                                 </Text>
                                 <Text fontSize={15}>60</Text>
                               </Text>
-                              <Text fontSize={10}>Correct <br/>  Numbers Read</Text>
+                              <Text fontSize={10}>
+                                Correct <br />  Numbers Read
+                              </Text>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
@@ -202,7 +231,9 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
                     _text={{
                       color: colors.white,
                     }}
-                    onPress={()=> {navigate('/student-list')}}
+                    onPress={() => {
+                      navigate("/student-list");
+                    }}
                   >
                     {t("Start Next Student Assessment")}
                   </Button>
@@ -212,7 +243,6 @@ export default function FinalAssessmentSuccessPage({ handleBackButton, formObjec
           </VStack>
         }
       />
-
     </Layout>
   );
 }

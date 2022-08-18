@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import {
-  Box,
-  HStack,
-  VStack,
-  Text, Divider, Button
-} from "native-base";
+import { Box, HStack, VStack, Text, Divider, Button } from "native-base";
 import {
   DEFAULT_THEME,
   H2,
   IconByName,
-  Collapsible, ProgressBar, overrideColorTheme
+  Collapsible,
+  ProgressBar,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -42,9 +39,11 @@ export default function SchoolAssessmentResultCollapsibleCard() {
                       _text={{ color: colors.white }}
                       isDisabled={false}
                       // onPress={()=> {navigate('/school-report')}}
-                      onPress={()=> {navigate('/school-nipun-certificate')}}
+                      onPress={() => {
+                        navigate("/school-nipun-certificate");
+                      }}
                     >
-                      {t('View Results')}
+                      {t("View Results")}
                     </Button>
                   </Box>
                 </VStack>

@@ -9,7 +9,7 @@ import {
   Divider,
   Actionsheet,
   Stack,
-  Pressable
+  Pressable,
 } from "native-base";
 import {
   DEFAULT_THEME,
@@ -21,48 +21,67 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const _handleGradeSelect = () => {
-  localStorage.setItem('hp-assessment-groupId', '300bd6a6-ee1f-424a-a763-9db8b08a19e9');
-}
+  localStorage.setItem(
+    "hp-assessment-groupId",
+    "300bd6a6-ee1f-424a-a763-9db8b08a19e9"
+  );
+};
 
-const TileBasedOnStatus = ({status, children}) => {
+const TileBasedOnStatus = ({ status, children }) => {
   const navigate = useNavigate();
-  if(status === 'ongoing'){
-    return <Pressable onPress={() => {_handleGradeSelect(); navigate('/class-details');}}>
-      <Box
-        bg={'#ffc3694d'}
-        p={4}
-        borderColor={"#FFC369"}
-        borderWidth={1}
-        rounded={10}
+  if (status === "ongoing") {
+    return (
+      <Pressable
+        onPress={() => {
+          _handleGradeSelect();
+          navigate("/class-details");
+        }}
       >
-        {children}
-      </Box>
-    </Pressable>
+        <Box
+          bg={"#ffc3694d"}
+          p={4}
+          borderColor={"#FFC369"}
+          borderWidth={1}
+          rounded={10}
+        >
+          {children}
+        </Box>
+      </Pressable>
+    );
   }
-  if(status === 'complete' || status === 'completeWithNipun'){
-    return <Pressable onPress={() => {_handleGradeSelect(); navigate('/class-details');}}>
-      <Box
-        bg={"#ECF7EB"}
-        p={4}
-        borderColor={"#C5DCC3"}
-        borderWidth={1}
-        rounded={10}
+  if (status === "complete" || status === "completeWithNipun") {
+    return (
+      <Pressable
+        onPress={() => {
+          _handleGradeSelect();
+          navigate("/class-details");
+        }}
       >
-        {children}
-      </Box>
-    </Pressable>
+        <Box
+          bg={"#ECF7EB"}
+          p={4}
+          borderColor={"#C5DCC3"}
+          borderWidth={1}
+          rounded={10}
+        >
+          {children}
+        </Box>
+      </Pressable>
+    );
   }
-  return <Pressable onPress={() => {_handleGradeSelect(); navigate('/class-details');}}>
-    <Box
-      p={4}
-      borderColor={"#eee"}
-      borderWidth={1}
-      rounded={10}
+  return (
+    <Pressable
+      onPress={() => {
+        _handleGradeSelect();
+        navigate("/class-details");
+      }}
     >
-      {children}
-    </Box>
-  </Pressable>
-}
+      <Box p={4} borderColor={"#eee"} borderWidth={1} rounded={10}>
+        {children}
+      </Box>
+    </Pressable>
+  );
+};
 
 export default function SchoolAcademicDetailCard() {
   const { t } = useTranslation();
@@ -81,7 +100,7 @@ export default function SchoolAcademicDetailCard() {
         <>
           {/*<Divider mb={4} />*/}
           <VStack space={4}>
-            <TileBasedOnStatus status={'pending'}>
+            <TileBasedOnStatus status={"pending"}>
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
@@ -89,14 +108,11 @@ export default function SchoolAcademicDetailCard() {
                     <Text color="#666">65 Students</Text>
                   </VStack>
                 </Box>
-                <IconByName
-                  name="ArrowRightSLineIcon"
-                  isDisabled={true}
-                />
+                <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
               </HStack>
             </TileBasedOnStatus>
 
-            <TileBasedOnStatus status={'ongoing'}>
+            <TileBasedOnStatus status={"ongoing"}>
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
@@ -104,14 +120,11 @@ export default function SchoolAcademicDetailCard() {
                     <Text color="#666">69 Students</Text>
                   </VStack>
                 </Box>
-                <IconByName
-                  name="ArrowRightSLineIcon"
-                  isDisabled={true}
-                />
+                <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
               </HStack>
             </TileBasedOnStatus>
 
-            <TileBasedOnStatus status={'complete'}>
+            <TileBasedOnStatus status={"complete"}>
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
@@ -119,10 +132,7 @@ export default function SchoolAcademicDetailCard() {
                     <Text color="#666">69 Students</Text>
                   </VStack>
                 </Box>
-                <IconByName
-                  name="ArrowRightSLineIcon"
-                  isDisabled={true}
-                />
+                <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
               </HStack>
             </TileBasedOnStatus>
           </VStack>

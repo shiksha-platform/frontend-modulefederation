@@ -31,63 +31,74 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import colorTheme from "../colorTheme";
-import nipun_badge from "../stories/assets/nipun_badge.svg"
+import nipun_badge from "../stories/assets/nipun_badge.svg";
 const colors = overrideColorTheme(colorTheme);
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const TileBasedOnStatus = ({status, children, setSelectedStudent, student}) => {
+const TileBasedOnStatus = ({
+  status,
+  children,
+  setSelectedStudent,
+  student,
+}) => {
   const navigate = useNavigate();
-  if(status === 'ongoing'){
-    return <Pressable onPress={() => setSelectedStudent(student)}>
+  if (status === "ongoing") {
+    return (
+      <Pressable onPress={() => setSelectedStudent(student)}>
+        <Box
+          bg={"#ffc3694d"}
+          p={4}
+          borderColor={"#FFC369"}
+          borderWidth={1}
+          rounded={10}
+        >
+          {children}
+        </Box>
+      </Pressable>
+    );
+  }
+  if (status === "complete" || status === "completeWithNipun") {
+    return (
+      <Pressable onPress={() => setSelectedStudent(student)}>
+        <Box
+          bg={"#ECF7EB"}
+          p={4}
+          borderColor={"#C5DCC3"}
+          borderWidth={1}
+          rounded={10}
+        >
+          {children}
+        </Box>
+      </Pressable>
+    );
+  }
+  return (
+    <Pressable onPress={() => setSelectedStudent(student)}>
       <Box
-        bg={'#ffc3694d'}
+        bg={"#ffffff"}
         p={4}
-        borderColor={"#FFC369"}
+        borderColor={"#eee"}
         borderWidth={1}
         rounded={10}
       >
         {children}
       </Box>
     </Pressable>
-  }
-  if(status === 'complete' || status === 'completeWithNipun'){
-    return <Pressable onPress={() => setSelectedStudent(student)}>
-      <Box
-        bg={"#ECF7EB"}
-        p={4}
-        borderColor={"#C5DCC3"}
-        borderWidth={1}
-        rounded={10}
-      >
-        {children}
-      </Box>
-    </Pressable>
-  }
-  return <Pressable onPress={() => setSelectedStudent(student)}>
-    <Box
-      bg={"#ffffff"}
-      p={4}
-      borderColor={"#eee"}
-      borderWidth={1}
-      rounded={10}
-    >
-      {children}
-    </Box>
-  </Pressable>
-}
+  );
+};
 
 const StudentListCard = ({
-                           classId,
-                           setPageName,
-                           student,
-                           setHeaderDetails,
-                           chooseAssessmentTypeModal,
-                           handleSelectedStudent,
-                           handleStudentPageNext,
-                           studentList
-                         }) => {
+  classId,
+  setPageName,
+  student,
+  setHeaderDetails,
+  chooseAssessmentTypeModal,
+  handleSelectedStudent,
+  handleStudentPageNext,
+  studentList,
+}) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
@@ -153,7 +164,10 @@ const StudentListCard = ({
   }
 
   return (
-    <TileBasedOnStatus setSelectedStudent={setSelectedStudent} student={student}>
+    <TileBasedOnStatus
+      setSelectedStudent={setSelectedStudent}
+      student={student}
+    >
       <HStack alignItems="center" justifyContent="space-between">
         <Box>
           <HStack alignItems="center" space={3}>
@@ -165,9 +179,7 @@ const StudentListCard = ({
               }}
             />
             <VStack>
-              <BodyLarge>
-                {student.firstName}
-              </BodyLarge>
+              <BodyLarge>{student.firstName}</BodyLarge>
               {/*<Checkbox
                             colorScheme="button"
                             borderColor={colors.primary}

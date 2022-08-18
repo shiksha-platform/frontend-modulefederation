@@ -7,23 +7,41 @@ import {
   HStack,
   Avatar,
   Divider,
-  Pressable
+  Pressable,
 } from "native-base";
-import { DEFAULT_THEME, H2, hpAssessmentRegistryService, IconByName, overrideColorTheme } from "@shiksha/common-lib";
+import {
+  DEFAULT_THEME,
+  H2,
+  hpAssessmentRegistryService,
+  IconByName,
+  overrideColorTheme,
+} from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
-import nipun_badge from "../stories/assets/nipun_badge.svg"
+import nipun_badge from "../stories/assets/nipun_badge.svg";
 const colors = overrideColorTheme(colorTheme);
 
-const CardBasedOnStatus = ({status, children}) => {
-  if(status === 'ongoing'){
-    return <Box bg={'#ffebd0'} borderRadius={10}>{children}</Box>
+const CardBasedOnStatus = ({ status, children }) => {
+  if (status === "ongoing") {
+    return (
+      <Box bg={"#ffebd0"} borderRadius={10}>
+        {children}
+      </Box>
+    );
   }
-  if(status === 'complete' || status === 'completeWithNipun'){
-    return <Box bg={"#ECF7EB"} borderRadius={10}>{children}</Box>
+  if (status === "complete" || status === "completeWithNipun") {
+    return (
+      <Box bg={"#ECF7EB"} borderRadius={10}>
+        {children}
+      </Box>
+    );
   }
-  return <Box bg={"white"} borderRadius={10}>{children}</Box>
-}
+  return (
+    <Box bg={"white"} borderRadius={10}>
+      {children}
+    </Box>
+  );
+};
 
 function SchoolCard({ schoolId }) {
   const navigate = useNavigate();
@@ -32,12 +50,12 @@ function SchoolCard({ schoolId }) {
   const getSchoolDetail = async (id) => {
     const detail = await hpAssessmentRegistryService.getSchoolDetail(id);
     setSchoolDetail(detail);
-  }
+  };
 
   const _handleSchoolSelect = () => {
-    localStorage.setItem('hp-assessment-school', JSON.stringify(schoolDetail));
-    navigate('/school-profile');
-  }
+    localStorage.setItem("hp-assessment-school", JSON.stringify(schoolDetail));
+    navigate("/school-profile");
+  };
 
   useEffect(() => {
     getSchoolDetail(schoolId);
@@ -71,24 +89,42 @@ function SchoolCard({ schoolId }) {
                       </VStack>
                     </HStack>
                   </Box>
-                  {
-                    schoolDetail?.status === 'completeWithNipun' && <Box alignItems='end'>
-                      <img src={nipun_badge} alt="nipun" style={{maxWidth: '45px'}} />
+                  {schoolDetail?.status === "completeWithNipun" && (
+                    <Box alignItems="end">
+                      <img
+                        src={nipun_badge}
+                        alt="nipun"
+                        style={{ maxWidth: "45px" }}
+                      />
                     </Box>
-                  }
+                  )}
                 </HStack>
               </Box>
-              <Divider bg={schoolDetail?.status === 'ongoing' ? colors.warning : (schoolDetail?.status === 'complete' || schoolDetail?.status === 'completeWithNipun' ? '#C5DCC3' : '#EEEEEE')} />
+              <Divider
+                bg={
+                  schoolDetail?.status === "ongoing"
+                    ? colors.warning
+                    : schoolDetail?.status === "complete" ||
+                      schoolDetail?.status === "completeWithNipun"
+                    ? "#C5DCC3"
+                    : "#EEEEEE"
+                }
+              />
               <Box p={4}>
                 <HStack
                   alignItems={"center"}
                   justifyContent={"space-between"}
                   flexWrap={"wrap"}
                 >
-                  <Box w={'50%'}>
+                  <Box w={"50%"}>
                     <VStack>
                       <HStack alignItems="center">
-                        <IconByName size="12px" mr={2} ml="-7px" name="MapPinLineIcon" />
+                        <IconByName
+                          size="12px"
+                          mr={2}
+                          ml="-7px"
+                          name="MapPinLineIcon"
+                        />
                         <Text color="#666" fontSize="12">
                           District
                         </Text>
@@ -97,10 +133,15 @@ function SchoolCard({ schoolId }) {
                     </VStack>
                   </Box>
 
-                  <Box w={'50%'}>
+                  <Box w={"50%"}>
                     <VStack>
                       <HStack alignItems="center">
-                        <IconByName size="12px" mr={2} ml="-7px" name="GovernmentLineIcon" />
+                        <IconByName
+                          size="12px"
+                          mr={2}
+                          ml="-7px"
+                          name="GovernmentLineIcon"
+                        />
                         <Text color="#666" fontSize="12">
                           Block
                         </Text>
@@ -109,7 +150,7 @@ function SchoolCard({ schoolId }) {
                     </VStack>
                   </Box>
 
-                  <Box w={'50%'} mt={4}>
+                  <Box w={"50%"} mt={4}>
                     <VStack>
                       <HStack alignItems="center">
                         <IconByName
@@ -126,7 +167,7 @@ function SchoolCard({ schoolId }) {
                     </VStack>
                   </Box>
 
-                  <Box w={'50%'} mt={4}>
+                  <Box w={"50%"} mt={4}>
                     <VStack>
                       <HStack alignItems="center">
                         <IconByName
@@ -143,7 +184,7 @@ function SchoolCard({ schoolId }) {
                     </VStack>
                   </Box>
 
-                  <Box w={'50%'} mt={4}>
+                  <Box w={"50%"} mt={4}>
                     <VStack>
                       <HStack alignItems="center">
                         <IconByName

@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import {
-  Box,
-  HStack,
-  VStack,
-  Text, Divider, Button
-} from "native-base";
+import { Box, HStack, VStack, Text, Divider, Button } from "native-base";
 import {
   DEFAULT_THEME,
   H2,
   IconByName,
-  Collapsible, ProgressBar, overrideColorTheme
+  Collapsible,
+  ProgressBar,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -24,7 +21,7 @@ export default function SchoolAssessmentProgressBox() {
     },
     {
       name: "4 Completed",
-      color: '#DF5B5B',
+      color: "#DF5B5B",
       value: 4,
     },
     {
@@ -38,47 +35,46 @@ export default function SchoolAssessmentProgressBox() {
       <Box>
         <VStack space={4}>
           <HStack alignItems="center">
-            <Box w={'20%'}>
-              Grade I
-            </Box>
-            <Box w={'79%'}>
-              <ProgressBar
-                flex="1"
-                data={progressAssessment}
-              />
+            <Box w={"20%"}>Grade I</Box>
+            <Box w={"79%"}>
+              <ProgressBar flex="1" data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center">
-            <Box w={'20%'}>
-              Grade II
-            </Box>
-            <Box w={'79%'}>
-              <ProgressBar
-                data={progressAssessment}
-              />
+            <Box w={"20%"}>Grade II</Box>
+            <Box w={"79%"}>
+              <ProgressBar data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center">
-            <Box w={'20%'}>
-              Grade III
-            </Box>
-            <Box w={'79%'}>
-              <ProgressBar
-                data={progressAssessment}
-              />
+            <Box w={"20%"}>Grade III</Box>
+            <Box w={"79%"}>
+              <ProgressBar data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center" justifyContent="space-between">
-            <HStack alignItems="center" >
-              <Box w='15px' h="15px" mr={2} bg={colors.successBarColor} rounded={4}></Box>
+            <HStack alignItems="center">
+              <Box
+                w="15px"
+                h="15px"
+                mr={2}
+                bg={colors.successBarColor}
+                rounded={4}
+              ></Box>
               <Text>Nipun</Text>
             </HStack>
-            <HStack alignItems="center" >
-              <Box w='15px' h="15px" mr={2} bg={'#DF5B5B'} rounded={4}></Box>
+            <HStack alignItems="center">
+              <Box w="15px" h="15px" mr={2} bg={"#DF5B5B"} rounded={4}></Box>
               <Text>Completed</Text>
             </HStack>
-            <HStack alignItems="center" >
-              <Box w='15px' h="15px" mr={2} bg={colors.unmarked} rounded={4}></Box>
+            <HStack alignItems="center">
+              <Box
+                w="15px"
+                h="15px"
+                mr={2}
+                bg={colors.unmarked}
+                rounded={4}
+              ></Box>
               <Text>Not Assessed</Text>
             </HStack>
           </HStack>
