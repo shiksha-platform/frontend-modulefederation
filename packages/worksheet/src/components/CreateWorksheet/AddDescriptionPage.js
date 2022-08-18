@@ -50,7 +50,7 @@ export default function AddDescriptionPage({
   ];
 
   const validate = () => {
-    let attribute = ["name", "description", "subject", "grade", "topic"];
+    let attribute = ["name", "description", "subject", "grade"];
     let errorArr = {};
     attribute.forEach((item) => {
       if (!formData[item] || formData[item] === "") {
