@@ -4,7 +4,6 @@ import {
   H2,
   IconByName,
   Layout,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import { Box, Button, HStack, Text, VStack } from "native-base";
@@ -12,12 +11,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 import WorksheetActionsheet from "../Actionsheet/WorksheetActionsheet";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 const styles = {
   addQuestionsBox: {
-    bg: colors.white,
+    bg: "worksheet.white",
     p: "5",
     position: "sticky",
     bottom: "85",
@@ -135,7 +132,7 @@ const FormWorksheet = ({
         iconComponent:
           pageName !== "success" ? (
             <Button
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="15px"
               py="10px"
               fontSize="12px"
@@ -159,7 +156,7 @@ const FormWorksheet = ({
         </HStack>
       }
       _subHeader={{
-        bg: colors.worksheetCardBg,
+        bg: "worksheet.cardBg",
         _text: {
           fontSize: "16px",
           fontWeight: "600",
@@ -175,7 +172,9 @@ const FormWorksheet = ({
         ) ? (
           <Box
             bg={
-              pageName === "success" ? colors.successAlert : colors.warningAlert
+              pageName === "success"
+                ? "worksheet.successAlert"
+                : "worksheet.warningAlert"
             }
             p="5"
           >
@@ -183,8 +182,8 @@ const FormWorksheet = ({
               <BodyLarge
                 color={
                   pageName === "success"
-                    ? colors.successAlertText
-                    : colors.worksheetText
+                    ? "worksheet.success"
+                    : "worksheet.darkGary4"
                 }
               >
                 {pageName === "success"
@@ -201,8 +200,8 @@ const FormWorksheet = ({
                 name="CloseCircleLineIcon"
                 color={
                   pageName === "success"
-                    ? colors.successAlertText
-                    : colors.worksheetText
+                    ? "worksheet.success"
+                    : "worksheet.darkGary4"
                 }
                 p="0"
                 onPress={(e) => setIsDataFilter(false)}
@@ -212,7 +211,7 @@ const FormWorksheet = ({
         ) : (
           ""
         )}
-        <Box bg={colors.white} p="5">
+        <Box bg={"worksheet.white"} p="5">
           <VStack space="5">
             {showQuestions.map((question, index) => {
               const isExist = selectData.filter(
@@ -225,13 +224,15 @@ const FormWorksheet = ({
                       <IconByName
                         name="InformationFillIcon"
                         p="1"
-                        color={colors.primary}
+                        color={"worksheet.primary"}
                         onPress={(e) => setQuestionObject(question)}
                       />
                       {!isSuccess ? (
                         <IconByName
                           p="1"
-                          color={isExist ? colors.primary : colors.lightGray2}
+                          color={
+                            isExist ? "worksheet.primary" : worksheet.lightGray2
+                          }
                           name={
                             isExist
                               ? "CheckboxLineIcon"
@@ -263,7 +264,7 @@ const FormWorksheet = ({
               <Button
                 flex="1"
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "worksheet.white" }}
                 px="5"
                 onPress={handleAddQuestions}
               >

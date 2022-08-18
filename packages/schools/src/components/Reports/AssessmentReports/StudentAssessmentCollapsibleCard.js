@@ -32,17 +32,17 @@ function StudentAssessmentCollapsibleCard() {
   const [progressData, setProgressData] = React.useState([
     {
       name: "22 Present",
-      color: colors.green,
+      color: "schools.green",
       value: 22,
     },
     {
       name: "4 Absent",
-      color: colors.absent,
+      color: "schools.absent",
       value: 4,
     },
     {
       name: "1 Unmarked",
-      color: colors.unmarked,
+      color: "schools.unmarked",
       value: 1,
     },
   ]);
@@ -54,14 +54,14 @@ function StudentAssessmentCollapsibleCard() {
           <VStack>
             <H2 fontWeight={600}>{t("Student Wise Assessment")}</H2>
             <HStack alignItems={"center"}>
-              <BodyMedium color={colors.darkGray}>
+              <BodyMedium color={"schools.darkGray"}>
                 {t("20 Students")}{" "}
               </BodyMedium>
-              <Text fontSize="5px" color={colors.darkGray} fontWeight={400}>
+              <Text fontSize="5px" color={"schools.darkGray"} fontWeight={400}>
                 {" "}
                 ●{" "}
               </Text>
-              <BodyMedium color={colors.darkGray}>
+              <BodyMedium color={"schools.darkGray"}>
                 {" "}
                 {t("Max Score 25")}
               </BodyMedium>

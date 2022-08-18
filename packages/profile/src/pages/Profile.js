@@ -19,7 +19,7 @@ import {
   Layout,
   Menu,
   telemetryFactory,
-  teacherRegistryService,
+  userRegistryService,
   attendanceRegistryService,
   H4,
   H1,
@@ -48,7 +48,7 @@ export default function Profile({ footerLinks, appName }) {
 
     const getData = async () => {
       if (!ignore) {
-        const resultTeacher = await teacherRegistryService.getOne();
+        const resultTeacher = await userRegistryService.getOne();
         setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),
@@ -134,7 +134,7 @@ export default function Profile({ footerLinks, appName }) {
             <Box minH={"150px"}>
               <Box
                 position={"absolute"}
-                bg={colors.cardBgTransparent}
+                bg={"profile.cardBgTransparent"}
                 bottom={0}
                 p={5}
                 pb={8}
@@ -142,8 +142,8 @@ export default function Profile({ footerLinks, appName }) {
               >
                 <HStack alignItems="center" justifyContent="space-between">
                   <VStack>
-                    <H4 color={colors.white}>{t("MY_PROFILE")}</H4>
-                    <H1 color={colors.white}>
+                    <H4 color={"profile.white"}>{t("MY_PROFILE")}</H4>
+                    <H1 color={"profile.white"}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
                   </VStack>
@@ -175,7 +175,7 @@ export default function Profile({ footerLinks, appName }) {
         }
         _subHeader={{
           bottom: "15px",
-          bg: colors.cardBg,
+          bg: "profile.cardBg",
         }}
         _footer={footerLinks}
       >
@@ -219,7 +219,7 @@ export default function Profile({ footerLinks, appName }) {
 }
 
 const Section = ({ title, button, children, _box, _title }) => (
-  <Box bg={colors.white} p="5" {..._box}>
+  <Box bg={"profile.white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"} {..._title}>
       <H3>{title}</H3>
       {button}
@@ -258,7 +258,7 @@ const Collapsible = ({
           <HStack alignItems={"center"} justifyContent={"space-between"}>
             <Text
               fontSize={typeof isHeaderBold === "undefined" ? "14px" : ""}
-              color={colors.gray}
+              color={"profile.gray"}
               fontWeight="500"
               {..._text}
             >
@@ -269,8 +269,8 @@ const Collapsible = ({
               isDisabled={true}
               color={
                 !collaps || collapsButton
-                  ? colors.grayInLight
-                  : colors.grayInDark
+                  ? "profile.lightGray1"
+                  : "profile.darkGary3"
               }
               name={
                 !collaps || collapsButton

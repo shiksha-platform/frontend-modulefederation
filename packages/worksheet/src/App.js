@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import QuestionBank from "pages/QuestionBank";
 import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";
@@ -13,49 +12,58 @@ import Worksheet from "./pages/Worksheet";
 import WorksheetShare from "./pages/WorksheetShare";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
   initializeI18n(
     ["worksheet"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
   );
   const routes = [
     {
+      moduleName: "worksheet",
       path: "/worksheet/list/:state",
       component: Worksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/list",
       component: Worksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:worksheetId/share",
       component: WorksheetShare,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/questionBank",
       component: QuestionBank,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:id",
       component: WorksheetQuestionBank,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:id/edit",
       component: EditWorksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/create",
       component: CreateWorksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/template/:worksheetId",
       component: WorksheetTemplate,
     },
     {
+      moduleName: "worksheet",
       path: "*",
       component: Teaching,
     },
@@ -64,7 +72,6 @@ function App() {
 
   return (
     <AppShell
-      theme={theme}
       basename={process.env.PUBLIC_URL}
       routes={routes}
       AuthComponent={LoginComponent}

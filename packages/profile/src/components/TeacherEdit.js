@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import {
   H1,
   H3,
-  teacherRegistryService,
+  userRegistryService,
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
@@ -121,7 +121,7 @@ export default function TeacherEdit({
     if (validate()) {
       if (editChangeState && setTeacherObject) {
         let result = {};
-        result = await teacherRegistryService.update(object, {
+        result = await userRegistryService.update(object, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
@@ -133,13 +133,13 @@ export default function TeacherEdit({
             render: () => {
               return (
                 <Box
-                  bg={colors.studentHeadingBg}
+                  bg={"profile.activeClass"}
                   px="3"
                   py="2"
                   rounded="sm"
                   mb={5}
                 >
-                  <H1 color={colors.coolGray}>
+                  <H1 color={"profile.lightGray3"}>
                     {result.data?.params?.status
                       ? result.data?.params?.status
                       : "successful"}
@@ -177,7 +177,7 @@ export default function TeacherEdit({
           editState ? (
             <Button
               colorScheme="button"
-              _text={{ fontWeight: "400", color: "white" }}
+              _text={{ fontWeight: "400", color: "profile.white" }}
               py={1}
               px={2}
               onPress={handleSubmit}
@@ -211,13 +211,13 @@ export default function TeacherEdit({
             <Stack
               p="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
-              borderColor={colors.coolGraylight}
+              borderColor={"profile.lightGray5"}
               key={index}
             >
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <H3 color={colors.labelColor} textTransform={"uppercase"}>
+                    <H3 color={"profile.unmarked"} textTransform={"uppercase"}>
                       {item.placeholder}
                     </H3>
                   </FormControl.Label>
@@ -246,7 +246,7 @@ export default function TeacherEdit({
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: colors.error,
+                        color: "profile.error",
                         fontWeight: 500,
                       }}
                     >
@@ -260,7 +260,7 @@ export default function TeacherEdit({
                 <>
                   <H3
                     fontWeight="500"
-                    color={colors.labelColor}
+                    color={"profile.unmarked"}
                     textTransform={"uppercase"}
                     pb="2"
                   >
@@ -286,7 +286,7 @@ export default function TeacherEdit({
 }
 
 const Section = ({ title, button, children, _box }) => (
-  <Box bg={colors.white} p="5" {..._box}>
+  <Box bg={"profile.white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"}>
       <H3>{title}</H3>
       {button}

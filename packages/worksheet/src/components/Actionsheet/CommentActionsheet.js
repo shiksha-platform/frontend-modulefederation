@@ -53,6 +53,7 @@ export default function Comment({
       let newData = {
         contextId: worksheet?.id,
         context: "Worksheet",
+        userId: localStorage.getItem("id"),
         status: "Publish",
         comment,
       };
@@ -76,14 +77,14 @@ export default function Comment({
       isOpen={showModuleComments}
       onClose={() => setShowModuleComments(false)}
     >
-      <Actionsheet.Content alignItems={"left"} bg={colors.worksheetCardBg}>
+      <Actionsheet.Content alignItems={"left"} bg={"worksheet.cardBg"}>
         <HStack justifyContent={"space-between"}>
           <Stack p={5} pt={1} pb="15px">
             <H2>{t("Comments")}</H2>
           </Stack>
           <IconByName
             name="CloseCircleLineIcon"
-            color={colors.worksheetCardIcon}
+            color={"worksheet.primaryDark"}
             onPress={(e) => setShowModuleComments(false)}
           />
         </HStack>
@@ -92,7 +93,7 @@ export default function Comment({
         <ScrollView>
           <VStack space="1px">
             {comments.map((item, index) => (
-              <Box bg={colors.white} p="5" key={index}>
+              <Box bg={"worksheet.white"} p="5" key={index}>
                 <HStack space="2" alignItems="center">
                   <Avatar
                     size="35px"
@@ -108,7 +109,7 @@ export default function Comment({
                   <VStack>
                     {console.log(item?.userData)}
                     <BodyLarge>{`${item?.userData?.firstName} ${item?.userData?.lastName}`}</BodyLarge>
-                    <Subtitle color={colors.lightGray2}>
+                    <Subtitle color={"worksheet.lightGray2"}>
                       {moment(item?.createdAt).format("DD MMMM, hh:mma")}
                     </Subtitle>
                   </VStack>
@@ -120,13 +121,13 @@ export default function Comment({
             ))}
           </VStack>
         </ScrollView>
-        <Box bg={colors.white} p="5">
+        <Box bg={"worksheet.white"} p="5">
           <HStack space="2" alignItems="center" w={"100%"}>
             <FormControl isInvalid={error}>
               <InputGroup>
                 <Input
                   h="48px"
-                  bg={colors.lightGray4}
+                  bg={"worksheet.lightGray4"}
                   size={"full"}
                   placeholder={t("WRITE_COMMENT")}
                   value={comment}
@@ -134,10 +135,10 @@ export default function Comment({
                 />
                 <InputRightAddon
                   children={
-                    <Box rounded="full" bg={colors.primary}>
+                    <Box rounded="full" bg={"worksheet.primary"}>
                       <IconByName
                         _icon={{ size: "15" }}
-                        color={colors.white}
+                        color={"worksheet.white"}
                         name="SendPlane2LineIcon"
                         onPress={handleSubmit}
                       />
@@ -147,7 +148,7 @@ export default function Comment({
               </InputGroup>
               {error ? (
                 <FormControl.ErrorMessage>
-                  <BodySmall color={colors.eventError}>{error}</BodySmall>
+                  <BodySmall color={"worksheet.eventError"}>{error}</BodySmall>
                 </FormControl.ErrorMessage>
               ) : (
                 <></>

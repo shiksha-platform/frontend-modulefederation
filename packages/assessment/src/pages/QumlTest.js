@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import colorTheme from "../colorTheme";
+import { QUMLBaseURL } from "assets/constants";
 const colors = overrideColorTheme(colorTheme);
 
 export default function QumlTest({
@@ -67,11 +68,15 @@ export default function QumlTest({
   };
 
   const getAssessmentData = async (result) => {
-    const id = result.result?.Trackassessment?.osid || "";
+    // const id = result.result?.Trackassessment?.osid || "";
+    const id = result.data?.insert_trackassessment_one?.trackAssessmentId || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    localStorage.setItem("assessment-score", assessmentDetails.score);
-    localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
+    localStorage.setItem("assessment-score", assessmentDetails[0].score);
+    localStorage.setItem(
+      "assessment-totalScore",
+      assessmentDetails[0].totalScore
+    );
     setLoading(false);
     // navigate("/assessment/assessment-result");
     setPageName("assessmentResult");
@@ -179,20 +184,11 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`https://quml.shikshaplatform.io/?questions=${questionIds.join(
-            ","
-          )}`}
-          // src={`http://139.59.25.99:8090/?questions=${questionIds.join(",")}`}
-          // src={`http://192.168.0.105:4200/?questions=${questionIds.join(',')}`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds.join(",")}`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
       )}
-      {/*<iframe
-        src="http://139.59.25.99:8090/?questions=do_431353902437642240011003,do_431353902009694617611001,do_431353902575100723211006"
-        frameBorder="0"
-        style={{ height: "calc(100vh - 315px)" }}
-      />*/}
     </Layout>
   );
 }

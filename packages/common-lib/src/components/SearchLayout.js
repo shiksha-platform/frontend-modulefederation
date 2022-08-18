@@ -64,6 +64,7 @@ export default function SearchLayout({
               //     />
               //   </React.Fragment>
               // }
+              onChange={(e) => setSearch(e.target.value)}
               placeholder={
                 searchPlaceholder
                   ? searchPlaceholder

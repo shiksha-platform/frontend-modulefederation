@@ -3,18 +3,15 @@ import {
   IconByName,
   Layout,
   FilterButton,
-  DEFAULT_THEME,
   overrideColorTheme,
   BodyMedium,
   BodyLarge,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import {
   Box,
   HStack,
-  Text,
   VStack,
   Button,
   Actionsheet,
@@ -22,7 +19,6 @@ import {
   Divider,
 } from "native-base";
 import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
-import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 const defaultInputs = [
@@ -49,7 +45,7 @@ const defaultInputs = [
   },
 ];
 
-export default function Recommendedschools() {
+export default function Recommendedschools({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [sortModal, setSortModal] = useState(false);
@@ -64,59 +60,18 @@ export default function Recommendedschools() {
     <Layout
       _header={{
         title: "Recommended Schools",
-        _heading: { color: colors.white },
         isEnableSearchBtn: true,
-        subHeading: t("See all your recommended schools for visits here"),
-        _subHeading: { color: colors.white, textTransform: "none" },
       }}
+      subHeader={
+        <H2 textTransform="inherit">
+          See all your recommended schools for visits here
+        </H2>
+      }
       _appBar={{ languages: ["en"] }}
       _subHeader={{ bg: colors.lightPurple }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitelaize",
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/visits",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg={colors.white}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>
@@ -136,10 +91,6 @@ export default function Recommendedschools() {
                     }}
                   >
                     Sort
-                    {/* <IconByName
-                      name="ArrowDownSLineIcon"
-                      color={colors.primary}
-                    /> */}
                   </Button>
                 </HStack>
               </Box>
@@ -149,8 +100,6 @@ export default function Recommendedschools() {
                   getObject={callBackFilterObject}
                   object={filterObject}
                   _actionSheet={{ bg: colors.lightGray }}
-                  _box={{ pt: 5 }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2", mr: "4" }}
                   _filterButton={{
                     rightIcon: "",
                     bg: colors.white,
@@ -183,7 +132,6 @@ export default function Recommendedschools() {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
-          {/*<Actionsheet.Item>Mathematics</Actionsheet.Item>*/}
           <Box pt="0">
             <BodyMedium color={colors.subtitle}>By last visited</BodyMedium>
             <Actionsheet.Item>

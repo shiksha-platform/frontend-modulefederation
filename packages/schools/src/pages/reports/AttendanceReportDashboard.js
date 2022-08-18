@@ -25,7 +25,7 @@ import CalendarBar from "../../components/CalendarBar";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function AttendanceReportDashboard() {
+export default function AttendanceReportDashboard({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [teacherDetailModal, setTeacherDetailModal] = useState(false);
@@ -38,53 +38,16 @@ export default function AttendanceReportDashboard() {
     <Layout
       _header={{
         title: "Attendance Reports",
-        _heading: { color: colors.white },
       }}
+      subHeader={<H2>View Class wise attendance report</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
         languages: ["en"],
         isEnableSearchBtn: true,
       }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/my-visits",
-            routeparameters: {},
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg={"schools.white"}>
         <VStack space={6}>
           <Box>
             <HStack
@@ -113,14 +76,11 @@ export default function AttendanceReportDashboard() {
                       : t("TODAY VIEW")}
                   </>
                 </Button>
-                <Actionsheet
-                  isOpen={showModal}
-                  _backdrop={{ opacity: "0.9", bg: colors.lightGray }}
-                >
+                <Actionsheet isOpen={showModal}>
                   <Actionsheet.Content
-                    p="0"
+                    p="3"
                     alignItems={"left"}
-                    bg={colors.lightGray}
+                    bg={"schools.cardBg"}
                   >
                     <HStack justifyContent={"space-between"}>
                       <Stack p={5} pt={2} pb="15px">
@@ -129,7 +89,7 @@ export default function AttendanceReportDashboard() {
                       <IconByName
                         name="CloseCircleLineIcon"
                         onPress={(e) => setShowModal(false)}
-                        color={colors.cheveron}
+                        color={"schools.darkGray"}
                       />
                     </HStack>
                   </Actionsheet.Content>
@@ -145,8 +105,6 @@ export default function AttendanceReportDashboard() {
                         <Pressable
                           key={index}
                           p="5"
-                          borderBottomWidth={1}
-                          borderBottomColor={"coolGray.500"}
                           onPress={(e) => {
                             setCalendarView(item.value);
                             setShowModal(false);

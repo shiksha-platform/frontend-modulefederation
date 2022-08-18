@@ -38,6 +38,7 @@ export default function PastAssessmentList({
   classId,
   selectedSubject,
   schoolDetails,
+  footerLinks,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -56,9 +57,10 @@ export default function PastAssessmentList({
     const data = await assessmentRegistryService.getAllAssessment({
       filters: { groupId: classId, subject: selectedSubject },
     });
-    data.forEach((item) => {
-      item.date = moment(item.createdAt).format("MM-DD-YYYY");
-    });
+    data &&
+      data.forEach((item) => {
+        item.date = moment(item.createdAt).format("MM-DD-YYYY");
+      });
     const groupedAssessments = groupBy(data, "date");
     setAllGroupedAssessments(groupedAssessments);
     setLoading(false);
@@ -208,45 +210,7 @@ export default function PastAssessmentList({
         </VStack>
       }
       _subHeader={{ bg: colors.cardBg, py: "6" }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Box p={4}>
         <>

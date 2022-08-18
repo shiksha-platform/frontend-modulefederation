@@ -36,6 +36,7 @@ export default function PastExaminationsList({
   classId,
   selectedSubject,
   schoolDetails,
+  footerLinks,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -81,45 +82,7 @@ export default function PastExaminationsList({
         </VStack>
       }
       _subHeader={{ bg: colors.cardBg, py: "6" }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Box p={4}>
         <>
