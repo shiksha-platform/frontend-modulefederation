@@ -24,9 +24,12 @@ import {
   BodyMedium,
   Subtitle,
   H4,
+  telemetryFactory
 } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
+import { useNavigate } from "react-router-dom";
 const colors = overrideColorTheme(colorTheme);
+// const { param } = useParams();
 
 // Start editing here, save and see your changes.
 export default function TeacherEdit({
@@ -36,7 +39,9 @@ export default function TeacherEdit({
   isEditable,
   header,
   nestedHeader,
-  nestedCollapse
+  nestedCollapse,
+  seeMore,
+  seeMoreBelowSection
 }) {
   const { t } = useTranslation("student");
   const [object, setObject] = useState({});
@@ -44,6 +49,7 @@ export default function TeacherEdit({
   const [editChangeState, setEditChangeState] = useState(false);
   const [errors, setErrors] = React.useState({});
   const toast = useToast();
+  const navigate = useNavigate();
   const onlyParameter =
     onlyParameterProp?.length > "0"
       ? onlyParameterProp
@@ -56,6 +62,39 @@ export default function TeacherEdit({
         "email",
         "gender",
       ];
+
+  const userObject = {
+    aadhar_number: "aadhaar",
+    residential_address: "address",
+    district: "district",
+    block: "block",
+    pincode: "pincode",
+    date_of_birth: "birthDate",
+    gender: "gender",
+    social_category: "socialCategory",
+    blood_group: "bloodGroup",
+    marital_status: "maritalStatus",
+    disability: "disability",
+    employee_code: "employeeCode",
+    employment_address: "address",
+    employment_type: "employmentType",
+    "present_designation/cadre": "designation",
+    qualifications: "profQualification",
+    teacher_category: "teacherCategory",
+    "subjects / subject ids": "subjectIds",
+    date_of_joining: "joiningDate",
+    reporting_officer: "reportsTo",
+    place_of_current_posting: "district",
+    designation: "leavingDesignation",
+    cadre: "cadre",
+    transfer_order_number: "transferOrderNumber",
+    date_of_order: "dateOfOrder",
+    place_of_posting: "placeOfPosting",
+    mode_of_posting: "modeOfPosting",
+    phoneNumber: "phoneNumber",
+    email: "email"
+  }
+
   const parameter = {
     employeeCode: { placeholder: t("EMPLOYEE_CODE") },
     joiningDate: { placeholder: t("DATE_OF_JOINING") },
@@ -72,6 +111,7 @@ export default function TeacherEdit({
     },
   };
   const formInputs = onlyParameter.map((e) => {
+    console.log(e);
     return {
       ...parameter[e],
       name: e,
@@ -101,6 +141,8 @@ export default function TeacherEdit({
       },
     };
   });
+
+  //console.log(formInputs, "Form Inputs");
 
   const validate = () => {
     let arr = {};
@@ -166,6 +208,8 @@ export default function TeacherEdit({
       setEditChangeState(false);
     }
   };
+  console.log(object, "OBJECT");
+  // console.log({ ...teacherObject, object }, "TEACHER OBJECT+OBJ");
 
   useEffect(() => {
     let ignore = false;
@@ -184,6 +228,11 @@ export default function TeacherEdit({
       title={header ? header : t("DETAILS")}
       nestedTitle={nestedHeader}
       nestedDropdown={nestedCollapse}
+      seeMore={seeMore}
+      onlyParameter={onlyParameter}
+      seeMoreBelowSection={seeMoreBelowSection}
+      teacherObject={teacherObject}
+      object={object}
       button={
         isEditable !== false ? (
           editState ? (
@@ -287,46 +336,69 @@ export default function TeacherEdit({
             </Box>
           );
         })}
-        <Box alignItems="center" p="3">
-          <Pressable
-            alignItems="center"
-          // onPress={() =>
-          //   showMore ? setShowMore(false) : setShowMore(true)
-          // }
-          >
-            <Subtitle color={colors.seeButton}>
-              {/* {showMore ? t("SHOW_LESS") : t("SHOW_MORE")} */}
-              SEE MORE
-            </Subtitle>
-          </Pressable>
-        </Box>
+        {seeMore &&
+          (<Box alignItems="center" p="3">
+            <Pressable
+              alignItems="center"
+              onPress={(e) =>
+                navigate(`/profile/seemore`, {
+                  state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [] },
+                })
+                //console.log(e)
+              }
+            >
+              <Subtitle color={colors.seeButton}>
+                {t("SEE_MORE")}
+              </Subtitle>
+            </Pressable>
+          </Box>)}
       </VStack>
-    </Section>
+    </Section >
   );
 }
 
-const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box }) => (
-  <Collapsible _header={{ height: "79px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
-    {nestedDropdown ?
-      (nestedTitle.map((item, index) => {
-        console.log(item, "item");
-        return (
-          <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
-            <Collapsible key={index} _header={{ height: "56px", borderBottomWidth: "1", borderColor: "#F4F4F4" }} header={<H4 color={colors.date} pl={1}>{item}</H4>}>
-              <HStack alignItems={"center"} justifyContent={"space-between"}>
-                {button}
-              </HStack>
-              <Stack pl={1}>
-                {children}
-              </Stack>
-            </Collapsible>
-          </Stack>)
-      }))
-      : <Box bg={colors.white} p="5" {..._box}>
-        <HStack alignItems={"center"} justifyContent={"space-between"}>
-          {button}
-        </HStack>
-        {children}
-      </Box>}
-  </Collapsible>
-);
+export const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box, seeMore, seeMoreBelowSection, teacherObject, object, onlyParameter }) => {
+  const { t } = useTranslation("student");
+  const navigate = useNavigate();
+  return (
+    <Collapsible _header={{ height: "60px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
+      {(nestedDropdown && nestedTitle.length > 0) ?
+        (nestedTitle.map((item, index) => {
+          console.log(item, "item");
+          return (
+            <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
+              <Collapsible key={index} _header={{ height: "40px", borderBottomWidth: "1", borderColor: "#F4F4F4" }} header={<H4 color={colors.date} pl={1}>{item}</H4>}>
+                <HStack alignItems={"center"} justifyContent={"space-between"}>
+                  {button}
+                </HStack>
+                <Stack pl={1}>
+                  {children}
+                </Stack>
+              </Collapsible>
+            </Stack>)
+        }))
+        : <Box bg={colors.white} p="5" {..._box}>
+          <HStack alignItems={"center"} justifyContent={"space-between"}>
+            {button}
+          </HStack>
+          {children}
+        </Box>}
+      {seeMoreBelowSection &&
+        (<Box alignItems="center" p="3">
+          <Pressable
+            alignItems="center"
+            onPress={(e) =>
+              navigate(`/profile/seemore`, {
+                state: { ...teacherObject, object, header: title, objectProp: onlyParameter, nestedCollapse: nestedDropdown === true ? true : false, nestedHeader: nestedTitle?.length > 0 ? nestedTitle : [] },
+              })
+              //console.log(e)
+            }
+          >
+            <Subtitle color={colors.seeButton}>
+              {t("SEE_MORE")}
+            </Subtitle>
+          </Pressable>
+        </Box>)}
+    </Collapsible>
+  )
+};

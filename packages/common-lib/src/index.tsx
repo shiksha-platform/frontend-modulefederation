@@ -26,6 +26,7 @@ import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
 import { getApiConfig } from './services/configApiRegistryService'
+import * as workHistoryRegistryService from './services/workHistoryRegistryService'
 import {
   getAllForUser,
   sendReadReceipt
@@ -63,7 +64,8 @@ export {
   sendReadReceipt,
   templateRegistryService,
   notificationRegistryService,
-  roleRegistryService
+  roleRegistryService,
+  workHistoryRegistryService
 }
 
 export * from './services/Auth'

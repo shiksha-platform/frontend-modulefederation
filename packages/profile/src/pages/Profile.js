@@ -27,6 +27,7 @@ import {
   H3,
   overrideColorTheme,
   BodyLarge,
+  workHistoryRegistryService
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
@@ -42,7 +43,16 @@ export default function Profile({ footerLinks, appName }) {
   const token = localStorage.getItem("token");
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
+  const [workHistoryData, setWorkHistoryData] = React.useState([])
   const navigate = useNavigate();
+
+  const getWorkHistoryData = async () => {
+    const result = await workHistoryRegistryService.sendNotificationSearch({
+      userId: teacherId
+    })
+    console.log(result, "history data");
+    setWorkHistoryData(result);
+  }
 
   useEffect(() => {
     let ignore = false;
@@ -93,6 +103,7 @@ export default function Profile({ footerLinks, appName }) {
           thisMonth: thisPersantage,
           lastMonth: lastPersantage,
         });
+        getWorkHistoryData();
       }
     };
     getData();
@@ -225,27 +236,7 @@ export default function Profile({ footerLinks, appName }) {
               "disability"
             ]}
             isEditable={false}
-          />
-          <TeacherEdit
-            header={t("CONTACT_DETAILS")}
-            teacherObject={teacherObject}
-            setTeacherObject={setTeacherObject}
-            onlyParameterProp={["phoneNumber", "email"]}
-          />
-          <TeacherEdit
-            header={t("Past_Positions_and_Transfer_History")}
-            teacherObject={teacherObject}
-            nestedCollapse={true}
-            nestedHeader={["11 August 2019 - 26 July 2020", "23 August 2020 - Present"]}
-            onlyParameterProp={[
-              "designation",
-              "cadre",
-              "transfer_order_number",
-              "date_of_order",
-              "place_of_posting",
-              "mode_of_posting"
-            ]}
-            isEditable={false}
+            seeMore={true}
           />
           <TeacherEdit
             header={t("Employment Details")}
@@ -267,6 +258,34 @@ export default function Profile({ footerLinks, appName }) {
               "place_of_current_posting"
             ]}
             isEditable={false}
+            seeMore={true}
+          />
+          <TeacherEdit
+            header={t("Past_Positions_and_Transfer_History")}
+            teacherObject={teacherObject}
+            nestedCollapse={true}
+            nestedHeader={
+              workHistoryData.map()
+            }
+            onlyParameterProp={[
+              "designation",
+              "cadre",
+              "transfer_order_number",
+              "date_of_order",
+              "place_of_posting",
+              "mode_of_posting"
+            ]}
+            isEditable={false}
+            seeMore={false}
+            seeMoreBelowSection={true}
+          />
+          <TeacherEdit
+            header={t("CONTACT_DETAILS")}
+            teacherObject={teacherObject}
+            setTeacherObject={setTeacherObject}
+            onlyParameterProp={["phoneNumber", "email"]}
+            isEditable={false}
+            seeMore={true}
           />
         </Stack>
       </Layout>
