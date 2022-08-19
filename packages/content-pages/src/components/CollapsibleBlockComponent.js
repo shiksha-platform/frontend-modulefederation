@@ -1,6 +1,9 @@
 import { BodyMedium, Collapsible } from "@shiksha/common-lib";
 
-const CollapsibleBlockComponent = ({ collapsibleHeader, collapsibleContent }) => {
+const CollapsibleBlockComponent = ({
+  collapsibleHeader,
+  collapsibleContent,
+}) => {
   return (
     <Collapsible
       defaultCollapse
