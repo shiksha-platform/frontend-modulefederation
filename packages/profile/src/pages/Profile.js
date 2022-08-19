@@ -28,7 +28,9 @@ import {
   H3,
   overrideColorTheme,
   BodyLarge,
-  workHistoryRegistryService
+  workHistoryRegistryService,
+  schoolRegistryService,
+  roleRegistryService
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
@@ -45,6 +47,8 @@ export default function Profile({ footerLinks, appName }) {
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
   const [workHistoryData, setWorkHistoryData] = React.useState([])
+  const [schoolData, setSchoolData] = React.useState({})
+  const [roleData, setRoleData] = React.useState({})
   const navigate = useNavigate();
 
   const getWorkHistoryData = async () => {

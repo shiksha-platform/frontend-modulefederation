@@ -113,16 +113,18 @@ export default function TeacherEdit({
   const formInputs = onlyParameter.map((e) => {
     //console.log("item:= ", e, "CHANGE:=", userObject[e], "value:=", object?.userObject[e]);
     // console.log(object.aadhaar);
-    // console.log(e);
-    // console.log("changed", userObject[e]);
-    // console.log("value:=", object?.userObject[e] ? object?.userObject[e] : "");
+    //console.log(e);
+    //console.log("changed", userObject[e]);
+    const change = userObject[e]
+    // console.log(change, "Changed");
+    // console.log("value:=", object?.change);
     return {
       ...parameter[e],
       name: e,
       placeholder: parameter[e]?.placeholder ? parameter[e].placeholder : e,
       isRequired: parameter[e]?.required ? parameter[e].required : false,
       type: parameter[e]?.type ? parameter[e].type : "text",
-      value: object?.[e] ? object[e] : "",
+      value: object.change ? object.change : "",
       onChange: (item) => {
         setEditChangeState(true);
         if (e === "firstName") {
