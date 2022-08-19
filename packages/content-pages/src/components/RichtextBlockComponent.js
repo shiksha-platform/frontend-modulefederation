@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import { mock1, mock2 } from "./mock";
+import DOMPurify from "isomorphic-dompurify";
 
 console.log(mock1);
 export default function RichtextBlockComponent({initialData}) {
@@ -23,5 +24,5 @@ export default function RichtextBlockComponent({initialData}) {
     }
   }, [convertedContent]);
 
-  return <div dangerouslySetInnerHTML={{ __html: convertedContent }}></div>;
+  return <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(convertedContent) }}></div>;
 }
