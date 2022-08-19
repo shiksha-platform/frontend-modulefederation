@@ -4,6 +4,9 @@ import manifest from '../manifest.json'
 
 const interfaceData = {
   messageState: 'messageState',
+  readTimestamp: "readTimestamp",
+  sentTimestamp: "sentTimestamp",
+  deliveryTimestamp: "deliveryTimestamp",
   provider: 'provider',
   botUuid: 'botUuid',
   payload: 'payload',
@@ -14,7 +17,7 @@ const interfaceData = {
   sessionId: 'sessionId',
   ownerId: 'ownerId',
   fromId: 'fromId',
-  userId: '7597185708',
+  userId: 'userId',
   timestamp: 'timestamp'
 }
 

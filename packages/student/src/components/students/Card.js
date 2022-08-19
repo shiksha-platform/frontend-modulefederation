@@ -154,8 +154,8 @@ const SubCard = ({
             )}
           </Text>
           {attendance &&
-          workingDaysCount &&
-          attendance.length >= workingDaysCount ? (
+            workingDaysCount &&
+            attendance.length >= workingDaysCount ? (
             <Box bg={"student.starIconBg"} rounded="full">
               <IconByName
                 p="1px"
@@ -177,8 +177,8 @@ const SubCard = ({
             )}
             <Text color={"student.lightGray1"}>{" • "}</Text>
             <Text>{t("ROLL_NUMBER") + "."} </Text>
-            {item.admissionNo ? (
-              <Text>{item.admissionNo.toString().padStart(2, "0")}</Text>
+            {item.id ? (
+              <Text>{item.id.toString().padStart(2, "0")}</Text>
             ) : (
               <Text italic>{t("NOT_ENTERED")}</Text>
             )}
@@ -190,14 +190,14 @@ const SubCard = ({
             ) : (
               <HStack space={1}>
                 <Text>{t("ROLL_NUMBER") + "."}</Text>
-                {item.admissionNo ? (
-                  <Text>{item.admissionNo.toString().padStart(2, "0")}</Text>
+                {item.id ? (
+                  <Text>{item.id.toString().padStart(2, "0")}</Text>
                 ) : (
                   <Text italic>{t("NOT_ENTERED")}</Text>
                 )}
                 <Text>{t("FATHERS_NAME")}:</Text>
-                {item.fathersName ? (
-                  <Text>{item.fathersName}</Text>
+                {item.parentName ? (
+                  <Text>{item.parentName}</Text>
                 ) : (
                   <Text italic>{t("NOT_ENTERED")}</Text>
                 )}

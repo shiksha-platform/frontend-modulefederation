@@ -106,8 +106,8 @@ const Notification = ({ footerLinks, appName }) => {
     )
       ? Response["attendance.allowed_role_to_send_attendance_notification"]
       : JSON.parse(
-          Response["attendance.allowed_role_to_send_attendance_notification"]
-        );
+        Response["attendance.allowed_role_to_send_attendance_notification"]
+      );
     setValidUsers(ValidUsersResp);
   };
 
@@ -260,7 +260,11 @@ const Notification = ({ footerLinks, appName }) => {
         )}
         <Actionsheet
           isOpen={showModalMore}
-          onClose={() => setShowModalMore(false)}
+          onClose={() => {
+            setShowModalMore(false)
+            setNotification({})
+          }
+          }
         >
           <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
@@ -442,6 +446,7 @@ const NotificationBox = ({
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
+  console.log(data);
 
   const readReceipt = async (id) => {
     const resp1 = await sendReadReceipt({
@@ -500,11 +505,11 @@ const NotificationBox = ({
                 />
                 {value.messageState === "READ" ? (
                   <BodySmall>
-                    {moment.utc(value.timestamp).local().format("LT")}
+                    {moment.utc(value.sentTimestamp).local().format("LT")}
                   </BodySmall>
                 ) : (
                   <Subtitle>
-                    {moment.utc(value.timestamp).local().format("LT")}
+                    {moment.utc(value.sentTimestamp).local().format("LT")}
                   </Subtitle>
                 )}
               </HStack>

@@ -774,7 +774,7 @@ const Send = ({ data, page, setPage, date }) => {
                     color={"notification.cardCloseIcon"}
                     isDisabled
                   />
-                  <BodyLarge>"Sent - 23rd April, 2022."</BodyLarge>
+                  <BodyLarge>{"Sent At:- " + moment.utc(notification?.createdAt).local().format("LT")}</BodyLarge>
                 </HStack>
               </Box>
               <Box
@@ -790,7 +790,7 @@ const Send = ({ data, page, setPage, date }) => {
                     isDisabled
                   />
                   <BodyLarge>
-                    {t("Scheduled - weekly on Thursday, 2:00 pm")}
+                    {t("Scheduled - ")}
                   </BodyLarge>
                 </HStack>
               </Box>

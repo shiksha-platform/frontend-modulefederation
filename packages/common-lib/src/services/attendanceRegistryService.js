@@ -18,7 +18,8 @@ const interfaceData = {
   latitude: 'latitude',
   longitude: 'longitude',
   image: 'image',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  parentName: 'parentName'
 }
 
 let only = Object.keys(interfaceData)
@@ -48,8 +49,8 @@ export const getOne = async (params = {}, header = {}) => {
 
   const result = await get(
     process.env.REACT_APP_API_URL +
-      `/attendance/usersegment/` +
-      `${params.attendance}`,
+    `/attendance/usersegment/` +
+    `${params.attendance}`,
     {
       params: { ...params },
       headers
