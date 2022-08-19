@@ -127,27 +127,6 @@ const AssessmentResult = ({
     capture("INTERACT", telemetryData);
   };
 
-  const _handleSpotAssessmentEnd = () => {
-    const telemetryData = telemetryFactory.end({
-      appName,
-      type: "Spot-Assessment-End",
-    });
-    capture("END", telemetryData);
-  };
-
-  useEffect(() => {
-    _handleSpotAssessmentEnd();
-
-    // return () => {
-    //   localStorage.removeItem("assessment-score");
-    //   localStorage.removeItem("assessment-totalScore");
-    // };
-  }, []);
-
-  /*useEffect(() => {
-    localStorage.setItem("assessment-nextOption", nextOption || "");
-  }, [nextOption]);*/
-
   const SuccessComponent = () => {
     return (
       <>
