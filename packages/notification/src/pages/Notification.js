@@ -106,8 +106,8 @@ const Notification = ({ footerLinks, appName }) => {
     )
       ? Response["attendance.allowed_role_to_send_attendance_notification"]
       : JSON.parse(
-        Response["attendance.allowed_role_to_send_attendance_notification"]
-      );
+          Response["attendance.allowed_role_to_send_attendance_notification"]
+        );
     setValidUsers(ValidUsersResp);
   };
 
@@ -261,10 +261,9 @@ const Notification = ({ footerLinks, appName }) => {
         <Actionsheet
           isOpen={showModalMore}
           onClose={() => {
-            setShowModalMore(false)
-            setNotification({})
-          }
-          }
+            setShowModalMore(false);
+            setNotification({});
+          }}
         >
           <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>

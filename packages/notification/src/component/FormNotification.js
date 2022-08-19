@@ -133,7 +133,7 @@ export default function FormNotification({
     const moduleSmall = moduleName.toLowerCase();
     const eventConfig =
       configData[
-      `${moduleSmall}.event_triggers_to_send_attendance_notification`
+        `${moduleSmall}.event_triggers_to_send_attendance_notification`
       ];
     const triggers = eventConfig !== undefined ? checkJSON(eventConfig) : [];
     setETriggers(triggers);
@@ -306,14 +306,14 @@ export default function FormNotification({
                     {
                       dateTimeData.name == "Group"
                         ? setDateTime({
-                          ...dateTime,
-                          [dateTimeData.name]: value.title,
-                          ["GroupId"]: value.id,
-                        })
+                            ...dateTime,
+                            [dateTimeData.name]: value.title,
+                            ["GroupId"]: value.id,
+                          })
                         : setDateTime({
-                          ...dateTime,
-                          [dateTimeData.name]: value,
-                        });
+                            ...dateTime,
+                            [dateTimeData.name]: value,
+                          });
                     }
                     handleTelemetry(dateTimeData.name, value);
                   }}
@@ -322,8 +322,8 @@ export default function FormNotification({
                       ? "notification.lightGray2"
                       : dateTimeData.name === "Group" &&
                         dateTime[dateTimeData.name] === value.title
-                        ? "notification.lightGray2"
-                        : ""
+                      ? "notification.lightGray2"
+                      : ""
                   }
                 >
                   <Text colorScheme="button">
@@ -374,9 +374,9 @@ const FormInput = ({
           {...(item?.buttonVariant
             ? { variant: item.buttonVariant }
             : {
-              variant: "outline",
-              _text: { color: "notification.primary" }
-            })}
+                variant: "outline",
+                _text: { color: "notification.primary" },
+              })}
           rounded="full"
           colorScheme="button"
           px="5"

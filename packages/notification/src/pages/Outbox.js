@@ -774,7 +774,10 @@ const Send = ({ data, page, setPage, date }) => {
                     color={"notification.cardCloseIcon"}
                     isDisabled
                   />
-                  <BodyLarge>{"Sent At:- " + moment.utc(notification?.createdAt).local().format("LT")}</BodyLarge>
+                  <BodyLarge>
+                    {"Sent At:- " +
+                      moment.utc(notification?.createdAt).local().format("LT")}
+                  </BodyLarge>
                 </HStack>
               </Box>
               <Box
@@ -789,9 +792,7 @@ const Send = ({ data, page, setPage, date }) => {
                     color={"notification.cardCloseIcon"}
                     isDisabled
                   />
-                  <BodyLarge>
-                    {t("Scheduled - ")}
-                  </BodyLarge>
+                  <BodyLarge>{t("Scheduled - ")}</BodyLarge>
                 </HStack>
               </Box>
             </VStack>

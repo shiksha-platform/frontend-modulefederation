@@ -154,8 +154,8 @@ const SubCard = ({
             )}
           </Text>
           {attendance &&
-            workingDaysCount &&
-            attendance.length >= workingDaysCount ? (
+          workingDaysCount &&
+          attendance.length >= workingDaysCount ? (
             <Box bg={"student.starIconBg"} rounded="full">
               <IconByName
                 p="1px"
