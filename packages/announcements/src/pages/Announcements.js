@@ -355,7 +355,7 @@ const Announcements = ({ footerLinks, appName, pinnedAnnouncementsData }) => {
                 fontSize="xs"
                 rounded="4"
                 colorScheme="button"
-                variant="solid"
+                variant="subtle"
               >
                 {t(convertToTranslationKey(selectedAnnouncement.author))}
               </Badge>
