@@ -22,6 +22,7 @@ import {
   telemetryFactory,
   userRegistryService,
   attendanceRegistryService,
+  roleRegistryService,
   H4,
   H1,
   H3,
@@ -53,6 +54,18 @@ export default function Profile({ footerLinks, appName }) {
     console.log(result, "history data");
     setWorkHistoryData(result);
   }
+
+  // const getSchoolData = async() =>{
+  //   const result = await schoolRegistryService.getOne({})
+  //   console.log(result);
+  //   setSchoolData(result)
+  // }
+
+  // const getRoleData = async() =>{
+  //   const result = await roleRegistryService.getOne({})
+  //   console.log(result);
+  //   setRoleData(result)
+  // }
 
   useEffect(() => {
     let ignore = false;
@@ -187,7 +200,7 @@ export default function Profile({ footerLinks, appName }) {
             items={[
               {
                 keyId: 1,
-                title: t("TAKE_ATTENDANCE"),
+                title: t("MARK_ATTENDANCE"),
                 icon: "CalendarCheckLineIcon",
                 boxMinW: "177px",
                 _text: { minW: "115px" },
@@ -264,9 +277,7 @@ export default function Profile({ footerLinks, appName }) {
             header={t("Past_Positions_and_Transfer_History")}
             teacherObject={teacherObject}
             nestedCollapse={true}
-            nestedHeader={
-              workHistoryData.map()
-            }
+            nestedHeader={["26 July 2020 - 12 July 2021", "13 July 2021 - Present"]}
             onlyParameterProp={[
               "designation",
               "cadre",

@@ -274,10 +274,10 @@ export default function SelfAttedanceSheet({
             todayAttendance.attendance === PRESENT && todayAttendance.remark
               ? todayAttendance.remark
               : todayAttendance.attendance === PRESENT
-              ? t("MARK_PRESENT")
-              : todayAttendance.attendance === ABSENT
-              ? t("MARK_ABSENT")
-              : "",
+                ? t("MARK_PRESENT")
+                : todayAttendance.attendance === ABSENT
+                  ? t("MARK_ABSENT")
+                  : "",
         };
         setSelfAttendance(newAttedance);
         if (setAttendance) setAttendance(newAttedance);
@@ -453,7 +453,7 @@ export default function SelfAttedanceSheet({
             <H1 color={colors.present}>{t("ATTENDANCE_MARKED")}</H1>
             <BodyMedium textAlign="center">
               {selfAttendance.attendance === PRESENT &&
-              selfAttendance.name !== selfAttendance.remark
+                selfAttendance.name !== selfAttendance.remark
                 ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
                 : ""}
             </BodyMedium>
@@ -560,7 +560,7 @@ export default function SelfAttedanceSheet({
               <Pressable
                 key={index}
                 p={3}
-                bg={selfAttendance?.name === t(item.name) ? "gray.100" : ""}
+                bg={selfAttendance?.name === t(item.name) ? "#cdcfd1" : ""}
                 onPress={(e) => {
                   if (item.name === "RESET_TO_UNMARK") {
                     handleResetToUnmarkTelemetry(item);

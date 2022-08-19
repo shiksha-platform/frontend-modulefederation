@@ -43,7 +43,7 @@ export default function TeacherEdit({
   seeMore,
   seeMoreBelowSection
 }) {
-  const { t } = useTranslation("student");
+  const { t } = useTranslation();
   const [object, setObject] = useState({});
   const [editState, setEditState] = useState(false);
   const [editChangeState, setEditChangeState] = useState(false);
@@ -111,7 +111,11 @@ export default function TeacherEdit({
     },
   };
   const formInputs = onlyParameter.map((e) => {
-    console.log(e);
+    //console.log("item:= ", e, "CHANGE:=", userObject[e], "value:=", object?.userObject[e]);
+    // console.log(object.aadhaar);
+    // console.log(e);
+    // console.log("changed", userObject[e]);
+    // console.log("value:=", object?.userObject[e] ? object?.userObject[e] : "");
     return {
       ...parameter[e],
       name: e,
@@ -319,8 +323,8 @@ export default function TeacherEdit({
                 </FormControl>
               ) : (
                 <>
-                  <BodyLarge color={colors.formSubtitle} textTransform={"uppercase"} alignItems={"center"}>
-                    {item.placeholder}
+                  <BodyLarge color={colors.formSubtitle} alignItems={"center"}>
+                    {t(item.placeholder)}
                   </BodyLarge>
                   {item.value ? (
                     <BodyMedium textTransform="inherit" color={colors.date}>
@@ -358,7 +362,7 @@ export default function TeacherEdit({
 }
 
 export const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box, seeMore, seeMoreBelowSection, teacherObject, object, onlyParameter }) => {
-  const { t } = useTranslation("student");
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <Collapsible _header={{ height: "60px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
