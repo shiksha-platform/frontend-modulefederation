@@ -93,8 +93,7 @@ export default function Home({ footerLinks, appName }) {
               </VStack>
             </HStack>
           </Box>
-        ),
-        _heading: { color: colors.white },
+        )
       }}
       _appBar={{ languages: ["en"], isShowNotificationButton: true }}
       _footer={footerLinks}
