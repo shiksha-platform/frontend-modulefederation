@@ -29,8 +29,7 @@ import {
   overrideColorTheme,
   BodyLarge,
   workHistoryRegistryService,
-  schoolRegistryService,
-  roleRegistryService
+  schoolRegistryService
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
@@ -47,29 +46,69 @@ export default function Profile({ footerLinks, appName }) {
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
   const [workHistoryData, setWorkHistoryData] = React.useState([])
+  const [expArray, setExpArray] = React.useState([])
   const [schoolData, setSchoolData] = React.useState({})
   const [roleData, setRoleData] = React.useState({})
   const navigate = useNavigate();
+
+  const userObject = {
+    aadhar_number: "aadhaar",
+    residential_address: "address",
+    district: "district",
+    block: "block",
+    pincode: "pincode",
+    date_of_birth: "birthDate",
+    gender: "gender",
+    social_category: "socialCategory",
+    blood_group: "bloodGroup",
+    marital_status: "maritalStatus",
+    disability: "disability",
+    designation: "leavingDesignation",
+    cadre: "cadre",
+    transfer_order_number: "transferOrderNumber",
+    date_of_order: "dateOfOrder",
+    place_of_posting: "placeOfPosting",
+    mode_of_posting: "modeOfPosting",
+    phoneNumber: "phoneNumber",
+    email: "email"
+  }
+
+  const schoolObject = {
+    employee_code: "employeeCode",
+    employment_address: "schoolAddress",
+    district: "schoolDistrict",
+    block: "schoolBlock",
+    pincode: "schoolPincode",
+    employment_type: "employmentType",
+    "present_designation/cadre": "designation",
+    qualifications: "profQualification",
+    teacher_category: "designation",
+    "subjects / subject ids": "subjectIds",
+    date_of_joining: "joiningDate",
+    reporting_officer: "reportsTo",
+    place_of_current_posting: "schoolDistrict",
+  }
+
 
   const getWorkHistoryData = async () => {
     const result = await workHistoryRegistryService.sendNotificationSearch({
       userId: teacherId
     })
-    console.log(result, "history data");
+
+    let arr = [];
+    result.map((e) => {
+      const startDate = new Date(e?.dateOfJoining).toDateString();
+      const endDate = new Date(e?.dateOfRelieving).toDateString();
+      arr = [...arr, `${e?.organizationName}        ${startDate}  -  ${endDate}`]
+    })
+    setExpArray(arr);
     setWorkHistoryData(result);
   }
 
-  // const getSchoolData = async() =>{
-  //   const result = await schoolRegistryService.getOne({})
-  //   console.log(result);
-  //   setSchoolData(result)
-  // }
-
-  // const getRoleData = async() =>{
-  //   const result = await roleRegistryService.getOne({})
-  //   console.log(result);
-  //   setRoleData(result)
-  // }
+  const getSchoolData = async (id, resultTeacher) => {
+    const result = await schoolRegistryService.getOne({ id: id })
+    setTeacherObject({ ...resultTeacher, ...result })
+  }
 
   useEffect(() => {
     let ignore = false;
@@ -77,7 +116,7 @@ export default function Profile({ footerLinks, appName }) {
     const getData = async () => {
       if (!ignore) {
         const resultTeacher = await userRegistryService.getOne();
-        setTeacherObject(resultTeacher);
+        //setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),
           toDate: moment().format("YYYY-MM-DD"),
@@ -121,6 +160,7 @@ export default function Profile({ footerLinks, appName }) {
           lastMonth: lastPersantage,
         });
         getWorkHistoryData();
+        getSchoolData(resultTeacher.schoolId, resultTeacher);
       }
     };
     getData();
@@ -239,6 +279,7 @@ export default function Profile({ footerLinks, appName }) {
           <TeacherEdit
             header={t("PERSONAL_DETAILS")}
             teacherObject={teacherObject}
+            obj={userObject}
             onlyParameterProp={[
               "aadhar_number",
               "residential_address",
@@ -258,7 +299,7 @@ export default function Profile({ footerLinks, appName }) {
           <TeacherEdit
             header={t("Employment Details")}
             teacherObject={teacherObject}
-            //nestedCollapse={}
+            obj={schoolObject}
             onlyParameterProp={[
               "employee_code",
               "employment_address",
@@ -279,9 +320,10 @@ export default function Profile({ footerLinks, appName }) {
           />
           <TeacherEdit
             header={t("Past_Positions_and_Transfer_History")}
-            teacherObject={teacherObject}
+            teacherObject={workHistoryData}
+            obj={userObject}
             nestedCollapse={true}
-            nestedHeader={["26 July 2020 - 12 July 2021", "13 July 2021 - Present"]}
+            nestedHeader={expArray}
             onlyParameterProp={[
               "designation",
               "cadre",
@@ -297,6 +339,7 @@ export default function Profile({ footerLinks, appName }) {
           <TeacherEdit
             header={t("CONTACT_DETAILS")}
             teacherObject={teacherObject}
+            obj={userObject}
             setTeacherObject={setTeacherObject}
             onlyParameterProp={["phoneNumber", "email"]}
             isEditable={false}

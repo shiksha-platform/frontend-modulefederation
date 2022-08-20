@@ -41,7 +41,8 @@ export default function TeacherEdit({
   nestedHeader,
   nestedCollapse,
   seeMore,
-  seeMoreBelowSection
+  seeMoreBelowSection,
+  obj
 }) {
   const { t } = useTranslation();
   const [object, setObject] = useState({});
@@ -63,38 +64,6 @@ export default function TeacherEdit({
         "gender",
       ];
 
-  const userObject = {
-    aadhar_number: "aadhaar",
-    residential_address: "address",
-    district: "district",
-    block: "block",
-    pincode: "pincode",
-    date_of_birth: "birthDate",
-    gender: "gender",
-    social_category: "socialCategory",
-    blood_group: "bloodGroup",
-    marital_status: "maritalStatus",
-    disability: "disability",
-    employee_code: "employeeCode",
-    employment_address: "address",
-    employment_type: "employmentType",
-    "present_designation/cadre": "designation",
-    qualifications: "profQualification",
-    teacher_category: "teacherCategory",
-    "subjects / subject ids": "subjectIds",
-    date_of_joining: "joiningDate",
-    reporting_officer: "reportsTo",
-    place_of_current_posting: "district",
-    designation: "leavingDesignation",
-    cadre: "cadre",
-    transfer_order_number: "transferOrderNumber",
-    date_of_order: "dateOfOrder",
-    place_of_posting: "placeOfPosting",
-    mode_of_posting: "modeOfPosting",
-    phoneNumber: "phoneNumber",
-    email: "email"
-  }
-
   const parameter = {
     employeeCode: { placeholder: t("EMPLOYEE_CODE") },
     joiningDate: { placeholder: t("DATE_OF_JOINING") },
@@ -111,13 +80,7 @@ export default function TeacherEdit({
     },
   };
   const formInputs = onlyParameter.map((e) => {
-    //console.log("item:= ", e, "CHANGE:=", userObject[e], "value:=", object?.userObject[e]);
-    // console.log(object.aadhaar);
-    //console.log(e);
-    //console.log("changed", userObject[e]);
-    const change = userObject[e]
-    // console.log(change, "Changed");
-    // console.log("value:=", object?.change);
+    const change = obj[e]
     return {
       ...parameter[e],
       name: e,
@@ -147,8 +110,6 @@ export default function TeacherEdit({
       },
     };
   });
-
-  //console.log(formInputs, "Form Inputs");
 
   const validate = () => {
     let arr = {};
@@ -215,7 +176,7 @@ export default function TeacherEdit({
     }
   };
   console.log(object, "OBJECT");
-  // console.log({ ...teacherObject, object }, "TEACHER OBJECT+OBJ");
+  console.log({ ...teacherObject, object }, "TEACHER OBJECT+OBJ");
 
   useEffect(() => {
     let ignore = false;
@@ -350,7 +311,6 @@ export default function TeacherEdit({
                 navigate(`/profile/seemore`, {
                   state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [] },
                 })
-                //console.log(e)
               }
             >
               <Subtitle color={colors.seeButton}>
@@ -370,7 +330,6 @@ export const Section = ({ title, nestedTitle, nestedDropdown, button, children, 
     <Collapsible _header={{ height: "60px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
       {(nestedDropdown && nestedTitle.length > 0) ?
         (nestedTitle.map((item, index) => {
-          console.log(item, "item");
           return (
             <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
               <Collapsible key={index} _header={{ height: "40px", borderBottomWidth: "1", borderColor: "#F4F4F4" }} header={<H4 color={colors.date} pl={1}>{item}</H4>}>
@@ -397,7 +356,6 @@ export const Section = ({ title, nestedTitle, nestedDropdown, button, children, 
               navigate(`/profile/seemore`, {
                 state: { ...teacherObject, object, header: title, objectProp: onlyParameter, nestedCollapse: nestedDropdown === true ? true : false, nestedHeader: nestedTitle?.length > 0 ? nestedTitle : [] },
               })
-              //console.log(e)
             }
           >
             <Subtitle color={colors.seeButton}>
