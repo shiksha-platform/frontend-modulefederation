@@ -51,8 +51,14 @@ const SeeMore = ({ footerLinks, appName }) => {
     const location = useLocation();
     const { t } = useTranslation();
 
-    console.log(location, "Location");
-
+    const obj1 = {
+        designation: "leavingDesignation",
+        cadre: "cadre",
+        transfer_order_number: "transferOrderNumber",
+        date_of_order: "dateOfOrder",
+        place_of_posting: "placeOfPosting",
+        mode_of_posting: "modeOfPosting",
+    }
     useEffect(() => {
         let ignore = false;
 
@@ -115,6 +121,7 @@ const SeeMore = ({ footerLinks, appName }) => {
         });
         capture("START", telemetryData);
     };
+
     return (
         <SelfAttedanceSheet
             {...{
@@ -195,6 +202,8 @@ const SeeMore = ({ footerLinks, appName }) => {
                     nestedCollapse={location.state.nestedCollapse === true ? true : false}
                     nestedHeader={location.state.nestedHeader?.length > 0 ? location.state.nestedHeader : []}
                     seeMoreBelowSection={false}
+                    workData={location.state.object?.length > 0 ? location.state.object : []}
+                    obj={location.state.nestedCollapse === true ? obj1 : location.state?.obj}
                 />
             </Layout>
         </SelfAttedanceSheet>

@@ -42,7 +42,8 @@ export default function TeacherEdit({
   nestedCollapse,
   seeMore,
   seeMoreBelowSection,
-  obj
+  obj,
+  workData
 }) {
   const { t } = useTranslation();
   const [object, setObject] = useState({});
@@ -87,7 +88,7 @@ export default function TeacherEdit({
       placeholder: parameter[e]?.placeholder ? parameter[e].placeholder : e,
       isRequired: parameter[e]?.required ? parameter[e].required : false,
       type: parameter[e]?.type ? parameter[e].type : "text",
-      value: object.change ? object.change : "",
+      value: object[change] ? object[change] : "",
       onChange: (item) => {
         setEditChangeState(true);
         if (e === "firstName") {
@@ -175,8 +176,6 @@ export default function TeacherEdit({
       setEditChangeState(false);
     }
   };
-  console.log(object, "OBJECT");
-  console.log({ ...teacherObject, object }, "TEACHER OBJECT+OBJ");
 
   useEffect(() => {
     let ignore = false;
@@ -194,12 +193,16 @@ export default function TeacherEdit({
       //_box={{ bg: "transparent" }}
       title={header ? header : t("DETAILS")}
       nestedTitle={nestedHeader}
+      formInputs={formInputs}
+      editState={editState}
       nestedDropdown={nestedCollapse}
       seeMore={seeMore}
       onlyParameter={onlyParameter}
       seeMoreBelowSection={seeMoreBelowSection}
       teacherObject={teacherObject}
       object={object}
+      obj={obj}
+      workData={workData}
       button={
         isEditable !== false ? (
           editState ? (
@@ -309,7 +312,7 @@ export default function TeacherEdit({
               alignItems="center"
               onPress={(e) =>
                 navigate(`/profile/seemore`, {
-                  state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [] },
+                  state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [], obj: obj },
                 })
               }
             >
@@ -323,21 +326,112 @@ export default function TeacherEdit({
   );
 }
 
-export const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box, seeMore, seeMoreBelowSection, teacherObject, object, onlyParameter }) => {
+export const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box, seeMore, seeMoreBelowSection, teacherObject, object, onlyParameter, formInputs, editState, obj, workData }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <Collapsible _header={{ height: "60px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
       {(nestedDropdown && nestedTitle.length > 0) ?
-        (nestedTitle.map((item, index) => {
+        (workData.map((singleItem, indexx) => {
+          const startDate = new Date(singleItem?.dateOfJoining).toDateString();
+          const endDate = new Date(singleItem?.dateOfRelieving).toDateString();
           return (
             <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
-              <Collapsible key={index} _header={{ height: "40px", borderBottomWidth: "1", borderColor: "#F4F4F4" }} header={<H4 color={colors.date} pl={1}>{item}</H4>}>
+              <Collapsible key={indexx} _header={{ height: "40px", borderBottomWidth: "1", borderColor: "#F4F4F4" }}
+                header={<H4 color={colors.date} pl={1}>{`${singleItem?.organizationName}        ${startDate}  -  ${endDate}`}</H4>}>
                 <HStack alignItems={"center"} justifyContent={"space-between"}>
                   {button}
                 </HStack>
                 <Stack pl={1}>
-                  {children}
+                  <VStack space={1}>
+                    {formInputs.map((item, index) => {
+                      const name = item.placeholder
+                      const val = obj[name]
+                      item.value = singleItem[val]
+                      return (
+                        <Box
+                          pt="4"
+                          borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
+                          borderColor={colors.teacherBackground2}
+                          key={index}
+                        >
+                          {editState ? (
+                            <FormControl isInvalid={item.name in errors}>
+                              <FormControl.Label>
+                                <BodyLarge color={colors.formSubtitle} textTransform={"uppercase"}>
+                                  {item.placeholder}
+                                </BodyLarge>
+                              </FormControl.Label>
+                              {item.type === "select" ? (
+                                <Select
+                                  accessibilityLabel={item.placeholder}
+                                  placeholder={item.placeholder}
+                                  key={index + item.name}
+                                  selectedValue={item?.value}
+                                  onValueChange={item.onChange}
+                                >
+                                  {item?.data &&
+                                    item?.data.map((e, index) => (
+                                      <Select.Item key={index} label={e} value={e} />
+                                    ))}
+                                </Select>
+                              ) : (
+                                <Input
+                                  variant="filled"
+                                  p={2}
+                                  {...item}
+                                  key={index + item.name}
+                                />
+                              )}
+                              {item.name in errors ? (
+                                <FormControl.ErrorMessage
+                                  _text={{
+                                    fontSize: "xs",
+                                    color: colors.error,
+                                    fontWeight: 500,
+                                  }}
+                                >
+                                  {errors[item.name]}
+                                </FormControl.ErrorMessage>
+                              ) : (
+                                <></>
+                              )}
+                            </FormControl>
+                          ) : (
+                            <>
+                              <BodyLarge color={colors.formSubtitle} alignItems={"center"}>
+                                {t(item.placeholder)}
+                              </BodyLarge>
+                              {item.value ? (
+                                <BodyMedium textTransform="inherit" color={colors.date}>
+                                  {item.value}
+                                </BodyMedium>
+                              ) : (
+                                <BodyMedium italic>
+                                  {t("NOT_ENTERED")}
+                                </BodyMedium>
+                              )}
+                            </>
+                          )}
+                        </Box>
+                      );
+                    })}
+                    {seeMore &&
+                      (<Box alignItems="center" p="3">
+                        <Pressable
+                          alignItems="center"
+                          onPress={(e) =>
+                            navigate(`/profile/seemore`, {
+                              state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [] },
+                            })
+                          }
+                        >
+                          <Subtitle color={colors.seeButton}>
+                            {t("SEE_MORE")}
+                          </Subtitle>
+                        </Pressable>
+                      </Box>)}
+                  </VStack>
                 </Stack>
               </Collapsible>
             </Stack>)

@@ -215,7 +215,7 @@ export default function Profile({ footerLinks, appName }) {
                     <H1 color={colors.date}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
-                    <BodyLarge color={colors.date}>Assistant Teacher, RSKV Kanya Vidyalaya</BodyLarge>
+                    <BodyLarge color={colors.date}>{teacherObject?.designation}</BodyLarge>
                   </VStack>
                   {/* <HStack>
                     <IconByName color={colors.white} name="CameraLineIcon" />
@@ -321,6 +321,7 @@ export default function Profile({ footerLinks, appName }) {
           <TeacherEdit
             header={t("Past_Positions_and_Transfer_History")}
             teacherObject={workHistoryData}
+            workData={workHistoryData}
             obj={userObject}
             nestedCollapse={true}
             nestedHeader={expArray}
@@ -343,7 +344,7 @@ export default function Profile({ footerLinks, appName }) {
             setTeacherObject={setTeacherObject}
             onlyParameterProp={["phoneNumber", "email"]}
             isEditable={false}
-            seeMore={true}
+            seeMore={false}
           />
         </Stack>
       </Layout>
