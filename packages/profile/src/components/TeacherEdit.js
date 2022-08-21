@@ -24,7 +24,7 @@ import {
   BodyMedium,
   Subtitle,
   H4,
-  telemetryFactory
+  telemetryFactory,
 } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ export default function TeacherEdit({
   seeMore,
   seeMoreBelowSection,
   obj,
-  workData
+  workData,
 }) {
   const { t } = useTranslation();
   const [object, setObject] = useState({});
@@ -56,14 +56,14 @@ export default function TeacherEdit({
     onlyParameterProp?.length > "0"
       ? onlyParameterProp
       : [
-        "address",
-        "firstName",
-        "lastName",
-        "fathersName",
-        "phoneNumber",
-        "email",
-        "gender",
-      ];
+          "address",
+          "firstName",
+          "lastName",
+          "fathersName",
+          "phoneNumber",
+          "email",
+          "gender",
+        ];
 
   const parameter = {
     employeeCode: { placeholder: t("EMPLOYEE_CODE") },
@@ -81,7 +81,7 @@ export default function TeacherEdit({
     },
   };
   const formInputs = onlyParameter.map((e) => {
-    const change = obj[e]
+    const change = obj[e];
     return {
       ...parameter[e],
       name: e,
@@ -248,7 +248,10 @@ export default function TeacherEdit({
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <BodyLarge color={"profile.unmarked"} textTransform={"uppercase"}>
+                    <BodyLarge
+                      color={"profile.unmarked"}
+                      textTransform={"uppercase"}
+                    >
                       {item.placeholder}
                     </BodyLarge>
                   </FormControl.Label>
@@ -297,68 +300,113 @@ export default function TeacherEdit({
                       {item.value}
                     </BodyMedium>
                   ) : (
-                    <BodyMedium italic>
-                      {t("NOT_ENTERED")}
-                    </BodyMedium>
+                    <BodyMedium italic>{t("NOT_ENTERED")}</BodyMedium>
                   )}
                 </>
               )}
             </Box>
           );
         })}
-        {seeMore &&
-          (<Box alignItems="center" p="3">
+        {seeMore && (
+          <Box alignItems="center" p="3">
             <Pressable
               alignItems="center"
               onPress={(e) =>
                 navigate(`/profile/seemore`, {
-                  state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [], obj: obj },
+                  state: {
+                    ...teacherObject,
+                    object,
+                    header: header,
+                    objectProp: onlyParameter,
+                    nestedCollapse: nestedCollapse === true ? true : false,
+                    nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [],
+                    obj: obj,
+                  },
                 })
               }
             >
-              <Subtitle color={colors.seeButton}>
-                {t("SEE_MORE")}
-              </Subtitle>
+              <Subtitle color={colors.seeButton}>{t("SEE_MORE")}</Subtitle>
             </Pressable>
-          </Box>)}
+          </Box>
+        )}
       </VStack>
-    </Section >
+    </Section>
   );
 }
 
-export const Section = ({ title, nestedTitle, nestedDropdown, button, children, _box, seeMore, seeMoreBelowSection, teacherObject, object, onlyParameter, formInputs, editState, obj, workData }) => {
+export const Section = ({
+  title,
+  nestedTitle,
+  nestedDropdown,
+  button,
+  children,
+  _box,
+  seeMore,
+  seeMoreBelowSection,
+  teacherObject,
+  object,
+  onlyParameter,
+  formInputs,
+  editState,
+  obj,
+  workData,
+}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   return (
-    <Collapsible _header={{ height: "60px" }} header={<H2 color={colors.date} pl={5}>{title}</H2>}>
-      {(nestedDropdown && nestedTitle.length > 0) ?
-        (workData.map((singleItem, indexx) => {
+    <Collapsible
+      _header={{ height: "60px" }}
+      header={
+        <H2 color={colors.date} pl={5}>
+          {title}
+        </H2>
+      }
+    >
+      {nestedDropdown && nestedTitle.length > 0 ? (
+        workData.map((singleItem, indexx) => {
           const startDate = new Date(singleItem?.dateOfJoining).toDateString();
           const endDate = new Date(singleItem?.dateOfRelieving).toDateString();
           return (
             <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
-              <Collapsible key={indexx} _header={{ height: "40px", borderBottomWidth: "1", borderColor: "#F4F4F4" }}
-                header={<H4 color={colors.date} pl={1}>{`${singleItem?.organizationName}        ${startDate}  -  ${endDate}`}</H4>}>
+              <Collapsible
+                key={indexx}
+                _header={{
+                  height: "40px",
+                  borderBottomWidth: "1",
+                  borderColor: "#F4F4F4",
+                }}
+                header={
+                  <H4
+                    color={colors.date}
+                    pl={1}
+                  >{`${singleItem?.organizationName}        ${startDate}  -  ${endDate}`}</H4>
+                }
+              >
                 <HStack alignItems={"center"} justifyContent={"space-between"}>
                   {button}
                 </HStack>
                 <Stack pl={1}>
                   <VStack space={1}>
                     {formInputs.map((item, index) => {
-                      const name = item.placeholder
-                      const val = obj[name]
-                      item.value = singleItem[val]
+                      const name = item.placeholder;
+                      const val = obj[name];
+                      item.value = singleItem[val];
                       return (
                         <Box
                           pt="4"
-                          borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
+                          borderBottomWidth={
+                            formInputs.length - 1 !== index ? "1" : "0"
+                          }
                           borderColor={colors.teacherBackground2}
                           key={index}
                         >
                           {editState ? (
                             <FormControl isInvalid={item.name in errors}>
                               <FormControl.Label>
-                                <BodyLarge color={colors.formSubtitle} textTransform={"uppercase"}>
+                                <BodyLarge
+                                  color={colors.formSubtitle}
+                                  textTransform={"uppercase"}
+                                >
                                   {item.placeholder}
                                 </BodyLarge>
                               </FormControl.Label>
@@ -372,7 +420,11 @@ export const Section = ({ title, nestedTitle, nestedDropdown, button, children, 
                                 >
                                   {item?.data &&
                                     item?.data.map((e, index) => (
-                                      <Select.Item key={index} label={e} value={e} />
+                                      <Select.Item
+                                        key={index}
+                                        label={e}
+                                        value={e}
+                                      />
                                     ))}
                                 </Select>
                               ) : (
@@ -399,11 +451,17 @@ export const Section = ({ title, nestedTitle, nestedDropdown, button, children, 
                             </FormControl>
                           ) : (
                             <>
-                              <BodyLarge color={colors.formSubtitle} alignItems={"center"}>
+                              <BodyLarge
+                                color={colors.formSubtitle}
+                                alignItems={"center"}
+                              >
                                 {t(item.placeholder)}
                               </BodyLarge>
                               {item.value ? (
-                                <BodyMedium textTransform="inherit" color={colors.date}>
+                                <BodyMedium
+                                  textTransform="inherit"
+                                  color={colors.date}
+                                >
                                   {item.value}
                                 </BodyMedium>
                               ) : (
@@ -416,13 +474,22 @@ export const Section = ({ title, nestedTitle, nestedDropdown, button, children, 
                         </Box>
                       );
                     })}
-                    {seeMore &&
-                      (<Box alignItems="center" p="3">
+                    {seeMore && (
+                      <Box alignItems="center" p="3">
                         <Pressable
                           alignItems="center"
                           onPress={(e) =>
                             navigate(`/profile/seemore`, {
-                              state: { ...teacherObject, object, header: header, objectProp: onlyParameter, nestedCollapse: nestedCollapse === true ? true : false, nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [] },
+                              state: {
+                                ...teacherObject,
+                                object,
+                                header: header,
+                                objectProp: onlyParameter,
+                                nestedCollapse:
+                                  nestedCollapse === true ? true : false,
+                                nestedHeader:
+                                  nestedHeader?.length > 0 ? nestedHeader : [],
+                              },
                             })
                           }
                         >
@@ -430,33 +497,43 @@ export const Section = ({ title, nestedTitle, nestedDropdown, button, children, 
                             {t("SEE_MORE")}
                           </Subtitle>
                         </Pressable>
-                      </Box>)}
+                      </Box>
+                    )}
                   </VStack>
                 </Stack>
               </Collapsible>
-            </Stack>)
-        }))
-        : <Box bg={colors.white} p="5" {..._box}>
+            </Stack>
+          );
+        })
+      ) : (
+        <Box bg={colors.white} p="5" {..._box}>
           <HStack alignItems={"center"} justifyContent={"space-between"}>
             {button}
           </HStack>
           {children}
-        </Box>}
-      {seeMoreBelowSection &&
-        (<Box alignItems="center" p="3">
+        </Box>
+      )}
+      {seeMoreBelowSection && (
+        <Box alignItems="center" p="3">
           <Pressable
             alignItems="center"
             onPress={(e) =>
               navigate(`/profile/seemore`, {
-                state: { ...teacherObject, object, header: title, objectProp: onlyParameter, nestedCollapse: nestedDropdown === true ? true : false, nestedHeader: nestedTitle?.length > 0 ? nestedTitle : [] },
+                state: {
+                  ...teacherObject,
+                  object,
+                  header: title,
+                  objectProp: onlyParameter,
+                  nestedCollapse: nestedDropdown === true ? true : false,
+                  nestedHeader: nestedTitle?.length > 0 ? nestedTitle : [],
+                },
               })
             }
           >
-            <Subtitle color={colors.seeButton}>
-              {t("SEE_MORE")}
-            </Subtitle>
+            <Subtitle color={colors.seeButton}>{t("SEE_MORE")}</Subtitle>
           </Pressable>
-        </Box>)}
+        </Box>
+      )}
     </Collapsible>
-  )
+  );
 };

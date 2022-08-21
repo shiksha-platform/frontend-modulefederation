@@ -23,6 +23,6 @@ const colorTheme = {
   formSubtitle: "#B5B5C8",
   teacherBackground: "#E5E5E5",
   teacherBackground2: "#F4F4F4",
-  seeButton: "#F87558"
+  seeButton: "#F87558",
 };
 export default colorTheme;

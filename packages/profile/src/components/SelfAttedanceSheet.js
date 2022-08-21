@@ -275,10 +275,10 @@ export default function SelfAttedanceSheet({
             todayAttendance.attendance === PRESENT && todayAttendance.remark
               ? todayAttendance.remark
               : todayAttendance.attendance === PRESENT
-                ? t("MARK_PRESENT")
-                : todayAttendance.attendance === ABSENT
-                  ? t("MARK_ABSENT")
-                  : "",
+              ? t("MARK_PRESENT")
+              : todayAttendance.attendance === ABSENT
+              ? t("MARK_ABSENT")
+              : "",
         };
         setSelfAttendance(newAttedance);
         if (setAttendance) setAttendance(newAttedance);
@@ -457,7 +457,7 @@ export default function SelfAttedanceSheet({
             <H1 color={"profile.present"}>{t("ATTENDANCE_MARKED")}</H1>
             <BodyMedium textAlign="center" textTransform="inherit">
               {selfAttendance.attendance === PRESENT &&
-                selfAttendance.name !== selfAttendance.remark
+              selfAttendance.name !== selfAttendance.remark
                 ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
                 : ""}
             </BodyMedium>

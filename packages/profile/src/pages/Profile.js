@@ -29,7 +29,7 @@ import {
   overrideColorTheme,
   BodyLarge,
   workHistoryRegistryService,
-  schoolRegistryService
+  schoolRegistryService,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
 import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
@@ -45,10 +45,10 @@ export default function Profile({ footerLinks, appName }) {
   const token = localStorage.getItem("token");
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
-  const [workHistoryData, setWorkHistoryData] = React.useState([])
-  const [expArray, setExpArray] = React.useState([])
-  const [schoolData, setSchoolData] = React.useState({})
-  const [roleData, setRoleData] = React.useState({})
+  const [workHistoryData, setWorkHistoryData] = React.useState([]);
+  const [expArray, setExpArray] = React.useState([]);
+  const [schoolData, setSchoolData] = React.useState({});
+  const [roleData, setRoleData] = React.useState({});
   const navigate = useNavigate();
 
   const userObject = {
@@ -70,8 +70,8 @@ export default function Profile({ footerLinks, appName }) {
     place_of_posting: "placeOfPosting",
     mode_of_posting: "modeOfPosting",
     phoneNumber: "phoneNumber",
-    email: "email"
-  }
+    email: "email",
+  };
 
   const schoolObject = {
     employee_code: "employeeCode",
@@ -87,28 +87,30 @@ export default function Profile({ footerLinks, appName }) {
     date_of_joining: "joiningDate",
     reporting_officer: "reportsTo",
     place_of_current_posting: "schoolDistrict",
-  }
-
+  };
 
   const getWorkHistoryData = async () => {
     const result = await workHistoryRegistryService.sendNotificationSearch({
-      userId: teacherId
-    })
+      userId: teacherId,
+    });
 
     let arr = [];
     result.map((e) => {
       const startDate = new Date(e?.dateOfJoining).toDateString();
       const endDate = new Date(e?.dateOfRelieving).toDateString();
-      arr = [...arr, `${e?.organizationName}        ${startDate}  -  ${endDate}`]
-    })
+      arr = [
+        ...arr,
+        `${e?.organizationName}        ${startDate}  -  ${endDate}`,
+      ];
+    });
     setExpArray(arr);
     setWorkHistoryData(result);
-  }
+  };
 
   const getSchoolData = async (id, resultTeacher) => {
-    const result = await schoolRegistryService.getOne({ id: id })
-    setTeacherObject({ ...resultTeacher, ...result })
-  }
+    const result = await schoolRegistryService.getOne({ id: id });
+    setTeacherObject({ ...resultTeacher, ...result });
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -215,7 +217,9 @@ export default function Profile({ footerLinks, appName }) {
                     <H1 color={"profile.white"}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
-                    <BodyLarge color={colors.date}>{teacherObject?.designation}</BodyLarge>
+                    <BodyLarge color={colors.date}>
+                      {teacherObject?.designation}
+                    </BodyLarge>
                   </VStack>
                   {/* <HStack>
                     <IconByName color={colors.white} name="CameraLineIcon" />
@@ -225,7 +229,7 @@ export default function Profile({ footerLinks, appName }) {
                     size="48px"
                     bg="amber.500"
                     source={{
-                      uri: teacherObject?.image
+                      uri: teacherObject?.image,
                     }}
                   >
                     {`${teacherObject?.firstName} ${teacherObject?.lastName}`
@@ -291,7 +295,7 @@ export default function Profile({ footerLinks, appName }) {
               "social_category",
               "blood_group",
               "marital_status",
-              "disability"
+              "disability",
             ]}
             isEditable={false}
             seeMore={true}
@@ -313,7 +317,7 @@ export default function Profile({ footerLinks, appName }) {
               "subjects / subject ids",
               "date_of_joining",
               "reporting_officer",
-              "place_of_current_posting"
+              "place_of_current_posting",
             ]}
             isEditable={false}
             seeMore={true}
@@ -331,7 +335,7 @@ export default function Profile({ footerLinks, appName }) {
               "transfer_order_number",
               "date_of_order",
               "place_of_posting",
-              "mode_of_posting"
+              "mode_of_posting",
             ]}
             isEditable={false}
             seeMore={false}
