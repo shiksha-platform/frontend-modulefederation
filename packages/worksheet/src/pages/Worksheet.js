@@ -147,7 +147,6 @@ export default function Worksheet({ footerLinks, appName }) {
       _appBar={{
         languages: manifest.languages,
         isEnableSearchBtn: true,
-        setSearch,
         setSearchState,
       }}
       subHeader={<H2 textTransform="none">{t("View all your worksheets")}</H2>}

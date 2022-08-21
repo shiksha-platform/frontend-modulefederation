@@ -5,6 +5,7 @@ export const capture = (event, data) => {
     api_host: process.env.PH_INSTANCE_ADDRESS,
     autocapture: false
   })
+
   if (event !== 'PAGE') {
     posthog.capture(event, data)
   }

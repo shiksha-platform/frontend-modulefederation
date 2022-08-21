@@ -7,15 +7,19 @@ import {
   H2,
   Loading,
   useWindowSize,
+  telemetryFactory,
+  capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import colorTheme from "../colorTheme";
+import { QUMLBaseURL } from "assets/constants";
 const colors = overrideColorTheme(colorTheme);
 
 export default function QumlTest({
+  appName,
   classId,
   setPageName,
   handleBackButton,
@@ -28,6 +32,7 @@ export default function QumlTest({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
+  const [assessmentStartTime, setAssessmentStartTime] = React.useState();
   /*const [questionIds, setQuestionIds] = useState(
     JSON.parse(localStorage.getItem("assessment-questionIds")) || []
   );*/
@@ -63,25 +68,48 @@ export default function QumlTest({
   };
 
   const getAssessmentData = async (result) => {
-    const id = result.result?.Trackassessment?.osid || "";
+    // const id = result.result?.Trackassessment?.osid || "";
+    const id = result.data?.insert_trackassessment_one?.trackAssessmentId || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    localStorage.setItem("assessment-score", assessmentDetails.score);
-    localStorage.setItem("assessment-totalScore", assessmentDetails.totalScore);
+    localStorage.setItem("assessment-score", assessmentDetails[0].score);
+    localStorage.setItem(
+      "assessment-totalScore",
+      assessmentDetails[0].totalScore
+    );
     setLoading(false);
     // navigate("/assessment/assessment-result");
     setPageName("assessmentResult");
   };
 
+  const _handleWrittenSpotAssessmentStart = () => {
+    const telemetryData = telemetryFactory.start({
+      appName: appName,
+      type: "Spot-Assessment-Written-Start",
+      studentId: selectedStudent.id,
+    });
+    capture("START", telemetryData);
+    setAssessmentStartTime(+new Date());
+  };
+
+  const _handleWrittenSpotAssessmentEnd = () => {
+    const endTime = +new Date();
+    const diff = (endTime - assessmentStartTime) / 1000 || 0;
+    const telemetryData = telemetryFactory.end({
+      appName,
+      type: "Spot-Assessment-End",
+      studentId: selectedStudent.id,
+      duration: diff,
+    });
+    capture("END", telemetryData);
+  };
+
   React.useEffect(() => {
+    _handleWrittenSpotAssessmentStart();
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== "http://139.59.25.99:8090") return;
-        /*localStorage.setItem(
-          "assessment-quml-result",
-          JSON.stringify(event.data)
-        );*/
+        if (event.origin !== "https://quml.shikshaplatform.io") return;
         startAssessment(event.data);
       },
       false
@@ -89,6 +117,7 @@ export default function QumlTest({
 
     return () => {
       window.removeEventListener("message", (val) => {});
+      _handleWrittenSpotAssessmentEnd();
     };
   }, []);
 
@@ -155,17 +184,11 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`http://139.59.25.99:8090/?questions=${questionIds.join(",")}`}
-          // src={`http://192.168.0.105:4200/?questions=${questionIds.join(',')}`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds.join(",")}`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
       )}
-      {/*<iframe
-        src="http://139.59.25.99:8090/?questions=do_431353902437642240011003,do_431353902009694617611001,do_431353902575100723211006"
-        frameBorder="0"
-        style={{ height: "calc(100vh - 315px)" }}
-      />*/}
     </Layout>
   );
 }

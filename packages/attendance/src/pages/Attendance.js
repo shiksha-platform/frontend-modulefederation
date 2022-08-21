@@ -215,7 +215,7 @@ export default function Attendance({ footerLinks, appName }) {
             size="sm"
             mt="8px"
             name="ArrowRightSLineIcon"
-            onPress={(e) => navigate(`/students/class/${classId}`)}
+            onPress={(e) => navigate(`/classes/${classId}`)}
           />
         </HStack>
       }

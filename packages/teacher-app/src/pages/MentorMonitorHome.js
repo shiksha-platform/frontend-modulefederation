@@ -6,6 +6,7 @@ import {
   FilterButton,
   H1,
   H2,
+  H3,
   Layout,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
@@ -89,62 +90,19 @@ export default function Home({ footerLinks, appName }) {
               />
               <VStack>
                 <BodyLarge>Welcome</BodyLarge>
-                <H1>Mr. Dhananjay Tripathi</H1>
+                <H1>{localStorage.getItem("fullName")}</H1>
               </VStack>
             </HStack>
           </Box>
         ),
-        _heading: { color: colors.white },
       }}
-      _appBar={{ languages: ["en"], isShowNotificationButton: true }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/visits",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-            textTransform: "capitalize",
-          },
-        ],
-      }}
+      subHeader={"This is how your day looks like"}
+      _appBar={{ languages: ["en"] }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg="white">
         <VStack space={6}>
-          <Box rounded={10} bg={colors.white} shadow="md">
+          <Box rounded={10} bg={colors.lightGray6} shadow="md">
             <VStack>
               <Box alignItems="center" p={4}>
                 <H2 textTransform="none">Your monthly review</H2>
@@ -157,7 +115,7 @@ export default function Home({ footerLinks, appName }) {
                       value={24}
                       maxValue={60}
                       styles={buildStyles({
-                        pathColor: colors.purple,
+                        pathColor: colors.primary,
                         textColor: colors.error,
                         trailColor: colors.background,
                       })}
@@ -182,7 +140,7 @@ export default function Home({ footerLinks, appName }) {
                       value={7}
                       maxValue={14}
                       styles={buildStyles({
-                        pathColor: colors.blue,
+                        pathColor: colors.primary,
                         textColor: colors.error,
                         trailColor: colors.background,
                       })}
@@ -215,9 +173,9 @@ export default function Home({ footerLinks, appName }) {
           </Box>
 
           <Box>
-            <H2 textTransform="none">
+            <H3 textTransform="none">
               Performance Overview of the District / Block
-            </H2>
+            </H3>
             <FilterButton
               getObject={callBackFilterObject}
               object={filterObject}
@@ -240,17 +198,17 @@ export default function Home({ footerLinks, appName }) {
           <Box>
             <HStack space="10px">
               <Box
-                bg={colors.white}
+                bg={colors.lightGray6}
                 rounded={10}
                 flex={1}
                 w="115px"
-                h="150px"
+                minH="150px"
                 alignItems="center"
                 textAlign="center"
                 py={4}
               >
                 <VStack space={4} alignItems="center">
-                  <Box w="50px" h="50px">
+                  <Box w="50px" minH="50px">
                     <CircularProgressbarWithChildren
                       value={0}
                       maxValue={756}
@@ -270,17 +228,17 @@ export default function Home({ footerLinks, appName }) {
                 </VStack>
               </Box>
               <Box
-                bg={colors.white}
+                bg={colors.lightGray6}
                 rounded={10}
                 flex={1}
                 w="115px"
-                h="150px"
+                minH="150px"
                 alignItems="center"
                 textAlign="center"
                 py={4}
               >
                 <VStack space={4} alignItems="center">
-                  <Box w="50px" h="50px">
+                  <Box w="50px" minH="50px">
                     <CircularProgressbarWithChildren
                       value={450}
                       maxValue={600}
@@ -302,17 +260,17 @@ export default function Home({ footerLinks, appName }) {
                 </VStack>
               </Box>
               <Box
-                bg={colors.white}
+                bg={colors.lightGray6}
                 rounded={10}
                 flex={1}
                 w="115px"
-                h="150px"
+                minH={"150px"}
                 alignItems="center"
                 textAlign="center"
                 py={4}
               >
                 <VStack space={4} alignItems="center">
-                  <Box w="50px" h="50px">
+                  <Box w="50px" minH="50px">
                     <CircularProgressbarWithChildren
                       value={45}
                       maxValue={100}

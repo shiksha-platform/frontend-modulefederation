@@ -1,4 +1,4 @@
-import { H1 } from "@shiksha/common-lib";
+import { H1, H2 } from "@shiksha/common-lib";
 import { Button, Modal, Text, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ const AlertValidationModal = ({ alertMessage, setAlertMessage }) => {
     <Modal safeAreaTop={true} isOpen={alertMessage} onClose={handleClose}>
       <Modal.Content>
         <VStack space={5} p="5">
-          <H1>{alertMessage}</H1>
+          <H1 textTransform="inherit">{alertMessage}</H1>
           <Button.Group>
             <Button
               flex="1"

@@ -88,9 +88,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         );
         setQuestions(newQuestions);
         if (newQuestions.length <= 0) {
-          setAlertMessage(
-            <H2 textTransform="none">{t("QUESTION_NOT_FOUND")}</H2>
-          );
+          setAlertMessage(t("QUESTION_NOT_FOUND"));
           setPageName();
         } else {
           setAlertMessage();
