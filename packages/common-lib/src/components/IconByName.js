@@ -56,6 +56,7 @@ import SearchLineIcon from 'remixicon-react/SearchLineIcon'
 import StarLineIcon from 'remixicon-react/StarLineIcon'
 import SpyLineIcon from 'remixicon-react/SpyLineIcon'
 import MailFillIcon from 'remixicon-react/MailFillIcon'
+import MailLineIcon from 'remixicon-react/MailLineIcon'
 import AddCircleFillIcon from 'remixicon-react/AddCircleFillIcon'
 import Heart3FillIcon from 'remixicon-react/Heart3FillIcon'
 import Heart3LineIcon from 'remixicon-react/Heart3LineIcon'
@@ -559,6 +560,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<MailFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'MailLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<MailLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

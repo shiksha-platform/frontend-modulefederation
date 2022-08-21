@@ -1,6 +1,6 @@
 import {
-  capture,
-  telemetryFactory,
+  studentRegistryService,
+  classRegistryService,
   Layout,
   Collapsible,
   H2,
@@ -25,66 +25,38 @@ import {
 import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import {
-  LinkedinShareButton,
-  LinkedinIcon,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from "react-share";
+import { WhatsappIcon, WhatsappShareButton } from "react-share";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const newStudents = [
-  {
-    fullName: "Shah Rukh Khan",
-    admissionNo: "1",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Rahul Patil",
-    admissionNo: "2",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Sandhya Shankar",
-    admissionNo: "3",
-    fathersName: "Mr. Fathers Name",
-    days: "3",
-  },
-  {
-    fullName: "Jatin Agarwal",
-    admissionNo: "4",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Rehan Orpe",
-    admissionNo: "5",
-    fathersName: "Mr. Fathers Name",
-    days: "11",
-  },
-  {
-    fullName: "Siddharth Kabra",
-    admissionNo: "6",
-    fathersName: "Mr. Fathers Name",
-    days: "3",
-  },
-];
-
 export default function WorksheetShare({ footerLinks, appName }) {
   const { t } = useTranslation();
   const Card = React.lazy(() => import("students/Card"));
+  const [classes, setClasses] = React.useState([]);
+  const [classObject, setClassObject] = React.useState([]);
+  const teacherId = localStorage.getItem("id");
   const [students, setStudents] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const { worksheetId } = useParams();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  React.useEffect(async () => {
+    const data = await classRegistryService.getAll({
+      teacherId: teacherId,
+      type: "class",
+      role: "teacher",
+    });
+    setClasses(data);
+    setClassObject(data?.[0]);
+    console.log({ data });
+    const newStudents = await studentRegistryService.getAll({
+      sortBy: "Alphabetically",
+      classId: data?.[0]?.id,
+    });
+    console.log({ newStudents });
     setStudents(newStudents);
   }, []);
 
@@ -97,16 +69,16 @@ export default function WorksheetShare({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("Class VI A"),
+        title: classObject.name,
         subHeading: "Select Student",
       }}
       _appBar={{ languages: manifest.languages }}
-      subHeader={`class V`}
-      _subHeader={{ bg: colors.worksheetCardBg }}
+      subHeader={classObject.name}
+      _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
       <Stack>
-        <VStack bg={colors.white} space="2">
+        <VStack bg={"worksheet.white"} space="2">
           <Collapsible
             header={
               <VStack space="2" py="5">
@@ -119,10 +91,10 @@ export default function WorksheetShare({ footerLinks, appName }) {
               <Box
                 key={index}
                 borderBottomWidth="1"
-                borderColor={colors.lightGray5}
+                borderColor={"worksheet.lightGray5"}
                 p="10px"
               >
-                <Suspense fallback="logding">
+                <Suspense fallback="loading">
                   <Card
                     attendanceProp={[]}
                     item={item}
@@ -131,14 +103,14 @@ export default function WorksheetShare({ footerLinks, appName }) {
                       <VStack alignItems="center">
                         <BodyLarge>
                           <Text>{item.admissionNo}</Text>
-                          <Text color={colors.lightGray2}> • </Text>
+                          <Text color={"worksheet.lightGray2"}> • </Text>
                           <Text>{item.fullName}</Text>
                         </BodyLarge>
                       </VStack>
                     }
                     textSubTitle={
                       <VStack alignItems="center">
-                        <Caption color={colors.gray}>
+                        <Caption color={"worksheet.gray"}>
                           {item.fathersName}
                         </Caption>
                       </VStack>
@@ -146,7 +118,9 @@ export default function WorksheetShare({ footerLinks, appName }) {
                     rightComponent={
                       <IconByName
                         color={
-                          item?.isSelected ? colors.primary : colors.lightGray2
+                          item?.isSelected
+                            ? "worksheet.primary"
+                            : "worksheet.lightGray2"
                         }
                         name={
                           item?.isSelected
@@ -179,12 +153,18 @@ export default function WorksheetShare({ footerLinks, appName }) {
             ))}
           </Collapsible>
         </VStack>
-        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          position="sticky"
+          bottom="0"
+          shadow={2}
+        >
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="5"
               onPress={(e) => setShowModal(true)}
             >
@@ -195,26 +175,22 @@ export default function WorksheetShare({ footerLinks, appName }) {
       </Stack>
       <Actionsheet
         isOpen={showModal}
-        _backdrop={{ opacity: "0.9", bg: colors.gray }}
+        _backdrop={{ opacity: "0.9", bg: "worksheet.gray" }}
       >
-        <Actionsheet.Content
-          p="0"
-          alignItems={"left"}
-          bg={colors.worksheetCardBg}
-        >
+        <Actionsheet.Content p="0" alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2 fontWeight={"600"}>{t("SELECT_VIEW")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.worksheetCardIcon}
+              color={"worksheet.primaryDark"}
               onPress={(e) => setShowModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
 
-        <Box w="100%" bg={colors.white}>
+        <Box w="100%" bg={"worksheet.white"}>
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <WhatsappShareButton
@@ -231,6 +207,18 @@ export default function WorksheetShare({ footerLinks, appName }) {
           </Box>
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
+              <HStack space="5">
+                <IconByName
+                  name="MailLineIcon"
+                  isDisabled
+                  _icon={{ size: 15 }}
+                />
+                <Text>{"SMS"}</Text>
+              </HStack>
+            </Pressable>
+          </Box>
+          {/* <Box shadow="2" p="5">
+            <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <LinkedinShareButton
                 url={`https://sandbox.shikshaplatform.io/modules/worksheet/worksheet/${worksheetId}/view`}
               >
@@ -240,40 +228,40 @@ export default function WorksheetShare({ footerLinks, appName }) {
                 </HStack>
               </LinkedinShareButton>
             </Pressable>
-          </Box>
+          </Box> */}
         </Box>
       </Actionsheet>
       <Actionsheet
         isOpen={showSuccessModal}
         _backdrop={{ opacity: "0.9", bg: "gray.500" }}
       >
-        <Actionsheet.Content p="0" alignItems={"left"} bg={colors.successAlert}>
+        <Actionsheet.Content p="0" alignItems={"left"} bg={"worksheet.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Worksheet Sent")}</H2>
-              <H4 color={colors.darkGreen}>{moment().format("DD MMM, h:m")}</H4>
+              <H4>{moment().format("DD MMM, h:m")}</H4>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.worksheetCardIcon}
+              color={"worksheet.primaryDark"}
               onPress={handleSuccessModule}
             />
           </HStack>
         </Actionsheet.Content>
 
-        <Box w="100%" bg={colors.white}>
+        <Box w="100%" bg={"worksheet.white"}>
           <Box px="5">
             <HStack
               py="5"
               borderBottomWidth="1"
-              borderColor={colors.lightGray2}
+              borderColor={"worksheet.lightGray2"}
               alignItems="center"
               space="1"
             >
               <IconByName
                 _icon={{ size: "16" }}
                 name="CheckDoubleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"worksheet.cardCloseIcon"}
                 isDisabled
               />
               <BodyLarge>
@@ -293,7 +281,13 @@ export default function WorksheetShare({ footerLinks, appName }) {
               https://shiksha.edu/learningmadeeasy+1/eaSe89Js.
             </BodyMedium>
           </VStack>
-          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+          <Box
+            bg={"worksheet.white"}
+            p="5"
+            position="sticky"
+            bottom="0"
+            shadow={2}
+          >
             <Button.Group>
               <Button
                 flex="1"
@@ -307,7 +301,7 @@ export default function WorksheetShare({ footerLinks, appName }) {
               <Button
                 flex="1"
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "worksheet.white" }}
                 px="5"
                 onPress={handleSuccessModule}
               >

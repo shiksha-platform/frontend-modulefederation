@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
-//import FloatingVideoPlayer from './floatingPlayer/FloatingVideoPlayer'
+import { getAppshellData } from './helper'
 
 function AppShell({
-  theme,
+  colors,
   routes,
   AuthComponent,
   basename,
@@ -17,49 +17,23 @@ function AppShell({
   ...otherProps
 }: any) {
   const [token, setToken] = useState(localStorage.getItem('token'))
-  const footerLinks = !isShowFooterLink
-    ? {}
-    : {
-      menues: [
-        {
-          title: 'HOME',
-          icon: 'Home4LineIcon',
-          module: 'Registry',
-          route: '/',
-          routeparameters: {}
-        },
-        {
-          title: 'CLASSES',
-          icon: 'TeamLineIcon',
-          module: 'Registry',
-          route: '/classes',
-          routeparameters: {}
-        },
-        {
-          title: 'SCHOOL',
-          icon: 'GovernmentLineIcon',
-          module: 'Registry',
-          route: '/',
-          routeparameters: {}
-        },
-        {
-          title: 'TEACHING',
-          icon: 'BookOpenLineIcon',
-          module: 'Registry',
-          route: '/worksheet',
-          routeparameters: {}
-        },
-        {
-          title: 'MY_LEARNING',
-          icon: 'UserLineIcon',
-          module: 'Registry',
-          route: '/mylearning',
-          routeparameters: {}
-        }
-      ]
-    }
+  const [theme, setTheme] = React.useState<any>({})
+  const [accessRoutes, setAccessRoutes] = React.useState<any>([])
+  const [footerLinks, setFooterLinks] = React.useState<any>([])
 
   useEffect(() => {
+    const getData = async () => {
+      const { newTheme, newRoutes, newFooterLinks } = await getAppshellData(
+        routes
+      )
+      if (isShowFooterLink) {
+        setFooterLinks({ menues: newFooterLinks })
+      }
+      setAccessRoutes(newRoutes)
+      setTheme(newTheme)
+    }
+
+    getData()
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
         setToken(localStorage.getItem('token'))
@@ -70,19 +44,23 @@ function AppShell({
     }
   }, [token])
 
+  if (!Object.keys(theme).length) {
+    return <React.Fragment />
+  }
+
   if (!token) {
     return (
-      <NativeBaseProvider theme={theme}>
+      <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
         <PushNotification />
         {/* <FloatingVideoPlayer /> */}
         <React.Suspense fallback={<Loading />}>
-          <AuthComponent {..._authComponent} />
+          <AuthComponent {...{ colors }} {..._authComponent} />
         </React.Suspense>
       </NativeBaseProvider>
     )
   } else {
     return (
-      <NativeBaseProvider theme={theme}>
+      <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
         <PushNotification />
         {/* <FloatingVideoPlayer /> */}
         <Suspense
@@ -94,11 +72,13 @@ function AppShell({
         >
           <Router basename={basename}>
             <Routes>
-              {routes.map((item: any, index: number) => (
+              {accessRoutes.map((item: any, index: number) => (
                 <Route
                   key={index}
                   path={item.path}
-                  element={<item.component {...{ footerLinks, appName }} />}
+                  element={
+                    <item.component {...{ footerLinks, appName, colors }} />
+                  }
                 />
               ))}
             </Routes>

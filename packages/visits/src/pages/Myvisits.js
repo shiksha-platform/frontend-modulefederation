@@ -1,25 +1,26 @@
 import {
   BodyMedium,
   H2,
-  IconByName,
   Layout,
   overrideColorTheme,
   SearchLayout,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Box, HStack, Text, VStack } from "native-base";
+import { Link } from "react-router-dom";
+import { Box, Button, VStack } from "native-base";
 import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
 import MySchoolsCard from "../components/MySchoolsCard";
+import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-export default function Myvisits() {
+export default function Myvisits({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
   const [searchState, setSearchState] = React.useState(false);
   const [search, setSearch] = React.useState(true);
+  const navigate = useNavigate();
 
   if (searchState) {
     return (
@@ -51,14 +52,12 @@ export default function Myvisits() {
     <Layout
       _header={{
         title: "My Visits",
-        _heading: { color: colors.white },
-        subHeading: t("View recommended and allocated schools for your visits"),
-        _subHeading: {
-          color: colors.white,
-          textTransform: "none",
-          maxWidth: "330px",
-        },
       }}
+      subHeader={
+        <H2 textTransform="inherit">
+          View recommended and allocated schools for your visits
+        </H2>
+      }
       _appBar={{
         languages: ["en"],
         isEnableSearchBtn: true,
@@ -66,47 +65,9 @@ export default function Myvisits() {
         setSearchState,
       }}
       _subHeader={{ bg: colors.lightPurple }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "VISITS",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "LEARNING",
-            icon: "LightbulbFlashLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "PROFILE",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
-      <Box p={6}>
+      <Box p={6} bg={colors.white}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>
@@ -123,13 +84,16 @@ export default function Myvisits() {
                     </Box>
                   );
                 })}
-              <Box textAlign="center">
-                <Link
-                  to="/visits/recommended-schools"
-                  style={{ color: colors.primary, textDecoration: "none" }}
+              <Box>
+                <Button
+                  flex="1"
+                  colorScheme="button"
+                  variant="outline"
+                  px="5"
+                  onPress={() => navigate(`/visits/recommended-schools`)}
                 >
                   Show More
-                </Link>
+                </Button>
               </Box>
             </VStack>
           </Box>
@@ -149,13 +113,16 @@ export default function Myvisits() {
                     />
                   );
                 })}
-              <Box textAlign="center">
-                <Link
-                  to="/visits/allocated-schools"
-                  style={{ color: colors.primary, textDecoration: "none" }}
+              <Box>
+                <Button
+                  flex="1"
+                  colorScheme="button"
+                  variant="outline"
+                  px="5"
+                  onPress={() => navigate(`/visits/allocated-schools`)}
                 >
                   Show More
-                </Link>
+                </Button>
               </Box>
             </VStack>
           </Box>

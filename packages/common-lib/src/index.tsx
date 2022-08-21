@@ -7,7 +7,6 @@ import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
 import Menu, { SubMenu } from './components/Menu'
-import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
@@ -25,9 +24,13 @@ import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import * as lessonPlansRegistryService from './services/lessonPlansRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
-import { getApiConfig } from './services/configApiRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
-import { getAllForUser } from './services/firebaseHistoryRegistryService'
+import * as roleRegistryService from './services/roleRegistryService'
+import { getApiConfig } from './services/configApiRegistryService'
+import {
+  getAllForUser,
+  sendReadReceipt
+} from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
 import FloatingVideoPlayer from './components/floatingPlayer/FloatingVideoPlayer'
 export {
@@ -42,7 +45,6 @@ export {
   Collapsible,
   Menu,
   SubMenu,
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
   AppRoutesContainer,
@@ -58,12 +60,13 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
-  lessonPlansRegistryService,
-  FloatingVideoPlayer,
-  templateRegistryService,
   getApiConfig,
+  getAllForUser,
+  sendReadReceipt,
+  lessonPlansRegistryService,
+  templateRegistryService,
   notificationRegistryService,
-  getAllForUser
+  roleRegistryService
 }
 
 export * from './services/Auth'

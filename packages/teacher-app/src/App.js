@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
 import {
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
   AppRoutesContainer,
@@ -15,7 +13,6 @@ import Home from "./pages/Home";
 initializeI18n(["translation", "core", "attendance"]);
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
   const ClassDetails = React.lazy(() => import("classes/ClassDetails"));
   const Attendance = React.lazy(() => import("attendance/Attendance"));
   const Report = React.lazy(() => import("attendance/Report"));
@@ -76,185 +73,382 @@ function App() {
   const QuestionList5 = React.lazy(() => import("assessment/QuestionLIst5"));
   const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
   const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
-  // const SingleLessonPlanDetails = React.lazy(() => import("/lessonplans/SingleLessonPlan"));
-  // const LessonPlansDetails = React.lazy(() => import("/lessonplans/LessonPlansDetails"));
-  // const Lessonplans = React.lazy(() => import("/lessonplans/Lessonplans"));
+  const SchoolProfile = React.lazy(() => import("schools/SchoolProfile"));
+  const MyVisitsPage = React.lazy(() => import("schools/MyVisitsPage"));
+  const AttendanceReportDashboard = React.lazy(() =>
+    import("schools/AttendanceReportDashboard")
+  );
+  const AttendanceSectionWiseReport = React.lazy(() =>
+    import("schools/AttendanceSectionWiseReport")
+  );
+  const AttendanceDetailedReport = React.lazy(() =>
+    import("schools/AttendanceDetailedReport")
+  );
+  const AssessmentReportDashboard = React.lazy(() =>
+    import("schools/AssessmentReportDashboard")
+  );
+  const AssessmentSectionWiseReport = React.lazy(() =>
+    import("schools/AssessmentSectionWiseReport")
+  );
+  const AssessmentDetailedReport = React.lazy(() =>
+    import("schools/AssessmentDetailedReport")
+  );
+  const TeacherDetails = React.lazy(() => import("schools/TeacherDetails"));
+  const TeacherAttendanceReport = React.lazy(() =>
+    import("schools/TeacherAttendanceReport")
+  );
+  const NewVisitPage = React.lazy(() => import("schools/NewVisitPage"));
+  const VisitSubmit = React.lazy(() => import("schools/VisitSubmit"));
+  const TeacherVisitReport = React.lazy(() =>
+    import("schools/TeacherVisitReport")
+  );
+  const Question = React.lazy(() => import("schools/Question"));
+  const Myvisits = React.lazy(() => import("visits/Myvisits"));
+  const Recommendedschools = React.lazy(() =>
+    import("visits/Recommendedschools")
+  );
+  const Allocatedschools = React.lazy(() => import("visits/Allocatedschools"));
 
   const routes = [
-    // {
-    //   path: "/worksheet/lessonplans",
-    //   component: LessonPlansDetails,
-    // },
-    // {
-    //   path: "/worksheet/lessonplans/list",
-    //   component: Lessonplans,
-    // },
-    // {
-    //   path: "/worksheet/lesson/:id",
-    //   component: SingleLessonPlanDetails,
-    // },
+    // worksheet
     {
+      moduleName: "worksheet",
       path: "/worksheet/list/:state",
       component: Worksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/list",
       component: Worksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:classId/view",
       component: TeachingDetail,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:worksheetId/share",
       component: WorksheetShare,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/questionBank",
       component: QuestionBank,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:id",
       component: WorksheetQuestionBank,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/:id/edit",
       component: EditWorksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/create",
       component: CreateWorksheet,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet/template/:worksheetId",
       component: WorksheetTemplate,
     },
     {
+      moduleName: "worksheet",
       path: "/worksheet",
       component: Teaching,
     },
+    // classess
     {
+      moduleName: "classes",
       path: "classes",
       component: MyClasses,
     },
     {
+      moduleName: "classes",
       path: "/classes/:classId",
       component: ClassDetails,
     },
-    { path: "/class/students/:classId", component: Student },
-    { path: "/attendance/:classId", component: Attendance },
-    { path: "/attendance/report", component: Report },
-    { path: "/class/students/:classId", component: Student },
     {
+      moduleName: "classes",
+      path: "/class/students/:classId",
+      component: Student,
+    },
+    // attendance
+    {
+      moduleName: "attendance",
+      path: "/attendance/:classId",
+      component: Attendance,
+    },
+    {
+      moduleName: "attendance",
+      path: "/attendance/report",
+      component: Report,
+    },
+    {
+      moduleName: "attendance",
       path: "/attendance/report/:classId/:view",
       component: ReportDetail,
     },
-    { path: "/attendance/sendSms/:classId", component: SendSMS },
-    { path: "/students/:studentId", component: StudentDetails },
-    { path: "/notification", component: Notification },
-    { path: "/notification/create", component: CreateNotification },
-    { path: "/notification/schedule", component: ScheduleNotification },
-    { path: "/notification/outbox", component: Outbox },
-    { path: "/profile", component: Profile },
-    { path: "/profile/attendance", component: AttendanceReport },
-
-    { path: "/mylearning", component: MyLearning },
     {
+      moduleName: "attendance",
+      path: "/attendance/sendSms/:classId",
+      component: SendSMS,
+    },
+    // students
+    {
+      moduleName: "student",
+      path: "/students/:studentId",
+      component: StudentDetails,
+    },
+    // notification
+    {
+      moduleName: "notification",
+      path: "/notification",
+      component: Notification,
+    },
+    {
+      moduleName: "notification",
+      path: "/notification/create",
+      component: CreateNotification,
+    },
+    {
+      moduleName: "notification",
+      path: "/notification/schedule",
+      component: ScheduleNotification,
+    },
+    {
+      moduleName: "notification",
+      path: "/notification/outbox",
+      component: Outbox,
+    },
+    // profile
+    {
+      moduleName: "profile",
+      path: "/profile",
+      component: Profile,
+    },
+    {
+      moduleName: "profile",
+      path: "/profile/attendance",
+      component: AttendanceReport,
+    },
+    // mylearning
+    {
+      moduleName: "mylearning",
+      path: "/mylearning",
+      component: MyLearning,
+    },
+    {
+      moduleName: "mylearning",
       path: "/mylearning/list/:state",
       component: CourseList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/list",
       component: CourseList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/:id/view",
       component: CourseDetails,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/video/list/:state",
       component: VideoList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/video/list",
       component: VideoList,
     },
     {
+      moduleName: "mylearning",
       path: "/mylearning/video/:id/view",
       component: VideoDetails,
     },
     // Asessment Routes
     {
+      moduleName: "assessment",
       path: "/assessment/exam-list2",
       component: QuestionList2,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/exam-list3",
       component: QuestionList3,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/exam-list4",
       component: QuestionList4,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/exam-list5",
       component: QuestionList5,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/exam-list6",
       component: QuestionList6,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/exam-list7",
       component: QuestionList7,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/examscores",
       component: ExamScores,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/assessment-result",
       component: SpotAssessmentResult,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/assessment-result2",
       component: SpotAssessmentResult2,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/assessment-result3",
       component: SpotAssessmentResult3,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/assessment-success",
       component: SuccessPublicationReport,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/assessment-detailed-report",
       component: ReportDetails,
     },
     {
+      moduleName: "assessment",
       path: "/assessment/quml-test",
       component: QumlTest,
     },
     {
+      moduleName: "assessment",
       path: "/assessment",
       component: Assessment,
     },
-    { path: "*", component: Home },
+    // Schools Routes
+    {
+      moduleName: "schools",
+      path: "/schools/new-visit",
+      component: NewVisitPage,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/visit-submit",
+      component: VisitSubmit,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-visit-report",
+      component: TeacherVisitReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-report",
+      component: AssessmentReportDashboard,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-section-report",
+      component: AssessmentSectionWiseReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/assessment-detailed-report",
+      component: AssessmentDetailedReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-report",
+      component: AttendanceReportDashboard,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-section-report",
+      component: AttendanceSectionWiseReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/attendance-detailed-report",
+      component: AttendanceDetailedReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/my-visits",
+      component: MyVisitsPage,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools",
+      component: SchoolProfile,
+    },
+    ,
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-details",
+      component: TeacherDetails,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/teacher-attendance-report",
+      component: TeacherAttendanceReport,
+    },
+    {
+      moduleName: "schools",
+      path: "/schools/questionnaire",
+      component: Question,
+    },
+    // Visits Routes
+    {
+      moduleName: "visits",
+      path: "/visits/recommended-schools",
+      component: Recommendedschools,
+    },
+    {
+      moduleName: "visits",
+      path: "/visits/allocated-schools",
+      component: Allocatedschools,
+    },
+    {
+      moduleName: "visits",
+      path: "/visits",
+      component: Myvisits,
+    },
+    {
+      moduleName: "app",
+      path: "*",
+      component: Home,
+    },
   ];
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const searchParams = Object.fromEntries(urlSearchParams.entries());
 
   useEffect(async () => {
-    const resultTeacher = await userRegistryService.getOne({}, {});
-
     if (searchParams.token != undefined) {
       localStorage.setItem("token", searchParams.token);
     }
+    const resultTeacher = await userRegistryService.getOne({}, {});
 
-    if (resultTeacher) {
-      let id = resultTeacher.id.replace("1-", "");
+    if (resultTeacher.id) {
+      let id = resultTeacher?.id;
       localStorage.setItem("id", id);
       localStorage.setItem(
         "fullName",
@@ -270,12 +464,11 @@ function App() {
   }, []);
   const LoginComponent = React.lazy(() => import("core/Login"));
   if (
-    process.env.OAUTH_PROXY_ENABLED == undefined ||
-    JSON.parse(process.env.OAUTH_PROXY_ENABLED) == false
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
   ) {
     return (
       <AppShell
-        theme={theme}
         basename={process.env.PUBLIC_URL}
         routes={routes}
         AuthComponent={LoginComponent}
@@ -286,7 +479,6 @@ function App() {
   } else {
     return (
       <AppRoutesContainer
-        theme={theme}
         basename={process.env.PUBLIC_URL}
         routes={routes}
         AuthComponent={LoginComponent}

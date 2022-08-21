@@ -69,7 +69,11 @@ const renderEventContent = ({
         <IconByName
           size="sm"
           name="FlashlightLineIcon"
-          colorScheme={item.activeMenu ? "emerald" : "timeTableFlashIcon"}
+          bg={
+            item.activeMenu
+              ? "calendar.activeClass"
+              : "calendar.timeTableFlashIcon"
+          }
           variant="solid"
           rounded="full"
           _icon={{

@@ -32,17 +32,17 @@ function SectionWiseSubjectProgress() {
   const [progressData, setProgressData] = React.useState([
     {
       name: "22 Present",
-      color: colors.green,
+      color: "schools.green",
       value: 22,
     },
     {
       name: "4 Absent",
-      color: colors.absent,
+      color: "schools.absent",
       value: 4,
     },
     {
       name: "1 Unmarked",
-      color: colors.unmarked,
+      color: "schools.unmarked",
       value: 1,
     },
   ]);
@@ -50,12 +50,12 @@ function SectionWiseSubjectProgress() {
   const [progressData2, setProgressData2] = React.useState([
     {
       name: "16 Assessed",
-      color: colors.green,
+      color: "schools.green",
       value: 16,
     },
     {
       name: "4 Pending",
-      color: colors.gray,
+      color: "schools.gray",
       value: 4,
     },
   ]);
@@ -72,15 +72,15 @@ function SectionWiseSubjectProgress() {
 
         <HStack alignItems="center" justifyContent="space-between">
           <HStack alignItems="center">
-            <Box bg={colors.green} w="15px" h="15px" rounded={4} />
+            <Box bg={"schools.green"} w="15px" h="15px" rounded={4} />
             <BodyMedium mx={2}>Passed</BodyMedium>
           </HStack>
           <HStack alignItems="center">
-            <Box bg={colors.absent} w="15px" h="15px" rounded={4} />
+            <Box bg={"schools.absent"} w="15px" h="15px" rounded={4} />
             <BodyMedium mx={2}>Failed</BodyMedium>
           </HStack>
           <HStack alignItems="center">
-            <Box bg={colors.unmarked} w="15px" h="15px" rounded={4} />
+            <Box bg={"schools.unmarked"} w="15px" h="15px" rounded={4} />
             <BodyMedium mx={2}>Not attempted</BodyMedium>
           </HStack>
         </HStack>

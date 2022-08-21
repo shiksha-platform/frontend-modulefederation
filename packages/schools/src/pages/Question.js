@@ -1,16 +1,16 @@
-import { Layout, overrideColorTheme } from "@shiksha/common-lib";
+import { Layout, H2 } from "@shiksha/common-lib";
 import React from "react";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
-const Question = () => {
+const Question = ({ footerLinks }) => {
   return (
     <Layout
       _header={{
-        title: "Fill the following questionnaire",
-        _heading: { color: colors.white },
+        title: "",
       }}
+      subHeader={<H2>Fill the following questionnaire</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{ languages: ["en"] }}
+      _footer={footerLinks}
     >
       <iframe
         src="http://localhost:8005/preview?xform=http://0.0.0.0:8000/Primary_Mentoring_Form.xml"

@@ -167,13 +167,34 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
   }
 }
 
-export const getAssessmentDetails = async (params = {}, header = {}) => {
+export const getAssessmentDetails = async (id, params = {}, header = {}) => {
   const headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await get(
-    `${process.env.REACT_APP_API_URL}/trackassessment/${params}`,
+    `${process.env.REACT_APP_API_URL}/trackassessment/${id}`,
+    {
+      params,
+      headers
+    }
+  )
+
+  if (result.data && result.data.data) {
+    return result.data.data
+  } else {
+    return {}
+  }
+}
+
+export const getAllAssessment = async (params = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/trackassessment/search`,
+    params,
     {
       headers
     }
@@ -211,5 +232,25 @@ export const getAttendanceDetailsByClass = async (
     return _.sortBy(data, 'firstName')
   } else {
     return []
+  }
+}
+
+export const getFilteredAssessments = async (params = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/trackassessment/`,
+    {
+      params,
+      headers
+    }
+  )
+
+  if (result.data && result.data.data) {
+    return result.data.data
+  } else {
+    return {}
   }
 }

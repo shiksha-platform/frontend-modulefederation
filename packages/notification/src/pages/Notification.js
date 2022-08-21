@@ -35,6 +35,8 @@ import {
   telemetryFactory,
   userRegistryService,
   getAllForUser,
+  sendReadReceipt,
+  H4,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -148,7 +150,7 @@ const Notification = ({ footerLinks, appName }) => {
             rounded="full"
             colorScheme="button"
             variant="outline"
-            bg={colors.notificationbtnBg}
+            bg={"notification.notificationBg"}
             px="5"
             py="4px"
             _text={{ textTransform: "capitalize", fontSize: "14px" }}
@@ -174,14 +176,14 @@ const Notification = ({ footerLinks, appName }) => {
     >
       <Stack space={1} mb="2">
         <VStack space="1">
-          <Box bg="white" p="5">
+          <Box bg="notification.white" p="5">
             <HStack justifyContent="space-between" alignItems="center">
               <CalendarBar {...{ page, setPage }} />
               {/* <Checkbox
                 colorScheme="button"
-                borderColor={colors.primary}
+                borderColor={"notification.primary"}
                 borderRadius="0"
-                _text={{ color: colors.primary, fontSize: "14px" }}
+                _text={{ color: "notification.primary", fontSize: "14px" }}
               >
                 {t("MARK_ALL_READ")}
               </Checkbox> */}
@@ -190,7 +192,7 @@ const Notification = ({ footerLinks, appName }) => {
           <FilterButton
             getObject={setFilterObject}
             _box={{ p: 5 }}
-            _actionSheet={{ bg: "worksheetCard.500" }}
+            _actionSheet={{ bg: "notification.notificationBg" }}
             isResettableFilter={true}
             filters={[
               {
@@ -201,7 +203,7 @@ const Notification = ({ footerLinks, appName }) => {
               },
             ]}
           />
-          <Box bg="white" p="5" roundedBottom={"xl"}>
+          <Box bg="notification.white" p="5" roundedBottom={"xl"}>
             <NotificationBox
               data={notificationInfo}
               showMore={showMore}
@@ -219,18 +221,24 @@ const Notification = ({ footerLinks, appName }) => {
                 showMore ? setShowMore(false) : setShowMore(true)
               }
             >
-              <Text color="button.500">
+              <Text color="notification.primary">
                 {showMore ? t("SHOW_LESS") : t("SHOW_MORE")}
               </Text>
             </Pressable>
           </Box>
         </VStack>
         {validUsers.includes(realm_access?.roles[2].toLowerCase()) && (
-          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+          <Box
+            bg={"notification.white"}
+            p="5"
+            position="sticky"
+            bottom="0"
+            shadow={2}
+          >
             <Link href={"/notification/create"}>
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 px="5"
                 flex="1"
               >
@@ -243,29 +251,29 @@ const Notification = ({ footerLinks, appName }) => {
           isOpen={showModalMore}
           onClose={() => setShowModalMore(false)}
         >
-          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2 fontWeight="500">{t("NOTIFICATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 onPress={(e) => setShowModalMore(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"} _text={{}}>
-            <BodyLarge p="5" color={colors.coolGraylight}>
+          <Box bg={"notification.white"} width={"100%"} _text={{}}>
+            <BodyLarge p="5" color={"notification.darkGary2"}>
               {t("MARK_AS_READ")}
             </BodyLarge>
-            <BodyLarge p="5" color={colors.coolGraylight}>
+            <BodyLarge p="5" color={"notification.darkGary2"}>
               {t("DELETE_MESSAGES")}
             </BodyLarge>
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 onPress={(e) => setShowModalMore(false)}
               >
                 {t("CONTINUE")}
@@ -277,19 +285,19 @@ const Notification = ({ footerLinks, appName }) => {
           isOpen={showModalInbox}
           onClose={() => setShowModalInbox(false)}
         >
-          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("NOTIFCATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 onPress={(e) => setShowModalInbox(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"}>
+          <Box bg={"notification.white"} width={"100%"}>
             <Link href={"/notification"}>
               <Box p="5">{t("INBOX")}</Box>
             </Link>
@@ -299,7 +307,7 @@ const Notification = ({ footerLinks, appName }) => {
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 onPress={(e) => setShowModalInbox(false)}
               >
                 {t("CONTINUE")}
@@ -308,30 +316,30 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg={colors?.cardBg}>
+          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("VIEW_NOTIFICATION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"}>
+          <Box bg={"notification.white"} width={"100%"}>
             <Box px="5">
               <HStack
                 py="5"
                 borderBottomWidth="1"
-                borderColor={colors.lightGray}
+                borderColor={"notification.lightGray2"}
                 alignItems="center"
                 space="1"
               >
                 <IconByName
                   _icon={{ size: "16" }}
-                  color={colors.cardCloseIcon}
+                  color={"notification.cardCloseIcon"}
                   name="CheckDoubleLineIcon"
                   isDisabled
                 />
@@ -346,10 +354,10 @@ const Notification = ({ footerLinks, appName }) => {
                   : "Dummy text"}
               </BodyMedium>
             </VStack>
-            <Box bg={colors.white} p="5" bottom="0" shadow="2">
+            <Box bg={"notification.white"} p="5" bottom="0" shadow="2">
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 onPress={(e) => setShowModal(false)}
               >
                 {t("DONE")}
@@ -358,23 +366,26 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <Actionsheet.Content
+            alignItems={"left"}
+            bg={"notification.notificationBg"}
+          >
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("SELECT_MODULE")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.cardCloseIcon}
+                color={"notification.cardCloseIcon"}
                 onPress={(e) => setFilterData()}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"}>
+          <Box bg={"notification.white"} width={"100%"}>
             <Box p="5">
               <Checkbox
                 colorScheme="button"
-                borderColor={colors.primary}
+                borderColor={"notification.primary"}
                 borderRadius="0"
               >
                 {t("SELECT_ALL")}
@@ -385,7 +396,7 @@ const Notification = ({ footerLinks, appName }) => {
                 <Box p="5" key={index}>
                   <Checkbox
                     colorScheme="button"
-                    borderColor={colors.primary}
+                    borderColor={"notification.primary"}
                     borderRadius="0"
                   >
                     {value}
@@ -395,7 +406,7 @@ const Notification = ({ footerLinks, appName }) => {
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "white" }}
+                _text={{ color: "notification.white" }}
                 onPress={(e) => {
                   setGroupValue(["Attendance", "Lesson Plans", "Timtable"]);
                   setFilterData();
@@ -423,43 +434,43 @@ const NotificationBox = ({
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
+
+  const readReceipt = async (id) => {
+    const resp1 = await sendReadReceipt({
+      eventType: "READ",
+      externalId: id,
+      destAdd: localStorage.getItem("phoneNumber"),
+      fcmDestAdd: localStorage.getItem("fcmToken"),
+    });
+  };
+
   const numberOfItems = showMore ? data.length : 2;
   return data.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
         key={index}
-        borderWidth="1"
-        borderColor={colors.primary}
+        borderWidth={value.messageState === "SENT" ? "2" : "1"}
+        borderColor={
+          value.messageState === "SENT" ? colors.primary : colors.lightGray
+        }
         my="2"
         p="5"
         rounded="10"
       >
-        <Pressable onPress={(e) => onPress(value)}>
+        <Pressable
+          onPress={(e) => {
+            onPress(value);
+            if (value.messageState === "SENT") {
+              readReceipt(value.messageId);
+            }
+          }}
+        >
           <VStack space="3">
-            {/* <HStack
-              space="2"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-               <HStack space="2" alignItems="center">
-                <IconByName
-                  _icon={{ size: "16" }}
-                  name="UserLineIcon"
-                  isDisabled
-                />
-                <H2>{value.name}</H2>
-                <H1 color={colors.primary}>•</H1>
-              </HStack>
-              <IconByName
-                _icon={{ size: "18" }}
-                p="0"
-                name="More2LineIcon"
-                onPress={(e) => {
-                  onPressMore();
-                }}
-              />
-            </HStack> */}
-            <Subtitle {...line2style}>{value.payload.text}</Subtitle>
+            {value.messageState === "READ" ? (
+              <BodySmall {...line2style}>{value?.payload?.text}</BodySmall>
+            ) : (
+              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
+            )}
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -467,8 +478,11 @@ const NotificationBox = ({
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                <BodySmall>Attendance</BodySmall>
-                {/* <BodySmall>{value.module}</BodySmall> */}
+                {value.messageState === "READ" ? (
+                  <BodySmall>Attendance</BodySmall>
+                ) : (
+                  <Subtitle {...line2style}>Attendance</Subtitle>
+                )}
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -476,9 +490,15 @@ const NotificationBox = ({
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>
-                  {moment.utc(value.timestamp).local().format("LT")}
-                </BodySmall>
+                {value.messageState === "READ" ? (
+                  <BodySmall>
+                    {moment.utc(value.timestamp).local().format("LT")}
+                  </BodySmall>
+                ) : (
+                  <Subtitle>
+                    {moment.utc(value.timestamp).local().format("LT")}
+                  </Subtitle>
+                )}
               </HStack>
             </HStack>
           </VStack>

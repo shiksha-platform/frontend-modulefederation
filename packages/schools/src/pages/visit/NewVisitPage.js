@@ -15,7 +15,7 @@ import colorTheme from "../../colorTheme";
 const colors0 = overrideColorTheme(colorTheme);
 let colors = DEFAULT_THEME;
 
-export default function NewVisitPage() {
+export default function NewVisitPage({ footerLinks }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
@@ -53,31 +53,29 @@ export default function NewVisitPage() {
     <Layout
       _header={{
         title: "New Visit",
-        _heading: { color: colors0.white },
       }}
+      subHeader={<H2 textTransform="inherit">Start your visit based on</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
         languages: ["en"],
         isEnableSearchBtn: true,
       }}
+      _footer={footerLinks}
     >
-      <Box rounded={10} bg={colors0.white} shadow="md">
+      <Box rounded={10} bg={"schools.white"} shadow="md">
         <VStack>
-          <Box p={4}>
-            <H2>Start your visit based on</H2>
-          </Box>
-          <Divider />
           <Box p={6}>
             <VStack space={6}>
               <Box>
                 <TeacherFilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: colors.cardBg }}
+                  _actionSheet={{ bg: "schools.cardBg" }}
                   _box={{ pt: 5 }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2" }}
+                  _button={{ px: "15px", py: "2" }}
                   _filterButton={{
                     rightIcon: "",
-                    bg: colors0.white,
+                    bg: "schools.white",
                   }}
                   resetButtonText={t("COLLAPSE")}
                 />
@@ -86,11 +84,11 @@ export default function NewVisitPage() {
                 <ClassFilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: colors.cardBg }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2" }}
+                  _actionSheet={{ bg: "schools.cardBg" }}
+                  _button={{ px: "15px", py: "2" }}
                   _filterButton={{
                     rightIcon: "",
-                    bg: colors0.white,
+                    bg: "schools.white",
                   }}
                   resetButtonText={t("COLLAPSE")}
                 />
@@ -99,11 +97,11 @@ export default function NewVisitPage() {
                 <SubjectFilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: colors.cardBg }}
-                  _button={{ bg: colors.primary, px: "15px", py: "2" }}
+                  _actionSheet={{ bg: "schools.cardBg" }}
+                  _button={{ px: "15px", py: "2" }}
                   _filterButton={{
                     rightIcon: "",
-                    bg: colors0.white,
+                    bg: "schools.white",
                   }}
                   resetButtonText={t("COLLAPSE")}
                 />
@@ -113,7 +111,7 @@ export default function NewVisitPage() {
           <Divider />
           <Box p={4}>
             <Button
-              colorScheme="button"
+              variant={"outline"}
               py={3}
               onPress={() => {
                 navigate("/schools/questionnaire");
