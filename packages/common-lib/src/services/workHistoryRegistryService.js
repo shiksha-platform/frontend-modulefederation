@@ -2,6 +2,7 @@ import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as coreUpdate } from './RestClient'
 
 const interfaceData = {
+    organizationName: "organizationName",
     workHistoryId: "workHistoryId",
     userId: "userId",
     role: "role",
