@@ -8,10 +8,6 @@ import SingleLessonPlan from "pages/SingleLessonPlan";
 import ExploreVideosList from "pages/ExploreVideosList";
 import VideoDetails from "pages/VideoDetails";
 import LessonplanShare from "pages/LessonplanShare";
-// import Teaching from "pages/Teaching";
-// import TeachingDetail from "pages/TeachingDetail";
-// import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
-// import CreateWorksheet from "pages/CreateWorksheet";
 
 function App() {
   const theme = extendTheme(DEFAULT_THEME);
@@ -21,30 +17,32 @@ function App() {
   );
   const routes = [
     {
+      moduleName: "lessonplans",
       path: "/lessonplans/list",
       component: Lessonplans,
     },
     {
+      moduleName: "lessonplans",
       path: "/videos/list",
       component: ExploreVideosList,
     },
     {
+      moduleName: "lessonplans",
       path: "/video/:id",
       component: VideoDetails,
     },
     {
+      moduleName: "lessonplans",
       path: "/lessonplan/:id",
       component: SingleLessonPlan,
     },
     {
+      moduleName: "lessonplans",
       path: "/lessonplan/:lessonplanId/share",
       component: LessonplanShare,
     },
-    // {
-    //   path: "/worksheet/template",
-    //   component: WorksheetTemplate,
-    // },
     {
+      moduleName: "lessonplans",
       path: "*",
       component: LessonPlansDetails,
     },
