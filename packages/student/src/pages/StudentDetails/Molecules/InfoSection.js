@@ -15,10 +15,10 @@ const InfoSection = ({ items, isLastBorderEnable }) => {
       borderBottomWidth={
         items.length - 1 !== index || isLastBorderEnable ? "1" : "0"
       }
-      borderColor={colors.coolGraylight}
+      borderColor={"student.lightGray3"}
       key={index}
     >
-      <H3 color={colors.labelColor}>{item.title}</H3>
+      <H3 color={"student.lightGray1"}>{item.title}</H3>
       {item.value ? (
         <BodySmall>{item.value}</BodySmall>
       ) : (

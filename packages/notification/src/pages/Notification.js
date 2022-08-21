@@ -192,7 +192,7 @@ const Notification = ({ footerLinks, appName }) => {
           <FilterButton
             getObject={setFilterObject}
             _box={{ p: 5 }}
-            _actionSheet={{ bg: "worksheetCard.500" }}
+            _actionSheet={{ bg: "notification.notificationBg" }}
             isResettableFilter={true}
             filters={[
               {
@@ -221,7 +221,7 @@ const Notification = ({ footerLinks, appName }) => {
                 showMore ? setShowMore(false) : setShowMore(true)
               }
             >
-              <Text color="button.500">
+              <Text color="notification.primary">
                 {showMore ? t("SHOW_LESS") : t("SHOW_MORE")}
               </Text>
             </Pressable>
@@ -366,7 +366,10 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
+          <Actionsheet.Content
+            alignItems={"left"}
+            bg={"notification.notificationBg"}
+          >
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("SELECT_MODULE")}</H2>

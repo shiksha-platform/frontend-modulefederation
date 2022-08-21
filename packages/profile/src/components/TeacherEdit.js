@@ -152,13 +152,13 @@ export default function TeacherEdit({
             render: () => {
               return (
                 <Box
-                  bg={colors.studentHeadingBg}
+                  bg={"profile.activeClass"}
                   px="3"
                   py="2"
                   rounded="sm"
                   mb={5}
                 >
-                  <H1 color={colors.coolGray}>
+                  <H1 color={"profile.lightGray3"}>
                     {result.data?.params?.status
                       ? result.data?.params?.status
                       : "successful"}
@@ -208,7 +208,7 @@ export default function TeacherEdit({
           editState ? (
             <Button
               colorScheme="button"
-              _text={{ fontWeight: "400", color: "white" }}
+              _text={{ fontWeight: "400", color: "profile.white" }}
               py={1}
               px={2}
               onPress={handleSubmit}
@@ -242,13 +242,13 @@ export default function TeacherEdit({
             <Box
               pt="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
-              borderColor={colors.teacherBackground2}
+              borderColor={"profile.lightGray5"}
               key={index}
             >
               {editState ? (
                 <FormControl isInvalid={item.name in errors}>
                   <FormControl.Label>
-                    <BodyLarge color={colors.formSubtitle} textTransform={"uppercase"}>
+                    <BodyLarge color={"profile.unmarked"} textTransform={"uppercase"}>
                       {item.placeholder}
                     </BodyLarge>
                   </FormControl.Label>
@@ -277,7 +277,7 @@ export default function TeacherEdit({
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: colors.error,
+                        color: "profile.error",
                         fontWeight: 500,
                       }}
                     >
@@ -289,7 +289,7 @@ export default function TeacherEdit({
                 </FormControl>
               ) : (
                 <>
-                  <BodyLarge color={colors.formSubtitle} alignItems={"center"}>
+                  <BodyLarge color={"profile.unmarked"} alignItems={"center"}>
                     {t(item.placeholder)}
                   </BodyLarge>
                   {item.value ? (

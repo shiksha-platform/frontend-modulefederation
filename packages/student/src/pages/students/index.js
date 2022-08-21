@@ -49,11 +49,11 @@ const Student = ({ footerLinks }) => {
         avatar: true,
       }}
       subHeader={<H2 fontWeight="400">{t("VIEW_ALL_STUDENTS")}</H2>}
-      _subHeader={{ bg: colors.studentBg }}
+      _subHeader={{ bg: "student.successAlert" }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
-      <Box bg={colors.white} p={4}>
+      <Box bg={"student.white"} p={4}>
         <Stack space={2}>
           <Collapsible
             defaultCollapse={true}
@@ -61,7 +61,7 @@ const Student = ({ footerLinks }) => {
             header={
               <>
                 <VStack>
-                  <H2 color={colors.darkGray}>{t("STUDENTS_LIST")}</H2>
+                  <H2 color={"student.darkGary1"}>{t("STUDENTS_LIST")}</H2>
                   <H4 fontSize={"xs"}>
                     {t("TOTAL") + ": " + students?.length}
                   </H4>
@@ -77,9 +77,9 @@ const Student = ({ footerLinks }) => {
                     <Box
                       borderBottomWidth="1"
                       _dark={{
-                        borderColor: colors.darkGraylight,
+                        borderColor: "student.darkGary5",
                       }}
-                      borderColor={colors.coolGraylight}
+                      borderColor={"student.lightGray3"}
                       pr="1"
                       py="4"
                     >

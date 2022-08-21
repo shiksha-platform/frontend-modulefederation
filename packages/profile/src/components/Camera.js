@@ -46,7 +46,12 @@ export default function Camera({
   if (cameraModal) {
     return (
       <Box alignItems={"center"}>
-        <Box position="fixed" zIndex={100} {...{ width, height }} bg="gray.900">
+        <Box
+          position="fixed"
+          zIndex={100}
+          {...{ width, height }}
+          bg="profile.darkGary0"
+        >
           <Box p="20px" ref={topElement}>
             <HStack
               space={4}
@@ -57,7 +62,7 @@ export default function Camera({
               {!cameraUrl ? (
                 <IconByName
                   name="Settings4LineIcon"
-                  color={colors.white}
+                  color={"profile.white"}
                   _icon={{
                     size: "30px",
                   }}
@@ -67,7 +72,7 @@ export default function Camera({
               )}
               <IconByName
                 name="CloseCircleLineIcon"
-                color={colors.white}
+                color={"profile.white"}
                 _icon={{
                   size: "30px",
                 }}
@@ -118,7 +123,7 @@ export default function Camera({
               {!cameraUrl ? (
                 <IconByName
                   name="FlashlightLineIcon"
-                  color={colors.white}
+                  color={"profile.white"}
                   _icon={{
                     size: "30px",
                   }}
@@ -133,19 +138,19 @@ export default function Camera({
                       ? "CheckboxBlankCircleLineIcon"
                       : "CheckboxCircleLineIcon"
                   }
-                  color={colors.white}
+                  color={"profile.white"}
                   _icon={{
                     size: "60px",
                   }}
                   onPress={(e) => capture()}
                 />
 
-                <Subtitle color={colors.white}>{t("CAPTURE")}</Subtitle>
+                <Subtitle color={"profile.white"}>{t("CAPTURE")}</Subtitle>
               </VStack>
               {!cameraUrl ? (
                 <IconByName
                   name="CameraSwitchLineIcon"
-                  color={colors.white}
+                  color={"profile.white"}
                   _icon={{
                     size: "30px",
                   }}

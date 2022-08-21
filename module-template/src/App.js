@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 import "./App.css";
 import { AppShell } from "@shiksha/common-lib";
@@ -19,7 +19,7 @@ function App() {
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
 
-  return <AppShell AuthComponent={LoginComponent} />;
+  return <AppShell routes={routes} AuthComponent={LoginComponent} />;
 }
 
 export default App;

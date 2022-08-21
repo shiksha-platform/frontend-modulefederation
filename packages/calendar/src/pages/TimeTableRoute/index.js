@@ -196,6 +196,7 @@ const TimeTableRoute = () => {
                 {
                   leftIcon: "BriefcaseLineIcon",
                   name: "Select another class",
+
                   rightIcon: "ArrowRightSLineIcon",
                   compareName: "CLASSES",
                 },
@@ -686,7 +687,9 @@ const Sheet = ({
                       ) : (
                         ""
                       )}
-                      <BodyLarge>{t(item.name)}</BodyLarge>
+                      <BodyLarge textTransform="inherit">
+                        {t(item.name)}
+                      </BodyLarge>
                     </HStack>
 
                     {item.rightIcon ? (
@@ -720,7 +723,9 @@ const Sheet = ({
           <Button.Group m="5">
             <Button
               flex="1"
-              colorScheme={selectedData?.attendance ? "button" : "gray"}
+              colorScheme={
+                selectedData?.attendance ? "button" : "calendar.gray"
+              }
               variant="outline"
               onPress={(e) => {
                 setSelectedData(false);
@@ -731,8 +736,10 @@ const Sheet = ({
             <Button
               flex="1"
               variant="outline"
-              colorScheme={selectedData?.attendance ? "button" : "gray"}
-              _text={{ color: "white" }}
+              colorScheme={
+                selectedData?.attendance ? "button" : "calendar.gray"
+              }
+              _text={{ color: "calendar.white" }}
               onPress={(e) => {
                 setShowModal(false);
                 if (parentModal) {
