@@ -30,7 +30,9 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    const newData = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    const newData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
     return await getDataWithUser(newData)
   } else {
     return []

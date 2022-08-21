@@ -3,7 +3,7 @@ import "./App.css";
 import { extendTheme } from "native-base";
 import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
 import LessonPlansDetails from "pages/LessonPlansDetails";
-import Lessonplans from './pages/Lessonplans'
+import Lessonplans from "./pages/Lessonplans";
 import SingleLessonPlan from "pages/SingleLessonPlan";
 import ExploreVideosList from "pages/ExploreVideosList";
 import VideoDetails from "pages/VideoDetails";

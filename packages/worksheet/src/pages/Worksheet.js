@@ -56,8 +56,8 @@ export default function Worksheet({ footerLinks, appName }) {
     );
     let params = state
       ? {
-        state: { eq: state },
-      }
+          state: { eq: state },
+        }
       : {};
 
     const arr = Object.keys(filterObject);

@@ -10,7 +10,7 @@ export default function VideoPlayer({ url }) {
   const [showControls, setShowControls] = React.useState(true);
   const [showVolume, setShowVolume] = React.useState(false);
   //const [showFloatingStat, setShowFloatingStat] = useState(<IconByName name="PictureInPicture2LineIcon" color="white" />)
-  const [showFloatingStat, setShowFloatingStat] = useState("Show")
+  const [showFloatingStat, setShowFloatingStat] = useState("Show");
   const [playerState, setPlayerState] = React.useState({
     isPlaying: false,
     progress: 0,
@@ -124,21 +124,20 @@ export default function VideoPlayer({ url }) {
     );
   };
 
-  const video = document.querySelector("#localvideo")
+  const video = document.querySelector("#localvideo");
 
   const canPIP = () =>
-    "pictureInPictureEnabled" in document &&
-    document.pictureInPictureEnabled;
+    "pictureInPictureEnabled" in document && document.pictureInPictureEnabled;
 
   const isInPIP = () => Boolean(document.pictureInPictureElement);
 
   const supportsModernPIP = () => {
-    const video = document.querySelector("#localvideo")
+    const video = document.querySelector("#localvideo");
     return (
       canPIP() &&
       video.requestPictureInPicture() &&
       typeof video.requestPictureInPicture === "function"
-    )
+    );
   };
 
   const openPIP = async (video) => {
@@ -146,28 +145,26 @@ export default function VideoPlayer({ url }) {
     if (supportsModernPIP()) {
       try {
         await video.requestPictureInPicture();
-      }
-      catch (e) {
+      } catch (e) {
         console.log(e);
       }
     }
   };
 
-  video?.addEventListener("enterpictureinpicture", e => {
-    setShowFloatingStat("Close")
-  })
+  video?.addEventListener("enterpictureinpicture", (e) => {
+    setShowFloatingStat("Close");
+  });
 
-  video?.addEventListener("leavepictureinpicture", e => {
-    setShowFloatingStat("Show")
-  })
+  video?.addEventListener("leavepictureinpicture", (e) => {
+    setShowFloatingStat("Show");
+  });
 
   const closePIP = async (video) => {
     if (!isInPIP()) return;
     if (supportsModernPIP()) {
       try {
         await document?.exitPictureInPicture();
-      }
-      catch (e) {
+      } catch (e) {
         console.log(e);
       }
     }
@@ -179,17 +176,14 @@ export default function VideoPlayer({ url }) {
       console.log("visible");
       try {
         await closePIP(video);
-      }
-      catch (e) {
+      } catch (e) {
         console.log(e);
       }
-    }
-    else {
+    } else {
       console.log("hidden");
       try {
         await openPIP(video);
-      }
-      catch (e) {
+      } catch (e) {
         console.log(e);
       }
     }
@@ -229,7 +223,7 @@ export default function VideoPlayer({ url }) {
         onClick={(e) => toggleControls()}
         width="100%"
         height="100%"
-      //autoPictureInPicture={true}
+        //autoPictureInPicture={true}
       />
       {showControls ? (
         <>
@@ -262,8 +256,8 @@ export default function VideoPlayer({ url }) {
                     playerState.isMuted
                       ? "VolumeMuteLineIcon"
                       : playerState.volume > 50
-                        ? "VolumeUpLineIcon"
-                        : "VolumeDownLineIcon"
+                      ? "VolumeUpLineIcon"
+                      : "VolumeDownLineIcon"
                   }
                   color={colors.white}
                 />
@@ -325,7 +319,11 @@ export default function VideoPlayer({ url }) {
               </H2>
               <IconByName
                 color="white"
-                name={showFloatingStat === "Show" ? "PictureInPicture2LineIcon" : "PictureInPictureExitLineIcon"}
+                name={
+                  showFloatingStat === "Show"
+                    ? "PictureInPicture2LineIcon"
+                    : "PictureInPictureExitLineIcon"
+                }
                 onPress={isInPIP() ? closePIP : openPIP}
               />
             </HStack>

@@ -31,7 +31,7 @@ export default function VideoDetails({ footerLinks, appName }) {
   const [showButtonArray, setShowButtonArray] = React.useState([]);
   const { id } = useParams();
   const location = useLocation();
-  const [videoLink, setVideoLink] = useState("")
+  const [videoLink, setVideoLink] = useState("");
   const [showFloating, setShowFloating] = useState(false);
   const VideoContext = createContext();
 
@@ -62,7 +62,9 @@ export default function VideoDetails({ footerLinks, appName }) {
       _footer={footerLinks}
     >
       <VStack space="1">
-        <VideoPlayer url={"http://techslides.com/demos/sample-videos/small.mp4"} />
+        <VideoPlayer
+          url={"http://techslides.com/demos/sample-videos/small.mp4"}
+        />
         <Box bg={colors.white}>
           <Box flex="1" px="5" py="4">
             <VStack space="4">

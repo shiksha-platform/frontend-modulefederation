@@ -1,4 +1,15 @@
-import { IconByName, overrideColorTheme, H2, Subtitle, Caption, BodyMedium, lessonPlansRegistryService, likeRegistryService, telemetryFactory, capture } from "@shiksha/common-lib";
+import {
+  IconByName,
+  overrideColorTheme,
+  H2,
+  Subtitle,
+  Caption,
+  BodyMedium,
+  lessonPlansRegistryService,
+  likeRegistryService,
+  telemetryFactory,
+  capture,
+} from "@shiksha/common-lib";
 import {
   Avatar,
   Box,
@@ -7,7 +18,7 @@ import {
   Stack,
   Text,
   VStack,
-  Link
+  Link,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -41,18 +52,22 @@ export default function LessonPlansCard({ item, url, canShare, appName }) {
     // } else {
     //   setShowButtonArray(canShowButtonArray);
     // }
-    setShowButtonArray(["Like", "Share", "Download"])
+    setShowButtonArray(["Like", "Share", "Download"]);
   }, []);
 
   const getLikes = async () => {
-    const result = await lessonPlansRegistryService.getLessonPlansLikes(item.id);
+    const result = await lessonPlansRegistryService.getLessonPlansLikes(
+      item.id
+    );
     const newData = result.find((e, index) => e.userId === sub);
     setLikes(result ? result : []);
     setLike(newData ? newData : {});
   };
 
   const getComments = async () => {
-    const result = await lessonPlansRegistryService.getLessonPlansComments(item.id);
+    const result = await lessonPlansRegistryService.getLessonPlansComments(
+      item.id
+    );
     setComments(result ? result : []);
   };
 
@@ -123,9 +138,7 @@ export default function LessonPlansCard({ item, url, canShare, appName }) {
               </Avatar>
               <Stack space="1">
                 <VStack space="1px">
-                  <H2>
-                    {item?.name}
-                  </H2>
+                  <H2>{item?.name}</H2>
                 </VStack>
 
                 <HStack space={1} alignItems="center">
@@ -135,9 +148,7 @@ export default function LessonPlansCard({ item, url, canShare, appName }) {
                     _icon={{ size: 12 }}
                     isDisabled
                   />
-                  <Caption>
-                    {(likes ? likes.length : 0) + " likes"}
-                  </Caption>
+                  <Caption>{(likes ? likes.length : 0) + " likes"}</Caption>
 
                   <Caption>
                     ({(comments ? comments.length : 0) + " comments"})
@@ -160,51 +171,36 @@ export default function LessonPlansCard({ item, url, canShare, appName }) {
           {item?.description}
         </BodyMedium>
         <HStack space="2" justifyContent="space-between" alignItems="baseline">
-
           <VStack space="2">
             <HStack space="1" alignItems="baseline" flex={1}>
-              <IconByName name="GitRepositoryLineIcon" _icon={{ size: 12 }} p="0" />
-              <Subtitle>
-                {"Source: " + item?.source}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
               <IconByName
-                name="SurveyLineIcon"
+                name="GitRepositoryLineIcon"
                 _icon={{ size: 12 }}
                 p="0"
               />
-              <Subtitle>
-                {"Subject: " + item?.subject[0]}
-              </Subtitle>
+              <Subtitle>{"Source: " + item?.source}</Subtitle>
             </HStack>
             <HStack space="1" alignItems="center">
-              <IconByName
-                name="ArticleLineIcon"
-                _icon={{ size: 12 }}
-                p="0"
-              />
-              <Subtitle>
-                {"Downloads: " + item?.downloads}
-              </Subtitle>
+              <IconByName name="SurveyLineIcon" _icon={{ size: 12 }} p="0" />
+              <Subtitle>{"Subject: " + item?.subject[0]}</Subtitle>
+            </HStack>
+            <HStack space="1" alignItems="center">
+              <IconByName name="ArticleLineIcon" _icon={{ size: 12 }} p="0" />
+              <Subtitle>{"Downloads: " + item?.downloads}</Subtitle>
             </HStack>
           </VStack>
           <VStack space="2">
             <HStack space="1" alignItems="center">
+              <IconByName name="TimeLineIcon" _icon={{ size: 12 }} p="0" />
+              <Subtitle>{"Duration: " + item?.duration}</Subtitle>
+            </HStack>
+            <HStack space="1" alignItems="center">
               <IconByName
-                name="TimeLineIcon"
+                name="LightbulbFlashLineIcon"
                 _icon={{ size: 12 }}
                 p="0"
               />
-              <Subtitle>
-                {"Duration: " + item?.duration}
-              </Subtitle>
-            </HStack>
-            <HStack space="1" alignItems="center">
-              <IconByName name="LightbulbFlashLineIcon" _icon={{ size: 12 }} p="0" />
-              <Subtitle>
-                {"Grade: " + item?.gradeLevel}
-              </Subtitle>
+              <Subtitle>{"Grade: " + item?.gradeLevel}</Subtitle>
             </HStack>
           </VStack>
         </HStack>
@@ -252,6 +248,6 @@ export default function LessonPlansCard({ item, url, canShare, appName }) {
           )}
         </HStack>
       </VStack>
-    </Box >
+    </Box>
   );
 }

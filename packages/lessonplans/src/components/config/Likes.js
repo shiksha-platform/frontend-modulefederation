@@ -1,3 +1,1 @@
-export const Likes = [
-    "Jona r",
-]
+export const Likes = ["Jona r"];
