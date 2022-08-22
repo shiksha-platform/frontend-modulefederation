@@ -43,7 +43,8 @@ const colorTheme = {
   dangerAlert: '#F9DEDE',
   girls: '#0ea5e9',
   boys: '#a855f7',
-  activeClass: '#10b981'
+  activeClass: '#10b981',
+  black: '#000000'
 }
 
 export default colorTheme

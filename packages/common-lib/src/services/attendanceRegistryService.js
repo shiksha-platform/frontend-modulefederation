@@ -18,7 +18,8 @@ const interfaceData = {
   latitude: 'latitude',
   longitude: 'longitude',
   image: 'image',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  parentName: 'parentName'
 }
 
 let only = Object.keys(interfaceData)
