@@ -25,6 +25,8 @@ import * as assessmentRegistryService from './services/assessmentRegistryService
 import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
+import * as mentorRegisteryService from './services/mentorRegisteryService'
+import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import {
   getAllForUser,
@@ -63,7 +65,9 @@ export {
   sendReadReceipt,
   templateRegistryService,
   notificationRegistryService,
-  roleRegistryService
+  roleRegistryService,
+  mentorRegisteryService,
+  schoolRegisteryService
 }
 
 export * from './services/Auth'
