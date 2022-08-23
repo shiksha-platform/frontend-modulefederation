@@ -1,0 +1,19 @@
+{
+  "ANNOUNCEMENTS": "Announcements",
+  "VIEW_LATEST_ANNOUNCEMENTS": "View Latest Announcements",
+  "RESET_FILTERS": "Reset Filters",
+  "SEARCH": "Search...",
+  "CLOSE": "Close",
+  "FILTER": "Filter",
+  "CONTINUE": "Continue",
+  "ALL_ANNOUNCEMENTS_LOADED": "All announcements have been loaded",
+  "ANNOUNCEMENT_TYPE": "Announcement Type",
+  "DATE_MODIFIED": "Date Modified",
+  "AUTHOR": "Author",
+  "EVENT": "Event",
+  "GENERAL": "General",
+  "LAST_WEEK": "Last Week",
+  "LAST_DAY": "Last Day",
+  "PRINCIPAL": "Principal",
+  "TEACHER": "Teacher"
+}

@@ -17,6 +17,7 @@ import SchoolCard from './components/SchoolCard'
 import * as userRegistryService from './services/userRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
+import * as announcementsRegistryService from './services/announcementsRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
 import * as worksheetRegistryService from './services/worksheetRegistryService'
 import * as questionRegistryService from './services/questionRegistryService'
@@ -56,6 +57,7 @@ export {
   userRegistryService,
   classRegistryService,
   attendanceRegistryService,
+  announcementsRegistryService,
   studentRegistryService,
   worksheetRegistryService,
   questionRegistryService,

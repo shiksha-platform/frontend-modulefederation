@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
+import { getAnnouncementsSet } from '../services/announcementsRegistryService'
 import { getAppshellData } from './helper'
 
 function AppShell({
@@ -33,7 +34,21 @@ function AppShell({
       setTheme(newTheme)
     }
 
-    getData()
+  //TODO: integrate with API call to fetch whitelisted modules
+  const pinnedAnnouncementsWhitelist = ['announcements']
+  //TODO: integrate with API call to fetch pinned announcements
+  const [pinnedAnnouncementsData, setPinnedAnnouncementsData] = useState([])
+
+  useEffect(() => {
+    if (!pinnedAnnouncementsWhitelist.some((val: string) => val === appName))
+      return
+
+    getAnnouncementsSet({ isPinned: true, status: 'published' }).then((res) => {
+      setPinnedAnnouncementsData(res.data)
+    })
+  }, [])
+
+  useEffect(() => {
     const subscription = eventBus.subscribe('AUTH', (data, envelop) => {
       if ((data.eventType = 'LOGIN_SUCCESS')) {
         setToken(localStorage.getItem('token'))
@@ -75,7 +90,13 @@ function AppShell({
                   key={index}
                   path={item.path}
                   element={
-                    <item.component {...{ footerLinks, appName, colors }} />
+                    pinnedAnnouncementsData?.length > 0 ? (
+                      <item.component
+                        {...{ footerLinks, appName, pinnedAnnouncementsData }}
+                      />
+                    ) : (
+                      <item.component {...{ footerLinks, appName }} />
+                    )
                   }
                 />
               ))}

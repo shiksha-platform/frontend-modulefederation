@@ -22,6 +22,7 @@ import PencilLineIcon from 'remixicon-react/PencilLineIcon'
 import CheckboxCircleLineIcon from 'remixicon-react/CheckboxCircleLineIcon'
 import CheckboxCircleFillIcon from 'remixicon-react/CheckboxCircleFillIcon'
 import CloseCircleLineIcon from 'remixicon-react/CloseCircleLineIcon'
+import CloseLineIcon from 'remixicon-react/CloseLineIcon'
 import CloseCircleFillIcon from 'remixicon-react/CloseCircleFillIcon'
 import CheckboxBlankCircleLineIcon from 'remixicon-react/CheckboxBlankCircleLineIcon'
 import CheckLineIcon from 'remixicon-react/CheckLineIcon'
@@ -98,6 +99,7 @@ import FullscreenLineIcon from 'remixicon-react/FullscreenLineIcon'
 import Settings4LineIcon from 'remixicon-react/Settings4LineIcon'
 import CameraSwitchLineIcon from 'remixicon-react/CameraSwitchLineIcon'
 import AwardFillIcon from 'remixicon-react/AwardFillIcon'
+import PushpinLineIcon from 'remixicon-react/PushpinLineIcon'
 
 function IconButton({ icon, isDisabled, prefix, ...props }) {
   if (!isDisabled) {
@@ -292,6 +294,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<CloseCircleFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'CloseLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<CloseLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break
@@ -885,6 +895,14 @@ export default function IconByName({ _icon, ...props }) {
         <IconButton
           {...props}
           icon={<CameraSwitchLineIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+    case 'PushpinLineIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<PushpinLineIcon {...(_icon ? _icon : {})} />}
         />
       )
       break

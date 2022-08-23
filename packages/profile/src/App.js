@@ -28,6 +28,7 @@ function App() {
       basename={process.env.PUBLIC_URL}
       routes={routes}
       AuthComponent={LoginComponent}
+      appName="profile"
       _authComponent={{ swPath: "/modules/profile" }}
     />
   );
