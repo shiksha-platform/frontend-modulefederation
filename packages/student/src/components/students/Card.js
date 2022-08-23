@@ -177,8 +177,8 @@ const SubCard = ({
             )}
             <Text color={"student.lightGray1"}>{" • "}</Text>
             <Text>{t("ROLL_NUMBER") + "."} </Text>
-            {item.id ? (
-              <Text>{item.id.toString().padStart(2, "0")}</Text>
+            {item.admissionNo ? (
+              item.admissionNo.toString().padStart(2, "0")
             ) : (
               <Text italic>{t("NOT_ENTERED")}</Text>
             )}
@@ -304,7 +304,7 @@ export default function Card({
           />
           <Actionsheet isOpen={open} onClose={(e) => setOpen(false)}>
             <Actionsheet.Content
-              bg={"student.successAlerts"}
+              bg={"student.successAlert"}
               alignItems="inherit"
             >
               <HStack justifyContent={"space-between"}>

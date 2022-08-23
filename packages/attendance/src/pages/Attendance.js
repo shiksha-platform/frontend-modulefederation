@@ -4,7 +4,7 @@ import {
   IconByName,
   Layout,
   calendar,
-  H1,
+  H2,
   classRegistryService,
   studentRegistryService,
   overrideColorTheme,
@@ -14,7 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import manifest1 from "../manifest.json";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
 import CalendarBar from "components/CalendarBar/CalendarBar";
 import AttendanceComponent, {
@@ -206,7 +206,7 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
-            <H1>{classObject?.title ? classObject?.title : ""}</H1>
+            <H2>{classObject?.title ? classObject?.title : ""}</H2>
             <BodySmall>
               {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
             </BodySmall>
