@@ -56,5 +56,5 @@ const getDataOne = async (object) => {
   data = await schoolRegisteryService.getSchoolById({
     id: item.schoolId
   })
-  return { ...item, schoolData: data}
+  return { ...item, schoolData: data }
 }
