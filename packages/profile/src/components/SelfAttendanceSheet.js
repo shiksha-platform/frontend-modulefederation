@@ -484,7 +484,9 @@ export default function SelfAttendanceSheet({
             <BodyMedium textAlign="center" textTransform="inherit">
               {selfAttendance.attendance === PRESENT &&
               selfAttendance.name !== selfAttendance.remark
-                ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
+                ? config && config["capture_selfie"] === "true"
+                  ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
+                  : t("YOU_SUCCESS_ATTENDANCE")
                 : ""}
             </BodyMedium>
           </VStack>

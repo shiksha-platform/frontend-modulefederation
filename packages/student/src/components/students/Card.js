@@ -250,7 +250,8 @@ export default function Card({
       let classObj = await classRegistryService.getOne({
         id: e.currentClassID,
       });
-      item.className = classObj?.className;
+
+      setStudentObject({ ...studentObject, className: classObj?.name });
     }
     setOpen(true);
     const telemetryData = telemetryFactory.interact({
@@ -280,7 +281,7 @@ export default function Card({
       <PressableNew href={href ? href : null}>
         <SubCard
           {...{
-            item,
+            item: studentObject,
             img,
             type,
             textTitle,
@@ -311,7 +312,7 @@ export default function Card({
                 <Box px="3" py="4" pt="0">
                   <SubCard
                     {...{
-                      item,
+                      item: studentObject,
                       img,
                       type: type ? type : "card",
                       textTitle,

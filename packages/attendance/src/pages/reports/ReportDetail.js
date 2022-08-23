@@ -353,7 +353,7 @@ export default function ReportDetail({ footerLinks, appName, setAlert }) {
               header={
                 <>
                   <VStack>
-                    <Text bold fontSize={"md"} textTransform="inherit">
+                    <Text bold fontSize={"md"} textTransform="none">
                       {t("ABSENT_CONSECUTIVE_3_DAYS")}
                     </Text>
                     <Text fontSize={"xs"}>

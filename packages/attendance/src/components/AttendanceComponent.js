@@ -342,7 +342,7 @@ export const MultipalAttendance = ({
                       ],
                       footer: (
                         <HStack justifyContent={"space-between"}>
-                          <Subtitle textTransform="capitalize">
+                          <Subtitle textTransform="none">
                             {t("ATTENDANCE_TAKEN_BY")}
                           </Subtitle>
                           <Subtitle color={colors.successAlertText}>
