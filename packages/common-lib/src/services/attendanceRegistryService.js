@@ -83,9 +83,9 @@ export const create = async (data, headers = {}) => {
       headers: header
     }
   )
+
   if (result.data) {
-    let { Attendance } = result.data?.data?.result
-    return Attendance
+    return result.data?.data?.attendanceId
   } else {
     return false
   }

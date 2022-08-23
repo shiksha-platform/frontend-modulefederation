@@ -30,7 +30,7 @@ const colors = overrideColorTheme(colorTheme);
 const PRESENT = "Present";
 const ABSENT = "Absent";
 
-export default function Attendance({ footerLinks, appName }) {
+export default function Attendance({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
@@ -296,6 +296,7 @@ export default function Attendance({ footerLinks, appName }) {
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
+              setAlert={setAlert}
               setLastAttedance={setLastAttedance}
               manifest={manifest}
               hidePopUpButton={false}

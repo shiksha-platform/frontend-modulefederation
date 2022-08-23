@@ -5,6 +5,7 @@ import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
 import { getAppshellData } from './helper'
+import Alert from './Alert'
 
 function AppShell({
   colors,
@@ -20,6 +21,7 @@ function AppShell({
   const [theme, setTheme] = React.useState<any>({})
   const [accessRoutes, setAccessRoutes] = React.useState<any>([])
   const [footerLinks, setFooterLinks] = React.useState<any>([])
+  const [alert, setAlert] = React.useState<any>()
 
   useEffect(() => {
     const getData = async () => {
@@ -61,6 +63,7 @@ function AppShell({
     return (
       <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
         <PushNotification />
+        <Alert {...{ alert, setAlert }} />
         <Suspense
           fallback={
             <Center>
@@ -75,7 +78,9 @@ function AppShell({
                   key={index}
                   path={item.path}
                   element={
-                    <item.component {...{ footerLinks, appName, colors }} />
+                    <item.component
+                      {...{ footerLinks, appName, colors, setAlert }}
+                    />
                   }
                 />
               ))}

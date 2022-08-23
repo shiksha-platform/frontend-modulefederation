@@ -39,7 +39,7 @@ import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function ReportDetail({ footerLinks, appName }) {
+export default function ReportDetail({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId, view } = useParams();
@@ -449,6 +449,7 @@ export default function ReportDetail({ footerLinks, appName }) {
                   data={students}
                   renderItem={({ item, index }) => (
                     <AttendanceComponent
+                      setAlert={setAlert}
                       isEditDisabled
                       page={page}
                       student={item}

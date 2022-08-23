@@ -512,6 +512,7 @@ export default function AttendanceComponent({
   appName,
   manifest,
   setLastAttedance,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -564,6 +565,7 @@ export default function AttendanceComponent({
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
+
     if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
       if (dataObject.attendanceId) {
         attendanceRegistryService
@@ -592,7 +594,10 @@ export default function AttendanceComponent({
             setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
-          });
+          })
+          .catch((e) =>
+            setAlert ? setAlert(e.message) : console.log(e.message)
+          );
       } else {
         attendanceRegistryService
           .create({
@@ -605,11 +610,17 @@ export default function AttendanceComponent({
             teacherId: teacherId,
           })
           .then((e) => {
-            setAttendance([...attendance, dataObject]);
+            setAttendance([
+              ...attendance,
+              { ...dataObject, id: e, attendanceId: e },
+            ]);
             setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
-          });
+          })
+          .catch((e) =>
+            setAlert ? setAlert(e.message) : console.log(e.message)
+          );
       }
     } else {
       setLoading({});

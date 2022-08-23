@@ -12,6 +12,7 @@ const colorTheme = {
   present: '#2BB639',
   absent: '#F57B7B',
   unmarked: '#B5B5C8',
+  special_duty: '#06D6A0',
   holiDay: '#F0F0F4',
   defaultMark: '#d3d3e5',
   lateMark: '#FFEB3B',
