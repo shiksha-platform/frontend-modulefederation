@@ -5,6 +5,7 @@ import {
   overrideColorTheme,
   SearchLayout,
   mentorRegisteryService,
+  SchoolCard,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -128,6 +129,35 @@ export default function Myvisits({ footerLinks }) {
                     />
                   );
                 })}
+
+              {/* {allocatedVisits &&
+                allocatedVisits.length &&
+                allocatedVisits.map((visit, visitIndex) => {
+                  return (
+                    <SchoolCard
+                      key={visitIndex}
+                      _bgColor={"green"}
+                      name={"ABC SCHOOL"}
+                      attributeData={[
+                        {
+                          icon: "MapPinLineIcon",
+                          label: "District",
+                          data: visit?.schoolData?.district,
+                        },
+                        {
+                          icon: "GovernmentLineIcon",
+                          label: "Block",
+                          data: visit?.schoolData?.block,
+                        },
+                        {
+                          icon: "CalendarEventLineIcon",
+                          label: "Last Visited",
+                          data: visit?.lastVisited,
+                        },
+                      ]}
+                    />
+                  );
+                })} */}
               <Box>
                 <Button
                   flex="1"

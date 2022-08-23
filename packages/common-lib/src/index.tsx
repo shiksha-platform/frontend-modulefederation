@@ -13,6 +13,7 @@ import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
 import FilterButton from './components/FilterButton'
+import SchoolCard from './components/SchoolCard'
 import * as userRegistryService from './services/userRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
@@ -51,6 +52,7 @@ export {
   ProgressBar,
   Tab,
   Loading,
+  SchoolCard,
   userRegistryService,
   classRegistryService,
   attendanceRegistryService,
