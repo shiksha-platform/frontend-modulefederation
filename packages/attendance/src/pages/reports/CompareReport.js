@@ -41,7 +41,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function ClassReportDetail({ footerLinks, appName }) {
+export default function ClassReportDetail({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId } = useParams();
@@ -438,6 +438,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                   data={students}
                   renderItem={({ item, index }) => (
                     <AttendanceComponent
+                      setAlert={setAlert}
                       isEditDisabled
                       type={compare === "monthInDays" ? "month" : "weeks"}
                       _weekBox={[{}, { bg: colors.weekCardCompareBg }]}

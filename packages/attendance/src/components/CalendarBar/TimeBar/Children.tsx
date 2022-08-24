@@ -27,8 +27,10 @@ export const Children: React.FC<{
       );
     case type === "week":
       return (
-        <VStack>
-          <FormatDate date={date} type="Week" />
+        <VStack alignItems="center">
+          <H2>
+            <FormatDate date={date} type="Week" />
+          </H2>
           <Caption>{t("THIS_WEEK")}</Caption>
         </VStack>
       );

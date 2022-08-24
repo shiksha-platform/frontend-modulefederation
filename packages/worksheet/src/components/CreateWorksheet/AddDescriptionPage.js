@@ -82,7 +82,7 @@ export default function AddDescriptionPage({
         questions: questions.map((e) => e.questionId),
       };
       setFormObject(data);
-      const { osid } = await worksheetRegistryService.create(data);
+      const worksheetId = await worksheetRegistryService.create(data);
       let type = "Worksheet-Search-Questions-End";
       let state = data?.state;
       if (createType === "auto") {
@@ -92,7 +92,7 @@ export default function AddDescriptionPage({
       const telemetryData = telemetryFactory.end({
         appName,
         type,
-        worksheetId: osid,
+        worksheetId,
         subject: data?.subject,
         grade: data?.grade,
         topic: data?.topic,

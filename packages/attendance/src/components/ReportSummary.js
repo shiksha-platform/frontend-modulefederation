@@ -275,7 +275,7 @@ export default function Report({
           footer
         ) : (
           <HStack justifyContent={"space-between"}>
-            <Text textTransform="capitalize">{t("ATTENDANCE_TAKEN_BY")}</Text>
+            <Text textTransform="none">{t("ATTENDANCE_TAKEN_BY")}</Text>
             <Text>{fullName ? fullName : ""}</Text>
           </HStack>
         )}
