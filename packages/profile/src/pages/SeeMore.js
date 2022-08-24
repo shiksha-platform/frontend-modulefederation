@@ -36,7 +36,7 @@ import manifest from "../manifest.json";
 import moment from "moment";
 import { Section } from "components/TeacherEdit";
 import TeacherEdit from "components/TeacherEdit";
-import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
+import SelfAttendanceSheet from "../components/SelfAttendanceSheet";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const colors = overrideColorTheme(colorTheme);
@@ -123,7 +123,7 @@ const SeeMore = ({ footerLinks, appName }) => {
   };
 
   return (
-    <SelfAttedanceSheet
+    <SelfAttendanceSheet
       {...{
         showModal,
         setShowModal,
@@ -155,7 +155,7 @@ const SeeMore = ({ footerLinks, appName }) => {
                         location.state?.lastName}
                     </H1>
                     <BodyLarge color={colors.date}>
-                      Assistant Teacher, RSKV Kanya Vidyalaya
+                      {teacherObject?.designation}
                     </BodyLarge>
                   </VStack>
                   <Avatar
@@ -218,7 +218,7 @@ const SeeMore = ({ footerLinks, appName }) => {
           }
         />
       </Layout>
-    </SelfAttedanceSheet>
+    </SelfAttendanceSheet>
   );
 };
 
