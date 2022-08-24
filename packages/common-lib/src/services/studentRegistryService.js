@@ -10,7 +10,7 @@ const interfaceData = {
   phoneNumber: 'studentPhoneNumber',
   lastName: 'lastName',
   aadhaar: 'aadhaar',
-  classId: 'classId',
+  groupId: 'groupId',
   schoolId: 'schoolId',
   refId: 'studentRefId',
   birthDate: 'birthDate',
@@ -25,7 +25,7 @@ const interfaceData = {
   singleGirl: 'singleGirl',
   socialCategory: 'socialCategory',
   admissionNo: 'refId1',
-  currentClassID: 'classId',
+  currentClassID: 'groupId',
   email: 'studentEmail',
   address: 'address',
   gender: 'gender'

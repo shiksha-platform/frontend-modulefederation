@@ -1,28 +1,21 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Text, Stack, Box, HStack, Button } from "native-base";
+import { Stack, Box, Button } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
-  IconByName,
   Layout,
   Collapsible,
   capture,
-  telemetryFactory,
-  H3,
   studentRegistryService,
   attendanceRegistryService,
   classRegistryService,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
-import colorTheme from "../../colorTheme";
 
-const colors = overrideColorTheme(colorTheme);
 import { useNavigate, useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
 import InfoSection from "./Molecules/InfoSection";
 import Section from "./Molecules/Section";
-import ButtonWrapper from "atoms/ButtonWrapper";
 
 const AttendanceComponent = React.lazy(() =>
   import("attendance/AttendanceComponent")

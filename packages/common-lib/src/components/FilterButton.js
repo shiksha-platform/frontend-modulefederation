@@ -67,11 +67,13 @@ const FilterButton = ({
         ...groupValue,
         [attributeName]: type === 'stingValueArray' ? [] : ''
       })
+      setFormData({})
     } else {
       setGroupValue({
         ...groupValue,
         [attributeName]: type === 'stingValueArray' ? [value] : value
       })
+      setFormData({})
     }
   }
 
@@ -244,7 +246,7 @@ const FilterButton = ({
               </HStack>
             </Pressable>
           ) : (
-            ''
+            <React.Fragment />
           )}
           {formData?.data &&
             formData?.data.map((value, index) => {
@@ -281,20 +283,24 @@ const FilterButton = ({
                 </Pressable>
               )
             })}
-          <Box p='5'>
-            <Button
-              colorScheme='button'
-              _text={{ color: 'white' }}
-              onPress={(e) => {
-                if (getObject) {
-                  getObject(groupValue)
-                }
-                setFormData({})
-              }}
-            >
-              {t('SELECT')}
-            </Button>
-          </Box>
+          {type === 'array' ? (
+            <Box p='5'>
+              <Button
+                colorScheme='button'
+                _text={{ color: 'white' }}
+                onPress={(e) => {
+                  if (getObject) {
+                    getObject(groupValue)
+                  }
+                  setFormData({})
+                }}
+              >
+                {t('SELECT')}
+              </Button>
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
         </Box>
       </Actionsheet>
     </Box>

@@ -3,7 +3,7 @@ import { getRole } from "@shiksha/common-lib";
 import TeacherHome from "./TeacherHome";
 import MentorMonitorHome from "./MentorMonitorHome";
 
-function Home({ footerLinks, appName }) {
+function Home(props) {
   const [role, setRole] = React.useState();
 
   React.useEffect(async (e) => {
@@ -12,9 +12,9 @@ function Home({ footerLinks, appName }) {
   }, []);
 
   if (role && role.toLowerCase() === "teacher") {
-    return <TeacherHome {...{ footerLinks, appName }} />;
+    return <TeacherHome {...props} />;
   } else if (role && ["mentor", "monitor"].includes(role.toLowerCase())) {
-    return <MentorMonitorHome {...{ footerLinks, appName }} />;
+    return <MentorMonitorHome {...props} />;
   }
   return <></>;
 }

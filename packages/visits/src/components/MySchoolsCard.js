@@ -1,18 +1,8 @@
 import React, { useEffect } from "react";
+import { Box, VStack, HStack, Avatar, Divider } from "native-base";
 import {
-  Box,
-  Center,
-  VStack,
-  Text,
-  HStack,
-  Avatar,
-  Divider,
-} from "native-base";
-import {
-  BodyLarge,
   BodyMedium,
   DEFAULT_THEME,
-  H2,
   H3,
   IconByName,
   overrideColorTheme,
@@ -21,7 +11,7 @@ import { visitedCard } from "../colorTheme";
 
 let colors = DEFAULT_THEME;
 
-function MySchoolsCard({ isVisited }) {
+function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
   useEffect(() => {
     if (isVisited) {
       colors = overrideColorTheme(visitedCard);
@@ -31,9 +21,9 @@ function MySchoolsCard({ isVisited }) {
     <>
       <VStack space={6}>
         <Box
-          bg="#dff5dd9e"
+          bg={isVisited ? "#ECF7EB" : "lightGray6"}
           borderRadius={10}
-          borderColor={colors.visitedCardBorderColor}
+          borderColor={isVisited ? "#C5DCC3" : "lightGray3"}
         >
           <Box p={4}>
             <VStack space={6}>
@@ -47,9 +37,9 @@ function MySchoolsCard({ isVisited }) {
                   }}
                 />
                 <VStack>
-                  <H3>Delhi Public School, Ghaziabad</H3>
+                  <H3>{schoolData?.schoolName}</H3>
                   <BodyMedium color={colors.subtitle}>
-                    Ghaziabad, Uttar Pradesh
+                    {schoolData?.district}
                   </BodyMedium>
                 </VStack>
               </HStack>
@@ -62,23 +52,25 @@ function MySchoolsCard({ isVisited }) {
               justifyContent={"space-between"}
               flexWrap={"wrap"}
             >
-              <div
-                style={{
-                  flex: "0 0 50%",
-                  maxWidth: "50%",
-                  marginBottom: "10px",
-                }}
-              >
-                <VStack>
-                  <HStack alignItems="center">
-                    <IconByName size="12px" mr={2} name="MapPinLineIcon" />
-                    <BodyMedium color="#666" fontSize="12">
-                      District
-                    </BodyMedium>
-                  </HStack>
-                  <BodyMedium>Ghaziabad</BodyMedium>
-                </VStack>
-              </div>
+              {schoolData?.district != "" && (
+                <div
+                  style={{
+                    flex: "0 0 50%",
+                    maxWidth: "50%",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <VStack>
+                    <HStack alignItems="center">
+                      <IconByName size="12px" mr={2} name="MapPinLineIcon" />
+                      <BodyMedium color="#666" fontSize="12">
+                        District
+                      </BodyMedium>
+                    </HStack>
+                    <BodyMedium>{schoolData?.district}</BodyMedium>
+                  </VStack>
+                </div>
+              )}
 
               <div
                 style={{
@@ -92,29 +84,32 @@ function MySchoolsCard({ isVisited }) {
                     <IconByName size="12px" mr={2} name="GovernmentLineIcon" />
                     <BodyMedium color="#666">Block</BodyMedium>
                   </HStack>
-                  <BodyMedium>Not Available</BodyMedium>
+                  <BodyMedium>
+                    {schoolData?.block ? schoolData?.block : "Not Available"}
+                  </BodyMedium>
                 </VStack>
               </div>
-
-              <div
-                style={{
-                  flex: "0 0 50%",
-                  maxWidth: "50%",
-                  marginBottom: "10px",
-                }}
-              >
-                <VStack>
-                  <HStack alignItems="center">
-                    <IconByName
-                      size="12px"
-                      mr={2}
-                      name="CalendarEventLineIcon"
-                    />
-                    <BodyMedium color="#666">Last Visited</BodyMedium>
-                  </HStack>
-                  <BodyMedium>30 May 2022</BodyMedium>
-                </VStack>
-              </div>
+              {lastVisited && (
+                <div
+                  style={{
+                    flex: "0 0 50%",
+                    maxWidth: "50%",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <VStack>
+                    <HStack alignItems="center">
+                      <IconByName
+                        size="12px"
+                        mr={2}
+                        name="CalendarEventLineIcon"
+                      />
+                      <BodyMedium color="#666">Last Visited</BodyMedium>
+                    </HStack>
+                    <BodyMedium>{lastVisited}</BodyMedium>
+                  </VStack>
+                </div>
+              )}
             </HStack>
           </Box>
         </Box>

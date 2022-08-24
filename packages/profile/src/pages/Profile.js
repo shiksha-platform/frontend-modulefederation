@@ -32,13 +32,14 @@ import {
   schoolRegistryService,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
-import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
+import SelfAttendanceSheet from "../components/SelfAttendanceSheet";
 import moment from "moment";
 import colorTheme from "../colorTheme";
 import TeacherEdit from "../components/TeacherEdit";
 
 const colors = overrideColorTheme(colorTheme);
-export default function Profile({ footerLinks, appName }) {
+
+export default function Profile({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [teacherObject, setTeacherObject] = useState({});
   const teacherId = localStorage.getItem("id");
@@ -188,8 +189,9 @@ export default function Profile({ footerLinks, appName }) {
   };
 
   return (
-    <SelfAttedanceSheet
+    <SelfAttendanceSheet
       {...{
+        setAlert,
         showModal,
         setShowModal,
         appName,
@@ -352,7 +354,7 @@ export default function Profile({ footerLinks, appName }) {
           />
         </Stack>
       </Layout>
-    </SelfAttedanceSheet>
+    </SelfAttendanceSheet>
   );
 }
 

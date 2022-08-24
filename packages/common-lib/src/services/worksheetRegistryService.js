@@ -104,8 +104,7 @@ export const create = async (data, header = {}) => {
     }
   )
   if (result.data) {
-    let { Worksheet } = result.data?.data?.result
-    return Worksheet
+    return result.data?.data?.worksheetId
   } else {
     return false
   }
