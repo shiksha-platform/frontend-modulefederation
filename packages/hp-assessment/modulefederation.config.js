@@ -3,7 +3,7 @@ const { dependencies } = require("./package.json");
 module.exports = {
   name: "hpAssessment",
   exposes: {
-    "./SampleComponent": "./src/components/SampleComponent",
+    // "./SampleComponent": "./src/components/SampleComponent",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

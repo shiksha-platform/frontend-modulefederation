@@ -63,8 +63,8 @@ export const getSubjectsList = async (params = {}, header = {}) => {
     }
   )
 
-  if (result.data && result.data.data) {
-    return result.data.data.sort()
+  if (result && result.data && result.data.data) {
+    return result?.data?.data?.sort()
   } else {
     return []
   }
