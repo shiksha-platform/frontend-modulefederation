@@ -56,14 +56,14 @@ export default function TeacherEdit({
     onlyParameterProp?.length > "0"
       ? onlyParameterProp
       : [
-        "address",
-        "firstName",
-        "lastName",
-        "fathersName",
-        "phoneNumber",
-        "email",
-        "gender",
-      ];
+          "address",
+          "firstName",
+          "lastName",
+          "fathersName",
+          "phoneNumber",
+          "email",
+          "gender",
+        ];
 
   const parameter = {
     employeeCode: { placeholder: t("EMPLOYEE_CODE") },

@@ -43,7 +43,7 @@ export const getOne = async (filters = {}, header = {}) => {
       return {}
     }
   } catch (e) {
-    console.warn("An error has occured while getting the response from API", e);
+    console.warn('An error has occured while getting the response from API', e)
     return {}
   }
 }
@@ -74,7 +74,7 @@ export const create = async (data, header = {}) => {
     let { workHistory } = result.data?.data?.result
     return workHistory
   } else {
-    console.warn("An error has occured while getting the response from API");
+    console.warn('An error has occured while getting the response from API')
     return false
   }
 }
@@ -95,7 +95,7 @@ export const sendNotificationSearch = async (params = {}, header = {}) => {
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
   } else {
-    console.warn("An error has occured while getting the response from API");
+    console.warn('An error has occured while getting the response from API')
     return []
   }
 }
@@ -119,7 +119,7 @@ export const update = async (data = {}, headers = {}) => {
   if (result.data) {
     return result
   } else {
-    console.warn("An error has occured while getting the response from API");
+    console.warn('An error has occured while getting the response from API')
     return {}
   }
 }

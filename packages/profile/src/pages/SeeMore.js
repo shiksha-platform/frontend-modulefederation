@@ -151,9 +151,7 @@ const SeeMore = ({ footerLinks, appName }) => {
                   <VStack>
                     <H4 color={colors.date}>{t("MY_PROFILE")}</H4>
                     <H1 color={colors.date}>
-                      {teacherObject?.firstName +
-                        " " +
-                        teacherObject?.lastName}
+                      {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
                     <BodyLarge color={colors.date}>
                       {teacherObject?.designation}
@@ -212,10 +210,14 @@ const SeeMore = ({ footerLinks, appName }) => {
           }
           seeMoreBelowSection={false}
           workData={
-            location.state.updatedObject?.length > 0 ? location.state.updatedObject : []
+            location.state.updatedObject?.length > 0
+              ? location.state.updatedObject
+              : []
           }
           fieldMapper={
-            location.state.nestedCollapse === true ? apiFieldMapping : location.state?.fieldMapper
+            location.state.nestedCollapse === true
+              ? apiFieldMapping
+              : location.state?.fieldMapper
           }
         />
       </Layout>
