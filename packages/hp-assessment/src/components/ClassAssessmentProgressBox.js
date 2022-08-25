@@ -6,7 +6,9 @@ import {
   IconByName,
   Collapsible,
   ProgressBar,
-  overrideColorTheme, BodySmall, BodyMedium
+  overrideColorTheme,
+  BodySmall,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -35,19 +37,25 @@ export default function SchoolAssessmentProgressBox() {
       <Box>
         <VStack space={6}>
           <HStack alignItems="center">
-            <Box w={"20%"}><BodyMedium>Grade I</BodyMedium></Box>
+            <Box w={"20%"}>
+              <BodyMedium>Grade I</BodyMedium>
+            </Box>
             <Box w={"78%"}>
               <ProgressBar flex="1" data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center">
-            <Box w={"20%"}><BodyMedium>Grade II</BodyMedium></Box>
+            <Box w={"20%"}>
+              <BodyMedium>Grade II</BodyMedium>
+            </Box>
             <Box w={"78%"}>
               <ProgressBar data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center">
-            <Box w={"20%"}><BodyMedium>Grade III</BodyMedium></Box>
+            <Box w={"20%"}>
+              <BodyMedium>Grade III</BodyMedium>
+            </Box>
             <Box w={"78%"}>
               <ProgressBar data={progressAssessment} />
             </Box>
@@ -64,7 +72,13 @@ export default function SchoolAssessmentProgressBox() {
               <BodyMedium>Nipun</BodyMedium>
             </HStack>
             <HStack alignItems="center">
-              <Box w="15px" h="15px" mr={2} bg="hpAssessment.absent" rounded={4}></Box>
+              <Box
+                w="15px"
+                h="15px"
+                mr={2}
+                bg="hpAssessment.absent"
+                rounded={4}
+              ></Box>
               <BodyMedium>Completed</BodyMedium>
             </HStack>
             <HStack alignItems="center">

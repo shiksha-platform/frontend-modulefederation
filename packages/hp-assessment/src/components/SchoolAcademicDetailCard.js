@@ -15,7 +15,10 @@ import {
   DEFAULT_THEME,
   H2,
   IconByName,
-  Collapsible, BodyLarge, Caption, overrideColorTheme
+  Collapsible,
+  BodyLarge,
+  Caption,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -78,7 +81,12 @@ const TileBasedOnStatus = ({ status, children }) => {
         navigate("/hpAssessment/class-details");
       }}
     >
-      <Box p={4} borderColor="hpAssessment.pendingSeparator" borderWidth={1} rounded={10}>
+      <Box
+        p={4}
+        borderColor="hpAssessment.pendingSeparator"
+        borderWidth={1}
+        rounded={10}
+      >
         {children}
       </Box>
     </Pressable>

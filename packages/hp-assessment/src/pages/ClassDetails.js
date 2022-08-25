@@ -54,10 +54,10 @@ export default function ClassDetails({ appName }) {
 
   const getAssessmentDetails = async () => {
     const params = {
-      fromDate: '01-01-2022',
-      toDate: '08-20-2022',
-      groupId: 'df',
-      subject: 'er'
+      fromDate: "01-01-2022",
+      toDate: "08-20-2022",
+      groupId: "df",
+      subject: "er",
       // groupId: localStorage.getItem("hp-assessment-groupId") || "300bd6a6-ee1f-424a-a763-9db8b08a19e9",
     };
     const data = await assessmentRegistryService.getFilteredAssessments(params);
@@ -66,16 +66,18 @@ export default function ClassDetails({ appName }) {
   };
 
   const calculateParticipantData = (assessmentsData) => {
-    const presentStudent = assessmentsData.filter((item) => {
-      return item.studentAssessmentStatus === 'COMPLETED'
-    }).length / 2;
+    const presentStudent =
+      assessmentsData.filter((item) => {
+        return item.studentAssessmentStatus === "COMPLETED";
+      }).length / 2;
 
-    const absentStudent = assessmentsData.filter((item) => {
-      return item.studentAssessmentStatus === 'ABSENT'
-    }).length / 2;
+    const absentStudent =
+      assessmentsData.filter((item) => {
+        return item.studentAssessmentStatus === "ABSENT";
+      }).length / 2;
     setAbsentStudentCount(absentStudent);
     setPresentStudentCount(presentStudent);
-  }
+  };
 
   useEffect(() => {
     getClassDetails();
@@ -134,8 +136,18 @@ export default function ClassDetails({ appName }) {
         </Box>
         <Box p={4}>
           <VStack space={4}>
-            <ClassParticipationCollapsibleCard assessmentsData={assessmentsData} totalStudentCount={totalStudentCount} presentStudentCount={presentStudentCount} absentStudentCount={absentStudentCount} />
-            <ClassAssessmentResultCollapsibleCard assessmentsData={assessmentsData} totalStudentCount={totalStudentCount} presentStudentCount={presentStudentCount} absentStudentCount={absentStudentCount} />
+            <ClassParticipationCollapsibleCard
+              assessmentsData={assessmentsData}
+              totalStudentCount={totalStudentCount}
+              presentStudentCount={presentStudentCount}
+              absentStudentCount={absentStudentCount}
+            />
+            <ClassAssessmentResultCollapsibleCard
+              assessmentsData={assessmentsData}
+              totalStudentCount={totalStudentCount}
+              presentStudentCount={presentStudentCount}
+              absentStudentCount={absentStudentCount}
+            />
           </VStack>
         </Box>
       </>

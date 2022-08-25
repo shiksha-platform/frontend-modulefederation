@@ -14,7 +14,9 @@ import {
   H2,
   hpAssessmentRegistryService,
   IconByName,
-  overrideColorTheme, H3, Caption
+  overrideColorTheme,
+  H3,
+  Caption,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
@@ -83,7 +85,9 @@ function SchoolCard({ schoolId }) {
                       />
                       <VStack>
                         <H3>{schoolDetail?.schoolName}</H3>
-                        <Caption color={colors.gray}>{schoolDetail?.district}</Caption>
+                        <Caption color={colors.gray}>
+                          {schoolDetail?.district}
+                        </Caption>
                       </VStack>
                     </HStack>
                   </Box>
@@ -124,7 +128,7 @@ function SchoolCard({ schoolId }) {
                           color={colors.gray}
                           name="MapPinLineIcon"
                         />
-                        <Caption color={colors.gray}>{t('District')}</Caption>
+                        <Caption color={colors.gray}>{t("District")}</Caption>
                       </HStack>
                       <Caption>{schoolDetail?.district}</Caption>
                     </VStack>
@@ -140,9 +144,7 @@ function SchoolCard({ schoolId }) {
                           color={colors.gray}
                           name="GovernmentLineIcon"
                         />
-                        <Caption color={colors.gray}>
-                          {t('Block')}
-                        </Caption>
+                        <Caption color={colors.gray}>{t("Block")}</Caption>
                       </HStack>
                       <Caption>{schoolDetail?.block}</Caption>
                     </VStack>
@@ -158,11 +160,9 @@ function SchoolCard({ schoolId }) {
                           color={colors.gray}
                           name="CalendarEventLineIcon"
                         />
-                        <Caption color={colors.gray}>
-                          {t('Cluster')}
-                        </Caption>
+                        <Caption color={colors.gray}>{t("Cluster")}</Caption>
                       </HStack>
-                      <Caption>{t('Gandhi Nagar')}</Caption>
+                      <Caption>{t("Gandhi Nagar")}</Caption>
                     </VStack>
                   </Box>
 
@@ -177,7 +177,7 @@ function SchoolCard({ schoolId }) {
                           name="CalendarEventLineIcon"
                         />
                         <Caption color={colors.gray}>
-                          {t('Enrollment in Grade 1-3')}
+                          {t("Enrollment in Grade 1-3")}
                         </Caption>
                       </HStack>
                       <Caption>200</Caption>
@@ -195,10 +195,10 @@ function SchoolCard({ schoolId }) {
                           name="CalendarEventLineIcon"
                         />
                         <Caption color={colors.gray}>
-                          {t('Reference ID/UDISE')}
+                          {t("Reference ID/UDISE")}
                         </Caption>
                       </HStack>
-                      <Caption>{t('213456')}</Caption>
+                      <Caption>{t("213456")}</Caption>
                     </VStack>
                   </Box>
                 </HStack>

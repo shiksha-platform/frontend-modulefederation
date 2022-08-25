@@ -18,6 +18,5 @@ const colorTheme = {
   scoreCardIcon2: "#F57B7B",
   reportDetailsSubheaderBg: "#FFCAAC",
   achiverBoxBg: "#FFF9F9",*/
-
 };
 export default colorTheme;

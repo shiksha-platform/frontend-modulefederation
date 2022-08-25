@@ -140,16 +140,12 @@ export default function StudentsListPage({
               <H2>{t("Students List")}</H2>
               {attendanceData.msg ? (
                 <>
-                  <Caption textTransform="none">
-                    {attendanceData.msg}
-                  </Caption>
+                  <Caption textTransform="none">{attendanceData.msg}</Caption>
                 </>
               ) : (
                 <>
                   <HStack alignItems={"center"}>
-                    <Caption>
-                      {t("Total Students for Evaluation ")}
-                    </Caption>{" "}
+                    <Caption>{t("Total Students for Evaluation ")}</Caption>{" "}
                     <Caption> ●</Caption>{" "}
                     <Caption> {t("Present ") + 0}</Caption>
                   </HStack>

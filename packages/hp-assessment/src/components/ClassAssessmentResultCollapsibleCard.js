@@ -7,12 +7,18 @@ import {
   Collapsible,
   ProgressBar,
   overrideColorTheme,
-  assessmentRegistryService, BodyMedium
+  assessmentRegistryService,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-export default function ClassAssessmentResultCollapsibleCard({assessmentsData, totalStudentCount, presentStudentCount, absentStudentCount}) {
+export default function ClassAssessmentResultCollapsibleCard({
+  assessmentsData,
+  totalStudentCount,
+  presentStudentCount,
+  absentStudentCount,
+}) {
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
@@ -46,7 +52,9 @@ export default function ClassAssessmentResultCollapsibleCard({assessmentsData, t
           <Box>
             <VStack space={4}>
               <HStack alignItems="center">
-                <Box w={"20%"}><BodyMedium>Grade I</BodyMedium></Box>
+                <Box w={"20%"}>
+                  <BodyMedium>Grade I</BodyMedium>
+                </Box>
                 <Box w={"78%"}>
                   <ProgressBar flex="1" data={progressAssessment} />
                 </Box>

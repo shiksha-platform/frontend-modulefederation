@@ -14,7 +14,6 @@ import SchoolReport from "./pages/SchoolReport";
 import SchoolNipunCertificate from "./pages/SchoolNipunCertificate";
 
 function App() {
-
   const routes = [
     {
       moduleName: "hpAssessment",

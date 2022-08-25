@@ -7,12 +7,18 @@ import {
   Collapsible,
   ProgressBar,
   overrideColorTheme,
-  Caption, BodyMedium
+  Caption,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-export default function ClassParticipationCollapsibleCard({assessmentsData, totalStudentCount, presentStudentCount, absentStudentCount}) {
+export default function ClassParticipationCollapsibleCard({
+  assessmentsData,
+  totalStudentCount,
+  presentStudentCount,
+  absentStudentCount,
+}) {
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
@@ -26,9 +32,11 @@ export default function ClassParticipationCollapsibleCard({assessmentsData, tota
       value: absentStudentCount,
     },
     {
-      name: `${(totalStudentCount - (presentStudentCount + absentStudentCount))} Unmarked`,
+      name: `${
+        totalStudentCount - (presentStudentCount + absentStudentCount)
+      } Unmarked`,
       color: "hpAssessment.unmarked",
-      value: (totalStudentCount - (presentStudentCount + absentStudentCount)),
+      value: totalStudentCount - (presentStudentCount + absentStudentCount),
     },
   ]);
 
@@ -40,13 +48,8 @@ export default function ClassParticipationCollapsibleCard({assessmentsData, tota
           <Box py={4}>
             <H2>Class Participation</H2>
             <HStack alignItems={"center"}>
-              <Caption>
-                {t("Total Students for Evaluation ") + 27}
-              </Caption>{" "}
-              <Caption fontSize={2}>
-                {" "}
-                •
-              </Caption>{" "}
+              <Caption>{t("Total Students for Evaluation ") + 27}</Caption>{" "}
+              <Caption fontSize={2}> •</Caption>{" "}
               <Caption> {t("Present ") + presentStudentCount}</Caption>
             </HStack>
           </Box>
@@ -56,7 +59,9 @@ export default function ClassParticipationCollapsibleCard({assessmentsData, tota
           <Box>
             <VStack space={4}>
               <HStack alignItems="center">
-                <Box w={"20%"}><BodyMedium>Total</BodyMedium></Box>
+                <Box w={"20%"}>
+                  <BodyMedium>Total</BodyMedium>
+                </Box>
                 <Box w={"78%"}>
                   <ProgressBar flex="1" data={progressAssessment} />
                 </Box>

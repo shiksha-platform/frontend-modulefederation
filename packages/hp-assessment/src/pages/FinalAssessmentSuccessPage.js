@@ -8,7 +8,9 @@ import {
   H3,
   H4,
   ProgressBar,
-  overrideColorTheme, Caption, BodyMedium
+  overrideColorTheme,
+  Caption,
+  BodyMedium,
 } from "@shiksha/common-lib";
 import {
   Button,
@@ -122,9 +124,7 @@ export default function FinalAssessmentSuccessPage({
                           <Box textAlign="center">
                             <VStack>
                               <H2 color={colors.success}>
-                                <H2 bold>
-                                  24/
-                                </H2>
+                                <H2 bold>24/</H2>
                                 <BodyMedium>60</BodyMedium>
                               </H2>
                               <Caption>
@@ -149,9 +149,7 @@ export default function FinalAssessmentSuccessPage({
                           <Box textAlign="center">
                             <VStack>
                               <H2 color={colors.error}>
-                                <H2 bold>
-                                  07/
-                                </H2>
+                                <H2 bold>07/</H2>
                                 <BodyMedium>14</BodyMedium>
                               </H2>
                               <Caption>
@@ -187,9 +185,7 @@ export default function FinalAssessmentSuccessPage({
                           <Box textAlign="center">
                             <VStack>
                               <H2 color={colors.success}>
-                                <H2 bold>
-                                  24/
-                                </H2>
+                                <H2 bold>24/</H2>
                                 <BodyMedium>60</BodyMedium>
                               </H2>
                               <Caption>
@@ -214,9 +210,7 @@ export default function FinalAssessmentSuccessPage({
                           <Box textAlign="center">
                             <VStack>
                               <H2 color={colors.error}>
-                                <H2 bold>
-                                  07/
-                                </H2>
+                                <H2 bold>07/</H2>
                                 <BodyMedium>14</BodyMedium>
                               </H2>
                               <Caption>

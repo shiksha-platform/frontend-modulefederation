@@ -62,7 +62,7 @@ export default function AllocatedSchools() {
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <H2 textTransform="none">{t('Allocated Schools')}</H2>
+            <H2 textTransform="none">{t("Allocated Schools")}</H2>
             <HStack alignItems={"center"}>
               <Caption>
                 {t("Total Schools for Evaluation ") + trackingList.length}
@@ -73,7 +73,7 @@ export default function AllocatedSchools() {
           </VStack>
         </HStack>
       }
-      _subHeader={{ bg: 'hpAssessment.cardBg' }}
+      _subHeader={{ bg: "hpAssessment.cardBg" }}
       _footer={{
         menues: [
           {
@@ -110,7 +110,12 @@ export default function AllocatedSchools() {
             trackingList.length > 0 &&
             trackingList.map((item) => {
               // const schoolDetail = getSchoolDetail(item?.monitorTrackingId);
-              return <SchoolCard schoolId={item?.schoolId} key={item?.schoolId + Math.random()} />;
+              return (
+                <SchoolCard
+                  schoolId={item?.schoolId}
+                  key={item?.schoolId + Math.random()}
+                />
+              );
             })}
           {/*<SchoolCard status={'pending'} />
           <SchoolCard status={'ongoing'} />
