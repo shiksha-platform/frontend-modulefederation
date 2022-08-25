@@ -42,11 +42,11 @@ export default function TeacherEdit({
   nestedCollapse,
   seeMore,
   seeMoreBelowSection,
-  obj,
+  fieldMapper,
   workData,
 }) {
   const { t } = useTranslation();
-  const [object, setObject] = useState({});
+  const [updatedObject, setUpdatedObject] = useState({});
   const [editState, setEditState] = useState(false);
   const [editChangeState, setEditChangeState] = useState(false);
   const [errors, setErrors] = React.useState({});
@@ -56,14 +56,14 @@ export default function TeacherEdit({
     onlyParameterProp?.length > "0"
       ? onlyParameterProp
       : [
-          "address",
-          "firstName",
-          "lastName",
-          "fathersName",
-          "phoneNumber",
-          "email",
-          "gender",
-        ];
+        "address",
+        "firstName",
+        "lastName",
+        "fathersName",
+        "phoneNumber",
+        "email",
+        "gender",
+      ];
 
   const parameter = {
     employeeCode: { placeholder: t("EMPLOYEE_CODE") },
@@ -81,32 +81,32 @@ export default function TeacherEdit({
     },
   };
   const formInputs = onlyParameter.map((e) => {
-    const change = obj[e];
+    const change = fieldMapper[e];
     return {
       ...parameter[e],
       name: e,
       placeholder: parameter[e]?.placeholder ? parameter[e].placeholder : e,
       isRequired: parameter[e]?.required ? parameter[e].required : false,
       type: parameter[e]?.type ? parameter[e].type : "text",
-      value: object[change] ? object[change] : "",
+      value: updatedObject[change] ? updatedObject[change] : "",
       onChange: (item) => {
         setEditChangeState(true);
         if (e === "firstName") {
-          setObject({
-            ...object,
+          setUpdatedObject({
+            ...updatedObject,
             [e]: item.target.value,
-            fullName: item.target.value + " " + object.lastName,
+            fullName: item.target.value + " " + updatedObject.lastName,
           });
         } else if (e === "lastName") {
-          setObject({
-            ...object,
+          setUpdatedObject({
+            ...updatedObject,
             [e]: item.target.value,
-            fullName: object.firstName + " " + item.target.value,
+            fullName: updatedObject.firstName + " " + item.target.value,
           });
         } else if (parameter[e]?.type === "select") {
-          setObject({ ...object, [e]: item });
+          setUpdatedObject({ ...updatedObject, [e]: item });
         } else {
-          setObject({ ...object, [e]: item.target.value });
+          setUpdatedObject({ ...updatedObject, [e]: item.target.value });
         }
       },
     };
@@ -115,15 +115,15 @@ export default function TeacherEdit({
   const validate = () => {
     let arr = {};
     if (
-      (onlyParameter.includes("phoneNumber") && !object?.phoneNumber) ||
-      (object?.phoneNumber === "" && onlyParameter.length === 0)
+      (onlyParameter.includes("phoneNumber") && !updatedObject?.phoneNumber) ||
+      (updatedObject?.phoneNumber === "" && onlyParameter.length === 0)
     ) {
       arr = { ...arr, phoneNumber: "Phone Number is invalid" };
     }
 
     if (
-      (onlyParameter.includes("email") && !object?.email) ||
-      (object?.email === "" && onlyParameter.length === 0)
+      (onlyParameter.includes("email") && !updatedObject?.email) ||
+      (updatedObject?.email === "" && onlyParameter.length === 0)
     ) {
       arr = { ...arr, email: "email is invalid" };
     }
@@ -140,14 +140,14 @@ export default function TeacherEdit({
     if (validate()) {
       if (editChangeState && setTeacherObject) {
         let result = {};
-        result = await userRegistryService.update(object, {
+        result = await userRegistryService.update(updatedObject, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
           onlyParameter: [...onlyParameter, "fullName"],
         });
         if (result.data) {
-          setTeacherObject(object);
+          setTeacherObject(updatedObject);
           toast.show({
             render: () => {
               return (
@@ -182,7 +182,7 @@ export default function TeacherEdit({
 
     const getData = async () => {
       if (!ignore) {
-        setObject(teacherObject);
+        setUpdatedObject(teacherObject);
       }
     };
     getData();
@@ -200,8 +200,8 @@ export default function TeacherEdit({
       onlyParameter={onlyParameter}
       seeMoreBelowSection={seeMoreBelowSection}
       teacherObject={teacherObject}
-      object={object}
-      obj={obj}
+      updatedObject={updatedObject}
+      fieldMapper={fieldMapper}
       workData={workData}
       button={
         isEditable !== false ? (
@@ -315,12 +315,12 @@ export default function TeacherEdit({
                 navigate(`/profile/seemore`, {
                   state: {
                     ...teacherObject,
-                    object,
+                    updatedObject,
                     header: header,
                     objectProp: onlyParameter,
                     nestedCollapse: nestedCollapse === true ? true : false,
                     nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [],
-                    obj: obj,
+                    fieldMapper: fieldMapper,
                   },
                 })
               }
@@ -344,11 +344,11 @@ export const Section = ({
   seeMore,
   seeMoreBelowSection,
   teacherObject,
-  object,
+  updatedObject,
   onlyParameter,
   formInputs,
   editState,
-  obj,
+  fieldMapper,
   workData,
 }) => {
   const { t } = useTranslation();
@@ -389,7 +389,7 @@ export const Section = ({
                   <VStack space={1}>
                     {formInputs.map((item, index) => {
                       const name = item.placeholder;
-                      const val = obj[name];
+                      const val = fieldMapper[name];
                       item.value = singleItem[val];
                       return (
                         <Box
@@ -482,7 +482,7 @@ export const Section = ({
                             navigate(`/profile/seemore`, {
                               state: {
                                 ...teacherObject,
-                                object,
+                                updatedObject,
                                 header: header,
                                 objectProp: onlyParameter,
                                 nestedCollapse:
@@ -521,7 +521,7 @@ export const Section = ({
               navigate(`/profile/seemore`, {
                 state: {
                   ...teacherObject,
-                  object,
+                  updatedObject,
                   header: title,
                   objectProp: onlyParameter,
                   nestedCollapse: nestedDropdown === true ? true : false,

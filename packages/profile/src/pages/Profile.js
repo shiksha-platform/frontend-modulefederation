@@ -285,7 +285,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
           <TeacherEdit
             header={t("PERSONAL_DETAILS")}
             teacherObject={teacherObject}
-            obj={userObject}
+            fieldMapper={userObject}
             onlyParameterProp={[
               "aadhar_number",
               "residential_address",
@@ -305,7 +305,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
           <TeacherEdit
             header={t("Employment Details")}
             teacherObject={teacherObject}
-            obj={schoolObject}
+            fieldMapper={schoolObject}
             onlyParameterProp={[
               "employee_code",
               "employment_address",
@@ -328,7 +328,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
             header={t("Past_Positions_and_Transfer_History")}
             teacherObject={workHistoryData}
             workData={workHistoryData}
-            obj={userObject}
+            fieldMapper={userObject}
             nestedCollapse={true}
             nestedHeader={expArray}
             onlyParameterProp={[
@@ -346,7 +346,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
           <TeacherEdit
             header={t("CONTACT_DETAILS")}
             teacherObject={teacherObject}
-            obj={userObject}
+            fieldMapper={userObject}
             setTeacherObject={setTeacherObject}
             onlyParameterProp={["phoneNumber", "email"]}
             isEditable={false}

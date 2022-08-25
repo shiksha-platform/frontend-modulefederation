@@ -44,6 +44,7 @@ const colors = overrideColorTheme(colorTheme);
 const SeeMore = ({ footerLinks, appName }) => {
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
+  const [teacherObject, setTeacherObject] = React.useState({});
   const { state } = useParams();
   const navigate = useNavigate();
   const teacherId = localStorage.getItem("id");
@@ -51,7 +52,7 @@ const SeeMore = ({ footerLinks, appName }) => {
   const location = useLocation();
   const { t } = useTranslation();
 
-  const obj1 = {
+  const apiFieldMapping = {
     designation: "leavingDesignation",
     cadre: "cadre",
     transfer_order_number: "transferOrderNumber",
@@ -64,8 +65,8 @@ const SeeMore = ({ footerLinks, appName }) => {
 
     const getData = async () => {
       if (!ignore) {
-        // const resultTeacher = await userRegistryService.getOne();
-        // setTeacherObject(resultTeacher);
+        const resultTeacher = await userRegistryService.getOne();
+        setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),
           toDate: moment().format("YYYY-MM-DD"),
@@ -150,9 +151,9 @@ const SeeMore = ({ footerLinks, appName }) => {
                   <VStack>
                     <H4 color={colors.date}>{t("MY_PROFILE")}</H4>
                     <H1 color={colors.date}>
-                      {location.state?.firstName +
+                      {teacherObject?.firstName +
                         " " +
-                        location.state?.lastName}
+                        teacherObject?.lastName}
                     </H1>
                     <BodyLarge color={colors.date}>
                       {teacherObject?.designation}
@@ -162,10 +163,10 @@ const SeeMore = ({ footerLinks, appName }) => {
                     size="48px"
                     bg="amber.500"
                     source={{
-                      uri: location.state?.image,
+                      uri: teacherObject?.image,
                     }}
                   >
-                    {`${location.state?.firstName} ${location.state?.lastName}`
+                    {`${teacherObject?.firstName} ${teacherObject?.lastName}`
                       .toUpperCase()
                       .substr(0, 2)}
                   </Avatar>
@@ -211,10 +212,10 @@ const SeeMore = ({ footerLinks, appName }) => {
           }
           seeMoreBelowSection={false}
           workData={
-            location.state.object?.length > 0 ? location.state.object : []
+            location.state.updatedObject?.length > 0 ? location.state.updatedObject : []
           }
-          obj={
-            location.state.nestedCollapse === true ? obj1 : location.state?.obj
+          fieldMapper={
+            location.state.nestedCollapse === true ? apiFieldMapping : location.state?.fieldMapper
           }
         />
       </Layout>

@@ -50,6 +50,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   if (result.data.data) {
     return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
   } else {
+    console.warn("An error has occured while getting the response from API");
     return []
   }
 }
@@ -75,7 +76,8 @@ export const getOne = async (params = {}, header = {}) => {
     } else {
       return {}
     }
-  } catch {
+  } catch (e) {
+    console.warn("An error has occured while getting the response from API", e);
     return {}
   }
 }
@@ -106,6 +108,7 @@ export const create = async (data, header = {}) => {
     let { Worksheet } = result.data?.data?.result
     return Worksheet
   } else {
+    console.warn("An error has occured while getting the response from API");
     return false
   }
 }
@@ -129,6 +132,7 @@ export const update = async (data = {}, headers = {}) => {
   if (result.data) {
     return result
   } else {
+    console.warn("An error has occured while getting the response from API");
     return {}
   }
 }
