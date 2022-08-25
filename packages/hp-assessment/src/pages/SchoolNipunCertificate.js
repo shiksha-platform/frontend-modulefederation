@@ -6,6 +6,7 @@ import {
   useWindowSize,
   H2,
   H3,
+  H4,
   ProgressBar,
   overrideColorTheme,
 } from "@shiksha/common-lib";
@@ -40,12 +41,12 @@ export default function SchoolNipunCertificate({
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: "hpAssessment.success",
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: "hpAssessment.unmarked",
       value: 6,
     },
   ]);
@@ -58,7 +59,7 @@ export default function SchoolNipunCertificate({
         customComponent={
           <VStack space="0" flex="1" width={width}>
             <VStack
-              bg="successAlert.500"
+              bg="hpAssessment.successBackground"
               pb="100px"
               pt="32px"
               alignItems="center"
@@ -67,7 +68,6 @@ export default function SchoolNipunCertificate({
             >
               <IconByName
                 name="DownloadLineIcon"
-                color="#14132A"
                 position="absolute"
                 top={0}
                 right={0}
@@ -81,7 +81,7 @@ export default function SchoolNipunCertificate({
               <Box textAlign="center">
                 <VStack space={4}>
                   <Box>
-                    <Text bold>{t("निआपका विद्यालय निपुण है")}</Text>
+                    <H4>{t("निआपका विद्यालय निपुण है")}</H4>
                   </Box>
                 </VStack>
               </Box>

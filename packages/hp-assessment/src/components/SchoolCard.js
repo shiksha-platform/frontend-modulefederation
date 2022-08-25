@@ -14,24 +14,25 @@ import {
   H2,
   hpAssessmentRegistryService,
   IconByName,
-  overrideColorTheme,
+  overrideColorTheme, H3, Caption
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 import nipun_badge from "../stories/assets/nipun_badge.svg";
+import { useTranslation } from "react-i18next";
 const colors = overrideColorTheme(colorTheme);
 
 const CardBasedOnStatus = ({ status, children }) => {
   if (status === "ongoing") {
     return (
-      <Box bg={"#ffebd0"} borderRadius={10}>
+      <Box bg="hpAssessment.ongoing" borderRadius={10}>
         {children}
       </Box>
     );
   }
   if (status === "complete" || status === "completeWithNipun") {
     return (
-      <Box bg={"#ECF7EB"} borderRadius={10}>
+      <Box bg="hpAssessment.completed" borderRadius={10}>
         {children}
       </Box>
     );
@@ -44,6 +45,7 @@ const CardBasedOnStatus = ({ status, children }) => {
 };
 
 function SchoolCard({ schoolId }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [schoolDetail, setSchoolDetail] = useState({});
 
@@ -54,7 +56,7 @@ function SchoolCard({ schoolId }) {
 
   const _handleSchoolSelect = () => {
     localStorage.setItem("hp-assessment-school", JSON.stringify(schoolDetail));
-    navigate("/school-profile");
+    navigate("/hpAssessment/school-profile");
   };
 
   useEffect(() => {
@@ -65,7 +67,7 @@ function SchoolCard({ schoolId }) {
     <>
       <VStack space={6}>
         <Pressable onPress={_handleSchoolSelect}>
-          <CardBasedOnStatus status={status}>
+          <CardBasedOnStatus status={schoolDetail?.status}>
             <>
               <Box p={4}>
                 <HStack alignItems="center" justifyContent="space-between">
@@ -74,18 +76,14 @@ function SchoolCard({ schoolId }) {
                       <Avatar
                         size="60px"
                         mr={4}
-                        borderRadius="md"
+                        borderRadius="5"
                         source={{
                           uri: "https://via.placeholder.com/50x50.png",
                         }}
                       />
                       <VStack>
-                        <Text bold fontSize={14}>
-                          {schoolDetail?.schoolName}
-                        </Text>
-                        <Text bold fontSize={12} color="#666">
-                          {schoolDetail?.district}
-                        </Text>
+                        <H3>{schoolDetail?.schoolName}</H3>
+                        <Caption color={colors.gray}>{schoolDetail?.district}</Caption>
                       </VStack>
                     </HStack>
                   </Box>
@@ -106,8 +104,8 @@ function SchoolCard({ schoolId }) {
                     ? colors.warning
                     : schoolDetail?.status === "complete" ||
                       schoolDetail?.status === "completeWithNipun"
-                    ? "#C5DCC3"
-                    : "#EEEEEE"
+                    ? "hpAssessment.completeSeparator"
+                    : "hpAssessment.pendingSeparator"
                 }
               />
               <Box p={4}>
@@ -123,13 +121,12 @@ function SchoolCard({ schoolId }) {
                           size="12px"
                           mr={2}
                           ml="-7px"
+                          color={colors.gray}
                           name="MapPinLineIcon"
                         />
-                        <Text color="#666" fontSize="12">
-                          District
-                        </Text>
+                        <Caption color={colors.gray}>{t('District')}</Caption>
                       </HStack>
-                      <Text fontSize="12">{schoolDetail?.district}</Text>
+                      <Caption>{schoolDetail?.district}</Caption>
                     </VStack>
                   </Box>
 
@@ -140,13 +137,14 @@ function SchoolCard({ schoolId }) {
                           size="12px"
                           mr={2}
                           ml="-7px"
+                          color={colors.gray}
                           name="GovernmentLineIcon"
                         />
-                        <Text color="#666" fontSize="12">
-                          Block
-                        </Text>
+                        <Caption color={colors.gray}>
+                          {t('Block')}
+                        </Caption>
                       </HStack>
-                      <Text fontSize="12">{schoolDetail?.block}</Text>
+                      <Caption>{schoolDetail?.block}</Caption>
                     </VStack>
                   </Box>
 
@@ -157,13 +155,14 @@ function SchoolCard({ schoolId }) {
                           size="12px"
                           mr={2}
                           ml="-7px"
+                          color={colors.gray}
                           name="CalendarEventLineIcon"
                         />
-                        <Text color="#666" fontSize="12">
-                          Cluster
-                        </Text>
+                        <Caption color={colors.gray}>
+                          {t('Cluster')}
+                        </Caption>
                       </HStack>
-                      <Text fontSize="12">Gandhi Nagar</Text>
+                      <Caption>{t('Gandhi Nagar')}</Caption>
                     </VStack>
                   </Box>
 
@@ -174,13 +173,14 @@ function SchoolCard({ schoolId }) {
                           size="12px"
                           mr={2}
                           ml="-7px"
+                          color={colors.gray}
                           name="CalendarEventLineIcon"
                         />
-                        <Text color="#666" fontSize="12">
-                          Enrollment in Grade 1-3
-                        </Text>
+                        <Caption color={colors.gray}>
+                          {t('Enrollment in Grade 1-3')}
+                        </Caption>
                       </HStack>
-                      <Text fontSize="12">200</Text>
+                      <Caption>200</Caption>
                     </VStack>
                   </Box>
 
@@ -191,13 +191,14 @@ function SchoolCard({ schoolId }) {
                           size="12px"
                           mr={2}
                           ml="-7px"
+                          color={colors.gray}
                           name="CalendarEventLineIcon"
                         />
-                        <Text color="#666" fontSize="12">
-                          Reference ID/UDISE
-                        </Text>
+                        <Caption color={colors.gray}>
+                          {t('Reference ID/UDISE')}
+                        </Caption>
                       </HStack>
-                      <Text fontSize="12">213456</Text>
+                      <Caption>{t('213456')}</Caption>
                     </VStack>
                   </Box>
                 </HStack>

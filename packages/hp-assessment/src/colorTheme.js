@@ -1,5 +1,5 @@
 const colorTheme = {
-  gray: "#5E6B78",
+  /*gray: "#5E6B78",
   lightGray: "#B5B5C8",
   lightGray0: "#9E9E9E",
   lightGray4: "#f3f4f6",
@@ -17,6 +17,7 @@ const colorTheme = {
   scoreCardBg2: "#FEEFEB",
   scoreCardIcon2: "#F57B7B",
   reportDetailsSubheaderBg: "#FFCAAC",
-  achiverBoxBg: "#FFF9F9",
+  achiverBoxBg: "#FFF9F9",*/
+
 };
 export default colorTheme;

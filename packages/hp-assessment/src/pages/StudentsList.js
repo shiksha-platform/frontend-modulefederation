@@ -140,18 +140,18 @@ export default function StudentsListPage({
               <H2>{t("Students List")}</H2>
               {attendanceData.msg ? (
                 <>
-                  <Caption color={colors.lightGray} textTransform="none">
+                  <Caption textTransform="none">
                     {attendanceData.msg}
                   </Caption>
                 </>
               ) : (
                 <>
                   <HStack alignItems={"center"}>
-                    <Caption color={colors.gray}>
+                    <Caption>
                       {t("Total Students for Evaluation ")}
                     </Caption>{" "}
-                    <Caption color={colors.lightGray}> ●</Caption>{" "}
-                    <Caption color={colors.gray}> {t("Present ") + 0}</Caption>
+                    <Caption> ●</Caption>{" "}
+                    <Caption> {t("Present ") + 0}</Caption>
                   </HStack>
                 </>
               )}
@@ -159,7 +159,7 @@ export default function StudentsListPage({
           </Box>
           <Box>
             <VStack space={4}>
-              {studentList && studentList.length ? (
+              {studentList && studentList.length > 0 ? (
                 studentList.map((student, index) => {
                   return (
                     <StudentListCard
@@ -199,7 +199,7 @@ export default function StudentsListPage({
             _text={{
               color: colors.white,
             }}
-            onPress={() => navigate("/oral-assessment-success")}
+            onPress={() => navigate("/hpAssessment/oral-assessment-success")}
           >
             {t("Continue Assessment")}
           </Button>

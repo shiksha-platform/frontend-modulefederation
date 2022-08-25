@@ -6,8 +6,9 @@ import {
   useWindowSize,
   H2,
   H3,
+  H4,
   ProgressBar,
-  overrideColorTheme,
+  overrideColorTheme, Caption, BodyMedium
 } from "@shiksha/common-lib";
 import {
   Button,
@@ -42,12 +43,12 @@ export default function FinalAssessmentSuccessPage({
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "12 Assessed",
-      color: "#0D921B",
+      color: "hpAssessment.success",
       value: 12,
     },
     {
       name: "6 pending",
-      color: "#DDDDDD",
+      color: "hpAssessment.unmarked",
       value: 6,
     },
   ]);
@@ -60,7 +61,7 @@ export default function FinalAssessmentSuccessPage({
         customComponent={
           <VStack space="0" flex="1" width={width}>
             <VStack
-              bg="successAlert.500"
+              bg="hpAssessment.successBackground"
               pb="100px"
               pt="32px"
               alignItems="center"
@@ -92,6 +93,7 @@ export default function FinalAssessmentSuccessPage({
                   source={{
                     uri: "https://via.placeholder.com/50x50.png",
                   }}
+                  mb={4}
                 />
                 <H2>Manoj</H2>
               </VStack>
@@ -101,7 +103,7 @@ export default function FinalAssessmentSuccessPage({
               <VStack space={4}>
                 <Box bg="white" rounded={10}>
                   <Box p={4} textAlign="center">
-                    <H2>{t("Language")}</H2>
+                    <H3>{t("Language")}</H3>
                   </Box>
                   <Divider />
                   <Box p={4}>
@@ -111,22 +113,23 @@ export default function FinalAssessmentSuccessPage({
                           value={24}
                           maxValue={60}
                           styles={buildStyles({
-                            pathColor: "#43B13A",
-                            textColor: "#f88",
-                            trailColor: "#F3F3F3",
+                            // pathColor: "#43B13A",
+                            pathColor: colors.success,
+                            textColor: colors.success,
+                            trailColor: colors.lightGray5,
                           })}
                         >
                           <Box textAlign="center">
                             <VStack>
-                              <Text color="#43B13A" fontSize={18}>
-                                <Text fontSize={18} bold>
+                              <H2 color={colors.success}>
+                                <H2 bold>
                                   24/
-                                </Text>
-                                <Text fontSize={15}>60</Text>
-                              </Text>
-                              <Text fontSize={10}>
+                                </H2>
+                                <BodyMedium>60</BodyMedium>
+                              </H2>
+                              <Caption>
                                 Correct <br />  Words/Minute
-                              </Text>
+                              </Caption>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
@@ -137,24 +140,25 @@ export default function FinalAssessmentSuccessPage({
                           value={7}
                           maxValue={14}
                           styles={buildStyles({
-                            pathColor: "#D12F2F",
-                            textColor: "#f88",
-                            trailColor: "#F3F3F3",
+                            // pathColor: "#D12F2F",
+                            pathColor: colors.error,
+                            textColor: colors.error,
+                            trailColor: colors.lightGray5,
                           })}
                         >
                           <Box textAlign="center">
                             <VStack>
-                              <Text color="#D12F2F" fontSize={18}>
-                                <Text fontSize={18} bold>
+                              <H2 color={colors.error}>
+                                <H2 bold>
                                   07/
-                                </Text>
-                                <Text fontSize={15}>14</Text>
-                              </Text>
-                              <Text fontSize={10}>
+                                </H2>
+                                <BodyMedium>14</BodyMedium>
+                              </H2>
+                              <Caption>
                                 Correct
                                 <br />
                                 Answers
-                              </Text>
+                              </Caption>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
@@ -164,7 +168,7 @@ export default function FinalAssessmentSuccessPage({
                 </Box>
                 <Box bg="white" rounded={10}>
                   <Box p={4} textAlign="center">
-                    <H2>{t("Numeracy")}</H2>
+                    <H3>{t("Numeracy")}</H3>
                   </Box>
                   <Divider />
                   <Box>
@@ -174,22 +178,23 @@ export default function FinalAssessmentSuccessPage({
                           value={24}
                           maxValue={60}
                           styles={buildStyles({
-                            pathColor: "#43B13A",
-                            textColor: "#f88",
-                            trailColor: "#F3F3F3",
+                            // pathColor: "#43B13A",
+                            pathColor: colors.success,
+                            textColor: colors.success,
+                            trailColor: colors.lightGray5,
                           })}
                         >
                           <Box textAlign="center">
                             <VStack>
-                              <Text color="#43B13A" fontSize={18}>
-                                <Text fontSize={18} bold>
+                              <H2 color={colors.success}>
+                                <H2 bold>
                                   24/
-                                </Text>
-                                <Text fontSize={15}>60</Text>
-                              </Text>
-                              <Text fontSize={10}>
+                                </H2>
+                                <BodyMedium>60</BodyMedium>
+                              </H2>
+                              <Caption>
                                 Correct <br />  Numbers Read
-                              </Text>
+                              </Caption>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
@@ -200,24 +205,25 @@ export default function FinalAssessmentSuccessPage({
                           value={7}
                           maxValue={14}
                           styles={buildStyles({
-                            pathColor: "#D12F2F",
-                            textColor: "#f88",
-                            trailColor: "#F3F3F3",
+                            // pathColor: "#D12F2F",
+                            pathColor: colors.error,
+                            textColor: colors.error,
+                            trailColor: colors.lightGray5,
                           })}
                         >
                           <Box textAlign="center">
                             <VStack>
-                              <Text color="#D12F2F" fontSize={18}>
-                                <Text fontSize={18} bold>
+                              <H2 color={colors.error}>
+                                <H2 bold>
                                   07/
-                                </Text>
-                                <Text fontSize={15}>14</Text>
-                              </Text>
-                              <Text fontSize={10}>
+                                </H2>
+                                <BodyMedium>14</BodyMedium>
+                              </H2>
+                              <Caption>
                                 Correct
                                 <br />
                                 Answers
-                              </Text>
+                              </Caption>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
@@ -232,7 +238,7 @@ export default function FinalAssessmentSuccessPage({
                       color: colors.white,
                     }}
                     onPress={() => {
-                      navigate("/student-list");
+                      navigate("/hpAssessment/student-list");
                     }}
                   >
                     {t("Start Next Student Assessment")}

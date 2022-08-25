@@ -15,10 +15,12 @@ import {
   DEFAULT_THEME,
   H2,
   IconByName,
-  Collapsible,
+  Collapsible, BodyLarge, Caption, overrideColorTheme
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import colorTheme from "../colorTheme";
+const colors = overrideColorTheme(colorTheme);
 
 const _handleGradeSelect = () => {
   localStorage.setItem(
@@ -34,13 +36,13 @@ const TileBasedOnStatus = ({ status, children }) => {
       <Pressable
         onPress={() => {
           _handleGradeSelect();
-          navigate("/class-details");
+          navigate("/hpAssessment/class-details");
         }}
       >
         <Box
-          bg={"#ffc3694d"}
+          bg="hpAssessment.ongoing"
           p={4}
-          borderColor={"#FFC369"}
+          borderColor={colors.warning}
           borderWidth={1}
           rounded={10}
         >
@@ -54,13 +56,13 @@ const TileBasedOnStatus = ({ status, children }) => {
       <Pressable
         onPress={() => {
           _handleGradeSelect();
-          navigate("/class-details");
+          navigate("/hpAssessment/class-details");
         }}
       >
         <Box
-          bg={"#ECF7EB"}
+          bg="hpAssessment.completed"
           p={4}
-          borderColor={"#C5DCC3"}
+          borderColor="hpAssessment.completeSeparator"
           borderWidth={1}
           rounded={10}
         >
@@ -73,10 +75,10 @@ const TileBasedOnStatus = ({ status, children }) => {
     <Pressable
       onPress={() => {
         _handleGradeSelect();
-        navigate("/class-details");
+        navigate("/hpAssessment/class-details");
       }}
     >
-      <Box p={4} borderColor={"#eee"} borderWidth={1} rounded={10}>
+      <Box p={4} borderColor="hpAssessment.pendingSeparator" borderWidth={1} rounded={10}>
         {children}
       </Box>
     </Pressable>
@@ -85,8 +87,6 @@ const TileBasedOnStatus = ({ status, children }) => {
 
 export default function SchoolAcademicDetailCard() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [academicDetailModal, setAcademicDetailModal] = useState(false);
   return (
     <>
       <Collapsible
@@ -104,8 +104,8 @@ export default function SchoolAcademicDetailCard() {
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
-                    <Text bold>Grade I</Text>
-                    <Text color="#666">65 Students</Text>
+                    <BodyLarge>Grade I</BodyLarge>
+                    <Caption color={colors.gray}>65 Students</Caption>
                   </VStack>
                 </Box>
                 <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
@@ -116,8 +116,8 @@ export default function SchoolAcademicDetailCard() {
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
-                    <Text bold>Grade II</Text>
-                    <Text color="#666">69 Students</Text>
+                    <BodyLarge>Grade II</BodyLarge>
+                    <Caption color={colors.gray}>69 Students</Caption>
                   </VStack>
                 </Box>
                 <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
@@ -128,8 +128,8 @@ export default function SchoolAcademicDetailCard() {
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
-                    <Text bold>Grade III</Text>
-                    <Text color="#666">69 Students</Text>
+                    <BodyLarge>Grade III</BodyLarge>
+                    <Caption color={colors.gray}>69 Students</Caption>
                   </VStack>
                 </Box>
                 <IconByName name="ArrowRightSLineIcon" isDisabled={true} />

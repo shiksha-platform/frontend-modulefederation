@@ -17,12 +17,12 @@ import SchoolCard from "../components/SchoolCard";
 import colorTheme from "../colorTheme";
 import { useTranslation } from "react-i18next";
 import React from "react";
-const colors = overrideColorTheme(colorTheme);
+// const colors = overrideColorTheme(colorTheme);
 
 export default function AllocatedSchools() {
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [trackingList, setTackingList] = useState([]);
   const [pendingSchools, setPendingSchools] = useState(0);
 
@@ -62,9 +62,7 @@ export default function AllocatedSchools() {
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <Text fontSize={"lg"} bold>
-              Allocated Schools
-            </Text>
+            <H2 textTransform="none">{t('Allocated Schools')}</H2>
             <HStack alignItems={"center"}>
               <Caption>
                 {t("Total Schools for Evaluation ") + trackingList.length}
@@ -75,7 +73,7 @@ export default function AllocatedSchools() {
           </VStack>
         </HStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: 'hpAssessment.cardBg' }}
       _footer={{
         menues: [
           {
@@ -109,10 +107,10 @@ export default function AllocatedSchools() {
       <Box p={4}>
         <VStack space={4}>
           {trackingList &&
-            trackingList.length &&
+            trackingList.length > 0 &&
             trackingList.map((item) => {
               // const schoolDetail = getSchoolDetail(item?.monitorTrackingId);
-              return <SchoolCard schoolId={item?.schoolId} />;
+              return <SchoolCard schoolId={item?.schoolId} key={item?.schoolId + Math.random()} />;
             })}
           {/*<SchoolCard status={'pending'} />
           <SchoolCard status={'ongoing'} />

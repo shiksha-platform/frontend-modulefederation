@@ -48,9 +48,9 @@ const TileBasedOnStatus = ({
     return (
       <Pressable onPress={() => setSelectedStudent(student)}>
         <Box
-          bg={"#ffc3694d"}
+          bg="hpAssessment.ongoing"
           p={4}
-          borderColor={"#FFC369"}
+          borderColor="hpAssessment.warning"
           borderWidth={1}
           rounded={10}
         >
@@ -63,9 +63,9 @@ const TileBasedOnStatus = ({
     return (
       <Pressable onPress={() => setSelectedStudent(student)}>
         <Box
-          bg={"#ECF7EB"}
+          bg="hpAssessment.completed"
           p={4}
-          borderColor={"#C5DCC3"}
+          borderColor="hpAssessment.completeSeparator"
           borderWidth={1}
           rounded={10}
         >
@@ -77,9 +77,9 @@ const TileBasedOnStatus = ({
   return (
     <Pressable onPress={() => setSelectedStudent(student)}>
       <Box
-        bg={"#ffffff"}
+        bg="hpAssessment.white"
         p={4}
-        borderColor={"#eee"}
+        borderColor="hpAssessment.pendingSeparator"
         borderWidth={1}
         rounded={10}
       >

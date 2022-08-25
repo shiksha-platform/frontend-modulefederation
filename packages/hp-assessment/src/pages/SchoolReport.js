@@ -56,7 +56,7 @@ export default function SchoolReport({ handleBackButton, formObject }) {
         customComponent={
           <VStack space="0" flex="1" width={width}>
             <VStack
-              bg={colors.scoreCardBg1}
+              bg="hpAssessment.scoreCardBg1"
               pb="100px"
               pt="32px"
               alignItems="center"
@@ -69,13 +69,11 @@ export default function SchoolReport({ handleBackButton, formObject }) {
               />
               <Box textAlign="center">
                 <VStack space={4}>
-                  <H2>{t("अभ्यास करते रहें")}</H2>
-                  <Box>
-                    <Text>
-                      {t("और फिर आप भी अगले निपुण इवैल्यूएशन में हो जाओगे")}
-                    </Text>
-                    <Text bold>{t("निपुण विद्यालय!")}</Text>
-                  </Box>
+                  <H1>{t("अभ्यास करते रहें")}</H1>
+                  <H3>
+                    {t("और फिर आप भी अगले निपुण इवैल्यूएशन में हो जाओगे")}
+                  </H3>
+                  <H2>{t("निपुण विद्यालय!")}</H2>
                 </VStack>
               </Box>
             </VStack>

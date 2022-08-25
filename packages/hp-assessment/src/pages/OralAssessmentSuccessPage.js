@@ -4,7 +4,7 @@ import {
   IconByName,
   Layout,
   overrideColorTheme,
-  useWindowSize,
+  useWindowSize, BodyLarge
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -33,8 +33,8 @@ export default function OralAssessmentSuccessPage({
     <Layout isDisabledAppBar={true}>
       <Box
         p={4}
-        h={height - 85}
-        bg={"#ECF7EB"}
+        h={height}
+        bg="hpAssessment.completed"
         alignItems="center"
         justifyContent="center"
       >
@@ -42,18 +42,18 @@ export default function OralAssessmentSuccessPage({
           <IconByName
             alignSelf="center"
             name="CheckboxCircleFillIcon"
-            color={colors.success}
+            color="hpAssessment.success"
             _icon={{ size: 50 }}
           />
-          <Text>
+          <BodyLarge color="hpAssessment.success">
             Your ORF assessment is complete. Click next to continue the
             assessment.
-          </Text>
+          </BodyLarge>
           <Button
             colorScheme="button"
             variant="outline"
             onPress={() => {
-              navigate("/final-assessment-success");
+              navigate("/hpAssessment/final-assessment-success");
             }}
           >
             {t("Next")}

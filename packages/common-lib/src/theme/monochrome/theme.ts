@@ -25,6 +25,16 @@ const theme = {
       specialDuty: '#06D6A0',
       activeClass: '#10b981'
     },
+    hpAssessment: {
+      ...colorTheme,
+      absent: '#DF5B5B',
+      ongoing: '#ffebd0',
+      completed: '#ECF7EB',
+      completeSeparator: '#C5DCC3',
+      pendingSeparator: '#EEEEEE',
+      successBackground: '#B9FBC0',
+      scoreCardBg1: '#FFE5B3'
+    },
     classes: {
       ...colorTheme,
       girls: '#0ea5e9',

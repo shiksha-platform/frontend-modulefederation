@@ -6,7 +6,7 @@ import {
   IconByName,
   Collapsible,
   ProgressBar,
-  overrideColorTheme,
+  overrideColorTheme, BodySmall, BodyMedium
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -16,39 +16,39 @@ export default function SchoolAssessmentProgressBox() {
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "22 Nipun",
-      color: colors.successBarColor,
+      color: "hpAssessment.success",
       value: 22,
     },
     {
       name: "4 Completed",
-      color: "#DF5B5B",
+      color: "hpAssessment.absent",
       value: 4,
     },
     {
       name: "1 pending",
-      color: colors.unmarked,
+      color: "hpAssessment.unmarked",
       value: 1,
     },
   ]);
   return (
     <>
       <Box>
-        <VStack space={4}>
+        <VStack space={6}>
           <HStack alignItems="center">
-            <Box w={"20%"}>Grade I</Box>
-            <Box w={"79%"}>
+            <Box w={"20%"}><BodyMedium>Grade I</BodyMedium></Box>
+            <Box w={"78%"}>
               <ProgressBar flex="1" data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center">
-            <Box w={"20%"}>Grade II</Box>
-            <Box w={"79%"}>
+            <Box w={"20%"}><BodyMedium>Grade II</BodyMedium></Box>
+            <Box w={"78%"}>
               <ProgressBar data={progressAssessment} />
             </Box>
           </HStack>
           <HStack alignItems="center">
-            <Box w={"20%"}>Grade III</Box>
-            <Box w={"79%"}>
+            <Box w={"20%"}><BodyMedium>Grade III</BodyMedium></Box>
+            <Box w={"78%"}>
               <ProgressBar data={progressAssessment} />
             </Box>
           </HStack>
@@ -58,24 +58,24 @@ export default function SchoolAssessmentProgressBox() {
                 w="15px"
                 h="15px"
                 mr={2}
-                bg={colors.successBarColor}
+                bg="hpAssessment.success"
                 rounded={4}
               ></Box>
-              <Text>Nipun</Text>
+              <BodyMedium>Nipun</BodyMedium>
             </HStack>
             <HStack alignItems="center">
-              <Box w="15px" h="15px" mr={2} bg={"#DF5B5B"} rounded={4}></Box>
-              <Text>Completed</Text>
+              <Box w="15px" h="15px" mr={2} bg="hpAssessment.absent" rounded={4}></Box>
+              <BodyMedium>Completed</BodyMedium>
             </HStack>
             <HStack alignItems="center">
               <Box
                 w="15px"
                 h="15px"
                 mr={2}
-                bg={colors.unmarked}
+                bg="hpAssessment.unmarked"
                 rounded={4}
               ></Box>
-              <Text>Not Assessed</Text>
+              <BodyMedium>Not Assessed</BodyMedium>
             </HStack>
           </HStack>
         </VStack>

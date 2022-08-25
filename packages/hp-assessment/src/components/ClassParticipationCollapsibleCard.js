@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, HStack, VStack, Text, Divider, Button } from "native-base";
 import {
   DEFAULT_THEME,
@@ -7,30 +7,31 @@ import {
   Collapsible,
   ProgressBar,
   overrideColorTheme,
-  Caption,
+  Caption, BodyMedium
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-export default function ClassParticipationCollapsibleCard() {
+export default function ClassParticipationCollapsibleCard({assessmentsData, totalStudentCount, presentStudentCount, absentStudentCount}) {
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
-      name: "22 Present",
-      color: colors.successBarColor,
-      value: 22,
+      name: `${presentStudentCount} Present`,
+      color: "hpAssessment.success",
+      value: presentStudentCount,
     },
     {
-      name: "4 Absent",
-      color: "#DF5B5B",
-      value: 4,
+      name: `${absentStudentCount} Absent`,
+      color: "hpAssessment.absent",
+      value: absentStudentCount,
     },
     {
-      name: "1 Unmarked",
-      color: colors.unmarked,
-      value: 1,
+      name: `${(totalStudentCount - (presentStudentCount + absentStudentCount))} Unmarked`,
+      color: "hpAssessment.unmarked",
+      value: (totalStudentCount - (presentStudentCount + absentStudentCount)),
     },
   ]);
+
   return (
     <>
       <Collapsible
@@ -39,14 +40,14 @@ export default function ClassParticipationCollapsibleCard() {
           <Box py={4}>
             <H2>Class Participation</H2>
             <HStack alignItems={"center"}>
-              <Caption color="#373839">
+              <Caption>
                 {t("Total Students for Evaluation ") + 27}
               </Caption>{" "}
-              <Caption color="#B5B5C8" fontSize={2}>
+              <Caption fontSize={2}>
                 {" "}
                 •
               </Caption>{" "}
-              <Caption color="#373839"> {t("Present ") + 26}</Caption>
+              <Caption> {t("Present ") + presentStudentCount}</Caption>
             </HStack>
           </Box>
         }
@@ -55,8 +56,8 @@ export default function ClassParticipationCollapsibleCard() {
           <Box>
             <VStack space={4}>
               <HStack alignItems="center">
-                <Box w={"20%"}>Total</Box>
-                <Box w={"79%"}>
+                <Box w={"20%"}><BodyMedium>Total</BodyMedium></Box>
+                <Box w={"78%"}>
                   <ProgressBar flex="1" data={progressAssessment} />
                 </Box>
               </HStack>
@@ -66,30 +67,30 @@ export default function ClassParticipationCollapsibleCard() {
                     w="15px"
                     h="15px"
                     mr={2}
-                    bg={colors.successBarColor}
+                    bg="hpAssessment.success"
                     rounded={4}
                   ></Box>
-                  <Text>Present</Text>
+                  <BodyMedium>Present</BodyMedium>
                 </HStack>
                 <HStack alignItems="center">
                   <Box
                     w="15px"
                     h="15px"
                     mr={2}
-                    bg={"#DF5B5B"}
+                    bg="hpAssessment.absent"
                     rounded={4}
                   ></Box>
-                  <Text>Absent</Text>
+                  <BodyMedium>Absent</BodyMedium>
                 </HStack>
                 <HStack alignItems="center">
                   <Box
                     w="15px"
                     h="15px"
                     mr={2}
-                    bg={colors.unmarked}
+                    bg="hpAssessment.unmarked"
                     rounded={4}
                   ></Box>
-                  <Text>Unmarked</Text>
+                  <BodyMedium>Unmarked</BodyMedium>
                 </HStack>
               </HStack>
             </VStack>

@@ -1,7 +1,7 @@
 const { dependencies } = require("./package.json");
 
 module.exports = {
-  name: "samplemodule",
+  name: "hpAssessment",
   exposes: {
     "./SampleComponent": "./src/components/SampleComponent",
   },

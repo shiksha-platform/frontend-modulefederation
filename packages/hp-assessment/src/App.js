@@ -2,8 +2,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "./App.css";
-import { extendTheme, NativeBaseProvider } from "native-base";
-import { DEFAULT_THEME, AppShell } from "@shiksha/common-lib";
+import { AppShell } from "@shiksha/common-lib";
 import AllocatedSchools from "./pages/AllocatedSchools";
 import SchoolProfile from "./pages/SchoolProfile";
 import ClassDetails from "./pages/ClassDetails";
@@ -15,45 +14,55 @@ import SchoolReport from "./pages/SchoolReport";
 import SchoolNipunCertificate from "./pages/SchoolNipunCertificate";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
+
   const routes = [
     {
-      path: "/school-nipun-certificate",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/school-nipun-certificate",
       component: SchoolNipunCertificate,
     },
     {
-      path: "/school-report",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/school-report",
       component: SchoolReport,
     },
     {
-      path: "/final-assessment-success",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/final-assessment-success",
       component: FinalAssessmentSuccessPage,
     },
     {
-      path: "/final-assessment-success2",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/final-assessment-success2",
       component: FinalAssessmentSuccessPage2,
     },
     {
-      path: "/oral-assessment-success",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/oral-assessment-success",
       component: OralAssessmentSuccessPage,
     },
     {
-      path: "/student-list",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/student-list",
       component: StudentsListPage,
     },
     {
-      path: "/class-details",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/class-details",
       component: ClassDetails,
     },
     {
-      path: "/school-profile",
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/school-profile",
       component: SchoolProfile,
     },
     {
+      moduleName: "hpAssessment",
       path: "/",
       component: AllocatedSchools,
     },
     {
+      moduleName: "hpAssessment",
       path: "*",
       component: AllocatedSchools,
     },
@@ -61,7 +70,11 @@ function App() {
   const LoginComponent = React.lazy(() => import("core/Login"));
 
   return (
-    <AppShell theme={theme} routes={routes} AuthComponent={LoginComponent} />
+    <AppShell
+      basename={process.env.PUBLIC_URL}
+      routes={routes}
+      AuthComponent={LoginComponent}
+    />
   );
 }
 

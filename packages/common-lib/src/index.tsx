@@ -22,6 +22,7 @@ import * as questionRegistryService from './services/questionRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
+import * as hpAssessmentRegistryService from './services/hpAssessmentRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
@@ -63,7 +64,8 @@ export {
   sendReadReceipt,
   templateRegistryService,
   notificationRegistryService,
-  roleRegistryService
+  roleRegistryService,
+  hpAssessmentRegistryService
 }
 
 export * from './services/Auth'

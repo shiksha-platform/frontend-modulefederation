@@ -1,5 +1,5 @@
 {
-  "name": "samplemodule",
+  "name": "hpAssessment",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -41,6 +41,7 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4"
   },
+  "homepage": "modules/hpAssessment",
   "scripts": {
     "start": "craco start",
     "build": "craco build",

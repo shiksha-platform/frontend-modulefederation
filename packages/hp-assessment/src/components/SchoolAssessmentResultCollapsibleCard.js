@@ -28,25 +28,21 @@ export default function SchoolAssessmentResultCollapsibleCard() {
       >
         <>
           <Box>
-            <VStack space={4}>
+            <VStack space={6} pt={2}>
               <SchoolAssessmentProgressBox />
               {/*<Divider />*/}
               <Box>
-                <VStack space={4}>
-                  <Box>
-                    <Button
-                      colorScheme={"button"}
-                      _text={{ color: colors.white }}
-                      isDisabled={false}
-                      // onPress={()=> {navigate('/school-report')}}
-                      onPress={() => {
-                        navigate("/school-nipun-certificate");
-                      }}
-                    >
-                      {t("View Results")}
-                    </Button>
-                  </Box>
-                </VStack>
+                <Button
+                  colorScheme={"button"}
+                  _text={{ color: colors.white }}
+                  isDisabled={false}
+                  // onPress={()=> {navigate('/school-report')}}
+                  onPress={() => {
+                    navigate("/hpAssessment/school-nipun-certificate");
+                  }}
+                >
+                  {t("View Results")}
+                </Button>
               </Box>
             </VStack>
           </Box>

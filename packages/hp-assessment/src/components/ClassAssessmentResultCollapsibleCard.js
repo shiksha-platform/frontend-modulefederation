@@ -7,47 +7,30 @@ import {
   Collapsible,
   ProgressBar,
   overrideColorTheme,
-  assessmentRegistryService,
+  assessmentRegistryService, BodyMedium
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
-export default function ClassAssessmentResultCollapsibleCard() {
+export default function ClassAssessmentResultCollapsibleCard({assessmentsData, totalStudentCount, presentStudentCount, absentStudentCount}) {
   const { t } = useTranslation();
-  const [assessmentsData, setAssessmentsData] = React.useState([]);
   const [progressAssessment, setProgressAssessment] = React.useState([
     {
       name: "22 Nipun",
-      color: colors.successBarColor,
+      color: "hpAssessment.success",
       value: 22,
     },
     {
       name: "4 Completed",
-      color: "#DF5B5B",
+      color: "hpAssessment.absent",
       value: 4,
     },
     {
       name: "1 pending",
-      color: colors.unmarked,
+      color: "hpAssessment.unmarked",
       value: 1,
     },
   ]);
-
-  const getFilteredAssessments = async () => {
-    const params = {
-      // fromDate: '',
-      // toDate: '',
-      groupId:
-        localStorage.getItem("hp-assessment-groupId") ||
-        "300bd6a6-ee1f-424a-a763-9db8b08a19e9",
-    };
-    const data = await assessmentRegistryService.getFilteredAssessments(params);
-    setAssessmentsData(data);
-  };
-
-  useEffect(() => {
-    getFilteredAssessments();
-  }, []);
 
   return (
     <>
@@ -63,8 +46,8 @@ export default function ClassAssessmentResultCollapsibleCard() {
           <Box>
             <VStack space={4}>
               <HStack alignItems="center">
-                <Box w={"20%"}>Grade I</Box>
-                <Box w={"79%"}>
+                <Box w={"20%"}><BodyMedium>Grade I</BodyMedium></Box>
+                <Box w={"78%"}>
                   <ProgressBar flex="1" data={progressAssessment} />
                 </Box>
               </HStack>
@@ -74,30 +57,30 @@ export default function ClassAssessmentResultCollapsibleCard() {
                     w="15px"
                     h="15px"
                     mr={2}
-                    bg={colors.successBarColor}
+                    bg="hpAssessment.success"
                     rounded={4}
                   ></Box>
-                  <Text>Nipun</Text>
+                  <BodyMedium>Nipun</BodyMedium>
                 </HStack>
                 <HStack alignItems="center">
                   <Box
                     w="15px"
                     h="15px"
                     mr={2}
-                    bg={"#DF5B5B"}
+                    bg="hpAssessment.absent"
                     rounded={4}
                   ></Box>
-                  <Text>Completed</Text>
+                  <BodyMedium>Completed</BodyMedium>
                 </HStack>
                 <HStack alignItems="center">
                   <Box
                     w="15px"
                     h="15px"
                     mr={2}
-                    bg={colors.unmarked}
+                    bg="hpAssessment.unmarked"
                     rounded={4}
                   ></Box>
-                  <Text>Not Assessed</Text>
+                  <BodyMedium>Not Assessed</BodyMedium>
                 </HStack>
               </HStack>
             </VStack>
