@@ -396,7 +396,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools",
+      path: "/schools/:id",
       component: SchoolProfile,
     },
     ,

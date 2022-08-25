@@ -55,6 +55,27 @@ export default function ScheduleNotification({ footerLinks, appName }) {
     }
   };
 
+  const leapYear = (year) => {
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+  };
+
+  //console.log(leapYear(2010));
+
+  const Day31Months = [
+    "01. January",
+    "03. March",
+    "05. May",
+    "07. July",
+    "08. August",
+    "10. October",
+    "12. December",
+  ];
+  const Day30Months = [
+    "04. April",
+    "06. June",
+    "09. September",
+    "11. November",
+  ];
   const to24HrsFormat = (time) => {
     if (time) {
       let hour = time.split(" ")[0].split(":")[0];
@@ -86,16 +107,17 @@ export default function ScheduleNotification({ footerLinks, appName }) {
   const NotificationSendRequest = async () => {
     let ist = new Date(
       new Date().getFullYear(),
-      dateTime.Month.substring(0, 2),
-      dateTime.Date,
+      dateTime?.Month?.substring(0, 2),
+      dateTime?.Date,
       to24HrsFormat(dateTime.Time).substring(0, 2),
-      dateTime.Time.substring(3, 5)
+      dateTime?.Time?.substring(3, 5)
     );
     let utc = moment.utc(ist).format("YYYY-MM-DD HH:mm:ss ");
     let utcMin = utc.slice(14, 16);
     let utcHrs = utc.slice(11, 13);
     let utcDay = utc.slice(8, 10);
     let utcMon = utc.slice(5, 7);
+
     const respp =
       await notificationRegistryService.sendScheduledNotificationPost({
         module: NotificationObject[location.state.Module],
@@ -130,6 +152,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
   //     { name: "REPEAT", data: ["Daily", "Weekly", "Monthly"] },
   //   ]);
   // }, [recurring]);
+  //   function leapYear(year)
+  // {
+  //   return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+  // }
 
   useEffect(() => {
     let data = {};
@@ -165,9 +191,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             <Center mx="5">
               <H1 color="gray.500">{t("NOTIFICATION_SCHEDULED")}</H1>
               <BodyMedium textAlign="center" color="gray.500">
-                {`Attendance Notification has been scheduled for ${new Date().getFullYear()}/${
-                  dateTime.Month ? dateTime?.Month.substring(0, 2) : ""
-                }/${dateTime.Date ? dateTime?.Date : ""} at ${
+                {`Attendance Notification has been scheduled for /${
+                  dateTime?.Date ? dateTime?.Date : ""
+                }/${
+                  dateTime.Month ? dateTime?.Month?.substring(0, 2) : ""
+                }/${new Date().getFullYear()} at ${
                   dateTime.Time ? dateTime?.Time : " "
                 }`}
                 {/* /${dateTime?.Month.substring(0, 2)}/${dateTime?.Date} at ${dateTime?.Time} */}
@@ -214,42 +242,6 @@ export default function ScheduleNotification({ footerLinks, appName }) {
           {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
           data={[
             {
-              name: "Date",
-              data: [
-                "01",
-                "02",
-                "03",
-                "04",
-                "05",
-                "06",
-                "07",
-                "08",
-                "09",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20",
-                "21",
-                "22",
-                "23",
-                "24",
-                "25",
-                "26",
-                "27",
-                "28",
-                "29",
-                "30",
-                "31",
-              ],
-            },
-            {
               name: "Month",
               data: [
                 "01. January",
@@ -265,6 +257,140 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 "11. November",
                 "12. December",
               ],
+            },
+            {
+              name: "Date",
+              data:
+                leapYear(new Date().getFullYear()) &&
+                dateTime.Month === "02. February"
+                  ? [
+                      "01",
+                      "02",
+                      "03",
+                      "04",
+                      "05",
+                      "06",
+                      "07",
+                      "08",
+                      "09",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "16",
+                      "17",
+                      "18",
+                      "19",
+                      "20",
+                      "21",
+                      "22",
+                      "23",
+                      "24",
+                      "25",
+                      "26",
+                      "27",
+                      "28",
+                      "29",
+                    ]
+                  : dateTime.Month === "02. February"
+                  ? [
+                      "01",
+                      "02",
+                      "03",
+                      "04",
+                      "05",
+                      "06",
+                      "07",
+                      "08",
+                      "09",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "16",
+                      "17",
+                      "18",
+                      "19",
+                      "20",
+                      "21",
+                      "22",
+                      "23",
+                      "24",
+                      "25",
+                      "26",
+                      "27",
+                      "28",
+                    ]
+                  : Day31Months.includes(dateTime.Month)
+                  ? [
+                      "01",
+                      "02",
+                      "03",
+                      "04",
+                      "05",
+                      "06",
+                      "07",
+                      "08",
+                      "09",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "16",
+                      "17",
+                      "18",
+                      "19",
+                      "20",
+                      "21",
+                      "22",
+                      "23",
+                      "24",
+                      "25",
+                      "26",
+                      "27",
+                      "28",
+                      "29",
+                      "30",
+                      "31",
+                    ]
+                  : [
+                      "01",
+                      "02",
+                      "03",
+                      "04",
+                      "05",
+                      "06",
+                      "07",
+                      "08",
+                      "09",
+                      "10",
+                      "11",
+                      "12",
+                      "13",
+                      "14",
+                      "15",
+                      "16",
+                      "17",
+                      "18",
+                      "19",
+                      "20",
+                      "21",
+                      "22",
+                      "23",
+                      "24",
+                      "25",
+                      "26",
+                      "27",
+                      "28",
+                      "29",
+                      "30",
+                    ],
             },
             {
               name: "Time",
@@ -329,6 +455,10 @@ export default function ScheduleNotification({ footerLinks, appName }) {
             >
               {t("CANCEL")}
             </Button>
+            {/* <Box>
+              <input
+                type={"date"} onChange={(e) => console.log(e.target.value)}></input>
+            </Box> */}
             <Button
               colorScheme="button"
               _text={{ color: "notification.white" }}
@@ -373,7 +503,11 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                         : ""
                     }
                   >
-                    <Text colorScheme="button">{value}</Text>
+                    <Text colorScheme="button">
+                      {dateTimeData.name === "Month"
+                        ? value.substring(3)
+                        : value}
+                    </Text>
                   </Pressable>
                 );
               })}
@@ -439,24 +573,19 @@ export default function ScheduleNotification({ footerLinks, appName }) {
                 />
                 <BodyLarge>
                   {t(
-                    `Scheduled for ${new Date().getFullYear()}/${
-                      dateTime.Month ? dateTime?.Month.substring(0, 2) : ""
-                    }/${dateTime.Date ? dateTime?.Date : ""} at ${
+                    `Scheduled for ${dateTime?.Date ? dateTime?.Date : ""}/${
+                      dateTime.Month ? dateTime?.Month?.substring(0, 2) : ""
+                    }/${new Date().getFullYear()} at ${
                       dateTime.Time ? dateTime?.Time : " "
                     }`
                   )}
-                  {/* / ${dateTime?.Month.substring(0, 2)}/${dateTime?.Date} at ${dateTime?.Time} */}
                 </BodyLarge>
               </HStack>
             </Box>
             <VStack p="5" space={6}>
               <H3>{t("NOTICE")}</H3>
               <BodyMedium textTransform={"inherit"}>
-                Kindly Note Your OTP @__123__@. Submission Of The OTP Will Be
-                Taken As Authentication That You Have Personally Verified And
-                Overseen The Distribution Of Smartphone To The Mentioned Student
-                ID Of Your School. Thank You! - Samagra Shiksha, Himachal
-                Pradesh View Recipient List
+                {location?.state.Template}
               </BodyMedium>
             </VStack>
             <Box p="5">
@@ -523,7 +652,13 @@ const FormInput = ({
             setDateTimeData(item);
           }}
         >
-          {dateTime[item.name] ? dateTime[item.name] : `Select ${t(item.name)}`}
+          {item.name == "Month"
+            ? dateTime[item.name]
+              ? dateTime[item.name].substring(3)
+              : `Select ${t(item.name)}`
+            : dateTime[item.name]
+            ? dateTime[item.name]
+            : `Select ${t(item.name)}`}
         </Button>
       </HStack>
     ))
