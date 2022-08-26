@@ -44,6 +44,7 @@ function App() {
   const Outbox = React.lazy(() => import("notification/Outbox"));
   const Profile = React.lazy(() => import("profile/Profile"));
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
+  const SeeMore = React.lazy(() => import("profile/SeeMore"));
 
   const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
   const CourseList = React.lazy(() => import("mylearning/CourseList"));
@@ -235,6 +236,11 @@ function App() {
       moduleName: "profile",
       path: "/profile/attendance",
       component: AttendanceReport,
+    },
+    {
+      moduleName: "profile",
+      path: "/profile/seemore",
+      component: SeeMore,
     },
     // mylearning
     {

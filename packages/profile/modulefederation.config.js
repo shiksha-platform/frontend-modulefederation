@@ -7,6 +7,7 @@ module.exports = {
     "./Profile": "./src/pages/Profile.js",
     "./AttendanceReport": "./src/pages/AttendanceReport.js",
     "./SelfAttendanceSheet": "./src/components/SelfAttendanceSheet.js",
+    "./SeeMore": "./src/pages/SeeMore.js",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
