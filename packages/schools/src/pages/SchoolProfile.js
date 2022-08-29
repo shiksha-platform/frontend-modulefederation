@@ -41,7 +41,7 @@ export default function SchoolProfile({ footerLinks }) {
                 keyId: 1,
                 title: "Start a Visit",
                 _text: { minW: "115px" },
-                onPress: (e) => navigate("/schools/new-visit"),
+                onPress: (e) => navigate(`/schools/new-visit/${id}`),
               },
             ]}
             type={"vertical"}

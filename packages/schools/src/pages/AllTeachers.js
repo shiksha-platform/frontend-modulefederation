@@ -53,7 +53,7 @@ export default function AllTeachers({ footerLinks }) {
         <VStack space={6}>
           <VStack space={6}>
             {teacherlist &&
-              teacherlist.length &&
+              teacherlist.length >= 1 ?
               teacherlist.map((teacher, index) => {
                 return (
                   <TeacherTile
@@ -63,7 +63,9 @@ export default function AllTeachers({ footerLinks }) {
                     setTeacherData={setTeacherData}
                   />
                 );
-              })}
+              }) : <Box bg={"schools.warningAlert"} p={"4"} rounded={10}>
+                Loading...
+              </Box>}
           </VStack>
         </VStack>
       </Box>

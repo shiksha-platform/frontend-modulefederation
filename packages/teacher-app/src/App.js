@@ -352,7 +352,7 @@ function App() {
     // Schools Routes
     {
       moduleName: "schools",
-      path: "/schools/new-visit",
+      path: "/schools/new-visit/:schoolId",
       component: NewVisitPage,
     },
     {

@@ -2,7 +2,6 @@ import React from "react";
 import { IconByName, H2, H3 } from "@shiksha/common-lib";
 import { HStack, VStack, Box, Avatar, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 const TeacherTile = ({ index, teacher, setTeacherData }) => {
   const { t } = useTranslation();

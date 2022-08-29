@@ -25,6 +25,17 @@ import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 import { AttributeComponent } from "components/AttributeComponent";
 
+const chunks = (data, chunkCount = 2) => {
+  return data.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / chunkCount);
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+    resultArray[chunkIndex].push(item);
+    return resultArray;
+  }, []);
+};
+
 function SchoolAdminTile({ title, grades }) {
   const { t } = useTranslation();
   const [academicDetailModal, setAcademicDetailModal] = useState(false);
@@ -52,10 +63,14 @@ function SchoolAdminTile({ title, grades }) {
 
               {grades &&
                 grades?.length &&
-                grades?.map((grade) => (
-                  <HStack alignItems="center">
-                    <H4>{grade} : </H4>
-                    <BodyLarge>50</BodyLarge>
+                chunks(grades)?.map((item) => (
+                  <HStack alignItems="center" space={10}>
+                    {item?.map((grade) => (
+                      <HStack alignItems="center">
+                        <H4>{grade} : </H4>
+                        <BodyLarge>50</BodyLarge>
+                      </HStack>
+                    ))}
                   </HStack>
                 ))}
 
@@ -219,4 +234,5 @@ function SchoolAdminTile({ title, grades }) {
     </>
   );
 }
+
 export default SchoolAdminTile;
