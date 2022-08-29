@@ -20,23 +20,21 @@ import {
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 
-const SelfAttedanceSheet = React.lazy(() =>
-  import("profile/SelfAttedanceSheet")
+const SelfAttendanceSheet = React.lazy(() =>
+  import("profile/SelfAttendanceSheet")
 );
 
-function Home({ footerLinks, appName }) {
+function Home({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [showModal, setShowModal] = React.useState(false);
   const [popupModal, setPopupModal] = React.useState(false);
   let newAvatar = localStorage.getItem("firstName");
   const [selfAttendance, setSelfAttendance] = React.useState({});
-  const navigate = useNavigate();
 
   let cameraUrl = "";
   let avatarUrlObject = cameraUrl
@@ -170,8 +168,9 @@ function Home({ footerLinks, appName }) {
   }, []);
 
   return (
-    <SelfAttedanceSheet
+    <SelfAttendanceSheet
       {...{
+        setAlert,
         showModal,
         setShowModal,
         setAttendance: setSelfAttendance,
@@ -211,10 +210,10 @@ function Home({ footerLinks, appName }) {
                   color={
                     selfAttendance.attendance === PRESENT &&
                     selfAttendance?.remark !== ""
-                      ? "special_duty.500"
+                      ? "attendance.special_duty"
                       : selfAttendance.attendance === ABSENT
-                      ? "absent.500"
-                      : "present.500"
+                      ? "attendance.absent"
+                      : "attendance.present"
                   }
                   position="absolute"
                   bottom="-5px"
@@ -293,7 +292,7 @@ function Home({ footerLinks, appName }) {
           </Modal.Content>
         </Modal>
       </Layout>
-    </SelfAttedanceSheet>
+    </SelfAttendanceSheet>
   );
 }
 export default Home;

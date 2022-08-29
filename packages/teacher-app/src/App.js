@@ -44,6 +44,7 @@ function App() {
   const Outbox = React.lazy(() => import("notification/Outbox"));
   const Profile = React.lazy(() => import("profile/Profile"));
   const AttendanceReport = React.lazy(() => import("profile/AttendanceReport"));
+  const SeeMore = React.lazy(() => import("profile/SeeMore"));
 
   const MyLearning = React.lazy(() => import("mylearning/MyLearning"));
   const CourseList = React.lazy(() => import("mylearning/CourseList"));
@@ -74,7 +75,7 @@ function App() {
   const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
   const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
   const SchoolProfile = React.lazy(() => import("schools/SchoolProfile"));
-  const MyVisitsPage = React.lazy(() => import("schools/MyVisitsPage"));
+  const AllTeachers = React.lazy(() => import("schools/AllTeachers"));
   const AttendanceReportDashboard = React.lazy(() =>
     import("schools/AttendanceReportDashboard")
   );
@@ -236,6 +237,11 @@ function App() {
       path: "/profile/attendance",
       component: AttendanceReport,
     },
+    {
+      moduleName: "profile",
+      path: "/profile/seemore",
+      component: SeeMore,
+    },
     // mylearning
     {
       moduleName: "mylearning",
@@ -391,18 +397,18 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/my-visits",
-      component: MyVisitsPage,
+      path: "/schools/teachers/:schoolId",
+      component: AllTeachers,
     },
     {
       moduleName: "schools",
-      path: "/schools",
+      path: "/schools/:id",
       component: SchoolProfile,
     },
     ,
     {
       moduleName: "schools",
-      path: "/schools/teacher-details",
+      path: "/schools/teacher-details/:teacherId",
       component: TeacherDetails,
     },
     {

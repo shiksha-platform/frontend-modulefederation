@@ -11,6 +11,7 @@ const colorTheme = {
   present: '#2BB639',
   absent: '#F57B7B',
   unmarked: '#B5B5C8',
+  special_duty: '#06D6A0',
   holiDay: '#F0F0F4',
   defaultMark: '#d3d3e5',
   lateMark: '#FFEB3B',
@@ -42,7 +43,8 @@ const colorTheme = {
   dangerAlert: '#F9DEDE',
   girls: '#0ea5e9',
   boys: '#a855f7',
-  activeClass: '#10b981'
+  activeClass: '#10b981',
+  black: '#000000'
 }
 
 export default colorTheme

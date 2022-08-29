@@ -3,7 +3,6 @@ import React from "react";
 import "./App.css";
 import { AppShell } from "@shiksha/common-lib";
 import SchoolProfile from "pages/SchoolProfile";
-import Myvisitspage from "pages/MyVisitsPage";
 import AttendanceReportDashboard from "pages/reports/AttendanceReportDashboard";
 import AttendanceSectionWiseReport from "pages/reports/AttendanceSectionWiseReport";
 import AttendanceDetailedReport from "pages/reports/AttendanceDetailedReport";
@@ -16,6 +15,7 @@ import NewVisitPage from "pages/visit/NewVisitPage";
 import VisitSubmit from "pages/visit/VisitSubmit";
 import TeacherVisitReport from "pages/TeacherVisitReport";
 import Question from "pages/Question";
+import AllTeachers from "pages/AllTeachers";
 
 function App() {
   const routes = [
@@ -66,8 +66,8 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "schools/my-visits",
-      component: Myvisitspage,
+      path: "/schools/teachers/:schoolId",
+      component: AllTeachers,
     },
     {
       moduleName: "schools",
@@ -77,7 +77,7 @@ function App() {
     ,
     {
       moduleName: "schools",
-      path: "/schools/teacher-details",
+      path: "/schools/teacher-details/:teacherId",
       component: TeacherDetails,
     },
     {

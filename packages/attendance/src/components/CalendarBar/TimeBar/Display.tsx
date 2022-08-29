@@ -26,7 +26,8 @@ export const Display: React.FC<any> = ({
           {
             // @ts-ignore
             <IconByName
-              size="50"
+              _icon={{ size: "24" }}
+              p="0"
               color={
                 typeof previousDisabled === "undefined" ||
                 previousDisabled === false
@@ -51,15 +52,14 @@ export const Display: React.FC<any> = ({
           }
         </HStack>
         <HStack space="4" alignItems="center">
-          <Text fontSize="md" bold>
-            {children}
-          </Text>
+          {children}
         </HStack>
         <HStack space="2">
           {
             // @ts-ignore
             <IconByName
-              size="50"
+              _icon={{ size: "24" }}
+              p="0"
               color={
                 typeof nextDisabled === "undefined" || nextDisabled === false
                   ? activeColor

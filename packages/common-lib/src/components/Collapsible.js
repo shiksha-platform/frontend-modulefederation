@@ -18,7 +18,8 @@ const Collapsible = ({
   isDisableCollapse,
   collapsButton,
   _icon,
-  _header
+  _header,
+  _box
 }) => {
   const [isOpen, setIsOpen] = useState(defaultCollapse)
   return (

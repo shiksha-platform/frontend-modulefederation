@@ -3,6 +3,7 @@ import "./App.css";
 import { initializeI18n, AppShell } from "@shiksha/common-lib";
 import Profile from "pages/Profile";
 import AttendanceReport from "pages/AttendanceReport";
+import SeeMore from "pages/SeeMore";
 
 function App() {
   initializeI18n(
@@ -14,6 +15,11 @@ function App() {
       moduleName: "profile",
       path: "/profile/attendance",
       component: AttendanceReport,
+    },
+    {
+      moduleName: "profile",
+      path: "/profile/seemore",
+      component: SeeMore,
     },
     {
       moduleName: "profile",
