@@ -75,7 +75,7 @@ function App() {
   const QuestionList6 = React.lazy(() => import("assessment/QuestionLIst6"));
   const QuestionList7 = React.lazy(() => import("assessment/QuestionLIst7"));
   const SchoolProfile = React.lazy(() => import("schools/SchoolProfile"));
-  const MyVisitsPage = React.lazy(() => import("schools/MyVisitsPage"));
+  const AllTeachers = React.lazy(() => import("schools/AllTeachers"));
   const AttendanceReportDashboard = React.lazy(() =>
     import("schools/AttendanceReportDashboard")
   );
@@ -397,8 +397,8 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/my-visits",
-      component: MyVisitsPage,
+      path: "/schools/teachers/:schoolId",
+      component: AllTeachers,
     },
     {
       moduleName: "schools",
@@ -408,7 +408,7 @@ function App() {
     ,
     {
       moduleName: "schools",
-      path: "/schools/teacher-details",
+      path: "/schools/teacher-details/:teacherId",
       component: TeacherDetails,
     },
     {

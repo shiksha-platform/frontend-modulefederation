@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -23,11 +23,14 @@ import {
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+import { AttributeComponent } from "components/AttributeComponent";
 
-function SchoolAdminTile({ title }) {
+function SchoolAdminTile({ title, grades }) {
   const { t } = useTranslation();
   const [academicDetailModal, setAcademicDetailModal] = useState(false);
   const [viewBy, setViewBy] = useState("grade");
+
+  useEffect(() => {}, []);
   return (
     <>
       {viewBy === "grade" && (
@@ -47,6 +50,16 @@ function SchoolAdminTile({ title }) {
                 </Button>
               </HStack>
 
+              {grades &&
+                grades?.length &&
+                grades?.map((grade) => (
+                  <HStack alignItems="center">
+                    <H4>{grade} : </H4>
+                    <BodyLarge>50</BodyLarge>
+                  </HStack>
+                ))}
+
+              {/* <AttributeComponent /> */}
               <Box>
                 <VStack space={4}>
                   <HStack alignItems="center">

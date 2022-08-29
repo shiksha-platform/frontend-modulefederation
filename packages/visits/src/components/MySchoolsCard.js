@@ -39,7 +39,8 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                 <VStack>
                   <H3>{schoolData?.schoolName}</H3>
                   <BodyMedium color={colors.subtitle}>
-                    {schoolData?.district}
+                    {typeof schoolData?.address == "string" &&
+                      schoolData?.address}
                   </BodyMedium>
                 </VStack>
               </HStack>

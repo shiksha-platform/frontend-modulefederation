@@ -10,6 +10,7 @@ const interfaceData = {
   section: 'section',
   status: 'status',
   image: 'image',
+  gradeLevel: 'gradeLevel',
   mergeParameterWithValue: {
     title: 'name'
   },
@@ -88,14 +89,14 @@ export const updateImage = async (data = {}, header = {}) => {
   }
 }
 
-export const getAllData = async (params = {}, header = {}) => {
+export const getAllData = async (filters = {}, header = {}) => {
   let headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
     `${process.env.REACT_APP_API_URL}/group/search`,
-    params,
+    { filters },
     {
       headers
     }

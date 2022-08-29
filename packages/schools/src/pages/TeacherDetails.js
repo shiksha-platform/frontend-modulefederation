@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BodyLarge,
   BodyMedium,
@@ -9,9 +9,11 @@ import {
   H3,
   IconByName,
   Layout,
+  mentorRegisteryService,
+  userRegistryService,
 } from "@shiksha/common-lib";
 import { Box, HStack, VStack, Avatar, Divider, Button } from "native-base";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   buildStyles,
   CircularProgressbarWithChildren,
@@ -19,7 +21,24 @@ import {
 
 const TeacherDetails = ({ footerLinks }) => {
   const navigate = useNavigate();
-  return (
+  const { teacherId } = useParams();
+  const [teacherlist, setTeacherList] = useState();
+  const [pastVisitDetails, setPastVisitDetails] = useState();
+
+  useEffect(async () => {
+    const data = await userRegistryService.getUserById(teacherId);
+    setTeacherList(data);
+
+    console.log(data);
+
+    const pastDetails = await mentorRegisteryService.getAllAllocatedSchools({
+      teacherId: data?.id?.slice(2, data?.id?.length),
+    });
+    console.log("Past Details:", pastDetails);
+    setPastVisitDetails(pastDetails);
+  }, []);
+
+  return teacherlist ? (
     <Layout
       _header={{
         title: "Teacher Details",
@@ -32,11 +51,16 @@ const TeacherDetails = ({ footerLinks }) => {
                 size="48px"
                 borderRadius="md"
                 source={{
-                  uri: "https://via.placeholder.com/50x50.png",
+                  uri: teacherlist.image ? teacherlist.image : "",
                 }}
-              />
+                bg={"schools.primary"}
+              >
+                <H2 color={"schools.white"}>
+                  {teacherlist?.firstName?.slice(0, 2).toUpperCase()}
+                </H2>
+              </Avatar>
               <VStack>
-                <H2>Chandan Pandit</H2>
+                <H2>{`${teacherlist?.firstName} ${teacherlist?.lastName}`}</H2>
               </VStack>
             </HStack>
           </Box>
@@ -57,19 +81,19 @@ const TeacherDetails = ({ footerLinks }) => {
           >
             <Box>
               <H3 color={"schools.gray"}>Designation</H3>
-              <BodyLarge>Assistant Officer</BodyLarge>
+              <BodyLarge>{teacherlist?.designation}</BodyLarge>
             </Box>
             <Box>
               <H3 color={"schools.gray"}>Qualification</H3>
-              <BodyLarge>B.Com. Hons</BodyLarge>
+              <BodyLarge>{teacherlist?.profQualification}</BodyLarge>
             </Box>
             <Box>
               <H3 color={"schools.gray"}>Phone</H3>
-              <BodyLarge>+91 1234 567 890</BodyLarge>
+              <BodyLarge>{teacherlist?.phoneNumber}</BodyLarge>
             </Box>
             <Box>
               <H3 color={"schools.gray"}>Date of Joining</H3>
-              <BodyLarge>10 Aug, 2013</BodyLarge>
+              <BodyLarge>{teacherlist?.joiningDate}</BodyLarge>
             </Box>
           </VStack>
         </Collapsible>
@@ -187,108 +211,75 @@ const TeacherDetails = ({ footerLinks }) => {
         </Collapsible>
       </Box>
       <Box p={5} bg={"schools.white"} mt={4}>
-        <Collapsible header="Mentor Visit Details">
+        <Collapsible header="Past Visit Details">
           <Divider marginY={6} />
-          <HStack
-            mx={2}
-            borderColor="schools.lightGray3"
-            bg={"schools.lightGray5"}
-            borderWidth={1}
-            borderRadius={10}
-            p={4}
-            justifyContent="space-between"
-          >
-            <Box>
-              <HStack alignItems="center" space={3}>
-                <Avatar
-                  size="48px"
-                  borderRadius="md"
-                  source={{
-                    uri: "https://via.placeholder.com/50x50.png",
-                  }}
-                />
-                <VStack>
-                  <H2>Chandan Pandit</H2>
-                  <BodyMedium color={"schools.gray"}>
-                    Class Teacher: VI A
-                  </BodyMedium>
-                </VStack>
+          {pastVisitDetails && pastVisitDetails.length > 0 ? (
+            pastVisitDetails.map((pastDetails) => (
+              <HStack
+                mx={2}
+                marginBottom={5}
+                borderColor="schools.lightGray3"
+                bg={"schools.lightGray5"}
+                borderWidth={1}
+                borderRadius={10}
+                p={4}
+                justifyContent="space-between"
+              >
+                <Box>
+                  <HStack alignItems="center" space={3}>
+                    <Avatar
+                      size="48px"
+                      borderRadius="md"
+                      source={{
+                        uri: teacherlist.image ? teacherlist.image : "",
+                      }}
+                      bg={"schools.primary"}
+                    >
+                      <H2 color={"schools.white"}>
+                        {pastDetails?.teacherData?.firstName
+                          ?.slice(0, 2)
+                          .toUpperCase()}
+                      </H2>
+                    </Avatar>
+                    <VStack>
+                      <H2>{`${pastDetails?.teacherData?.firstName} ${pastDetails?.teacherData?.lastName}`}</H2>
+                    </VStack>
+                  </HStack>
+                  <HStack mt={4}>
+                    <VStack mr={4}>
+                      <BodyMedium color={"schools.gray"}>
+                        <IconByName
+                          name="CalendarEventLineIcon"
+                          color={"schools.gray"}
+                          size={4}
+                          alignItems="center"
+                        />{" "}
+                        Last Visited on:
+                      </BodyMedium>
+                      <BodyMedium>{pastDetails?.lastVisited}</BodyMedium>
+                    </VStack>
+                    <VStack>
+                      <BodyMedium color={"schools.gray"}>
+                        Last Visited by:
+                      </BodyMedium>
+                      <BodyMedium>
+                        {pastDetails?.mentorData?.firstName}
+                      </BodyMedium>
+                    </VStack>
+                  </HStack>
+                </Box>
               </HStack>
-              <HStack mt={4}>
-                <VStack mr={4}>
-                  <BodyMedium color={"schools.gray"}>
-                    <IconByName
-                      name="CalendarEventLineIcon"
-                      color={"schools.gray"}
-                      size={4}
-                      alignItems="center"
-                    />{" "}
-                    Last Visited on:
-                  </BodyMedium>
-                  <BodyMedium>30 May 2022</BodyMedium>
-                </VStack>
-                <VStack>
-                  <BodyMedium color={"schools.gray"}>
-                    Last Visited by:
-                  </BodyMedium>
-                  <BodyMedium>Kritika Kumar Gupta</BodyMedium>
-                </VStack>
-              </HStack>
+            ))
+          ) : (
+            <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+              No past visit details available for this teacher.
             </Box>
-            <IconByName name="ArrowRightSLineIcon" color={"schools.darkGray"} />
-          </HStack>
-          <HStack
-            mx={2}
-            my={4}
-            borderColor="schools.lightGray3"
-            bg={"schools.lightGray5"}
-            borderWidth={1}
-            borderRadius={10}
-            p={4}
-            justifyContent="space-between"
-          >
-            <Box>
-              <HStack alignItems="center" space={3}>
-                <Avatar
-                  size="48px"
-                  borderRadius="md"
-                  source={{
-                    uri: "https://via.placeholder.com/50x50.png",
-                  }}
-                />
-                <VStack>
-                  <H3>Chandan Pandit</H3>
-                  <BodyMedium color={"schools.gray"}>
-                    Class Teacher: VI A
-                  </BodyMedium>
-                </VStack>
-              </HStack>
-              <HStack mt={4}>
-                <VStack mr={4}>
-                  <BodyMedium color={"schools.gray"}>
-                    <IconByName
-                      name="CalendarEventLineIcon"
-                      color={"schools.gray"}
-                      size={4}
-                      alignItems="center"
-                    />{" "}
-                    Last Visited on:
-                  </BodyMedium>
-                  <BodyMedium>30 May 2022</BodyMedium>
-                </VStack>
-                <VStack>
-                  <BodyMedium color={"schools.gray"}>
-                    Last Visited by:
-                  </BodyMedium>
-                  <BodyMedium>Kritika Kumar Gupta</BodyMedium>
-                </VStack>
-              </HStack>
-            </Box>
-            <IconByName name="ArrowRightSLineIcon" color={"schools.darkGray"} />
-          </HStack>
+          )}
         </Collapsible>
       </Box>
     </Layout>
+  ) : (
+    "Loading"
   );
 };
 

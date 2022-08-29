@@ -85,9 +85,14 @@ export default function Home({ footerLinks, appName }) {
                 size="48px"
                 borderRadius="md"
                 source={{
-                  uri: "https://via.placeholder.com/50x50.png",
+                  uri: "",
                 }}
-              />
+                bg={"primary"}
+              >
+                <H2 color="white">
+                  {localStorage.getItem("fullName").slice(0, 2).toUpperCase()}
+                </H2>
+              </Avatar>
               <VStack>
                 <BodyLarge>Welcome</BodyLarge>
                 <H1>{localStorage.getItem("fullName")}</H1>

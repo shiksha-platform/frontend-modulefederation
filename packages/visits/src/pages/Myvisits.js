@@ -5,7 +5,6 @@ import {
   overrideColorTheme,
   SearchLayout,
   mentorRegisteryService,
-  SchoolCard,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -18,7 +17,7 @@ const colors = overrideColorTheme(colorTheme);
 
 export default function Myvisits({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
+  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}]);
   const [allocatedVisits, setAllocatedVisits] = useState([]);
   const [searchState, setSearchState] = React.useState(false);
   const [search, setSearch] = React.useState(true);
@@ -118,57 +117,36 @@ export default function Myvisits({ footerLinks }) {
                 <H2>My Schools</H2>
               </Box>
               {allocatedVisits &&
-                allocatedVisits.length &&
+                allocatedVisits?.length &&
                 allocatedVisits.map((visit, visitIndex) => {
                   return (
-                    <MySchoolsCard
-                      isVisited={visit?.status == "visited" ? true : false}
-                      key={`myvisit${visitIndex}`}
-                      schoolData={visit?.schoolData}
-                      lastVisited={visit?.lastVisited}
-                    />
+                    visitIndex < 3 && (
+                      <Pressable
+                        onPress={() => navigate(`/schools/${visit?.schoolId}`)}
+                      >
+                        <MySchoolsCard
+                          isVisited={visit?.status == "visited" ? true : false}
+                          key={`myvisit${visitIndex}`}
+                          schoolData={visit?.schoolData}
+                          lastVisited={visit?.lastVisited}
+                        />
+                      </Pressable>
+                    )
                   );
                 })}
-
-              {/* {allocatedVisits &&
-                allocatedVisits.length &&
-                allocatedVisits.map((visit, visitIndex) => {
-                  return (
-                    <SchoolCard
-                      key={visitIndex}
-                      _bgColor={"green"}
-                      name={"ABC SCHOOL"}
-                      attributeData={[
-                        {
-                          icon: "MapPinLineIcon",
-                          label: "District",
-                          data: visit?.schoolData?.district,
-                        },
-                        {
-                          icon: "GovernmentLineIcon",
-                          label: "Block",
-                          data: visit?.schoolData?.block,
-                        },
-                        {
-                          icon: "CalendarEventLineIcon",
-                          label: "Last Visited",
-                          data: visit?.lastVisited,
-                        },
-                      ]}
-                    />
-                  );
-                })} */}
-              <Box>
-                <Button
-                  flex="1"
-                  colorScheme="button"
-                  variant="outline"
-                  px="5"
-                  onPress={() => navigate(`/visits/allocated-schools`)}
-                >
-                  Show More
-                </Button>
-              </Box>
+              {allocatedVisits && allocatedVisits?.length >= 3 && (
+                <Box>
+                  <Button
+                    flex="1"
+                    colorScheme="button"
+                    variant="outline"
+                    px="5"
+                    onPress={() => navigate(`/visits/allocated-schools`)}
+                  >
+                    Show More
+                  </Button>
+                </Box>
+              )}
             </VStack>
           </Box>
         </VStack>

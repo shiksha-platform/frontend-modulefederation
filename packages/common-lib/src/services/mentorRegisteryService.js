@@ -1,4 +1,4 @@
-import { schoolRegisteryService } from '..'
+import { schoolRegisteryService, userRegistryService } from '..'
 import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as coreUpdate } from './RestClient'
 
@@ -14,7 +14,8 @@ const interfaceData = {
   scheduleVisitDate: 'scheduleVisitDate',
   visitDate: 'visitDate',
   feedback: 'feedback',
-  status: 'status'
+  status: 'status',
+  lastVisited: 'lastVisited'
 }
 
 let only = Object.keys(interfaceData)
@@ -51,10 +52,14 @@ const getData = async (data) => {
 }
 
 const getDataOne = async (object) => {
-  let data = {}
+  let data = {},
+    teacherData = {},
+    mentorData = {}
   const item = mapInterfaceData(object, interfaceData)
   data = await schoolRegisteryService.getSchoolById({
     id: item.schoolId
   })
-  return { ...item, schoolData: data }
+  teacherData = await userRegistryService.getUserById(item.teacherId)
+  mentorData = await userRegistryService.getUserById(item.mentorId)
+  return { ...item, schoolData: data, teacherData, mentorData }
 }
