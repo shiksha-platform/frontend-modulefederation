@@ -298,7 +298,7 @@ export default function Card({
           <IconByName
             onPress={(e) => handalOpenPoup(item)}
             size="sm"
-            color={"student.darkGary0s"}
+            color={"student.darkGray0s"}
             name="ArrowDownSLineIcon"
             {..._arrow}
           />

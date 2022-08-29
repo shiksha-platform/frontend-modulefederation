@@ -37,7 +37,7 @@ const SubjectRoute = () => {
       <Box
         borderBottomWidth="1"
         _dark={{
-          borderColor: "classes.darkGary3",
+          borderColor: "classes.darkGray3",
         }}
         borderColor={"classes.lightGray4"}
         pr="1"
@@ -68,7 +68,7 @@ const SubjectRoute = () => {
       <Box
         borderBottomWidth="1"
         _dark={{
-          borderColor: "classes.darkGary3",
+          borderColor: "classes.darkGray3",
         }}
         borderColor={"classes.lightGray4"}
         pr="1"

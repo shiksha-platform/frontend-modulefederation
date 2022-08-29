@@ -264,10 +264,10 @@ const Notification = ({ footerLinks, appName }) => {
             </HStack>
           </Actionsheet.Content>
           <Box bg={"notification.white"} width={"100%"} _text={{}}>
-            <BodyLarge p="5" color={"notification.darkGary2"}>
+            <BodyLarge p="5" color={"notification.darkGray2"}>
               {t("MARK_AS_READ")}
             </BodyLarge>
-            <BodyLarge p="5" color={"notification.darkGary2"}>
+            <BodyLarge p="5" color={"notification.darkGray2"}>
               {t("DELETE_MESSAGES")}
             </BodyLarge>
             <Box p="5">

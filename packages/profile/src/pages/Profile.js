@@ -270,7 +270,7 @@ const Collapsible = ({
               color={
                 !collaps || collapsButton
                   ? "profile.lightGray1"
-                  : "profile.darkGary3"
+                  : "profile.darkGray3"
               }
               name={
                 !collaps || collapsButton

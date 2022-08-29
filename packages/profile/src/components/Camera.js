@@ -50,7 +50,7 @@ export default function Camera({
           position="fixed"
           zIndex={100}
           {...{ width, height }}
-          bg="profile.darkGary0"
+          bg="profile.darkGray0"
         >
           <Box p="20px" ref={topElement}>
             <HStack

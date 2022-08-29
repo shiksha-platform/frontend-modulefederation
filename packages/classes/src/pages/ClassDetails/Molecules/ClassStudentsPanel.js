@@ -21,7 +21,7 @@ const ClassStudentsPanel = ({ classObject, students }) => {
               <Box
                 borderBottomWidth="1"
                 _dark={{
-                  borderColor: "classes.darkGary3",
+                  borderColor: "classes.darkGray3",
                 }}
                 borderColor={"classes.lightGray3"}
                 pr="1"

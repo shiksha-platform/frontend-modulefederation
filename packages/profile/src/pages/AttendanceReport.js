@@ -92,7 +92,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
           <Suspense fallback="loading">
             <CalendarBar
               view="monthInDays"
-              activeColor="profile.darkGary0"
+              activeColor="profile.darkGray0"
               setPage={setWeekPage}
               page={weekPage}
               _box={{ p: 2, bg: "transparent" }}

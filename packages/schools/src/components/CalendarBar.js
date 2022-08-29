@@ -234,7 +234,7 @@ const Display = ({
                 ? activeColor
                   ? activeColor
                   : "schools.gray"
-                : "schools.darkGary3"
+                : "schools.darkGray3"
             }
             name="ArrowRightSLineIcon"
             onPress={(e) => {
