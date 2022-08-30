@@ -68,14 +68,14 @@ function SchoolAdminTile({ title, grades }) {
                     {item?.map((grade) => (
                       <HStack alignItems="center">
                         <H4>{grade} : </H4>
-                        <BodyLarge>50</BodyLarge>
+                        <BodyLarge>1</BodyLarge>
                       </HStack>
                     ))}
                   </HStack>
                 ))}
 
               {/* <AttributeComponent /> */}
-              <Box>
+              {/* <Box>
                 <VStack space={4}>
                   <HStack alignItems="center">
                     <HStack alignItems="center">
@@ -99,7 +99,7 @@ function SchoolAdminTile({ title, grades }) {
                     </HStack>
                   </HStack>
                 </VStack>
-              </Box>
+              </Box> */}
             </VStack>
           </Box>
         </Box>

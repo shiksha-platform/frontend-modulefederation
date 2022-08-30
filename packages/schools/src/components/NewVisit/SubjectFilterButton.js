@@ -10,12 +10,18 @@ import {
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { H2, H3, H4, IconByName, userRegistryService } from "@shiksha/common-lib";
+import {
+  H2,
+  H3,
+  H4,
+  IconByName,
+  userRegistryService,
+} from "@shiksha/common-lib";
 
 export default function SubjectFilterButton({
   data,
   selectedSubject,
-  setSelectedSubject
+  setSelectedSubject,
 }) {
   const { t } = useTranslation();
 
@@ -23,8 +29,8 @@ export default function SubjectFilterButton({
 
   let subjectData;
   useEffect(async () => {
-    subjectData = await userRegistryService.getUserById(data)
-  }, [])
+    subjectData = await userRegistryService.getUserById(data);
+  }, []);
 
   return (
     <Box roundedBottom={"xl"}>
@@ -41,9 +47,7 @@ export default function SubjectFilterButton({
             color={"schools.primary"}
           >
             <HStack justifyContent={"space-between"}>
-              {selectedSubject
-                ? selectedSubject
-                : "Select Subject"}
+              {selectedSubject ? selectedSubject : "Select Subject"}
               <IconByName
                 color={"schools.primary"}
                 name="ArrowDownSLineIcon"
@@ -69,36 +73,40 @@ export default function SubjectFilterButton({
             </Actionsheet.Content>
             <Box bg={"schools.white"} width={"100%"} pt={4}>
               <VStack space={4}>
-                {filterData.length >= 1 ? filterData?.map((data, index) => (
-                  <Pressable
-                    px="5"
-                    key={index}
-                    onPress={() => setSelectedSubject(data)}
-                  >
-                    <Box bg={"schools.white"}>
-                      <HStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Box>
-                          <HStack alignItems="center" space={3}>
-                            <VStack>
-                              <H3
-                                color={"schools.bodyText"}
-                                _dark={{
-                                  color: "warmGray.50",
-                                }}
-                              >
-                                {data}
-                              </H3>
-                            </VStack>
-                          </HStack>
-                        </Box>
-                        <IconByName name="ArrowRightSLineIcon" />
-                      </HStack>
-                    </Box>
-                  </Pressable>
-                )) : <Text px={5}>No available Subjects</Text>}
+                {filterData.length >= 1 ? (
+                  filterData?.map((data, index) => (
+                    <Pressable
+                      px="5"
+                      key={index}
+                      onPress={() => setSelectedSubject(data)}
+                    >
+                      <Box bg={"schools.white"}>
+                        <HStack
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Box>
+                            <HStack alignItems="center" space={3}>
+                              <VStack>
+                                <H3
+                                  color={"schools.bodyText"}
+                                  _dark={{
+                                    color: "warmGray.50",
+                                  }}
+                                >
+                                  {data}
+                                </H3>
+                              </VStack>
+                            </HStack>
+                          </Box>
+                          <IconByName name="ArrowRightSLineIcon" />
+                        </HStack>
+                      </Box>
+                    </Pressable>
+                  ))
+                ) : (
+                  <Text px={5}>No available Subjects</Text>
+                )}
               </VStack>
               <Box p="5">
                 <Button

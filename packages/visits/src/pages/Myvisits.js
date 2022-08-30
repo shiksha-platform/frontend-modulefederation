@@ -9,10 +9,10 @@ import {
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Pressable, VStack } from "native-base";
-import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
-import MySchoolsCard from "../components/MySchoolsCard";
+import RecommendedVisitsCard from "components/RecommendedVisitsCard";
+import MySchoolsCard from "components/MySchoolsCard";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
+import colorTheme from "colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Myvisits({ footerLinks }) {

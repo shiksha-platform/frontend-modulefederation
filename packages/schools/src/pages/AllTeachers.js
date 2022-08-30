@@ -1,12 +1,12 @@
 import {
   BodyLarge,
-  BodyMedium,
   H2,
   H3,
   H4,
   IconByName,
   Layout,
   userRegistryService,
+  mentorRegisteryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -29,6 +29,7 @@ export default function AllTeachers({ footerLinks }) {
   const navigate = useNavigate();
   const [teacherlist, setTeacherList] = useState([]);
   const [teacherData, setTeacherData] = useState(null);
+  const [visitedSchoolsData, setVisitedSchoolsData] = useState(null);
   const { schoolId } = useParams();
 
   useEffect(async () => {
@@ -37,6 +38,12 @@ export default function AllTeachers({ footerLinks }) {
       role: { eq: "Teacher" },
     });
     setTeacherList(data);
+
+    const visitedData = await mentorRegisteryService.getAllAllocatedSchools({
+      mentorId: localStorage.getItem("id"),
+      schoolId,
+    });
+    setVisitedSchoolsData(() => visitedData);
   }, []);
 
   return (
@@ -52,8 +59,7 @@ export default function AllTeachers({ footerLinks }) {
       <Box p={6} bg={"schools.white"}>
         <VStack space={6}>
           <VStack space={6}>
-            {teacherlist &&
-              teacherlist.length >= 1 ?
+            {teacherlist && teacherlist.length > 0 ? (
               teacherlist.map((teacher, index) => {
                 return (
                   <TeacherTile
@@ -61,11 +67,15 @@ export default function AllTeachers({ footerLinks }) {
                     teacher={teacher}
                     index={index}
                     setTeacherData={setTeacherData}
+                    visitedData={visitedSchoolsData}
                   />
                 );
-              }) : <Box bg={"schools.warningAlert"} p={"4"} rounded={10}>
+              })
+            ) : (
+              <Box bg={"schools.warningAlert"} p={"4"} rounded={10}>
                 Loading...
-              </Box>}
+              </Box>
+            )}
           </VStack>
         </VStack>
       </Box>

@@ -7,7 +7,7 @@ import {
   Pressable,
   Stack,
   VStack,
-  Text
+  Text,
 } from "native-base";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -65,52 +65,56 @@ export default function TeacherFilterButton({
             </Actionsheet.Content>
             <Box bg={"schools.white"} width={"100%"} pt={4}>
               <VStack space={4}>
-                {filterData.length >= 1 ? filterData?.map((data, index) => (
-                  <Pressable
-                    px="5"
-                    key={index}
-                    onPress={() => setSelectedTeacher(data?.teacherData)}
-                  >
-                    <Box bg={"schools.white"}>
-                      <HStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Box>
-                          <HStack alignItems="center" space={3}>
-                            <Avatar
-                              size="48px"
-                              borderRadius="md"
-                              source={{
-                                uri: data?.teacherData?.image
-                                  ? data?.teacherData?.image
-                                  : "",
-                              }}
-                              bg={"schools.primary"}
-                            >
-                              <H2 color={"schools.white"}>
-                                {data?.teacherData?.firstName
-                                  ?.slice(0, 2)
-                                  .toUpperCase()}
-                              </H2>
-                            </Avatar>
-                            <VStack>
-                              <H3
-                                color={"schools.bodyText"}
-                                _dark={{
-                                  color: "warmGray.50",
+                {filterData.length >= 1 ? (
+                  filterData?.map((data, index) => (
+                    <Pressable
+                      px="5"
+                      key={index}
+                      onPress={() => setSelectedTeacher(data?.teacherData)}
+                    >
+                      <Box bg={"schools.white"}>
+                        <HStack
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Box>
+                            <HStack alignItems="center" space={3}>
+                              <Avatar
+                                size="48px"
+                                borderRadius="md"
+                                source={{
+                                  uri: data?.teacherData?.image
+                                    ? data?.teacherData?.image
+                                    : "",
                                 }}
+                                bg={"schools.primary"}
                               >
-                                {`${data?.teacherData?.firstName} ${data?.teacherData?.lastName}`}
-                              </H3>
-                            </VStack>
-                          </HStack>
-                        </Box>
-                        <IconByName name="ArrowRightSLineIcon" />
-                      </HStack>
-                    </Box>
-                  </Pressable>
-                )) : <Text px={5}>No available Teachers</Text>}
+                                <H2 color={"schools.white"}>
+                                  {data?.teacherData?.firstName
+                                    ?.slice(0, 2)
+                                    .toUpperCase()}
+                                </H2>
+                              </Avatar>
+                              <VStack>
+                                <H3
+                                  color={"schools.bodyText"}
+                                  _dark={{
+                                    color: "warmGray.50",
+                                  }}
+                                >
+                                  {`${data?.teacherData?.firstName} ${data?.teacherData?.lastName}`}
+                                </H3>
+                              </VStack>
+                            </HStack>
+                          </Box>
+                          <IconByName name="ArrowRightSLineIcon" />
+                        </HStack>
+                      </Box>
+                    </Pressable>
+                  ))
+                ) : (
+                  <Text px={5}>No available Teachers</Text>
+                )}
               </VStack>
               <Box p="5">
                 <Button

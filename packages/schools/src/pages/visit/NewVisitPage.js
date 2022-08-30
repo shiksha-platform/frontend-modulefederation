@@ -70,17 +70,18 @@ export default function NewVisitPage({ footerLinks }) {
                 </Box>
               )}
 
-              {selectedTeacher && selectedClass && <Box>
-                <SubjectFilterButton
-                  data={selectedTeacher?.id?.slice(
-                    2,
-                    selectedTeacher?.id?.length
-                  )}
-                  selectedSubject={selectedSubject}
-                  setSelectedSubject={setSelectedSubject}
-                />
-              </Box>}
-
+              {selectedTeacher && selectedClass && (
+                <Box>
+                  <SubjectFilterButton
+                    data={selectedTeacher?.id?.slice(
+                      2,
+                      selectedTeacher?.id?.length
+                    )}
+                    selectedSubject={selectedSubject}
+                    setSelectedSubject={setSelectedSubject}
+                  />
+                </Box>
+              )}
             </VStack>
           </Box>
           <Divider />
@@ -91,7 +92,11 @@ export default function NewVisitPage({ footerLinks }) {
                 navigate("/schools/questionnaire");
               }}
               _text={{ color: "schools.white" }}
-              isDisabled={(selectedTeacher && selectedClass && selectedSubject) === null ? true : false}
+              isDisabled={
+                (selectedTeacher && selectedClass && selectedSubject) === null
+                  ? true
+                  : false
+              }
             >
               {t("Start Visit")}
             </Button>

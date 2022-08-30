@@ -6,11 +6,17 @@ import {
   Stack,
   Pressable,
   VStack,
-  Text
+  Text,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { H2, H3, H4, IconByName, classRegistryService } from "@shiksha/common-lib";
+import {
+  H2,
+  H3,
+  H4,
+  IconByName,
+  classRegistryService,
+} from "@shiksha/common-lib";
 
 export default function ClassFilterButton({
   data,
@@ -24,9 +30,9 @@ export default function ClassFilterButton({
   let classData;
   useEffect(async () => {
     classData = await classRegistryService.getAllData({
-      teacherId: { eq: data }
-    })
-  }, [])
+      teacherId: { eq: data },
+    });
+  }, []);
 
   return (
     <Box roundedBottom={"xl"}>
@@ -69,36 +75,40 @@ export default function ClassFilterButton({
             </Actionsheet.Content>
             <Box bg={"schools.white"} width={"100%"} pt={4}>
               <VStack space={4}>
-                {filterData.length >= 1 ? filterData?.map((data, index) => (
-                  <Pressable
-                    px="5"
-                    key={index}
-                    onPress={() => setSelectedClass(data?.name)}
-                  >
-                    <Box bg={"schools.white"}>
-                      <HStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Box>
-                          <HStack alignItems="center" space={3}>
-                            <VStack>
-                              <H3
-                                color={"schools.bodyText"}
-                                _dark={{
-                                  color: "warmGray.50",
-                                }}
-                              >
-                                {data?.name}
-                              </H3>
-                            </VStack>
-                          </HStack>
-                        </Box>
-                        <IconByName name="ArrowRightSLineIcon" />
-                      </HStack>
-                    </Box>
-                  </Pressable>
-                )) : <Text px={5}>No available Classes</Text>}
+                {filterData.length >= 1 ? (
+                  filterData?.map((data, index) => (
+                    <Pressable
+                      px="5"
+                      key={index}
+                      onPress={() => setSelectedClass(data?.name)}
+                    >
+                      <Box bg={"schools.white"}>
+                        <HStack
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Box>
+                            <HStack alignItems="center" space={3}>
+                              <VStack>
+                                <H3
+                                  color={"schools.bodyText"}
+                                  _dark={{
+                                    color: "warmGray.50",
+                                  }}
+                                >
+                                  {data?.name}
+                                </H3>
+                              </VStack>
+                            </HStack>
+                          </Box>
+                          <IconByName name="ArrowRightSLineIcon" />
+                        </HStack>
+                      </Box>
+                    </Pressable>
+                  ))
+                ) : (
+                  <Text px={5}>No available Classes</Text>
+                )}
               </VStack>
               <Box p="5">
                 <Button

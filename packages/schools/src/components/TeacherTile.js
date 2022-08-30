@@ -3,7 +3,7 @@ import { IconByName, H2, H3 } from "@shiksha/common-lib";
 import { HStack, VStack, Box, Avatar, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
 
-const TeacherTile = ({ index, teacher, setTeacherData }) => {
+const TeacherTile = ({ index, teacher, setTeacherData, visitedData }) => {
   const { t } = useTranslation();
   return (
     <React.Fragment>
@@ -16,12 +16,12 @@ const TeacherTile = ({ index, teacher, setTeacherData }) => {
                   size="48px"
                   borderRadius="md"
                   source={{
-                    uri: teacher.image ? teacher.image : "",
+                    uri: teacher?.image ? teacher?.image : "",
                   }}
                   bg={"schools.primary"}
                 >
                   <H2 color={"schools.white"}>
-                    {teacher?.firstName?.slice(0, 2).toUpperCase()}
+                    {teacher?.firstName?.slice(0, 2)?.toUpperCase()}
                   </H2>
                 </Avatar>
                 <VStack>
@@ -31,20 +31,28 @@ const TeacherTile = ({ index, teacher, setTeacherData }) => {
                       color: "warmGray.50",
                     }}
                   >
-                    {index + 1} . {`${teacher.firstName} ${teacher.lastName}`}
+                    {index + 1} . {`${teacher?.firstName} ${teacher?.lastName}`}
                   </H3>
                 </VStack>
               </HStack>
             </Box>
             <Box>
               <HStack>
-                <IconByName
-                  _icon={{ size: "22" }}
-                  borderRadius="full"
-                  bg={"schools.primary"}
-                  color={"schools.white"}
-                  name="UserLineIcon"
-                />
+                {visitedData &&
+                  visitedData?.find(
+                    (data) => data?.teacherId === teacher?.id
+                  ) && (
+                    <Box>
+                      <IconByName
+                        _icon={{ size: "22" }}
+                        borderRadius="full"
+                        bg={"schools.primary"}
+                        color={"schools.white"}
+                        name="UserLineIcon"
+                      />
+                    </Box>
+                  )}
+
                 <IconByName
                   name="ArrowRightSLineIcon"
                   color={"schools.lightGray"}
