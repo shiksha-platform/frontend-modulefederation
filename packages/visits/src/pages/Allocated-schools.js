@@ -7,6 +7,7 @@ import {
   Layout,
   overrideColorTheme,
   mentorRegisteryService,
+  Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -141,9 +142,7 @@ export default function Allocatedschools({ footerLinks }) {
                   );
                 })
               ) : (
-                <Box bg={"schools.warningAlert"} p={"4"} rounded={10}>
-                  Loading...
-                </Box>
+                <Loading height={"200px"} />
               )}
             </VStack>
           </Box>

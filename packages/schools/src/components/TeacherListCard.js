@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+
+// Imports for navigation
+import { useNavigate } from "react-router-dom";
+
+// Import for translation
+import { useTranslation } from "react-i18next";
+
+// Imports from common library functions and native base components
 import {
   Collapsible,
   H3,
@@ -7,8 +15,6 @@ import {
   H2,
 } from "@shiksha/common-lib";
 import { HStack, VStack, Box, Divider, Avatar, Button } from "native-base";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 const TeacherListCard = ({ schoolId, visitedData }) => {
   const navigate = useNavigate();
@@ -91,7 +97,7 @@ const TeacherListCard = ({ schoolId, visitedData }) => {
           No teachers available in this school
         </Box>
       )}
-      {teacherlist && teacherlist.length >= 1 && (
+      {teacherlist && teacherlist.length > 0 && (
         <Box pt={4} textAlign="center">
           <Button
             variant="outline"

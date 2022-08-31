@@ -75,7 +75,7 @@ export default function ClassFilterButton({
             </Actionsheet.Content>
             <Box bg={"schools.white"} width={"100%"} pt={4}>
               <VStack space={4}>
-                {filterData.length >= 1 ? (
+                {filterData.length > 0 ? (
                   filterData?.map((data, index) => (
                     <Pressable
                       px="5"
@@ -96,7 +96,7 @@ export default function ClassFilterButton({
                                     color: "warmGray.50",
                                   }}
                                 >
-                                  {data?.name}
+                                  {data?.name} ● {data?.section}
                                 </H3>
                               </VStack>
                             </HStack>

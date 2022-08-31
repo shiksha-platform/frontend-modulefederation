@@ -73,7 +73,7 @@ export default function SubjectFilterButton({
             </Actionsheet.Content>
             <Box bg={"schools.white"} width={"100%"} pt={4}>
               <VStack space={4}>
-                {filterData.length >= 1 ? (
+                {filterData.length > 0 ? (
                   filterData?.map((data, index) => (
                     <Pressable
                       px="5"

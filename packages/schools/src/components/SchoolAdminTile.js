@@ -1,29 +1,19 @@
 import React, { useEffect, useState } from "react";
+
+// Import for translation
+import { useTranslation } from "react-i18next";
+
+// Imports from common library functions and native base components
 import {
   Box,
-  Center,
   VStack,
   Text,
   HStack,
-  Avatar,
-  Divider,
   Actionsheet,
   Stack,
   Button,
 } from "native-base";
-import {
-  DEFAULT_THEME,
-  H2,
-  IconByName,
-  Collapsible,
-  overrideColorTheme,
-  H4,
-  BodyLarge,
-} from "@shiksha/common-lib";
-import { useTranslation } from "react-i18next";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
-import { AttributeComponent } from "components/AttributeComponent";
+import { BodyLarge, H2, H4, IconByName } from "@shiksha/common-lib";
 
 const chunks = (data, chunkCount = 2) => {
   return data.reduce((resultArray, item, index) => {
@@ -36,7 +26,7 @@ const chunks = (data, chunkCount = 2) => {
   }, []);
 };
 
-function SchoolAdminTile({ title, grades }) {
+function SchoolAdminTile({ title, grades, genderCount, socialCategoryCount }) {
   const { t } = useTranslation();
   const [academicDetailModal, setAcademicDetailModal] = useState(false);
   const [viewBy, setViewBy] = useState("grade");
@@ -128,16 +118,16 @@ function SchoolAdminTile({ title, grades }) {
                     bg={"schools.girls"}
                     style={{ width: "12px", height: "12px" }}
                   ></Box>
-                  <BodyLarge mx={2}>Boys:</BodyLarge>
-                  <H4>150</H4>
+                  <BodyLarge mx={2}>Male:</BodyLarge>
+                  <H4>{genderCount?.male}</H4>
                 </HStack>
                 <HStack ml={4} alignItems="center">
                   <Box
                     bg={"schools.boys"}
                     style={{ width: "12px", height: "12px" }}
                   ></Box>
-                  <BodyLarge mx={2}>Girls:</BodyLarge>
-                  <H4>125</H4>
+                  <BodyLarge mx={2}>Female:</BodyLarge>
+                  <H4>{genderCount?.female}</H4>
                 </HStack>
               </HStack>
             </VStack>
@@ -163,25 +153,15 @@ function SchoolAdminTile({ title, grades }) {
               </HStack>
 
               <Box>
-                <VStack space={4}>
-                  <HStack alignItems="center">
-                    <H4>Scheduled Caste (SC) : </H4>
-                    <BodyLarge>50</BodyLarge>
-                  </HStack>
-                  <HStack alignItems="center">
-                    <H4>scheduled Tribe (ST) : </H4>
-                    <BodyLarge>125</BodyLarge>
-                  </HStack>
-
-                  <HStack alignItems="center">
-                    <H4>Other Backward Class (OBC) : </H4>
-                    <BodyLarge>90</BodyLarge>
-                  </HStack>
-                  <HStack alignItems="center">
-                    <H4>General Category (GC) : </H4>
-                    <BodyLarge>95</BodyLarge>
-                  </HStack>
-                </VStack>
+                {socialCategoryCount &&
+                  Object.entries(socialCategoryCount).map(([key, value]) => (
+                    <VStack space={4}>
+                      <HStack alignItems="center">
+                        <H4>{key} : </H4>
+                        <BodyLarge>{value?.length}</BodyLarge>
+                      </HStack>
+                    </VStack>
+                  ))}
               </Box>
             </VStack>
           </Box>

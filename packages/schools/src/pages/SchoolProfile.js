@@ -1,15 +1,18 @@
+// Route: {basePath}/schools/{id}
+
 import React, { useEffect, useState } from "react";
 
-// Imports for navigationa and for extraction of params
+// Imports for navigation and for extraction of params
 import { useNavigate, useParams } from "react-router-dom";
 
 // Import for translation
 import { useTranslation } from "react-i18next";
 
-// Imports for common library functions and native base components
+// Imports from common library functions and native base components
 import { Box, VStack } from "native-base";
 import {
   Layout,
+  Loading,
   mentorRegisteryService,
   Menu,
   schoolRegisteryService,
@@ -51,8 +54,7 @@ export default function SchoolProfile({ footerLinks }) {
   }, []);
   return (
     // Check if the visit details and school data is present or not
-    visitedSchoolsData &&
-    schoolData && (
+    visitedSchoolsData && schoolData ? (
       <Layout
         imageUrl={`${window.location.origin}/school.png`}
         _header={{
@@ -89,13 +91,20 @@ export default function SchoolProfile({ footerLinks }) {
             {visitedSchoolsData && visitedSchoolsData.length > 0 ? (
               <Box>
                 <VStack space={6}>
+                  {/* General School details */}
                   <SchoolAddressCard schoolData={schoolData} />
+
+                  {/* Administrative School details */}
                   <SchoolAdminDetailCard schoolId={id} />
                   <SchoolAcademicDetailCard />
+
+                  {/* List of all teachers with symbols those who are allocated */}
                   <TeacherListCard
                     schoolId={id}
                     visitedData={visitedSchoolsData}
                   />
+
+                  {/* Past Visit Details specific to that mentor */}
                   <PastVisitCard schoolId={id} />
                 </VStack>
               </Box>
@@ -107,6 +116,8 @@ export default function SchoolProfile({ footerLinks }) {
           </VStack>
         </Box>
       </Layout>
+    ) : (
+      <Loading />
     )
   );
 }

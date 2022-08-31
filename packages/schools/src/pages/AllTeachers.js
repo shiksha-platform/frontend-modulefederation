@@ -5,6 +5,7 @@ import {
   H4,
   IconByName,
   Layout,
+  Loading,
   userRegistryService,
   mentorRegisteryService,
 } from "@shiksha/common-lib";
@@ -72,9 +73,7 @@ export default function AllTeachers({ footerLinks }) {
                 );
               })
             ) : (
-              <Box bg={"schools.warningAlert"} p={"4"} rounded={10}>
-                Loading...
-              </Box>
+              <Loading height={"200px"} />
             )}
           </VStack>
         </VStack>

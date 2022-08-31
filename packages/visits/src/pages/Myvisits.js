@@ -111,13 +111,13 @@ export default function Myvisits({ footerLinks }) {
             </VStack>
           </Box>
 
+          {/* List of Allocated Schools */}
           <Box>
             <VStack space={6}>
               <Box>
-                <H2>My Schools</H2>
+                <H2>Allocated Schools</H2>
               </Box>
-              {allocatedVisits &&
-                allocatedVisits?.length &&
+              {allocatedVisits && allocatedVisits?.length > 0 ? (
                 allocatedVisits.map((visit, visitIndex) => {
                   return (
                     visitIndex < 3 && (
@@ -133,20 +133,25 @@ export default function Myvisits({ footerLinks }) {
                       </Pressable>
                     )
                   );
-                })}
-              {allocatedVisits && allocatedVisits?.length >= 3 && (
-                <Box>
-                  <Button
-                    flex="1"
-                    colorScheme="button"
-                    variant="outline"
-                    px="5"
-                    onPress={() => navigate(`/visits/allocated-schools`)}
-                  >
-                    Show More
-                  </Button>
+                })
+              ) : (
+                <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                  No allocated school is available.
                 </Box>
               )}
+
+              {/* Show more allocated schools button  */}
+              <Box>
+                <Button
+                  flex="1"
+                  colorScheme="button"
+                  variant="outline"
+                  px="5"
+                  onPress={() => navigate(`/visits/allocated-schools`)}
+                >
+                  Show More
+                </Button>
+              </Box>
             </VStack>
           </Box>
         </VStack>

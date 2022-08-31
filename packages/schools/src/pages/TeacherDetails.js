@@ -1,4 +1,11 @@
+// Route: {basePath}/schools/teacher-details/{id}
+
 import React, { useEffect, useState } from "react";
+
+// Imports for navigation and for extraction of params
+import { useNavigate, useParams } from "react-router-dom";
+
+// Imports from common library functions and native base components
 import {
   BodyLarge,
   BodyMedium,
@@ -9,11 +16,13 @@ import {
   H3,
   IconByName,
   Layout,
+  Loading,
   mentorRegisteryService,
   userRegistryService,
 } from "@shiksha/common-lib";
 import { Box, HStack, VStack, Avatar, Divider, Button } from "native-base";
-import { useNavigate, useParams } from "react-router-dom";
+
+// Imports for Circular Progressbar
 import {
   buildStyles,
   CircularProgressbarWithChildren,
@@ -26,17 +35,16 @@ const TeacherDetails = ({ footerLinks }) => {
   const [pastVisitDetails, setPastVisitDetails] = useState();
 
   useEffect(async () => {
+    // Getting teacher list by teacher id
     const data = await userRegistryService.getUserById(teacherId);
     setTeacherList(data);
 
-    console.log(data);
-
+    // All the past visit details for the teacher
     const pastDetails = await mentorRegisteryService.getAllAllocatedSchools({
       teacherId: data?.id?.slice(2, data?.id?.length),
     });
-    console.log("Past Details:", pastDetails);
     setPastVisitDetails(pastDetails);
-  }, []);
+  }, [teacherId]);
 
   return teacherlist ? (
     <Layout
@@ -131,7 +139,7 @@ const TeacherDetails = ({ footerLinks }) => {
                     styles={buildStyles({
                       pathColor: "schools.absent",
                       textColor: "schools.absent",
-                      trailColor: "schools.dangerAlert",
+                      trailColor: "schools.absent",
                     })}
                   >
                     <Box textAlign="center">
@@ -279,7 +287,7 @@ const TeacherDetails = ({ footerLinks }) => {
       </Box>
     </Layout>
   ) : (
-    "Loading"
+    <Loading />
   );
 };
 

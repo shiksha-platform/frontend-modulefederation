@@ -1,4 +1,9 @@
-import { H2, Layout, mentorRegisteryService } from "@shiksha/common-lib";
+import {
+  H2,
+  Layout,
+  Loading,
+  mentorRegisteryService,
+} from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Box, VStack, Button, Divider } from "native-base";
@@ -29,7 +34,6 @@ export default function NewVisitPage({ footerLinks }) {
       mentorId: localStorage.getItem("id"),
       schoolId,
     });
-    console.log(data);
     setVisitData(data);
   }, []);
 
@@ -46,63 +50,67 @@ export default function NewVisitPage({ footerLinks }) {
       }}
       _footer={footerLinks}
     >
-      <Box rounded={10} bg={"schools.white"} shadow="md">
-        <VStack>
-          <Box p={6}>
-            <VStack space={6}>
-              <Box>
-                <TeacherFilterButton
-                  data={visitData}
-                  selectedTeacher={selectedTeacher}
-                  setSelectedTeacher={setSelectedTeacher}
-                />
-              </Box>
-              {selectedTeacher && (
+      {visitData ? (
+        <Box rounded={10} bg={"schools.white"} shadow="md">
+          <VStack>
+            <Box p={6}>
+              <VStack space={6}>
                 <Box>
-                  <ClassFilterButton
-                    data={selectedTeacher?.id?.slice(
-                      2,
-                      selectedTeacher?.id?.length
-                    )}
-                    selectedClass={selectedClass}
-                    setSelectedClass={setSelectedClass}
+                  <TeacherFilterButton
+                    data={visitData}
+                    selectedTeacher={selectedTeacher}
+                    setSelectedTeacher={setSelectedTeacher}
                   />
                 </Box>
-              )}
+                {selectedTeacher && (
+                  <Box>
+                    <ClassFilterButton
+                      data={selectedTeacher?.id?.slice(
+                        2,
+                        selectedTeacher?.id?.length
+                      )}
+                      selectedClass={selectedClass}
+                      setSelectedClass={setSelectedClass}
+                    />
+                  </Box>
+                )}
 
-              {selectedTeacher && selectedClass && (
-                <Box>
-                  <SubjectFilterButton
-                    data={selectedTeacher?.id?.slice(
-                      2,
-                      selectedTeacher?.id?.length
-                    )}
-                    selectedSubject={selectedSubject}
-                    setSelectedSubject={setSelectedSubject}
-                  />
-                </Box>
-              )}
-            </VStack>
-          </Box>
-          <Divider />
-          <Box p={4}>
-            <Button
-              py={3}
-              onPress={() => {
-                navigate("/schools/questionnaire");
-              }}
-              _text={{ color: "schools.white" }}
-              isDisabled={
-                (selectedTeacher && selectedClass && selectedSubject) === null
-                  ? true
-                  : false
-              }
-            >
-              {t("Start Visit")}
-            </Button>
-          </Box>
-        </VStack>
-      </Box>
+                {selectedTeacher && selectedClass && (
+                  <Box>
+                    <SubjectFilterButton
+                      data={selectedTeacher?.id?.slice(
+                        2,
+                        selectedTeacher?.id?.length
+                      )}
+                      selectedSubject={selectedSubject}
+                      setSelectedSubject={setSelectedSubject}
+                    />
+                  </Box>
+                )}
+              </VStack>
+            </Box>
+            <Divider />
+            <Box p={4}>
+              <Button
+                py={3}
+                onPress={() => {
+                  navigate("/schools/questionnaire");
+                }}
+                _text={{ color: "schools.white" }}
+                isDisabled={
+                  (selectedTeacher && selectedClass && selectedSubject) === null
+                    ? true
+                    : false
+                }
+              >
+                {t("Start Visit")}
+              </Button>
+            </Box>
+          </VStack>
+        </Box>
+      ) : (
+        <Loading />
+      )}
     </Layout>
   );
 }
