@@ -1,16 +1,15 @@
 import {
   BodyLarge,
   BodyMedium,
-  DEFAULT_THEME,
   FilterButton,
   H2,
   IconByName,
   Layout,
   overrideColorTheme,
+  mentorRegisteryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   HStack,
@@ -20,8 +19,9 @@ import {
   Button,
   Stack,
   Divider,
+  Pressable,
 } from "native-base";
-import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
+import { useNavigate } from "react-router-dom";
 import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -51,13 +51,27 @@ const defaultInputs = [
 ];
 export default function Allocatedschools({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
+  const [allocatedVisits, setAllocatedVisits] = useState([]);
+  const [totalSchools, setTotalSchools] = useState();
+  const [totalPendingSchools, setTotalPendingSchools] = useState();
   const [sortModal, setSortModal] = useState(false);
 
   const [filterObject, setFilterObject] = React.useState({});
-
+  const navigate = useNavigate();
   const callBackFilterObject = React.useCallback((e) => {
     setFilterObject();
+  }, []);
+
+  useEffect(async () => {
+    const data = await mentorRegisteryService.getAllAllocatedSchools({
+      mentorId: localStorage.getItem("id"),
+    });
+    setAllocatedVisits(data);
+    setTotalSchools(data.length);
+
+    let count = 0;
+    data.forEach((school) => school?.status == "pending" && count++);
+    setTotalPendingSchools(count);
   }, []);
 
   return (
@@ -82,9 +96,9 @@ export default function Allocatedschools({ footerLinks }) {
               <Box>
                 <HStack alignItems="center" justifyContent="space-between">
                   <Box>
-                    <H2>13 Schools</H2>
+                    <H2>Schools</H2>
                     <BodyMedium>
-                      Schools not visited in last 2 months
+                      Total {totalSchools} ● Not visited {totalPendingSchools}
                     </BodyMedium>
                   </Box>
                   <Button
@@ -111,11 +125,26 @@ export default function Allocatedschools({ footerLinks }) {
                   filters={defaultInputs}
                 />
               </Box>
-              {recommendedVisits &&
-                recommendedVisits.length &&
-                recommendedVisits.map(() => {
-                  return <RecommendedVisitsCard isVisited={false} />;
-                })}
+              {allocatedVisits && allocatedVisits.length > 0 ? (
+                allocatedVisits.map((visit, visitIndex) => {
+                  return (
+                    <Pressable
+                      onPress={() => navigate(`/schools/${visit?.schoolId}`)}
+                    >
+                      <MySchoolsCard
+                        isVisited={visit?.status == "visited" ? true : false}
+                        key={`myvisit${visitIndex}`}
+                        schoolData={visit?.schoolData}
+                        lastVisited={visit?.lastVisited}
+                      />
+                    </Pressable>
+                  );
+                })
+              ) : (
+                <Box bg={"schools.warningAlert"} p={"4"} rounded={10}>
+                  Loading...
+                </Box>
+              )}
             </VStack>
           </Box>
         </VStack>

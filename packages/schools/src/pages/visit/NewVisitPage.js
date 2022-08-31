@@ -1,52 +1,36 @@
-import {
-  DEFAULT_THEME,
-  H2,
-  Layout,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
+import { H2, Layout, mentorRegisteryService } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, VStack, Button, Divider } from "native-base";
-import TeacherFilterButton from "../../components/NewVisit/TeacherFilterButton";
-import ClassFilterButton from "../../components/NewVisit/ClassFilterButton";
-import SubjectFilterButton from "../../components/NewVisit/SubjectFilterButton";
-import { useNavigate } from "react-router-dom";
-import colorTheme from "../../colorTheme";
-const colors0 = overrideColorTheme(colorTheme);
-let colors = DEFAULT_THEME;
+import TeacherFilterButton from "components/NewVisit/TeacherFilterButton";
+import ClassFilterButton from "components/NewVisit/ClassFilterButton";
+import SubjectFilterButton from "components/NewVisit/SubjectFilterButton";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function NewVisitPage({ footerLinks }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
-  const [teacherDetailModal, setTeacherDetailModal] = useState(false);
+  const [visitData, setVisitData] = useState();
 
-  const [teacherlist, setTeacherList] = useState([]);
-
-  const [filterObject, setFilterObject] = React.useState({});
+  const [filterObject, setFilterObject] = useState({});
 
   const callBackFilterObject = React.useCallback((e) => {
     setFilterObject();
   }, []);
 
-  React.useEffect(() => {
-    setTeacherList([
-      {
-        id: 1,
-        name: "Rahul",
-        class: "VI A",
-      },
-      {
-        id: 2,
-        name: "Rahul",
-        class: "VI A",
-      },
-      {
-        id: 3,
-        name: "Rahul",
-        class: "VI A",
-      },
-    ]);
+  const { schoolId } = useParams();
+
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+
+  useEffect(async () => {
+    const data = await mentorRegisteryService.getAllAllocatedSchools({
+      mentorId: localStorage.getItem("id"),
+      schoolId,
+    });
+    console.log(data);
+    setVisitData(data);
   }, []);
 
   return (
@@ -68,54 +52,51 @@ export default function NewVisitPage({ footerLinks }) {
             <VStack space={6}>
               <Box>
                 <TeacherFilterButton
-                  getObject={callBackFilterObject}
-                  object={filterObject}
-                  _actionSheet={{ bg: "schools.cardBg" }}
-                  _box={{ pt: 5 }}
-                  _button={{ px: "15px", py: "2" }}
-                  _filterButton={{
-                    rightIcon: "",
-                    bg: "schools.white",
-                  }}
-                  resetButtonText={t("COLLAPSE")}
+                  data={visitData}
+                  selectedTeacher={selectedTeacher}
+                  setSelectedTeacher={setSelectedTeacher}
                 />
               </Box>
-              <Box>
-                <ClassFilterButton
-                  getObject={callBackFilterObject}
-                  object={filterObject}
-                  _actionSheet={{ bg: "schools.cardBg" }}
-                  _button={{ px: "15px", py: "2" }}
-                  _filterButton={{
-                    rightIcon: "",
-                    bg: "schools.white",
-                  }}
-                  resetButtonText={t("COLLAPSE")}
-                />
-              </Box>
-              <Box>
-                <SubjectFilterButton
-                  getObject={callBackFilterObject}
-                  object={filterObject}
-                  _actionSheet={{ bg: "schools.cardBg" }}
-                  _button={{ px: "15px", py: "2" }}
-                  _filterButton={{
-                    rightIcon: "",
-                    bg: "schools.white",
-                  }}
-                  resetButtonText={t("COLLAPSE")}
-                />
-              </Box>
+              {selectedTeacher && (
+                <Box>
+                  <ClassFilterButton
+                    data={selectedTeacher?.id?.slice(
+                      2,
+                      selectedTeacher?.id?.length
+                    )}
+                    selectedClass={selectedClass}
+                    setSelectedClass={setSelectedClass}
+                  />
+                </Box>
+              )}
+
+              {selectedTeacher && selectedClass && (
+                <Box>
+                  <SubjectFilterButton
+                    data={selectedTeacher?.id?.slice(
+                      2,
+                      selectedTeacher?.id?.length
+                    )}
+                    selectedSubject={selectedSubject}
+                    setSelectedSubject={setSelectedSubject}
+                  />
+                </Box>
+              )}
             </VStack>
           </Box>
           <Divider />
           <Box p={4}>
             <Button
-              variant={"outline"}
               py={3}
               onPress={() => {
                 navigate("/schools/questionnaire");
               }}
+              _text={{ color: "schools.white" }}
+              isDisabled={
+                (selectedTeacher && selectedClass && selectedSubject) === null
+                  ? true
+                  : false
+              }
             >
               {t("Start Visit")}
             </Button>

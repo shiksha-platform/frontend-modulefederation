@@ -5,150 +5,129 @@ import {
   Button,
   HStack,
   Pressable,
-  ScrollView,
   Stack,
-  Text,
-  Tooltip,
   VStack,
+  Text,
 } from "native-base";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BodyMedium,
-  H2,
-  H3,
-  H4,
-  IconByName,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import { H2, H3, H4, IconByName } from "@shiksha/common-lib";
 
 export default function TeacherFilterButton({
-  getObject,
-  _box,
-  _button,
-  _actionSheet,
+  data,
+  selectedTeacher,
+  setSelectedTeacher,
 }) {
   const { t } = useTranslation();
 
-  const value = {
-    name: "Teacher",
-    attributeName: "teacher",
-    data: ["Teacher1", "Teacher2", "Teacher3", "Teacher4", "Teacher5"],
-  };
-
-  const [filterData, setFilterData] = React.useState(false);
-  const [selectData, setSelectData] = React.useState([]);
+  const [filterData, setFilterData] = useState();
 
   return (
-    <Box roundedBottom={"xl"} {..._box}>
+    <Box roundedBottom={"xl"}>
       <VStack space={2}>
         <H4>Teacher Name</H4>
-        <Button
-          rounded="10"
-          colorScheme="button"
-          variant="outline"
-          px="5"
-          rightIcon={
-            <IconByName
-              color={"schools.primary"}
-              name="ArrowDownSLineIcon"
-              isDisabled
-            />
-          }
-          onPress={(e) => {
-            if (value?.data && value?.data.length > 0) {
-              setFilterData(value);
-            }
-          }}
-          {..._button}
-        >
-          <Text color={"schools.primary"}>
-            {selectData && selectData.length ? selectData[0] : "Teacher"}
-          </Text>
-        </Button>
-        <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-          <Actionsheet.Content
-            alignItems={"left"}
-            bg={"schools.lightGray"}
-            {..._actionSheet}
+        <Pressable onPress={() => setFilterData(data)}>
+          <Box
+            rounded={10}
+            borderWidth={1}
+            px={4}
+            pt={3}
+            pb={2}
+            borderColor={"schools.primary"}
+            color={"schools.primary"}
           >
             <HStack justifyContent={"space-between"}>
-              <Stack p={5} pt={2} pb="15px">
-                <H2>{t("Choose Teacher")}</H2>
-              </Stack>
+              {selectedTeacher
+                ? `${selectedTeacher?.firstName} ${selectedTeacher?.lastName}`
+                : "Select Teacher"}
               <IconByName
-                name="CloseCircleLineIcon"
-                onPress={(e) => setFilterData()}
                 color={"schools.primary"}
+                name="ArrowDownSLineIcon"
+                isDisabled
               />
             </HStack>
-          </Actionsheet.Content>
-          <Box bg={"schools.white"} width={"100%"} pt={4}>
-            <VStack space={4}>
-              {filterData?.data &&
-                filterData?.data.map((value, index) => (
-                  <Pressable
-                    px="5"
-                    key={value}
-                    onPress={(e) => {
-                      setSelectData([value]);
-                    }}
-                  >
-                    <Box bg={"schools.white"}>
-                      <HStack
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Box>
-                          <HStack alignItems="center" space={3}>
-                            <Avatar
-                              size="48px"
-                              borderRadius="md"
-                              source={{
-                                uri: "https://via.placeholder.com/50x50.png",
-                              }}
-                            />
-                            <VStack>
-                              <H3
-                                color={"schools.bodyText"}
-                                _dark={{
-                                  color: "warmGray.50",
-                                }}
-                              >
-                                {value}
-                              </H3>
-                              <BodyMedium color={"schools.gray"}>
-                                Class Teacher: Vi A
-                              </BodyMedium>
-                            </VStack>
-                          </HStack>
-                        </Box>
-
-                        <IconByName
-                          name="ArrowRightSLineIcon"
-                          // onPress={() => setSortModal(false)}
-                        />
-                      </HStack>
-                    </Box>
-                  </Pressable>
-                ))}
-            </VStack>
-            <Box p="5">
-              <Button
-                colorScheme="button"
-                _text={{ color: "schools.white" }}
-                onPress={() => {
-                  setFilterData({});
-                  if (getObject) getObject(selectData);
-                }}
-              >
-                {t("Done")}
-              </Button>
-            </Box>
           </Box>
-        </Actionsheet>
+        </Pressable>
+
+        {filterData && (
+          <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
+            <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
+              <HStack justifyContent={"space-between"}>
+                <Stack p={5} pt={2} pb="15px">
+                  <H2>{t("Choose Teacher")}</H2>
+                </Stack>
+                <IconByName
+                  name="CloseCircleLineIcon"
+                  onPress={() => setFilterData()}
+                  color={"schools.primary"}
+                />
+              </HStack>
+            </Actionsheet.Content>
+            <Box bg={"schools.white"} width={"100%"} pt={4}>
+              <VStack space={4}>
+                {filterData.length >= 1 ? (
+                  filterData?.map((data, index) => (
+                    <Pressable
+                      px="5"
+                      key={index}
+                      onPress={() => setSelectedTeacher(data?.teacherData)}
+                    >
+                      <Box bg={"schools.white"}>
+                        <HStack
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Box>
+                            <HStack alignItems="center" space={3}>
+                              <Avatar
+                                size="48px"
+                                borderRadius="md"
+                                source={{
+                                  uri: data?.teacherData?.image
+                                    ? data?.teacherData?.image
+                                    : "",
+                                }}
+                                bg={"schools.primary"}
+                              >
+                                <H2 color={"schools.white"}>
+                                  {data?.teacherData?.firstName
+                                    ?.slice(0, 2)
+                                    .toUpperCase()}
+                                </H2>
+                              </Avatar>
+                              <VStack>
+                                <H3
+                                  color={"schools.bodyText"}
+                                  _dark={{
+                                    color: "warmGray.50",
+                                  }}
+                                >
+                                  {`${data?.teacherData?.firstName} ${data?.teacherData?.lastName}`}
+                                </H3>
+                              </VStack>
+                            </HStack>
+                          </Box>
+                          <IconByName name="ArrowRightSLineIcon" />
+                        </HStack>
+                      </Box>
+                    </Pressable>
+                  ))
+                ) : (
+                  <Text px={5}>No available Teachers</Text>
+                )}
+              </VStack>
+              <Box p="5">
+                <Button
+                  colorScheme="button"
+                  _text={{ color: "schools.white" }}
+                  onPress={() => setFilterData()}
+                >
+                  {t("Done")}
+                </Button>
+              </Box>
+            </Box>
+          </Actionsheet>
+        )}
       </VStack>
     </Box>
   );

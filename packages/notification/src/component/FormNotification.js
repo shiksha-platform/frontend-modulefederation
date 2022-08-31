@@ -1,6 +1,9 @@
 import {
   capture,
   IconByName,
+  Layout,
+  Loading,
+  H1,
   H2,
   classRegistryService,
   getApiConfig,
@@ -9,6 +12,7 @@ import {
   overrideColorTheme,
   BodyLarge,
   BodySmall,
+  templateRegistryService,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import {
@@ -17,10 +21,14 @@ import {
   Button,
   Text,
   Actionsheet,
+  FormControl,
+  Input,
+  Divider,
   Box,
   Pressable,
   Checkbox,
   VStack,
+  Center,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -36,6 +44,8 @@ export default function FormNotification({
   dateTime,
   setDateTime,
   students,
+  template,
+  setTemplate,
 }) {
   const { t } = useTranslation();
   const [dateTimeData, setDateTimeData] = useState({});
@@ -43,19 +53,27 @@ export default function FormNotification({
   const [showModalTemplate, setShowModalTemplate] = useState(false);
   const [classData, setClassData] = useState([]);
   const [eTriggers, setETriggers] = useState([]);
+  const [templates, setTemplates] = useState([]);
+  //const [template, setTemplate] = useState("")
+  const [channels, setChannels] = useState([]);
   const navigate = useNavigate();
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
-    //setConfigData(Response);
-    const triggers = Array.isArray(
-      Response["attendance.event_triggers_to_send_attendance_notification"]
+    setConfigData(Response);
+    const communicationChannels = Array.isArray(
+      Response["attendance.channels_of_communication"]
     )
-      ? Response["attendance.event_triggers_to_send_attendance_notification"]
-      : JSON.parse(
-          Response["attendance.event_triggers_to_send_attendance_notification"]
-        );
-    setETriggers([...triggers, "Absent_Today"]);
+      ? Response["attendance.channels_of_communication"]
+      : JSON.parse(Response["attendance.channels_of_communication"]);
+
+    // setETriggers([...triggers, "Absent_Today"]);
+    setChannels(communicationChannels);
+  };
+
+  const getTemplates = async () => {
+    const resp = await templateRegistryService.getAll({ tag: dateTime.Event });
+    setTemplates(resp);
   };
 
   const getClassData = async () => {
@@ -96,6 +114,11 @@ export default function FormNotification({
     }
   };
 
+  const checkJSON = (value) => {
+    const result = Array.isArray(value) ? value : JSON.parse(value);
+    return result;
+  };
+
   const handleTelemetry = (fieldName, value) => {
     const telemetryData = telemetryFactory.interact({
       appName,
@@ -105,10 +128,44 @@ export default function FormNotification({
     capture("INTERACT", telemetryData);
   };
 
+  const getTriggerEvents = (moduleName) => {
+    console.log(moduleName, "ModuleName");
+    const moduleSmall = moduleName.toLowerCase();
+    const eventConfig =
+      configData[
+        `${moduleSmall}.event_triggers_to_send_attendance_notification`
+      ];
+    const triggers = eventConfig !== undefined ? checkJSON(eventConfig) : [];
+    setETriggers(triggers);
+  };
+
+  console.log(eTriggers, "ETriggers");
+
   useEffect(() => {
     getConfigData();
     getClassData();
   }, []);
+
+  useEffect(() => {
+    getTemplates();
+  }, [dateTime.Event]);
+
+  useEffect(() => {
+    if (templates.length > 0) {
+      console.log("in template");
+      setDateTime({
+        ...dateTime,
+        Template: templates[0].body,
+        TemplateId: templates[0].id,
+      });
+    }
+  }, [templates]);
+
+  useEffect(() => {
+    if (dateTime.Module) {
+      getTriggerEvents(dateTime.Module);
+    }
+  }, [dateTime.Module]);
 
   return (
     <Stack space={1} mb="2">
@@ -116,31 +173,24 @@ export default function FormNotification({
         {...{ dateTime, setDateTime, dateTimeData, setDateTimeData }}
         data={[
           { name: "Group", data: classData },
-          { name: "Channel", data: ["SMS", "WhatsApp"] },
+          { name: "Channel", data: channels },
           { name: "Module", data: ["Attendance", "Lessonplans", "Worksheet"] },
-          //{ name: "Channel", data: channels },
-          //Channels are coming as string from backend instead of an array, hence using hardcode instead of 100
           { name: "Event", data: eTriggers },
         ]}
       />
-      <Box bg="notification.white" p="5">
+      <Box bg="white" p="5">
         <VStack space="2">
           <HStack justifyContent="space-between">
             <Text fontSize="16" fontWeight="600">
               {t("MESSAGE")}
             </Text>
-            <Button variant="ghost" onPress={(e) => console.log(e)}>
+            <Button variant="ghost" onPress={(e) => setShowModalTemplate(true)}>
               <BodyLarge fontSize="14" fontWeight="500" color="button.500">
                 {t("USE_ANOTHER_TEMPLATE")}
               </BodyLarge>
             </Button>
           </HStack>
-          <BodySmall>
-            Kindly note your OTP @__123__@. Submission of the OTP will be taken
-            as authentication that you have personally verified and overseen the
-            distribution of smartphone to the mentioned student ID of your
-            school. Thank you! - Samagra Shiksha, Himachal Pradesh
-          </BodySmall>
+          <BodySmall>{dateTime?.Template}</BodySmall>
         </VStack>
       </Box>
       <Box bg={"notification.white"} p="5">
@@ -187,41 +237,44 @@ export default function FormNotification({
         isOpen={showModalTemplate}
         onClose={() => setShowModalTemplate(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <H2 fontWeight="500">{t("SELECT_TEMPLATE")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"notification.cardCloseIcon"}
+              color={colors.cardCloseIcon}
               onPress={(e) => setShowModalTemplate(false)}
             />
           </HStack>
         </Actionsheet.Content>
         <Box bg={"notification.white"} width={"100%"}>
-          {[
-            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking.",
-            "Hello Mr. Rajesh Sharma, this is to inform you that your ward Sheetal has been present all days this week in sch...",
-            "Learners should be able to use strategies that will support their understanding during their own reading",
-            "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking..",
-          ].map((value, index) => {
+          {templates?.map((value, index) => {
             return (
               <Box p="5" key={index}>
-                <Checkbox
-                  colorScheme="button"
-                  borderColor={"notification.primary"}
-                  borderRadius="0"
+                <Pressable
+                  key={index}
+                  p="5"
+                  onPress={(e) => {
+                    //setTemplate(value.body)
+                    setDateTime({
+                      ...dateTime,
+                      ["TemplateId"]: value.id,
+                      ["Template"]: value.body,
+                    });
+                  }}
+                  bg={value.body === dateTime["Template"] ? "gray.100" : ""}
                 >
-                  {value}
-                </Checkbox>
+                  <Text colorScheme="button">{t(value.body)}</Text>
+                </Pressable>
               </Box>
             );
           })}
           <Box p="5">
             <Button
               colorScheme="button"
-              _text={{ color: "notification.white" }}
+              _text={{ color: "white" }}
               onPress={(e) => setShowModalTemplate(false)}
             >
               {t("CONTINUE")}
@@ -233,7 +286,7 @@ export default function FormNotification({
         isOpen={dateTimeData?.name}
         onClose={() => setDateTimeData({})}
       >
-        <Actionsheet.Content alignItems={"left"} bg="notification.cardBg">
+        <Actionsheet.Content alignItems={"left"} bg="#D9F0FC">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
               <Text fontSize="16px" fontWeight={"600"}>
@@ -242,7 +295,7 @@ export default function FormNotification({
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color="notification.cardBg"
+              color="classCard.900"
               onPress={(e) => setDateTimeData({})}
             />
           </HStack>
@@ -272,10 +325,10 @@ export default function FormNotification({
                   }}
                   bg={
                     dateTime[dateTimeData.name] === value
-                      ? "gray.100"
+                      ? "notification.lightGray2"
                       : dateTimeData.name === "Group" &&
                         dateTime[dateTimeData.name] === value.title
-                      ? "gray.100"
+                      ? "notification.lightGray2"
                       : ""
                   }
                 >
@@ -288,7 +341,7 @@ export default function FormNotification({
           <Box p="5">
             <Button
               colorScheme="button"
-              _text={{ color: "notification.white" }}
+              _text={{ color: "white" }}
               onPress={(e) => {
                 setDateTimeData({});
               }}
@@ -326,12 +379,15 @@ const FormInput = ({
         <Button
           {...(item?.buttonVariant
             ? { variant: item.buttonVariant }
-            : { _text: { color: "black" } })}
+            : {
+                variant: "outline",
+                _text: { color: "notification.primary" },
+              })}
           rounded="full"
           colorScheme="button"
           px="5"
           py="1"
-          bg="viewNotification.500"
+          bg="notification.white"
           _text={{ textTransform: "capitelize" }}
           rightIcon={
             <IconByName

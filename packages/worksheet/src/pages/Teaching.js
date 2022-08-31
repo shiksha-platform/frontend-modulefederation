@@ -4,7 +4,6 @@ import {
   SubMenu,
   Tab,
   classRegistryService,
-  overrideColorTheme,
   H2,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
@@ -12,8 +11,6 @@ import { Actionsheet, Box, Button } from "native-base";
 import { teachingMaterial } from "./../config/teachingMaterial";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -96,6 +93,7 @@ const MyTeaching = ({ data }) => {
       <SubMenu
         _boxMenu={{ p: 5, borderLeftWidth: 0 }}
         key={index}
+        _icon={{ isDisabled: true }}
         item={{
           title: `${item.name} • ${item.subjectName}`,
           onPress: (e) => navigate(`/worksheet/${item.id}/view`),

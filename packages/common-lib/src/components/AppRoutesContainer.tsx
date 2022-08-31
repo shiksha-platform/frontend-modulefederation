@@ -4,8 +4,10 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
 import { useAuthFlow } from '../hooks/useAuthFlow'
+import Alert from './Alert'
 
 const AppRoutesContainer = ({
+  colors,
   theme,
   routes,
   basename,
@@ -14,6 +16,7 @@ const AppRoutesContainer = ({
   ...otherProps
 }: any) => {
   const user = useAuthFlow()
+  const [alert, setAlert] = React.useState<any>()
   const footerLinks = !isShowFooterLink
     ? {}
     : {
@@ -58,6 +61,7 @@ const AppRoutesContainer = ({
   return (
     <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
       <PushNotification />
+      <Alert {...{ alert, setAlert }} />
       <Suspense
         fallback={
           <Center>
@@ -71,7 +75,11 @@ const AppRoutesContainer = ({
               <Route
                 key={index}
                 path={item.path}
-                element={<item.component {...{ footerLinks, appName }} />}
+                element={
+                  <item.component
+                    {...{ footerLinks, appName, colors, setAlert }}
+                  />
+                }
               />
             ))}
           </Routes>

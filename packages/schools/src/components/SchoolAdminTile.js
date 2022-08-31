@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -23,11 +23,25 @@ import {
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+import { AttributeComponent } from "components/AttributeComponent";
 
-function SchoolAdminTile({ title }) {
+const chunks = (data, chunkCount = 2) => {
+  return data.reduce((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / chunkCount);
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = []; // start a new chunk
+    }
+    resultArray[chunkIndex].push(item);
+    return resultArray;
+  }, []);
+};
+
+function SchoolAdminTile({ title, grades }) {
   const { t } = useTranslation();
   const [academicDetailModal, setAcademicDetailModal] = useState(false);
   const [viewBy, setViewBy] = useState("grade");
+
+  useEffect(() => {}, []);
   return (
     <>
       {viewBy === "grade" && (
@@ -47,7 +61,21 @@ function SchoolAdminTile({ title }) {
                 </Button>
               </HStack>
 
-              <Box>
+              {grades &&
+                grades?.length &&
+                chunks(grades)?.map((item) => (
+                  <HStack alignItems="center" space={10}>
+                    {item?.map((grade) => (
+                      <HStack alignItems="center">
+                        <H4>{grade} : </H4>
+                        <BodyLarge>1</BodyLarge>
+                      </HStack>
+                    ))}
+                  </HStack>
+                ))}
+
+              {/* <AttributeComponent /> */}
+              {/* <Box>
                 <VStack space={4}>
                   <HStack alignItems="center">
                     <HStack alignItems="center">
@@ -71,7 +99,7 @@ function SchoolAdminTile({ title }) {
                     </HStack>
                   </HStack>
                 </VStack>
-              </Box>
+              </Box> */}
             </VStack>
           </Box>
         </Box>
@@ -206,4 +234,5 @@ function SchoolAdminTile({ title }) {
     </>
   );
 }
+
 export default SchoolAdminTile;

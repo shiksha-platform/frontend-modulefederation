@@ -48,7 +48,7 @@ const interfaceData = {
   }
 }
 
-export const getAll = async (params = {}, header = {}) => {
+export const getAll = async (filters = {}, header = {}) => {
   let headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     ...header
@@ -56,13 +56,13 @@ export const getAll = async (params = {}, header = {}) => {
 
   const result = await post(
     `${process.env.REACT_APP_API_URL}/user/search`,
-    params,
+    { filters },
     {
       headers
     }
   )
-  if (result.data) {
-    return result.data.map((e) => mapInterfaceData(e, interfaceData))
+  if (result.data.data) {
+    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
   } else {
     return []
   }
@@ -80,6 +80,21 @@ export const getOne = async (params = {}, header = {}) => {
   }).catch((error) => error)
   if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData)
+  } else {
+    return {}
+  }
+}
+
+export const getUserById = async (id, header = {}) => {
+  let headers = {
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ...header
+  }
+  const result = await get(`${process.env.REACT_APP_API_URL}/user/${id}`, {
+    headers
+  }).catch((error) => error)
+  if (result.data) {
+    return mapInterfaceData(result.data.data, interfaceData)
   } else {
     return {}
   }

@@ -78,6 +78,16 @@ const Notification = ({ footerLinks, appName }) => {
   const handleTelemetry = (notification) => {
     setShowModal(true);
     setNotification(notification);
+    setNotificationInfo(
+      notificationInfo.map((item) => {
+        if (item.id === notification.id) {
+          return { ...item, messageState: "READ" };
+        } else {
+          return item;
+        }
+      })
+    );
+
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Notification-Intaract",
@@ -89,14 +99,19 @@ const Notification = ({ footerLinks, appName }) => {
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
+    console.log(Response);
     //setConfigData(Response);
     const ValidUsersResp = Array.isArray(
-      Response["notification.configureWhoCanSendNotification"]
+      Response["attendance.allowed_role_to_send_attendance_notification"]
     )
-      ? Response["notification.configureWhoCanSendNotification"]
-      : JSON.parse(Response["notification.configureWhoCanSendNotification"]);
+      ? Response["attendance.allowed_role_to_send_attendance_notification"]
+      : JSON.parse(
+          Response["attendance.allowed_role_to_send_attendance_notification"]
+        );
     setValidUsers(ValidUsersResp);
   };
+
+  console.log(validUsers);
 
   const GetAllNotifications = async () => {
     const resp1 = await getAllForUser({
@@ -111,6 +126,8 @@ const Notification = ({ footerLinks, appName }) => {
   useEffect(() => {
     getDateFromCalendar();
   }, [page]);
+
+  console.log(realm_access?.roles[1].toLowerCase());
 
   //CURRENTLY THERE ARE NO FILTERS SUPPORTED BY HISTORY API
   // const getFilterDetails = () => {
@@ -150,7 +167,7 @@ const Notification = ({ footerLinks, appName }) => {
             rounded="full"
             colorScheme="button"
             variant="outline"
-            bg={"notification.notificationBg"}
+            bg={colors.notificationbtnBg}
             px="5"
             py="4px"
             _text={{ textTransform: "capitalize", fontSize: "14px" }}
@@ -176,14 +193,14 @@ const Notification = ({ footerLinks, appName }) => {
     >
       <Stack space={1} mb="2">
         <VStack space="1">
-          <Box bg="notification.white" p="5">
+          <Box bg="white" p="5">
             <HStack justifyContent="space-between" alignItems="center">
               <CalendarBar {...{ page, setPage }} />
               {/* <Checkbox
                 colorScheme="button"
-                borderColor={"notification.primary"}
+                borderColor={colors.primary}
                 borderRadius="0"
-                _text={{ color: "notification.primary", fontSize: "14px" }}
+                _text={{ color: colors.primary, fontSize: "14px" }}
               >
                 {t("MARK_ALL_READ")}
               </Checkbox> */}
@@ -192,7 +209,7 @@ const Notification = ({ footerLinks, appName }) => {
           <FilterButton
             getObject={setFilterObject}
             _box={{ p: 5 }}
-            _actionSheet={{ bg: "notification.notificationBg" }}
+            _actionSheet={{ bg: "worksheetCard.500" }}
             isResettableFilter={true}
             filters={[
               {
@@ -203,7 +220,7 @@ const Notification = ({ footerLinks, appName }) => {
               },
             ]}
           />
-          <Box bg="notification.white" p="5" roundedBottom={"xl"}>
+          <Box bg="white" p="5" roundedBottom={"xl"}>
             <NotificationBox
               data={notificationInfo}
               showMore={showMore}
@@ -221,24 +238,18 @@ const Notification = ({ footerLinks, appName }) => {
                 showMore ? setShowMore(false) : setShowMore(true)
               }
             >
-              <Text color="notification.primary">
+              <Text color="button.500">
                 {showMore ? t("SHOW_LESS") : t("SHOW_MORE")}
               </Text>
             </Pressable>
           </Box>
         </VStack>
-        {validUsers.includes(realm_access?.roles[2].toLowerCase()) && (
-          <Box
-            bg={"notification.white"}
-            p="5"
-            position="sticky"
-            bottom="0"
-            shadow={2}
-          >
+        {validUsers.includes(realm_access?.roles[1].toLowerCase()) && (
+          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
             <Link href={"/notification/create"}>
               <Button
                 colorScheme="button"
-                _text={{ color: "notification.white" }}
+                _text={{ color: "white" }}
                 px="5"
                 flex="1"
               >
@@ -249,31 +260,34 @@ const Notification = ({ footerLinks, appName }) => {
         )}
         <Actionsheet
           isOpen={showModalMore}
-          onClose={() => setShowModalMore(false)}
+          onClose={() => {
+            setShowModalMore(false);
+            setNotification({});
+          }}
         >
-          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
+          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2 fontWeight="500">{t("NOTIFICATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={"notification.cardCloseIcon"}
+                color={colors.cardCloseIcon}
                 onPress={(e) => setShowModalMore(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={"notification.white"} width={"100%"} _text={{}}>
-            <BodyLarge p="5" color={"notification.darkGary2"}>
+          <Box bg={colors.white} width={"100%"} _text={{}}>
+            <BodyLarge p="5" color={colors.coolGraylight}>
               {t("MARK_AS_READ")}
             </BodyLarge>
-            <BodyLarge p="5" color={"notification.darkGary2"}>
+            <BodyLarge p="5" color={colors.coolGraylight}>
               {t("DELETE_MESSAGES")}
             </BodyLarge>
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "notification.white" }}
+                _text={{ color: "white" }}
                 onPress={(e) => setShowModalMore(false)}
               >
                 {t("CONTINUE")}
@@ -285,19 +299,19 @@ const Notification = ({ footerLinks, appName }) => {
           isOpen={showModalInbox}
           onClose={() => setShowModalInbox(false)}
         >
-          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
+          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("NOTIFCATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={"notification.cardCloseIcon"}
+                color={colors.cardCloseIcon}
                 onPress={(e) => setShowModalInbox(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={"notification.white"} width={"100%"}>
+          <Box bg={colors.white} width={"100%"}>
             <Link href={"/notification"}>
               <Box p="5">{t("INBOX")}</Box>
             </Link>
@@ -307,7 +321,7 @@ const Notification = ({ footerLinks, appName }) => {
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "notification.white" }}
+                _text={{ color: "white" }}
                 onPress={(e) => setShowModalInbox(false)}
               >
                 {t("CONTINUE")}
@@ -316,30 +330,30 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Actionsheet.Content alignItems={"left"} bg={"notification.cardBg"}>
+          <Actionsheet.Content alignItems={"left"} bg={colors?.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("VIEW_NOTIFICATION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={"notification.cardCloseIcon"}
+                color={colors.cardCloseIcon}
                 onPress={(e) => setShowModal(false)}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={"notification.white"} width={"100%"}>
+          <Box bg={colors.white} width={"100%"}>
             <Box px="5">
               <HStack
                 py="5"
                 borderBottomWidth="1"
-                borderColor={"notification.lightGray2"}
+                borderColor={colors.lightGray}
                 alignItems="center"
                 space="1"
               >
                 <IconByName
                   _icon={{ size: "16" }}
-                  color={"notification.cardCloseIcon"}
+                  color={colors.cardCloseIcon}
                   name="CheckDoubleLineIcon"
                   isDisabled
                 />
@@ -354,10 +368,10 @@ const Notification = ({ footerLinks, appName }) => {
                   : "Dummy text"}
               </BodyMedium>
             </VStack>
-            <Box bg={"notification.white"} p="5" bottom="0" shadow="2">
+            <Box bg={colors.white} p="5" bottom="0" shadow="2">
               <Button
                 colorScheme="button"
-                _text={{ color: "notification.white" }}
+                _text={{ color: "white" }}
                 onPress={(e) => setShowModal(false)}
               >
                 {t("DONE")}
@@ -366,26 +380,23 @@ const Notification = ({ footerLinks, appName }) => {
           </Box>
         </Actionsheet>
         <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
-          <Actionsheet.Content
-            alignItems={"left"}
-            bg={"notification.notificationBg"}
-          >
+          <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
                 <H2>{t("SELECT_MODULE")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
-                color={"notification.cardCloseIcon"}
+                color={colors.cardCloseIcon}
                 onPress={(e) => setFilterData()}
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={"notification.white"} width={"100%"}>
+          <Box bg={colors.white} width={"100%"}>
             <Box p="5">
               <Checkbox
                 colorScheme="button"
-                borderColor={"notification.primary"}
+                borderColor={colors.primary}
                 borderRadius="0"
               >
                 {t("SELECT_ALL")}
@@ -396,7 +407,7 @@ const Notification = ({ footerLinks, appName }) => {
                 <Box p="5" key={index}>
                   <Checkbox
                     colorScheme="button"
-                    borderColor={"notification.primary"}
+                    borderColor={colors.primary}
                     borderRadius="0"
                   >
                     {value}
@@ -406,7 +417,7 @@ const Notification = ({ footerLinks, appName }) => {
             <Box p="5">
               <Button
                 colorScheme="button"
-                _text={{ color: "notification.white" }}
+                _text={{ color: "white" }}
                 onPress={(e) => {
                   setGroupValue(["Attendance", "Lesson Plans", "Timtable"]);
                   setFilterData();
@@ -434,6 +445,7 @@ const NotificationBox = ({
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
+  console.log(data);
 
   const readReceipt = async (id) => {
     const resp1 = await sendReadReceipt({
@@ -492,11 +504,11 @@ const NotificationBox = ({
                 />
                 {value.messageState === "READ" ? (
                   <BodySmall>
-                    {moment.utc(value.timestamp).local().format("LT")}
+                    {moment.utc(value.sentTimestamp).local().format("LT")}
                   </BodySmall>
                 ) : (
                   <Subtitle>
-                    {moment.utc(value.timestamp).local().format("LT")}
+                    {moment.utc(value.sentTimestamp).local().format("LT")}
                   </Subtitle>
                 )}
               </HStack>

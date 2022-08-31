@@ -4,7 +4,7 @@ module.exports = {
   name: "schools",
   exposes: {
     "./SchoolProfile": "./src/pages/SchoolProfile",
-    "./MyVisitsPage": "./src/pages/MyVisitsPage",
+    "./AllTeachers": "./src/pages/AllTeachers",
     "./AttendanceReportDashboard":
       "./src/pages/reports/AttendanceReportDashboard",
     "./AttendanceSectionWiseReport":

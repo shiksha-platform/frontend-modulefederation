@@ -1,33 +1,33 @@
 import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as coreUpdate } from './RestClient'
-import * as likeRegistryService from './likeRegistryService'
-import * as commentRegistryService from './commentRegistryService'
 
 const interfaceData = {
-  id: 'worksheetId',
-  name: 'name',
-  state: 'state',
-  subject: 'subject',
-  grade: 'grade',
-  level: 'level',
-  topic: 'topic',
-  source: 'source',
-  instructions: 'instructions',
-  feedback: 'feedback',
-  hints: 'hints',
-  navigationMode: 'navigationMode',
-  timeLimits: 'timeLimits',
-  showHints: 'showHints',
-  questions: 'questions',
-  questionSets: 'questionSets',
-  outcomeDeclaration: 'outcomeDeclaration',
-  outcomeProcessing: 'outcomeProcessing',
-  questionSetType: 'questionSetType',
-  criteria: 'criteria',
-  usedFor: 'usedFor',
-  description: 'purpose',
-  visibility: 'visibility',
-  qumlVersion: 'qumlVersion'
+  schoolId: 'schoolId',
+  schoolName: 'schoolName',
+  schoolEmail: 'email',
+  schoolUdise: 'udise',
+  schoolMediumOfInstruction: 'mediumOfInstruction',
+  schoolPhoneNumber: 'phoneNumber',
+  schoolAddress: 'address',
+  schoolHeadMaster: 'headMaster',
+  schoolType: 'schoolType',
+  schoolWebsite: 'website',
+  schoolVillage: 'village',
+  schoolBlock: 'block',
+  schoolDistrict: 'district',
+  schoolStateId: 'stateId',
+  schoolPincode: 'pincode',
+  schoolLocationId: 'locationId',
+  schoolEnrollCount: 'enrollCount',
+  schoolStatus: 'status',
+  schoolLatitude: 'latitude',
+  schoolLongitude: 'longitude',
+  schoolMetaData: 'metaData',
+  schoolDeactivationReason: 'deactivationReason',
+  schoolCreatedAt: 'createdAt',
+  schoolUpdatedAt: 'updatedAt',
+  schoolCreatedBy: 'createdBy',
+  schoolUpdatedBy: 'updatedBy'
 }
 
 let only = Object.keys(interfaceData)
@@ -41,7 +41,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   }
   const result = await post(
-    process.env.REACT_APP_API_URL + '/worksheet/search',
+    process.env.REACT_APP_API_URL + '/school/search',
     { filters: params, limit: limit },
     {
       headers: headers?.headers ? headers?.headers : {}
@@ -51,18 +51,19 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   if (result.data.data) {
     return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
   } else {
+    console.warn('An error has occured while getting the response from API')
     return []
   }
 }
 
-export const getOne = async (filters = {}, header = {}) => {
+export const getOne = async (params = {}, header = {}) => {
   let headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   try {
     const result = await get(
-      process.env.REACT_APP_API_URL + '/worksheet/' + filters.id,
+      process.env.REACT_APP_API_URL + '/school/' + params.id,
       {
         headers
       }
@@ -76,7 +77,8 @@ export const getOne = async (filters = {}, header = {}) => {
     } else {
       return {}
     }
-  } catch {
+  } catch (e) {
+    console.warn('An error has occured while getting the response from API', e)
     return {}
   }
 }
@@ -97,15 +99,17 @@ export const create = async (data, header = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await post(
-    process.env.REACT_APP_API_URL + '/worksheet',
+    process.env.REACT_APP_API_URL + '/school',
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}
     }
   )
   if (result.data) {
-    return result.data?.data?.worksheetId
+    let { Worksheet } = result.data?.data?.result
+    return Worksheet
   } else {
+    console.warn('An error has occured while getting the response from API')
     return false
   }
 }
@@ -120,7 +124,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    process.env.REACT_APP_API_URL + '/worksheet/' + data.id,
+    process.env.REACT_APP_API_URL + '/school/' + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}
@@ -129,43 +133,7 @@ export const update = async (data = {}, headers = {}) => {
   if (result.data) {
     return result
   } else {
+    console.warn('An error has occured while getting the response from API')
     return {}
   }
-}
-
-export const downloadWorksheet = async ({ id, ...params }, header = {}) => {
-  let headers = {
-    ...header,
-    Authorization: 'Bearer ' + localStorage.getItem('token')
-  }
-  try {
-    const result = await post(
-      `${process.env.REACT_APP_API_URL}/worksheet/${id}/pdf`,
-      null,
-      { headers, params: params }
-    )
-    if (result?.data?.data) {
-      return result?.data?.data
-    } else {
-      return {}
-    }
-  } catch {
-    return {}
-  }
-}
-
-export const getWorksheetLikes = async (id) => {
-  return await likeRegistryService.getAll({
-    contextId: { eq: id },
-    context: { eq: 'Worksheet' },
-    type: { eq: 'like' }
-  })
-}
-
-export const getWorksheetComments = async (id, filter = {}) => {
-  return await commentRegistryService.getAll({
-    contextId: { eq: id },
-    context: { eq: 'Worksheet' },
-    ...filter
-  })
 }

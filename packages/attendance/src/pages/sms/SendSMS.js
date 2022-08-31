@@ -19,8 +19,6 @@ import {
   telemetryFactory,
   H2,
   H3,
-  H4,
-  H5,
   capture,
   calendar,
   getStudentsPresentAbsent,
@@ -227,7 +225,9 @@ export default function SendSMS({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <H2 bold={true}>{t("ABSENT_CONSECUTIVE_3_DAYS")}</H2>
+                    <H2 textTransform={"none"}>
+                      {t("ABSENT_CONSECUTIVE_3_DAYS")}
+                    </H2>
                     <Caption>
                       {absentStudents?.length + " " + t("STUDENTS")}
                     </Caption>

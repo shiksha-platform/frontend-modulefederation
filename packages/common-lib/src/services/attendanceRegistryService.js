@@ -18,7 +18,8 @@ const interfaceData = {
   latitude: 'latitude',
   longitude: 'longitude',
   image: 'image',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  parentName: 'parentName'
 }
 
 let only = Object.keys(interfaceData)
@@ -82,9 +83,9 @@ export const create = async (data, headers = {}) => {
       headers: header
     }
   )
+
   if (result.data) {
-    let { Attendance } = result.data?.data?.result
-    return Attendance
+    return result.data?.data?.attendanceId
   } else {
     return false
   }

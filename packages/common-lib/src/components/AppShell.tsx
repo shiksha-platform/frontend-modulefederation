@@ -82,6 +82,7 @@ function AppShell({
   } else {
     return (
       <AppRoutesContainer
+        colors={colors}
         theme={theme}
         basename={basename}
         routes={routes}
