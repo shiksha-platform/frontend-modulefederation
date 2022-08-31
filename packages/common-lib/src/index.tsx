@@ -36,6 +36,7 @@ import {
   sendReadReceipt
 } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
+import { useAuthFlow } from './hooks/useAuthFlow'
 export {
   AppBar,
   Header,
@@ -69,6 +70,7 @@ export {
   sendReadReceipt,
   templateRegistryService,
   notificationRegistryService,
+  useAuthFlow,
   roleRegistryService,
   workHistoryRegistryService,
   schoolRegistryService,

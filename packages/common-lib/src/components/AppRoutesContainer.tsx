@@ -1,18 +1,22 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { Center, NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
+import { PushNotification } from './firebase/firebase'
+import { useAuthFlow } from '../hooks/useAuthFlow'
+import Alert from './Alert'
 
 const AppRoutesContainer = ({
+  colors,
   theme,
   routes,
-  AuthComponent,
   basename,
   isShowFooterLink,
   appName,
   ...otherProps
 }: any) => {
+  const user = useAuthFlow()
+  const [alert, setAlert] = React.useState<any>()
   const footerLinks = !isShowFooterLink
     ? {}
     : {
@@ -55,7 +59,9 @@ const AppRoutesContainer = ({
         ]
       }
   return (
-    <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
+      <PushNotification />
+      <Alert {...{ alert, setAlert }} />
       <Suspense
         fallback={
           <Center>
@@ -69,7 +75,11 @@ const AppRoutesContainer = ({
               <Route
                 key={index}
                 path={item.path}
-                element={<item.component {...{ footerLinks, appName }} />}
+                element={
+                  <item.component
+                    {...{ footerLinks, appName, colors, setAlert }}
+                  />
+                }
               />
             ))}
           </Routes>
