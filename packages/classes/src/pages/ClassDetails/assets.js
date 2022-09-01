@@ -9,26 +9,33 @@ import {
 } from "@shiksha/common-lib";
 import { Stack, Box, VStack, HStack } from "native-base";
 
-export const routes = (classId) => {
+export const routes = (classObject, students) => {
   const { t } = useTranslation();
   const [subjects, setSubjects] = React.useState([]);
 
   React.useEffect(async () => {
     const data = await assessmentRegistryService.getSubjectsList({
-      gradeLevel: "class1",
+      gradeLevel: classObject?.gradeLevel,
     });
+
     setSubjects(data);
-  }, []);
+  }, [classObject]);
 
   return subjects.map((item) => {
     return {
       title: item.name,
-      component: <SubjectRoute subject={item.code} classId={classId} />,
+      component: (
+        <SubjectRoute
+          subject={item.code}
+          classObject={classObject}
+          students={students}
+        />
+      ),
     };
   });
 };
 
-const SubjectRoute = ({ subject, classId }) => {
+const SubjectRoute = ({ subject, classObject, students }) => {
   const { t } = useTranslation();
 
   const Assessment = React.lazy(() => import("assessment/Assessment"));
@@ -53,7 +60,7 @@ const SubjectRoute = ({ subject, classId }) => {
             <Suspense fallback="loading...">
               <Assessment
                 isLayoutNotRequired={true}
-                {...{ classId, subject }}
+                {...{ classObject, subject, students }}
               />
             </Suspense>
           </Collapsible>

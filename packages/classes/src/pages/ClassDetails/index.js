@@ -104,7 +104,7 @@ const ClassDetails = ({ footerLinks }) => {
           classObject={classObject}
           students={students}
         ></ClassStudentsPanel>
-        <ClassSubjectsPanel classId={classId} />
+        <ClassSubjectsPanel classObject={classObject} students={students} />
         <ClassDetailsPanel students={students} />
       </Stack>
     </Layout>

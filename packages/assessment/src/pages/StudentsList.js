@@ -48,10 +48,11 @@ export default function StudentsListPage({
           <Avatar
             size="48px"
             borderRadius="md"
-            source={{
-              uri: "https://via.placeholder.com/50x50.png",
-            }}
-          />
+            bg={"primary"}
+            _text={{ color: "white" }}
+          >
+            {localStorage.getItem("fullName")?.toUpperCase()?.substring(0, 2)}
+          </Avatar>
         ),
       }}
       _appBar={{

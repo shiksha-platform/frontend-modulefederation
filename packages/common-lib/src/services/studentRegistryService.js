@@ -110,6 +110,28 @@ export const update = async (data = {}, headers = {}) => {
   }
 }
 
+export const getAllStudents = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/student/search',
+    { filters },
+    {
+      headers
+    }
+  )
+  if (result?.data?.data) {
+    const studentData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    return studentData
+  } else {
+    return {}
+  }
+}
+
 export const setDefaultValue = async (data) => {
   return data.map((e) => mapInterfaceData(e, interfaceData))
 }

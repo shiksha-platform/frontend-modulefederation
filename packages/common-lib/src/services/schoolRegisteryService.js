@@ -26,7 +26,9 @@ const interfaceData = {
   latitude: 'latitude',
   longitude: 'longitude',
   metaData: 'metaData',
-  deactivationReason: 'deactivationReason'
+  deactivationReason: 'deactivationReason',
+  headMaster: 'headMaster',
+  board: 'board'
 }
 
 let only = Object.keys(interfaceData)

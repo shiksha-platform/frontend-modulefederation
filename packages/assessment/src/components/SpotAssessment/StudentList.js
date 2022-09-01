@@ -46,18 +46,12 @@ const StudentListCard = ({
 }) => {
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
-  // let { classId } = useParams();
-  // if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
-
   const [studentlist, setStudentlist] = useState([]);
-
   const [loading, setLoading] = React.useState(true);
-
   const [attendanceData, setAttendanceData] = useState({});
 
   const checkAttendance = async () => {
     const date = moment().format("YYYY-MM-DD");
-    // const date = moment("2022-07-21").format("YYYY-MM-DD");
     const attendanceDetails =
       await assessmentRegistryService.getAttendanceDetailsByClass(classId, {
         date,
@@ -89,7 +83,6 @@ const StudentListCard = ({
 
   useEffect(() => {
     checkAttendance();
-    // getStudentsList();
   }, []);
 
   if (loading) {
@@ -137,23 +130,32 @@ const StudentListCard = ({
                     onPress={() => {
                       handleSelectedStudent(student);
                     }}
-                    // isDisabled={student.attendance !== "Present"}
                     isDisabled={student.attendance === "Absent"}
                     _disabled={{ cursor: "not-allowed" }}
                   >
                     <HStack alignItems="center" space={3}>
-                      <Avatar
-                        size="48px"
-                        borderRadius="md"
-                        source={{
-                          uri:
-                            student.image && student.image !== ""
-                              ? `${manifest.api_url}/files/${encodeURIComponent(
-                                  student.image
-                                )}`
-                              : `https://via.placeholder.com/80x80.png`,
-                        }}
-                      />
+                      {student.image ? (
+                        <Avatar
+                          size="48px"
+                          borderRadius="md"
+                          source={{
+                            uri: `${
+                              manifest.api_url
+                            }/files/${encodeURIComponent(student.image)}`,
+                          }}
+                        />
+                      ) : (
+                        <Avatar
+                          size="48px"
+                          borderRadius="md"
+                          bg={"primary"}
+                          _text={{ color: "white" }}
+                        >
+                          {`${student.firstName}`
+                            ?.toUpperCase()
+                            ?.substring(0, 2)}
+                        </Avatar>
+                      )}
                       <VStack>
                         <BodyLarge
                           alignItems="center"

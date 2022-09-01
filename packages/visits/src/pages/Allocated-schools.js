@@ -1,13 +1,13 @@
 import {
   BodyLarge,
   BodyMedium,
-  DEFAULT_THEME,
   FilterButton,
   H2,
   IconByName,
   Layout,
   overrideColorTheme,
   mentorRegisteryService,
+  Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -20,7 +20,9 @@ import {
   Button,
   Stack,
   Divider,
+  Pressable,
 } from "native-base";
+import { useNavigate } from "react-router-dom";
 import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
@@ -56,7 +58,7 @@ export default function Allocatedschools({ footerLinks }) {
   const [sortModal, setSortModal] = useState(false);
 
   const [filterObject, setFilterObject] = React.useState({});
-
+  const navigate = useNavigate();
   const callBackFilterObject = React.useCallback((e) => {
     setFilterObject();
   }, []);
@@ -124,18 +126,24 @@ export default function Allocatedschools({ footerLinks }) {
                   filters={defaultInputs}
                 />
               </Box>
-              {allocatedVisits &&
-                allocatedVisits.length &&
+              {allocatedVisits && allocatedVisits.length > 0 ? (
                 allocatedVisits.map((visit, visitIndex) => {
                   return (
-                    <MySchoolsCard
-                      isVisited={visit?.status == "visited" ? true : false}
-                      key={`myvisit${visitIndex}`}
-                      schoolData={visit?.schoolData}
-                      lastVisited={visit?.lastVisited}
-                    />
+                    <Pressable
+                      onPress={() => navigate(`/schools/${visit?.schoolId}`)}
+                    >
+                      <MySchoolsCard
+                        isVisited={visit?.status == "visited" ? true : false}
+                        key={`myvisit${visitIndex}`}
+                        schoolData={visit?.schoolData}
+                        lastVisited={visit?.lastVisited}
+                      />
+                    </Pressable>
                   );
-                })}
+                })
+              ) : (
+                <Loading height={"200px"} />
+              )}
             </VStack>
           </Box>
         </VStack>

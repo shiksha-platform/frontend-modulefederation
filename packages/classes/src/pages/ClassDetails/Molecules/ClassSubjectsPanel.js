@@ -4,14 +4,14 @@ import { VStack, Box } from "native-base";
 import { useTranslation } from "react-i18next";
 import { routes } from "../assets";
 
-const ClassSubjectsPanel = ({ classId }) => {
+const ClassSubjectsPanel = ({ classObject, students }) => {
   const { t } = useTranslation();
   return (
     <Collapsible defaultCollapse={true} header={t("SUBJECTS")}>
       <VStack>
         <Box>
           <Tab
-            routes={routes(classId)}
+            routes={routes(classObject, students)}
             _box={{
               display: "flex",
               overflowX: "auto",

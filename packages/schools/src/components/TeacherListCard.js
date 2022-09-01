@@ -1,47 +1,32 @@
-import React, { useState } from "react";
-import { BodyMedium, Collapsible, H3, IconByName } from "@shiksha/common-lib";
-import {
-  HStack,
-  VStack,
-  Box,
-  Divider,
-  Avatar,
-  Pressable,
-  Button,
-} from "native-base";
+import React, { useState, useEffect } from "react";
+
+// Imports for navigation
+import { useNavigate } from "react-router-dom";
+
+// Import for translation
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
-import { H2, overrideColorTheme } from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
+// Imports from common library functions and native base components
+import {
+  Collapsible,
+  H3,
+  IconByName,
+  userRegistryService,
+  H2,
+} from "@shiksha/common-lib";
+import { HStack, VStack, Box, Divider, Avatar, Button } from "native-base";
 
-const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
+const TeacherListCard = ({ schoolId, visitedData }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [teacherlist, setStudentlist] = useState([]);
+  const [teacherlist, setTeacherList] = useState([]);
 
-  React.useEffect(() => {
-    setStudentlist([
-      {
-        id: 1,
-        name: "Rahul",
-        class: "VI A",
-      },
-      {
-        id: 2,
-        name: "Rahul",
-        class: "VI A",
-      },
-      {
-        id: 3,
-        name: "Rahul",
-        class: "VI A",
-      },
-    ]);
+  useEffect(async () => {
+    const data = await userRegistryService.getAll({
+      schoolId: { eq: schoolId },
+      role: { eq: "Teacher" },
+    });
+    setTeacherList(data);
   }, []);
 
   return (
@@ -49,19 +34,16 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
       defaultCollapse={true}
       header={
         <Box py={4}>
-          <H2>Allocated Teachers List</H2>
+          <H2>Teachers List</H2>
         </Box>
       }
     >
-      {teacherlist &&
-        teacherlist.length &&
-        teacherlist.map((teacher, index) => {
-          return (
-            <React.Fragment key={`student${index}`}>
-              <Box borderColor={"schools.lightGray3"} p={4}>
-                <Pressable
-                  onPress={() => navigate("/schools/assessment-result")}
-                >
+      {teacherlist && teacherlist.length > 0 ? (
+        teacherlist.map(
+          (teacher, index) =>
+            index < 3 && (
+              <React.Fragment key={`student${index}`}>
+                <Box borderColor={"schools.lightGray3"} p={4}>
                   <HStack justifyContent="space-between" alignItems="center">
                     <Box>
                       <HStack alignItems="center" space={3}>
@@ -69,9 +51,14 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
                           size="48px"
                           borderRadius="md"
                           source={{
-                            uri: "https://via.placeholder.com/50x50.png",
+                            uri: teacher.image ? teacher.image : "",
                           }}
-                        />
+                          bg={"schools.primary"}
+                        >
+                          <H2 color={"schools.white"}>
+                            {teacher?.firstName?.slice(0, 2)?.toUpperCase()}
+                          </H2>
+                        </Avatar>
                         <VStack>
                           <H3
                             color={"schools.bodyText"}
@@ -79,46 +66,47 @@ const TeacherListCard = ({ classId, students, setHeaderDetails }) => {
                               color: "warmGray.50",
                             }}
                           >
-                            {index + 1} . {teacher.name}
+                            {index + 1} .{" "}
+                            {`${teacher?.firstName} ${teacher?.lastName}`}
                           </H3>
-                          <BodyMedium color={"schools.gray"}>
-                            Class Teacher: {teacher.class}
-                          </BodyMedium>
                         </VStack>
                       </HStack>
                     </Box>
-                    <Box>
-                      <HStack alignItems="center">
-                        <IconByName
-                          _icon={{ size: "22" }}
-                          borderRadius="full"
-                          bg={"schools.primary"}
-                          color={"schools.white"}
-                          name="UserLineIcon"
-                        />
-                        <IconByName
-                          _icon={{ size: "18" }}
-                          color={"schools.darkGray"}
-                          name="ArrowRightSLineIcon"
-                        />
-                      </HStack>
-                    </Box>
+                    {visitedData &&
+                      visitedData?.find(
+                        (data) => data?.teacherId === teacher?.id
+                      ) && (
+                        <Box>
+                          <IconByName
+                            _icon={{ size: "22" }}
+                            borderRadius="full"
+                            bg={"schools.primary"}
+                            color={"schools.white"}
+                            name="UserLineIcon"
+                          />
+                        </Box>
+                      )}
                   </HStack>
-                </Pressable>
-              </Box>
-
-              <Divider />
-            </React.Fragment>
-          );
-        })}
-      <Box pt={4} textAlign="center">
-        <Button
-          variant="outline"
-          onPress={() => navigate("/schools/my-visits")}
-        >
-          Load More
-        </Button>
-      </Box>
+                </Box>
+                <Divider />
+              </React.Fragment>
+            )
+        )
+      ) : (
+        <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+          No teachers available in this school
+        </Box>
+      )}
+      {teacherlist && teacherlist.length > 0 && (
+        <Box pt={4} textAlign="center">
+          <Button
+            variant="outline"
+            onPress={() => navigate(`/schools/teachers/${schoolId}`)}
+          >
+            Load More
+          </Button>
+        </Box>
+      )}
     </Collapsible>
   );
 };

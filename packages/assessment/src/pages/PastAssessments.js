@@ -19,6 +19,7 @@ import { Box, HStack, VStack, Button } from "native-base";
 import colorTheme from "../colorTheme";
 import moment from "moment";
 import report from "utils/report";
+import ReportCard from "components/ReportCard";
 const colors = overrideColorTheme(colorTheme);
 
 const ORAL_ASSESSMENT = "Oral Assessment";
@@ -93,57 +94,12 @@ export default function PastAssessments({ footerLinks, setAlert }) {
           {/*<BodyLarge mb={2}>{allGroupedAssessments[key][0].date}</BodyLarge>*/}
           <BodyLarge mb={2}>{moment(key).format("DD MMM Y")}</BodyLarge>
           <VStack space={4}>
-            <Box
-              borderWidth="1"
-              borderColor={colors.borderColor}
-              borderRadius="10px"
-            >
-              <VStack space="4">
-                <Box p="4" pb="4px" roundedTop="6">
-                  <VStack space={2}>
-                    <Box>
-                      <BodyLarge py="2">
-                        {t("Written Spot Assessment")}
-                      </BodyLarge>
-                    </Box>
-
-                    <ProgressBar
-                      isTextShow
-                      legendType="separated"
-                      h="35px"
-                      _bar={{ rounded: "md", mb: "2" }}
-                      isLabelCountHide
-                      data={progressAssessmentWritten}
-                    />
-                  </VStack>
-                </Box>
-              </VStack>
-            </Box>
-
-            <Box
-              borderWidth="1"
-              borderColor={colors.borderColor}
-              borderRadius="10px"
-            >
-              <VStack space="4">
-                <Box p="4" pb="4px" roundedTop="6">
-                  <VStack space={2}>
-                    <Box>
-                      <BodyLarge py="2">{t("Oral Spot Assessment")}</BodyLarge>
-                    </Box>
-
-                    <ProgressBar
-                      isTextShow
-                      legendType="separated"
-                      h="35px"
-                      _bar={{ rounded: "md", mb: "2" }}
-                      isLabelCountHide
-                      data={progressAssessmentOral}
-                    />
-                  </VStack>
-                </Box>
-              </VStack>
-            </Box>
+            <ReportCard
+              {...{
+                writtenData: progressAssessmentWritten,
+                oralData: progressAssessmentOral,
+              }}
+            />
             <Button
               onPress={(e) =>
                 navigate(

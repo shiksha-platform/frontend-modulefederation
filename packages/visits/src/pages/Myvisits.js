@@ -5,20 +5,19 @@ import {
   overrideColorTheme,
   SearchLayout,
   mentorRegisteryService,
-  SchoolCard,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Pressable, VStack } from "native-base";
-import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
-import MySchoolsCard from "../components/MySchoolsCard";
+import RecommendedVisitsCard from "components/RecommendedVisitsCard";
+import MySchoolsCard from "components/MySchoolsCard";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
+import colorTheme from "colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Myvisits({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
+  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}]);
   const [allocatedVisits, setAllocatedVisits] = useState([]);
   const [searchState, setSearchState] = React.useState(false);
   const [search, setSearch] = React.useState(true);
@@ -112,52 +111,36 @@ export default function Myvisits({ footerLinks }) {
             </VStack>
           </Box>
 
+          {/* List of Allocated Schools */}
           <Box>
             <VStack space={6}>
               <Box>
-                <H2>My Schools</H2>
+                <H2>Allocated Schools</H2>
               </Box>
-              {allocatedVisits &&
-                allocatedVisits.length &&
+              {allocatedVisits && allocatedVisits?.length > 0 ? (
                 allocatedVisits.map((visit, visitIndex) => {
                   return (
-                    <MySchoolsCard
-                      isVisited={visit?.status == "visited" ? true : false}
-                      key={`myvisit${visitIndex}`}
-                      schoolData={visit?.schoolData}
-                      lastVisited={visit?.lastVisited}
-                    />
+                    visitIndex < 3 && (
+                      <Pressable
+                        onPress={() => navigate(`/schools/${visit?.schoolId}`)}
+                      >
+                        <MySchoolsCard
+                          isVisited={visit?.status == "visited" ? true : false}
+                          key={`myvisit${visitIndex}`}
+                          schoolData={visit?.schoolData}
+                          lastVisited={visit?.lastVisited}
+                        />
+                      </Pressable>
+                    )
                   );
-                })}
+                })
+              ) : (
+                <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                  No allocated school is available.
+                </Box>
+              )}
 
-              {/* {allocatedVisits &&
-                allocatedVisits.length &&
-                allocatedVisits.map((visit, visitIndex) => {
-                  return (
-                    <SchoolCard
-                      key={visitIndex}
-                      _bgColor={"green"}
-                      name={"ABC SCHOOL"}
-                      attributeData={[
-                        {
-                          icon: "MapPinLineIcon",
-                          label: "District",
-                          data: visit?.schoolData?.district,
-                        },
-                        {
-                          icon: "GovernmentLineIcon",
-                          label: "Block",
-                          data: visit?.schoolData?.block,
-                        },
-                        {
-                          icon: "CalendarEventLineIcon",
-                          label: "Last Visited",
-                          data: visit?.lastVisited,
-                        },
-                      ]}
-                    />
-                  );
-                })} */}
+              {/* Show more allocated schools button  */}
               <Box>
                 <Button
                   flex="1"

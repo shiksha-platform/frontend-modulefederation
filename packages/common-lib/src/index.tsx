@@ -29,11 +29,14 @@ import * as roleRegistryService from './services/roleRegistryService'
 import * as mentorRegisteryService from './services/mentorRegisteryService'
 import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
+import * as workHistoryRegistryService from './services/workHistoryRegistryService'
+import * as schoolRegistryService from './services/schoolRegistryService'
 import {
   getAllForUser,
   sendReadReceipt
 } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
+import { useAuthFlow } from './hooks/useAuthFlow'
 export {
   AppBar,
   Header,
@@ -67,7 +70,10 @@ export {
   sendReadReceipt,
   templateRegistryService,
   notificationRegistryService,
+  useAuthFlow,
   roleRegistryService,
+  workHistoryRegistryService,
+  schoolRegistryService,
   mentorRegisteryService,
   schoolRegisteryService
 }

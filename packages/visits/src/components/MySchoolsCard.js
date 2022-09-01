@@ -3,6 +3,7 @@ import { Box, VStack, HStack, Avatar, Divider } from "native-base";
 import {
   BodyMedium,
   DEFAULT_THEME,
+  H2,
   H3,
   IconByName,
   overrideColorTheme,
@@ -33,13 +34,19 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                   mr={4}
                   borderRadius="md"
                   source={{
-                    uri: "https://via.placeholder.com/50x50.png",
+                    uri: schoolData?.image ? schoolData?.image : "",
                   }}
-                />
+                  bg="schools.primary"
+                >
+                  <H2 color="schools.white">
+                    {schoolData?.schoolName?.slice(0, 2).toUpperCase()}
+                  </H2>
+                </Avatar>
                 <VStack>
                   <H3>{schoolData?.schoolName}</H3>
                   <BodyMedium color={colors.subtitle}>
-                    {schoolData?.district}
+                    {typeof schoolData?.address == "string" &&
+                      schoolData?.address}
                   </BodyMedium>
                 </VStack>
               </HStack>

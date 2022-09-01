@@ -33,7 +33,6 @@ export default function Footer({ menues, routeDynamics, ...props }) {
       <Pressable
         {...prop}
         onPress={() => {
-          console.log('hello footer press')
           navigate(
             routeDynamics
               ? generatePath(item.route, { ...{ id: item.id } })

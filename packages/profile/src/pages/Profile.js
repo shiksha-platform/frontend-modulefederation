@@ -8,6 +8,7 @@ import {
   HStack,
   Pressable,
   PresenceTransition,
+  Avatar,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -21,10 +22,14 @@ import {
   telemetryFactory,
   userRegistryService,
   attendanceRegistryService,
+  roleRegistryService,
   H4,
   H1,
   H3,
   overrideColorTheme,
+  BodyLarge,
+  workHistoryRegistryService,
+  schoolRegistryService,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
 import SelfAttendanceSheet from "../components/SelfAttendanceSheet";
@@ -33,7 +38,7 @@ import colorTheme from "../colorTheme";
 import TeacherEdit from "../components/TeacherEdit";
 
 const colors = overrideColorTheme(colorTheme);
-// Start editing here, save and see your changes.
+
 export default function Profile({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [teacherObject, setTeacherObject] = useState({});
@@ -41,7 +46,72 @@ export default function Profile({ footerLinks, appName, setAlert }) {
   const token = localStorage.getItem("token");
   const [showModal, setShowModal] = React.useState(false);
   const [attendance, setAttendance] = React.useState({});
+  const [workHistoryData, setWorkHistoryData] = React.useState([]);
+  const [expArray, setExpArray] = React.useState([]);
+  const [schoolData, setSchoolData] = React.useState({});
+  const [roleData, setRoleData] = React.useState({});
   const navigate = useNavigate();
+
+  const userObject = {
+    aadhar_number: "aadhaar",
+    residential_address: "address",
+    district: "district",
+    block: "block",
+    pincode: "pincode",
+    date_of_birth: "birthDate",
+    gender: "gender",
+    social_category: "socialCategory",
+    blood_group: "bloodGroup",
+    marital_status: "maritalStatus",
+    disability: "disability",
+    designation: "leavingDesignation",
+    cadre: "cadre",
+    transfer_order_number: "transferOrderNumber",
+    date_of_order: "dateOfOrder",
+    place_of_posting: "placeOfPosting",
+    mode_of_posting: "modeOfPosting",
+    phoneNumber: "phoneNumber",
+    email: "email",
+  };
+
+  const schoolObject = {
+    employee_code: "employeeCode",
+    employment_address: "schoolAddress",
+    district: "schoolDistrict",
+    block: "schoolBlock",
+    pincode: "schoolPincode",
+    employment_type: "employmentType",
+    "present_designation/cadre": "designation",
+    qualifications: "profQualification",
+    teacher_category: "designation",
+    "subjects / subject ids": "subjectIds",
+    date_of_joining: "joiningDate",
+    reporting_officer: "reportsTo",
+    place_of_current_posting: "schoolDistrict",
+  };
+
+  const getWorkHistoryData = async () => {
+    const result = await workHistoryRegistryService.sendNotificationSearch({
+      userId: teacherId,
+    });
+
+    let arr = [];
+    result.map((e) => {
+      const startDate = new Date(e?.dateOfJoining).toDateString();
+      const endDate = new Date(e?.dateOfRelieving).toDateString();
+      arr = [
+        ...arr,
+        `${e?.organizationName}        ${startDate}  -  ${endDate}`,
+      ];
+    });
+    setExpArray(arr);
+    setWorkHistoryData(result);
+  };
+
+  const getSchoolData = async (id, resultTeacher) => {
+    const result = await schoolRegistryService.getOne({ id: id });
+    setTeacherObject({ ...resultTeacher, ...result });
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -49,7 +119,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
     const getData = async () => {
       if (!ignore) {
         const resultTeacher = await userRegistryService.getOne();
-        setTeacherObject(resultTeacher);
+        //setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),
           toDate: moment().format("YYYY-MM-DD"),
@@ -92,6 +162,8 @@ export default function Profile({ footerLinks, appName, setAlert }) {
           thisMonth: thisPersantage,
           lastMonth: lastPersantage,
         });
+        getWorkHistoryData();
+        getSchoolData(resultTeacher.schoolId, resultTeacher);
       }
     };
     getData();
@@ -127,7 +199,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
       }}
     >
       <Layout
-        imageUrl={`${window.location.origin}/class.png`}
+        //imageUrl={`${process.env.PUBLIC_URL}/class.png`}
         _appBar={{ languages: manifest.languages }}
         _header={{
           title: t("MY_CLASSES"),
@@ -147,11 +219,25 @@ export default function Profile({ footerLinks, appName, setAlert }) {
                     <H1 color={"profile.white"}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
+                    <BodyLarge color={colors.date}>
+                      {teacherObject?.designation}
+                    </BodyLarge>
                   </VStack>
                   {/* <HStack>
                     <IconByName color={colors.white} name="CameraLineIcon" />
                     <IconByName color={colors.white} name="ShareLineIcon" />
                   </HStack> */}
+                  <Avatar
+                    size="48px"
+                    bg="amber.500"
+                    source={{
+                      uri: teacherObject?.image,
+                    }}
+                  >
+                    {`${teacherObject?.firstName} ${teacherObject?.lastName}`
+                      .toUpperCase()
+                      .substr(0, 2)}
+                  </Avatar>
                 </HStack>
               </Box>
             </Box>
@@ -164,7 +250,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
             items={[
               {
                 keyId: 1,
-                title: t("TAKE_ATTENDANCE"),
+                title: t("MARK_ATTENDANCE"),
                 icon: "CalendarCheckLineIcon",
                 boxMinW: "177px",
                 _text: { minW: "115px" },
@@ -180,7 +266,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
         }}
         _footer={footerLinks}
       >
-        <Stack space={1}>
+        <Stack space={2}>
           <Section title={t("ATTENDANCE")} />
           <Section>
             <Stack space={5}>
@@ -199,19 +285,72 @@ export default function Profile({ footerLinks, appName, setAlert }) {
           <TeacherEdit
             header={t("PERSONAL_DETAILS")}
             teacherObject={teacherObject}
+            fieldMapper={userObject}
             onlyParameterProp={[
-              "employeeCode",
-              "joiningDate",
-              "birthDate",
+              "aadhar_number",
+              "residential_address",
+              "district",
+              "block",
+              "pincode",
+              "date_of_birth",
               "gender",
+              "social_category",
+              "blood_group",
+              "marital_status",
+              "disability",
             ]}
             isEditable={false}
+            seeMore={true}
+          />
+          <TeacherEdit
+            header={t("Employment Details")}
+            teacherObject={teacherObject}
+            fieldMapper={schoolObject}
+            onlyParameterProp={[
+              "employee_code",
+              "employment_address",
+              "district",
+              "block",
+              "pincode",
+              "employment_type",
+              "present_designation/cadre",
+              "qualifications",
+              "teacher_category",
+              "subjects / subject ids",
+              "date_of_joining",
+              "reporting_officer",
+              "place_of_current_posting",
+            ]}
+            isEditable={false}
+            seeMore={true}
+          />
+          <TeacherEdit
+            header={t("Past_Positions_and_Transfer_History")}
+            teacherObject={workHistoryData}
+            workData={workHistoryData}
+            fieldMapper={userObject}
+            nestedCollapse={true}
+            nestedHeader={expArray}
+            onlyParameterProp={[
+              "designation",
+              "cadre",
+              "transfer_order_number",
+              "date_of_order",
+              "place_of_posting",
+              "mode_of_posting",
+            ]}
+            isEditable={false}
+            seeMore={false}
+            seeMoreBelowSection={true}
           />
           <TeacherEdit
             header={t("CONTACT_DETAILS")}
             teacherObject={teacherObject}
+            fieldMapper={userObject}
             setTeacherObject={setTeacherObject}
             onlyParameterProp={["phoneNumber", "email"]}
+            isEditable={false}
+            seeMore={false}
           />
         </Stack>
       </Layout>
