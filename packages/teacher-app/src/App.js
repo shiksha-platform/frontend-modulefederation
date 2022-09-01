@@ -52,6 +52,12 @@ function App() {
   const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
   // Assessment Module Imports
   const Assessment = React.lazy(() => import("assessment/Assessment"));
+  const AssessmentGiven = React.lazy(() =>
+    import("assessment/AssessmentGiven")
+  );
+  const PastAssessments = React.lazy(() =>
+    import("assessment/PastAssessments")
+  );
   const ExamScores = React.lazy(() => import("assessment/ExamScores"));
   const SuccessPublicationReport = React.lazy(() =>
     import("assessment/successPublicationReport")
@@ -325,11 +331,6 @@ function App() {
     },
     {
       moduleName: "assessment",
-      path: "/assessment/assessment-success",
-      component: SuccessPublicationReport,
-    },
-    {
-      moduleName: "assessment",
       path: "/assessment/assessment-detailed-report",
       component: ReportDetails,
     },
@@ -337,6 +338,16 @@ function App() {
       moduleName: "assessment",
       path: "/assessment/quml-test",
       component: QumlTest,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/past-assessments/:classId/:subject",
+      component: PastAssessments,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/given/:classId/:subject",
+      component: AssessmentGiven,
     },
     {
       moduleName: "assessment",
@@ -433,7 +444,7 @@ function App() {
     },
     {
       moduleName: "app",
-      path: "*",
+      path: "/",
       component: Home,
     },
   ];

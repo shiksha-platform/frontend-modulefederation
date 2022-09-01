@@ -1,10 +1,6 @@
 import {
   BodyLarge,
-  BodySmall,
-  Collapsible,
   H2,
-  H3,
-  IconByName,
   Layout,
   ProgressBar,
   overrideColorTheme,
@@ -13,54 +9,55 @@ import {
   Loading,
   useWindowSize,
   studentRegistryService,
+  classRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-import {
-  Box,
-  HStack,
-  Text,
-  VStack,
-  Button,
-  Actionsheet,
-  Stack,
-  Divider,
-  Avatar,
-  Spacer,
-} from "native-base";
+import { Box, HStack, VStack, Button } from "native-base";
 import colorTheme from "../colorTheme";
 import moment from "moment";
+import report from "utils/report";
 const colors = overrideColorTheme(colorTheme);
 
-export default function PastAssessmentList({
-  classId,
-  selectedSubject,
-  schoolDetails,
-  footerLinks,
-}) {
+const ORAL_ASSESSMENT = "Oral Assessment";
+const WRITTEN_ASSESSMENT = "Written Assessment";
+
+export default function PastAssessments({ footerLinks, setAlert }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [width, height] = useWindowSize();
   const [loading, setLoading] = useState(true);
   const [allGroupedAssessments, setAllGroupedAssessments] = useState({});
   const [studentlist, setStudentlist] = useState([]);
+  const [classObject, setClassObject] = useState({});
+
+  let { classId, subject } = useParams();
+  classId = classId ? classId : "ce045222-52a8-4a0a-8266-9220f63baba7";
+  subject = subject ? subject : "English";
 
   const getStudentsList = async () => {
-    const list = await studentRegistryService.getAll({ classId });
-    setStudentlist(list);
+    const list = await studentRegistryService
+      .getAll({ classId })
+      .catch((e) => setAlert(e.message));
+    setStudentlist(list ? list : []);
     setLoading(false);
   };
 
+  const getClass = async () => {
+    const classDetails = await classRegistryService
+      .getOne({ id: classId })
+      .catch((e) => setAlert(e.message));
+    setClassObject(classDetails);
+  };
+
   const getAllAssessment = async () => {
-    const data = await assessmentRegistryService.getAllAssessment({
-      filters: { groupId: classId, subject: selectedSubject },
-    });
-    data &&
-      data.forEach((item) => {
-        item.date = moment(item.createdAt).format("MM-DD-YYYY");
-      });
+    const data = await assessmentRegistryService
+      .getAllAssessment({
+        groupId: classId,
+        subject: subject,
+      })
+      .catch((e) => setAlert(e.message));
     const groupedAssessments = groupBy(data, "date");
     setAllGroupedAssessments(groupedAssessments);
     setLoading(false);
@@ -81,18 +78,20 @@ export default function PastAssessmentList({
   const getCards = () => {
     let content = [];
     for (let key in allGroupedAssessments) {
-      let writtenAssessedStudents = allGroupedAssessments[key].filter(
-        (item) => {
-          return item.type === "Written Assessment";
-        }
-      ).length;
-      let oralAssessedStudents = allGroupedAssessments[key].filter((item) => {
-        return item.type === "Oral Assessment";
-      }).length;
+      const progressAssessmentWritten = report(
+        studentlist,
+        allGroupedAssessments[key],
+        WRITTEN_ASSESSMENT
+      );
+      const progressAssessmentOral = report(
+        studentlist,
+        allGroupedAssessments[key],
+        ORAL_ASSESSMENT
+      );
       content.push(
-        <Box>
+        <Box key={key}>
           {/*<BodyLarge mb={2}>{allGroupedAssessments[key][0].date}</BodyLarge>*/}
-          <BodyLarge mb={2}>{key}</BodyLarge>
+          <BodyLarge mb={2}>{moment(key).format("DD MMM Y")}</BodyLarge>
           <VStack space={4}>
             <Box
               borderWidth="1"
@@ -114,20 +113,7 @@ export default function PastAssessmentList({
                       h="35px"
                       _bar={{ rounded: "md", mb: "2" }}
                       isLabelCountHide
-                      data={[
-                        {
-                          name: `${writtenAssessedStudents} Assessed`,
-                          color: colors.successBarColor,
-                          value: writtenAssessedStudents,
-                        },
-                        {
-                          name: `${
-                            studentlist.length - writtenAssessedStudents
-                          } pending`,
-                          color: colors.pendingBarColor,
-                          value: studentlist.length - writtenAssessedStudents,
-                        },
-                      ]}
+                      data={progressAssessmentWritten}
                     />
                   </VStack>
                 </Box>
@@ -152,39 +138,38 @@ export default function PastAssessmentList({
                       h="35px"
                       _bar={{ rounded: "md", mb: "2" }}
                       isLabelCountHide
-                      data={[
-                        {
-                          name: `${oralAssessedStudents} Assessed`,
-                          color: colors.successBarColor,
-                          value: oralAssessedStudents,
-                        },
-                        {
-                          name: `${
-                            studentlist.length - oralAssessedStudents
-                          } pending`,
-                          color: colors.pendingBarColor,
-                          value: studentlist.length - oralAssessedStudents,
-                        },
-                      ]}
+                      data={progressAssessmentOral}
                     />
                   </VStack>
                 </Box>
               </VStack>
             </Box>
+            <Button
+              onPress={(e) =>
+                navigate(
+                  `/assessment/assessment-detailed-report/${classId}/${subject}/${key}`
+                )
+              }
+              _text={{ color: "white" }}
+              py={3}
+            >
+              {t("VIEW_REPORT")}
+            </Button>
           </VStack>
         </Box>
       );
     }
-    return content;
+    return content.length ? content : <H2>Data Not Found</H2>;
   };
 
   useEffect(() => {
     getStudentsList();
+    getClass();
     getAllAssessment();
   }, []);
 
   if (loading) {
-    return <Loading height={height - height / 2} />;
+    return <Loading />;
   }
 
   return (
@@ -198,13 +183,13 @@ export default function PastAssessmentList({
       }}
       subHeader={
         <VStack>
-          <H2>{selectedSubject}</H2>
+          <H2>{subject}</H2>
           <HStack alignItems={"center"}>
             <Caption color={colors.gray}>
-              {schoolDetails && schoolDetails.name}
+              {classObject && classObject.name}
             </Caption>
-            {schoolDetails && schoolDetails.section && (
-              <Caption color={colors.gray}> {schoolDetails.section}</Caption>
+            {classObject && classObject.section && (
+              <Caption color={colors.gray}> {classObject.section}</Caption>
             )}
           </HStack>
         </VStack>
@@ -213,9 +198,7 @@ export default function PastAssessmentList({
       _footer={footerLinks}
     >
       <Box p={4}>
-        <>
-          <VStack space={12}>{getCards()}</VStack>
-        </>
+        <VStack space={12}>{getCards()}</VStack>
       </Box>
     </Layout>
   );

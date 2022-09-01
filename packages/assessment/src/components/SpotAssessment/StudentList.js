@@ -40,15 +40,10 @@ const UNMARKED = "Unmarked";
 
 const StudentListCard = ({
   classId,
-  setPageName,
-  students,
-  setHeaderDetails,
-  chooseAssessmentTypeModal,
   handleSelectedStudent,
   selectedStudent,
   handleStudentPageNext,
 }) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
   // let { classId } = useParams();
@@ -123,7 +118,6 @@ const StudentListCard = ({
                     </Caption>{" "}
                     <Caption color={colors.lightGray}> ●</Caption>{" "}
                     <Caption color={colors.gray}>
-                      {" "}
                       {t("Present ") + attendanceData.present}
                     </Caption>
                   </HStack>

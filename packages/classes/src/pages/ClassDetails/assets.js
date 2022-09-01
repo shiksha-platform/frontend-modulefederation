@@ -1,37 +1,37 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import { Collapsible, H2, classRegistryService, H1 } from "@shiksha/common-lib";
-import { Stack, Box, VStack, HStack, Menu, Pressable } from "native-base";
+import {
+  Collapsible,
+  H2,
+  classRegistryService,
+  H1,
+  assessmentRegistryService,
+} from "@shiksha/common-lib";
+import { Stack, Box, VStack, HStack } from "native-base";
 
-export const routes = () => {
+export const routes = (classId) => {
   const { t } = useTranslation();
-  return [
-    {
-      title: t("SCIENCE"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("MATHS"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("ENGLISH"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("HISTORY"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("GEOGRAPHY"),
-      component: <SubjectRoute />,
-    },
-  ];
+  const [subjects, setSubjects] = React.useState([]);
+
+  React.useEffect(async () => {
+    const data = await assessmentRegistryService.getSubjectsList({
+      gradeLevel: "class1",
+    });
+    setSubjects(data);
+  }, []);
+
+  return subjects.map((item) => {
+    return {
+      title: item.name,
+      component: <SubjectRoute subject={item.code} classId={classId} />,
+    };
+  });
 };
 
-const SubjectRoute = () => {
+const SubjectRoute = ({ subject, classId }) => {
   const { t } = useTranslation();
 
+  const Assessment = React.lazy(() => import("assessment/Assessment"));
   return (
     <Box>
       <Box
@@ -46,23 +46,17 @@ const SubjectRoute = () => {
           <Collapsible
             header={
               <HStack alignItems="center" space="2">
-                {t("ASSIGNMENTS")}
-                <Box
-                  rounded="full"
-                  borderWidth="1"
-                  borderColor={"classes.primary"}
-                  px="6px"
-                  _text={{
-                    color: "classes.primary",
-                    fontSize: "10px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Coming Soon...
-                </Box>
+                {t("ASSESSMENT")}
               </HStack>
             }
-          />
+          >
+            <Suspense fallback="loading...">
+              <Assessment
+                isLayoutNotRequired={true}
+                {...{ classId, subject }}
+              />
+            </Suspense>
+          </Collapsible>
         </Stack>
       </Box>
       <Box

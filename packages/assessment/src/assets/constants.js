@@ -1,3 +1,1 @@
-export const QUMLBaseURL = () => {
-  return "https://quml.shikshaplatform.io";
-};
+export const QUMLBaseURL = "https://quml.shikshaplatform.io";

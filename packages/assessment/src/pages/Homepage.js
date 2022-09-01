@@ -8,36 +8,39 @@ import {
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React from "react";
-import { Avatar, HStack, Stack, Text, VStack } from "native-base";
-import StudentListCard from "../components/SpotAssessment/StudentList";
+import { HStack, Stack, Text, VStack } from "native-base";
 import colorTheme from "../colorTheme";
 import SpotAssessmentCard from "../components/SpotAssessment/SpotAssessmentCard";
 import ExamScoresCard from "../components/ExamScores/ExamScoresCard";
+import { useNavigate } from "react-router-dom";
 
 const colors = overrideColorTheme(colorTheme);
 
 export default function Homepage({
+  classId,
+  subject,
   setPageName,
+  footerLinks,
   isLayoutNotRequired,
   _handleSpotAssessmentStart,
 }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   if (isLayoutNotRequired) {
     return (
-      <Stack space={1} mb="2" shadow={2}>
-        <Collapsible
-          defaultCollapse={true}
-          header={<BodyLarge>{t("Assessment")}</BodyLarge>}
-        >
-          <VStack py="4" space={4}>
-            <SpotAssessmentCard
-              setPageName={setPageName}
-              _handleSpotAssessmentStart={_handleSpotAssessmentStart}
-            />
-            <ExamScoresCard setPageName={setPageName} />
-          </VStack>
-        </Collapsible>
+      <Stack space={1} mb="2">
+        <VStack py="4" space={4}>
+          <SpotAssessmentCard
+            _viewPastAssessment={{
+              onPress: () => {
+                navigate(`/assessment/past-assessments/${classId}/${subject}`);
+              },
+            }}
+            _handleSpotAssessmentStart={_handleSpotAssessmentStart}
+          />
+          <ExamScoresCard setPageName={setPageName} />
+        </VStack>
       </Stack>
     );
   }
@@ -58,45 +61,7 @@ export default function Homepage({
         </HStack>
       }
       _subHeader={{ bg: colors.cardBg }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Stack space={1} mb="2" shadow={2}>
         <Collapsible
@@ -105,7 +70,13 @@ export default function Homepage({
         >
           <VStack py="4" space={4}>
             <SpotAssessmentCard
-              setPageName={setPageName}
+              _viewPastAssessment={{
+                onPress: () => {
+                  navigate(
+                    `/assessment/past-assessments/${classId}/${subject}`
+                  );
+                },
+              }}
               _handleSpotAssessmentStart={_handleSpotAssessmentStart}
             />
             <ExamScoresCard setPageName={setPageName} />

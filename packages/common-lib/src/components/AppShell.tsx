@@ -6,6 +6,7 @@ import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
 import { getAppshellData } from './helper'
 import Alert from './Alert'
+import NotFound from './NotFound'
 
 function AppShell({
   colors,
@@ -31,7 +32,13 @@ function AppShell({
       if (isShowFooterLink) {
         setFooterLinks({ menues: newFooterLinks })
       }
-      setAccessRoutes(newRoutes)
+      setAccessRoutes([
+        ...newRoutes,
+        {
+          path: '*',
+          component: NotFound
+        }
+      ])
       setTheme(newTheme)
     }
 

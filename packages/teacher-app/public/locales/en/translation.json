@@ -92,6 +92,7 @@
   "STUDENT_IS_GOOD_NEED": "Student is... good at... has issues... has special needs",
   "SAVE": "Save",
   "SAVE_VIEW_REPORT": "Save and View Report",
+  "VIEW_REPORT": "View Report",
   "ATTENDANCE_REGISTER": "Attendance register",
   "SEE_FULL_REPORT": "See full report",
   "TOTAL": "Total",
@@ -121,6 +122,7 @@
   "HISTORY": "History",
   "GEOGRAPHY": "Geography",
   "ASSIGNMENTS": "Content Videos",
+  "ASSESSMENT": "Assessment",
   "LESSON_PLANS": "Lesson Plans",
   "ASSESSMENTS": "Worksheets",
   "RANGE": "Range",
@@ -351,5 +353,7 @@
   "UPLOAD_PHPTP": "Upload Photo",
   "ENTER_TITLE_HINT": "Enter title hint",
   "TEMPLATE_NO": "Template No",
-  "REPORT_CONFIG_TYPE_NOT_FOUND": "Report config type not found"
+  "REPORT_CONFIG_TYPE_NOT_FOUND": "Report config type not found",
+  "CLASS_PARTICIPATION_IN_ORAL_ASSESSMENTS": "Class Participation in Oral Assessments",
+  "CLASS_PARTICIPATION_IN_WRITTEN_ASSESSMENTS": "Class Participation in Written Assessments"
 }

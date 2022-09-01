@@ -17,7 +17,7 @@ function App() {
     },
     {
       moduleName: "profile",
-      path: "*",
+      path: "/",
       component: Profile,
     },
   ];

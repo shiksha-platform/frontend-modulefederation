@@ -1,38 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
-  capture,
-  IconByName,
   ProgressBar,
-  telemetryFactory,
   overrideColorTheme,
   BodyLarge,
   BodySmall,
   Subtitle,
-  H2,
-  H3,
-  assessmentRegistryService,
 } from "@shiksha/common-lib";
-import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-  Divider,
-  Actionsheet,
-  Checkbox,
-} from "native-base";
+import { VStack, Box, Button, Divider } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 const SpotAssessmentCard = ({
-  setPageName,
-  appName,
   _handleSpotAssessmentStart,
+  _viewPastAssessment,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -128,9 +110,7 @@ const SpotAssessmentCard = ({
           my={2}
           textAlign={"center"}
           color={colors.primary}
-          onPress={() => {
-            setPageName("pastAssessment");
-          }}
+          {..._viewPastAssessment}
         >
           {t("VIEW PAST ASSESSMENTS")}
         </Subtitle>

@@ -17,7 +17,7 @@ function App() {
     <NativeBaseProvider theme={theme}>
       <Router basename={process.env.PUBLIC_URL}>
         <Routes>
-          <Route path="*" element={<Login />} />
+          <Route path="/" element={<Login />} />
         </Routes>
       </Router>
     </NativeBaseProvider>
