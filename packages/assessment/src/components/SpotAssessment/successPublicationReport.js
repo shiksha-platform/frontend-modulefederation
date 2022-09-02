@@ -7,7 +7,6 @@ import {
   H2,
   H3,
   ProgressBar,
-  overrideColorTheme,
   BodyLarge,
   Caption,
   Subtitle,
@@ -15,51 +14,79 @@ import {
   telemetryFactory,
   assessmentRegistryService,
   studentRegistryService,
+  classRegistryService,
 } from "@shiksha/common-lib";
-import { Button, Box, VStack, Text, HStack, Avatar } from "native-base";
+import {
+  Button,
+  Box,
+  VStack,
+  Text,
+  HStack,
+  Avatar,
+  useTheme,
+} from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../../colorTheme";
-import moment from "moment";
-const colors = overrideColorTheme(colorTheme);
+import report from "utils/report";
+
+const ORAL_ASSESSMENT = "Oral Assessment";
+const WRITTEN_ASSESSMENT = "Written Assessment";
 
 export default function SuccessPublicationReport({
   appName,
   classId,
-  selectedSubject,
-  schoolDetails,
+  subject,
 }) {
+  const { colors } = useTheme();
+  console.log({ colors });
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [allGroupedAssessments, setAllGroupedAssessments] = useState({});
   const [studentlist, setStudentlist] = useState([]);
-
-  const [progressAssessment, setProgressAssessment] = React.useState([
-    {
-      name: "12 Assessed",
-      color: colors.successBarColor,
-      value: 12,
-    },
-    {
-      name: "6 pending",
-      color: colors.pendingBarColor,
-      value: 6,
-    },
-  ]);
+  const [classObject, setClassObject] = useState({});
+  const [achieverStudents, setAchieverStudents] = React.useState([]);
+  const [progressAssessmentWritten, setProgressAssessmentWritten] =
+    React.useState([]);
+  const [progressAssessmentOral, setProgressAssessmentOral] = React.useState(
+    []
+  );
 
   useEffect(() => {
     getStudentsList();
-    getAllAssessment();
   }, []);
 
   const getStudentsList = async () => {
-    const list = await studentRegistryService.getAll({ classId });
-    setStudentlist(list);
-    setLoading(false);
+    let classObj = await classRegistryService.getOne({ id: classId });
+    setClassObject(classObj);
+    const studentData = await studentRegistryService.getAll({ classId });
+    setStudentlist(studentData);
+    const data = await assessmentRegistryService.getAllAssessment({
+      filters: { groupId: classId, subject: subject },
+    });
+
+    const assessmentStudentWritten = studentData.filter(
+      (stu) =>
+        data.filter((track) => {
+          let scoreBoolean = false;
+          if (track?.answersheet) {
+            const data = JSON.parse(track.answersheet);
+            scoreBoolean =
+              track.totalScore ===
+              data?.children.reduce((value, item) => value + item.score, 0);
+          }
+          return (
+            stu.id === track.studentId &&
+            track.type === WRITTEN_ASSESSMENT &&
+            scoreBoolean
+          );
+        }).length
+    );
+    setAchieverStudents(assessmentStudentWritten);
+
+    setProgressAssessmentWritten(report(studentData, data, WRITTEN_ASSESSMENT));
+    setProgressAssessmentOral(report(studentData, data, ORAL_ASSESSMENT));
   };
 
   const _handleSpotAssessmentNotificationSend = () => {
@@ -72,138 +99,45 @@ export default function SuccessPublicationReport({
   };
 
   const handleFullReportClick = () => {
-    // _handleFullReportStartEvent();
-    navigate("/assessment/assessment-detailed-report");
+    navigate(`/assessment/assessment-detailed-report/${classId}/${subject}`);
   };
 
-  const getAllAssessment = async () => {
-    const data = await assessmentRegistryService.getAllAssessment({
-      filters: { groupId: classId, subject: selectedSubject },
-    });
-    data.forEach((item) => {
-      item.date = moment(item.createdAt).format("MM-DD-YYYY");
-    });
-    const groupedAssessments = groupBy(data, "date");
-    setAllGroupedAssessments(groupedAssessments);
-    setLoading(false);
-  };
-
-  function groupBy(objectArray, property) {
-    return objectArray.reduce((acc, obj) => {
-      const key = obj[property];
-      if (!acc[key]) {
-        acc[key] = [];
-      }
-      // Add object to list for given key's value
-      acc[key].push(obj);
-      return acc;
-    }, {});
-  }
-
-  const getCard = (type) => {
-    let content = [];
-    for (let key in allGroupedAssessments) {
-      // if(key === moment().format('MM-DD-YYYY')){
-      if (key === "07-28-2022") {
-        let writtenAssessedStudents = allGroupedAssessments[key].filter(
-          (item) => {
-            return item.type === "Written Assessment";
-          }
-        ).length;
-        let oralAssessedStudents = allGroupedAssessments[key].filter((item) => {
-          return item.type === "Oral Assessment";
-        }).length;
-        content.push(
-          <FailureCard
-            type={type}
-            writtenAssessedStudents={writtenAssessedStudents}
-            oralAssessedStudents={oralAssessedStudents}
-          />
-        );
-      }
-    }
-    return content;
-  };
-
-  const FailureCard = ({
-    type,
-    oralAssessedStudents,
-    writtenAssessedStudents,
-  }) => {
+  const FailureCard = ({ type, progressAssessmentData }) => {
     return (
       <Box borderRadius="md">
         <VStack>
-          <Box px="4" py={2} bg={colors.scoreCardIcon2} roundedTop="6">
+          <Box px="4" py={2} bg={"assessment.danger"} roundedTop="6">
             <HStack alignItems="center">
               <IconByName
                 name="EmotionSadLineIcon"
                 pr="0"
-                color={colors.white}
+                color={"assessment.white"}
               />
-              <Subtitle color={colors.white}>
-                {" "}
+              <Subtitle color={"assessment.white"}>
                 Poor overall performance!
               </Subtitle>
             </HStack>
           </Box>
-          <Box p="4" bg={colors.QuationsBoxContentBg}>
+          <Box p="4" bg={"assessment.primaryLight"}>
             <VStack flex="auto" alignContent={"center"}>
-              {type === "oral" ? (
-                <ProgressBar
-                  isTextShow
-                  legendType="separated"
-                  h="35px"
-                  _bar={{ rounded: "md", mb: "2" }}
-                  isLabelCountHide
-                  _legendType={{ color: colors.gray }}
-                  data={[
-                    {
-                      name: `${oralAssessedStudents} Assessed`,
-                      color: colors.successBarColor,
-                      value: oralAssessedStudents,
-                    },
-                    {
-                      name: `${
-                        studentlist.length - oralAssessedStudents
-                      } pending`,
-                      color: colors.pendingBarColor,
-                      value: studentlist.length - oralAssessedStudents,
-                    },
-                  ]}
-                />
-              ) : (
-                <ProgressBar
-                  isTextShow
-                  legendType="separated"
-                  h="35px"
-                  _bar={{ rounded: "md", mb: "2" }}
-                  isLabelCountHide
-                  _legendType={{ color: colors.gray }}
-                  data={[
-                    {
-                      name: `${writtenAssessedStudents} Assessed`,
-                      color: colors.successBarColor,
-                      value: writtenAssessedStudents,
-                    },
-                    {
-                      name: `${
-                        studentlist.length - writtenAssessedStudents
-                      } pending`,
-                      color: colors.pendingBarColor,
-                      value: studentlist.length - writtenAssessedStudents,
-                    },
-                  ]}
-                />
-              )}
+              <ProgressBar
+                isTextShow
+                legendType="separated"
+                h="35px"
+                _bar={{ rounded: "md", mb: "2" }}
+                isLabelCountHide
+                _legendType={{ color: "assessment.gray" }}
+                data={progressAssessmentData}
+              />
             </VStack>
           </Box>
           <Box
             p="4"
-            bg={colors.QuationsBoxBg}
+            bg={"assessment.QuationsBoxBg"}
             borderBottomRadius={6}
             textAlign="center"
           >
-            {type === "oral" ? (
+            {type === ORAL_ASSESSMENT ? (
               <Subtitle>
                 Average correct words/minute is <H2>12</H2>
               </Subtitle>
@@ -221,12 +155,9 @@ export default function SuccessPublicationReport({
   return (
     <Layout
       _appBar={{
-        // onPressBackButton: handleBackButton
-        //   ? handleBackButton
-        //   : (e) => console.log(e),
         languages: manifest.languages,
-        color: colors.success,
-        _box: { bg: colors.bgSuccessAlert },
+        color: "assessment.success",
+        _box: { bg: "assessment.successAlert" },
       }}
     >
       <Loading
@@ -234,16 +165,16 @@ export default function SuccessPublicationReport({
         height={height - 230}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack bg={colors.bgSuccessAlert} pb="100px" pt="32px">
+            <VStack bg={"assessment.successAlert"} pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
                 name="CheckboxCircleFillIcon"
-                color={colors.success}
+                color={"assessment.success"}
                 _icon={{ size: 100 }}
               />
               <Box alignItems="center">
-                <H1 color={colors.success}>Completed</H1>
-                <BodyLarge color={colors.success}>
+                <H1 color={"assessment.success"}>Completed</H1>
+                <BodyLarge color={"assessment.success"}>
                   Your spot assessment successfully
                 </BodyLarge>
               </Box>
@@ -253,23 +184,22 @@ export default function SuccessPublicationReport({
                 p: 4,
                 mt: -30,
                 position: "relative",
-                bg: colors.reportDetailsSubheaderBg,
+                bg: "assessment.reportDetailsSubheaderBg",
                 roundedTop: "20",
                 _text: { textTransform: "inherit" },
               }}
             >
               <VStack>
-                <H2>{selectedSubject}</H2>
+                <H2>{subject}</H2>
                 <HStack alignItems={"center"}>
-                  <Caption color={colors.gray}>
-                    Class {schoolDetails && schoolDetails.name}
+                  <Caption color={"assessment.gray"}>
+                    Class {classObject && classObject?.name}
                   </Caption>
-                  {schoolDetails && schoolDetails.section && (
+                  {classObject && classObject?.section && (
                     <>
-                      <Caption color={colors.lightGray0}> ●</Caption>{" "}
-                      <Caption color={colors.gray}>
-                        {" "}
-                        {schoolDetails.section}
+                      <Caption color={"assessment.lightGray0"}> ●</Caption>{" "}
+                      <Caption color={"assessment.gray"}>
+                        {classObject?.section}
                       </Caption>
                     </>
                   )}
@@ -279,27 +209,33 @@ export default function SuccessPublicationReport({
 
             <Box>
               <VStack space={2}>
-                <Box p={4} bg={colors.white}>
+                <Box p={4} bg={"assessment.white"}>
                   <VStack space={6}>
                     <Box>
                       <VStack space={2}>
                         <H2>Class Participation in Oral Assessments</H2>
-                        {getCard("oral")}
+                        <FailureCard
+                          type={ORAL_ASSESSMENT}
+                          progressAssessmentData={progressAssessmentOral}
+                        />
                       </VStack>
                     </Box>
 
                     <Box>
                       <VStack space={2}>
                         <H2>Class Participation in Written Assessments</H2>
-                        {getCard("written")}
+                        <FailureCard
+                          type={WRITTEN_ASSESSMENT}
+                          progressAssessmentData={progressAssessmentWritten}
+                        />
                       </VStack>
                     </Box>
                   </VStack>
                 </Box>
 
-                <Box p={4} justifyContent="center" bg={colors.white}>
+                <Box p={4} justifyContent="center" bg={"assessment.white"}>
                   <H2>20 Students Assessed</H2>
-                  <Subtitle color={colors.gray} mb="4">
+                  <Subtitle color={"assessment.gray"} mb="4">
                     Assessment SMS will be sent to selected students
                   </Subtitle>
 
@@ -320,7 +256,7 @@ export default function SuccessPublicationReport({
                         colorScheme="button"
                         w="50%"
                         _text={{
-                          color: colors.white,
+                          color: "assessment.white",
                         }}
                         onPress={() => {
                           _handleSpotAssessmentNotificationSend();
@@ -331,93 +267,45 @@ export default function SuccessPublicationReport({
                     </HStack>
                   </Box>
                 </Box>
-                <Box p={4} bg={colors.white}>
-                  <Box py="4" bg={colors.white}>
-                    <VStack space={4}>
+
+                <Box bg={"assessment.white"} p={5}>
+                  <Box bg={"assessment.achiverBoxBg"} rounded={"md"} p="4">
+                    <VStack space={5}>
                       <H2 mb={3}>100% Achievers</H2>
-                      <Box p={4} bg={colors.achiverBoxBg} rounded="10">
-                        <HStack space={2} justifyContent="space-between">
-                          <Box textAlign={"center"}>
-                            <VStack space={1}>
+                      <HStack space={2} justifyContent="space-between">
+                        {achieverStudents.map((student, index) => (
+                          <Box textAlign={"center"} key={index}>
+                            <VStack space={1} alignItems={"center"}>
                               <Avatar
                                 size="48px"
-                                mx="auto"
                                 borderRadius="md"
-                                source={{
-                                  uri: "https://via.placeholder.com/50x50.png",
-                                }}
-                              />
-                              <H3>Shivani Joshi</H3>
-                              <Subtitle color={colors.gray}>
-                                Roll No 11
-                              </Subtitle>
+                                mr={4}
+                                bg="assessment.primary"
+                              >
+                                <H2 color="assessment.white">
+                                  {`${student.firstName} ${student.lastName}`
+                                    .toUpperCase()
+                                    .substr(0, 2)}
+                                </H2>
+                              </Avatar>
+                              <VStack>
+                                <H3>{`${student.firstName} ${student.lastName}`}</H3>
+                                <Subtitle color={"assessment.gray"}>
+                                  {t("Roll No. ") + student.admissionNo} ●
+                                </Subtitle>
+                              </VStack>
                             </VStack>
                           </Box>
-
-                          <Box textAlign={"center"}>
-                            <VStack space={1}>
-                              <Avatar
-                                size="48px"
-                                mx="auto"
-                                borderRadius="md"
-                                source={{
-                                  uri: "https://via.placeholder.com/50x50.png",
-                                }}
-                              />
-                              <H3>Shivani Joshi</H3>
-                              <Subtitle color={colors.gray}>
-                                Roll No 11
-                              </Subtitle>
-                            </VStack>
-                          </Box>
-
-                          <Box textAlign={"center"}>
-                            <VStack space={1}>
-                              <Avatar
-                                size="48px"
-                                mx="auto"
-                                borderRadius="md"
-                                source={{
-                                  uri: "https://via.placeholder.com/50x50.png",
-                                }}
-                              />
-                              <H3>Shivani Joshi</H3>
-                              <Subtitle color={colors.gray}>
-                                Roll No 11
-                              </Subtitle>
-                            </VStack>
-                          </Box>
-                        </HStack>
-                      </Box>
+                        ))}
+                        {achieverStudents?.length <= 0 ? (
+                          <Caption textTransform="inherit">
+                            {t("NO_STUDENT_HAS_ACHIEVED")}
+                          </Caption>
+                        ) : (
+                          <React.Fragment />
+                        )}
+                      </HStack>
                     </VStack>
-                  </Box>
-                  <Box mt={4}>
-                    <HStack justifyContent={"space-between"}>
-                      <Button
-                        colorScheme="button"
-                        variant="outline"
-                        w="45%"
-                        mr="2"
-                        // onPress={()=> setSelectedStudent()}
-                      >
-                        {t("Close")}
-                      </Button>
-
-                      <Button
-                        colorScheme="button"
-                        w="50%"
-                        ml="2"
-                        _text={{
-                          color: colors.white,
-                        }}
-                        /*onPress={() =>
-                          navigate("/assessment/assessment-detailed-report")
-                        }*/
-                        onPress={handleFullReportClick}
-                      >
-                        {t("See full report")}
-                      </Button>
-                    </HStack>
                   </Box>
                 </Box>
               </VStack>
@@ -425,39 +313,6 @@ export default function SuccessPublicationReport({
           </VStack>
         }
       />
-      {/*<Box
-        bg="white"
-        p="5"
-        position="fixed"
-        bottom="0"
-        shadow={2}
-        width={width}
-      >
-        <HStack justifyContent={'space-between'}>
-                      <Button
-                        colorScheme="button"
-                        variant="outline"
-                        _text={{
-                          fontSize: '14px',
-                          p:'1'
-                        }}
-                        // onPress={()=> setSelectedStudent()}
-                      >
-                        {t("View Message")}
-                      </Button>
-
-                      <Button
-                        colorScheme="button"
-                        _text={{
-                          color: '#fff',
-                          fontSize: '14px',
-                          p:'1'
-                        }}
-                      >
-                        {t("Send Another message")}
-                      </Button>
-                    </HStack>
-      </Box>*/}
     </Layout>
   );
 }

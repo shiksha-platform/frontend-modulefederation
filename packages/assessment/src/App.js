@@ -15,14 +15,15 @@ import QuestionList4 from "./components/ExamScores/QuestionLIst4";
 import QuestionList5 from "./components/ExamScores/QuestionLIst5";
 import QuestionList6 from "./components/ExamScores/QuestionLIst6";
 import QuestionList7 from "./components/ExamScores/QuestionLIst7";
-import PastAssessmentList from "./pages/PastAssessments";
+import PastAssessments from "./pages/PastAssessments";
 import PastExaminationsList from "./pages/PastExaminations";
+import AssessmentGiven from "pages/AssessmentGiven";
 
 function App() {
-  /*initializeI18n(
+  initializeI18n(
     ["assessment"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
-  );*/
+  );
   const routes = [
     {
       moduleName: "assessment",
@@ -56,7 +57,7 @@ function App() {
     },
     {
       moduleName: "assessment",
-      path: "/examscores",
+      path: "/assessment/examscores",
       component: ExamScores,
     },
     {
@@ -76,18 +77,18 @@ function App() {
     },
     {
       moduleName: "assessment",
-      path: "/assessment-success",
-      component: SuccessPublicationReport,
-    },
-    {
-      moduleName: "assessment",
-      path: "/assessment-detailed-report",
+      path: "/assessment/assessment-detailed-report/:classId/:subject",
       component: ReportDetails,
     },
     {
       moduleName: "assessment",
-      path: "/assessment/past-assessments",
-      component: PastAssessmentList,
+      path: "/assessment/assessment-detailed-report/:classId/:subject/:date",
+      component: ReportDetails,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/past-assessments/:classId/:subject",
+      component: PastAssessments,
     },
     {
       moduleName: "assessment",
@@ -98,6 +99,11 @@ function App() {
       moduleName: "assessment",
       path: "/assessment/quml-test",
       component: QumlTest,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/given/:classId/:subject",
+      component: AssessmentGiven,
     },
     {
       moduleName: "assessment",

@@ -92,7 +92,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "*",
+      path: "/",
       component: SchoolProfile,
     },
   ];

@@ -45,6 +45,13 @@ const theme = {
       notificationBg: '#E0DFF6'
     },
     schools: { ...colorTheme },
+    assessment: {
+      ...colorTheme,
+      primaryLight: '#FFF8F7',
+      reportDetailsSubheaderBg: '#FFCAAC',
+      QuationsBoxBg: '#FEF1EE',
+      achiverBoxBg: '#FFF9F9'
+    },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

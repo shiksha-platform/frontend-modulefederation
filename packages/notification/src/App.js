@@ -32,7 +32,7 @@ function App() {
       path: "/notification/outbox",
       component: Outbox,
     },
-    { moduleName: "notification", path: "*", component: Notification },
+    { moduleName: "notification", path: "/", component: Notification },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
   const skipLogin = !(

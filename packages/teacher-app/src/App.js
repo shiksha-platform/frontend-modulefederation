@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
-import {
-  initializeI18n,
-  AppShell,
-  AppRoutesContainer,
-  userRegistryService,
-  useAuthFlow,
-} from "@shiksha/common-lib";
+import { initializeI18n, AppShell } from "@shiksha/common-lib";
 
 import { routes } from "./Routes";
 
@@ -14,7 +8,6 @@ import { routes } from "./Routes";
 initializeI18n(["translation", "core", "attendance"]);
 
 function App() {
-  console.log(process.env);
   const LoginComponent = React.lazy(() => import("core/Login"));
   const skipLogin = !(
     process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||

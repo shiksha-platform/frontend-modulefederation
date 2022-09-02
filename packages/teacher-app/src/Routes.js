@@ -42,6 +42,8 @@ const VideoList = React.lazy(() => import("mylearning/VideoList"));
 const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
 // Assessment Module Imports
 const Assessment = React.lazy(() => import("assessment/Assessment"));
+const AssessmentGiven = React.lazy(() => import("assessment/AssessmentGiven"));
+const PastAssessments = React.lazy(() => import("assessment/PastAssessments"));
 const ExamScores = React.lazy(() => import("assessment/ExamScores"));
 const SuccessPublicationReport = React.lazy(() =>
   import("assessment/successPublicationReport")
@@ -325,13 +327,28 @@ export const routes = [
   },
   {
     moduleName: "assessment",
-    path: "/assessment/assessment-detailed-report",
+    path: "/assessment/assessment-detailed-report/:classId/:subject",
+    component: ReportDetails,
+  },
+  {
+    moduleName: "assessment",
+    path: "/assessment/assessment-detailed-report/:classId/:subject/:date",
     component: ReportDetails,
   },
   {
     moduleName: "assessment",
     path: "/assessment/quml-test",
     component: QumlTest,
+  },
+  {
+    moduleName: "assessment",
+    path: "/assessment/past-assessments/:classId/:subject",
+    component: PastAssessments,
+  },
+  {
+    moduleName: "assessment",
+    path: "/assessment/given/:classId/:subject",
+    component: AssessmentGiven,
   },
   {
     moduleName: "assessment",
@@ -428,7 +445,7 @@ export const routes = [
   },
   {
     moduleName: "app",
-    path: "*",
+    path: "/",
     component: Home,
   },
 ];

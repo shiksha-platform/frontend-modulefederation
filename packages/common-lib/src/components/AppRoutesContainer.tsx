@@ -7,57 +7,16 @@ import { useAuthFlow } from '../hooks/useAuthFlow'
 import Alert from './Alert'
 
 const AppRoutesContainer = ({
-  colors,
   theme,
   routes,
   basename,
-  isShowFooterLink,
+  footerLinks,
   appName,
+  alert,
+  setAlert,
   ...otherProps
 }: any) => {
   const user = useAuthFlow()
-  const [alert, setAlert] = React.useState<any>()
-  const footerLinks = !isShowFooterLink
-    ? {}
-    : {
-        menues: [
-          {
-            title: 'HOME',
-            icon: 'Home4LineIcon',
-            module: 'Registry',
-            route: '/',
-            routeparameters: {}
-          },
-          {
-            title: 'CLASSES',
-            icon: 'TeamLineIcon',
-            module: 'Registry',
-            route: '/classes',
-            routeparameters: {}
-          },
-          {
-            title: 'SCHOOL',
-            icon: 'GovernmentLineIcon',
-            module: 'Registry',
-            route: '/',
-            routeparameters: {}
-          },
-          {
-            title: 'TEACHING',
-            icon: 'BookOpenLineIcon',
-            module: 'Registry',
-            route: '/worksheet',
-            routeparameters: {}
-          },
-          {
-            title: 'CAREER',
-            icon: 'UserLineIcon',
-            module: 'Registry',
-            route: '/',
-            routeparameters: {}
-          }
-        ]
-      }
   return (
     <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
       <PushNotification />
@@ -76,9 +35,7 @@ const AppRoutesContainer = ({
                 key={index}
                 path={item.path}
                 element={
-                  <item.component
-                    {...{ footerLinks, appName, colors, setAlert }}
-                  />
+                  <item.component {...{ footerLinks, appName, setAlert }} />
                 }
               />
             ))}

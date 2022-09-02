@@ -4,8 +4,8 @@ import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
 import { PushNotification } from './firebase/firebase'
 import AppRoutesContainer from './AppRoutesContainer'
-import { useAuthFlow } from '../hooks/useAuthFlow'
 import { getAppshellData } from './helper'
+import NotFound from './NotFound'
 
 function AppShell({
   colors,
@@ -22,6 +22,7 @@ function AppShell({
   const [theme, setTheme] = React.useState<any>({})
   const [accessRoutes, setAccessRoutes] = React.useState<any>([])
   const [footerLinks, setFooterLinks] = React.useState<any>([])
+  const [alert, setAlert] = React.useState<any>()
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search)
@@ -41,7 +42,13 @@ function AppShell({
       if (isShowFooterLink) {
         setFooterLinks({ menues: newFooterLinks })
       }
-      setAccessRoutes(newRoutes)
+      setAccessRoutes([
+        ...newRoutes,
+        {
+          path: '*',
+          component: NotFound
+        }
+      ])
       setTheme(newTheme)
     }
 
@@ -82,12 +89,15 @@ function AppShell({
   } else {
     return (
       <AppRoutesContainer
-        colors={colors}
-        theme={theme}
-        basename={basename}
-        routes={routes}
-        isShowFooterLink={true}
-        appName='Teacher App'
+        {...{
+          theme,
+          routes: accessRoutes,
+          basename,
+          footerLinks,
+          appName: 'Teacher App',
+          alert,
+          setAlert
+        }}
       />
     )
   }

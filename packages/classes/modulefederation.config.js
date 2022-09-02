@@ -9,6 +9,7 @@ module.exports = {
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
+    assessment: `assessment@[window.appModules.assessment.url]/moduleEntry.js`,
     students: `students@[window.appModules.students.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",

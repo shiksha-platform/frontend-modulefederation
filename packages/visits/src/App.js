@@ -25,7 +25,7 @@ function App() {
     },
     {
       moduleName: "visits",
-      path: "*",
+      path: "/",
       component: Myvisits,
     },
   ];

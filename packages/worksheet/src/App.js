@@ -64,7 +64,7 @@ function App() {
     },
     {
       moduleName: "worksheet",
-      path: "*",
+      path: "/",
       component: Teaching,
     },
   ];

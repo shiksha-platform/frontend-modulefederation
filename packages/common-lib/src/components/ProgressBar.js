@@ -43,7 +43,8 @@ export default function ProgressBar({
             }}
             {..._labelCount}
           >
-            {item.value.toString().padStart(2, '0') + (sufix ? sufix : '')}
+            {item.value.toString().padStart(2, '0') +
+              (sufix ? sufix : <React.Fragment />)}
           </Box>
         )
       }
@@ -74,7 +75,7 @@ export default function ProgressBar({
                   {item.name}
                 </Text>
               ) : (
-                ''
+                <React.Fragment />
               )}
             </Box>
           </Tooltip>
@@ -106,7 +107,7 @@ export default function ProgressBar({
       })
   }
 
-  const getLegendPattern = () => {
+  const GetLegendPattern = () => {
     if (legendType === 'separated') {
       return (
         <HStack
@@ -114,7 +115,7 @@ export default function ProgressBar({
           space={1}
           justifyContent='space-between'
         >
-          {legends === '' ? '' : legends}
+          {!legends || legends === '' ? <React.Fragment /> : legends}
         </HStack>
       )
     }
@@ -125,13 +126,13 @@ export default function ProgressBar({
           space={1}
           justifyContent='space-between'
         >
-          {legends === '' ? '' : legends}
+          {!legends || legends === '' ? <React.Fragment /> : legends}
         </HStack>
       )
     }
     return (
       <HStack alignSelf='center' space={1} justifyContent='center'>
-        {legends === '' ? '' : legends}
+        {!legends || legends === '' ? <React.Fragment /> : legends}
       </HStack>
     )
   }
@@ -140,14 +141,14 @@ export default function ProgressBar({
     <Stack {...props}>
       <VStack>
         {!isLabelCountHide ? (
-          <HStack>{values === '' ? '' : values}</HStack>
+          <HStack>{values === '' ? <React.Fragment /> : values}</HStack>
         ) : (
-          ''
+          <React.Fragment />
         )}
         <HStack overflow='hidden' rounded='xl' {..._bar}>
-          {bars === '' ? '' : bars}
+          {!bars || bars === '' ? <Text>Progress Data Empty</Text> : bars}
         </HStack>
-        {!isTextInBar && isTextShow ? getLegendPattern() : ''}
+        {!isTextInBar && isTextShow ? <GetLegendPattern /> : <React.Fragment />}
       </VStack>
     </Stack>
   )
