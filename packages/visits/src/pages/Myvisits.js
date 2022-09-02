@@ -13,6 +13,7 @@ import RecommendedVisitsCard from "components/RecommendedVisitsCard";
 import MySchoolsCard from "components/MySchoolsCard";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "colorTheme";
+import manifest from "manifest.json";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Myvisits({ footerLinks }) {
@@ -68,7 +69,7 @@ export default function Myvisits({ footerLinks }) {
         </H2>
       }
       _appBar={{
-        languages: ["en"],
+        languages: manifest.languages,
         isEnableSearchBtn: true,
         setSearch,
         setSearchState,

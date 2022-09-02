@@ -20,6 +20,7 @@ import {
 } from "native-base";
 import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
 import colorTheme from "../colorTheme";
+import manifest from "manifest.json";
 const colors = overrideColorTheme(colorTheme);
 const defaultInputs = [
   {
@@ -67,7 +68,7 @@ export default function Recommendedschools({ footerLinks }) {
           See all your recommended schools for visits here
         </H2>
       }
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _subHeader={{ bg: colors.lightPurple }}
       _footer={footerLinks}
     >

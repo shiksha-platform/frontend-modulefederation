@@ -25,6 +25,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
+import manifest from "manifest.json";
 const colors = overrideColorTheme(colorTheme);
 
 const defaultInputs = [
@@ -86,7 +87,7 @@ export default function Allocatedschools({ footerLinks }) {
           See all your allocated schools for visits here
         </H2>
       }
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _subHeader={{ bg: colors.lightPurple }}
       _footer={footerLinks}
     >
