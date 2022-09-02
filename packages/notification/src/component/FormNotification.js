@@ -77,10 +77,7 @@ export default function FormNotification({
   };
 
   const getClassData = async () => {
-    const Response = await classRegistryService.getAllData({
-      //limit: "",
-      filters: {},
-    });
+    const Response = await classRegistryService.getAllData({});
     let GroupWithId = [];
     Response.forEach((e) => {
       GroupWithId = [...GroupWithId, { ["title"]: e.title, ["id"]: e.id }];
