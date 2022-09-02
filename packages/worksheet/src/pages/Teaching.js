@@ -25,10 +25,8 @@ export default function Teaching({ footerLinks, appName }) {
     async function getData() {
       setClasses(
         await classRegistryService.getAllData({
-          filters: {
-            schoolId: { eq: schoolId },
-            teacherId: { neq: teacherId },
-          },
+          schoolId: { eq: schoolId },
+          teacherId: { neq: teacherId },
         })
       );
     }
