@@ -2,9 +2,7 @@ import { Box, Text, VStack } from "native-base";
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { overrideColorTheme } from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+
 Chart.register(ArcElement, Tooltip, Legend);
 export default function RoundedProgressBar({
   values,
