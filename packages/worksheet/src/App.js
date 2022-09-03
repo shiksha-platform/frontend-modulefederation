@@ -29,7 +29,7 @@ function App() {
     },
     {
       moduleName: "worksheet",
-      path: "/worksheet/:classId/view",
+      path: "/worksheet/:classId/:subject",
       component: TeachingDetail,
     },
     {

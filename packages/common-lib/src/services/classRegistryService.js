@@ -1,6 +1,6 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
+import * as questionRegistryService from './questionRegistryService'
 
 const interfaceData = {
   id: 'groupId',
@@ -33,6 +33,9 @@ export const getAll = async (params = {}, header = {}) => {
     }
   )
   if (result.data) {
+    if (params.coreData === 'getCoreData') {
+      return result.data.data
+    }
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return data.sort(function (a, b) {
       return a.name - b.name
@@ -126,4 +129,29 @@ export const getOne = async (filters = {}, header = {}) => {
   } else {
     return {}
   }
+}
+
+export const getGradeSubjects = async (
+  { teacherId, ...params } = {},
+  header = {}
+) => {
+  const groupData = await getAll({ teacherId, coreData: 'getCoreData' })
+  let data = await Promise.all(
+    groupData.map(async (item) => await getDataWithSubjectOne(item))
+  )
+  return data.reduce((newData, old) => [...newData, ...old])
+}
+
+const getDataWithSubjectOne = async (object) => {
+  let subjectData = []
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.gradeLevel) {
+    subjectData = await questionRegistryService.getSubjectsList({
+      gradeLevel: item.gradeLevel,
+      adapter: 'diksha'
+    })
+  }
+  return subjectData.map((e) => {
+    return { ...item, subjectName: e?.code }
+  })
 }
