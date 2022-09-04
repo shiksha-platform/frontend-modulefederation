@@ -8,13 +8,14 @@ import {
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Actionsheet, Box, Button } from "native-base";
-import { teachingMaterial } from "./../config/teachingMaterial";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
 
 export default function Teaching({ footerLinks, appName }) {
   const { t } = useTranslation();
+  const [otherClasses, setOtherClasses] = React.useState([]);
   const [clasess, setClasses] = React.useState([]);
+
   const [isOpen, setIsOpen] = React.useState(false);
   const teacherId = localStorage.getItem("id");
   const schoolId = localStorage.getItem("schoolId");
@@ -23,10 +24,15 @@ export default function Teaching({ footerLinks, appName }) {
   React.useEffect(() => {
     let ignore = false;
     async function getData() {
-      setClasses(
+      setOtherClasses(
         await classRegistryService.getAllData({
           schoolId: { eq: schoolId },
           teacherId: { neq: teacherId },
+        })
+      );
+      setClasses(
+        await classRegistryService.getGradeSubjects({
+          teacherId: teacherId,
         })
       );
     }
@@ -57,7 +63,7 @@ export default function Teaching({ footerLinks, appName }) {
           routes={[
             {
               title: t("Teaching Material"),
-              component: <MyTeaching data={teachingMaterial} />,
+              component: <MyTeaching data={clasess} />,
             },
             { title: t("Schedule"), component: <Schedule /> },
           ]}
@@ -93,8 +99,9 @@ const MyTeaching = ({ data }) => {
         key={index}
         _icon={{ isDisabled: true }}
         item={{
-          title: `${item.name} • ${item.subjectName}`,
-          onPress: (e) => navigate(`/worksheet/${item.id}/view`),
+          title: `Class ${item.name} • Sec ${item.section} • ${item.subjectName}`,
+          onPress: (e) =>
+            navigate(`/worksheet/${item?.id}/${item?.subjectName}`),
         }}
       />
     );
