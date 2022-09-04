@@ -116,7 +116,7 @@ export const routes = [
   },
   {
     moduleName: "worksheet",
-    path: "/worksheet/:classId/view",
+    path: "/worksheet/:classId/:subject",
     component: TeachingDetail,
   },
   {

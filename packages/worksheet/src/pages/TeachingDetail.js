@@ -19,7 +19,6 @@ import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { useNavigate, useParams } from "react-router-dom";
 import manifestLocal from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
-import { teachingMaterial } from "./../config/teachingMaterial";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
@@ -37,27 +36,27 @@ export default function TeachingDetail({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(true);
   const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
-  const { classId } = useParams();
-
-  const getClass = async () => {
-    const data = teachingMaterial.find((e) => e.id === classId);
-    if (data) {
-      setClassObject(data ? data : {});
-    } else {
-      let classObj = await classRegistryService.getOne({ id: classId });
-      setClassObject(classObj);
-    }
-  };
+  const { classId, subject } = useParams();
 
   React.useEffect(async () => {
-    getClass();
+    let classObj = await classRegistryService.getOne({ id: classId });
+    setClassObject(classObj);
+    let filter =
+      classId && subject
+        ? {
+            grade: { eq: classObj?.gradeLevel },
+            subject: { eq: subject },
+          }
+        : {};
     const data = await worksheetRegistryService.getAll({
       limit: 2,
+      ...filter,
       state: { eq: "Publish" },
     });
     setWorksheets(data);
     const draftsData = await worksheetRegistryService.getAll({
       limit: 2,
+      ...filter,
       state: { eq: "Draft" },
     });
     setWorksheetDrafts(draftsData);
