@@ -47,7 +47,8 @@ const theme = {
       completeSeparator: '#C5DCC3',
       pendingSeparator: '#EEEEEE',
       successBackground: '#B9FBC0',
-      scoreCardBg1: '#FFE5B3'
+      scoreCardBg1: '#FFE5B3',
+      cardBg1: '#303765'
     },
     notification: {
       ...colorTheme,
@@ -92,6 +93,15 @@ const theme = {
       400: '#ee8e78',
       500: '#F87558',
       600: '#d9654c'
+    },
+    hpButton: {
+      50: '#fcf1ee',
+      100: '#303765',
+      200: '#303765',
+      300: '#303765',
+      400: '#303765',
+      500: '#303765',
+      600: '#303765e6'
     }
   },
   fonts: {

@@ -25,14 +25,14 @@ import { useTranslation } from "react-i18next";
 const colors = overrideColorTheme(colorTheme);
 
 const CardBasedOnStatus = ({ status, children }) => {
-  if (status === "ongoing") {
+  if (status === "visited") {
     return (
       <Box bg="hpAssessment.ongoing" borderRadius={10}>
         {children}
       </Box>
     );
   }
-  if (status === "complete" || status === "completeWithNipun") {
+  if (status === "nipun_ready" || status === "nipun") {
     return (
       <Box bg="hpAssessment.completed" borderRadius={10}>
         {children}
@@ -46,18 +46,20 @@ const CardBasedOnStatus = ({ status, children }) => {
   );
 };
 
-function SchoolCard({ schoolId }) {
+function SchoolCard({ schoolId, groupIds, status }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [schoolDetail, setSchoolDetail] = useState({});
 
   const getSchoolDetail = async (id) => {
     const detail = await hpAssessmentRegistryService.getSchoolDetail(id);
+    detail['assessmentStatus'] = status;
     setSchoolDetail(detail);
   };
 
   const _handleSchoolSelect = () => {
     localStorage.setItem("hp-assessment-school", JSON.stringify(schoolDetail));
+    localStorage.setItem("hp-assessment-grades", groupIds);
     navigate("/hpAssessment/school-profile");
   };
 
@@ -69,7 +71,7 @@ function SchoolCard({ schoolId }) {
     <>
       <VStack space={6}>
         <Pressable onPress={_handleSchoolSelect}>
-          <CardBasedOnStatus status={schoolDetail?.status}>
+          <CardBasedOnStatus status={status}>
             <>
               <Box p={4}>
                 <HStack alignItems="center" justifyContent="space-between">
@@ -91,7 +93,7 @@ function SchoolCard({ schoolId }) {
                       </VStack>
                     </HStack>
                   </Box>
-                  {schoolDetail?.status === "completeWithNipun" && (
+                  {status === "nipun" && (
                     <Box alignItems="end">
                       <img
                         src={nipun_badge}
@@ -104,10 +106,10 @@ function SchoolCard({ schoolId }) {
               </Box>
               <Divider
                 bg={
-                  schoolDetail?.status === "ongoing"
-                    ? colors.warning
-                    : schoolDetail?.status === "complete" ||
-                      schoolDetail?.status === "completeWithNipun"
+                  status === "visited"
+                    ? 'hpAssessment.warning'
+                    : status === "nipun_ready" ||
+                      status === "nipun"
                     ? "hpAssessment.completeSeparator"
                     : "hpAssessment.pendingSeparator"
                 }
@@ -198,7 +200,7 @@ function SchoolCard({ schoolId }) {
                           {t("Reference ID/UDISE")}
                         </Caption>
                       </HStack>
-                      <Caption>{t("213456")}</Caption>
+                      <Caption>{schoolDetail?.udise}</Caption>
                     </VStack>
                   </Box>
                 </HStack>

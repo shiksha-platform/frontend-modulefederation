@@ -16,27 +16,29 @@ const colors = overrideColorTheme(colorTheme);
 export default function ClassAssessmentResultCollapsibleCard({
   assessmentsData,
   totalStudentCount,
-  presentStudentCount,
-  absentStudentCount,
+  nipunStudentCount,
+  nipunReadyStudentCount,
 }) {
   const { t } = useTranslation();
-  const [progressAssessment, setProgressAssessment] = React.useState([
+  const progressAssessment = [
     {
-      name: "22 Nipun",
+      name: `${nipunStudentCount} Nipun`,
       color: "hpAssessment.success",
-      value: 22,
+      value: nipunStudentCount,
     },
     {
-      name: "4 Completed",
+      name: `${nipunReadyStudentCount} Completed`,
       color: "hpAssessment.absent",
-      value: 4,
+      value: nipunReadyStudentCount,
     },
     {
-      name: "1 pending",
+      name: `${
+        totalStudentCount - (nipunStudentCount + nipunReadyStudentCount)
+      } Pending`,
       color: "hpAssessment.unmarked",
-      value: 1,
+      value: totalStudentCount - (nipunStudentCount + nipunReadyStudentCount),
     },
-  ]);
+  ];
 
   return (
     <>

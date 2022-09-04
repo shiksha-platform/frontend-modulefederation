@@ -43,10 +43,13 @@ const TileBasedOnStatus = ({
   setSelectedStudent,
   student,
 }) => {
-  const navigate = useNavigate();
-  if (status === "ongoing") {
+  if (student.status === "visited") {
     return (
-      <Pressable onPress={() => setSelectedStudent(student)}>
+      <Pressable
+        onPress={() => {setSelectedStudent(student)}}
+        isDisabled={student.attendance === "Absent"}
+        _disabled={{ cursor: "not-allowed" }}
+      >
         <Box
           bg="hpAssessment.ongoing"
           p={4}
@@ -59,9 +62,13 @@ const TileBasedOnStatus = ({
       </Pressable>
     );
   }
-  if (status === "complete" || status === "completeWithNipun") {
+  if (status === "nipun_ready" || status === "nipun") {
     return (
-      <Pressable onPress={() => setSelectedStudent(student)}>
+      <Pressable
+        onPress={() => setSelectedStudent(student)}
+        isDisabled={student.attendance === "Absent"}
+        _disabled={{ cursor: "not-allowed" }}
+      >
         <Box
           bg="hpAssessment.completed"
           p={4}
@@ -75,7 +82,11 @@ const TileBasedOnStatus = ({
     );
   }
   return (
-    <Pressable onPress={() => setSelectedStudent(student)}>
+    <Pressable
+      onPress={() => setSelectedStudent(student)}
+      isDisabled={student.status === "Absent"}
+      _disabled={{ cursor: "not-allowed" }}
+    >
       <Box
         bg="hpAssessment.white"
         p={4}
@@ -98,66 +109,14 @@ const StudentListCard = ({
   handleSelectedStudent,
   handleStudentPageNext,
   studentList,
+  selectedStudent,
+  setSelectedStudent
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
 
-  const [selectedStudent, setSelectedStudent] = useState();
-  /*const [studentList, setStudentlist] = useState([
-    {
-      id: 1,
-      firstName: 'Manoj',
-      lastName: '',
-      fathersName: 'abc'
-    },
-    {
-      id: 2,
-      firstName: 'Rahul',
-      lastName: '',
-      fathersName: 'xyz'
-    },
-    {
-      id: 3,
-      firstName: 'Manoj',
-      lastName: '',
-      fathersName: 'abc'
-    },
-    {
-      id: 4,
-      firstName: 'Rahul',
-      lastName: '',
-      fathersName: 'xyz'
-    },
-    {
-      id: 5,
-      firstName: 'Manoj',
-      lastName: '',
-      fathersName: 'abc'
-    },
-    {
-      id: 6,
-      firstName: 'Rahul',
-      lastName: '',
-      fathersName: 'xyz'
-    },
-    {
-      id: 7,
-      firstName: 'Manoj',
-      lastName: '',
-      fathersName: 'abc'
-    },
-    {
-      id: 8,
-      firstName: 'Rahul',
-      lastName: '',
-      fathersName: 'xyz'
-    }
-  ]);*/
-
   const [loading, setLoading] = React.useState(false);
-
-  const [attendanceData, setAttendanceData] = useState({});
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -179,15 +138,13 @@ const StudentListCard = ({
               }}
             />
             <VStack>
-              <BodyLarge>{student.firstName}</BodyLarge>
-              {/*<Checkbox
-                            colorScheme="button"
-                            borderColor={colors.primary}
-                            borderRadius="0"
-                          >
-                            {""}
-                            <BodyLarge>{t("Absent")}</BodyLarge>
-                          </Checkbox>*/}
+              <BodyLarge
+                color={
+                  selectedStudent?.id === student.id
+                    ? "hpAssessment.black"
+                    : "hpAssessment.gray"
+                }
+              >{student.firstName}</BodyLarge>
             </VStack>
           </HStack>
         </Box>

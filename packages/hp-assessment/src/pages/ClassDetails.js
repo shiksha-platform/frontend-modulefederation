@@ -30,9 +30,11 @@ export default function ClassDetails({ appName }) {
   const [assessmentStartTime, setAssessmentStartTime] = useState();
   const [classObject, setClassObject] = useState({});
   const [assessmentsData, setAssessmentsData] = React.useState([]);
-  const [totalStudentCount, setTotalStudentCount] = React.useState(0);
+  const [totalStudentCount, setTotalStudentCount] = React.useState(20);
   const [presentStudentCount, setPresentStudentCount] = React.useState(0);
   const [absentStudentCount, setAbsentStudentCount] = React.useState(0);
+  const [nipunStudentCount, setNipunStudentCount] = React.useState(0);
+  const [nipunReadyStudentCount, setNipunReadyStudentCount] = React.useState(0);
 
   const _handleAssessmentStartEvent = () => {
     const telemetryData = telemetryFactory.start({
@@ -55,28 +57,45 @@ export default function ClassDetails({ appName }) {
   const getAssessmentDetails = async () => {
     const params = {
       fromDate: "01-01-2022",
-      toDate: "08-20-2022",
-      groupId: "df",
-      subject: "er",
+      toDate: "08-25-2022",
+      groupId: "ce045222-52a8-4a0a-8266-9220f63baba7",
+      subject: "English",
       // groupId: localStorage.getItem("hp-assessment-groupId") || "300bd6a6-ee1f-424a-a763-9db8b08a19e9",
     };
     const data = await assessmentRegistryService.getFilteredAssessments(params);
     calculateParticipantData(data);
+    calculateAssessmentResults(data);
     setAssessmentsData(data);
   };
 
   const calculateParticipantData = (assessmentsData) => {
     const presentStudent =
-      assessmentsData.filter((item) => {
-        return item.studentAssessmentStatus === "COMPLETED";
-      }).length / 2;
+      Math.floor(assessmentsData.filter((item) => {
+        return item.status === "COMPLETED";
+      }).length / 2);
 
     const absentStudent =
-      assessmentsData.filter((item) => {
-        return item.studentAssessmentStatus === "ABSENT";
-      }).length / 2;
+      Math.floor(assessmentsData.filter((item) => {
+        return item.status === "ABSENT";
+      }).length / 2);
+
     setAbsentStudentCount(absentStudent);
     setPresentStudentCount(presentStudent);
+  };
+
+  const calculateAssessmentResults = (assessmentsData) => {
+    const nipunStudent =
+      Math.floor(assessmentsData.filter((item) => {
+        return item.status === "nipun";
+      }).length / 2);
+
+    const nipunReadyStudent =
+      Math.floor(assessmentsData.filter((item) => {
+        return item.status === "COMPLETED";
+      }).length / 2);
+
+    setNipunStudentCount(nipunStudent);
+    setNipunReadyStudentCount(nipunReadyStudent);
   };
 
   useEffect(() => {
@@ -126,7 +145,7 @@ export default function ClassDetails({ appName }) {
       <>
         <Box p={4} bg={colors.white}>
           <Button
-            colorScheme={"button"}
+            colorScheme={"hpButton"}
             _text={{ color: colors.white }}
             isDisabled={false}
             onPress={_handleAssessmentStart}
@@ -145,8 +164,8 @@ export default function ClassDetails({ appName }) {
             <ClassAssessmentResultCollapsibleCard
               assessmentsData={assessmentsData}
               totalStudentCount={totalStudentCount}
-              presentStudentCount={presentStudentCount}
-              absentStudentCount={absentStudentCount}
+              nipunStudentCount={nipunStudentCount}
+              nipunReadyStudentCount={nipunReadyStudentCount}
             />
           </VStack>
         </Box>

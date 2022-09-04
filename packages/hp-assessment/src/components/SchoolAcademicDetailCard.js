@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -18,27 +18,31 @@ import {
   Collapsible,
   BodyLarge,
   Caption,
-  overrideColorTheme,
+  overrideColorTheme, hpAssessmentRegistryService, classRegistryService
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const _handleGradeSelect = () => {
+const _handleGradeSelect = (id, name) => {
   localStorage.setItem(
     "hp-assessment-groupId",
-    "300bd6a6-ee1f-424a-a763-9db8b08a19e9"
+    id
+  );
+  localStorage.setItem(
+    "hp-assessment-groupName",
+    name
   );
 };
 
-const TileBasedOnStatus = ({ status, children }) => {
+const TileBasedOnStatus = ({ status, id, name, children }) => {
   const navigate = useNavigate();
-  if (status === "ongoing") {
+  if (status === "visited") {
     return (
       <Pressable
         onPress={() => {
-          _handleGradeSelect();
+          _handleGradeSelect(id, name);
           navigate("/hpAssessment/class-details");
         }}
       >
@@ -54,11 +58,11 @@ const TileBasedOnStatus = ({ status, children }) => {
       </Pressable>
     );
   }
-  if (status === "complete" || status === "completeWithNipun") {
+  if (status === "completed") {
     return (
       <Pressable
         onPress={() => {
-          _handleGradeSelect();
+          _handleGradeSelect(id, name);
           navigate("/hpAssessment/class-details");
         }}
       >
@@ -77,7 +81,7 @@ const TileBasedOnStatus = ({ status, children }) => {
   return (
     <Pressable
       onPress={() => {
-        _handleGradeSelect();
+        _handleGradeSelect(id, name);
         navigate("/hpAssessment/class-details");
       }}
     >
@@ -95,6 +99,35 @@ const TileBasedOnStatus = ({ status, children }) => {
 
 export default function SchoolAcademicDetailCard() {
   const { t } = useTranslation();
+  const grades = localStorage.getItem('hp-assessment-grades').split(",");
+
+  const [gradeList, setGradeList] = useState([]);
+  let list = [];
+
+  /*const getGroupsUnderSchool = async (id, i) => {
+    const {data: {data}} = await hpAssessmentRegistryService.getGroupDetailsById(id);
+    list.push(data);
+    if(i+1 === grades.length){
+      setGradeList(list)
+    }
+  };*/
+
+  const getGroupsUnderSchool = (id, i) => {
+    hpAssessmentRegistryService.getGroupDetailsById(id).then((res)=> {
+      const data = res.data.data;
+      list.push(data);
+      if(i+1 === grades.length){
+        setGradeList(list)
+      }
+    });
+  };
+
+  useEffect(() => {
+    grades.forEach((item, i)=> {
+      getGroupsUnderSchool(item, i);
+    })
+  }, [])
+
   return (
     <>
       <Collapsible
@@ -108,6 +141,22 @@ export default function SchoolAcademicDetailCard() {
         <>
           {/*<Divider mb={4} />*/}
           <VStack space={4}>
+            {
+              gradeList && gradeList.length > 0 && gradeList.map((item) => {
+                return <TileBasedOnStatus status={item.status} id={item.groupId} name={item.name}>
+                  <HStack alignItems="center" justifyContent="space-between">
+                    <Box>
+                      <VStack>
+                        <BodyLarge>{item.name}</BodyLarge>
+                        <Caption color={colors.gray}>65 Students</Caption>
+                      </VStack>
+                    </Box>
+                    <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
+                  </HStack>
+                </TileBasedOnStatus>
+              })
+            }
+            {/*
             <TileBasedOnStatus status={"pending"}>
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
@@ -120,7 +169,7 @@ export default function SchoolAcademicDetailCard() {
               </HStack>
             </TileBasedOnStatus>
 
-            <TileBasedOnStatus status={"ongoing"}>
+            <TileBasedOnStatus status={"visited"}>
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
@@ -132,7 +181,7 @@ export default function SchoolAcademicDetailCard() {
               </HStack>
             </TileBasedOnStatus>
 
-            <TileBasedOnStatus status={"complete"}>
+            <TileBasedOnStatus status={"nipun_ready"}>
               <HStack alignItems="center" justifyContent="space-between">
                 <Box>
                   <VStack>
@@ -143,6 +192,7 @@ export default function SchoolAcademicDetailCard() {
                 <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
               </HStack>
             </TileBasedOnStatus>
+            */}
           </VStack>
         </>
       </Collapsible>

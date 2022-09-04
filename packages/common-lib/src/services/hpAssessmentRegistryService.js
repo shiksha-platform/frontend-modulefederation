@@ -1,4 +1,4 @@
-import { get, post } from './RestClient'
+import { get, post, update as coreUpdate } from "./RestClient";
 import mapInterfaceData from './mapInterfaceData'
 const defaultAdapter = 'diksha'
 
@@ -186,7 +186,7 @@ export const getAllAllocatedSchools = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
-    `${process.env.REACT_APP_API_URL}/monitortracking/search`,
+    `${process.env.REACT_APP_API_URL}/monitortracking/search?monitorId=${params.monitorId}`,
     params,
     {
       headers
@@ -211,6 +211,63 @@ export const getSchoolDetail = async (id, header = {}) => {
 
   if (result.data && result.data.data) {
     return result.data.data
+  } else {
+    return {}
+  }
+}
+
+export const getGroupDetailsById = async (id, data = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    process.env.REACT_APP_API_URL + '/group/' + id,
+    data,
+    {
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
+  } else {
+    return {}
+  }
+}
+
+export const getGroupMembersById = async (id, data = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    process.env.REACT_APP_API_URL + '/groupmembership/' + id,
+    data,
+    {
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
+  } else {
+    return {}
+  }
+}
+
+export const getGroupMembershipSearch = async (data = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/groupmembership/search/',
+    data,
+    {
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
   } else {
     return {}
   }

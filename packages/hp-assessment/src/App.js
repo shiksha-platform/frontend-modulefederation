@@ -12,9 +12,22 @@ import FinalAssessmentSuccessPage from "./pages/FinalAssessmentSuccessPage";
 import FinalAssessmentSuccessPage2 from "./pages/FinalAssessmentSuccessPage2";
 import SchoolReport from "./pages/SchoolReport";
 import SchoolNipunCertificate from "./pages/SchoolNipunCertificate";
+import QumlTest from "./pages/QumlTest";
+import ReadAlongInstruction from "./pages/read-along/Instruction";
+import NotInstalledError from "./pages/read-along/NotInstalledError";
 
 function App() {
   const routes = [
+    {
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/read-along-instruction",
+      component: ReadAlongInstruction,
+    },
+    {
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/read-along-not-installed",
+      component: NotInstalledError,
+    },
     {
       moduleName: "hpAssessment",
       path: "/hpAssessment/school-nipun-certificate",
@@ -34,6 +47,11 @@ function App() {
       moduleName: "hpAssessment",
       path: "/hpAssessment/final-assessment-success2",
       component: FinalAssessmentSuccessPage2,
+    },
+    {
+      moduleName: "hpAssessment",
+      path: "/hpAssessment/quml-test",
+      component: QumlTest,
     },
     {
       moduleName: "hpAssessment",

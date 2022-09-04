@@ -5,7 +5,7 @@ import {
   Layout,
   overrideColorTheme,
   useWindowSize,
-  BodyLarge,
+  BodyLarge, questionRegistryService
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -29,6 +29,25 @@ export default function OralAssessmentSuccessPage({
   const navigate = useNavigate();
   const [title, setTitle] = useState();
   const [width, height] = useWindowSize();
+  const [questionIds, setQuestionIds] = useState([]);
+
+
+  const fetchQuestionsForWrittenAssessment = async () => {
+    const limit = 2;
+    let data = {
+      adapter: "diksha",
+      limit,
+      subject: "Mathematics",
+      // bloomsLevel: selectedCompetencies || "application",
+      className: localStorage.getItem('hp-assessment-groupName')
+    };
+    const questions = await questionRegistryService.getAllQuestions(data);
+    let questionIds = questions.map((question) => {
+      return question.questionId;
+    });
+    setQuestionIds(questionIds);
+    localStorage.setItem('hp-assessment-written-questionIds', questionIds);
+  };
 
   return (
     <Layout isDisabledAppBar={true}>
@@ -51,10 +70,12 @@ export default function OralAssessmentSuccessPage({
             assessment.
           </BodyLarge>
           <Button
-            colorScheme="button"
+            colorScheme="hBbutton"
             variant="outline"
             onPress={() => {
-              navigate("/hpAssessment/final-assessment-success");
+              fetchQuestionsForWrittenAssessment();
+              navigate("/hpAssessment/quml-test");
+              // navigate("/hpAssessment/final-assessment-success");
             }}
           >
             {t("Next")}

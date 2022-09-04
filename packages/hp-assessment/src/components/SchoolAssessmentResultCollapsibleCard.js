@@ -33,7 +33,7 @@ export default function SchoolAssessmentResultCollapsibleCard() {
               {/*<Divider />*/}
               <Box>
                 <Button
-                  colorScheme={"button"}
+                  colorScheme={"hpButton"}
                   _text={{ color: colors.white }}
                   isDisabled={false}
                   // onPress={()=> {navigate('/school-report')}}

@@ -149,8 +149,8 @@ export default function FinalAssessmentSuccessPage({
                           <Box textAlign="center">
                             <VStack>
                               <H2 color={colors.error}>
-                                <H2 bold>07/</H2>
-                                <BodyMedium>14</BodyMedium>
+                                <H2 bold>50%</H2>
+                                {/*<BodyMedium>14</BodyMedium>*/}
                               </H2>
                               <Caption>
                                 Correct
@@ -210,8 +210,8 @@ export default function FinalAssessmentSuccessPage({
                           <Box textAlign="center">
                             <VStack>
                               <H2 color={colors.error}>
-                                <H2 bold>07/</H2>
-                                <BodyMedium>14</BodyMedium>
+                                <H2 bold>50%</H2>
+                                {/*<BodyMedium>14</BodyMedium>*/}
                               </H2>
                               <Caption>
                                 Correct
@@ -227,7 +227,7 @@ export default function FinalAssessmentSuccessPage({
                 </Box>
                 <Box p="4">
                   <Button
-                    colorScheme="button"
+                    colorScheme="hpButton"
                     _text={{
                       color: colors.white,
                     }}

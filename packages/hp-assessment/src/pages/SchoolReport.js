@@ -21,8 +21,8 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
-import nipun_ready_badge from "../stories/assets/nipun_ready-badge.svg";
-import nipun_ready_kids from "../stories/assets/nipun_ready_kids.svg";
+import nipun_ready_badge from "../stories/assets/nipun_ready-badge.png";
+// import nipun_ready_kids from "../stories/assets/nipun_ready_kids.svg";
 import {
   CircularProgressbarWithChildren,
   buildStyles,

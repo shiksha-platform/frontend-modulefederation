@@ -33,7 +33,8 @@ const theme = {
       completeSeparator: '#C5DCC3',
       pendingSeparator: '#EEEEEE',
       successBackground: '#B9FBC0',
-      scoreCardBg1: '#FFE5B3'
+      scoreCardBg1: '#FFE5B3',
+      cardBg1: '#303765'
     },
     classes: {
       ...colorTheme,

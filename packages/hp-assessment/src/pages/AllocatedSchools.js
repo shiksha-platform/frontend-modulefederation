@@ -22,22 +22,113 @@ import React from "react";
 export default function AllocatedSchools() {
   const { t } = useTranslation();
   const [width, height] = useWindowSize();
-  const [loading, setLoading] = useState(false);
-  const [trackingList, setTackingList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [trackingList, setTrackingList] = useState([]);
   const [pendingSchools, setPendingSchools] = useState(0);
+  const teacherId = localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488";
 
-  const getAllAllocatedSchools = async () => {
-    const list = await hpAssessmentRegistryService.getAllAllocatedSchools();
-    setTackingList(list);
-    const pendingSchools = list.filter((item) => {
-      return item.status === "pending";
-    }).length;
-    setPendingSchools(pendingSchools);
+  function calculateTrackingData(list) {
+    const groupedList = formatData(list, "schoolId");
+
+    let pendingCount = 0;
+    let schoolStatus = '';
+    for(let key in groupedList){
+      let isPending = groupedList[key].status.every((item) => {
+        return item === 'pending';
+      })
+      if(isPending) {
+        pendingCount++;
+      }
+
+      groupedList[key].status.forEach((item) => {
+        if(item === 'pending'){
+          if(schoolStatus === ''){
+            schoolStatus = 'pending'
+          }
+          if(schoolStatus === 'pending'){
+            schoolStatus = 'pending'
+          }
+          if(schoolStatus === 'visited'){
+            schoolStatus = 'visited'
+          }
+          if(schoolStatus === 'nipun_ready'){
+            schoolStatus = 'visited'
+          }
+          if(schoolStatus === 'nipun'){
+            schoolStatus = 'visited'
+          }
+        }
+        else if(item === 'nipun_ready'){
+          if(schoolStatus === ''){
+            schoolStatus = 'nipun_ready'
+          }
+          if(schoolStatus === 'pending'){
+            schoolStatus = 'visited'
+          }
+          if(schoolStatus === 'visited'){
+            schoolStatus = 'visited'
+          }
+          if(schoolStatus === 'nipun_ready'){
+            schoolStatus = 'nipun_ready'
+          }
+          if(schoolStatus === 'nipun'){
+            schoolStatus = 'nipun_ready'
+          }
+        }
+        else if(item === 'nipun'){
+          if(schoolStatus === ''){
+            schoolStatus = 'nipun'
+          }
+          if(schoolStatus === 'pending'){
+            schoolStatus = 'visited'
+          }
+          if(schoolStatus === 'visited'){
+            schoolStatus = 'visited'
+          }
+          if(schoolStatus === 'nipun_ready'){
+            schoolStatus = 'nipun_ready'
+          }
+          if(schoolStatus === 'nipun'){
+            schoolStatus = 'nipun'
+          }
+        }
+        else {
+          schoolStatus = 'visited'
+        }
+      })
+
+      groupedList[key]['schoolStatus'] = schoolStatus;
+    }
+
+    setTrackingList(groupedList);
+    setPendingSchools(pendingCount);
     setLoading(false);
+  }
+
+  function formatData(objectArray, property) {
+    return objectArray.reduce((acc, obj) => {
+      const key = obj[property];
+      if (!acc[key]) {
+        acc[key] = {
+          schoolId: '',
+          status: [],
+          groupIds: []
+        };
+      }
+      acc[key].schoolId = obj.schoolId;
+      acc[key].status.push(obj.status);
+      acc[key].groupIds.push(obj.groupId);
+      return acc;
+    }, {});
+  }
+
+  const getMonitorTrackingData = async () => {
+    const list = await hpAssessmentRegistryService.getAllAllocatedSchools({monitorId: teacherId});
+    calculateTrackingData(list);
   };
 
   useEffect(() => {
-    getAllAllocatedSchools();
+    getMonitorTrackingData();
   }, []);
 
   if (loading) {
@@ -62,18 +153,20 @@ export default function AllocatedSchools() {
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <H2 textTransform="none">{t("Allocated Schools")}</H2>
+            <H2 textTransform="none" color="hpAssessment.white">{t("Allocated Schools")}</H2>
             <HStack alignItems={"center"}>
-              <Caption>
-                {t("Total Schools for Evaluation ") + trackingList.length}
+              <Caption color="hpAssessment.white">
+                {t("Total Schools for Evaluation ") + Object.keys(trackingList).length}
               </Caption>{" "}
-              <Caption fontSize={2}> •</Caption>{" "}
-              <Caption> {t("Pending ") + pendingSchools}</Caption>
+              <Caption fontSize={2} color="hpAssessment.white"> •</Caption>{" "}
+              <Caption color="hpAssessment.white"> {t("Pending ") + pendingSchools}</Caption>
             </HStack>
           </VStack>
         </HStack>
       }
-      _subHeader={{ bg: "hpAssessment.cardBg" }}
+      _subHeader={{
+        bg: "hpAssessment.cardBg1",
+      }}
       _footer={{
         menues: [
           {
@@ -106,21 +199,19 @@ export default function AllocatedSchools() {
     >
       <Box p={4}>
         <VStack space={4}>
-          {trackingList &&
-            trackingList.length > 0 &&
-            trackingList.map((item) => {
+          {
+            Object.keys(trackingList).map((key) => {
               // const schoolDetail = getSchoolDetail(item?.monitorTrackingId);
               return (
                 <SchoolCard
-                  schoolId={item?.schoolId}
-                  key={item?.schoolId + Math.random()}
+                  status={trackingList[key].schoolStatus}
+                  schoolId={key}
+                  groupIds={trackingList[key].groupIds}
+                  key={key + Math.random()}
                 />
               );
-            })}
-          {/*<SchoolCard status={'pending'} />
-          <SchoolCard status={'ongoing'} />
-          <SchoolCard status={'complete'} />
-          <SchoolCard status={'completeWithNipun'} />*/}
+            })
+          }
         </VStack>
       </Box>
     </Layout>

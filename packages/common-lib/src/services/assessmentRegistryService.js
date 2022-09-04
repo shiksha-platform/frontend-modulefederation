@@ -240,10 +240,10 @@ export const getFilteredAssessments = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(
-    `${process.env.REACT_APP_API_URL}/trackassessment/`,
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/trackassessment/search`,
+    params,
     {
-      params,
       headers
     }
   )

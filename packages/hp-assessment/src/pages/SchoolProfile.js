@@ -3,7 +3,7 @@ import {
   IconByName,
   Layout,
   ProgressBar,
-  overrideColorTheme,
+  overrideColorTheme, Loading, useWindowSize
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -18,21 +18,30 @@ const colors = overrideColorTheme(colorTheme);
 export default function SchoolProfile() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [width, height] = useWindowSize();
+  const [loading, setLoading] = useState(true);
   const [schoolDetail, setSchoolDetail] = useState({});
 
   useEffect(() => {
     const detail = JSON.parse(localStorage.getItem("hp-assessment-school"));
     setSchoolDetail(detail);
+    setLoading(false);
   }, []);
+
+  if (loading) {
+    return <Loading height={height - height / 2} />;
+  }
 
   return (
     <Layout
       _header={{
         title: schoolDetail?.schoolName,
         subHeading: schoolDetail?.district,
-        iconComponent: (
-          <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
-        ),
+        ...(schoolDetail && schoolDetail.assessmentStatus === 'nipun') && {
+          iconComponent: (
+            <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
+          )
+        },
         /*subHeading: (
           <VStack>
             <Text>
