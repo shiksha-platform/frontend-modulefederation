@@ -37,6 +37,7 @@ import {
 } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
 import { useAuthFlow } from './hooks/useAuthFlow'
+import StarRating from './components/StarRating'
 export {
   AppBar,
   Header,
@@ -75,7 +76,8 @@ export {
   workHistoryRegistryService,
   schoolRegistryService,
   mentorRegisteryService,
-  schoolRegisteryService
+  schoolRegisteryService,
+  StarRating
 }
 
 export * from './services/Auth'
