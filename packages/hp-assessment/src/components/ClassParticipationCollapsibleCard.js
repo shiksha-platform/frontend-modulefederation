@@ -38,7 +38,7 @@ export default function ClassParticipationCollapsibleCard({
       color: "hpAssessment.unmarked",
       value: totalStudentCount - (presentStudentCount + absentStudentCount),
     },
-  ]
+  ];
 
   return (
     <>
@@ -48,7 +48,9 @@ export default function ClassParticipationCollapsibleCard({
           <Box py={4}>
             <H2>Class Participation</H2>
             <HStack alignItems={"center"}>
-              <Caption>{t("Total Students for Evaluation ") + totalStudentCount}</Caption>{" "}
+              <Caption>
+                {t("Total Students for Evaluation ") + totalStudentCount}
+              </Caption>{" "}
               <Caption fontSize={2}> •</Caption>{" "}
               <Caption> {t("Present ") + presentStudentCount}</Caption>
             </HStack>

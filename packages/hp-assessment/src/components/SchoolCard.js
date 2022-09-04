@@ -53,7 +53,7 @@ function SchoolCard({ schoolId, groupIds, status }) {
 
   const getSchoolDetail = async (id) => {
     const detail = await hpAssessmentRegistryService.getSchoolDetail(id);
-    detail['assessmentStatus'] = status;
+    detail["assessmentStatus"] = status;
     setSchoolDetail(detail);
   };
 
@@ -107,9 +107,8 @@ function SchoolCard({ schoolId, groupIds, status }) {
               <Divider
                 bg={
                   status === "visited"
-                    ? 'hpAssessment.warning'
-                    : status === "nipun_ready" ||
-                      status === "nipun"
+                    ? "hpAssessment.warning"
+                    : status === "nipun_ready" || status === "nipun"
                     ? "hpAssessment.completeSeparator"
                     : "hpAssessment.pendingSeparator"
                 }

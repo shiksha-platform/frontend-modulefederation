@@ -18,7 +18,9 @@ import {
   Collapsible,
   BodyLarge,
   Caption,
-  overrideColorTheme, hpAssessmentRegistryService, classRegistryService
+  overrideColorTheme,
+  hpAssessmentRegistryService,
+  classRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -26,14 +28,8 @@ import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
 const _handleGradeSelect = (id, name) => {
-  localStorage.setItem(
-    "hp-assessment-groupId",
-    id
-  );
-  localStorage.setItem(
-    "hp-assessment-groupName",
-    name
-  );
+  localStorage.setItem("hp-assessment-groupId", id);
+  localStorage.setItem("hp-assessment-groupName", name);
 };
 
 const TileBasedOnStatus = ({ status, id, name, children }) => {
@@ -99,7 +95,7 @@ const TileBasedOnStatus = ({ status, id, name, children }) => {
 
 export default function SchoolAcademicDetailCard() {
   const { t } = useTranslation();
-  const grades = localStorage.getItem('hp-assessment-grades').split(",");
+  const grades = localStorage.getItem("hp-assessment-grades").split(",");
 
   const [gradeList, setGradeList] = useState([]);
   let list = [];
@@ -113,20 +109,20 @@ export default function SchoolAcademicDetailCard() {
   };*/
 
   const getGroupsUnderSchool = (id, i) => {
-    hpAssessmentRegistryService.getGroupDetailsById(id).then((res)=> {
+    hpAssessmentRegistryService.getGroupDetailsById(id).then((res) => {
       const data = res.data.data;
       list.push(data);
-      if(i+1 === grades.length){
-        setGradeList(list)
+      if (i + 1 === grades.length) {
+        setGradeList(list);
       }
     });
   };
 
   useEffect(() => {
-    grades.forEach((item, i)=> {
+    grades.forEach((item, i) => {
       getGroupsUnderSchool(item, i);
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <>
@@ -141,21 +137,30 @@ export default function SchoolAcademicDetailCard() {
         <>
           {/*<Divider mb={4} />*/}
           <VStack space={4}>
-            {
-              gradeList && gradeList.length > 0 && gradeList.map((item) => {
-                return <TileBasedOnStatus status={item.status} id={item.groupId} name={item.name}>
-                  <HStack alignItems="center" justifyContent="space-between">
-                    <Box>
-                      <VStack>
-                        <BodyLarge>{item.name}</BodyLarge>
-                        <Caption color={colors.gray}>65 Students</Caption>
-                      </VStack>
-                    </Box>
-                    <IconByName name="ArrowRightSLineIcon" isDisabled={true} />
-                  </HStack>
-                </TileBasedOnStatus>
-              })
-            }
+            {gradeList &&
+              gradeList.length > 0 &&
+              gradeList.map((item) => {
+                return (
+                  <TileBasedOnStatus
+                    status={item.status}
+                    id={item.groupId}
+                    name={item.name}
+                  >
+                    <HStack alignItems="center" justifyContent="space-between">
+                      <Box>
+                        <VStack>
+                          <BodyLarge>{item.name}</BodyLarge>
+                          <Caption color={colors.gray}>65 Students</Caption>
+                        </VStack>
+                      </Box>
+                      <IconByName
+                        name="ArrowRightSLineIcon"
+                        isDisabled={true}
+                      />
+                    </HStack>
+                  </TileBasedOnStatus>
+                );
+              })}
             {/*
             <TileBasedOnStatus status={"pending"}>
               <HStack alignItems="center" justifyContent="space-between">

@@ -4,12 +4,13 @@ import {
   Caption,
   classRegistryService,
   H2,
-  H3, hpAssessmentRegistryService,
+  H3,
+  hpAssessmentRegistryService,
   Layout,
   Loading,
   overrideColorTheme,
   studentRegistryService,
-  useWindowSize
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -61,7 +62,7 @@ export default function StudentsListPage({
 
   const _handleStudentAbsentMarking = async () => {
     setLoading(true);
-    const type = ['Written Assessment', 'Oral Assessment'];
+    const type = ["Written Assessment", "Oral Assessment"];
     type.forEach((item, i, arr) => {
       const data = {
         type: item,
@@ -69,28 +70,30 @@ export default function StudentsListPage({
         studentId: selectedStudent?.id,
         teacherId:
           localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
-        status: 'Absent'
+        status: "Absent",
       };
-      assessmentRegistryService.createUpdateAssessment(data).then((res)=> {
-        if(i === arr.length -1){
+      assessmentRegistryService.createUpdateAssessment(data).then((res) => {
+        if (i === arr.length - 1) {
           setLoading(false);
         }
       });
-    })
+    });
   };
 
   const getStudentsList = async () => {
     let list = [];
     const param = {
-      "limit": "20",
-      "page": 1,
-      "filters": {"groupId":{"_eq": classId}}
-    }
-    const { data: {data} } = await hpAssessmentRegistryService.getGroupMembershipSearch(param);
+      limit: "20",
+      page: 1,
+      filters: { groupId: { _eq: classId } },
+    };
+    const {
+      data: { data },
+    } = await hpAssessmentRegistryService.getGroupMembershipSearch(param);
     for (const key in data) {
-      const res = await studentRegistryService.getOne({id: data[key].userId});
+      const res = await studentRegistryService.getOne({ id: data[key].userId });
       list.push(res);
-      if(key == data.length-1){
+      if (key == data.length - 1) {
         setStudentlist(list);
       }
     }
@@ -125,12 +128,20 @@ export default function StudentsListPage({
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <H2 textTransform="none" color="hpAssessment.white">{t("Students List")}</H2>
+            <H2 textTransform="none" color="hpAssessment.white">
+              {t("Students List")}
+            </H2>
             <>
               <HStack alignItems={"center"}>
                 <Caption color="hpAssessment.white">{`Total Students for Evaluation ${totalStudentCount}`}</Caption>{" "}
-                <Caption color="hpAssessment.white" fontSize={2}> •</Caption>{" "}
-                <Caption color="hpAssessment.white"> {t("Present ") + presentStudentCount}</Caption>
+                <Caption color="hpAssessment.white" fontSize={2}>
+                  {" "}
+                  •
+                </Caption>{" "}
+                <Caption color="hpAssessment.white">
+                  {" "}
+                  {t("Present ") + presentStudentCount}
+                </Caption>
               </HStack>
             </>
           </VStack>
@@ -198,7 +209,7 @@ export default function StudentsListPage({
             mr="2"
             isDisabled={!(selectedStudent && selectedStudent.id)}
             _disabled={{ cursor: "not-allowed" }}
-            onPress={()=> _handleStudentAbsentMarking()}
+            onPress={() => _handleStudentAbsentMarking()}
           >
             {t("Mark Absent")}
           </Button>
@@ -212,7 +223,13 @@ export default function StudentsListPage({
             }}
             isDisabled={!(selectedStudent && selectedStudent.id)}
             _disabled={{ cursor: "not-allowed" }}
-            onPress={() => {localStorage.setItem('hp-assessment-selectedStudentId', selectedStudent.id); navigate("/hpAssessment/read-along-instruction");}}
+            onPress={() => {
+              localStorage.setItem(
+                "hp-assessment-selectedStudentId",
+                selectedStudent.id
+              );
+              navigate("/hpAssessment/read-along-instruction");
+            }}
           >
             {t("Continue Assessment")}
           </Button>

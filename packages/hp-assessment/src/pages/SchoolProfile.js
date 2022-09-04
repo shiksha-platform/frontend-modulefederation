@@ -3,7 +3,9 @@ import {
   IconByName,
   Layout,
   ProgressBar,
-  overrideColorTheme, Loading, useWindowSize
+  overrideColorTheme,
+  Loading,
+  useWindowSize,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -37,11 +39,12 @@ export default function SchoolProfile() {
       _header={{
         title: schoolDetail?.schoolName,
         subHeading: schoolDetail?.district,
-        ...(schoolDetail && schoolDetail.assessmentStatus === 'nipun') && {
-          iconComponent: (
-            <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
-          )
-        },
+        ...(schoolDetail &&
+          schoolDetail.assessmentStatus === "nipun" && {
+            iconComponent: (
+              <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
+            ),
+          }),
         /*subHeading: (
           <VStack>
             <Text>

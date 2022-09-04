@@ -13,7 +13,16 @@ import {
   BodyMedium,
 } from "@shiksha/common-lib";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, HStack, Text, VStack, Button, Actionsheet, Stack, Pressable } from "native-base";
+import {
+  Box,
+  HStack,
+  Text,
+  VStack,
+  Button,
+  Actionsheet,
+  Stack,
+  Pressable,
+} from "native-base";
 import { useTranslation } from "react-i18next";
 import React from "react";
 // const colors = overrideColorTheme(colorTheme);
@@ -26,15 +35,22 @@ export default function ReadAlongInstruction() {
   const [showModalTemplate, setShowModalTemplate] = useState(true);
 
   const _handleReadAlongOpen = () => {
-    androidInteract.triggerReadAlong("hp_g3_hinP4")
-  }
+    androidInteract.triggerReadAlong("hp_g3_hinP4");
+  };
 
-  function onReadAlongResult(correctWords, timeTaken){
-    document.getElementById("results").innerHTML = "Read Along : Correct words : " + correctWords + " : Time taken : " +
-      timeTaken + " seconds";
+  function onReadAlongResult(correctWords, timeTaken) {
+    document.getElementById("results").innerHTML =
+      "Read Along : Correct words : " +
+      correctWords +
+      " : Time taken : " +
+      timeTaken +
+      " seconds";
 
-    localStorage.setItem('hp-assessment-oral-test-result', JSON.stringify({correctWords, timeTaken}));
-    navigate('/hpAssessment/oral-assessment-success');
+    localStorage.setItem(
+      "hp-assessment-oral-test-result",
+      JSON.stringify({ correctWords, timeTaken })
+    );
+    navigate("/hpAssessment/oral-assessment-success");
   }
 
   if (loading) {
@@ -49,7 +65,9 @@ export default function ReadAlongInstruction() {
         isEnableSearchBtn: true,
       }}
       subHeader={
-        <H2 textTransform="none" color="hpAssessment.white">अभ्यास हेतु विषय सम्बन्धी निर्देश</H2>
+        <H2 textTransform="none" color="hpAssessment.white">
+          अभ्यास हेतु विषय सम्बन्धी निर्देश
+        </H2>
       }
       _subHeader={{
         bg: "hpAssessment.cardBg1",
@@ -87,16 +105,25 @@ export default function ReadAlongInstruction() {
       <Box p={4}>
         <VStack space={4}>
           <H2>चलिए शुरू करते हैं !</H2>
-          <BodyMedium color="hpAssessment.success">आपको अभी कुछ शब्द अथवा कहानियां दिखेंगी, उनको पढ़ने की कोशिश करें। भाषा के आकलन 'Read Along' ऐप पर होगा। आकलन शुरू करने से पहले सुनिश्चित आपने ऐप को सेटअप करने के सब स्टेप कर लिए हैं ।</BodyMedium>
+          <BodyMedium color="hpAssessment.success">
+            आपको अभी कुछ शब्द अथवा कहानियां दिखेंगी, उनको पढ़ने की कोशिश करें।
+            भाषा के आकलन 'Read Along' ऐप पर होगा। आकलन शुरू करने से पहले
+            सुनिश्चित आपने ऐप को सेटअप करने के सब स्टेप कर लिए हैं ।
+          </BodyMedium>
           <BodyMedium>
             <ol>
-              <li>गूगल प्ले स्टोर से Read Along' ऐप डाउनलोड करें। ऐप को खोलें।</li>
+              <li>
+                गूगल प्ले स्टोर से Read Along' ऐप डाउनलोड करें। ऐप को खोलें।
+              </li>
               <li>ऐप खुलने पर Audio' व 'Video' permission को 'Allow'करें ।</li>
               <li>ऐप की भाषा को अंग्रेजी से हिंदी में बदलें ।</li>
               <li>ऐप पर आप "hpnipun22" पार्टनर कोड डालें।</li>
             </ol>
           </BodyMedium>
-          <BodyMedium>स्टेप 3 व 4 हेतु विकल्प ऐप के पहले पेज पर बाईं ओर बटन दबाने पर मिलेंगे</BodyMedium>
+          <BodyMedium>
+            स्टेप 3 व 4 हेतु विकल्प ऐप के पहले पेज पर बाईं ओर बटन दबाने पर
+            मिलेंगे
+          </BodyMedium>
 
           <Button
             colorScheme="hpButton"
@@ -116,7 +143,9 @@ export default function ReadAlongInstruction() {
         <Actionsheet.Content alignItems={"left"} bg="hpAssessment.cardBg1">
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={1} pb="2px">
-              <H2 fontWeight="500" color="hpAssessment.white">कृपया निम्नलिखित की दोबारा जांच करें:</H2>
+              <H2 fontWeight="500" color="hpAssessment.white">
+                कृपया निम्नलिखित की दोबारा जांच करें:
+              </H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
@@ -127,8 +156,14 @@ export default function ReadAlongInstruction() {
         </Actionsheet.Content>
         <Box bg="hpAssessment.white" width={"100%"}>
           <ul>
-            <li>'Read Along' ऐप की भाषा को अंग्रेजी से हिंदी में बदलें। ('Read Along' के पहले पेज पर बाईं ओर बटन दबाने पर यह विकल्प मिलेगा)</li>
-            <li>'Read Along' ऐप पर आपने 'hpnipun22' पार्टनर कोड डालें। ('Read Along' के पहले पेज पर बाईं ओर बटन दबाने पर यह विकल्प मिलेगा)</li>
+            <li>
+              'Read Along' ऐप की भाषा को अंग्रेजी से हिंदी में बदलें। ('Read
+              Along' के पहले पेज पर बाईं ओर बटन दबाने पर यह विकल्प मिलेगा)
+            </li>
+            <li>
+              'Read Along' ऐप पर आपने 'hpnipun22' पार्टनर कोड डालें। ('Read
+              Along' के पहले पेज पर बाईं ओर बटन दबाने पर यह विकल्प मिलेगा)
+            </li>
           </ul>
           <Box p={5}>
             <Button

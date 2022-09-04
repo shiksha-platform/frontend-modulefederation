@@ -28,13 +28,16 @@ export default function QumlTest({
   selectedCompetencies,
   selectedSubject,
 }) {
-  const questionIds = localStorage.getItem('hp-assessment-written-questionIds') || '';
+  const questionIds =
+    localStorage.getItem("hp-assessment-written-questionIds") || "";
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [assessmentStartTime, setAssessmentStartTime] = React.useState();
   const [width, height] = useWindowSize();
-  const selectedStudentId = localStorage.getItem('hp-assessment-selectedStudentId');
+  const selectedStudentId = localStorage.getItem(
+    "hp-assessment-selectedStudentId"
+  );
 
   const startAssessment = async (qumlResult) => {
     setLoading(true);
@@ -45,15 +48,15 @@ export default function QumlTest({
     const data = {
       filter: JSON.stringify(params),
       // type: selectedAssessmentType,
-      type: 'Written Assessment',
-      questions: questionIds.split(','),
+      type: "Written Assessment",
+      questions: questionIds.split(","),
       source: "diksha",
       answersheet: JSON.stringify(qumlResult[0]),
       // studentId: selectedStudent.id,
       studentId: selectedStudentId,
       teacherId:
         localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
-      status: 'COMPLETED'
+      status: "COMPLETED",
     };
     const result = await assessmentRegistryService.createUpdateAssessment(data);
     getAssessmentData(result);
@@ -127,10 +130,10 @@ export default function QumlTest({
       }}
       subHeader={
         <H2 textTransform="none" color="hpAssessment.white">
-            {t("Attempt the questions")}
+          {t("Attempt the questions")}
         </H2>
       }
-      _subHeader={{ bg: 'hpAssessment.cardBg1' }}
+      _subHeader={{ bg: "hpAssessment.cardBg1" }}
       _footer={{
         menues: [
           {

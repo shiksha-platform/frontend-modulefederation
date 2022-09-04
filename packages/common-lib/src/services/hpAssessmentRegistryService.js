@@ -1,4 +1,4 @@
-import { get, post, update as coreUpdate } from "./RestClient";
+import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 const defaultAdapter = 'diksha'
 

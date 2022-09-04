@@ -69,30 +69,34 @@ export default function ClassDetails({ appName }) {
   };
 
   const calculateParticipantData = (assessmentsData) => {
-    const presentStudent =
-      Math.floor(assessmentsData.filter((item) => {
+    const presentStudent = Math.floor(
+      assessmentsData.filter((item) => {
         return item.status === "COMPLETED";
-      }).length / 2);
+      }).length / 2
+    );
 
-    const absentStudent =
-      Math.floor(assessmentsData.filter((item) => {
+    const absentStudent = Math.floor(
+      assessmentsData.filter((item) => {
         return item.status === "ABSENT";
-      }).length / 2);
+      }).length / 2
+    );
 
     setAbsentStudentCount(absentStudent);
     setPresentStudentCount(presentStudent);
   };
 
   const calculateAssessmentResults = (assessmentsData) => {
-    const nipunStudent =
-      Math.floor(assessmentsData.filter((item) => {
+    const nipunStudent = Math.floor(
+      assessmentsData.filter((item) => {
         return item.status === "nipun";
-      }).length / 2);
+      }).length / 2
+    );
 
-    const nipunReadyStudent =
-      Math.floor(assessmentsData.filter((item) => {
+    const nipunReadyStudent = Math.floor(
+      assessmentsData.filter((item) => {
         return item.status === "COMPLETED";
-      }).length / 2);
+      }).length / 2
+    );
 
     setNipunStudentCount(nipunStudent);
     setNipunReadyStudentCount(nipunReadyStudent);

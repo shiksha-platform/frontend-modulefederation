@@ -46,7 +46,9 @@ const TileBasedOnStatus = ({
   if (student.status === "visited") {
     return (
       <Pressable
-        onPress={() => {setSelectedStudent(student)}}
+        onPress={() => {
+          setSelectedStudent(student);
+        }}
         isDisabled={student.attendance === "Absent"}
         _disabled={{ cursor: "not-allowed" }}
       >
@@ -110,7 +112,7 @@ const StudentListCard = ({
   handleStudentPageNext,
   studentList,
   selectedStudent,
-  setSelectedStudent
+  setSelectedStudent,
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -144,7 +146,9 @@ const StudentListCard = ({
                     ? "hpAssessment.black"
                     : "hpAssessment.gray"
                 }
-              >{student.firstName}</BodyLarge>
+              >
+                {student.firstName}
+              </BodyLarge>
             </VStack>
           </HStack>
         </Box>

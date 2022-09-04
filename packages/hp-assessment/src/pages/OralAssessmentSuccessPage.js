@@ -5,7 +5,8 @@ import {
   Layout,
   overrideColorTheme,
   useWindowSize,
-  BodyLarge, questionRegistryService
+  BodyLarge,
+  questionRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -31,7 +32,6 @@ export default function OralAssessmentSuccessPage({
   const [width, height] = useWindowSize();
   const [questionIds, setQuestionIds] = useState([]);
 
-
   const fetchQuestionsForWrittenAssessment = async () => {
     const limit = 2;
     let data = {
@@ -39,14 +39,14 @@ export default function OralAssessmentSuccessPage({
       limit,
       subject: "Mathematics",
       // bloomsLevel: selectedCompetencies || "application",
-      className: localStorage.getItem('hp-assessment-groupName')
+      className: localStorage.getItem("hp-assessment-groupName"),
     };
     const questions = await questionRegistryService.getAllQuestions(data);
     let questionIds = questions.map((question) => {
       return question.questionId;
     });
     setQuestionIds(questionIds);
-    localStorage.setItem('hp-assessment-written-questionIds', questionIds);
+    localStorage.setItem("hp-assessment-written-questionIds", questionIds);
   };
 
   return (

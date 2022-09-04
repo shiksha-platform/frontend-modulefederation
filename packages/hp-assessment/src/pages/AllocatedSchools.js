@@ -25,79 +25,77 @@ export default function AllocatedSchools() {
   const [loading, setLoading] = useState(true);
   const [trackingList, setTrackingList] = useState([]);
   const [pendingSchools, setPendingSchools] = useState(0);
-  const teacherId = localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488";
+  const teacherId =
+    localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488";
 
   function calculateTrackingData(list) {
     const groupedList = formatData(list, "schoolId");
 
     let pendingCount = 0;
-    let schoolStatus = '';
-    for(let key in groupedList){
+    let schoolStatus = "";
+    for (let key in groupedList) {
       let isPending = groupedList[key].status.every((item) => {
-        return item === 'pending';
-      })
-      if(isPending) {
+        return item === "pending";
+      });
+      if (isPending) {
         pendingCount++;
       }
 
       groupedList[key].status.forEach((item) => {
-        if(item === 'pending'){
-          if(schoolStatus === ''){
-            schoolStatus = 'pending'
+        if (item === "pending") {
+          if (schoolStatus === "") {
+            schoolStatus = "pending";
           }
-          if(schoolStatus === 'pending'){
-            schoolStatus = 'pending'
+          if (schoolStatus === "pending") {
+            schoolStatus = "pending";
           }
-          if(schoolStatus === 'visited'){
-            schoolStatus = 'visited'
+          if (schoolStatus === "visited") {
+            schoolStatus = "visited";
           }
-          if(schoolStatus === 'nipun_ready'){
-            schoolStatus = 'visited'
+          if (schoolStatus === "nipun_ready") {
+            schoolStatus = "visited";
           }
-          if(schoolStatus === 'nipun'){
-            schoolStatus = 'visited'
+          if (schoolStatus === "nipun") {
+            schoolStatus = "visited";
           }
+        } else if (item === "nipun_ready") {
+          if (schoolStatus === "") {
+            schoolStatus = "nipun_ready";
+          }
+          if (schoolStatus === "pending") {
+            schoolStatus = "visited";
+          }
+          if (schoolStatus === "visited") {
+            schoolStatus = "visited";
+          }
+          if (schoolStatus === "nipun_ready") {
+            schoolStatus = "nipun_ready";
+          }
+          if (schoolStatus === "nipun") {
+            schoolStatus = "nipun_ready";
+          }
+        } else if (item === "nipun") {
+          if (schoolStatus === "") {
+            schoolStatus = "nipun";
+          }
+          if (schoolStatus === "pending") {
+            schoolStatus = "visited";
+          }
+          if (schoolStatus === "visited") {
+            schoolStatus = "visited";
+          }
+          if (schoolStatus === "nipun_ready") {
+            schoolStatus = "nipun_ready";
+          }
+          if (schoolStatus === "nipun") {
+            schoolStatus = "nipun";
+          }
+        } else {
+          schoolStatus = "visited";
         }
-        else if(item === 'nipun_ready'){
-          if(schoolStatus === ''){
-            schoolStatus = 'nipun_ready'
-          }
-          if(schoolStatus === 'pending'){
-            schoolStatus = 'visited'
-          }
-          if(schoolStatus === 'visited'){
-            schoolStatus = 'visited'
-          }
-          if(schoolStatus === 'nipun_ready'){
-            schoolStatus = 'nipun_ready'
-          }
-          if(schoolStatus === 'nipun'){
-            schoolStatus = 'nipun_ready'
-          }
-        }
-        else if(item === 'nipun'){
-          if(schoolStatus === ''){
-            schoolStatus = 'nipun'
-          }
-          if(schoolStatus === 'pending'){
-            schoolStatus = 'visited'
-          }
-          if(schoolStatus === 'visited'){
-            schoolStatus = 'visited'
-          }
-          if(schoolStatus === 'nipun_ready'){
-            schoolStatus = 'nipun_ready'
-          }
-          if(schoolStatus === 'nipun'){
-            schoolStatus = 'nipun'
-          }
-        }
-        else {
-          schoolStatus = 'visited'
-        }
-      })
+      });
 
-      groupedList[key]['schoolStatus'] = schoolStatus;
+      groupedList[key]["schoolStatus"] = schoolStatus;
     }
 
     setTrackingList(groupedList);
@@ -110,9 +108,9 @@ export default function AllocatedSchools() {
       const key = obj[property];
       if (!acc[key]) {
         acc[key] = {
-          schoolId: '',
+          schoolId: "",
           status: [],
-          groupIds: []
+          groupIds: [],
         };
       }
       acc[key].schoolId = obj.schoolId;
@@ -123,7 +121,9 @@ export default function AllocatedSchools() {
   }
 
   const getMonitorTrackingData = async () => {
-    const list = await hpAssessmentRegistryService.getAllAllocatedSchools({monitorId: teacherId});
+    const list = await hpAssessmentRegistryService.getAllAllocatedSchools({
+      monitorId: teacherId,
+    });
     calculateTrackingData(list);
   };
 
@@ -153,13 +153,22 @@ export default function AllocatedSchools() {
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <H2 textTransform="none" color="hpAssessment.white">{t("Allocated Schools")}</H2>
+            <H2 textTransform="none" color="hpAssessment.white">
+              {t("Allocated Schools")}
+            </H2>
             <HStack alignItems={"center"}>
               <Caption color="hpAssessment.white">
-                {t("Total Schools for Evaluation ") + Object.keys(trackingList).length}
+                {t("Total Schools for Evaluation ") +
+                  Object.keys(trackingList).length}
               </Caption>{" "}
-              <Caption fontSize={2} color="hpAssessment.white"> •</Caption>{" "}
-              <Caption color="hpAssessment.white"> {t("Pending ") + pendingSchools}</Caption>
+              <Caption fontSize={2} color="hpAssessment.white">
+                {" "}
+                •
+              </Caption>{" "}
+              <Caption color="hpAssessment.white">
+                {" "}
+                {t("Pending ") + pendingSchools}
+              </Caption>
             </HStack>
           </VStack>
         </HStack>
@@ -199,19 +208,17 @@ export default function AllocatedSchools() {
     >
       <Box p={4}>
         <VStack space={4}>
-          {
-            Object.keys(trackingList).map((key) => {
-              // const schoolDetail = getSchoolDetail(item?.monitorTrackingId);
-              return (
-                <SchoolCard
-                  status={trackingList[key].schoolStatus}
-                  schoolId={key}
-                  groupIds={trackingList[key].groupIds}
-                  key={key + Math.random()}
-                />
-              );
-            })
-          }
+          {Object.keys(trackingList).map((key) => {
+            // const schoolDetail = getSchoolDetail(item?.monitorTrackingId);
+            return (
+              <SchoolCard
+                status={trackingList[key].schoolStatus}
+                schoolId={key}
+                groupIds={trackingList[key].groupIds}
+                key={key + Math.random()}
+              />
+            );
+          })}
         </VStack>
       </Box>
     </Layout>
