@@ -1,22 +1,15 @@
 import {
-  Collapsible,
-  IconByName,
   Layout,
   assessmentRegistryService,
-  overrideColorTheme,
-  H2,
   Loading,
-  useWindowSize,
   telemetryFactory,
   capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
-import colorTheme from "../colorTheme";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Text, VStack } from "native-base";
 import { QUMLBaseURL } from "assets/constants";
-const colors = overrideColorTheme(colorTheme);
 
 export default function QumlTest({
   appName,
@@ -53,6 +46,7 @@ export default function QumlTest({
       teacherId:
         localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
       status: "COMPLETED",
+      groupId: classId,
     };
     const result = await assessmentRegistryService
       .createUpdateAssessment(data)
@@ -138,7 +132,7 @@ export default function QumlTest({
           </Text>
         </VStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "assessment.cardBg" }}
       _footer={footerLinks}
     >
       {questionIds && (

@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
   Collapsible,
-  overrideColorTheme,
   H2,
   Caption,
   BodyLarge,
   studentRegistryService,
   Loading,
-  questionRegistryService,
-  IconByName,
-  telemetryFactory,
-  capture,
   assessmentRegistryService,
-  H3,
   useWindowSize,
 } from "@shiksha/common-lib";
 import {
@@ -24,19 +18,10 @@ import {
   Spacer,
   Pressable,
   Button,
-  Actionsheet,
-  Stack,
-  Checkbox,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import colorTheme from "../../colorTheme";
 import moment from "moment";
 import manifest from "../../manifest.json";
-const colors = overrideColorTheme(colorTheme);
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
 
 const StudentListCard = ({
   classId,
@@ -90,34 +75,28 @@ const StudentListCard = ({
   }
 
   return (
-    <>
+    <Box>
       <Collapsible
         defaultCollapse={true}
         header={
-          <>
-            <VStack>
-              <H2>{t("Students List")}</H2>
-              {attendanceData.msg ? (
-                <>
-                  <Caption color={colors.lightGray} textTransform="none">
-                    {attendanceData.msg}
-                  </Caption>
-                </>
-              ) : (
-                <>
-                  <HStack alignItems={"center"}>
-                    <Caption color={colors.gray}>
-                      {t("Total ") + studentlist.length}
-                    </Caption>{" "}
-                    <Caption color={colors.lightGray}> ●</Caption>{" "}
-                    <Caption color={colors.gray}>
-                      {t("Present ") + attendanceData.present}
-                    </Caption>
-                  </HStack>
-                </>
-              )}
-            </VStack>
-          </>
+          <VStack>
+            <H2>{t("Students List")}</H2>
+            {attendanceData.msg ? (
+              <Caption color={"assessment.lightGray"} textTransform="none">
+                {attendanceData.msg}
+              </Caption>
+            ) : (
+              <HStack alignItems={"center"}>
+                <Caption color={"assessment.gray"}>
+                  {t("Total ") + studentlist.length}
+                </Caption>{" "}
+                <Caption color={"assessment.lightGray"}> ●</Caption>{" "}
+                <Caption color={"assessment.gray"}>
+                  {t("Present ") + attendanceData.present}
+                </Caption>
+              </HStack>
+            )}
+          </VStack>
         }
         fontSize="2px"
       >
@@ -163,14 +142,14 @@ const StudentListCard = ({
                           color={
                             selectedStudent?.id === student.id
                               ? "black"
-                              : colors.gray
+                              : "assessment.gray"
                           }
                         >
                           {index + 1}{" "}
-                          <Caption color={colors.lightGray}>●</Caption>{" "}
+                          <Caption color={"assessment.lightGray"}>●</Caption>{" "}
                           {student.firstName} {student.lastName}
                         </BodyLarge>
-                        <Caption color={colors.lightGray}>
+                        <Caption color={"assessment.lightGray"}>
                           {student.fathersName
                             ? `Mr. ${student.fathersName}`
                             : ""}
@@ -182,7 +161,7 @@ const StudentListCard = ({
                 </Box>
 
                 {studentlist.length - 1 != index && (
-                  <Divider bg={colors.dividerColor} />
+                  <Divider bg={"assessment.dividerColor"} />
                 )}
               </React.Fragment>
             );
@@ -191,13 +170,19 @@ const StudentListCard = ({
           <>No students found</>
         )}
       </Collapsible>
-      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
+      <Box
+        bg={"assessment.white"}
+        p="5"
+        position="sticky"
+        bottom="85"
+        shadow={2}
+      >
         <Button.Group>
           <Button
             isDisabled={!selectedStudent}
             flex="1"
             colorScheme="button"
-            _text={{ color: colors.white }}
+            _text={{ color: "assessment.white" }}
             px="5"
             // onPress={()=> {handleStartAssessment()}}
             onPress={handleStudentPageNext}
@@ -207,7 +192,7 @@ const StudentListCard = ({
           </Button>
         </Button.Group>
       </Box>
-    </>
+    </Box>
   );
 };
 

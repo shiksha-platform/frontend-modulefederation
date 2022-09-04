@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   BodyLarge,
   BodyMedium,
@@ -7,10 +7,8 @@ import {
   H2,
   IconByName,
   Layout,
-  Loading,
-  overrideColorTheme,
+  StarRating,
   telemetryFactory,
-  useWindowSize,
 } from "@shiksha/common-lib";
 import {
   Actionsheet,
@@ -20,19 +18,12 @@ import {
   Divider,
   HStack,
   Stack,
+  useTheme,
   VStack,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
 import RoundedProgressBar from "../components/RoundedProgressBar";
-import colorTheme from "../colorTheme";
-
-const colors = overrideColorTheme(colorTheme);
-
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
 
 const AssessmentResult = ({
   appName,
@@ -48,12 +39,10 @@ const AssessmentResult = ({
   setSelectedAssessmentType,
   selectedAssessmentType,
 }) => {
-  const [width, height] = useWindowSize();
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const [toDoNextModal, setToDoNextModal] = useState(false);
-  const [similarTestModal, setSimilarTestModal] = useState(false);
-  const [nextOption, setNextOption] = useState();
+  const [toDoNextModal, setToDoNextModal] = React.useState(false);
+  const [similarTestModal, setSimilarTestModal] = React.useState(false);
+  const [nextOption, setNextOption] = React.useState();
   const scorePercent = Math.floor(
     (localStorage.getItem("assessment-score") /
       localStorage.getItem("assessment-totalScore")) *
@@ -127,345 +116,35 @@ const AssessmentResult = ({
     capture("INTERACT", telemetryData);
   };
 
-  const SuccessComponent = () => {
-    return (
-      <>
-        <VStack space="0" flex="1" width={width}>
-          <VStack bg={colors.bgSuccessAlert} pb="100px" pt="32px">
-            <IconByName
-              alignSelf="center"
-              name="EmotionHappyLineIcon"
-              color={colors.success}
-              _icon={{ size: 100 }}
-            />
-            <Box alignItems="center">
-              <H1 color={colors.success}>YAY!</H1>
-              <BodyLarge color={colors.success}>
-                You got most of the answers right.
-              </BodyLarge>
-            </Box>
-          </VStack>
-          <VStack space={50} bg={colors.white}>
-            <Box alignItems="center">
-              <Box textAlign="center" marginTop="-40px">
-                <VStack space={3}>
-                  <Box mx="auto">
-                    <Avatar
-                      size="80px"
-                      borderRadius="md"
-                      source={{
-                        // uri: "https://via.placeholder.com/80x80.png",
-                        uri:
-                          studentDetails &&
-                          studentDetails.image &&
-                          studentDetails.image !== ""
-                            ? `${manifest.api_url}/files/${encodeURIComponent(
-                                studentDetails.image
-                              )}`
-                            : `https://via.placeholder.com/80x80.png`,
-                      }}
-                    />
-                  </Box>
-                  <Box>
-                    <H2>{studentDetails.fullName}</H2>
-                    {studentDetails.fathersName && (
-                      <BodyMedium color={colors.gray}>
-                        `MR. ${studentDetails.fathersName}`
-                      </BodyMedium>
-                    )}
-                  </Box>
-                </VStack>
-              </Box>
-            </Box>
-            <Box>
-              <VStack>
-                <Box p="4" alignItems="center">
-                  <RoundedProgressBar
-                    values={[scorePercent, 100 - scorePercent]}
-                    colors={[
-                      colors.scoreSuccessStarColor,
-                      colors.circleProgressBarcolor,
-                    ]}
-                    title={{ text: `${scorePercent}%`, fontSize: "21px" }}
-                    legend={{ text: "Total Score", fontSize: "14px" }}
-                    cutout={"85%"}
-                    size="80px"
-                  />
-                  {/* <HStack justifyContent={"center"} alignItems="center">
-                      <IconByName name="StarFillIcon" p="0" color="green.600" />
-                      <IconByName name="StarFillIcon" p="0" color="green.600" />
-                      <IconByName name="StarFillIcon" p="0" color="green.600" />
-                      <IconByName name="StarFillIcon" p="0" color="green.600" />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color={colors.scoreSuccessStarColor}
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color={colors.scoreSuccessStarColor}
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color={colors.scoreSuccessStarColor}
-                      />
-                      <IconByName
-                        name="StarFillIcon"
-                        p="0"
-                        color={colors.scoreSuccessStarColor}
-                      />
-                      <IconByName
-                        name="StarHalfFillIcon"
-                        p="0"
-                        color={colors.scoreSuccessStarColor}
-                      />
-                    </HStack> */}
-                </Box>
-              </VStack>
-            </Box>
-            <Box px="4">
-              <Button
-                colorScheme="button"
-                _text={{
-                  color: colors.white,
-                }}
-                onPress={() => setToDoNextModal(true)}
-              >
-                {t("Next")}
-              </Button>
-            </Box>
-          </VStack>
-        </VStack>
-      </>
-    );
-  };
-
-  const OKComponent = () => {
-    return (
-      <>
-        <VStack space="0" flex="1" width={width}>
-          <VStack bg={colors.scoreCardBg1} pb="100px" pt="32px">
-            <IconByName
-              alignSelf="center"
-              name="EmotionNormalLineIcon"
-              color={colors.scoreCardIcon1}
-              _icon={{ size: 100 }}
-            />
-            <Box alignItems="center">
-              <H1 color={colors.scoreCardIcon1}>NOT BAD!</H1>
-              <BodyLarge color={colors.scoreCardIcon1}>
-                You got most of the answers right.
-              </BodyLarge>
-            </Box>
-          </VStack>
-          <VStack space={50} bg="white">
-            <Box alignItems="center">
-              <Box textAlign="center" marginTop="-40px">
-                <VStack space={3}>
-                  <Box mx="auto">
-                    <Avatar
-                      size="80px"
-                      borderRadius="md"
-                      source={{
-                        // uri: "https://via.placeholder.com/80x80.png",
-                        uri:
-                          studentDetails.image && studentDetails.image !== ""
-                            ? `${manifest.api_url}/files/${encodeURIComponent(
-                                studentDetails.image
-                              )}`
-                            : `https://via.placeholder.com/80x80.png`,
-                      }}
-                    />
-                  </Box>
-                  <Box>
-                    <H2>{studentDetails.fullName}</H2>
-                    {studentDetails.fathersName && (
-                      <BodyMedium color={colors.gray}>
-                        `MR. ${studentDetails.fathersName}`
-                      </BodyMedium>
-                    )}
-                  </Box>
-                </VStack>
-              </Box>
-            </Box>
-            <Box>
-              <VStack>
-                <Box p="4" alignItems="center">
-                  <RoundedProgressBar
-                    values={[scorePercent, 100 - scorePercent]}
-                    colors={[
-                      colors.scoreCardIcon1,
-                      colors.circleProgressBarcolor,
-                    ]}
-                    title={{ text: `${scorePercent}%`, fontSize: "21px" }}
-                    legend={{ text: "Total Score", fontSize: "14px" }}
-                    cutout={"85%"}
-                    size="80px"
-                  />
-                  {/* <HStack justifyContent={"center"} alignItems="center">
-                      <IconByName name="StarFillIcon" p="0" color="#E78D12" />
-                      <IconByName name="StarFillIcon" p="0" color="#E78D12" />
-                      <IconByName name="StarFillIcon" p="0" color="#E78D12" />
-                      <IconByName
-                        name="StarHalfFillIcon"
-                        p="0"
-                        color="#E78D12"
-                      />
-                      <IconByName name="StarLineIcon" p="0" color="#E78D12" />
-                    </HStack> */}
-                </Box>
-              </VStack>
-            </Box>
-            <Box px="4">
-              <Button
-                colorScheme="button"
-                _text={{
-                  color: colors.white,
-                }}
-                onPress={() => setToDoNextModal(true)}
-              >
-                {t("Next")}
-              </Button>
-            </Box>
-          </VStack>
-        </VStack>
-      </>
-    );
-  };
-
-  const FailureComponent = () => {
-    return (
-      <>
-        <VStack space="0" flex="1" width={width}>
-          <VStack bg={colors.scoreCardBg2} pb="100px" pt="32px">
-            <IconByName
-              alignSelf="center"
-              name="EmotionUnhappyLineIcon"
-              color={colors.scoreCardIcon2}
-              _icon={{ size: 100 }}
-            />
-            <Box alignItems="center">
-              <H1 color={colors.scoreCardIcon2}>OHH NO!</H1>
-              <BodyLarge color={colors.scoreCardIcon2}>
-                Better luck next time
-              </BodyLarge>
-            </Box>
-          </VStack>
-          <VStack space={50} bg={colors.white}>
-            <Box alignItems="center">
-              <Box textAlign="center" marginTop="-40px">
-                <VStack space={3}>
-                  <Box mx="auto">
-                    <Avatar
-                      size="80px"
-                      borderRadius="md"
-                      source={{
-                        // uri: "https://via.placeholder.com/80x80.png",
-                        uri:
-                          studentDetails &&
-                          studentDetails.image &&
-                          studentDetails.image !== ""
-                            ? `${manifest.api_url}/files/${encodeURIComponent(
-                                studentDetails.image
-                              )}`
-                            : `https://via.placeholder.com/80x80.png`,
-                      }}
-                    />
-                  </Box>
-                  <Box>
-                    <H2>{studentDetails?.fullName}</H2>
-                    {studentDetails?.fathersName && (
-                      <BodyMedium color={colors.gray}>
-                        `MR. ${studentDetails.fathersName}`
-                      </BodyMedium>
-                    )}
-                  </Box>
-                </VStack>
-              </Box>
-            </Box>
-            <Box>
-              <VStack>
-                <Box p="4" alignItems="center">
-                  <RoundedProgressBar
-                    values={[scorePercent, 100 - scorePercent]}
-                    colors={[
-                      colors.scoreCardIcon2,
-                      colors.circleProgressBarcolor,
-                    ]}
-                    title={{ text: `${scorePercent}%`, fontSize: "21px" }}
-                    legend={{ text: "Total Score", fontSize: "14px" }}
-                    cutout={"85%"}
-                    size="80px"
-                  />
-                  {/* <HStack justifyContent={"center"} alignItems="center">
-                      <IconByName name="StarFillIcon" p="0" color="#F57B7B" />
-                      <IconByName
-                        name="StarHalfFillIcon"
-                        p="0"
-                        color="#F57B7B"
-                      />
-                      <IconByName name="StarLineIcon" p="0" color="#F57B7B" />
-                      <IconByName name="StarLineIcon" p="0" color="#F57B7B" />
-                      <IconByName name="StarLineIcon" p="0" color="#F57B7B" />
-                    </HStack> */}
-                </Box>
-              </VStack>
-            </Box>
-            <Box px="4">
-              <Button
-                colorScheme="button"
-                _text={{
-                  color: colors.white,
-                }}
-                onPress={() => setToDoNextModal(true)}
-              >
-                {t("Next")}
-              </Button>
-            </Box>
-          </VStack>
-        </VStack>
-      </>
-    );
-  };
-
   return (
     <Layout isDisabledAppBar={true}>
-      <Loading
-        width={width}
-        height={height}
-        customComponent={
-          scorePercent >= 75 ? (
-            <SuccessComponent />
-          ) : scorePercent < 75 && scorePercent >= 35 ? (
-            <OKComponent />
-          ) : (
-            <FailureComponent />
-          )
-        }
+      <ResultOnPersantage
+        {...{ studentDetails, scorePercent, setToDoNextModal }}
       />
+
       <Actionsheet
         isOpen={toDoNextModal}
         onClose={() => setToDoNextModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"assessment.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("What would you like to do next?")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
+              color={"assessment.cardCloseIcon"}
               onPress={(e) => setToDoNextModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"assessment.white"}>
           <Actionsheet.Item onPress={() => setNextOption("typeSelection")}>
             <BodyLarge
               textTransform="none"
-              color={nextOption === "typeSelection" ? "black" : colors.gray}
+              color={
+                nextOption === "typeSelection" ? "black" : "assessment.gray"
+              }
             >
               Continue another type of test with same student
             </BodyLarge>
@@ -473,7 +152,7 @@ const AssessmentResult = ({
           <Actionsheet.Item onPress={() => setNextOption("repeat")}>
             <BodyLarge
               textTransform="none"
-              color={nextOption === "repeat" ? "black" : colors.gray}
+              color={nextOption === "repeat" ? "black" : "assessment.gray"}
             >
               Repeat test with another student
             </BodyLarge>
@@ -481,7 +160,7 @@ const AssessmentResult = ({
           <Actionsheet.Item onPress={() => setNextOption("similar")}>
             <BodyLarge
               textTransform="none"
-              color={nextOption === "similar" ? "black" : colors.gray}
+              color={nextOption === "similar" ? "black" : "assessment.gray"}
             >
               Give similar test to another student
             </BodyLarge>
@@ -489,7 +168,7 @@ const AssessmentResult = ({
           <Actionsheet.Item onPress={() => setNextOption("end")}>
             <BodyLarge
               textTransform="none"
-              color={nextOption === "end" ? "black" : colors.gray}
+              color={nextOption === "end" ? "black" : "assessment.gray"}
             >
               End Assessment
             </BodyLarge>
@@ -500,7 +179,7 @@ const AssessmentResult = ({
             <Button
               colorScheme="button"
               _text={{
-                color: colors.white,
+                color: "assessment.white",
               }}
               // onPress={()=> setSelectedStudent()}
               onPress={() => handleNextOption()}
@@ -516,19 +195,19 @@ const AssessmentResult = ({
         isOpen={similarTestModal}
         onClose={() => setSimilarTestModal(false)}
       >
-        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+        <Actionsheet.Content alignItems={"left"} bg={"assessment.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Give similar test to another student")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.cardCloseIcon}
+              color={"assessment.cardCloseIcon"}
               onPress={(e) => setSimilarTestModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"assessment.white"}>
           <BodyMedium my={3}>
             A similar test will consist of the same competencies with a
             different set of questions.
@@ -541,7 +220,7 @@ const AssessmentResult = ({
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white,
+                  color: "assessment.white",
                 }}
                 onPress={() => handleCompSelectionWithSimilarQuestion()}
               >
@@ -551,7 +230,7 @@ const AssessmentResult = ({
               <Button
                 colorScheme="button"
                 _text={{
-                  color: colors.white,
+                  color: "assessment.white",
                 }}
                 onPress={() => handleContinueWithSimilarQuestion()}
               >
@@ -566,3 +245,124 @@ const AssessmentResult = ({
 };
 
 export default AssessmentResult;
+
+const ResultOnPersantage = ({
+  scorePercent,
+  studentDetails,
+  setToDoNextModal,
+}) => {
+  const { colors } = useTheme();
+  const { t } = useTranslation();
+  const [bgColor, setBgColor] = React.useState();
+  const [textColor, setTextColor] = React.useState();
+  const [titleComponent, setTitleComponent] = React.useState();
+
+  React.useEffect(() => {
+    if (scorePercent >= 75) {
+      setBgColor(colors["assessment"]?.["successAlert"]);
+      setTextColor(colors["assessment"]?.["success"]);
+      setTitleComponent(
+        <Box alignItems="center">
+          <H1 color={"assessment.success"}>YAY!</H1>
+          <BodyLarge color={"assessment.success"}>
+            You got most of the answers right.
+          </BodyLarge>
+        </Box>
+      );
+    } else if (scorePercent < 75 && scorePercent >= 35) {
+      setBgColor(colors["assessment"]?.["warningAlert"]);
+      setTextColor(colors["assessment"]?.["warning"]);
+      setTitleComponent(
+        <Box alignItems="center">
+          <H1 color={"assessment.warning"}>NOT BAD!</H1>
+          <BodyLarge color={"assessment.warning"}>
+            You got most of the answers right.
+          </BodyLarge>
+        </Box>
+      );
+    } else {
+      setBgColor(colors["assessment"]?.["dangerAlert"]);
+      setTextColor(colors["assessment"]?.["danger"]);
+      setTitleComponent(
+        <Box alignItems="center">
+          <H1 color={"assessment.danger"}>OHH NO!</H1>
+          <BodyLarge color={"assessment.danger"}>
+            Better luck next time
+          </BodyLarge>
+        </Box>
+      );
+    }
+  }, [scorePercent]);
+
+  return (
+    <Box>
+      <VStack bg={bgColor} py="50px">
+        <IconByName
+          alignSelf="center"
+          name="EmotionHappyLineIcon"
+          color={textColor}
+          _icon={{ size: 100 }}
+        />
+        {titleComponent}
+      </VStack>
+      <VStack space={10} bg={"assessment.white"}>
+        <Box alignItems="center">
+          <Box textAlign="center" marginTop="-40px">
+            <VStack space={3}>
+              <Box mx="auto">
+                <Avatar
+                  size="80px"
+                  borderRadius="md"
+                  {...(studentDetails?.image && studentDetails?.image !== ""
+                    ? {
+                        source: {
+                          uri: `${manifest.api_url}/files/${encodeURIComponent(
+                            studentDetails?.image
+                          )}`,
+                        },
+                      }
+                    : { bg: "assessment.primary" })}
+                >
+                  {studentDetails?.fullName}
+                </Avatar>
+              </Box>
+              <Box>
+                <H2>{studentDetails?.fullName}</H2>
+                {studentDetails?.fathersName && (
+                  <BodyMedium color={"assessment.gray"}>
+                    `MR. ${studentDetails?.fathersName}`
+                  </BodyMedium>
+                )}
+              </Box>
+            </VStack>
+          </Box>
+        </Box>
+
+        <VStack>
+          <Box p="4" alignItems="center">
+            <RoundedProgressBar
+              values={[scorePercent, 100 - scorePercent]}
+              colors={[textColor, colors?.assessment?.lightGray2]}
+              title={{ text: `${scorePercent}%`, fontSize: "21px" }}
+              legend={{ text: "Total Score", fontSize: "14px" }}
+              cutout={"85%"}
+              size="80px"
+            />
+          </Box>
+        </VStack>
+        <StarRating color={textColor} count={5} percentage={scorePercent} />
+        <Box px="4">
+          <Button
+            colorScheme="button"
+            _text={{
+              color: "assessment.white",
+            }}
+            onPress={() => setToDoNextModal(true)}
+          >
+            {t("Next")}
+          </Button>
+        </Box>
+      </VStack>
+    </Box>
+  );
+};
