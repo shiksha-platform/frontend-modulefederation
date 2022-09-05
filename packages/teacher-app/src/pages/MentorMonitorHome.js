@@ -100,14 +100,14 @@ export default function Home({ footerLinks, appName }) {
                 </H2>
               </Avatar>
               <VStack>
-                <BodyLarge>Welcome</BodyLarge>
+                <BodyLarge mb={-2.5}>Welcome</BodyLarge>
                 <H1>{localStorage.getItem("fullName")}</H1>
               </VStack>
             </HStack>
           </Box>
         ),
       }}
-      subHeader={"This is how your day looks like"}
+      subHeader={"This is how your progress looks like"}
       _appBar={{ languages: ["en"] }}
       _footer={footerLinks}
     >
@@ -184,9 +184,9 @@ export default function Home({ footerLinks, appName }) {
           </Box>
 
           <Box>
-            <H3 textTransform="none">
+            <H2 textTransform="none" fontWeight="bold">
               Performance Overview of the District / Block
-            </H3>
+            </H2>
             <FilterButton
               getObject={callBackFilterObject}
               object={filterObject}
@@ -262,11 +262,7 @@ export default function Home({ footerLinks, appName }) {
                     </CircularProgressbarWithChildren>
                   </Box>
                   <BodyMedium px="1">
-                    No of
-                    <br />
-                    Monthly Targets
-                    <br />
-                    achievers
+                    No of Monthly Targets achievers
                   </BodyMedium>
                 </VStack>
               </Box>
@@ -294,11 +290,7 @@ export default function Home({ footerLinks, appName }) {
                     </CircularProgressbarWithChildren>
                   </Box>
                   <BodyMedium px="1">
-                    Percentage of
-                    <br />
-                    monthly target
-                    <br />
-                    achievers
+                    Percentage of monthly target achievers
                   </BodyMedium>
                 </VStack>
               </Box>
