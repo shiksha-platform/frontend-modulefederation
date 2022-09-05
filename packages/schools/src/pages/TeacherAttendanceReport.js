@@ -141,7 +141,7 @@ export default function TeacherAttendanceReport({ footerLinks, appName }) {
               <H2 textTransform="none">{t("Monthly Attendance")}</H2>
             </Box>
           </HStack>
-          <Box bg={"schools.reportBoxBg"} rounded="10px">
+          <Box bg={"schools.lightGray6"} rounded="10px">
             <VStack p="5" space={3}>
               <VStack space={"30px"}>
                 {[
@@ -167,15 +167,15 @@ export default function TeacherAttendanceReport({ footerLinks, appName }) {
                               status === "Present"
                                 ? "schools.present"
                                 : status === "Absent"
-                                  ? "schools.absent"
-                                  : status === "Unmarked"
-                                    ? "schools.unmarked"
-                                    : "schools.specialDuty",
+                                ? "schools.absent"
+                                : status === "Unmarked"
+                                ? "schools.unmarked"
+                                : "schools.specialDuty",
                             value: attendance.filter(
                               (e) =>
                                 e.attendance === status &&
                                 moment(e.date).format("Y MMM") ===
-                                month.format("Y MMM")
+                                  month.format("Y MMM")
                             ).length,
                           };
                         })}
@@ -224,9 +224,9 @@ const CalendarComponent = ({
 
         let smsIconProp = !isIconSizeSmall
           ? {
-            _box: { py: 2, minW: "46px", alignItems: "center" },
-            status: "CheckboxBlankCircleLineIcon",
-          }
+              _box: { py: 2, minW: "46px", alignItems: "center" },
+              status: "CheckboxBlankCircleLineIcon",
+            }
           : {};
         if (smsItem?.attendance && smsItem?.attendance === "Present") {
           smsIconProp = {
@@ -265,10 +265,10 @@ const CalendarComponent = ({
               type && type !== "month" && day.day() !== 0
                 ? 1
                 : day.day() === 0
-                  ? 0.3
-                  : day.format("M") !== moment().format("M")
-                    ? 0.3
-                    : 1
+                ? 0.3
+                : day.format("M") !== moment().format("M")
+                ? 0.3
+                : 1
             }
           >
             <Text
@@ -296,9 +296,9 @@ const CalendarComponent = ({
             </Text>
             <TouchableHighlight
               onPress={(e) => setAttendanceObject(smsItem)}
-            // onLongPress={(e) => {
-            //   console.log({ e });
-            // }}
+              // onLongPress={(e) => {
+              //   console.log({ e });
+              // }}
             >
               <Box alignItems="center">
                 {loding && loding[dateValue + item.id] ? (
