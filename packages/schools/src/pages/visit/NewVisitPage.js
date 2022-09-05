@@ -45,8 +45,7 @@ export default function NewVisitPage({ footerLinks }) {
       subHeader={<H2 textTransform="inherit">Start your visit based on</H2>}
       _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
-        languages: ["en"],
-        isEnableSearchBtn: true,
+        languages: ["en"]
       }}
       _footer={footerLinks}
     >
