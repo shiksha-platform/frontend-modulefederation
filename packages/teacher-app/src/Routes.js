@@ -425,7 +425,7 @@ export const routes = [
   },
   {
     moduleName: "schools",
-    path: "/schools/teacher-attendance-report",
+    path: "/schools/teacher-attendance-report/:teacherId",
     component: TeacherAttendanceReport,
   },
   {

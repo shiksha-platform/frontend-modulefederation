@@ -180,7 +180,7 @@ const TeacherDetails = ({ footerLinks }) => {
             width="100%"
             variant="outline"
             onPress={() => {
-              navigate("/schools/teacher-attendance-report");
+              navigate(`/schools/teacher-attendance-report/${teacherId}`);
             }}
           >
             Attendance Report
