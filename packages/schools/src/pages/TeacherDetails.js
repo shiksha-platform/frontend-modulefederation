@@ -24,7 +24,7 @@ import {
   mentorRegisteryService,
   userRegistryService,
 } from "@shiksha/common-lib";
-import { Box, HStack, VStack, Avatar, Divider, Button } from "native-base";
+import { Box, HStack, VStack, Avatar, Divider, Button, useTheme } from "native-base";
 
 // Imports for Circular Progressbar
 import {
@@ -33,6 +33,7 @@ import {
 } from "react-circular-progressbar";
 
 const TeacherDetails = ({ footerLinks }) => {
+  const { colors } = useTheme();
   const navigate = useNavigate();
   const { teacherId } = useParams();
   const [teacherlist, setTeacherList] = useState();
@@ -141,9 +142,9 @@ const TeacherDetails = ({ footerLinks }) => {
                     value={51}
                     maxValue={100}
                     styles={buildStyles({
-                      pathColor: "schools.absent",
-                      textColor: "schools.absent",
-                      trailColor: "schools.absent",
+                      pathColor: colors?.["schools"]?.["absent"],
+                      textColor: colors?.["schools"]?.["absent"],
+                      trailColor: colors?.["schools"]?.["darkGray5"],
                     })}
                   >
                     <Box textAlign="center">
@@ -160,9 +161,9 @@ const TeacherDetails = ({ footerLinks }) => {
                     value={90}
                     maxValue={100}
                     styles={buildStyles({
-                      pathColor: "schools.green",
-                      textColor: "schools.green",
-                      trailColor: "schools.successAlert",
+                      pathColor: colors?.["schools"]?.["green"],
+                      textColor: colors?.["schools"]?.["green"],
+                      trailColor: colors?.["schools"]?.["darkGray5"],
                     })}
                   >
                     <Box textAlign="center">
