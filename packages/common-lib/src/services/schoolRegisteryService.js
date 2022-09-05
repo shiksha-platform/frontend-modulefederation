@@ -18,6 +18,7 @@ const interfaceData = {
   village: 'village',
   block: 'block',
   district: 'district',
+  cluster: 'cluster',
   stateId: 'stateId',
   pincode: 'pincode',
   locationId: 'locationId',

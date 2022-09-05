@@ -74,6 +74,8 @@ export default function SchoolProfile({ footerLinks }) {
                 {
                   keyId: 1,
                   title: "Start a Visit",
+                  icon: "Home4LineIcon",
+                  boxMinW: "177px",
                   _text: { minW: "115px" },
                   onPress: () => navigate(`/schools/new-visit/${id}`),
                 },
@@ -82,7 +84,7 @@ export default function SchoolProfile({ footerLinks }) {
             />
           )
         }
-        _subHeader={{ bg: "schools.cardBg" }}
+        _subHeader={{ bottom: "15px", bg: "schools.cardBg" }}
         _footer={footerLinks}
       >
         <Box p={6} bg={"schools.white"}>

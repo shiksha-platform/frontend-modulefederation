@@ -13,8 +13,7 @@ import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  HStack,
-  Text,
+  HStack,  
   VStack,
   Actionsheet,
   Button,

@@ -96,6 +96,27 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                   </BodyMedium>
                 </VStack>
               </div>
+
+              {schoolData?.cluster != "" && (
+                <div
+                  style={{
+                    flex: "0 0 50%",
+                    maxWidth: "50%",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <VStack>
+                    <HStack alignItems="center">
+                      <IconByName size="12px" mr={2} name="GovernmentLineIcon" />
+                      <BodyMedium color="#666" fontSize="12">
+                        Cluster
+                      </BodyMedium>
+                    </HStack>
+                    <BodyMedium>{schoolData?.cluster}</BodyMedium>
+                  </VStack>
+                </div>
+              )}
+
               {lastVisited && (
                 <div
                   style={{
