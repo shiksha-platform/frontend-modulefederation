@@ -24,6 +24,7 @@ import {
   BodyMedium,
 } from "@shiksha/common-lib";
 import colorTheme from "../colorTheme";
+import manifest from "manifest.json";
 const colors = overrideColorTheme(colorTheme);
 
 const TeacherAttendanceReport = ({ footerLinks }) => {
@@ -75,7 +76,7 @@ const TeacherAttendanceReport = ({ footerLinks }) => {
         </Box>
       }
       _subHeader={{ bg: "schools.cardBg" }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
       <Box p={5} bg={"schools.white"}>
@@ -175,9 +176,9 @@ const CalendarComponent = ({
           .find((e) => e.date === dateValue);
         let smsIconProp = !isIconSizeSmall
           ? {
-              _box: { py: 2, minW: "46px", alignItems: "center" },
-              status: "CheckboxBlankCircleLineIcon",
-            }
+            _box: { py: 2, minW: "46px", alignItems: "center" },
+            status: "CheckboxBlankCircleLineIcon",
+          }
           : {};
         if (smsItem?.type && smsItem?.type === "Present") {
           smsIconProp = {
@@ -213,10 +214,10 @@ const CalendarComponent = ({
               type && type !== "month" && day.day() !== 0
                 ? 1
                 : day.day() === 0
-                ? 0.3
-                : day.format("M") !== moment().format("M")
-                ? 0.3
-                : 1
+                  ? 0.3
+                  : day.format("M") !== moment().format("M")
+                    ? 0.3
+                    : 1
             }
           >
             <Text

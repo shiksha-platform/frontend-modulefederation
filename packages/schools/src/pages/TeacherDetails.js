@@ -5,6 +5,10 @@ import React, { useEffect, useState } from "react";
 // Imports for navigation and for extraction of params
 import { useNavigate, useParams } from "react-router-dom";
 
+// Import for translation
+import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
+
 // Imports from common library functions and native base components
 import {
   BodyLarge,
@@ -75,7 +79,7 @@ const TeacherDetails = ({ footerLinks }) => {
         </HStack>
       }
       _subHeader={{ bg: "schools.cardBg" }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
       <Box p={5} bg={"schools.white"}>

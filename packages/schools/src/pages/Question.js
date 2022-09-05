@@ -1,5 +1,6 @@
 import { Layout, H2 } from "@shiksha/common-lib";
 import React from "react";
+import manifest from "manifest.json";
 
 const Question = ({ footerLinks }) => {
   return (
@@ -9,7 +10,7 @@ const Question = ({ footerLinks }) => {
       }}
       subHeader={<H2>Fill the following questionnaire</H2>}
       _subHeader={{ bg: "schools.cardBg" }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
       <iframe

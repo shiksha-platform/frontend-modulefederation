@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // Import for translation
 import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
 
 // Imports from common library functions and native base components
 import { Box, VStack } from "native-base";
@@ -62,7 +63,7 @@ export default function SchoolProfile({ footerLinks }) {
           _heading: { color: "schools.white", t },
         }}
         _appBar={{
-          languages: ["en"],
+          languages: manifest.languages
         }}
         subHeader={
           // Start Visit button will only appear when there will be a allocated school to you
