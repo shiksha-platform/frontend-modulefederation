@@ -72,7 +72,7 @@ function SchoolAddressCard({ schoolData }) {
                     <Box
                       style={{
                         flex: "0 0 50%",
-                        maxWidth: "50%"
+                        maxWidth: "50%",
                       }}
                     >
                       <H4 color={"schools.gray"}>Headmaster</H4>

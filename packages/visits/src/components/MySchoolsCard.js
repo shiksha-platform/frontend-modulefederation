@@ -107,7 +107,11 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                 >
                   <VStack>
                     <HStack alignItems="center">
-                      <IconByName size="12px" mr={2} name="GovernmentLineIcon" />
+                      <IconByName
+                        size="12px"
+                        mr={2}
+                        name="GovernmentLineIcon"
+                      />
                       <BodyMedium color="#666" fontSize="12">
                         Cluster
                       </BodyMedium>

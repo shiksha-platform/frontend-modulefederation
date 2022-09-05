@@ -24,7 +24,15 @@ import {
   mentorRegisteryService,
   userRegistryService,
 } from "@shiksha/common-lib";
-import { Box, HStack, VStack, Avatar, Divider, Button, useTheme } from "native-base";
+import {
+  Box,
+  HStack,
+  VStack,
+  Avatar,
+  Divider,
+  Button,
+  useTheme,
+} from "native-base";
 
 // Imports for Circular Progressbar
 import {
@@ -130,7 +138,7 @@ const TeacherDetails = ({ footerLinks }) => {
             <Box>
               <H2 color={"schools.absent"}>Very Bad</H2>
               <BodySmall color={"schools.absent"}>
-                You have been present all days this month
+                You have been absent all days this month
               </BodySmall>
             </Box>
           </HStack>
@@ -139,7 +147,7 @@ const TeacherDetails = ({ footerLinks }) => {
               <VStack alignItems="center" space={3}>
                 <Box w="100px" h="100px">
                   <CircularProgressbarWithChildren
-                    value={51}
+                    value={0}
                     maxValue={100}
                     styles={buildStyles({
                       pathColor: colors?.["schools"]?.["absent"],
@@ -148,7 +156,7 @@ const TeacherDetails = ({ footerLinks }) => {
                     })}
                   >
                     <Box textAlign="center">
-                      <H1 color={"schools.absent"}>51%</H1>
+                      <H1 color={"schools.absent"}>0%</H1>
                     </Box>
                   </CircularProgressbarWithChildren>
                 </Box>
@@ -158,7 +166,7 @@ const TeacherDetails = ({ footerLinks }) => {
               <VStack alignItems="center" space={3}>
                 <Box w="100px" h="100px">
                   <CircularProgressbarWithChildren
-                    value={90}
+                    value={0}
                     maxValue={100}
                     styles={buildStyles({
                       pathColor: colors?.["schools"]?.["green"],
@@ -167,11 +175,11 @@ const TeacherDetails = ({ footerLinks }) => {
                     })}
                   >
                     <Box textAlign="center">
-                      <H1 color={"schools.green"}>90%</H1>
+                      <H1 color={"schools.green"}>0%</H1>
                     </Box>
                   </CircularProgressbarWithChildren>
                 </Box>
-                <BodyMedium>Last Year</BodyMedium>
+                <BodyMedium>Last Month</BodyMedium>
               </VStack>
             </HStack>
           </Box>

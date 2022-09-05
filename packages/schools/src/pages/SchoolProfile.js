@@ -63,7 +63,7 @@ export default function SchoolProfile({ footerLinks }) {
           _heading: { color: "schools.white", t },
         }}
         _appBar={{
-          languages: manifest.languages
+          languages: manifest.languages,
         }}
         subHeader={
           // Start Visit button will only appear when there will be a allocated school to you
