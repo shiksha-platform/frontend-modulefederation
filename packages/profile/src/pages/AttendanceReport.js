@@ -17,6 +17,7 @@ import {
   BodyLarge,
   Subtitle,
   BodySmall,
+  H4,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
@@ -85,7 +86,8 @@ export default function AttendanceReport({ footerLinks, appName }) {
     <Layout
       _header={{
         title: t("ATTENDANCE_REPORTS"),
-        subHeading: t("MY_PROFILE"),
+        subHeading: <H4>{t("MY_PROFILE")}</H4>,
+        textTransform: "capitalize",
       }}
       subHeader={
         <HStack space="4" justifyContent="space-between" alignItems="center">
@@ -321,7 +323,9 @@ const CalendarComponent = ({
                     status="Loader4LineIcon"
                     color={"profile.primary"}
                     isDisabled
-                    _icon={{ _fontawesome: { spin: true } }}
+                    _icon={{
+                      _fontawesome: { spin: true },
+                    }}
                   />
                 ) : (
                   <GetIcon {...smsIconProp} />
