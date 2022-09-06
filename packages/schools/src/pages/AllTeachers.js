@@ -79,7 +79,7 @@ export default function AllTeachers({ footerLinks }) {
         </VStack>
       </Box>
 
-      {teacherData && (
+      {teacherData && visitedSchoolsData && (
         <Actionsheet isOpen={teacherData} onClose={() => setTeacherData()}>
           <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
             <HStack justifyContent={"space-between"} alignItems="center">
@@ -98,16 +98,32 @@ export default function AllTeachers({ footerLinks }) {
                         {teacherData?.firstName?.slice(0, 2).toUpperCase()}
                       </H2>
                     </Avatar>
-                    <VStack>
+                    <HStack>
                       <H3
                         color={"schools.bodyText"}
                         _dark={{
                           color: "schools.darkGray2",
                         }}
+                        marginTop="5px"
                       >
                         {`${teacherData.firstName} ${teacherData.lastName}`}
                       </H3>
-                    </VStack>
+                      {visitedSchoolsData &&
+                        visitedSchoolsData?.find(
+                          (data) => data?.teacherId === teacherData?.id
+                        ) && (
+                          <Box>
+                            <IconByName
+                              _icon={{ size: "16" }}
+                              borderRadius="full"
+                              bg={"schools.primary"}
+                              color={"schools.white"}
+                              name="UserLineIcon"
+                              marginLeft="15px"
+                            />
+                          </Box>
+                        )}
+                    </HStack>
                   </HStack>
                 </Box>
               </Stack>

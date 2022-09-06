@@ -18,6 +18,7 @@ import QuestionList7 from "./components/ExamScores/QuestionLIst7";
 import PastAssessments from "./pages/PastAssessments";
 import PastExaminationsList from "./pages/PastExaminations";
 import AssessmentGiven from "pages/AssessmentGiven";
+import StudentReport from "pages/StudentReport";
 
 function App() {
   initializeI18n(
@@ -104,6 +105,11 @@ function App() {
       moduleName: "assessment",
       path: "/assessment/given/:classId/:subject",
       component: AssessmentGiven,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/student-report/:classId/:subject/:date",
+      component: StudentReport,
     },
     {
       moduleName: "assessment",

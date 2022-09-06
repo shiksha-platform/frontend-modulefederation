@@ -133,14 +133,7 @@ export default function AssessmentGiven(props) {
     return (
       <SuccessPublicationReport
         {...props}
-        classId={classId}
-        setPageName={setPageName}
-        handleBackButton={handleBackButton}
-        selectedStudent={selectedStudent}
-        selectedAssessmentType={selectedAssessmentType}
-        selectedCompetencies={selectedCompetencies}
-        selectedSubject={subject}
-        questionIds={questionIds}
+        {...{ classId, subject, handleBackButton, selectedStudent }}
       />
     );
   }

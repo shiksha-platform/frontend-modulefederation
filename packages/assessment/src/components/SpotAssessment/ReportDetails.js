@@ -1,31 +1,28 @@
 import {
-  Collapsible,
   IconByName,
   Layout,
   ProgressBar,
   H2,
-  H3,
   telemetryFactory,
   capture,
   overrideColorTheme,
   BodyLarge,
   Caption,
-  BodySmall,
   Subtitle,
   assessmentRegistryService,
   studentRegistryService,
   classRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar, Button } from "native-base";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
 import colorTheme from "../../colorTheme";
-import RoundedProgressBar from "components/RoundedProgressBar";
 import moment from "moment";
-import report from "utils/report";
+import report, { achiever } from "utils/report";
+import AssessmentAchieverCard from "./AssessmentAchieverCard";
+import StudentQuestionsReport from "./StudentQuestionsReport";
 const colors = overrideColorTheme(colorTheme);
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -36,12 +33,12 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   let { classId, subject, date } = useParams();
   classId = classId ? classId : "ce045222-52a8-4a0a-8266-9220f63baba7";
-  subject = subject ? subject : "English";
+  subject = subject ? subject : "english";
   date = date
     ? moment(date).format("YYYY-MM-DD")
     : moment().format("YYYY-MM-DD");
-  const [classObject, setClassObject] = useState({});
-  const [reportStartTime, setReportStartTime] = useState();
+  const [classObject, setClassObject] = React.useState({});
+  const [reportStartTime, setReportStartTime] = React.useState();
   const [students, setStudents] = React.useState([]);
   const [assessmentStudents, setAssessmentStudents] = React.useState([]);
   const [achieverStudents, setAchieverStudents] = React.useState([]);
@@ -110,27 +107,10 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
       classId,
     });
     setStudents(studentData);
-
-    const assessmentStudentWritten = studentData.filter(
-      (stu) =>
-        data.filter((track) => {
-          let scoreBoolean = false;
-          if (track?.answersheet) {
-            const data = JSON.parse(track.answersheet);
-            scoreBoolean =
-              track.totalScore ===
-              data?.children.reduce((value, item) => value + item.score, 0);
-          }
-          return (
-            stu.id === track.studentId &&
-            track.type === WRITTEN_ASSESSMENT &&
-            scoreBoolean
-          );
-        }).length
-    );
-    setAchieverStudents(assessmentStudentWritten);
-
-    setProgressAssessmentWritten(report(studentData, data, WRITTEN_ASSESSMENT));
+    setAchieverStudents(achiever(studentData, data, 3));
+    const reportData = report(studentData, data, WRITTEN_ASSESSMENT, "data");
+    setAssessmentStudents(reportData?.presentStudents);
+    setProgressAssessmentWritten(reportData?.data);
     setProgressAssessmentOral(report(studentData, data, ORAL_ASSESSMENT));
 
     const averageOral = data.reduce(
@@ -172,7 +152,7 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
     );
   };
 
-  useEffect(async () => {
+  React.useEffect(async () => {
     await getAssessments();
     _handleFullReportStartEvent();
     return () => {
@@ -322,318 +302,13 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
                 </Box>
               </VStack>
             </Box>
-
-            <Box bg={colors.white} p={5}>
-              <Box bg={colors.achiverBoxBg} rounded={"md"} p="4">
-                <VStack space={5}>
-                  <H2 mb={3}>100% Achievers</H2>
-                  <HStack space={2} justifyContent="space-between">
-                    {achieverStudents.map((student, index) => (
-                      <Box textAlign={"center"} key={index}>
-                        <VStack space={1}>
-                          <Avatar
-                            size="48px"
-                            borderRadius="md"
-                            mr={4}
-                            bg="assessment.primary"
-                          >
-                            <H2 color="assessment.white">
-                              {`${student.firstName} ${student.lastName}`
-                                .toUpperCase()
-                                .substr(0, 2)}
-                            </H2>
-                          </Avatar>
-                          <VStack>
-                            <H3>{`${student.firstName} ${student.lastName}`}</H3>
-                            <Subtitle color={colors.gray}>
-                              {t("Roll No. ") + student.admissionNo} ●
-                            </Subtitle>
-                          </VStack>
-                        </VStack>
-                      </Box>
-                    ))}
-                    {achieverStudents?.length <= 0 ? (
-                      <Caption textTransform="inherit">
-                        {t("NO_STUDENT_HAS_ACHIEVED")}
-                      </Caption>
-                    ) : (
-                      <React.Fragment />
-                    )}
-                  </HStack>
-                </VStack>
-              </Box>
-            </Box>
-
-            <Box p={4} px="0px" bg={colors.white}>
-              <Collapsible
-                defaultCollapse={true}
-                header={
-                  <VStack>
-                    <H2>{t("Student Wise Assessment")}</H2>
-                    <HStack alignItems={"center"}>
-                      <Caption color={colors.gray}>{t("3 Students")} </Caption>
-                      <Caption color={colors.lightGray0}> ● </Caption>
-                      <Caption color={colors.gray}>
-                        {t("Max Score : " + 25)}
-                      </Caption>
-                    </HStack>
-                  </VStack>
-                }
-                fontSize="2px"
-              >
-                {assessmentStudents.map((student, key) => {
-                  const trackStudent = track.find(
-                    (e) => e.studentId === student.id
-                  );
-                  let questions = [];
-                  let totalScore = 0,
-                    score = 0;
-                  if (trackStudent?.answersheet) {
-                    const data = JSON.parse(trackStudent.answersheet);
-                    questions = data.children;
-                    totalScore = trackStudent.totalScore;
-                    score = questions.reduce(
-                      (value, item) => value + item.score,
-                      0
-                    );
-                  }
-
-                  return (
-                    <VStack pt={6} space={4} key={key}>
-                      <Box
-                        bg={colors.QuationsBoxContentBg}
-                        roundedTop="10px"
-                        px="4"
-                        py="2"
-                      >
-                        <HStack
-                          alignItems="center"
-                          justifyContent="space-between"
-                        >
-                          <Box>
-                            <HStack>
-                              <Avatar
-                                size="48px"
-                                borderRadius="md"
-                                mr={4}
-                                bg="assessment.primary"
-                              >
-                                <H2 color="assessment.white">
-                                  {`${student.firstName} ${student.lastName}`
-                                    .toUpperCase()
-                                    .substr(0, 2)}
-                                </H2>
-                              </Avatar>
-                              <VStack>
-                                <H2>{`${student.firstName} ${student.lastName}`}</H2>
-                                <HStack alignItems={"center"}>
-                                  <Caption color={colors.lightGray0}>
-                                    {t("Roll No. ") + student.admissionNo} ●
-                                  </Caption>
-                                  <Caption color={colors.lightGray0}>
-                                    {student.fathersName}
-                                  </Caption>
-                                </HStack>
-                              </VStack>
-                            </HStack>
-                          </Box>
-                          <Box>
-                            <VStack>
-                              <Box position="relative">
-                                <RoundedProgressBar
-                                  values={[score, totalScore]}
-                                  colors={[
-                                    colors.successBarColor,
-                                    colors.circleProgressBarcolor,
-                                  ]}
-                                  // legend={{ text: "Total Score", fontSize: "14px" }}
-                                  cutout={"80%"}
-                                  size="45px"
-                                />
-                                <Text
-                                  position="absolute"
-                                  top="50%"
-                                  left="50%"
-                                  style={{
-                                    transform: "translate(-50%, -25%)",
-                                  }}
-                                >
-                                  {score}
-                                </Text>
-                              </Box>
-                              <Caption color={colors.lightGray0}>
-                                Total Score
-                              </Caption>
-                            </VStack>
-                          </Box>
-                        </HStack>
-                      </Box>
-
-                      <Box
-                        borderWidth="1"
-                        borderColor={colors.borderColor}
-                        borderRadius="10px"
-                      >
-                        <HStack
-                          alignItems="center"
-                          justifyContent="space-between"
-                          p={4}
-                        >
-                          <H2>Written Assessment</H2>
-                          <Box>
-                            <VStack>
-                              <Box position="relative">
-                                <RoundedProgressBar
-                                  values={[score, totalScore]}
-                                  colors={[
-                                    colors.successBarColor,
-                                    colors.circleProgressBarcolor,
-                                  ]}
-                                  // legend={{ text: "Total Score", fontSize: "14px" }}
-                                  cutout={"80%"}
-                                  size="45px"
-                                />
-                                <Text
-                                  position="absolute"
-                                  top="50%"
-                                  left="50%"
-                                  style={{
-                                    transform: "translate(-50%, -25%)",
-                                  }}
-                                >
-                                  {score}
-                                </Text>
-                              </Box>
-                              <Caption color={colors.lightGray0}>
-                                Total Score
-                              </Caption>
-                            </VStack>
-                          </Box>
-                        </HStack>
-                        <HStack space={10} flexWrap="wrap" p="4">
-                          {questions.map((question, index) => {
-                            let iconProp = {
-                              name: "CloseCircleLineIcon",
-                              color: "assessment.error",
-                            };
-
-                            if (
-                              question?.class &&
-                              question?.class === "skipped"
-                            ) {
-                              iconProp = {
-                                name: "CheckboxBlankCircleLineIcon",
-                                color: "assessment.gray",
-                              };
-                            } else if (
-                              question?.class &&
-                              question?.class === "correct"
-                            ) {
-                              iconProp = {
-                                name: "CheckboxCircleLineIcon",
-                                color: "assessment.success",
-                              };
-                            }
-
-                            return (
-                              <Box key={`q-${index}`} textAlign="center" mb={8}>
-                                <VStack justifyContent="center" space={2}>
-                                  <BodySmall>Q-{question.index}</BodySmall>
-                                  <IconByName
-                                    {...iconProp}
-                                    p={0}
-                                    _icon={{ size: 25 }}
-                                  />
-                                </VStack>
-                              </Box>
-                            );
-                          })}
-                        </HStack>
-                      </Box>
-
-                      <Box
-                        borderWidth="1"
-                        borderColor={colors.borderColor}
-                        borderRadius="10px"
-                        p={4}
-                      >
-                        <VStack space={4}>
-                          <H2>{t("Oral Assessment")}</H2>
-                          <HStack
-                            alignItems="center"
-                            justifyContent="space-between"
-                          >
-                            <Box>
-                              <VStack>
-                                <Box position="relative">
-                                  <RoundedProgressBar
-                                    values={[18, 6]}
-                                    colors={[
-                                      colors.successBarColor,
-                                      colors.circleProgressBarcolor,
-                                    ]}
-                                    // legend={{ text: "Total Score", fontSize: "14px" }}
-                                    cutout={"80%"}
-                                    size="45px"
-                                  />
-                                  <Text
-                                    position="absolute"
-                                    top="50%"
-                                    left="50%"
-                                    style={{
-                                      transform: "translate(-50%, -25%)",
-                                    }}
-                                  >
-                                    18
-                                  </Text>
-                                </Box>
-                                <Caption color={colors.lightGray0}>
-                                  Words Read
-                                </Caption>
-                              </VStack>
-                            </Box>
-                            <Box>
-                              <VStack>
-                                <Box position="relative">
-                                  <RoundedProgressBar
-                                    values={[18, 6]}
-                                    colors={[
-                                      colors.successBarColor,
-                                      colors.circleProgressBarcolor,
-                                    ]}
-                                    // legend={{ text: "Total Score", fontSize: "14px" }}
-                                    cutout={"80%"}
-                                    size="45px"
-                                  />
-                                  <Text
-                                    position="absolute"
-                                    top="50%"
-                                    left="50%"
-                                    style={{
-                                      transform: "translate(-50%, -25%)",
-                                    }}
-                                  >
-                                    18
-                                  </Text>
-                                </Box>
-                                <Caption color={colors.lightGray0}>
-                                  Numbers Read
-                                </Caption>
-                              </VStack>
-                            </Box>
-                          </HStack>
-                        </VStack>
-                      </Box>
-                    </VStack>
-                  );
-                })}
-                <Box py="2">
-                  <Button colorScheme="button" variant="outline" py={3}>
-                    {t("See all students")}
-                  </Button>
-                </Box>
-              </Collapsible>
-            </Box>
+            <AssessmentAchieverCard students={achieverStudents} />
+            <StudentQuestionsReport
+              students={assessmentStudents}
+              track={track}
+              {...{ classId, subject, date }}
+              limit={2}
+            />
           </VStack>
         </Box>
       </Stack>

@@ -16,20 +16,13 @@ import {
   studentRegistryService,
   classRegistryService,
 } from "@shiksha/common-lib";
-import {
-  Button,
-  Box,
-  VStack,
-  Text,
-  HStack,
-  Avatar,
-  useTheme,
-} from "native-base";
+import { Button, Box, VStack, HStack, Avatar } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
 import { useNavigate } from "react-router-dom";
-import report from "utils/report";
+import report, { getTotalAvarage } from "utils/report";
+import AssessmentAchieverCard from "./AssessmentAchieverCard";
 
 const ORAL_ASSESSMENT = "Oral Assessment";
 const WRITTEN_ASSESSMENT = "Written Assessment";
@@ -39,14 +32,14 @@ export default function SuccessPublicationReport({
   classId,
   subject,
 }) {
-  const { colors } = useTheme();
-  console.log({ colors });
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [studentlist, setStudentlist] = useState([]);
+  const [presentStudentCount, setPresentStudentCount] = useState([]);
   const [classObject, setClassObject] = useState({});
   const [achieverStudents, setAchieverStudents] = React.useState([]);
+  const [average, setAverage] = React.useState(0);
+  const [total, setTotal] = React.useState(0);
   const [progressAssessmentWritten, setProgressAssessmentWritten] =
     React.useState([]);
   const [progressAssessmentOral, setProgressAssessmentOral] = React.useState(
@@ -61,10 +54,13 @@ export default function SuccessPublicationReport({
     let classObj = await classRegistryService.getOne({ id: classId });
     setClassObject(classObj);
     const studentData = await studentRegistryService.getAll({ classId });
-    setStudentlist(studentData);
     const data = await assessmentRegistryService.getAllAssessment({
-      filters: { groupId: classId, subject: subject },
+      groupId: classId,
+      subject: subject,
     });
+    const calculateData = getTotalAvarage(data);
+    setTotal(calculateData?.total);
+    setAverage(calculateData?.score);
 
     const assessmentStudentWritten = studentData.filter(
       (stu) =>
@@ -84,8 +80,9 @@ export default function SuccessPublicationReport({
         }).length
     );
     setAchieverStudents(assessmentStudentWritten);
-
-    setProgressAssessmentWritten(report(studentData, data, WRITTEN_ASSESSMENT));
+    const reportData = report(studentData, data, WRITTEN_ASSESSMENT, true);
+    setPresentStudentCount(reportData?.presentCount);
+    setProgressAssessmentWritten(reportData?.data);
     setProgressAssessmentOral(report(studentData, data, ORAL_ASSESSMENT));
   };
 
@@ -95,7 +92,7 @@ export default function SuccessPublicationReport({
       type: "Spot-Assessment-Notification-Send",
     });
     capture("INTERACT", telemetryData);
-    navigate("notification/create?module=Assessment");
+    navigate("/notification/create?module=Assessment");
   };
 
   const handleFullReportClick = () => {
@@ -143,7 +140,8 @@ export default function SuccessPublicationReport({
               </Subtitle>
             ) : (
               <Subtitle>
-                Average Class Score is <H2 bold>18</H2> out of <H2>25</H2>
+                Average Class Score is <H2 bold>{average}</H2> out of
+                <H2>{total}</H2>
               </Subtitle>
             )}
           </Box>
@@ -234,79 +232,56 @@ export default function SuccessPublicationReport({
                 </Box>
 
                 <Box p={4} justifyContent="center" bg={"assessment.white"}>
-                  <H2>20 Students Assessed</H2>
+                  <H2>{presentStudentCount} Students Assessed</H2>
                   <Subtitle color={"assessment.gray"} mb="4">
                     Assessment SMS will be sent to selected students
                   </Subtitle>
 
                   <Box py="2">
-                    <HStack justifyContent={"space-between"}>
-                      <Button
+                    {/* <HStack justifyContent={"space-between"}> */}
+                    {/* <Button
                         colorScheme="button"
                         variant="outline"
-                        w="45%"
                         onPress={() =>
                           navigate("/notification?module=Assessment")
                         }
                       >
                         {t("View Message")}
-                      </Button>
+                      </Button> */}
 
-                      <Button
-                        colorScheme="button"
-                        w="50%"
-                        _text={{
-                          color: "assessment.white",
-                        }}
-                        onPress={() => {
-                          _handleSpotAssessmentNotificationSend();
-                        }}
-                      >
-                        {t("Send Another message")}
-                      </Button>
-                    </HStack>
+                    <Button
+                      onPress={() => {
+                        _handleSpotAssessmentNotificationSend();
+                      }}
+                    >
+                      {t("Send Another message")}
+                    </Button>
+                    {/* </HStack> */}
                   </Box>
                 </Box>
 
+                <AssessmentAchieverCard students={achieverStudents} />
+
                 <Box bg={"assessment.white"} p={5}>
-                  <Box bg={"assessment.achiverBoxBg"} rounded={"md"} p="4">
-                    <VStack space={5}>
-                      <H2 mb={3}>100% Achievers</H2>
-                      <HStack space={2} justifyContent="space-between">
-                        {achieverStudents.map((student, index) => (
-                          <Box textAlign={"center"} key={index}>
-                            <VStack space={1} alignItems={"center"}>
-                              <Avatar
-                                size="48px"
-                                borderRadius="md"
-                                mr={4}
-                                bg="assessment.primary"
-                              >
-                                <H2 color="assessment.white">
-                                  {`${student.firstName} ${student.lastName}`
-                                    .toUpperCase()
-                                    .substr(0, 2)}
-                                </H2>
-                              </Avatar>
-                              <VStack>
-                                <H3>{`${student.firstName} ${student.lastName}`}</H3>
-                                <Subtitle color={"assessment.gray"}>
-                                  {t("Roll No. ") + student.admissionNo} ●
-                                </Subtitle>
-                              </VStack>
-                            </VStack>
-                          </Box>
-                        ))}
-                        {achieverStudents?.length <= 0 ? (
-                          <Caption textTransform="inherit">
-                            {t("NO_STUDENT_HAS_ACHIEVED")}
-                          </Caption>
-                        ) : (
-                          <React.Fragment />
-                        )}
-                      </HStack>
-                    </VStack>
-                  </Box>
+                  <Button.Group>
+                    <Button
+                      flex="1"
+                      variant="outline"
+                      // onPress={()=> setSelectedStudent()}
+                    >
+                      {t("Close")}
+                    </Button>
+
+                    <Button
+                      flex="1"
+                      _text={{
+                        color: "assessment.white",
+                      }}
+                      onPress={handleFullReportClick}
+                    >
+                      {t("See full report")}
+                    </Button>
+                  </Button.Group>
                 </Box>
               </VStack>
             </Box>

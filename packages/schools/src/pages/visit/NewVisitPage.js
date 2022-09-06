@@ -1,16 +1,27 @@
+// Route: {basePath}/schools/new-visit/{id}
+
+import React, { useState, useEffect } from "react";
+
+// Imports for navigation and for extraction of params
+import { useNavigate, useParams } from "react-router-dom";
+
+// Import for translation
+import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
+
+// Imports from common library functions and native base components
+import { Box, VStack, Button, Divider } from "native-base";
 import {
   H2,
   Layout,
   Loading,
   mentorRegisteryService,
 } from "@shiksha/common-lib";
-import { useTranslation } from "react-i18next";
-import React, { useState, useEffect } from "react";
-import { Box, VStack, Button, Divider } from "native-base";
+
+// Components used inside the New Visits page for adding different classes filters
 import TeacherFilterButton from "components/NewVisit/TeacherFilterButton";
 import ClassFilterButton from "components/NewVisit/ClassFilterButton";
 import SubjectFilterButton from "components/NewVisit/SubjectFilterButton";
-import { useNavigate, useParams } from "react-router-dom";
 
 export default function NewVisitPage({ footerLinks }) {
   const navigate = useNavigate();
@@ -45,8 +56,7 @@ export default function NewVisitPage({ footerLinks }) {
       subHeader={<H2 textTransform="inherit">Start your visit based on</H2>}
       _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
-        languages: ["en"],
-        isEnableSearchBtn: true,
+        languages: manifest.languages,
       }}
       _footer={footerLinks}
     >
@@ -109,7 +119,7 @@ export default function NewVisitPage({ footerLinks }) {
           </VStack>
         </Box>
       ) : (
-        <Loading />
+        <Loading height={"200px"} />
       )}
     </Layout>
   );

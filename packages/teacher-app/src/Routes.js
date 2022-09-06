@@ -43,6 +43,7 @@ const VideoDetails = React.lazy(() => import("mylearning/VideoDetails"));
 // Assessment Module Imports
 const Assessment = React.lazy(() => import("assessment/Assessment"));
 const AssessmentGiven = React.lazy(() => import("assessment/AssessmentGiven"));
+const StudentReport = React.lazy(() => import("assessment/StudentReport"));
 const PastAssessments = React.lazy(() => import("assessment/PastAssessments"));
 const ExamScores = React.lazy(() => import("assessment/ExamScores"));
 const SuccessPublicationReport = React.lazy(() =>
@@ -352,6 +353,11 @@ export const routes = [
   },
   {
     moduleName: "assessment",
+    path: "/assessment/student-report/:classId/:subject/:date",
+    component: StudentReport,
+  },
+  {
+    moduleName: "assessment",
     path: "/assessment",
     component: Assessment,
   },
@@ -419,7 +425,7 @@ export const routes = [
   },
   {
     moduleName: "schools",
-    path: "/schools/teacher-attendance-report",
+    path: "/schools/teacher-attendance-report/:teacherId",
     component: TeacherAttendanceReport,
   },
   {
