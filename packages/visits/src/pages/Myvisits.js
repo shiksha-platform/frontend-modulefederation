@@ -10,7 +10,6 @@ import {
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Pressable, VStack } from "native-base";
-import RecommendedVisitsCard from "components/RecommendedVisitsCard";
 import MySchoolsCard from "components/MySchoolsCard";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "colorTheme";
@@ -68,7 +67,7 @@ export default function Myvisits({ footerLinks }) {
     // Setting the list of recommended visits when last visit is of 2 months ago
     Object.entries(groupOfRecommendedVisits).forEach(([key, value]) => {
       if (
-        new Date(value[0]?.schoolLastVisited).getMilliseconds() <
+        new Date(value[0]?.schoolLastVisited).getMilliseconds() >
         today.getMilliseconds()
       )
         delete groupOfRecommendedVisits[key];
