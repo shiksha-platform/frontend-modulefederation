@@ -104,7 +104,7 @@ export default function Recommendedschools({ footerLinks }) {
     setRecommendedVisits(groupBySchools);
   }, []);
 
-  return recommendedVisits ? (
+  return (
     <Layout
       _header={{
         title: "Recommended Schools",
@@ -159,23 +159,26 @@ export default function Recommendedschools({ footerLinks }) {
                   filters={defaultInputs}
                 />
               </Box>
-              {recommendedVisits &&
-              Object.keys(recommendedVisits)?.length > 0 ? (
-                Object.entries(recommendedVisits).map(
-                  ([key, visit], visitIndex) => (
-                    <Pressable onPress={() => navigate(`/schools/${key}`)}>
-                      <MySchoolsCard
-                        key={`myvisit${visitIndex}`}
-                        schoolData={visit[0]?.schoolData}
-                        lastVisited={visit[0]?.schoolLastVisited}
-                      />
-                    </Pressable>
+              {recommendedVisits ? (
+                Object.keys(recommendedVisits)?.length > 0 ? (
+                  Object.entries(recommendedVisits).map(
+                    ([key, visit], visitIndex) => (
+                      <Pressable onPress={() => navigate(`/schools/${key}`)}>
+                        <MySchoolsCard
+                          key={`myvisit${visitIndex}`}
+                          schoolData={visit[0]?.schoolData}
+                          lastVisited={visit[0]?.schoolLastVisited}
+                        />
+                      </Pressable>
+                    )
                   )
+                ) : (
+                  <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                    All schools are visited in a recent 2 months.
+                  </Box>
                 )
               ) : (
-                <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                  All schools are visited in a recent 2 months.
-                </Box>
+                <Loading height={"200px"} />
               )}
             </VStack>
           </Box>
@@ -248,7 +251,5 @@ export default function Recommendedschools({ footerLinks }) {
         </Box>
       </Actionsheet>
     </Layout>
-  ) : (
-    <Loading />
   );
 }
