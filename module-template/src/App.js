@@ -13,7 +13,7 @@ function App() {
     },
     {
       moduleName: "module-template",
-      path: "*",
+      path: "/",
       component: Sample,
     },
   ];

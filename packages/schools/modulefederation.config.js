@@ -26,6 +26,7 @@ module.exports = {
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
+    attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

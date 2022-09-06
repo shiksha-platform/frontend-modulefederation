@@ -1,29 +1,14 @@
 import React, { useState } from "react";
+import { Box, VStack, HStack, Divider, Actionsheet, Stack } from "native-base";
 import {
-  Box,
-  Center,
-  VStack,
-  Text,
-  HStack,
-  Avatar,
-  Divider,
-  Actionsheet,
-  Stack,
-  Pressable,
-} from "native-base";
-import {
-  DEFAULT_THEME,
   H2,
   IconByName,
   Collapsible,
-  overrideColorTheme,
   H3,
   BodyMedium,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function SchoolAcademicDetailCard() {
   const { t } = useTranslation();

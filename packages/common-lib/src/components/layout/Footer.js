@@ -15,14 +15,18 @@ export default function Footer({ menues, routeDynamics, ...props }) {
 
   useEffect(() => {
     let path = window?.location?.pathname.toString()
-    if (path.startsWith('/attendance') || path.startsWith('/class')) {
+    if (
+      path.startsWith('/attendance') ||
+      path.startsWith('/class') ||
+      path.startsWith('/assessment')
+    ) {
       setSelected('classes')
     } else if (path.startsWith('/worksheet')) {
       setSelected('worksheet')
     } else if (path.startsWith('/mylearning')) {
       setSelected('mylearning')
-    } else if (path.startsWith('/schools')) {
-      setSelected('schools')
+    } else if (path.startsWith('/visits') || path.startsWith('/schools')) {
+      setSelected('visits')
     } else {
       setSelected('app')
     }
@@ -33,7 +37,6 @@ export default function Footer({ menues, routeDynamics, ...props }) {
       <Pressable
         {...prop}
         onPress={() => {
-          console.log('hello footer press')
           navigate(
             routeDynamics
               ? generatePath(item.route, { ...{ id: item.id } })

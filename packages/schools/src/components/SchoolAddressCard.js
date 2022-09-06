@@ -36,7 +36,6 @@ function SchoolAddressCard({ schoolData }) {
                       style={{
                         flex: "0 0 50%",
                         maxWidth: "50%",
-                        marginBottom: 12,
                       }}
                     >
                       <H4 color={"schools.gray"}>District</H4>
@@ -46,22 +45,21 @@ function SchoolAddressCard({ schoolData }) {
                       style={{
                         flex: "0 0 50%",
                         maxWidth: "50%",
-                        marginBottom: 12,
                       }}
                     >
                       <H4 color={"schools.gray"}>Block</H4>
                       <BodyLarge>{schoolData?.block}</BodyLarge>
                     </Box>
-                    {/* <Box
+                    <Box
                       style={{
                         flex: "0 0 50%",
                         maxWidth: "50%",
-                        marginBottom: 12,
+                        marginTop: "10px",
                       }}
                     >
-                      <H4 color={"schools.gray"}>Headmaster</H4>
-                      <BodyLarge>Siddhant Chaturvedi</BodyLarge>
-                    </Box> */}
+                      <H4 color={"schools.gray"}>Cluster</H4>
+                      <BodyLarge>{schoolData?.cluster}</BodyLarge>
+                    </Box>
                   </HStack>
                 </Box>
 
@@ -75,7 +73,16 @@ function SchoolAddressCard({ schoolData }) {
                       style={{
                         flex: "0 0 50%",
                         maxWidth: "50%",
-                        marginBottom: 12,
+                      }}
+                    >
+                      <H4 color={"schools.gray"}>Headmaster</H4>
+                      <BodyLarge>{schoolData?.headMaster}</BodyLarge>
+                    </Box>
+
+                    <Box
+                      style={{
+                        flex: "0 0 50%",
+                        maxWidth: "50%",
                       }}
                     >
                       <H4 color={"schools.gray"}>Contact</H4>
@@ -94,22 +101,20 @@ function SchoolAddressCard({ schoolData }) {
                       style={{
                         flex: "0 0 50%",
                         maxWidth: "50%",
-                        marginBottom: 12,
                       }}
                     >
                       <H4 color={"schools.gray"}>Medium</H4>
                       <BodyLarge>{schoolData?.mediumOfInstruction}</BodyLarge>
                     </Box>
-                    {/* <Box
+                    <Box
                       style={{
                         flex: "0 0 50%",
                         maxWidth: "50%",
-                        marginBottom: 12,
                       }}
                     >
                       <H4 color={"schools.gray"}>Board</H4>
-                      <BodyLarge>CBSE</BodyLarge>
-                    </Box> */}
+                      <BodyLarge>{schoolData?.board}</BodyLarge>
+                    </Box>
                   </HStack>
                 </Box>
               </VStack>

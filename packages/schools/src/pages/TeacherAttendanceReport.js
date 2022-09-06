@@ -1,57 +1,34 @@
 import moment from "moment";
-import {
-  Actionsheet,
-  Box,
-  Button,
-  HStack,
-  Pressable,
-  Stack,
-  Text,
-  VStack,
-  Divider,
-} from "native-base";
-import React, { useState, useEffect } from "react";
+import { Actionsheet, Box, Button, HStack, Text, VStack } from "native-base";
+import React, { useState, useEffect, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
 import {
   IconByName,
   Layout,
   ProgressBar,
-  H2,
-  Collapsible,
-  overrideColorTheme,
   calendar,
+  userRegistryService,
+  attendanceRegistryService,
+  H2,
   BodyLarge,
-  BodyMedium,
+  Subtitle,
+  BodySmall,
 } from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import { useNavigate, useParams } from "react-router-dom";
 
-const TeacherAttendanceReport = ({ footerLinks }) => {
-  const [progressData, setProgressData] = React.useState([
-    {
-      name: "22 Present",
-      color: "schools.green",
-      value: 22,
-    },
-    {
-      name: "4 Absent",
-      color: "schools.absent",
-      value: 4,
-    },
-    {
-      name: "1 Unmarked",
-      color: "schools.unmarked",
-      value: 1,
-    },
-  ]);
+export default function TeacherAttendanceReport({ footerLinks, appName }) {
+  const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
-  const [attendanceType, setAttendanceType] = useState("MORNING_SCHOOL");
   const [teacherObject, setTeacherObject] = useState({});
-  const teacherId = localStorage.getItem("id");
-  const token = localStorage.getItem("token");
+  const { teacherId } = useParams();
+
+  console.log("TEACHER ID", teacherId);
   const [attendance, setAttendance] = useState([]);
   const [attendanceObject, setAttendanceObject] = useState({});
   const [weekDays, setWeekDays] = useState([]);
+  const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ignore = false;
@@ -63,88 +40,157 @@ const TeacherAttendanceReport = ({ footerLinks }) => {
     getData();
   }, [weekPage]);
 
+  useEffect(() => {
+    let ignore = false;
+    const getData = async () => {
+      if (!ignore) {
+        const resultTeacher = await userRegistryService.getUserById(teacherId);
+        setTeacherObject(resultTeacher);
+        let thisMonthParams = {
+          fromDate: moment()
+            .add(-2, "months")
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+          toDate: moment().format("YYYY-MM-DD"),
+          userId: teacherId,
+        };
+        const thisMonthAttendance = await attendanceRegistryService.getAll(
+          thisMonthParams
+        );
+        setAttendance(thisMonthAttendance);
+      }
+    };
+    getData();
+  }, [weekPage, teacherId]);
+
+  const handleBackButton = () => {
+    navigate(-1);
+  };
+
   return (
     <Layout
       _header={{
-        title: "Attendance Report",
+        title: t("ATTENDANCE_REPORTS"),
       }}
       subHeader={
-        <Box>
-          <H2>Chandan Pandit</H2>
-          <BodyLarge color={"schools.gray"}>Class VI . Sec A</BodyLarge>
-        </Box>
+        <HStack space="4" justifyContent="space-between" alignItems="center">
+          <Suspense fallback="loading">
+            <CalendarBar
+              view="monthInDays"
+              activeColor="schools.darkGary0"
+              setPage={setWeekPage}
+              page={weekPage}
+              _box={{ p: 2, bg: "transparent" }}
+            />
+          </Suspense>
+        </HStack>
       }
       _subHeader={{ bg: "schools.cardBg" }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ onPressBackButton: handleBackButton }}
       _footer={footerLinks}
     >
-      <Box p={5} bg={"schools.white"}>
-        <Collapsible
-          defaultCollapse={true}
-          header={
-            <Box py={4}>
-              <H2>Daily Attendance</H2>
-            </Box>
-          }
-        >
-          <Divider mb={4} />
-          <CalendarComponent
-            monthDays={weekDays}
-            item={teacherObject}
-            attendance={attendance}
-            setAttendanceObject={setAttendanceObject}
-          />
-        </Collapsible>
-      </Box>
-      <Box px={5} bg={"schools.white"} mt={4}>
-        <Collapsible
-          defaultCollapse={true}
-          header={
-            <Box py={4}>
-              <H2>Monthly Attendance</H2>
-            </Box>
-          }
-        >
-          <Divider mb={4} />
-          <VStack space={6} pt={3}>
-            <HStack alignItems="center" justifyContent="space-between">
-              <BodyMedium w={"20%"}>Jan 2022</BodyMedium>
-              <Box w={"80%"} pr={3}>
-                <ProgressBar data={progressData} />
-              </Box>
-            </HStack>
-            <HStack alignItems="center" justifyContent="space-between">
-              <BodyMedium w={"20%"}>Dec 2021</BodyMedium>
-              <Box w={"80%"} pr={3}>
-                <ProgressBar data={progressData} />
-              </Box>
-            </HStack>
-            <HStack alignItems="center" justifyContent="space-between">
-              <BodyMedium w={"20%"}>Nov 2021</BodyMedium>
-              <Box w={"80%"} pr={3}>
-                <ProgressBar data={progressData} />
-              </Box>
-            </HStack>
-            <HStack alignItems="center" justifyContent="space-between">
-              <HStack alignItems="center">
-                <Box bg={"schools.green"} w="15px" h="15px" rounded={4} />
-                <Text mx={2}>Present</Text>
-              </HStack>
-              <HStack alignItems="center">
-                <Box bg={"schools.absent"} w="15px" h="15px" rounded={4} />
-                <Text mx={2}>Absent</Text>
-              </HStack>
-              <HStack alignItems="center">
-                <Box bg={colors.unmarkeds} w="15px" h="15px" rounded={4} />
-                <Text mx={2}>Unmarked</Text>
-              </HStack>
-            </HStack>
+      <VStack space="1">
+        <Box bg={"schools.white"} p="5" py="30">
+          <HStack space="4" justifyContent="space-between" alignItems="center">
+            <H2>
+              {teacherObject?.firstName} {teacherObject?.lastName}
+            </H2>
+          </HStack>
+        </Box>
+        <Box bg={"schools.white"}>
+          <VStack py="5">
+            <CalendarComponent
+              monthDays={weekDays}
+              item={teacherObject}
+              attendance={attendance}
+              setAttendanceObject={setAttendanceObject}
+            />
           </VStack>
-        </Collapsible>
-      </Box>
+          <Actionsheet
+            isOpen={attendanceObject?.attendance}
+            _backdrop={{ opacity: "0.9", bg: "schools.gray" }}
+          >
+            <Actionsheet.Content
+              p="0"
+              alignItems={"left"}
+              bg={"schools.white"}
+            ></Actionsheet.Content>
+            <Box bg="schools.white" w="100%" p="5">
+              <VStack space="5" textAlign="center">
+                <Subtitle color={"schools.gray"}>
+                  {t("ATTENDANCE_DETAILS")}
+                </Subtitle>
+                <H2>{attendanceObject?.type}</H2>
+                <BodyLarge color={"schools.gray"}>
+                  {attendanceObject.mess2age}
+                </BodyLarge>
+                <Button
+                  variant="outline"
+                  flex={1}
+                  onPress={(e) => setAttendanceObject({})}
+                >
+                  {t("CLOSE")}
+                </Button>
+              </VStack>
+            </Box>
+          </Actionsheet>
+        </Box>
+        <VStack space={5} bg={"schools.white"} p="5" mt="1">
+          <HStack space="4" justifyContent="space-between" alignItems="center">
+            <Box py="15px">
+              <H2 textTransform="none">{t("Monthly Attendance")}</H2>
+            </Box>
+          </HStack>
+          <Box bg={"schools.lightGray6"} rounded="10px">
+            <VStack p="5" space={3}>
+              <VStack space={"30px"}>
+                {[
+                  moment(),
+                  moment().add(-1, "months"),
+                  moment().add(-2, "months"),
+                ].map((month, index) => (
+                  <HStack key={index} alignItems={"center"} space={3}>
+                    <VStack alignItems={"center"}>
+                      <BodySmall>{month.format("Y MMM")}</BodySmall>
+                    </VStack>
+                    <VStack flex="auto" alignContent={"center"}>
+                      <ProgressBar
+                        data={[
+                          "Present",
+                          "Absent",
+                          "SpecialDuty",
+                          "Unmarked",
+                        ].map((status) => {
+                          return {
+                            name: month.format("Y MMM"),
+                            color:
+                              status === "Present"
+                                ? "schools.present"
+                                : status === "Absent"
+                                ? "schools.absent"
+                                : status === "Unmarked"
+                                ? "schools.unmarked"
+                                : "schools.specialDuty",
+                            value: attendance.filter(
+                              (e) =>
+                                e.attendance === status &&
+                                moment(e.date).format("Y MMM") ===
+                                  month.format("Y MMM")
+                            ).length,
+                          };
+                        })}
+                      />
+                    </VStack>
+                  </HStack>
+                ))}
+              </VStack>
+            </VStack>
+          </Box>
+        </VStack>
+      </VStack>
     </Layout>
   );
-};
+}
 
 const CalendarComponent = ({
   monthDays,
@@ -156,14 +202,16 @@ const CalendarComponent = ({
   loding,
   _weekBox,
 }) => {
-  const sample = ["Present", "Absent", "SpecialDuty"];
-
   return monthDays.map((week, index) => (
     <HStack
       key={index}
       justifyContent="space-around"
       alignItems="center"
-      p="0.5"
+      borderBottomWidth={
+        monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
+      }
+      borderBottomColor={"schools.lightGray2"}
+      p={"2"}
       {...(_weekBox?.[index] ? _weekBox[index] : {})}
     >
       {week.map((day, subIndex) => {
@@ -173,29 +221,33 @@ const CalendarComponent = ({
           .slice()
           .reverse()
           .find((e) => e.date === dateValue);
+
         let smsIconProp = !isIconSizeSmall
           ? {
               _box: { py: 2, minW: "46px", alignItems: "center" },
               status: "CheckboxBlankCircleLineIcon",
             }
           : {};
-        if (smsItem?.type && smsItem?.type === "Present") {
+        if (smsItem?.attendance && smsItem?.attendance === "Present") {
           smsIconProp = {
             ...smsIconProp,
-            status: smsItem?.type,
-            type: smsItem?.status,
+            status: smsItem?.attendance,
+            type: smsItem?.attendance,
           };
-        } else if (smsItem?.type && smsItem?.type === "Absent") {
+        } else if (smsItem?.attendance && smsItem?.attendance === "Absent") {
           smsIconProp = {
             ...smsIconProp,
-            status: smsItem?.type,
-            type: smsItem?.status,
+            status: smsItem?.attendance,
+            type: smsItem?.attendance,
           };
-        } else if (smsItem?.type && smsItem?.type === "SpecialDuty") {
+        } else if (
+          smsItem?.attendance &&
+          smsItem?.attendance === "SpecialDuty"
+        ) {
           smsIconProp = {
             ...smsIconProp,
-            status: smsItem?.type,
-            type: smsItem?.status,
+            status: smsItem?.attendance,
+            type: smsItem?.attendance,
           };
         } else if (day.day() === 0) {
           smsIconProp = { ...smsIconProp, status: "Holiday" };
@@ -227,15 +279,13 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <Text pb="4" color={colors.dateLight} fontSize={12}>
+                    <Text pb="1" color={"schools.lightGray0"}>
                       {day.format("ddd")}
                     </Text>
                   ) : (
                     ""
                   )}
-                  <Text color={colors.date} fontSize={14} fontWeight={600}>
-                    {day.format("DD")}
-                  </Text>
+                  <Text color={"schools.bodyText"}>{day.format("DD")}</Text>
                 </VStack>
               ) : (
                 <HStack alignItems={"center"} space={1}>
@@ -244,21 +294,23 @@ const CalendarComponent = ({
                 </HStack>
               )}
             </Text>
-            <TouchableHighlight onPress={(e) => setAttendanceObject(smsItem)}>
+            <TouchableHighlight
+              onPress={(e) => setAttendanceObject(smsItem)}
+              // onLongPress={(e) => {
+              //   console.log({ e });
+              // }}
+            >
               <Box alignItems="center">
                 {loding && loding[dateValue + item.id] ? (
                   <GetIcon
                     {...smsIconProp}
-                    status="Present"
+                    status="Loader4LineIcon"
                     color={"schools.primary"}
                     isDisabled
                     _icon={{ _fontawesome: { spin: true } }}
                   />
                 ) : (
-                  <GetIcon
-                    {...smsIconProp}
-                    status={sample[Math.floor(Math.random() * sample.length)]}
-                  />
+                  <GetIcon {...smsIconProp} />
                 )}
               </Box>
             </TouchableHighlight>
@@ -269,20 +321,20 @@ const CalendarComponent = ({
   ));
 };
 
-const GetIcon = ({ status, _box, color, _icon }) => {
+export const GetIcon = ({ status, _box, color, _icon }) => {
   let icon = <></>;
   let iconProps = { fontSize: "xl", isDisabled: true, ..._icon };
   switch (status) {
     case "Present":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancePresent}>
+        <Box {..._box} color={color ? color : "schools.present"}>
           <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Absent":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceAbsent}>
+        <Box {..._box} color={color ? color : "schools.absent"}>
           <IconByName name="CloseCircleLineIcon" {...iconProps} />
         </Box>
       );
@@ -296,28 +348,28 @@ const GetIcon = ({ status, _box, color, _icon }) => {
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : colors.holiDay}>
+        <Box {..._box} color={color ? color : "schools.holiDay"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Unmarked":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "schools.unnmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Today":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "schools.unnmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     default:
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancedefault}>
+        <Box {..._box} color={color ? color : "schools.defaultMark"}>
           <IconByName name={status} {...iconProps} />
         </Box>
       );
@@ -325,5 +377,3 @@ const GetIcon = ({ status, _box, color, _icon }) => {
   }
   return icon;
 };
-
-export default TeacherAttendanceReport;

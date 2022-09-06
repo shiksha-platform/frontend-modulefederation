@@ -9,6 +9,7 @@ const interfaceData = {
   schoolMediumOfInstruction: 'mediumOfInstruction',
   schoolPhoneNumber: 'phoneNumber',
   schoolAddress: 'address',
+  schoolHeadMaster: 'headMaster',
   schoolType: 'schoolType',
   schoolWebsite: 'website',
   schoolVillage: 'village',

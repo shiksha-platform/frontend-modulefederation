@@ -1,4 +1,8 @@
-import { schoolRegisteryService, userRegistryService } from '..'
+import {
+  schoolRegisteryService,
+  userRegistryService,
+  classRegistryService
+} from '..'
 import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as coreUpdate } from './RestClient'
 
@@ -61,5 +65,6 @@ const getDataOne = async (object) => {
   })
   teacherData = await userRegistryService.getUserById(item.teacherId)
   mentorData = await userRegistryService.getUserById(item.mentorId)
+
   return { ...item, schoolData: data, teacherData, mentorData }
 }

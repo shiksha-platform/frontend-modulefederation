@@ -3,6 +3,7 @@ import { Box, VStack, HStack, Avatar, Divider } from "native-base";
 import {
   BodyMedium,
   DEFAULT_THEME,
+  H2,
   H3,
   IconByName,
   overrideColorTheme,
@@ -33,9 +34,14 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                   mr={4}
                   borderRadius="md"
                   source={{
-                    uri: "https://via.placeholder.com/50x50.png",
+                    uri: schoolData?.image ? schoolData?.image : "",
                   }}
-                />
+                  bg="schools.primary"
+                >
+                  <H2 color="schools.white">
+                    {schoolData?.schoolName?.slice(0, 2).toUpperCase()}
+                  </H2>
+                </Avatar>
                 <VStack>
                   <H3>{schoolData?.schoolName}</H3>
                   <BodyMedium color={colors.subtitle}>
@@ -90,6 +96,31 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                   </BodyMedium>
                 </VStack>
               </div>
+
+              {schoolData?.cluster != "" && (
+                <div
+                  style={{
+                    flex: "0 0 50%",
+                    maxWidth: "50%",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <VStack>
+                    <HStack alignItems="center">
+                      <IconByName
+                        size="12px"
+                        mr={2}
+                        name="GovernmentLineIcon"
+                      />
+                      <BodyMedium color="#666" fontSize="12">
+                        Cluster
+                      </BodyMedium>
+                    </HStack>
+                    <BodyMedium>{schoolData?.cluster}</BodyMedium>
+                  </VStack>
+                </div>
+              )}
+
               {lastVisited && (
                 <div
                   style={{

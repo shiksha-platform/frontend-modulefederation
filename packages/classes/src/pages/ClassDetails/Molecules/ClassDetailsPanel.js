@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapsible, IconByName } from "@shiksha/common-lib";
+import { Collapsible } from "@shiksha/common-lib";
 import { HStack, Text, VStack, Box, useTheme } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Pie } from "react-chartjs-2";

@@ -1,28 +1,30 @@
 import {
   BodyLarge,
   BodyMedium,
-  DEFAULT_THEME,
   FilterButton,
   H2,
   IconByName,
   Layout,
   overrideColorTheme,
   mentorRegisteryService,
+  Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import {
   Box,
   HStack,
-  Text,
   VStack,
   Actionsheet,
   Button,
   Stack,
   Divider,
+  Pressable,
 } from "native-base";
+import { useNavigate } from "react-router-dom";
 import MySchoolsCard from "../components/MySchoolsCard";
 import colorTheme from "../colorTheme";
+import manifest from "manifest.json";
 const colors = overrideColorTheme(colorTheme);
 
 const defaultInputs = [
@@ -56,7 +58,7 @@ export default function Allocatedschools({ footerLinks }) {
   const [sortModal, setSortModal] = useState(false);
 
   const [filterObject, setFilterObject] = React.useState({});
-
+  const navigate = useNavigate();
   const callBackFilterObject = React.useCallback((e) => {
     setFilterObject();
   }, []);
@@ -65,11 +67,40 @@ export default function Allocatedschools({ footerLinks }) {
     const data = await mentorRegisteryService.getAllAllocatedSchools({
       mentorId: localStorage.getItem("id"),
     });
-    setAllocatedVisits(data);
-    setTotalSchools(data.length);
+
+    const groupBySchools = data.reduce((group, school) => {
+      const { schoolId } = school;
+      group[schoolId] = group[schoolId] ?? [];
+      group[schoolId].push(school);
+      return group;
+    }, {});
+
+    // Getting the last Visited date of mentor for schools and setting the status to pending even if one teacher is not visited
+    Object.entries(groupBySchools).forEach(([key, value]) => {
+      let lastVisitedMiliSeconds = new Date(0).getMilliseconds(),
+        schoolStatus = "visited",
+        schoolLastVisited;
+      value?.forEach((school) => {
+        if (school?.status === "pending") schoolStatus = "pending";
+        if (
+          new Date(school?.lastVisited).getMilliseconds() >
+          lastVisitedMiliSeconds
+        )
+          lastVisitedMiliSeconds = new Date(school?.lastVisited);
+        schoolLastVisited = school?.lastVisited;
+      });
+      value[0].schoolLastVisited = schoolLastVisited;
+      value[0].schoolStatus = schoolStatus;
+    });
+
+    // Settings the list of allocated schools
+    setAllocatedVisits(groupBySchools);
+    setTotalSchools(Object.keys(groupBySchools).length);
 
     let count = 0;
-    data.forEach((school) => school?.status == "pending" && count++);
+    Object.entries(groupBySchools).map(([key, value]) => {
+      if (value[0]?.schoolStatus == "pending") count++;
+    });
     setTotalPendingSchools(count);
   }, []);
 
@@ -84,7 +115,7 @@ export default function Allocatedschools({ footerLinks }) {
           See all your allocated schools for visits here
         </H2>
       }
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _subHeader={{ bg: colors.lightPurple }}
       _footer={footerLinks}
     >
@@ -124,18 +155,24 @@ export default function Allocatedschools({ footerLinks }) {
                   filters={defaultInputs}
                 />
               </Box>
-              {allocatedVisits &&
-                allocatedVisits.length &&
-                allocatedVisits.map((visit, visitIndex) => {
-                  return (
-                    <MySchoolsCard
-                      isVisited={visit?.status == "visited" ? true : false}
-                      key={`myvisit${visitIndex}`}
-                      schoolData={visit?.schoolData}
-                      lastVisited={visit?.lastVisited}
-                    />
-                  );
-                })}
+              {allocatedVisits && Object.keys(allocatedVisits)?.length > 0 ? (
+                Object.entries(allocatedVisits).map(
+                  ([key, visit], visitIndex) => (
+                    <Pressable onPress={() => navigate(`/schools/${key}`)}>
+                      <MySchoolsCard
+                        isVisited={
+                          visit[0]?.schoolStatus == "visited" ? true : false
+                        }
+                        key={`myvisit${visitIndex}`}
+                        schoolData={visit[0]?.schoolData}
+                        lastVisited={visit[0]?.schoolLastVisited}
+                      />
+                    </Pressable>
+                  )
+                )
+              ) : (
+                <Loading height={"200px"} />
+              )}
             </VStack>
           </Box>
         </VStack>

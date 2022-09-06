@@ -1,22 +1,15 @@
 import {
-  Collapsible,
-  IconByName,
   Layout,
   assessmentRegistryService,
-  overrideColorTheme,
-  H2,
   Loading,
-  useWindowSize,
   telemetryFactory,
   capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
-import colorTheme from "../colorTheme";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Text, VStack } from "native-base";
 import { QUMLBaseURL } from "assets/constants";
-const colors = overrideColorTheme(colorTheme);
 
 export default function QumlTest({
   appName,
@@ -28,26 +21,16 @@ export default function QumlTest({
   selectedCompetencies,
   selectedSubject,
   questionIds,
+  footerLinks,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [assessmentStartTime, setAssessmentStartTime] = React.useState();
-  /*const [questionIds, setQuestionIds] = useState(
-    JSON.parse(localStorage.getItem("assessment-questionIds")) || []
-  );*/
-  const [width, height] = useWindowSize();
 
   const startAssessment = async (qumlResult) => {
     setLoading(true);
-    // const subject = localStorage.getItem("assessment-subject");
-    // const competencies = JSON.parse(localStorage.getItem("assessment-competencies"));
-    // const classId = localStorage.getItem("assessment-class");
-    // const assessmentType = localStorage.getItem("assessment-type");
-    // const studentId = JSON.parse(localStorage.getItem("assessment-student")).id || null;
-    // const questionIds = JSON.parse(localStorage.getItem('assessment-questionIds'));
-    // const qumlResult = JSON.parse(localStorage.getItem('assessment-quml-result'));
-
     const params = {
       subject: selectedSubject,
       competencies: selectedCompetencies,
@@ -55,6 +38,7 @@ export default function QumlTest({
     };
     const data = {
       filter: JSON.stringify(params),
+      subject: selectedSubject,
       type: selectedAssessmentType,
       questions: questionIds,
       source: "diksha",
@@ -62,13 +46,20 @@ export default function QumlTest({
       studentId: selectedStudent.id,
       teacherId:
         localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
+      status: "COMPLETED",
+      groupId: classId,
     };
-    const result = await assessmentRegistryService.createUpdateAssessment(data);
+    const result = await assessmentRegistryService
+      .createUpdateAssessment(data)
+      .catch((e) => {
+        setLoading(false);
+        setAlert({ type: "warning", title: e.message });
+        setPageName("assessmentResult");
+      });
     getAssessmentData(result);
   };
 
   const getAssessmentData = async (result) => {
-    // const id = result.result?.Trackassessment?.osid || "";
     const id = result.data?.insert_trackassessment_one?.trackAssessmentId || "";
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
@@ -78,7 +69,8 @@ export default function QumlTest({
       assessmentDetails[0].totalScore
     );
     setLoading(false);
-    // navigate("/assessment/assessment-result");
+
+    setAlert({ type: "success", title: "you have successfully submitted" });
     setPageName("assessmentResult");
   };
 
@@ -109,7 +101,7 @@ export default function QumlTest({
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== "https://quml.shikshaplatform.io") return;
+        if (event.origin !== QUMLBaseURL) return;
         startAssessment(event.data);
       },
       false
@@ -122,7 +114,7 @@ export default function QumlTest({
   }, []);
 
   if (loading) {
-    return <Loading height={height} />;
+    return <Loading />;
   }
 
   return (
@@ -141,50 +133,12 @@ export default function QumlTest({
           </Text>
         </VStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _subHeader={{ bg: "assessment.cardBg" }}
+      _footer={footerLinks}
     >
       {questionIds && (
         <iframe
-          src={`${QUMLBaseURL()}/?questions=${questionIds.join(",")}`}
+          src={`${QUMLBaseURL}/?questions=${questionIds.join(",")}`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />

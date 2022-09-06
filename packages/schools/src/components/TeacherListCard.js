@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+
+// Imports for navigation
+import { useNavigate } from "react-router-dom";
+
+// Import for translation
+import { useTranslation } from "react-i18next";
+
+// Imports from common library functions and native base components
 import {
   Collapsible,
   H3,
@@ -7,10 +15,8 @@ import {
   H2,
 } from "@shiksha/common-lib";
 import { HStack, VStack, Box, Divider, Avatar, Button } from "native-base";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
-const TeacherListCard = ({ schoolId }) => {
+const TeacherListCard = ({ schoolId, visitedData }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [teacherlist, setTeacherList] = useState([]);
@@ -28,11 +34,11 @@ const TeacherListCard = ({ schoolId }) => {
       defaultCollapse={true}
       header={
         <Box py={4}>
-          <H2>Allocated Teachers List</H2>
+          <H2>Teachers List</H2>
         </Box>
       }
     >
-      {teacherlist && teacherlist.length >= 1 ? (
+      {teacherlist && teacherlist.length > 0 ? (
         teacherlist.map(
           (teacher, index) =>
             index < 3 && (
@@ -50,7 +56,7 @@ const TeacherListCard = ({ schoolId }) => {
                           bg={"schools.primary"}
                         >
                           <H2 color={"schools.white"}>
-                            {teacher?.firstName?.slice(0, 2).toUpperCase()}
+                            {teacher?.firstName?.slice(0, 2)?.toUpperCase()}
                           </H2>
                         </Avatar>
                         <VStack>
@@ -61,20 +67,25 @@ const TeacherListCard = ({ schoolId }) => {
                             }}
                           >
                             {index + 1} .{" "}
-                            {`${teacher.firstName} ${teacher.lastName}`}
+                            {`${teacher?.firstName} ${teacher?.lastName}`}
                           </H3>
                         </VStack>
                       </HStack>
                     </Box>
-                    <Box>
-                      <IconByName
-                        _icon={{ size: "22" }}
-                        borderRadius="full"
-                        bg={"schools.primary"}
-                        color={"schools.white"}
-                        name="UserLineIcon"
-                      />
-                    </Box>
+                    {visitedData &&
+                      visitedData?.find(
+                        (data) => data?.teacherId === teacher?.id
+                      ) && (
+                        <Box>
+                          <IconByName
+                            _icon={{ size: "22" }}
+                            borderRadius="full"
+                            bg={"schools.primary"}
+                            color={"schools.white"}
+                            name="UserLineIcon"
+                          />
+                        </Box>
+                      )}
                   </HStack>
                 </Box>
                 <Divider />
@@ -86,7 +97,7 @@ const TeacherListCard = ({ schoolId }) => {
           No teachers available in this school
         </Box>
       )}
-      {teacherlist && teacherlist.length >= 1 && (
+      {teacherlist && teacherlist.length > 0 && (
         <Box pt={4} textAlign="center">
           <Button
             variant="outline"

@@ -6,9 +6,11 @@ import {
   overrideColorTheme,
   BodyMedium,
   BodyLarge,
+  mentorRegisteryService,
+  Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   HStack,
@@ -17,9 +19,11 @@ import {
   Actionsheet,
   Stack,
   Divider,
+  Pressable,
 } from "native-base";
-import RecommendedVisitsCard from "../components/RecommendedVisitsCard";
+import MySchoolsCard from "components/MySchoolsCard";
 import colorTheme from "../colorTheme";
+import manifest from "manifest.json";
 const colors = overrideColorTheme(colorTheme);
 const defaultInputs = [
   {
@@ -47,13 +51,57 @@ const defaultInputs = [
 
 export default function Recommendedschools({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
+  const [recommendedVisits, setRecommendedVisits] = useState();
   const [sortModal, setSortModal] = useState(false);
 
   const [filterObject, setFilterObject] = React.useState({});
 
   const callBackFilterObject = React.useCallback((e) => {
     setFilterObject();
+  }, []);
+
+  useEffect(async () => {
+    const data = await mentorRegisteryService.getAllAllocatedSchools({
+      mentorId: localStorage.getItem("id"),
+    });
+
+    const groupBySchools = data.reduce((group, school) => {
+      const { schoolId } = school;
+      group[schoolId] = group[schoolId] ?? [];
+      group[schoolId].push(school);
+      return group;
+    }, {});
+
+    // Getting the last Visited date of mentor for schools and setting the status to pending even if one teacher is not visited
+    Object.entries(groupBySchools).forEach(([key, value]) => {
+      let lastVisitedMiliSeconds = new Date(0).getMilliseconds(),
+        schoolLastVisited;
+      value?.forEach((school) => {
+        if (
+          new Date(school?.lastVisited).getMilliseconds() >
+          lastVisitedMiliSeconds
+        )
+          lastVisitedMiliSeconds = new Date(school?.lastVisited);
+        schoolLastVisited = school?.lastVisited;
+      });
+      value[0].schoolLastVisited = schoolLastVisited;
+    });
+
+    // Getting the date of 2 months ago
+    const today = new Date();
+    today.setMonth(today.getMonth() - 2);
+
+    // Setting the list of recommended visits when last visit is of 2 months ago
+    Object.entries(groupBySchools).forEach(([key, value]) => {
+      if (
+        new Date(value[0]?.schoolLastVisited).getMilliseconds() >
+        today.getMilliseconds()
+      )
+        delete groupBySchools[key];
+    });
+
+    // Settings the list of recommended schools
+    setRecommendedVisits(groupBySchools);
   }, []);
 
   return (
@@ -67,7 +115,7 @@ export default function Recommendedschools({ footerLinks }) {
           See all your recommended schools for visits here
         </H2>
       }
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _subHeader={{ bg: colors.lightPurple }}
       _footer={footerLinks}
     >
@@ -80,7 +128,10 @@ export default function Recommendedschools({ footerLinks }) {
                   <Box>
                     <H2>Schools</H2>
                     <BodyMedium>
-                      05 Schools not visited in last 2 months
+                      {recommendedVisits &&
+                        Object.keys(recommendedVisits)?.length > 0 &&
+                        Object.keys(recommendedVisits)?.length}{" "}
+                      Schools not visited in last 2 months
                     </BodyMedium>
                   </Box>
                   <Button
@@ -108,11 +159,27 @@ export default function Recommendedschools({ footerLinks }) {
                   filters={defaultInputs}
                 />
               </Box>
-              {recommendedVisits &&
-                recommendedVisits.length &&
-                recommendedVisits.map(() => {
-                  return <RecommendedVisitsCard isVisited={false} />;
-                })}
+              {recommendedVisits ? (
+                Object.keys(recommendedVisits)?.length > 0 ? (
+                  Object.entries(recommendedVisits).map(
+                    ([key, visit], visitIndex) => (
+                      <Pressable onPress={() => navigate(`/schools/${key}`)}>
+                        <MySchoolsCard
+                          key={`myvisit${visitIndex}`}
+                          schoolData={visit[0]?.schoolData}
+                          lastVisited={visit[0]?.schoolLastVisited}
+                        />
+                      </Pressable>
+                    )
+                  )
+                ) : (
+                  <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                    All schools are visited in a recent 2 months.
+                  </Box>
+                )
+              ) : (
+                <Loading height={"200px"} />
+              )}
             </VStack>
           </Box>
         </VStack>

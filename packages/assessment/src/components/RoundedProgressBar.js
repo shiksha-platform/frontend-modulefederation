@@ -1,9 +1,8 @@
-import { Box, Text, VStack } from "native-base";
+import { Box, Text, useTheme, VStack } from "native-base";
 import React from "react";
+import { Chart, ArcElement } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { overrideColorTheme } from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
-const colors0 = overrideColorTheme(colorTheme);
+Chart.register(ArcElement);
 
 export default function RoundedProgressBar({
   values,
@@ -14,10 +13,11 @@ export default function RoundedProgressBar({
   size,
   ...props
 }) {
+  const theme = useTheme();
   return (
     <Box>
-      <VStack alignItems="center" space={2}>
-        <Box position="relative" width={size} textAlign="center">
+      <VStack alignItems="center" space={1}>
+        <Box position="relative" width={size}>
           <Doughnut
             data={{
               datasets: [
@@ -27,7 +27,7 @@ export default function RoundedProgressBar({
                   data: values ? values : [14, 6],
                   backgroundColor: colors
                     ? colors
-                    : [colors0.successBarColor, colors0.lightGray4],
+                    : [theme?.colors.primary, theme?.colors?.lightGray2],
                   borderWidth: 0,
                   cutout: cutout ? cutout : "80%",
                 },

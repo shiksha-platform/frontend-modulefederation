@@ -1,4 +1,15 @@
+// Route: {basePath}/schools/teacher-details/{id}
+
 import React, { useEffect, useState } from "react";
+
+// Imports for navigation and for extraction of params
+import { useNavigate, useParams } from "react-router-dom";
+
+// Import for translation
+import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
+
+// Imports from common library functions and native base components
 import {
   BodyLarge,
   BodyMedium,
@@ -9,34 +20,44 @@ import {
   H3,
   IconByName,
   Layout,
+  Loading,
   mentorRegisteryService,
   userRegistryService,
 } from "@shiksha/common-lib";
-import { Box, HStack, VStack, Avatar, Divider, Button } from "native-base";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  Box,
+  HStack,
+  VStack,
+  Avatar,
+  Divider,
+  Button,
+  useTheme,
+} from "native-base";
+
+// Imports for Circular Progressbar
 import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 
 const TeacherDetails = ({ footerLinks }) => {
+  const { colors } = useTheme();
   const navigate = useNavigate();
   const { teacherId } = useParams();
   const [teacherlist, setTeacherList] = useState();
   const [pastVisitDetails, setPastVisitDetails] = useState();
 
   useEffect(async () => {
+    // Getting teacher list by teacher id
     const data = await userRegistryService.getUserById(teacherId);
     setTeacherList(data);
 
-    console.log(data);
-
+    // All the past visit details for the teacher
     const pastDetails = await mentorRegisteryService.getAllAllocatedSchools({
       teacherId: data?.id?.slice(2, data?.id?.length),
     });
-    console.log("Past Details:", pastDetails);
     setPastVisitDetails(pastDetails);
-  }, []);
+  }, [teacherId]);
 
   return teacherlist ? (
     <Layout
@@ -67,7 +88,7 @@ const TeacherDetails = ({ footerLinks }) => {
         </HStack>
       }
       _subHeader={{ bg: "schools.cardBg" }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
       <Box p={5} bg={"schools.white"}>
@@ -117,7 +138,7 @@ const TeacherDetails = ({ footerLinks }) => {
             <Box>
               <H2 color={"schools.absent"}>Very Bad</H2>
               <BodySmall color={"schools.absent"}>
-                You have been present all days this month
+                You have been absent all days this month
               </BodySmall>
             </Box>
           </HStack>
@@ -126,16 +147,16 @@ const TeacherDetails = ({ footerLinks }) => {
               <VStack alignItems="center" space={3}>
                 <Box w="100px" h="100px">
                   <CircularProgressbarWithChildren
-                    value={51}
+                    value={0}
                     maxValue={100}
                     styles={buildStyles({
-                      pathColor: "schools.absent",
-                      textColor: "schools.absent",
-                      trailColor: "schools.dangerAlert",
+                      pathColor: colors?.["schools"]?.["absent"],
+                      textColor: colors?.["schools"]?.["absent"],
+                      trailColor: colors?.["schools"]?.["darkGray5"],
                     })}
                   >
                     <Box textAlign="center">
-                      <H1 color={"schools.absent"}>51%</H1>
+                      <H1 color={"schools.absent"}>0%</H1>
                     </Box>
                   </CircularProgressbarWithChildren>
                 </Box>
@@ -145,20 +166,20 @@ const TeacherDetails = ({ footerLinks }) => {
               <VStack alignItems="center" space={3}>
                 <Box w="100px" h="100px">
                   <CircularProgressbarWithChildren
-                    value={90}
+                    value={0}
                     maxValue={100}
                     styles={buildStyles({
-                      pathColor: "schools.green",
-                      textColor: "schools.green",
-                      trailColor: "schools.successAlert",
+                      pathColor: colors?.["schools"]?.["green"],
+                      textColor: colors?.["schools"]?.["green"],
+                      trailColor: colors?.["schools"]?.["darkGray5"],
                     })}
                   >
                     <Box textAlign="center">
-                      <H1 color={"schools.green"}>90%</H1>
+                      <H1 color={"schools.green"}>0%</H1>
                     </Box>
                   </CircularProgressbarWithChildren>
                 </Box>
-                <BodyMedium>Last Year</BodyMedium>
+                <BodyMedium>Last Month</BodyMedium>
               </VStack>
             </HStack>
           </Box>
@@ -167,7 +188,7 @@ const TeacherDetails = ({ footerLinks }) => {
             width="100%"
             variant="outline"
             onPress={() => {
-              navigate("/schools/teacher-attendance-report");
+              navigate(`/schools/teacher-attendance-report/${teacherId}`);
             }}
           >
             Attendance Report
@@ -279,7 +300,7 @@ const TeacherDetails = ({ footerLinks }) => {
       </Box>
     </Layout>
   ) : (
-    "Loading"
+    <Loading />
   );
 };
 

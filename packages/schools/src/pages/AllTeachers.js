@@ -1,12 +1,13 @@
 import {
   BodyLarge,
-  BodyMedium,
   H2,
   H3,
   H4,
   IconByName,
   Layout,
+  Loading,
   userRegistryService,
+  mentorRegisteryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
@@ -29,6 +30,7 @@ export default function AllTeachers({ footerLinks }) {
   const navigate = useNavigate();
   const [teacherlist, setTeacherList] = useState([]);
   const [teacherData, setTeacherData] = useState(null);
+  const [visitedSchoolsData, setVisitedSchoolsData] = useState(null);
   const { schoolId } = useParams();
 
   useEffect(async () => {
@@ -37,6 +39,12 @@ export default function AllTeachers({ footerLinks }) {
       role: { eq: "Teacher" },
     });
     setTeacherList(data);
+
+    const visitedData = await mentorRegisteryService.getAllAllocatedSchools({
+      mentorId: localStorage.getItem("id"),
+      schoolId,
+    });
+    setVisitedSchoolsData(() => visitedData);
   }, []);
 
   return (
@@ -52,8 +60,7 @@ export default function AllTeachers({ footerLinks }) {
       <Box p={6} bg={"schools.white"}>
         <VStack space={6}>
           <VStack space={6}>
-            {teacherlist &&
-              teacherlist.length &&
+            {teacherlist && teacherlist.length > 0 ? (
               teacherlist.map((teacher, index) => {
                 return (
                   <TeacherTile
@@ -61,14 +68,18 @@ export default function AllTeachers({ footerLinks }) {
                     teacher={teacher}
                     index={index}
                     setTeacherData={setTeacherData}
+                    visitedData={visitedSchoolsData}
                   />
                 );
-              })}
+              })
+            ) : (
+              <Loading height={"200px"} />
+            )}
           </VStack>
         </VStack>
       </Box>
 
-      {teacherData && (
+      {teacherData && visitedSchoolsData && (
         <Actionsheet isOpen={teacherData} onClose={() => setTeacherData()}>
           <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
             <HStack justifyContent={"space-between"} alignItems="center">
@@ -87,16 +98,32 @@ export default function AllTeachers({ footerLinks }) {
                         {teacherData?.firstName?.slice(0, 2).toUpperCase()}
                       </H2>
                     </Avatar>
-                    <VStack>
+                    <HStack>
                       <H3
                         color={"schools.bodyText"}
                         _dark={{
                           color: "schools.darkGray2",
                         }}
+                        marginTop="5px"
                       >
                         {`${teacherData.firstName} ${teacherData.lastName}`}
                       </H3>
-                    </VStack>
+                      {visitedSchoolsData &&
+                        visitedSchoolsData?.find(
+                          (data) => data?.teacherId === teacherData?.id
+                        ) && (
+                          <Box>
+                            <IconByName
+                              _icon={{ size: "16" }}
+                              borderRadius="full"
+                              bg={"schools.primary"}
+                              color={"schools.white"}
+                              name="UserLineIcon"
+                              marginLeft="15px"
+                            />
+                          </Box>
+                        )}
+                    </HStack>
                   </HStack>
                 </Box>
               </Stack>

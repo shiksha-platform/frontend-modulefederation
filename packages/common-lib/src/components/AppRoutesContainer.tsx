@@ -1,61 +1,26 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { Center, NativeBaseProvider } from 'native-base'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { eventBus } from '../services/EventBus'
 import Loading from './Loading'
+import { PushNotification } from './firebase/firebase'
+import { useAuthFlow } from '../hooks/useAuthFlow'
+import Alert from './Alert'
 
 const AppRoutesContainer = ({
   theme,
   routes,
-  AuthComponent,
   basename,
-  isShowFooterLink,
+  footerLinks,
   appName,
+  alert,
+  setAlert,
   ...otherProps
 }: any) => {
-  const footerLinks = !isShowFooterLink
-    ? {}
-    : {
-        menues: [
-          {
-            title: 'HOME',
-            icon: 'Home4LineIcon',
-            module: 'Registry',
-            route: '/',
-            routeparameters: {}
-          },
-          {
-            title: 'CLASSES',
-            icon: 'TeamLineIcon',
-            module: 'Registry',
-            route: '/classes',
-            routeparameters: {}
-          },
-          {
-            title: 'SCHOOL',
-            icon: 'GovernmentLineIcon',
-            module: 'Registry',
-            route: '/',
-            routeparameters: {}
-          },
-          {
-            title: 'TEACHING',
-            icon: 'BookOpenLineIcon',
-            module: 'Registry',
-            route: '/worksheet',
-            routeparameters: {}
-          },
-          {
-            title: 'CAREER',
-            icon: 'UserLineIcon',
-            module: 'Registry',
-            route: '/',
-            routeparameters: {}
-          }
-        ]
-      }
+  const user = useAuthFlow()
   return (
-    <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
+      <PushNotification />
+      <Alert {...{ alert, setAlert }} />
       <Suspense
         fallback={
           <Center>
@@ -69,7 +34,9 @@ const AppRoutesContainer = ({
               <Route
                 key={index}
                 path={item.path}
-                element={<item.component {...{ footerLinks, appName }} />}
+                element={
+                  <item.component {...{ footerLinks, appName, setAlert }} />
+                }
               />
             ))}
           </Routes>

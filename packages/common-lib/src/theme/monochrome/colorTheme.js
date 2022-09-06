@@ -15,6 +15,7 @@ const colorTheme = {
   eventPoorPerformance: '#E04242',
   success: '#0D921B',
   warning: '#FFC369',
+  danger: '#F57B7B',
   present: '#2BB639',
   absent: '#F57B7B',
   special_duty: '#06D6A0',

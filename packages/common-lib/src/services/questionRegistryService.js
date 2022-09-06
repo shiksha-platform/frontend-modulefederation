@@ -1,6 +1,6 @@
 import { get, post } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
+const defaultAdapter = 'diksha'
 
 const interfaceData = {
   questionId: 'questionId',
@@ -18,7 +18,10 @@ const interfaceData = {
   type: 'type'
 }
 
-export const getAllQuestions = async (params = {}, header = {}) => {
+export const getAllQuestions = async (
+  { adapter, ...params } = {},
+  header = {}
+) => {
   let headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     ContentType: 'application/json',
@@ -27,7 +30,7 @@ export const getAllQuestions = async (params = {}, header = {}) => {
   }
   try {
     const result = await get(
-      `${process.env.REACT_APP_API_URL}/question/${params?.adapter}/search?server=dev`,
+      `${process.env.REACT_APP_API_URL}/question/${adapter}/search?server=dev`,
       {
         params: params,
         headers
@@ -92,6 +95,46 @@ const readQuestion = async (questionId) => {
       qType,
       questionId: identifier
     }
+  } else {
+    return []
+  }
+}
+
+export const getSubjectsList = async (
+  { adapter, ...params } = {},
+  header = {}
+) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  let adapterData = adapter ? adapter : defaultAdapter
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/question/${adapterData}/subjectlist`,
+    { params, headers }
+  )
+  if (result.data && result.data.data) {
+    return result.data.data.sort()
+  } else {
+    return []
+  }
+}
+
+export const getTopicsList = async (
+  { adapter, ...params } = {},
+  header = {}
+) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  let adapterData = adapter ? adapter : defaultAdapter
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/question/${adapterData}/topicslist`,
+    { params, headers }
+  )
+  if (result.data && result.data.data) {
+    return result.data.data.sort()
   } else {
     return []
   }

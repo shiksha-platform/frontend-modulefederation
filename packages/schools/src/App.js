@@ -21,7 +21,7 @@ function App() {
   const routes = [
     {
       moduleName: "schools",
-      path: "/schools/new-visit",
+      path: "/schools/new-visit/:schoolId",
       component: NewVisitPage,
     },
     {
@@ -82,7 +82,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/teacher-attendance-report",
+      path: "/schools/teacher-attendance-report/:teacherId",
       component: TeacherAttendanceReport,
     },
     {
@@ -92,7 +92,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "*",
+      path: "/",
       component: SchoolProfile,
     },
   ];

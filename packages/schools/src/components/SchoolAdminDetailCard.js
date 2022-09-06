@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+// Imports for common library functions and native base components
 import { Box, VStack, Divider } from "native-base";
 import {
   H2,
@@ -6,14 +8,21 @@ import {
   studentRegistryService,
   classRegistryService,
 } from "@shiksha/common-lib";
+
+// Import for the component for displaying school admin details
 import SchoolAdminTile from "./SchoolAdminTile";
 
 function SchoolAdminDetailCard({ schoolId }) {
   const [totalStudents, setTotalStudents] = useState(null);
   const [grades, setGrades] = useState(null);
+  const [genderCount, setGenderCount] = useState({
+    male: 0,
+    female: 0,
+  });
+  const [socialCategoryCount, setsocialCategoryCount] = useState();
 
   useEffect(async () => {
-    // Get Total Students of School
+    // Get count of total students in school
     const data = await studentRegistryService.getAllStudents({
       schoolId: { eq: schoolId },
     });
@@ -24,7 +33,7 @@ function SchoolAdminDetailCard({ schoolId }) {
       schoolId: { eq: schoolId },
     });
     const uniqueGradeSet = new Set();
-    gradeData.map((grade) => uniqueGradeSet.add(grade.gradeLevel));
+    gradeData.map((grade) => uniqueGradeSet.add(grade?.parent));
     const arrayUniqueGradeSet = Array.from(uniqueGradeSet);
     setGrades(arrayUniqueGradeSet);
 
@@ -40,7 +49,36 @@ function SchoolAdminDetailCard({ schoolId }) {
       totalStudentsInGrade[i] = studentGradeData.length;
     });
     console.log("TOTALSTUDENT");
-    totalStudents.map((abc) => console.log(abc));
+    // totalStudents.map((abc) => console.log(abc));
+
+    // Get male students count of particular school
+    const maleStudent = await studentRegistryService.getAllStudents({
+      schoolId: { eq: schoolId },
+      gender: { eq: "male" },
+    });
+    setGenderCount((prevState) => ({
+      ...prevState,
+      male: maleStudent?.length,
+    }));
+
+    // Get female students count of particular school
+    const femaleStudent = await studentRegistryService.getAllStudents({
+      schoolId: { eq: schoolId },
+      gender: { eq: "female" },
+    });
+    setGenderCount((prevState) => ({
+      ...prevState,
+      female: femaleStudent?.length,
+    }));
+
+    // Get socialCategory students count of particular school
+    const groupByCategory = data.reduce((group, student) => {
+      const { socialCategory } = student;
+      group[socialCategory] = group[socialCategory] ?? [];
+      group[socialCategory].push(student);
+      return group;
+    }, {});
+    setsocialCategoryCount(groupByCategory);
   }, [schoolId]);
   return (
     <Collapsible
@@ -54,12 +92,17 @@ function SchoolAdminDetailCard({ schoolId }) {
       {totalStudents ? (
         <>
           <VStack space={0} bg={"schools.lightGray5"} p={4} rounded={10}>
+            {/* Tile for displaying student details */}
             <SchoolAdminTile
+              key=""
               title={`${totalStudents} students`}
               grades={grades}
+              genderCount={genderCount}
+              socialCategoryCount={socialCategoryCount}
             />
-            <Divider />
-            <SchoolAdminTile title={"08 Teachers"} />
+
+            {/* <Divider /> */}
+            {/* <SchoolAdminTile title={"08 Teachers"} /> */}
           </VStack>
         </>
       ) : (
