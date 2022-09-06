@@ -28,12 +28,6 @@ export default function NewVisitPage({ footerLinks }) {
   const { t } = useTranslation();
   const [visitData, setVisitData] = useState();
 
-  const [filterObject, setFilterObject] = useState({});
-
-  const callBackFilterObject = React.useCallback((e) => {
-    setFilterObject();
-  }, []);
-
   const { schoolId } = useParams();
 
   const [selectedTeacher, setSelectedTeacher] = useState(null);
