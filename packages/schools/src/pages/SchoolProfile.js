@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 // Import for translation
 import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
 
 // Imports from common library functions and native base components
 import { Box, VStack } from "native-base";
@@ -62,7 +63,7 @@ export default function SchoolProfile({ footerLinks }) {
           _heading: { color: "schools.white", t },
         }}
         _appBar={{
-          languages: ["en"],
+          languages: manifest.languages,
         }}
         subHeader={
           // Start Visit button will only appear when there will be a allocated school to you
@@ -74,6 +75,8 @@ export default function SchoolProfile({ footerLinks }) {
                 {
                   keyId: 1,
                   title: "Start a Visit",
+                  icon: "Home4LineIcon",
+                  boxMinW: "177px",
                   _text: { minW: "115px" },
                   onPress: () => navigate(`/schools/new-visit/${id}`),
                 },
@@ -82,7 +85,7 @@ export default function SchoolProfile({ footerLinks }) {
             />
           )
         }
-        _subHeader={{ bg: "schools.cardBg" }}
+        _subHeader={{ bottom: "15px", bg: "schools.cardBg" }}
         _footer={footerLinks}
       >
         <Box p={6} bg={"schools.white"}>

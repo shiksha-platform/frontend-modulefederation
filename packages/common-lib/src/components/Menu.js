@@ -62,7 +62,7 @@ export default function Menu({
                 item={item}
                 bg='button.500'
                 rounded={'md'}
-                p='2'
+                p='1'
                 minW={item?.boxMinW ? item?.boxMinW : '104px'}
               >
                 <VStack

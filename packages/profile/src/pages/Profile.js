@@ -169,7 +169,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
     getData();
   }, [teacherId, token]);
 
-  const handalSelfAttendance = () => {
+  const handleSelfAttendance = () => {
     setShowModal(!showModal);
     const telemetryData = telemetryFactory.interact({
       appName,
@@ -254,7 +254,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
                 icon: "CalendarCheckLineIcon",
                 boxMinW: "177px",
                 _text: { minW: "115px" },
-                onPress: (e) => handalSelfAttendance(),
+                onPress: (e) => handleSelfAttendance(),
               },
             ]}
             type={"vertical"}
