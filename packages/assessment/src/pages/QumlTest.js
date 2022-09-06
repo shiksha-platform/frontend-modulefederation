@@ -38,6 +38,7 @@ export default function QumlTest({
     };
     const data = {
       filter: JSON.stringify(params),
+      subject: selectedSubject,
       type: selectedAssessmentType,
       questions: questionIds,
       source: "diksha",
