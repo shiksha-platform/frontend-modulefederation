@@ -24,6 +24,7 @@ import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
+import * as contentPagesRegistryService from './services/contentPagesRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
 import * as mentorRegisteryService from './services/mentorRegisteryService'
@@ -66,6 +67,7 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
+  contentPagesRegistryService,
   getApiConfig,
   getAllForUser,
   sendReadReceipt,
