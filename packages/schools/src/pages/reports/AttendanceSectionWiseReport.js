@@ -62,11 +62,11 @@ export default function AttendanceReportDashboard({ footerLinks }) {
     <Layout
       _header={{
         title: "Class I Attendance Reports",
-        _heading: { color: "white" },
       }}
+      subHeader={<H2>View Section wise Attendance report</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
         languages: ["en"],
-        isEnableSearchBtn: true,
       }}
       _footer={footerLinks}
     >
