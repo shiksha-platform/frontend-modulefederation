@@ -10,7 +10,6 @@ import {
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { Box, Button, Pressable, VStack } from "native-base";
-import RecommendedVisitsCard from "components/RecommendedVisitsCard";
 import MySchoolsCard from "components/MySchoolsCard";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "colorTheme";
@@ -19,8 +18,8 @@ const colors = overrideColorTheme(colorTheme);
 
 export default function Myvisits({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}]);
-  const [allocatedVisits, setAllocatedVisits] = useState([]);
+  const [recommendedVisits, setRecommendedVisits] = useState();
+  const [allocatedVisits, setAllocatedVisits] = useState();
   const [searchState, setSearchState] = React.useState(false);
   const [search, setSearch] = React.useState(true);
   const navigate = useNavigate();
@@ -68,7 +67,7 @@ export default function Myvisits({ footerLinks }) {
     // Setting the list of recommended visits when last visit is of 2 months ago
     Object.entries(groupOfRecommendedVisits).forEach(([key, value]) => {
       if (
-        new Date(value[0]?.schoolLastVisited).getMilliseconds() <
+        new Date(value[0]?.schoolLastVisited).getMilliseconds() >
         today.getMilliseconds()
       )
         delete groupOfRecommendedVisits[key];
@@ -91,10 +90,10 @@ export default function Myvisits({ footerLinks }) {
       >
         <Box p={6}>
           <VStack space={6}>
-            {recommendedVisits && Object.keys(recommendedVisits)?.length > 0 ? (
-              Object.entries(recommendedVisits).map(
-                ([key, visit], visitIndex) =>
-                  visitIndex < 2 && (
+            {recommendedVisits ? (
+              Object.keys(recommendedVisits)?.length > 0 ? (
+                Object.entries(recommendedVisits).map(
+                  ([key, visit], visitIndex) => (
                     <Pressable onPress={() => navigate(`/schools/${key}`)}>
                       <MySchoolsCard
                         key={`myvisit${visitIndex}`}
@@ -103,11 +102,14 @@ export default function Myvisits({ footerLinks }) {
                       />
                     </Pressable>
                   )
+                )
+              ) : (
+                <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                  All schools are visited in a recent 2 months.
+                </Box>
               )
             ) : (
-              <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                All schools are visited in a recent 2 months.
-              </Box>
+              <Loading height={"200px"} />
             )}
           </VStack>
         </Box>
@@ -143,38 +145,30 @@ export default function Myvisits({ footerLinks }) {
                   <H2>Recommended Visits</H2>
                   <BodyMedium>Schools not visited in last 2 months</BodyMedium>
                 </Box>
-                {recommendedVisits &&
-                Object.keys(recommendedVisits)?.length > 0 ? (
-                  Object.entries(recommendedVisits).map(
-                    ([key, visit], visitIndex) =>
-                      visitIndex < 2 && (
-                        <Pressable onPress={() => navigate(`/schools/${key}`)}>
-                          <MySchoolsCard
-                            key={`myvisit${visitIndex}`}
-                            schoolData={visit[0]?.schoolData}
-                            lastVisited={visit[0]?.schoolLastVisited}
-                          />
-                        </Pressable>
-                      )
+                {recommendedVisits ? (
+                  Object.keys(recommendedVisits)?.length > 0 ? (
+                    Object.entries(recommendedVisits).map(
+                      ([key, visit], visitIndex) =>
+                        visitIndex < 2 && (
+                          <Pressable
+                            onPress={() => navigate(`/schools/${key}`)}
+                          >
+                            <MySchoolsCard
+                              key={`myvisit${visitIndex}`}
+                              schoolData={visit[0]?.schoolData}
+                              lastVisited={visit[0]?.schoolLastVisited}
+                            />
+                          </Pressable>
+                        )
+                    )
+                  ) : (
+                    <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                      All schools are visited in a recent 2 months.
+                    </Box>
                   )
                 ) : (
-                  <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                    All schools are visited in a recent 2 months.
-                  </Box>
+                  <Loading height={"200px"} />
                 )}
-                {/* {recommendedVisits &&
-                recommendedVisits.length &&
-                recommendedVisits.map((visit, visitIndex) => {
-                  return (
-                    <Box textDecoration="none">
-                      <Pressable onPress={() => navigate("/schools/1")}>
-                        <RecommendedVisitsCard
-                          key={`recommended${visitIndex}`}
-                        />
-                      </Pressable>
-                    </Box>
-                  );
-                })} */}
 
                 {recommendedVisits &&
                   Object.keys(recommendedVisits)?.length > 0 && (
@@ -199,59 +193,36 @@ export default function Myvisits({ footerLinks }) {
                 <Box>
                   <H2>Allocated Schools</H2>
                 </Box>
-                {/* {socialCategoryCount &&
-                Object.entries(socialCategoryCount).map(([key, value]) => (
-                  <VStack space={4}>
-                    <HStack alignItems="center">
-                      <H4>{key} : </H4>
-                      <BodyLarge>{value?.length}</BodyLarge>
-                    </HStack>
-                  </VStack>
-                ))} */}
 
-                {allocatedVisits && Object.keys(allocatedVisits)?.length > 0 ? (
-                  Object.entries(allocatedVisits).map(
-                    ([key, visit], visitIndex) =>
-                      visitIndex < 2 && (
-                        <Pressable onPress={() => navigate(`/schools/${key}`)}>
-                          <MySchoolsCard
-                            isVisited={
-                              visit[0]?.schoolStatus == "visited" ? true : false
-                            }
-                            key={`myvisit${visitIndex}`}
-                            schoolData={visit[0]?.schoolData}
-                            lastVisited={visit[0]?.schoolLastVisited}
-                          />
-                        </Pressable>
-                      )
+                {allocatedVisits ? (
+                  Object.keys(allocatedVisits)?.length > 0 ? (
+                    Object.entries(allocatedVisits).map(
+                      ([key, visit], visitIndex) =>
+                        visitIndex < 2 && (
+                          <Pressable
+                            onPress={() => navigate(`/schools/${key}`)}
+                          >
+                            <MySchoolsCard
+                              isVisited={
+                                visit[0]?.schoolStatus == "visited"
+                                  ? true
+                                  : false
+                              }
+                              key={`myvisit${visitIndex}`}
+                              schoolData={visit[0]?.schoolData}
+                              lastVisited={visit[0]?.schoolLastVisited}
+                            />
+                          </Pressable>
+                        )
+                    )
+                  ) : (
+                    <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                      No allocated school is available.
+                    </Box>
                   )
                 ) : (
-                  <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                    No allocated school is available.
-                  </Box>
+                  <Loading height={"200px"} />
                 )}
-                {/* {allocatedVisits && allocatedVisits?.length > 0 ? (
-                allocatedVisits.map((visit, visitIndex) => {
-                  return (
-                    visitIndex < 3 && (
-                      <Pressable
-                        onPress={() => navigate(`/schools/${visit?.schoolId}`)}
-                      >
-                        <MySchoolsCard
-                          isVisited={visit?.status == "visited" ? true : false}
-                          key={`myvisit${visitIndex}`}
-                          schoolData={visit?.schoolData}
-                          lastVisited={visit?.lastVisited}
-                        />
-                      </Pressable>
-                    )
-                  );
-                })
-              ) : (
-                <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                  No allocated school is available.
-                </Box>
-              )} */}
 
                 {/* Show more allocated schools button  */}
                 {allocatedVisits && Object.keys(allocatedVisits)?.length > 0 && (
