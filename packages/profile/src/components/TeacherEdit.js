@@ -66,14 +66,16 @@ export default function TeacherEdit({
         ];
 
   const parameter = {
-    employeeCode: { placeholder: t("EMPLOYEE_CODE") },
+    employeeCode: {
+      placeholder: t("EMPLOYEE_CODE"),
+    },
     joiningDate: { placeholder: t("DATE_OF_JOINING") },
     birthDate: { placeholder: t("DATE_OF_BIRTH") },
     firstName: { placeholder: t("FIRST_NAME"), required: true },
     lastName: { placeholder: t("LAST_NAME") },
     fathersName: { placeholder: t("FATHERS_NAME") },
-    phoneNumber: { placeholder: t("PHONE_NUMBER") },
-    email: { placeholder: t("EMAIL"), type: "email" },
+    phoneNumber: { placeholder: t("PHONE_NUMBER"), required: true },
+    email: { placeholder: t("EMAIL"), type: "email", required: true },
     gender: {
       placeholder: t("GENDER"),
       type: "select",
@@ -241,6 +243,7 @@ export default function TeacherEdit({
           return (
             <Box
               pt="4"
+              pb="4"
               borderBottomWidth={formInputs.length - 1 !== index ? "1" : "0"}
               borderColor={"profile.lightGray5"}
               key={index}
@@ -296,7 +299,10 @@ export default function TeacherEdit({
                     {t(item.placeholder)}
                   </BodyLarge>
                   {item.value ? (
-                    <BodyMedium textTransform="inherit" color={colors.date}>
+                    <BodyMedium
+                      textTransform="inherit"
+                      color={"profile.bodyText"}
+                    >
                       {item.value}
                     </BodyMedium>
                   ) : (
@@ -325,7 +331,7 @@ export default function TeacherEdit({
                 })
               }
             >
-              <Subtitle color={colors.seeButton}>{t("SEE_MORE")}</Subtitle>
+              <Subtitle color={"profile.primary"}>{t("SEE_MORE")}</Subtitle>
             </Pressable>
           </Box>
         )}
@@ -357,7 +363,7 @@ export const Section = ({
     <Collapsible
       _header={{ height: "60px" }}
       header={
-        <H2 color={colors.date} pl={5}>
+        <H2 color={"profile.bodyText"} pl={5}>
           {title}
         </H2>
       }
@@ -367,17 +373,17 @@ export const Section = ({
           const startDate = new Date(singleItem?.dateOfJoining).toDateString();
           const endDate = new Date(singleItem?.dateOfRelieving).toDateString();
           return (
-            <Stack space={1} bg={colors.white} pt={4} pl={"0"} {..._box}>
+            <Stack space={1} bg={"profile.white"} pt={4} pl={"0"} {..._box}>
               <Collapsible
                 key={indexx}
                 _header={{
                   height: "40px",
                   borderBottomWidth: "1",
-                  borderColor: "#F4F4F4",
+                  borderColor: "profile.lightGray5",
                 }}
                 header={
                   <H4
-                    color={colors.date}
+                    color={"profile.bodyText"}
                     pl={1}
                   >{`${singleItem?.organizationName}        ${startDate}  -  ${endDate}`}</H4>
                 }
@@ -394,17 +400,18 @@ export const Section = ({
                       return (
                         <Box
                           pt="4"
+                          pb="4"
                           borderBottomWidth={
                             formInputs.length - 1 !== index ? "1" : "0"
                           }
-                          borderColor={colors.teacherBackground2}
+                          borderColor={"profile.lightGray5"}
                           key={index}
                         >
                           {editState ? (
                             <FormControl isInvalid={item.name in errors}>
                               <FormControl.Label>
                                 <BodyLarge
-                                  color={colors.formSubtitle}
+                                  color={"profile.unmarked"}
                                   textTransform={"uppercase"}
                                 >
                                   {item.placeholder}
@@ -439,7 +446,7 @@ export const Section = ({
                                 <FormControl.ErrorMessage
                                   _text={{
                                     fontSize: "xs",
-                                    color: colors.error,
+                                    color: "profile.error",
                                     fontWeight: 500,
                                   }}
                                 >
@@ -452,7 +459,7 @@ export const Section = ({
                           ) : (
                             <>
                               <BodyLarge
-                                color={colors.formSubtitle}
+                                color={"profile.unmarked"}
                                 alignItems={"center"}
                               >
                                 {t(item.placeholder)}
@@ -460,7 +467,7 @@ export const Section = ({
                               {item.value ? (
                                 <BodyMedium
                                   textTransform="inherit"
-                                  color={colors.date}
+                                  color={"profile.bodyText"}
                                 >
                                   {item.value}
                                 </BodyMedium>
@@ -493,7 +500,7 @@ export const Section = ({
                             })
                           }
                         >
-                          <Subtitle color={colors.seeButton}>
+                          <Subtitle color={"profile.primary"}>
                             {t("SEE_MORE")}
                           </Subtitle>
                         </Pressable>
@@ -506,7 +513,7 @@ export const Section = ({
           );
         })
       ) : (
-        <Box bg={colors.white} p="5" {..._box}>
+        <Box bg={"profile.white"} p="5" {..._box}>
           <HStack alignItems={"center"} justifyContent={"space-between"}>
             {button}
           </HStack>
@@ -530,7 +537,7 @@ export const Section = ({
               })
             }
           >
-            <Subtitle color={colors.seeButton}>{t("SEE_MORE")}</Subtitle>
+            <Subtitle color={"profile.primary"}>{t("SEE_MORE")}</Subtitle>
           </Pressable>
         </Box>
       )}

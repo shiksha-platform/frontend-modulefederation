@@ -4,6 +4,7 @@ import {
   IconByName,
   Subtitle,
   overrideColorTheme,
+  BodyLarge,
 } from "@shiksha/common-lib";
 import { Box, HStack, Text, VStack } from "native-base";
 import Profile from "pages/Profile";
@@ -39,7 +40,7 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
   return (
     <VStack>
       {title !== "" ? (
-        <Box bg={bg} roundedTop={"xl"} py="10px" px="15px">
+        <Box bg={"profile.success"} roundedTop={"xl"} py="10px" px="15px">
           <HStack alignItems={"center"}>
             <IconByName name={iconName} color={"profile.white"} />
             <Subtitle textTransform="ingerit" color={"profile.white"}>
@@ -53,16 +54,16 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
       <Box bg={"profile.primaryLight"} p="5">
         <HStack alignItems={"center"} justifyContent="space-around">
           <VStack alignItems="center">
-            <H1 color={"profile.present"}>
+            <H1 color={"profile.success"}>
               {thisMonth ? Math.round(thisMonth) : 0}%
             </H1>
-            <BodySmall color={"profile.gray"}>{t("THIS_MONTH")}</BodySmall>
+            <BodyLarge color={"profile.gray"}>{t("THIS_MONTH")}</BodyLarge>
           </VStack>
           <VStack alignItems="center">
             <H1 color={"profile.presentText"}>
               {lastMonth ? Math.round(lastMonth) : 0}%
             </H1>
-            <BodySmall color={"profile.gray"}>{t("LAST_MONTH")}</BodySmall>
+            <BodyLarge color={"profile.gray"}>{t("LAST_MONTH")}</BodyLarge>
           </VStack>
         </HStack>
       </Box>
