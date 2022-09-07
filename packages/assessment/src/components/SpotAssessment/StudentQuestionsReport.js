@@ -8,15 +8,7 @@ import {
   IconByName,
   Subtitle,
 } from "@shiksha/common-lib";
-import {
-  Avatar,
-  Box,
-  Button,
-  HStack,
-  Text,
-  useTheme,
-  VStack,
-} from "native-base";
+import { Avatar, Box, Button, HStack, useTheme, VStack } from "native-base";
 import RoundedProgressBar from "components/RoundedProgressBar";
 import { useTranslation } from "react-i18next";
 import { getMaxScore } from "utils/report";
@@ -79,12 +71,7 @@ export default function StudentQuestionsReport({
 
           return (
             <VStack pt={6} space={4} key={key}>
-              <Box
-                bg={"assessment.QuationsBoxBg"}
-                roundedTop="10px"
-                px="4"
-                py="2"
-              >
+              <Box bg={"assessment.QuationsBoxBg"} roundedTop="10px" px="4">
                 <HStack alignItems="center" justifyContent="space-between">
                   <Box>
                     <HStack>
@@ -120,7 +107,7 @@ export default function StudentQuestionsReport({
                       colors["assessment"]?.["lightGray2"],
                     ]}
                     cutout={"80%"}
-                    size="45px"
+                    size="35px"
                     title={{ text: score, fontSize: "12px" }}
                     legend={{ text: "Total Score", fontSize: "10px" }}
                   />
@@ -145,7 +132,7 @@ export default function StudentQuestionsReport({
                       colors["assessment"]?.["lightGray2"],
                     ]}
                     cutout={"80%"}
-                    size="45px"
+                    size="35px"
                     title={{ text: score, fontSize: "12px" }}
                     legend={{ text: "Total Score", fontSize: "10px" }}
                   />
@@ -204,7 +191,7 @@ export default function StudentQuestionsReport({
                         colors["assessment"]?.["lightGray2"],
                       ]}
                       cutout={"80%"}
-                      size="45px"
+                      size="35px"
                       title={{ text: 20, fontSize: "12px" }}
                       legend={{ text: "Words Read", fontSize: "10px" }}
                     />
@@ -215,7 +202,7 @@ export default function StudentQuestionsReport({
                         colors["assessment"]?.["lightGray2"],
                       ]}
                       cutout={"80%"}
-                      size="45px"
+                      size="35px"
                       title={{ text: 18, fontSize: "12px" }}
                       legend={{ text: "Numbers Read", fontSize: "10px" }}
                     />

@@ -70,14 +70,12 @@ const FilterButton = ({
         ...groupValue,
         [attributeName]: type === 'stingValueArray' ? [] : ''
       })
-      setFormData({})
     } else {
       setDependentData(formData, value)
       setGroupValue({
         ...groupValue,
         [attributeName]: type === 'stingValueArray' ? [value] : value
       })
-      setFormData({})
     }
   }
 
@@ -108,7 +106,7 @@ const FilterButton = ({
       ? 'gradeLevel'
       : data.attributeName
     const nameData = inputs.find((e) => e.dependent === attributeName)
-    if (nameData.urlName === 'getSubjectsList') {
+    if (nameData?.urlName === 'getSubjectsList') {
       const selectData = await questionRegistryService.getSubjectsList({
         adapter: groupValue?.source,
         gradeLevel: value
@@ -121,7 +119,7 @@ const FilterButton = ({
           return e
         })
       )
-    } else if (nameData.urlName === 'getTopicsList') {
+    } else if (nameData?.urlName === 'getTopicsList') {
       const selectData = await questionRegistryService.getTopicsList({
         adapter: groupValue?.source,
         subject: value
@@ -352,24 +350,20 @@ const FilterButton = ({
                 )
               })}
           </ScrollView>
-          {type === 'array' ? (
-            <Box p='5'>
-              <Button
-                colorScheme='button'
-                _text={{ color: 'white' }}
-                onPress={(e) => {
-                  if (getObject) {
-                    getObject(groupValue)
-                  }
-                  setFormData({})
-                }}
-              >
-                {t('SELECT')}
-              </Button>
-            </Box>
-          ) : (
-            <React.Fragment />
-          )}
+          <Box p='5'>
+            <Button
+              colorScheme='button'
+              _text={{ color: 'white' }}
+              onPress={(e) => {
+                if (getObject) {
+                  getObject(groupValue)
+                }
+                setFormData({})
+              }}
+            >
+              {t('SELECT')}
+            </Button>
+          </Box>
         </Box>
       </Actionsheet>
     </Box>

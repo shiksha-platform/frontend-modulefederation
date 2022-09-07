@@ -5,6 +5,7 @@ import {
   H2,
   IconByName,
   questionRegistryService,
+  getArray,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -45,9 +46,6 @@ const newDefaultInputs = defaultInputs.map((e) => {
       : "array",
   };
 });
-
-const getArray = (item) =>
-  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
 
 export default function Form({
   manifest,
@@ -194,7 +192,7 @@ export default function Form({
     const nameData = newDefaultInputs.find(
       (e) => e.dependent === attributeName
     );
-    if (nameData.urlName === "getSubjectsList") {
+    if (nameData?.urlName === "getSubjectsList") {
       const selectData = await questionRegistryService.getSubjectsList({
         adapter: formObject?.source,
         gradeLevel: value,
@@ -207,7 +205,7 @@ export default function Form({
           return e;
         })
       );
-    } else if (nameData.urlName === "getTopicsList") {
+    } else if (nameData?.urlName === "getTopicsList") {
       const selectData = await questionRegistryService.getTopicsList({
         adapter: formObject?.source,
         subject: value,
