@@ -214,7 +214,7 @@ export default function WorksheetBox({
         </HStack>
         {worksheetConfig?.includes("description") || true ? (
           <BodyMedium
-            color={"worksheet.darkGary4"}
+            color={"worksheet.darkGray4"}
             style={{
               overflow: "hidden",
               textOverflow: "ellipsis",

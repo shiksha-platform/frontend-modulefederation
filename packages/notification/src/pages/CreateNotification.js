@@ -123,8 +123,8 @@ const CreateNotification = ({ footerLinks, appName }) => {
           icon={<IconByName name="MailSendLineIcon" _icon={{ size: 100 }} />}
           message={
             <Center>
-              <H1 color={"notification.darkGary2"}>{t("NOTIFICATION_SENT")}</H1>
-              <BodyMedium color={"notification.darkGary2"}>
+              <H1 color={"notification.darkGray2"}>{t("NOTIFICATION_SENT")}</H1>
+              <BodyMedium color={"notification.darkGray2"}>
                 {`Attendance Notification has been sent to ${students.length} parents`}
               </BodyMedium>
               {/* <Button

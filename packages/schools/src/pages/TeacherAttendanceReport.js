@@ -2,7 +2,6 @@ import moment from "moment";
 import { Actionsheet, Box, Button, HStack, Text, VStack } from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import { TouchableHighlight } from "react-native-web";
 import {
   IconByName,
   Layout,
@@ -22,8 +21,7 @@ export default function TeacherAttendanceReport({ footerLinks, appName }) {
   const [weekPage, setWeekPage] = useState(0);
   const [teacherObject, setTeacherObject] = useState({});
   const { teacherId } = useParams();
-
-  console.log("TEACHER ID", teacherId);
+  
   const [attendance, setAttendance] = useState([]);
   const [attendanceObject, setAttendanceObject] = useState({});
   const [weekDays, setWeekDays] = useState([]);
@@ -167,15 +165,15 @@ export default function TeacherAttendanceReport({ footerLinks, appName }) {
                               status === "Present"
                                 ? "schools.present"
                                 : status === "Absent"
-                                ? "schools.absent"
-                                : status === "Unmarked"
-                                ? "schools.unmarked"
-                                : "schools.specialDuty",
+                                  ? "schools.absent"
+                                  : status === "Unmarked"
+                                    ? "schools.unmarked"
+                                    : "schools.specialDuty",
                             value: attendance.filter(
                               (e) =>
                                 e.attendance === status &&
                                 moment(e.date).format("Y MMM") ===
-                                  month.format("Y MMM")
+                                month.format("Y MMM")
                             ).length,
                           };
                         })}
@@ -224,9 +222,9 @@ const CalendarComponent = ({
 
         let smsIconProp = !isIconSizeSmall
           ? {
-              _box: { py: 2, minW: "46px", alignItems: "center" },
-              status: "CheckboxBlankCircleLineIcon",
-            }
+            _box: { py: 2, minW: "46px", alignItems: "center" },
+            status: "CheckboxBlankCircleLineIcon",
+          }
           : {};
         if (smsItem?.attendance && smsItem?.attendance === "Present") {
           smsIconProp = {
@@ -265,10 +263,10 @@ const CalendarComponent = ({
               type && type !== "month" && day.day() !== 0
                 ? 1
                 : day.day() === 0
-                ? 0.3
-                : day.format("M") !== moment().format("M")
-                ? 0.3
-                : 1
+                  ? 0.3
+                  : day.format("M") !== moment().format("M")
+                    ? 0.3
+                    : 1
             }
           >
             <Text
@@ -294,26 +292,19 @@ const CalendarComponent = ({
                 </HStack>
               )}
             </Text>
-            <TouchableHighlight
-              onPress={(e) => setAttendanceObject(smsItem)}
-              // onLongPress={(e) => {
-              //   console.log({ e });
-              // }}
-            >
-              <Box alignItems="center">
-                {loding && loding[dateValue + item.id] ? (
-                  <GetIcon
-                    {...smsIconProp}
-                    status="Loader4LineIcon"
-                    color={"schools.primary"}
-                    isDisabled
-                    _icon={{ _fontawesome: { spin: true } }}
-                  />
-                ) : (
-                  <GetIcon {...smsIconProp} />
-                )}
-              </Box>
-            </TouchableHighlight>
+            <Box alignItems="center">
+              {loding && loding[dateValue + item.id] ? (
+                <GetIcon
+                  {...smsIconProp}
+                  status="Loader4LineIcon"
+                  color={"schools.primary"}
+                  isDisabled
+                  _icon={{ _fontawesome: { spin: true } }}
+                />
+              ) : (
+                <GetIcon {...smsIconProp} />
+              )}
+            </Box>
           </VStack>
         );
       })}
@@ -341,7 +332,7 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
       break;
     case "SpecialDuty":
       icon = (
-        <Box {..._box} color={color ? color : "schools.specialDuty"}>
+        <Box {..._box} color={color ? color : colors.primary}>
           <IconByName name="AwardLineIcon" {...iconProps} />
         </Box>
       );

@@ -61,7 +61,7 @@ const Student = ({ footerLinks }) => {
             header={
               <>
                 <VStack>
-                  <H2 color={"student.darkGary1"}>{t("STUDENTS_LIST")}</H2>
+                  <H2 color={"student.darkGray1"}>{t("STUDENTS_LIST")}</H2>
                   <H4 fontSize={"xs"}>
                     {t("TOTAL") + ": " + students?.length}
                   </H4>
@@ -77,7 +77,7 @@ const Student = ({ footerLinks }) => {
                     <Box
                       borderBottomWidth="1"
                       _dark={{
-                        borderColor: "student.darkGary5",
+                        borderColor: "student.darkGray5",
                       }}
                       borderColor={"student.lightGray3"}
                       pr="1"
