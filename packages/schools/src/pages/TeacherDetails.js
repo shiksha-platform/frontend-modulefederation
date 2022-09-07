@@ -24,7 +24,7 @@ import {
   Loading,
   mentorRegisteryService,
   userRegistryService,
-  attendanceRegistryService
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
 import {
   Box,
@@ -91,8 +91,7 @@ const TeacherDetails = ({ footerLinks }) => {
       let lastMonthDays = calendar(-1, "monthInDays");
       let lastMonthParams = {
         fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
-        toDate:
-          lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
+        toDate: lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
         userId: localStorage.getItem("id"),
       };
       const lastDiffDays = moment(lastMonthParams.toDate).diff(
@@ -116,7 +115,6 @@ const TeacherDetails = ({ footerLinks }) => {
       // console.log("present Month Attendance", lastPercentage);
     };
     getData();
-
   }, [teacherId]);
 
   return teacherlist ? (
