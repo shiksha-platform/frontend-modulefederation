@@ -1,11 +1,23 @@
-import { BodySmall, H1, IconByName, Subtitle } from "@shiksha/common-lib";
-import { Box, HStack, Text, VStack } from "native-base";
+import {
+  BodySmall,
+  BodyMedium,
+  H1,
+  IconByName,
+  Subtitle,
+} from "@shiksha/common-lib";
+import { Box, HStack, Text, VStack, useTheme } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+// Imports for Circular Progressbar
+import {
+  buildStyles,
+  CircularProgressbarWithChildren,
+} from "react-circular-progressbar";
+
 export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
   const { t } = useTranslation();
-
+  const { colors } = useTheme();
   let bg,
     iconName,
     title = "";
@@ -43,17 +55,47 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
       )}
       <Box bg={"schools.primaryLight"} p="5">
         <HStack alignItems={"center"} justifyContent="space-around">
-          <VStack alignItems="center">
-            <H1 color={"schools.present"}>
-              {thisMonth ? Math.round(thisMonth) : 0}%
-            </H1>
-            <BodySmall color={"schools.gray"}>{t("THIS_MONTH")}</BodySmall>
+          <VStack alignItems="center" space={3}>
+            <Box w="100px" h="100px">
+              <CircularProgressbarWithChildren
+                value={thisMonth}
+                maxValue={100}
+                styles={buildStyles({
+                  pathColor: colors?.["schools"]?.["absent"],
+                  textColor: colors?.["schools"]?.["absent"],
+                  trailColor: colors?.["schools"]?.["darkGray5"],
+                })}
+              >
+                <Box textAlign="center">
+                  <H1 color={"schools.absent"}>
+                    {" "}
+                    {thisMonth ? Math.round(thisMonth) : 0}%
+                  </H1>
+                </Box>
+              </CircularProgressbarWithChildren>
+            </Box>
+            <BodyMedium>This Month</BodyMedium>
           </VStack>
-          <VStack alignItems="center">
-            <H1 color={"schools.presentText"}>
-              {lastMonth ? Math.round(lastMonth) : 0}%
-            </H1>
-            <BodySmall color={"schools.gray"}>{t("LAST_MONTH")}</BodySmall>
+          <VStack alignItems="center" space={3}>
+            <Box w="100px" h="100px">
+              <CircularProgressbarWithChildren
+                value={lastMonth}
+                maxValue={100}
+                styles={buildStyles({
+                  pathColor: colors?.["schools"]?.["absent"],
+                  textColor: colors?.["schools"]?.["absent"],
+                  trailColor: colors?.["schools"]?.["darkGray5"],
+                })}
+              >
+                <Box textAlign="center">
+                  <H1 color={"schools.absent"}>
+                    {" "}
+                    {lastMonth ? Math.round(lastMonth) : 0}%
+                  </H1>
+                </Box>
+              </CircularProgressbarWithChildren>
+            </Box>
+            <BodyMedium>Last Month</BodyMedium>
           </VStack>
         </HStack>
       </Box>

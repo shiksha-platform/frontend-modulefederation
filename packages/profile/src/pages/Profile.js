@@ -136,7 +136,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
         const thisMonthCount = thisMonthAttendance.filter(
           (e) => e.attendance === "Present"
         ).length;
-        const thisPersantage = (thisMonthCount * 100) / thisDiffDays;
+        const thisPercentage = (thisMonthCount * 100) / thisDiffDays;
 
         let lastMonthDays = calendar(-1, "monthInDays");
         let lastMonthParams = {
@@ -156,11 +156,11 @@ export default function Profile({ footerLinks, appName, setAlert }) {
         const lastMonthCount = lastMonthAttendance.filter(
           (e) => e.attendance === "Present"
         ).length;
-        const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
+        const lastPercentage = (lastMonthCount * 100) / lastDiffDays;
 
         setAttendance({
-          thisMonth: thisPersantage,
-          lastMonth: lastPersantage,
+          thisMonth: thisPercentage,
+          lastMonth: lastPercentage,
         });
         getWorkHistoryData();
         getSchoolData(resultTeacher.schoolId, resultTeacher);

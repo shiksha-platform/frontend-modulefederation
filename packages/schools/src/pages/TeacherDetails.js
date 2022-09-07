@@ -15,6 +15,7 @@ import {
   BodyMedium,
   BodySmall,
   Collapsible,
+  calendar,
   H1,
   H2,
   H3,
@@ -23,6 +24,7 @@ import {
   Loading,
   mentorRegisteryService,
   userRegistryService,
+  attendanceRegistryService
 } from "@shiksha/common-lib";
 import {
   Box,
@@ -40,11 +42,16 @@ import {
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 
+// Import for moment library
+import moment from "moment";
+import AttendanceSummaryCard from "components/AttendanceSummaryCard";
+
 const TeacherDetails = ({ footerLinks }) => {
   const { colors } = useTheme();
   const navigate = useNavigate();
   const { teacherId } = useParams();
   const [teacherlist, setTeacherList] = useState();
+  const [attendance, setAttendance] = useState();
   const [pastVisitDetails, setPastVisitDetails] = useState();
 
   useEffect(async () => {
@@ -57,6 +64,59 @@ const TeacherDetails = ({ footerLinks }) => {
       teacherId: data?.id?.slice(2, data?.id?.length),
     });
     setPastVisitDetails(pastDetails);
+
+    const getData = async () => {
+      let thisMonthParams = {
+        fromDate: moment()
+          .add(-2, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD"),
+        toDate: moment().format("YYYY-MM-DD"),
+        userId: teacherId,
+      };
+      const thisMonthAttendance = await attendanceRegistryService.getAll(
+        thisMonthParams
+      );
+
+      const thisDiffDays = moment(thisMonthParams.toDate).diff(
+        thisMonthParams.fromDate,
+        "Days"
+      );
+
+      const thisMonthCount = thisMonthAttendance.filter(
+        (e) => e.attendance === "Present"
+      ).length;
+      const thisPercentage = (thisMonthCount * 100) / thisDiffDays;
+
+      let lastMonthDays = calendar(-1, "monthInDays");
+      let lastMonthParams = {
+        fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
+        toDate:
+          lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
+        userId: localStorage.getItem("id"),
+      };
+      const lastDiffDays = moment(lastMonthParams.toDate).diff(
+        lastMonthParams.fromDate,
+        "Days"
+      );
+      const lastMonthAttendance = await attendanceRegistryService.getAll(
+        lastMonthParams
+      );
+
+      const lastMonthCount = lastMonthAttendance.filter(
+        (e) => e.attendance === "Present"
+      ).length;
+      const lastPercentage = (lastMonthCount * 100) / lastDiffDays;
+
+      setAttendance({
+        thisMonth: thisPercentage,
+        lastMonth: lastPercentage,
+      });
+      // console.log("present Month Attendance", thisPercentage);
+      // console.log("present Month Attendance", lastPercentage);
+    };
+    getData();
+
   }, [teacherId]);
 
   return teacherlist ? (
@@ -143,6 +203,7 @@ const TeacherDetails = ({ footerLinks }) => {
             </Box>
           </HStack>
           <Box mt={6} bg={"schools.lightGray5"} p={4} rounded={10}>
+            <AttendanceSummaryCard {...attendance} />
             <HStack justifyContent="space-around">
               <VStack alignItems="center" space={3}>
                 <Box w="100px" h="100px">
