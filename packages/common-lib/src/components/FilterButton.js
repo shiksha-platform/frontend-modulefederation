@@ -127,7 +127,7 @@ const FilterButton = ({
       setInputs(
         inputs.map((e) => {
           if (e.attributeName === nameData.attributeName) {
-            return { ...e, data: selectData.map((e) => e.name) }
+            return { ...e, data: selectData }
           }
           return e
         })

@@ -5,7 +5,6 @@ import {
   Layout,
   H2,
   questionRegistryService,
-  overrideColorTheme,
   getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
@@ -17,8 +16,6 @@ import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage
 import ListOfQuestions from "../components/CreateWorksheet/ListOfQuestions";
 import { defaultInputs, autoGenerateInputs } from "../config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
