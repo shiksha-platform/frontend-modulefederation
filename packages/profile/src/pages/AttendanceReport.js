@@ -137,7 +137,7 @@ export default function AttendanceReport({ footerLinks, appName }) {
                 </Subtitle>
                 <H2>{attendanceObject?.type}</H2>
                 <BodyLarge color={"profile.gray"}>
-                  {attendanceObject.mess2age}
+                  {attendanceObject?.mess2age}
                 </BodyLarge>
                 <Button
                   variant="outline"

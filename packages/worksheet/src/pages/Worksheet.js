@@ -27,9 +27,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
     ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
       ? "grade"
       : e.attributeName,
-    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
-      ? "stingValueArray"
-      : ["source"].includes(e.attributeName)
+    ["type"]: ["subject", "gradeLevel", "source"].includes(e.attributeName)
       ? "string"
       : "array",
   };
@@ -37,7 +35,7 @@ const newDefaultInputs = defaultInputs.map((e) => {
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function Worksheet({ footerLinks, appName }) {
+export default function Worksheet({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [filterObject, setFilterObject] = React.useState({});
   const [worksheets, setWorksheets] = React.useState([]);
@@ -138,6 +136,7 @@ export default function Worksheet({ footerLinks, appName }) {
             worksheetConfig,
             showButtonArray,
             inputs,
+            setAlert,
           }}
         />
       </SearchLayout>
@@ -178,6 +177,7 @@ export default function Worksheet({ footerLinks, appName }) {
           worksheetConfig,
           showButtonArray,
           inputs,
+          setAlert,
         }}
       />
     </Layout>
@@ -192,6 +192,7 @@ const ChildrenWorksheet = ({
   setFilterObject,
   appName,
   inputs,
+  setAlert,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -210,6 +211,7 @@ const ChildrenWorksheet = ({
   return (
     <Stack>
       <FilterButton
+        setAlert={setAlert}
         getObject={handleFilter}
         _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: "worksheet.cardBg" }}

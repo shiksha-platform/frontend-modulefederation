@@ -326,7 +326,7 @@ const FilterButton = ({
                     bg={
                       (type !== 'array' && valueArr === value) ||
                       (type === 'stingValueArray' && valueArr.includes(value))
-                        ? 'gray.200'
+                        ? 'lightGray2'
                         : 'white'
                     }
                   >
@@ -355,10 +355,10 @@ const FilterButton = ({
               colorScheme='button'
               _text={{ color: 'white' }}
               onPress={(e) => {
+                setFormData({})
                 if (getObject) {
                   getObject(groupValue)
                 }
-                setFormData({})
               }}
             >
               {t('SELECT')}
