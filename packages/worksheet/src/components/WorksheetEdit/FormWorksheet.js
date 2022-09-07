@@ -183,7 +183,7 @@ const FormWorksheet = ({
                 color={
                   pageName === "success"
                     ? "worksheet.success"
-                    : "worksheet.darkGary4"
+                    : "worksheet.darkGray4"
                 }
               >
                 {pageName === "success"
@@ -201,7 +201,7 @@ const FormWorksheet = ({
                 color={
                   pageName === "success"
                     ? "worksheet.success"
-                    : "worksheet.darkGary4"
+                    : "worksheet.darkGray4"
                 }
                 p="0"
                 onPress={(e) => setIsDataFilter(false)}

@@ -332,7 +332,7 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
       break;
     case "SpecialDuty":
       icon = (
-        <Box {..._box} color={color ? color : "schools.specialDuty"}>
+        <Box {..._box} color={color ? color : colors.primary}>
           <IconByName name="AwardLineIcon" {...iconProps} />
         </Box>
       );

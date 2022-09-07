@@ -75,7 +75,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
   };
 
   const schoolObject = {
-    employee_code: "employeeCode",
+    EMPLOYEE_CODE: "employeeCode",
     employment_address: "schoolAddress",
     district: "schoolDistrict",
     block: "schoolBlock",
@@ -207,7 +207,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
             <Box minH={"150px"}>
               <Box
                 position={"absolute"}
-                bg={"profile.cardBgTransparent"}
+                //bg={"profile.cardBgTransparent"}
                 bottom={0}
                 p={5}
                 pb={8}
@@ -215,11 +215,13 @@ export default function Profile({ footerLinks, appName, setAlert }) {
               >
                 <HStack alignItems="center" justifyContent="space-between">
                   <VStack>
-                    <H4 color={"profile.white"}>{t("MY_PROFILE")}</H4>
-                    <H1 color={"profile.white"}>
+                    <H4 color={"profile.bodyText"} textTransform={"capitalize"}>
+                      {t("MY_PROFILE")}
+                    </H4>
+                    <H1 color={"profile.bodyText"}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
-                    <BodyLarge color={colors.date}>
+                    <BodyLarge color={"profile.bodyText"}>
                       {teacherObject?.designation}
                     </BodyLarge>
                   </VStack>
@@ -307,7 +309,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
             teacherObject={teacherObject}
             fieldMapper={schoolObject}
             onlyParameterProp={[
-              "employee_code",
+              "EMPLOYEE_CODE",
               "employment_address",
               "district",
               "block",
@@ -361,7 +363,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
 const Section = ({ title, button, children, _box, _title }) => (
   <Box bg={"profile.white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"} {..._title}>
-      <H3>{title}</H3>
+      <H3 color={"profile.bodyText"}>{title}</H3>
       {button}
     </HStack>
     {children}
@@ -410,7 +412,7 @@ const Collapsible = ({
               color={
                 !collaps || collapsButton
                   ? "profile.lightGray1"
-                  : "profile.darkGary3"
+                  : "profile.darkGray3"
               }
               name={
                 !collaps || collapsButton

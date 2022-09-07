@@ -149,11 +149,11 @@ const SeeMore = ({ footerLinks, appName }) => {
               >
                 <HStack alignItems="center" justifyContent="space-between">
                   <VStack>
-                    <H4 color={colors.date}>{t("MY_PROFILE")}</H4>
-                    <H1 color={colors.date}>
+                    <H4 color={"profile.bodyText"}>{t("MY_PROFILE")}</H4>
+                    <H1 color={"profile.bodyText"}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
-                    <BodyLarge color={colors.date}>
+                    <BodyLarge color={"profile.bodyText"}>
                       {teacherObject?.designation}
                     </BodyLarge>
                   </VStack>
@@ -192,7 +192,7 @@ const SeeMore = ({ footerLinks, appName }) => {
         }
         _subHeader={{
           bottom: "15px",
-          bg: colors.cardBg,
+          bg: "profile.cardBg",
         }}
         _footer={footerLinks}
       >

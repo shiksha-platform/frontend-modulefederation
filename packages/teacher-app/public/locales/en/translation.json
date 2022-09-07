@@ -387,5 +387,12 @@
   "date_of_joining": "DATE OF JOINING",
   "reporting_officer": "REPORTING OFFICER",
   "place_of_current_posting": "PLACE OF CURRENT POSTING",
-  "SEE_LESS": "See Less"
+  "MY_PROFILE": "My Profile",
+  "ATTENDANCE_REPORTS": "Attendance Reports",
+  "EMPLOYEE_CODE": "EMPLOYEE CODE",
+  "THIS_MONTH": "THIS MONTH",
+  "LAST_MONTH": "LAST MONTH",
+  "SEE_LESS": "SEE LESS",
+  "PHONE_NUMBER": "PHONE NUMBER",
+  "EMAIL": "EMAIL"
 }
