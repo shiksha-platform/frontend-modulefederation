@@ -92,7 +92,10 @@ export const updateImage = async (data = {}, header = {}) => {
   }
 }
 
-export const getAllData = async (filters = {}, header = {}) => {
+export const getAllData = async (
+  { coreData, ...filters } = {},
+  header = {}
+) => {
   let headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -106,6 +109,9 @@ export const getAllData = async (filters = {}, header = {}) => {
   )
 
   if (result.data) {
+    if (coreData === 'getCoreData') {
+      return result.data.data
+    }
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
   } else {
@@ -136,6 +142,14 @@ export const getGradeSubjects = async (
   header = {}
 ) => {
   const groupData = await getAll({ teacherId, coreData: 'getCoreData' })
+  let data = await Promise.all(
+    groupData.map(async (item) => await getDataWithSubjectOne(item))
+  )
+  return data.reduce((newData, old) => [...newData, ...old])
+}
+
+export const getGradeSubjectsQuery = async (params = {}, header = {}) => {
+  const groupData = await getAllData({ ...params, coreData: 'getCoreData' })
   let data = await Promise.all(
     groupData.map(async (item) => await getDataWithSubjectOne(item))
   )

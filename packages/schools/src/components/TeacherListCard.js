@@ -74,13 +74,12 @@ const TeacherListCard = ({ schoolId, visitedData }) => {
                     </Box>
                     {console.log("VISITEDDATA", visitedData)}
                     {visitedData &&
-                      visitedData?.find(
-                        (data) => {
-                          console.log("data?.teacherId", data?.teacherId);
-                          console.log("teacher?.id", teacher?.id);
-                          return data?.teacherId === teacher?.id?.slice(2, teacher?.id.length)
-                        }
-                      ) && (
+                      visitedData?.find((data) => {
+                        return (
+                          data?.teacherId ===
+                          teacher?.id?.slice(2, teacher?.id.length)
+                        );
+                      }) && (
                         <Box>
                           <IconByName
                             _icon={{ size: "22" }}

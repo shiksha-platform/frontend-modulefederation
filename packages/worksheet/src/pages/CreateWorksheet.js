@@ -97,7 +97,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }
       setLoading(false);
     }
-  }, [formObject, ["ListOfQuestions", "WorksheetTemplate"].includes(pageName)]);
+  }, [formObject, ["ListOfQuestions"].includes(pageName)]);
 
   if (loading) {
     return <Loading />;
@@ -118,7 +118,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }
     } else if (pageName === "filterData") {
       setPageName("ListOfQuestions");
-    } else if (["ListOfQuestions", "WorksheetTemplate"].includes(pageName)) {
+    } else if (["ListOfQuestions"].includes(pageName)) {
       setPageName("");
     } else {
       navigate(-1);

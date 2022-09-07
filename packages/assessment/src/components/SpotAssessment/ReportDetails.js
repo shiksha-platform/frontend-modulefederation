@@ -23,6 +23,8 @@ import moment from "moment";
 import report, { achiever } from "utils/report";
 import AssessmentAchieverCard from "./AssessmentAchieverCard";
 import StudentQuestionsReport from "./StudentQuestionsReport";
+import manifest from "../../manifest.json";
+
 const colors = overrideColorTheme(colorTheme);
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -52,21 +54,21 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
   const [averageScoreWritten, setaverageScoreWritten] = React.useState();
   const [averageScoreOral, setaverageScoreOral] = React.useState();
 
-  const _handleSpotAssessmentFullReportShare = () => {
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Spot-Assessment-Full-Report-Share",
-    });
-    capture("INTERACT", telemetryData);
-  };
+  // const _handleSpotAssessmentFullReportShare = () => {
+  //   const telemetryData = telemetryFactory.interact({
+  //     appName,
+  //     type: "Spot-Assessment-Full-Report-Share",
+  //   });
+  //   capture("INTERACT", telemetryData);
+  // };
 
-  const _handleSpotAssessmentFullReportDownload = () => {
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Spot-Assessment-Full-Report-Download",
-    });
-    capture("INTERACT", telemetryData);
-  };
+  // const _handleSpotAssessmentFullReportDownload = () => {
+  //   const telemetryData = telemetryFactory.interact({
+  //     appName,
+  //     type: "Spot-Assessment-Full-Report-Download",
+  //   });
+  //   capture("INTERACT", telemetryData);
+  // };
 
   const _handleFullReportStartEvent = () => {
     const telemetryData = telemetryFactory.start({
@@ -169,19 +171,19 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
         subHeading: <BodyLarge py="2">{t("Spot Assessment")}</BodyLarge>,
       }}
       _appBar={{
-        languages: ["en"],
-        rightIcon: (
-          <HStack>
-            <IconByName
-              name="ShareLineIcon"
-              onPress={_handleSpotAssessmentFullReportShare}
-            />
-            <IconByName
-              name="DownloadLineIcon"
-              onPress={_handleSpotAssessmentFullReportDownload}
-            />
-          </HStack>
-        ),
+        languages: manifest.languages,
+        // rightIcon: (
+        //   <HStack>
+        //     <IconByName
+        //       name="ShareLineIcon"
+        //       onPress={_handleSpotAssessmentFullReportShare}
+        //     />
+        //     <IconByName
+        //       name="DownloadLineIcon"
+        //       onPress={_handleSpotAssessmentFullReportDownload}
+        //     />
+        //   </HStack>
+        // ),
       }}
       subHeader={
         <VStack>

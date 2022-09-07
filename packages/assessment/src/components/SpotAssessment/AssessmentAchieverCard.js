@@ -8,7 +8,7 @@ function AssessmentAchieverCard({ students }) {
 
   return (
     <Box bg={"assessment.white"} p={5}>
-      <Box bg={"assessment.achiverBoxBg"} rounded={"md"} p="4">
+      <Box bg={"assessment.achiverBoxBg"} rounded={10} p="4">
         <VStack space={5}>
           <H2 mb={3}>100% Achievers</H2>
           <HStack space={2} justifyContent="space-around">

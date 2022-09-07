@@ -10,6 +10,7 @@ import {
   SearchLayout,
   getApiConfig,
   H2,
+  getArray,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, Stack, VStack } from "native-base";
@@ -26,7 +27,11 @@ const newDefaultInputs = defaultInputs.map((e) => {
     ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
       ? "grade"
       : e.attributeName,
-    ["type"]: "sting",
+    ["type"]: ["subject", "gradeLevel"].includes(e.attributeName)
+      ? "stingValueArray"
+      : ["source"].includes(e.attributeName)
+      ? "string"
+      : "array",
   };
 });
 
@@ -40,6 +45,7 @@ export default function Worksheet({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(true);
   const [search, setSearch] = React.useState(true);
   const [searchState, setSearchState] = React.useState(false);
+  const [inputs, setInputs] = React.useState([]);
   const [sortData, setSortData] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
@@ -47,6 +53,15 @@ export default function Worksheet({ footerLinks, appName }) {
 
   React.useEffect(async () => {
     const newManifest = await getApiConfig(["worksheet"]);
+    const source = getArray(newManifest?.["question-bank.questionResource"]);
+    setInputs(
+      newDefaultInputs.map((item, index) => {
+        if (item.attributeName === "source") {
+          item.data = source;
+        }
+        return item;
+      })
+    );
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
@@ -122,6 +137,7 @@ export default function Worksheet({ footerLinks, appName }) {
             sortArray,
             worksheetConfig,
             showButtonArray,
+            inputs,
           }}
         />
       </SearchLayout>
@@ -131,7 +147,7 @@ export default function Worksheet({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("All Worksheets"),
+        title: t("ALL_WORKSHEETS"),
         iconComponent: (
           <Box>
             <SortActionsheet
@@ -161,6 +177,7 @@ export default function Worksheet({ footerLinks, appName }) {
           appName,
           worksheetConfig,
           showButtonArray,
+          inputs,
         }}
       />
     </Layout>
@@ -174,6 +191,7 @@ const ChildrenWorksheet = ({
   isHideCreateButton,
   setFilterObject,
   appName,
+  inputs,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -203,7 +221,7 @@ const ChildrenWorksheet = ({
         }}
         resetButtonText={t("COLLAPSE")}
         color={"worksheet.primary"}
-        filters={newDefaultInputs}
+        filters={inputs}
       />
       <VStack>
         <Box

@@ -100,12 +100,13 @@ export default function AssessmentGiven(props) {
   const handleStartAssessment = async () => {
     if (!isRepeat) {
       setFetchingQuestion(true);
-      const limit = 2;
+      const limit = 4;
       let data = {
         adapter: "diksha",
         limit,
         subject: subject,
         bloomsLevel: selectedCompetencies || "application",
+        questionType: "MCQ",
       };
       const questions = await questionRegistryService.getAllQuestions(data);
       let questionIds = questions.map((question) => {

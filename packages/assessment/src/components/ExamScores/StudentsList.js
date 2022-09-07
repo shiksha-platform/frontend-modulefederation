@@ -368,7 +368,7 @@ const StudentsList = ({ setHeaderDetails }) => {
                                     title={{ text: "79", fontSize: "12px" }}
                                     // legend={{ text: "Total Score", fontSize: "14px" }}
                                     cutout={"79%"}
-                                    size="45px"
+                                    size="35px"
                                   />
                                 </Box>
                               </HStack>
