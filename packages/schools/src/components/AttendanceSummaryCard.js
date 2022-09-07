@@ -63,7 +63,7 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
                 styles={buildStyles({
                   pathColor: colors?.["schools"]?.["absent"],
                   textColor: colors?.["schools"]?.["absent"],
-                  trailColor: colors?.["schools"]?.["darkGray5"],
+                  trailColor: colors?.["schools"]?.["lightGray1"],
                 })}
               >
                 <Box textAlign="center">
@@ -84,7 +84,7 @@ export default function AttendanceSummaryCard({ thisMonth, lastMonth }) {
                 styles={buildStyles({
                   pathColor: colors?.["schools"]?.["absent"],
                   textColor: colors?.["schools"]?.["absent"],
-                  trailColor: colors?.["schools"]?.["darkGray5"],
+                  trailColor: colors?.["schools"]?.["lightGray1"],
                 })}
               >
                 <Box textAlign="center">

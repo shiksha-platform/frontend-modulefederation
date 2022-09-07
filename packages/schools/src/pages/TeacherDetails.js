@@ -204,7 +204,7 @@ const TeacherDetails = ({ footerLinks }) => {
           </HStack>
           <Box mt={6} bg={"schools.lightGray5"} p={4} rounded={10}>
             <AttendanceSummaryCard {...attendance} />
-            <HStack justifyContent="space-around">
+            {/* <HStack justifyContent="space-around">
               <VStack alignItems="center" space={3}>
                 <Box w="100px" h="100px">
                   <CircularProgressbarWithChildren
@@ -242,7 +242,7 @@ const TeacherDetails = ({ footerLinks }) => {
                 </Box>
                 <BodyMedium>Last Month</BodyMedium>
               </VStack>
-            </HStack>
+            </HStack> */}
           </Box>
           <Divider marginY={6} />
           <Button
