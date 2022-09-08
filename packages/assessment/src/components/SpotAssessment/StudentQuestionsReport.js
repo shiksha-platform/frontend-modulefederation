@@ -128,8 +128,8 @@ export default function StudentQuestionsReport({
                 <HStack
                   alignItems="center"
                   justifyContent="space-between"
-                  p={4}
-                  pt={2}
+                  p="4"
+                  pt="2"
                 >
                   <H2>Written Assessment</H2>
                   <RoundedProgressBar
@@ -145,11 +145,11 @@ export default function StudentQuestionsReport({
                   />
                 </HStack>
                 <Box px="5" pb="5">
-                  {questions.map((item, pindex) => (
+                  {questions.map((item, itemIndex) => (
                     <HStack
                       justifyContent={"space-evenly"}
                       space="10"
-                      key={pindex}
+                      key={itemIndex}
                     >
                       {item.map((question, index) => {
                         let iconProp = {
@@ -174,7 +174,7 @@ export default function StudentQuestionsReport({
 
                         return (
                           <VStack
-                            key={`q-${index}`}
+                            key={index}
                             justifyContent="center"
                             space={2}
                             py="2"
