@@ -90,19 +90,16 @@ export default function Profile({ footerLinks, appName, setAlert }) {
       userId: teacherId,
     });
 
-    let arr = [];
-    result.map((e) => {
-      const startDate = new Date(e?.dateOfJoining).toDateString();
-      const endDate = new Date(e?.dateOfRelieving).toDateString();
-      arr = [
-        ...arr,
-        `${e?.organizationName}        ${startDate}  -  ${endDate}`,
-      ];
-    });
+    const arr = result.map(
+      (e) =>
+        `${e?.organizationName} ${moment(e?.dateOfJoining).format(
+          "Do MMM YYYY"
+        )} - ${moment(e?.dateOfRelieving).format("Do MMM YYYY")}`
+    );
     setExpArray(arr);
+    console.log(result);
     setWorkHistoryData(result);
   };
-
   const getSchoolData = async (id, resultTeacher) => {
     const result = await schoolRegistryService.getOne({ id: id });
     setTeacherObject({ ...resultTeacher, ...result });
@@ -369,62 +366,3 @@ const Section = ({ title, button, children, _box, _title }) => (
     {children}
   </Box>
 );
-
-const Collapsible = ({
-  header,
-  body,
-  defaultCollapse,
-  isHeaderBold,
-  isDisableCollapse,
-  onPressFuction,
-  collapsButton,
-  _text,
-  _icon,
-  _box,
-}) => {
-  const [collaps, setCollaps] = useState(defaultCollapse);
-
-  return (
-    <>
-      <Pressable
-        onPress={() => {
-          if (onPressFuction) {
-            onPressFuction();
-          }
-          if (!isDisableCollapse) {
-            setCollaps(!collaps);
-          }
-        }}
-      >
-        <Box {..._box}>
-          <HStack alignItems={"center"} justifyContent={"space-between"}>
-            <Text
-              fontSize={typeof isHeaderBold === "undefined" ? "14px" : ""}
-              color={"profile.gray"}
-              fontWeight="500"
-              {..._text}
-            >
-              {header}
-            </Text>
-            <IconByName
-              size="sm"
-              isDisabled={true}
-              color={
-                !collaps || collapsButton
-                  ? "profile.lightGray1"
-                  : "profile.darkGray3"
-              }
-              name={
-                !collaps || collapsButton
-                  ? "ArrowDownSLineIcon"
-                  : "ArrowUpSLineIcon"
-              }
-              {..._icon}
-            />
-          </HStack>
-        </Box>
-      </Pressable>
-      <PresenceTransition visible={collaps}>{body}</PresenceTransition>
-    </>
-  );
-};

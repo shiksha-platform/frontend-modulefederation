@@ -175,7 +175,9 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
   return (
     <Layout
       _header={{
-        title: classObject?.title ? classObject?.title : "",
+        title:
+          (classObject?.name ? classObject?.name : "") +
+          (classObject?.section ? " • Sec " + classObject?.section : ""),
         // isEnableSearchBtn: true,
         // setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
@@ -203,7 +205,10 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
-            <H2>{classObject?.title ? classObject?.title : ""}</H2>
+            <H2>
+              {(classObject?.name ? classObject?.name : "") +
+                (classObject?.section ? " • Sec " + classObject?.section : "")}
+            </H2>
             <BodySmall>
               {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
             </BodySmall>

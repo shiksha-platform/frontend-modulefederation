@@ -41,7 +41,7 @@ const ChooseClassActionSheet = () => {
               key={index}
               onPress={(e) => navigate(`/classes/${item?.id}`)}
             >
-              {item?.name}
+              {`${item?.name} ${item?.section ? "• Sec " + item?.section : ""}`}
             </Actionsheet.Item>
           ))}
         </Actionsheet.Content>

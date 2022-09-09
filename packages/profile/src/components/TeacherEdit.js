@@ -369,8 +369,6 @@ export const Section = ({
     >
       {nestedDropdown && nestedTitle.length > 0 ? (
         workData.map((singleItem, indexx) => {
-          const startDate = new Date(singleItem?.dateOfJoining).toDateString();
-          const endDate = new Date(singleItem?.dateOfRelieving).toDateString();
           return (
             <Stack space={1} bg={"profile.white"} pt={4} pl={"0"} {..._box}>
               <Collapsible
@@ -381,10 +379,9 @@ export const Section = ({
                   borderColor: "profile.lightGray5",
                 }}
                 header={
-                  <H4
-                    color={"profile.bodyText"}
-                    pl={1}
-                  >{`${singleItem?.organizationName}        ${startDate}  -  ${endDate}`}</H4>
+                  <H4 color={"profile.bodyText"} pl={1}>
+                    {nestedTitle[indexx]}
+                  </H4>
                 }
               >
                 <HStack alignItems={"center"} justifyContent={"space-between"}>

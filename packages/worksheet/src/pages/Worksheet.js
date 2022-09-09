@@ -41,10 +41,11 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
   const [worksheets, setWorksheets] = React.useState([]);
   const [sortArray, setSortArray] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [worksheetLoading, setWorksheetLoading] = React.useState(true);
   const [search, setSearch] = React.useState(true);
   const [searchState, setSearchState] = React.useState(false);
   const [inputs, setInputs] = React.useState([]);
-  const [sortData, setSortData] = React.useState();
+  // const [sortData, setSortData] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
   const { state } = useParams();
@@ -67,6 +68,28 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
         ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
         : []
     );
+    // const sorts = Array.isArray(
+    //   newManifest?.["worksheet.configureWorksheetSortOptions"]
+    // )
+    //   ? newManifest?.["worksheet.configureWorksheetSortOptions"]
+    //   : newManifest?.["worksheet.configureWorksheetSortOptions"]
+    //   ? JSON.parse(newManifest?.["worksheet.configureWorksheetSortOptions"])
+    //   : [];
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    setShowButtonArray([...showButtonArray, ...buttons]);
+
+    // setSortArray(sorts);
+    setLoading(false);
+  }, []);
+
+  React.useEffect(async () => {
+    setWorksheetLoading(true);
     let params = state
       ? {
           state: { eq: state },
@@ -91,24 +114,7 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
       filterData = data.filter((e) => e.name);
     }
     setWorksheets(filterData);
-    const sorts = Array.isArray(
-      newManifest?.["worksheet.configureWorksheetSortOptions"]
-    )
-      ? newManifest?.["worksheet.configureWorksheetSortOptions"]
-      : newManifest?.["worksheet.configureWorksheetSortOptions"]
-      ? JSON.parse(newManifest?.["worksheet.configureWorksheetSortOptions"])
-      : [];
-    let buttons = [];
-    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
-      buttons = [...buttons, "Download"];
-    }
-    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
-      buttons = [...buttons, "Share"];
-    }
-    setShowButtonArray([...showButtonArray, ...buttons]);
-
-    setSortArray(sorts);
-    setLoading(false);
+    setWorksheetLoading(false);
   }, [filterObject, search.length >= 3, searchState]);
 
   if (loading) {
@@ -137,6 +143,7 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
             showButtonArray,
             inputs,
             setAlert,
+            worksheetLoading,
           }}
         />
       </SearchLayout>
@@ -147,17 +154,17 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
     <Layout
       _header={{
         title: t("ALL_WORKSHEETS"),
-        iconComponent: (
-          <Box>
-            <SortActionsheet
-              {...{
-                appName,
-                sortArray,
-                setSortData,
-              }}
-            />
-          </Box>
-        ),
+        // iconComponent: (
+        //   <Box>
+        //     <SortActionsheet
+        //       {...{
+        //         appName,
+        //         sortArray,
+        //         setSortData,
+        //       }}
+        //     />
+        //   </Box>
+        // ),
       }}
       _appBar={{
         languages: manifest.languages,
@@ -178,6 +185,7 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
           showButtonArray,
           inputs,
           setAlert,
+          worksheetLoading,
         }}
       />
     </Layout>
@@ -193,10 +201,12 @@ const ChildrenWorksheet = ({
   appName,
   inputs,
   setAlert,
+  worksheetLoading,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { state } = useParams();
+  const ref = React.useRef(null);
 
   const handleFilter = (obejct) => {
     const telemetryData = telemetryFactory.interact({
@@ -209,7 +219,7 @@ const ChildrenWorksheet = ({
   };
 
   return (
-    <Stack>
+    <Stack bg={"white"} p={worksheetLoading ? "5" : "0"}>
       <FilterButton
         setAlert={setAlert}
         getObject={handleFilter}
@@ -225,62 +235,66 @@ const ChildrenWorksheet = ({
         color={"worksheet.primary"}
         filters={inputs}
       />
-      <VStack>
-        <Box
-          bg={"worksheet.white"}
-          p="5"
-          mb="4"
-          roundedBottom={"xl"}
-          shadow={2}
-        >
-          <Stack>
-            <VStack space={3}>
-              {worksheets.length > 0 ? (
-                worksheets.map((item, index) => {
-                  return (
-                    <WorksheetBox
-                      canShowButtonArray={showButtonArray}
-                      worksheetConfig={worksheetConfig}
-                      appName={appName}
-                      canShare={true}
-                      key={index}
-                      {...{ item, url: `/worksheet/${item.id}` }}
-                    />
-                  );
-                })
-              ) : (
-                <Box
-                  p="10"
-                  my="5"
-                  alignItems={"center"}
-                  rounded="lg"
-                  bg={"worksheet.secondary"}
-                >
-                  {t("WORKSHEET_NOT_FOUND")}
-                </Box>
-              )}
-            </VStack>
-          </Stack>
-        </Box>
-      </VStack>
-      {!isHideCreateButton ? (
-        <Box
-          bg={"worksheet.white"}
-          p="5"
-          position="sticky"
-          bottom="84"
-          shadow={2}
-        >
-          <Button
-            _text={{ color: "worksheet.white" }}
-            p="3"
-            onPress={(e) => navigate("/worksheet/create")}
-          >
-            {t("CREATE_NEW_WORKSHEET")}
-          </Button>
-        </Box>
+      {worksheetLoading ? (
+        <Loading height="auto" />
       ) : (
-        <React.Fragment />
+        <VStack ref={ref}>
+          <Box
+            bg={"worksheet.white"}
+            p="5"
+            mb="4"
+            roundedBottom={"xl"}
+            shadow={2}
+          >
+            <Stack>
+              <VStack space={3}>
+                {worksheets.length > 0 ? (
+                  worksheets.map((item, index) => {
+                    return (
+                      <WorksheetBox
+                        canShowButtonArray={showButtonArray}
+                        worksheetConfig={worksheetConfig}
+                        appName={appName}
+                        canShare={true}
+                        key={index}
+                        {...{ item, url: `/worksheet/${item.id}` }}
+                      />
+                    );
+                  })
+                ) : (
+                  <Box
+                    p="10"
+                    my="5"
+                    alignItems={"center"}
+                    rounded="lg"
+                    bg={"worksheet.secondary"}
+                  >
+                    {t("WORKSHEET_NOT_FOUND")}
+                  </Box>
+                )}
+              </VStack>
+            </Stack>
+          </Box>
+          {!isHideCreateButton ? (
+            <Box
+              bg={"worksheet.white"}
+              p="5"
+              position="sticky"
+              bottom="84"
+              shadow={2}
+            >
+              <Button
+                _text={{ color: "worksheet.white" }}
+                p="3"
+                onPress={(e) => navigate("/worksheet/create")}
+              >
+                {t("CREATE_NEW_WORKSHEET")}
+              </Button>
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+        </VStack>
       )}
     </Stack>
   );
