@@ -89,7 +89,7 @@ export default function WorksheetBox({
         context: "Worksheet",
         type: "like",
       };
-      const { osid } = await likeRegistryService.create(newData);
+      const osid = await likeRegistryService.create(newData);
       const telemetryData = telemetryFactory.interact({
         appName,
         type: "Worksheet-Like",

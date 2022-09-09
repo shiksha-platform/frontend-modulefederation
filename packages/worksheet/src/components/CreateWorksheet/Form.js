@@ -155,11 +155,12 @@ export default function Form({
         [attributeName]: type === "stingValueArray" ? [] : "",
       });
     } else {
-      setDependentData(formData, value);
-      setFormObject({
+      const newData = {
         ...formObject,
         [attributeName]: type === "stingValueArray" ? [value] : value,
-      });
+      };
+      setDependentData(formData, value);
+      setFormObject(newData);
     }
   };
 
@@ -185,39 +186,51 @@ export default function Form({
     }
   };
 
-  const setDependentData = async (data, value) => {
-    let attributeName = ["grade"].includes(data.attributeName)
-      ? "gradeLevel"
-      : data.attributeName;
-    const nameData = newDefaultInputs.find(
-      (e) => e.dependent === attributeName
-    );
-    if (nameData?.urlName === "getSubjectsList") {
-      const selectData = await questionRegistryService.getSubjectsList({
-        adapter: formObject?.source,
-        gradeLevel: value,
+  const setDependentData = async (object = null, value = null) => {
+    if (object && value) {
+      let attributeName = ["grade"].includes(object.attributeName)
+        ? "gradeLevel"
+        : object.attributeName;
+      const nameData = inputs.find((e) => e.dependent === attributeName);
+
+      if (nameData?.urlName === "getSubjectsList") {
+        const selectData = await questionRegistryService.getSubjectsList({
+          adapter: formObject?.source,
+          gradeLevel: value,
+        });
+        setInputs(
+          inputs.map((e) => {
+            if (e.attributeName === nameData.attributeName) {
+              return { ...e, data: selectData.map((e) => e.code) };
+            }
+            return e;
+          })
+        );
+      } else if (nameData?.urlName === "getTopicsList") {
+        const selectData = await questionRegistryService.getTopicsList({
+          adapter: formObject?.source,
+          subject: value,
+        });
+        setInputs(
+          inputs.map((e) => {
+            if (e.attributeName === nameData.attributeName) {
+              return { ...e, data: selectData };
+            }
+            return e;
+          })
+        );
+      }
+    } else {
+      inputs.forEach(async (data) => {
+        let valueData = object
+          ? Array.isArray(object?.[data.attributeName])
+            ? object?.[data.attributeName]?.[0]
+            : object?.[data.attributeName]
+          : Array.isArray(formObject?.[data.attributeName])
+          ? formObject?.[data.attributeName]?.[0]
+          : formObject?.[data.attributeName];
+        await setDependentData(data, valueData);
       });
-      setInputs(
-        inputs.map((e) => {
-          if (e.attributeName === nameData.attributeName) {
-            return { ...e, data: selectData.map((e) => e.code) };
-          }
-          return e;
-        })
-      );
-    } else if (nameData?.urlName === "getTopicsList") {
-      const selectData = await questionRegistryService.getTopicsList({
-        adapter: formObject?.source,
-        subject: value,
-      });
-      setInputs(
-        inputs.map((e) => {
-          if (e.attributeName === nameData.attributeName) {
-            return { ...e, data: selectData.map((e) => e.name) };
-          }
-          return e;
-        })
-      );
     }
   };
 

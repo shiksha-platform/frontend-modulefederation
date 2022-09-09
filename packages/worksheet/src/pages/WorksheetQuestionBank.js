@@ -122,7 +122,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         context: "Worksheet",
         type: "like",
       };
-      const { osid } = await likeRegistryService.create(newData);
+      const osid = await likeRegistryService.create(newData);
       setLike({ ...newData, id: osid });
     }
   };

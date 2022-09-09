@@ -11,12 +11,13 @@ export default function RoundedProgressBar({
   legend,
   cutout,
   size,
+  _vstack,
   ...props
 }) {
   const theme = useTheme();
   return (
     <Box>
-      <VStack alignItems="center" space={1}>
+      <VStack alignItems="center" space={1} {..._vstack}>
         <Box position="relative" width={size}>
           <Doughnut
             data={{

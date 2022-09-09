@@ -11,10 +11,13 @@ export default function AlertComponent({ alert, setAlert }) {
         description = null
       let toastElement = {}
       let type = 'primary'
-      if (typeof alert === 'object') {
+      if (typeof alert === 'object' && (alert?.title || alert?.description)) {
         title = alert?.title
         description = alert?.description
-        type = alert?.type?.toLowerCase()
+        type =
+          typeof alert?.type === 'string'
+            ? alert?.type?.toLowerCase()
+            : 'success'
       } else {
         description = alert
       }
