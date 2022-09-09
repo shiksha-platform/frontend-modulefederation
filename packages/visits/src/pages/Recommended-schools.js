@@ -74,15 +74,13 @@ export default function Recommendedschools({ footerLinks }) {
 
     // Getting the last Visited date of mentor for schools and setting the status to pending even if one teacher is not visited
     Object.entries(groupBySchools).forEach(([key, value]) => {
-      let lastVisitedMiliSeconds = new Date(0).getMilliseconds(),
+      let lastVisitedMilliSeconds = new Date(0).getTime(),
         schoolLastVisited;
       value?.forEach((school) => {
-        if (
-          new Date(school?.lastVisited).getMilliseconds() >
-          lastVisitedMiliSeconds
-        )
-          lastVisitedMiliSeconds = new Date(school?.lastVisited);
-        schoolLastVisited = school?.lastVisited;
+        if (new Date(school?.lastVisited).getTime() > lastVisitedMilliSeconds) {
+          lastVisitedMilliSeconds = new Date(school?.lastVisited).getTime();
+          schoolLastVisited = school?.lastVisited;
+        }
       });
       value[0].schoolLastVisited = schoolLastVisited;
     });
@@ -93,10 +91,7 @@ export default function Recommendedschools({ footerLinks }) {
 
     // Setting the list of recommended visits when last visit is of 2 months ago
     Object.entries(groupBySchools).forEach(([key, value]) => {
-      if (
-        new Date(value[0]?.schoolLastVisited).getMilliseconds() >
-        today.getMilliseconds()
-      )
+      if (new Date(value[0]?.schoolLastVisited).getTime() > today.getTime())
         delete groupBySchools[key];
     });
 
