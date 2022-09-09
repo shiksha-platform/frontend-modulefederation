@@ -119,7 +119,6 @@ const SubCard = ({
       {typeof img === "undefined" || img === true ? (
         <Avatar
           size="40px"
-          bg={item?.avatarUrl ? "" : "amber.500"}
           {...(item?.avatarUrl ? { source: { uri: item.avatarUrl } } : {})}
           rounded="lg"
         >

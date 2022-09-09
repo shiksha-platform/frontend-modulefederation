@@ -10,6 +10,7 @@ import {
   overrideColorTheme,
   BodySmall,
   getApiConfig,
+  Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest1 from "../manifest.json";
@@ -33,18 +34,16 @@ const ABSENT = "Absent";
 export default function Attendance({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
-  const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
   const [students, setStudents] = useState([]);
   const [searchStudents, setSearchStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   let { classId } = useParams();
   if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("true");
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [sms, setSms] = useState([]);
-  const teacherId = localStorage.getItem("id");
   const [attendanceStartTime, setAttendanceStartTime] = useState();
   const [unmarkStudents, setUnmarkStudents] = useState([]);
   const navigate = useNavigate();
@@ -80,7 +79,7 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
     setSearchStudents(filterStudent);
   }, [search, students]);
 
-  useEffect(() => {
+  useEffect(async () => {
     let ignore = false;
     async function getData() {
       const newManifest = await getApiConfig();
@@ -109,7 +108,8 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
         }))
       );
     }
-    getData();
+    await getData();
+    setLoading(false);
     return () => {
       ignore = true;
     };
@@ -166,13 +166,10 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
     return <FourOFour />;
   }
 
-  if (loading) {
-    return (
-      <Loader
-        success={allAttendanceStatus.success}
-        fail={allAttendanceStatus.fail}
-      />
-    );
+  if (loading === "true") {
+    return <Loading />;
+  } else if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -321,8 +318,6 @@ export default function Attendance({ footerLinks, appName, setAlert }) {
           attendance,
           getAttendance,
           setLoading,
-          setAllAttendanceStatus,
-          allAttendanceStatus,
           classId,
           classObject,
           isEditDisabled,

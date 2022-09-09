@@ -272,13 +272,7 @@ export default function SuccessPublicationReport({
                       {t("Close")}
                     </Button>
 
-                    <Button
-                      flex="1"
-                      _text={{
-                        color: "assessment.white",
-                      }}
-                      onPress={handleFullReportClick}
-                    >
+                    <Button flex="1" onPress={handleFullReportClick}>
                       {t("See full report")}
                     </Button>
                   </Button.Group>

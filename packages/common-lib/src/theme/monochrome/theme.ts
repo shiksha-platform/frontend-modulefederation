@@ -114,7 +114,28 @@ const theme = {
         _text: {
           textTransform: 'uppercase',
           fontSize: '12px',
-          fontWeight: '600'
+          fontWeight: '600',
+          color: 'white'
+        }
+      },
+      variants: {
+        solid: (e: any) => {
+          return {
+            _text: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    },
+    Avatar: {
+      baseStyle: {
+        rounded: 'lg'
+      },
+      defaultProps: {
+        bg: 'primary',
+        _text: {
+          color: 'white'
         }
       }
     }

@@ -7,7 +7,6 @@ import {
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { Text, VStack } from "native-base";
 import { QUMLBaseURL } from "assets/constants";
 
@@ -25,7 +24,6 @@ export default function QumlTest({
   setAlert,
 }) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [assessmentStartTime, setAssessmentStartTime] = React.useState();
 
@@ -44,8 +42,7 @@ export default function QumlTest({
       source: "diksha",
       answersheet: JSON.stringify(qumlResult[0]),
       studentId: selectedStudent.id,
-      teacherId:
-        localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
+      teacherId: localStorage.getItem("id"),
       status: "COMPLETED",
       groupId: classId,
     };
@@ -69,7 +66,6 @@ export default function QumlTest({
       assessmentDetails[0].totalScore
     );
     setLoading(false);
-
     setAlert({ type: "success", title: "you have successfully submitted" });
     setPageName("assessmentResult");
   };
