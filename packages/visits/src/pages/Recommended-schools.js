@@ -10,6 +10,7 @@ import {
   Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import {
   Box,
@@ -55,6 +56,7 @@ export default function Recommendedschools({ footerLinks }) {
   const [sortModal, setSortModal] = useState(false);
 
   const [filterObject, setFilterObject] = React.useState({});
+  const navigate = useNavigate();
 
   const callBackFilterObject = React.useCallback((e) => {
     setFilterObject();
