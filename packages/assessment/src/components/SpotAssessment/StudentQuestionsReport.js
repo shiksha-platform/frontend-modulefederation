@@ -7,6 +7,7 @@ import {
   H2,
   IconByName,
   Subtitle,
+  chunk,
 } from "@shiksha/common-lib";
 import { Avatar, Box, Button, HStack, useTheme, VStack } from "native-base";
 import RoundedProgressBar from "components/RoundedProgressBar";
@@ -67,40 +68,45 @@ export default function StudentQuestionsReport({
             questions = data.children;
             totalScore = trackStudent.totalScore;
             score = questions.reduce((value, item) => value + item.score, 0);
+            questions = chunk(questions, 5);
           }
 
           return (
             <VStack pt={6} space={4} key={key}>
-              <Box bg={"assessment.QuationsBoxBg"} roundedTop="10px" px="4">
+              <Box
+                bg={"assessment.QuationsBoxBg"}
+                roundedTop="10px"
+                px="5"
+                py="4"
+              >
                 <HStack alignItems="center" justifyContent="space-between">
-                  <Box>
-                    <HStack>
-                      <Avatar
-                        size="10"
-                        borderRadius="md"
-                        mr={4}
-                        bg="assessment.primary"
-                      >
-                        <Subtitle color="assessment.white">
-                          {`${student.firstName} ${student.lastName}`
-                            .toUpperCase()
-                            .substr(0, 2)}
-                        </Subtitle>
-                      </Avatar>
-                      <VStack>
-                        <BodyLarge>{`${student.firstName} ${student.lastName}`}</BodyLarge>
-                        <HStack alignItems={"center"}>
-                          <Caption color={"assessment.lightGray0"}>
-                            {t("Roll No. ") + student.admissionNo} ●
-                          </Caption>
-                          <Caption color={"assessment.lightGray0"}>
-                            {student.fathersName}
-                          </Caption>
-                        </HStack>
-                      </VStack>
-                    </HStack>
-                  </Box>
+                  <HStack>
+                    <Avatar
+                      size="10"
+                      borderRadius="md"
+                      mr={4}
+                      bg="assessment.primary"
+                    >
+                      <Subtitle color="assessment.white">
+                        {`${student.firstName} ${student.lastName}`
+                          .toUpperCase()
+                          .substr(0, 2)}
+                      </Subtitle>
+                    </Avatar>
+                    <VStack>
+                      <BodyLarge>{`${student.firstName} ${student.lastName}`}</BodyLarge>
+                      <HStack alignItems={"center"}>
+                        <Caption color={"assessment.lightGray0"}>
+                          {t("Roll No. ") + student.admissionNo} ●
+                        </Caption>
+                        <Caption color={"assessment.lightGray0"}>
+                          {student.fathersName}
+                        </Caption>
+                      </HStack>
+                    </VStack>
+                  </HStack>
                   <RoundedProgressBar
+                    _vstack={{ space: 0 }}
                     values={[score, totalScore]}
                     colors={[
                       colors["assessment"]?.["success"],
@@ -122,7 +128,8 @@ export default function StudentQuestionsReport({
                 <HStack
                   alignItems="center"
                   justifyContent="space-between"
-                  p={4}
+                  p="4"
+                  pt="2"
                 >
                   <H2>Written Assessment</H2>
                   <RoundedProgressBar
@@ -137,42 +144,54 @@ export default function StudentQuestionsReport({
                     legend={{ text: "Total Score", fontSize: "10px" }}
                   />
                 </HStack>
-                <HStack space={10} flexWrap="wrap" p="4">
-                  {questions.map((question, index) => {
-                    let iconProp = {
-                      name: "CloseCircleLineIcon",
-                      color: "assessment.error",
-                    };
+                <Box px="5" pb="5">
+                  {questions.map((item, itemIndex) => (
+                    <HStack
+                      justifyContent={"space-evenly"}
+                      space="10"
+                      key={itemIndex}
+                    >
+                      {item.map((question, index) => {
+                        let iconProp = {
+                          name: "CloseCircleLineIcon",
+                          color: "assessment.error",
+                        };
 
-                    if (question?.class && question?.class === "skipped") {
-                      iconProp = {
-                        name: "CheckboxBlankCircleLineIcon",
-                        color: "assessment.gray",
-                      };
-                    } else if (
-                      question?.class &&
-                      question?.class === "correct"
-                    ) {
-                      iconProp = {
-                        name: "CheckboxCircleLineIcon",
-                        color: "assessment.success",
-                      };
-                    }
+                        if (question?.class && question?.class === "skipped") {
+                          iconProp = {
+                            name: "CheckboxBlankCircleLineIcon",
+                            color: "assessment.gray",
+                          };
+                        } else if (
+                          question?.class &&
+                          question?.class === "correct"
+                        ) {
+                          iconProp = {
+                            name: "CheckboxCircleLineIcon",
+                            color: "assessment.success",
+                          };
+                        }
 
-                    return (
-                      <Box key={`q-${index}`} textAlign="center" mb={8}>
-                        <VStack justifyContent="center" space={2}>
-                          <BodySmall>Q-{question.index}</BodySmall>
-                          <IconByName
-                            {...iconProp}
-                            p={0}
-                            _icon={{ size: 25 }}
-                          />
-                        </VStack>
-                      </Box>
-                    );
-                  })}
-                </HStack>
+                        return (
+                          <VStack
+                            key={index}
+                            justifyContent="center"
+                            space={2}
+                            py="2"
+                            px="1"
+                          >
+                            <BodySmall>Q-{question.index}</BodySmall>
+                            <IconByName
+                              {...iconProp}
+                              p={0}
+                              _icon={{ size: 25 }}
+                            />
+                          </VStack>
+                        );
+                      })}
+                    </HStack>
+                  ))}
+                </Box>
               </Box>
 
               <Box

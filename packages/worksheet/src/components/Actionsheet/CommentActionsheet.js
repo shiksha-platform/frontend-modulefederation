@@ -57,7 +57,7 @@ export default function Comment({
         status: "Publish",
         comment,
       };
-      const { osid } = await commentRegistryService.create(newData);
+      const osid = await commentRegistryService.create(newData);
       setCommets([
         ...comments,
         {

@@ -173,3 +173,12 @@ export const getTokernUserInfo = (token = '') => {
 
 export const getArray = (item) =>
   Array.isArray(item) ? item : item ? JSON.parse(item) : []
+
+export const chunk = (array, chunk) => {
+  return [].concat.apply(
+    [],
+    array.map(function (elem, i) {
+      return i % chunk ? [] : [array.slice(i, i + chunk)]
+    })
+  )
+}
