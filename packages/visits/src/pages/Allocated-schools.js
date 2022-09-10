@@ -116,7 +116,7 @@ export default function Allocatedschools({ footerLinks }) {
         </H2>
       }
       _appBar={{ languages: manifest.languages }}
-      _subHeader={{ bg: "visits.lightPurple" }}
+      _subHeader={{ bg: "visits.cardBg" }}
       _footer={footerLinks}
     >
       <Box p={6} bg={"visits.white"}>
