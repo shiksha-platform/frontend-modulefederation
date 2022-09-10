@@ -357,5 +357,8 @@
   "SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS": "पिछले 2 महीनों में स्कूल नहीं गए",
   "ALL_SCHOOLS_VISITED_LAST_TWO_MONTHS": "हाल के 2 महीनों में सभी स्कूलों का दौरा किया गया",
   "ALLOCATED_VISITS": "आवंटित विज़िट",
-  "NO_ALLOCATED_VISITS": "कोई आवंटित विज़िट उपलब्ध नहीं है"
+  "NO_ALLOCATED_VISITS": "कोई आवंटित विज़िट उपलब्ध नहीं है",
+  "ALL_ALLOCATED_VISITS": "अपने सभी आवंटित स्कूलों को यहां देखें",
+  "SCHOOLS": "स्कूल",
+  "NOT_VISITED": "देखा नहीं गया"
 }

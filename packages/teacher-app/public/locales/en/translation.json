@@ -396,5 +396,8 @@
   "SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS": "Schools not visited in last 2 months",
   "ALL_SCHOOLS_VISITED_LAST_TWO_MONTHS": "All schools are visited in a recent 2 months",
   "ALLOCATED_VISITS": "Allocated Visits",
-  "NO_ALLOCATED_VISITS": "No allocated visits is available"
+  "NO_ALLOCATED_VISITS": "No allocated visits is available",
+  "ALL_ALLOCATED_VISITS": "See all your allocated schools for visits here",
+  "SCHOOLS": "Schools",
+  "NOT_VISITED": "Not Visited"
 }

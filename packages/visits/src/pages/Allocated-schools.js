@@ -107,14 +107,10 @@ export default function Allocatedschools({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: "Allocated Schools",
+        title: t("ALLOCATED_VISITS"),
         isEnableSearchBtn: true,
       }}
-      subHeader={
-        <H2 textTransform="inherit">
-          See all your allocated schools for visits here
-        </H2>
-      }
+      subHeader={<H2 textTransform="inherit">{t("ALL_ALLOCATED_VISITS")}</H2>}
       _appBar={{ languages: manifest.languages }}
       _subHeader={{ bg: "visits.cardBg" }}
       _footer={footerLinks}
@@ -126,9 +122,10 @@ export default function Allocatedschools({ footerLinks }) {
               <Box>
                 <HStack alignItems="center" justifyContent="space-between">
                   <Box>
-                    <H2>Schools</H2>
+                    <H2>{t("SCHOOLS")}</H2>
                     <BodyMedium>
-                      Total {totalSchools} ● Not visited {totalPendingSchools}
+                      {t("TOTAL")} {totalSchools} ● {t("NOT_VISITED")}{" "}
+                      {totalPendingSchools}
                     </BodyMedium>
                   </Box>
                   <Button
