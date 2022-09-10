@@ -94,7 +94,7 @@ function SchoolAdminDetailCard({ schoolId }) {
           <VStack space={0} bg={"schools.lightGray5"} p={4} rounded={10}>
             {/* Tile for displaying student details */}
             <SchoolAdminTile
-              key=""
+              key="1"
               title={`${totalStudents} students`}
               grades={grades}
               genderCount={genderCount}
