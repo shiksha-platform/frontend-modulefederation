@@ -34,7 +34,7 @@ export default function SchoolProfile({ footerLinks }) {
   const { id } = useParams();
 
   // It will contain the school data of fetched id
-  const [schoolData, setSchoolData] = useState(null);
+  const [schoolData, setSchoolData] = useState([]);
 
   // It will contain the mentor visit details of specific school
   const [visitedSchoolsData, setVisitedSchoolsData] = useState(null);
@@ -53,6 +53,7 @@ export default function SchoolProfile({ footerLinks }) {
     });
     setVisitedSchoolsData(() => visitedData);
   }, []);
+
   return (
     // Check if the visit details and school data is present or not
     visitedSchoolsData && schoolData ? (
@@ -99,7 +100,7 @@ export default function SchoolProfile({ footerLinks }) {
 
                   {/* Administrative School details */}
                   <SchoolAdminDetailCard schoolId={id} />
-                  <SchoolAcademicDetailCard />
+                  <SchoolAcademicDetailCard schoolId={id} />
 
                   {/* List of all teachers with symbols those who are allocated */}
                   <TeacherListCard

@@ -19,6 +19,7 @@ const CalendarBar: FC<ICalendarBar> = ({ view, ...props }) => {
       props.type = "monthInDays";
       break;
     case "week":
+    case "weeks":
       props.type = "week";
       break;
     default:

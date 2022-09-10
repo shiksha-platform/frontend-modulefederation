@@ -2,7 +2,7 @@ import { Box, HStack, useToast, VStack, Alert } from 'native-base'
 import React from 'react'
 import { H3, BodySmall } from './layout/HeaderTags'
 
-export default function AlertComponent({ alert, setAlert }) {
+function AlertComponent({ alert, setAlert }) {
   const toast = useToast()
 
   React.useEffect(() => {
@@ -56,3 +56,4 @@ export default function AlertComponent({ alert, setAlert }) {
   }, [alert])
   return <React.Fragment />
 }
+export default React.memo(AlertComponent)

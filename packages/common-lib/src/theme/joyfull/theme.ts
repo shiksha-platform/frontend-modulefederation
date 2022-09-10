@@ -55,7 +55,8 @@ const theme = {
     },
     schools: {
       ...colorTheme,
-      cardBg: '#CDECF6'
+      cardBg: '#CDECF6',
+      primaryLight: '#FFF8F7'
     },
     assessment: {
       ...colorTheme,
@@ -125,6 +126,26 @@ const theme = {
           textTransform: 'uppercase',
           fontSize: '12px',
           fontWeight: '600'
+        }
+      },
+      variants: {
+        solid: (e: any) => {
+          return {
+            _text: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    },
+    Avatar: {
+      baseStyle: {
+        rounded: 'lg'
+      },
+      defaultProps: {
+        bg: 'primary',
+        _text: {
+          color: 'white'
         }
       }
     }

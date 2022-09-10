@@ -1,7 +1,7 @@
 import { Box, Menu, Button, Text, VStack, Center } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
+import CalendarBar from "../components/CalendarBar";
 import {
   IconByName,
   Layout,
@@ -15,11 +15,10 @@ import {
   Subtitle,
   getArray,
   Loading,
-  attendanceRegistryService,
 } from "@shiksha/common-lib";
-import ReportSummary from "../../components/Reports/AttendanceReports/ReportSummary";
-import { useNavigate, useParams } from "react-router-dom";
-import manifestLocal from "../../manifest.json";
+import ReportSummary from "../components/Reports/AttendanceReports/ReportSummary";
+import { useNavigate } from "react-router-dom";
+import manifestLocal from "../manifest.json";
 
 export default function Report({ footerLinks, config }) {
   const { t } = useTranslation();
@@ -29,20 +28,18 @@ export default function Report({ footerLinks, config }) {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [calendarView, setCalendarView] = React.useState();
-  const [makeDefaultCollapse, setMakeDefaultCollapse] = useState([]);
+  const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
   const titleName = t("ATTENDANCE_REPORTS");
   const [reportTypes, setReportTypes] = React.useState();
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const { parentId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(async () => {
     let ignore = false;
     if (!ignore) {
-      if (classes[0]?.id) {
-        getAttendance(classes[0].id);
-        setMakeDefaultCollapse([classes[0].id]);
-      }
+      if (classes[0]?.id) getAttendance(classes[0].id);
+      setMakeDefaultCollapse(makeDefaultCollapse);
     }
     return () => {
       ignore = true;
@@ -87,17 +84,15 @@ export default function Report({ footerLinks, config }) {
   }, []);
 
   const getAttendance = async (classId) => {
-    if (calendarView) {
-      let weekdays = calendar(page, calendarView);
-      let params = {
-        fromDate: weekdays?.[0]?.format("Y-MM-DD"),
-        toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
-      };
-      const attendanceData = await attendanceRegistryService.getAll(params);
-      setAttendance({ ...attendance, [classId]: attendanceData });
-      const studentData = await studentRegistryService.getAll({ classId });
-      setStudents({ ...students, [classId]: studentData });
-    }
+    let weekdays = calendar(page, calendarView);
+    let params = {
+      fromDate: weekdays?.[0]?.format("Y-MM-DD"),
+      toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+    };
+    const attendanceData = await attendanceRegistryService.getAll(params);
+    setAttendance({ ...attendance, [classId]: attendanceData });
+    const studentData = await studentRegistryService.getAll({ classId });
+    setStudents({ ...students, [classId]: studentData });
   };
 
   if (loading) {
@@ -206,19 +201,8 @@ export default function Report({ footerLinks, config }) {
             borderBottomColor={"schools.coolGray"}
           >
             <Collapsible
-              defaultCollapse={
-                makeDefaultCollapse.filter((e) => e === item.id).length
-              }
-              onPressFuction={(e) => {
-                if (makeDefaultCollapse.filter((e) => e === item.id).length) {
-                  setMakeDefaultCollapse(
-                    makeDefaultCollapse.filter((e) => e !== item.id)
-                  );
-                } else {
-                  setMakeDefaultCollapse([...makeDefaultCollapse, item.id]);
-                }
-                getAttendance(item.id);
-              }}
+              defaultCollapse={!index ? true : makeDefaultCollapse}
+              onPressFuction={(e) => getAttendance(item.id)}
               header={
                 <VStack>
                   <H2>
@@ -231,7 +215,6 @@ export default function Report({ footerLinks, config }) {
               <VStack py="4">
                 <ReportSummary
                   {...{
-                    config,
                     page,
                     calendarView,
                     students: students[item.id] ? students[item.id] : [],

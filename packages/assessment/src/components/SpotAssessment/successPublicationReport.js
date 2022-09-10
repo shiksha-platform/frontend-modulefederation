@@ -191,11 +191,11 @@ export default function SuccessPublicationReport({
                 <H2>{subject}</H2>
                 <HStack alignItems={"center"}>
                   <Caption color={"assessment.gray"}>
-                    Class {classObject && classObject?.name}
+                    {classObject && classObject?.name}
                   </Caption>
                   {classObject && classObject?.section && (
                     <>
-                      <Caption color={"assessment.lightGray0"}> ●</Caption>{" "}
+                      <Caption color={"assessment.lightGray0"}> ● Sec </Caption>
                       <Caption color={"assessment.gray"}>
                         {classObject?.section}
                       </Caption>
@@ -272,13 +272,7 @@ export default function SuccessPublicationReport({
                       {t("Close")}
                     </Button>
 
-                    <Button
-                      flex="1"
-                      _text={{
-                        color: "assessment.white",
-                      }}
-                      onPress={handleFullReportClick}
-                    >
+                    <Button flex="1" onPress={handleFullReportClick}>
                       {t("See full report")}
                     </Button>
                   </Button.Group>

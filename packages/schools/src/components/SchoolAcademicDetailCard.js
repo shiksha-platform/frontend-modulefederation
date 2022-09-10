@@ -6,14 +6,28 @@ import {
   Collapsible,
   H3,
   BodyMedium,
+  classRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export default function SchoolAcademicDetailCard() {
+export default function SchoolAcademicDetailCard({ schoolId }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [academicDetailModal, setAcademicDetailModal] = useState(false);
+  const [classId, setClassId] = React.useState();
+
+  // It will contain the class data of fetched id
+  const [classData, setClassData] = useState([]);
+
+  React.useEffect(async () => {
+    const classResult = await classRegistryService.getAllData({
+      schoolId: { eq: schoolId },
+      type: { eq: "Parent class" },
+      coreData: "getStudents",
+    });
+    setClassData(() => classResult);
+  }, [schoolId]);
+
   return (
     <>
       <Collapsible
@@ -27,56 +41,42 @@ export default function SchoolAcademicDetailCard() {
         <>
           <Divider mb={4} />
           <VStack space={6}>
-            <Box
-              p={6}
-              borderColor={"schools.lightGray3"}
-              bg={"schools.lightGray5"}
-              borderWidth={1}
-              rounded={10}
-            >
-              <HStack alignItems="center" justifyContent="space-between">
-                <Box>
-                  <VStack>
-                    <H3 color={"schools.bodyText"}>Class I</H3>
-                    <BodyMedium color={"schools.gray"}>65 Students</BodyMedium>
-                  </VStack>
+            {classData?.length > 0 ? (
+              classData?.map((item, index) => (
+                <Box
+                  key={index}
+                  p={6}
+                  borderColor={"schools.lightGray3"}
+                  bg={"schools.lightGray5"}
+                  borderWidth={1}
+                  rounded={10}
+                >
+                  <HStack alignItems="center" justifyContent="space-between">
+                    <Box>
+                      <VStack>
+                        <H3 color={"schools.bodyText"}>{item?.name}</H3>
+                        <BodyMedium color={"schools.gray"}>
+                          {item?.studentData?.length} Students
+                        </BodyMedium>
+                      </VStack>
+                    </Box>
+                    <IconByName
+                      name="ArrowRightSLineIcon"
+                      onPress={() => setClassId(item?.id)}
+                      color={"schools.lightGray"}
+                    />
+                  </HStack>
                 </Box>
-                <IconByName
-                  name="ArrowRightSLineIcon"
-                  onPress={() => setAcademicDetailModal(true)}
-                  color={"schools.lightGray"}
-                />
-              </HStack>
-            </Box>
-
-            <Box
-              p={6}
-              borderColor={"schools.lightGray3"}
-              bg={"schools.lightGray5"}
-              borderWidth={1}
-              rounded={10}
-            >
-              <HStack alignItems="center" justifyContent="space-between">
-                <Box>
-                  <VStack>
-                    <H3 color={"schools.bodyText"}>Class II</H3>
-                    <BodyMedium color={"schools.gray"}>69 Students</BodyMedium>
-                  </VStack>
-                </Box>
-                <IconByName
-                  name="ArrowRightSLineIcon"
-                  onPress={() => setAcademicDetailModal(true)}
-                  color={"schools.lightGray"}
-                />
-              </HStack>
-            </Box>
+              ))
+            ) : (
+              <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                No classes available in this school
+              </Box>
+            )}
           </VStack>
         </>
       </Collapsible>
-      <Actionsheet
-        isOpen={academicDetailModal}
-        onClose={() => setAcademicDetailModal(false)}
-      >
+      <Actionsheet isOpen={classId} onClose={() => setClassId(false)}>
         <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
@@ -85,13 +85,13 @@ export default function SchoolAcademicDetailCard() {
             <IconByName
               name="CloseCircleLineIcon"
               color={"schools.darkGray"}
-              onPress={() => setAcademicDetailModal(false)}
+              onPress={() => setClassId(false)}
             />
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
           <Actionsheet.Item
-            onPress={() => navigate("/schools/attendance-report")}
+            onPress={() => navigate(`/schools/attendance-report/${classId}`)}
           >
             Attendance Reports
           </Actionsheet.Item>

@@ -295,7 +295,10 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_SUMMARY_REPORT")}
                     </H2>
                     <BodySmall color={colors.white}>
-                      {classObject?.title ?? ""}
+                      {(classObject?.name ? classObject?.name : "") +
+                        (classObject?.section
+                          ? " • Sec " + classObject?.section
+                          : "")}
                     </BodySmall>
                   </Stack>
                   <IconByName
@@ -367,7 +370,6 @@ export const MultipalAttendance = ({
                         variant="outline"
                         flex="1"
                         textTransform="capitalize"
-                        wordBreak="break-word"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,
@@ -385,11 +387,8 @@ export const MultipalAttendance = ({
                         {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
                       </Button>
                       <Button
-                        _text={{
-                          color: colors.white,
-                          textTransform: "capitalize",
-                        }}
                         flex="1"
+                        textTransform="capitalize"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,

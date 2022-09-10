@@ -1,4 +1,14 @@
-import { Button, Box, FormControl, Input, Select } from "native-base";
+import {
+  Button,
+  Box,
+  FormControl,
+  Input,
+  Select,
+  Pressable,
+  HStack,
+  Text,
+  ScrollView,
+} from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs } from "config/worksheetConfig";
@@ -9,6 +19,8 @@ import {
   questionRegistryService,
   BodyLarge,
   getArray,
+  IconByName,
+  BodySmall,
 } from "@shiksha/common-lib";
 import moment from "moment";
 
@@ -184,44 +196,71 @@ export default function AddDescriptionPage({
                     })}
                 </Select>
               ) : item.type === "multiselect" ? (
-                <select
+                <ScrollView
+                  borderWidth={1}
+                  borderColor="worksheet.lightGray3"
+                  minH="36px"
+                  maxH="108px"
                   bg={"worksheet.lightGray5"}
-                  accessibilityLabel={placeholder}
-                  placeholder={placeholder}
-                  key={index + item.name}
-                  value={formData[attribute]}
-                  multiple={true}
-                  onChange={(e) => {
-                    let value = [];
-                    if (
-                      formData[attribute] &&
-                      formData[attribute].includes(e.target.value)
-                    ) {
-                      value = formData[attribute].filter(
-                        (item) => item !== e.target.value
-                      );
-                    } else {
-                      value = [
-                        ...(formData[attribute] ? formData[attribute] : []),
-                        e.target.value,
-                      ];
-                    }
-                    setFormData({
-                      ...formData,
-                      [attribute]: value,
-                    });
-                  }}
+                  rounded="sm"
                 >
-                  {item?.data &&
-                    item?.data.map((e, index) => (
-                      <option
+                  {item?.data?.length <= 0 ? (
+                    <BodySmall p="2" color="worksheet.lightGray0">
+                      {placeholder}
+                    </BodySmall>
+                  ) : (
+                    item?.data?.map((value, index) => (
+                      <Pressable
+                        p="2"
                         key={index}
-                        label={e}
-                        value={e}
-                        style={{ padding: "10px" }}
-                      />
-                    ))}
-                </select>
+                        onPress={(e) => {
+                          let newValue = [];
+                          if (
+                            formData[attribute] &&
+                            formData[attribute].includes(value)
+                          ) {
+                            newValue = formData[attribute].filter(
+                              (item) => item !== value
+                            );
+                          } else {
+                            newValue = [
+                              ...(formData[attribute]
+                                ? formData[attribute]
+                                : []),
+                              value,
+                            ];
+                          }
+                          setFormData({
+                            ...formData,
+                            [attribute]: newValue,
+                          });
+                        }}
+                      >
+                        <HStack
+                          space="2"
+                          colorScheme="button"
+                          alignItems="center"
+                        >
+                          <IconByName
+                            isDisabled
+                            _icon={{ size: "20px" }}
+                            color={
+                              formData[attribute]?.includes(value)
+                                ? "primary"
+                                : "gray"
+                            }
+                            name={
+                              formData[attribute]?.includes(value)
+                                ? "CheckboxLineIcon"
+                                : "CheckboxBlankLineIcon"
+                            }
+                          />
+                          <BodySmall>{value}</BodySmall>
+                        </HStack>
+                      </Pressable>
+                    ))
+                  )}
+                </ScrollView>
               ) : (
                 <Input
                   bg={"worksheet.lightGray5"}

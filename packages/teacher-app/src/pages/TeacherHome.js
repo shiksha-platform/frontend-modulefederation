@@ -192,9 +192,7 @@ function Home({ footerLinks, appName, setAlert }) {
                   size="50px"
                 />
               ) : (
-                <Avatar bg="amber.500" rounded="lg">
-                  {newAvatar?.toUpperCase().substr(0, 2)}
-                </Avatar>
+                <Avatar>{newAvatar?.toUpperCase().substr(0, 2)}</Avatar>
               )}
               {selfAttendance?.attendance ? (
                 <IconByName

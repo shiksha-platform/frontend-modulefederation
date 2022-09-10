@@ -35,7 +35,9 @@ const AppRoutesContainer = ({
                 key={index}
                 path={item.path}
                 element={
-                  <item.component {...{ footerLinks, appName, setAlert }} />
+                  <item.component
+                    {...{ footerLinks, appName, setAlert, ...otherProps }}
+                  />
                 }
               />
             ))}

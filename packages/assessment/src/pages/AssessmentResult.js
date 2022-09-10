@@ -256,6 +256,7 @@ const ResultOnPersantage = ({
   const [bgColor, setBgColor] = React.useState();
   const [textColor, setTextColor] = React.useState();
   const [titleComponent, setTitleComponent] = React.useState();
+  const [iconName, setIconName] = React.useState();
 
   React.useEffect(() => {
     if (scorePercent >= 75) {
@@ -269,6 +270,7 @@ const ResultOnPersantage = ({
           </BodyLarge>
         </Box>
       );
+      setIconName("EmotionHappyLineIcon");
     } else if (scorePercent < 75 && scorePercent >= 35) {
       setBgColor(colors["assessment"]?.["warningAlert"]);
       setTextColor(colors["assessment"]?.["warning"]);
@@ -280,6 +282,7 @@ const ResultOnPersantage = ({
           </BodyLarge>
         </Box>
       );
+      setIconName("EmotionNormalLineIcon");
     } else {
       setBgColor(colors["assessment"]?.["dangerAlert"]);
       setTextColor(colors["assessment"]?.["danger"]);
@@ -291,6 +294,7 @@ const ResultOnPersantage = ({
           </BodyLarge>
         </Box>
       );
+      setIconName("EmotionUnhappyLineIcon");
     }
   }, [scorePercent]);
 
@@ -299,7 +303,7 @@ const ResultOnPersantage = ({
       <VStack bg={bgColor} py="50px">
         <IconByName
           alignSelf="center"
-          name="EmotionHappyLineIcon"
+          name={iconName}
           color={textColor}
           _icon={{ size: 100 }}
         />
@@ -312,7 +316,6 @@ const ResultOnPersantage = ({
               <Box mx="auto">
                 <Avatar
                   size="80px"
-                  borderRadius="md"
                   {...(studentDetails?.image && studentDetails?.image !== ""
                     ? {
                         source: {
@@ -321,9 +324,11 @@ const ResultOnPersantage = ({
                           )}`,
                         },
                       }
-                    : { bg: "assessment.primary" })}
+                    : {})}
                 >
-                  {studentDetails?.fullName}
+                  <H1 color="assessment.white">
+                    {studentDetails?.fullName?.toUpperCase().substr(0, 2)}
+                  </H1>
                 </Avatar>
               </Box>
               <Box>
