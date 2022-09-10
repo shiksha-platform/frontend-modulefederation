@@ -60,7 +60,7 @@ function PastVisitCard({ schoolId }) {
                           >
                             <H2 color={"schools.white"}>
                               {detail?.teacherData?.firstName
-                                .slice(0, 2)
+                                ?.slice(0, 2)
                                 .toUpperCase()}
                             </H2>
                           </Avatar>

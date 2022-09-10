@@ -114,7 +114,9 @@ export default function Myvisits({ footerLinks }) {
       _header={{
         title: t("MY_VISITS"),
       }}
-      subHeader={<H2 textTransform="inherit">{t("RECOMMENDED_ALLOCATED_SCHOOLS")}</H2>}
+      subHeader={
+        <H2 textTransform="inherit">{t("RECOMMENDED_ALLOCATED_SCHOOLS")}</H2>
+      }
       _appBar={{
         languages: manifest.languages,
         isEnableSearchBtn: true,
@@ -131,7 +133,9 @@ export default function Myvisits({ footerLinks }) {
               <VStack space={6}>
                 <Box>
                   <H2>{t("RECOMMENDED_VISITS")}</H2>
-                  <BodyMedium>{t("SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS")}</BodyMedium>
+                  <BodyMedium>
+                    {t("SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS")}
+                  </BodyMedium>
                 </Box>
                 {recommendedVisits ? (
                   Object.keys(recommendedVisits)?.length > 0 ? (
@@ -140,6 +144,7 @@ export default function Myvisits({ footerLinks }) {
                         visitIndex < 2 && (
                           <Pressable
                             onPress={() => navigate(`/schools/${key}`)}
+                            key={visitIndex}
                           >
                             <MySchoolsCard
                               key={`myvisit${visitIndex}`}
@@ -189,6 +194,7 @@ export default function Myvisits({ footerLinks }) {
                         visitIndex < 2 && (
                           <Pressable
                             onPress={() => navigate(`/schools/${key}`)}
+                            key={visitIndex}
                           >
                             <MySchoolsCard
                               isVisited={

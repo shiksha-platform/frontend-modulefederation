@@ -2,7 +2,7 @@ import {
   Loading,
   worksheetRegistryService,
   questionRegistryService,
-  getApiConfig
+  getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -28,15 +28,15 @@ export default function EditWorksheet({ footerLinks, appName }) {
       Array.isArray(newManifest?.["question-bank.questionMetadata"])
         ? newManifest?.["question-bank.questionMetadata"]
         : newManifest?.["question-bank.questionMetadata"]
-          ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
-          : []
+        ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+        : []
     );
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
         : newManifest?.["worksheet.worksheetMetadata"]
-          ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
-          : []
+        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
+        : []
     );
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =

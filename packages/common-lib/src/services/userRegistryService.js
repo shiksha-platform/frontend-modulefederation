@@ -93,7 +93,7 @@ export const getUserById = async (id, header = {}) => {
   const result = await get(`${process.env.REACT_APP_API_URL}/user/${id}`, {
     headers
   }).catch((error) => error)
-  if (result.data) {
+  if (result?.data && result?.data?.data) {
     return mapInterfaceData(result.data.data, interfaceData)
   } else {
     return {}
