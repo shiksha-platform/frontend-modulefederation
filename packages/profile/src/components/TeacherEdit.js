@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Text,
   Button,
   Stack,
   Box,
@@ -15,27 +14,22 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   H1,
-  H3,
   userRegistryService,
-  overrideColorTheme,
   Collapsible,
   H2,
   BodyLarge,
   BodyMedium,
   Subtitle,
   H4,
-  telemetryFactory,
 } from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
 import { useNavigate } from "react-router-dom";
-const colors = overrideColorTheme(colorTheme);
-// const { param } = useParams();
 
 // Start editing here, save and see your changes.
 export default function TeacherEdit({
   teacherObject,
   setTeacherObject,
   onlyParameterProp,
+  moreParameterProp,
   isEditable,
   header,
   nestedHeader,
@@ -200,6 +194,7 @@ export default function TeacherEdit({
       nestedDropdown={nestedCollapse}
       seeMore={seeMore}
       onlyParameter={onlyParameter}
+      moreParameterProp={moreParameterProp}
       seeMoreBelowSection={seeMoreBelowSection}
       teacherObject={teacherObject}
       updatedObject={updatedObject}
@@ -323,7 +318,10 @@ export default function TeacherEdit({
                     ...teacherObject,
                     updatedObject,
                     header: header,
-                    objectProp: onlyParameter,
+                    objectProp: [
+                      ...onlyParameter,
+                      ...(moreParameterProp ? moreParameterProp : []),
+                    ],
                     nestedCollapse: nestedCollapse === true ? true : false,
                     nestedHeader: nestedHeader?.length > 0 ? nestedHeader : [],
                     fieldMapper: fieldMapper,
@@ -352,6 +350,7 @@ export const Section = ({
   teacherObject,
   updatedObject,
   onlyParameter,
+  moreParameterProp,
   formInputs,
   editState,
   fieldMapper,
@@ -370,8 +369,6 @@ export const Section = ({
     >
       {nestedDropdown && nestedTitle.length > 0 ? (
         workData.map((singleItem, indexx) => {
-          const startDate = new Date(singleItem?.dateOfJoining).toDateString();
-          const endDate = new Date(singleItem?.dateOfRelieving).toDateString();
           return (
             <Stack space={1} bg={"profile.white"} pt={4} pl={"0"} {..._box}>
               <Collapsible
@@ -382,10 +379,9 @@ export const Section = ({
                   borderColor: "profile.lightGray5",
                 }}
                 header={
-                  <H4
-                    color={"profile.bodyText"}
-                    pl={1}
-                  >{`${singleItem?.organizationName}        ${startDate}  -  ${endDate}`}</H4>
+                  <H4 color={"profile.bodyText"} pl={1}>
+                    {nestedTitle[indexx]}
+                  </H4>
                 }
               >
                 <HStack alignItems={"center"} justifyContent={"space-between"}>
@@ -491,7 +487,12 @@ export const Section = ({
                                 ...teacherObject,
                                 updatedObject,
                                 header: header,
-                                objectProp: onlyParameter,
+                                objectProp: [
+                                  ...onlyParameter,
+                                  ...(moreParameterProp
+                                    ? moreParameterProp
+                                    : []),
+                                ],
                                 nestedCollapse:
                                   nestedCollapse === true ? true : false,
                                 nestedHeader:
@@ -530,7 +531,10 @@ export const Section = ({
                   ...teacherObject,
                   updatedObject,
                   header: title,
-                  objectProp: onlyParameter,
+                  objectProp: [
+                    ...onlyParameter,
+                    ...(moreParameterProp ? moreParameterProp : []),
+                  ],
                   nestedCollapse: nestedDropdown === true ? true : false,
                   nestedHeader: nestedTitle?.length > 0 ? nestedTitle : [],
                 },

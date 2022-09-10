@@ -125,6 +125,26 @@ const theme = {
           fontSize: '12px',
           fontWeight: '600'
         }
+      },
+      variants: {
+        solid: (e: any) => {
+          return {
+            _text: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    },
+    Avatar: {
+      baseStyle: {
+        rounded: 'lg'
+      },
+      defaultProps: {
+        bg: 'primary',
+        _text: {
+          color: 'white'
+        }
       }
     }
   }

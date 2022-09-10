@@ -23,6 +23,7 @@ function AppShell({
   const [accessRoutes, setAccessRoutes] = React.useState<any>([])
   const [footerLinks, setFooterLinks] = React.useState<any>([])
   const [alert, setAlert] = React.useState<any>()
+  const [allConfig, setAllConfig] = React.useState<any>()
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search)
@@ -36,9 +37,8 @@ function AppShell({
 
   useEffect(() => {
     const getData = async () => {
-      const { newTheme, newRoutes, newFooterLinks } = await getAppshellData(
-        routes
-      )
+      const { newTheme, newRoutes, newFooterLinks, config } =
+        await getAppshellData(routes)
       if (isShowFooterLink) {
         setFooterLinks({ menues: newFooterLinks })
       }
@@ -50,6 +50,7 @@ function AppShell({
         }
       ])
       setTheme(newTheme)
+      setAllConfig(config)
     }
 
     getData()
@@ -96,7 +97,8 @@ function AppShell({
           footerLinks,
           appName: 'Teacher App',
           alert,
-          setAlert
+          setAlert,
+          config: allConfig
         }}
       />
     )

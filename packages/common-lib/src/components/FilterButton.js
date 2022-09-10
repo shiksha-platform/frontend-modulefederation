@@ -203,6 +203,7 @@ const FilterButton = ({
                         <Tooltip
                           label={groupValue?.[attributeName].toString()}
                           openDelay={50}
+                          bg='white'
                         >
                           {groupValue[attributeName] &&
                           Array.isArray(groupValue[attributeName])
@@ -248,124 +249,135 @@ const FilterButton = ({
           </ScrollView>
         )}
       </HStack>
-      <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content
-          alignItems={'left'}
-          bg='classCard.500'
-          {..._actionSheet}
-        >
-          <HStack justifyContent={'space-between'}>
-            <Stack p={5} pt={2} pb='15px'>
-              <H2>
-                {`${t('Select')} ${formData?.name ? formData?.name : ''}`}
-              </H2>
-            </Stack>
-            <IconByName
-              name='CloseCircleLineIcon'
-              color='classCard.900'
-              onPress={(e) => setFormData({})}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box bg={'white'} width={'100%'} maxH='80%'>
-          <ScrollView>
-            {type === 'array' ? (
-              <Pressable
-                p='3'
+
+      {formData?.name ? (
+        <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
+          <Actionsheet.Content
+            alignItems={'left'}
+            bg='classCard.500'
+            {..._actionSheet}
+          >
+            <HStack justifyContent={'space-between'}>
+              <Stack p={5} pt={2} pb='15px'>
+                <H2>
+                  {`${t('Select')} ${formData?.name ? formData?.name : ''}`}
+                </H2>
+              </Stack>
+              <IconByName
+                name='CloseCircleLineIcon'
+                color='classCard.900'
+                onPress={(e) => setFormData({})}
+              />
+            </HStack>
+          </Actionsheet.Content>
+          <Box bg={'white'} width={'100%'} maxH='80%'>
+            <ScrollView>
+              {type === 'array' ? (
+                <Pressable
+                  p='3'
+                  onPress={(e) => {
+                    if (
+                      formData?.data &&
+                      valueArr &&
+                      formData?.data?.length === valueArr?.length
+                    ) {
+                      setGroupValue({
+                        ...groupValue,
+                        [formData?.attributeName]: null
+                      })
+                    } else {
+                      setGroupValue({
+                        ...groupValue,
+                        [formData?.attributeName]: formData.data
+                      })
+                    }
+                  }}
+                >
+                  <HStack space='2' colorScheme='button' alignItems='center'>
+                    <IconByName
+                      isDisabled
+                      color={
+                        formData?.data &&
+                        valueArr &&
+                        formData?.data?.length === valueArr?.length
+                          ? 'primary'
+                          : 'gray'
+                      }
+                      name={
+                        formData?.data &&
+                        valueArr &&
+                        formData?.data?.length === valueArr?.length
+                          ? 'CheckboxLineIcon'
+                          : 'CheckboxBlankLineIcon'
+                      }
+                    />
+                    <Text>{t('Select All')}</Text>
+                  </HStack>
+                </Pressable>
+              ) : (
+                <React.Fragment />
+              )}
+              {formData?.data &&
+                formData?.data.map((item, index) => {
+                  let value = item?.value ? item?.value : item
+                  let label = item?.label ? item?.label : item
+                  return (
+                    <Pressable
+                      p='3'
+                      key={index}
+                      onPress={(e) => handleSelectVlaue(value)}
+                      bg={
+                        (type !== 'array' && valueArr === value) ||
+                        (type === 'stingValueArray' && valueArr.includes(value))
+                          ? 'lightGray2'
+                          : 'white'
+                      }
+                    >
+                      <HStack
+                        space='2'
+                        colorScheme='button'
+                        alignItems='center'
+                      >
+                        {type === 'array' ? (
+                          <IconByName
+                            isDisabled
+                            color={
+                              valueArr.includes(value) ? 'primary' : 'gray'
+                            }
+                            name={
+                              valueArr.includes(value)
+                                ? 'CheckboxLineIcon'
+                                : 'CheckboxBlankLineIcon'
+                            }
+                          />
+                        ) : (
+                          ''
+                        )}
+                        <Text>{label}</Text>
+                      </HStack>
+                    </Pressable>
+                  )
+                })}
+            </ScrollView>
+            <Box p='5'>
+              <Button
+                colorScheme='button'
+                _text={{ color: 'white' }}
                 onPress={(e) => {
-                  if (
-                    formData?.data &&
-                    valueArr &&
-                    formData?.data?.length === valueArr?.length
-                  ) {
-                    setGroupValue({
-                      ...groupValue,
-                      [formData?.attributeName]: null
-                    })
-                  } else {
-                    setGroupValue({
-                      ...groupValue,
-                      [formData?.attributeName]: formData.data
-                    })
+                  setFormData({})
+                  if (getObject) {
+                    getObject(groupValue)
                   }
                 }}
               >
-                <HStack space='2' colorScheme='button' alignItems='center'>
-                  <IconByName
-                    isDisabled
-                    color={
-                      formData?.data &&
-                      valueArr &&
-                      formData?.data?.length === valueArr?.length
-                        ? 'primary'
-                        : 'gray'
-                    }
-                    name={
-                      formData?.data &&
-                      valueArr &&
-                      formData?.data?.length === valueArr?.length
-                        ? 'CheckboxLineIcon'
-                        : 'CheckboxBlankLineIcon'
-                    }
-                  />
-                  <Text>{t('Select All')}</Text>
-                </HStack>
-              </Pressable>
-            ) : (
-              <React.Fragment />
-            )}
-            {formData?.data &&
-              formData?.data.map((item, index) => {
-                let value = item?.value ? item?.value : item
-                let label = item?.label ? item?.label : item
-                return (
-                  <Pressable
-                    p='3'
-                    key={index}
-                    onPress={(e) => handleSelectVlaue(value)}
-                    bg={
-                      (type !== 'array' && valueArr === value) ||
-                      (type === 'stingValueArray' && valueArr.includes(value))
-                        ? 'lightGray2'
-                        : 'white'
-                    }
-                  >
-                    <HStack space='2' colorScheme='button' alignItems='center'>
-                      {type === 'array' ? (
-                        <IconByName
-                          isDisabled
-                          color={valueArr.includes(value) ? 'primary' : 'gray'}
-                          name={
-                            valueArr.includes(value)
-                              ? 'CheckboxLineIcon'
-                              : 'CheckboxBlankLineIcon'
-                          }
-                        />
-                      ) : (
-                        ''
-                      )}
-                      <Text>{label}</Text>
-                    </HStack>
-                  </Pressable>
-                )
-              })}
-          </ScrollView>
-          <Box p='5'>
-            <Button
-              colorScheme='button'
-              _text={{ color: 'white' }}
-              onPress={(e) => {
-                setFormData({})
-                if (getObject) {
-                  getObject(groupValue)
-                }
-              }}
-            >
-              {t('SELECT')}
-            </Button>
+                {t('SELECT')}
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Actionsheet>
+        </Actionsheet>
+      ) : (
+        <React.Fragment />
+      )}
     </Box>
   )
 }
