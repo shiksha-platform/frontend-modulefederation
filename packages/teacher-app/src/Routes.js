@@ -394,7 +394,7 @@ export const routes = [
   },
   {
     moduleName: "schools",
-    path: "/schools/attendance-report",
+    path: "/schools/attendance-report/:parentId",
     component: AttendanceReportDashboard,
   },
   {

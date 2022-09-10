@@ -112,6 +112,9 @@ export const getAllData = async (
     if (coreData === 'getCoreData') {
       return result.data.data
     }
+    if (coreData === 'getStudents') {
+      return await getStudents(result.data.data)
+    }
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
   } else {
@@ -132,6 +135,22 @@ export const getOne = async (filters = {}, header = {}) => {
   )
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData)
+  } else {
+    return {}
+  }
+}
+
+export const getChild = async ({ groupId, ...params } = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/group/${groupId}/child`,
+    { params, headers }
+  )
+  if (result.data) {
+    return result.data.data
   } else {
     return {}
   }
@@ -168,4 +187,20 @@ const getDataWithSubjectOne = async (object) => {
   return subjectData.map((e) => {
     return { ...item, subjectName: e?.code }
   })
+}
+
+export const getStudents = async (data) => {
+  return await Promise.all(data.map(async (item) => await getStudent(item)))
+}
+
+const getStudent = async (object) => {
+  let studentData = []
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.id) {
+    studentData = await getChild({
+      groupId: item.id,
+      role: 'Student'
+    })
+  }
+  return { ...item, studentData }
 }
