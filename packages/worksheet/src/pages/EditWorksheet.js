@@ -2,8 +2,7 @@ import {
   Loading,
   worksheetRegistryService,
   questionRegistryService,
-  getApiConfig,
-  overrideColorTheme,
+  getApiConfig
 } from "@shiksha/common-lib";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -11,8 +10,6 @@ import ListOfWorksheet from "../components/WorksheetEdit/ListOfWorksheet";
 import UpdateDescriptionPage from "../components/WorksheetEdit/UpdateDescriptionPage";
 import FormWorksheet from "components/WorksheetEdit/FormWorksheet";
 import QuestionActionsheet from "../components/Actionsheet/QuestionActionsheet";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function EditWorksheet({ footerLinks, appName }) {
   const [pageName, setPageName] = React.useState();
@@ -31,15 +28,15 @@ export default function EditWorksheet({ footerLinks, appName }) {
       Array.isArray(newManifest?.["question-bank.questionMetadata"])
         ? newManifest?.["question-bank.questionMetadata"]
         : newManifest?.["question-bank.questionMetadata"]
-        ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
-        : []
+          ? JSON.parse(newManifest?.["question-bank.questionMetadata"])
+          : []
     );
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
         : newManifest?.["worksheet.worksheetMetadata"]
-        ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
-        : []
+          ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
+          : []
     );
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =

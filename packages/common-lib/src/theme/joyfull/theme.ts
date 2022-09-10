@@ -66,7 +66,8 @@ const theme = {
     },
     visits: {
       ...colorTheme,
-      cardBg: '#C9AFF4'
+      cardBg: '#CDECF6',
+      visitedCard: '#ECF7EB'
     },
     widgetColor: {
       400: '#7F9DAC',

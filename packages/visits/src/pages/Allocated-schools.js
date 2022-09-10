@@ -179,14 +179,14 @@ export default function Allocatedschools({ footerLinks }) {
       </Box>
 
       <Actionsheet isOpen={sortModal} onClose={() => setSortModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg={"visits.lightGray"}>
+        <Actionsheet.Content alignItems={"left"} bg={"visits.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Sort")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={"visits.primary"}
+              color={"visits.darkGray0"}
               onPress={() => setSortModal(false)}
             />
           </HStack>

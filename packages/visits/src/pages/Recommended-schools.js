@@ -113,10 +113,10 @@ export default function Recommendedschools({ footerLinks }) {
         </H2>
       }
       _appBar={{ languages: manifest.languages }}
-      _subHeader={{ bg: colors.lightPurple }}
+      _subHeader={{ bg: "visits.cardBg" }}
       _footer={footerLinks}
     >
-      <Box p={6} bg={colors.white}>
+      <Box p={6} bg={"visits.white"}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>
@@ -133,7 +133,7 @@ export default function Recommendedschools({ footerLinks }) {
                   </Box>
                   <Button
                     variant="outline"
-                    bg={colors.white}
+                    bg={"visits.white"}
                     onPress={() => {
                       setSortModal(true);
                     }}
@@ -147,10 +147,10 @@ export default function Recommendedschools({ footerLinks }) {
                 <FilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: colors.lightGray }}
+                  _actionSheet={{ bg: "visits.lightGray" }}
                   _filterButton={{
                     rightIcon: "",
-                    bg: colors.white,
+                    bg: "visits.white",
                   }}
                   resetButtonText={t("COLLAPSE")}
                   filters={defaultInputs}
@@ -183,27 +183,27 @@ export default function Recommendedschools({ footerLinks }) {
       </Box>
 
       <Actionsheet isOpen={sortModal} onClose={() => setSortModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={"visits.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Sort")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.primary}
+              color={"visits.darkGray0"}
               onPress={() => setSortModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"visits.white"}>
           <Box pt="0">
-            <BodyMedium color={colors.subtitle}>By last visited</BodyMedium>
+            <BodyMedium color={"visits.gray"}>By last visited</BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
                   size="sm"
                   name="ArrowRightUpLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
                 <BodyLarge>Latest to Oldest</BodyLarge>
               </HStack>
@@ -213,7 +213,7 @@ export default function Recommendedschools({ footerLinks }) {
                 <IconByName
                   size="sm"
                   name="ArrowRightDownLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
                 <BodyLarge>Oldest to Latest</BodyLarge>
               </HStack>
@@ -223,13 +223,13 @@ export default function Recommendedschools({ footerLinks }) {
           <Divider my={4}></Divider>
 
           <Box pt="0">
-            <BodyMedium color={colors.subtitle}>By Completed</BodyMedium>
+            <BodyMedium color={"visits.gray"}>By Completed</BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
                   size="sm"
                   name="ArrowRightUpLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
                 <BodyLarge>Visited</BodyLarge>
               </HStack>
@@ -239,7 +239,7 @@ export default function Recommendedschools({ footerLinks }) {
                 <IconByName
                   size="sm"
                   name="ArrowRightDownLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
                 <BodyLarge>Not Visited</BodyLarge>
               </HStack>
