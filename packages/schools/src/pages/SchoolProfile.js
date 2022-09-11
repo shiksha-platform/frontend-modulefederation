@@ -75,7 +75,7 @@ export default function SchoolProfile({ footerLinks }) {
               items={[
                 {
                   keyId: 1,
-                  title: "Start a Visit",
+                  title: t("START_VISIT"),
                   icon: "Home4LineIcon",
                   boxMinW: "177px",
                   _text: { minW: "115px" },
@@ -114,7 +114,7 @@ export default function SchoolProfile({ footerLinks }) {
               </Box>
             ) : (
               <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                This school is not allocated to you for visit
+                {t("SCHOOL_NOT_ALLOCATED_FOR_VISIT")}
               </Box>
             )}
           </VStack>

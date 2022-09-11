@@ -366,5 +366,21 @@
   "LATEST_TO_OLDEST": "नवीनतम से सबसे पुराना",
   "OLDEST_TO_LATEST": "सबसे पुराना से नवीनतम",
   "BY_COMPLETED": "पूरा करके",
-  "VISITED": "विज़िटेड"
+  "VISITED": "विज़िटेड",
+  "VIEW_ALL_TEACHERS": "सभी शिक्षक देखें",
+  "DESIGNATION": "पदनाम",
+  "QUALIFICATIONS": "योग्यता",
+  "PHONE": "फोन",
+  "DATE_OF_JOINING": "शामिल होने की तिथि",
+  "DISTRICT": "जिला",
+  "BLOCK": "ब्लॉक",
+  "CLUSTER": "क्लस्टर",
+  "HEADMASTER": "हेडमास्टर",
+  "CONTACT": "संपर्क",
+  "MEDIUM": "मध्यम",
+  "BOARD": "बोर्ड",
+  "ADMINISTRATIVE_DETAILS": "प्रशासनिक विवरण",
+  "ACADEMIC_DETAILS": "Academic details",
+  "NO_CLASSES_AVAILABLE": "इस स्कूल में कोई कक्षा उपलब्ध नहीं है",
+  "START_VISIT": "विज़िट शुरू करें"
 }

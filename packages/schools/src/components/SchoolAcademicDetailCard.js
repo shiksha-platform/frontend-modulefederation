@@ -70,7 +70,7 @@ export default function SchoolAcademicDetailCard({ schoolId }) {
               ))
             ) : (
               <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                No classes available in this school
+                {t("NO_CLASSES_AVAILABLE")}
               </Box>
             )}
           </VStack>

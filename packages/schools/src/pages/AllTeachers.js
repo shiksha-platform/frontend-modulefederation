@@ -50,18 +50,18 @@ export default function AllTeachers({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: "My Visits",
+        title: t("MY_VISITS"),
       }}
       _appBar={{ languages: ["en"] }}
-      subHeader={<H2 textTransform="inherit">View all teachers</H2>}
+      subHeader={<H2 textTransform="inherit">{t("VIEW_ALL_TEACHERS")}</H2>}
       _subHeader={{ bg: "schools.cardBg" }}
       _footer={footerLinks}
     >
       <Box p={6} bg={"schools.white"}>
         <VStack space={6}>
           <VStack space={6}>
-            {teacherlist && teacherlist.length > 0 ? (
-              teacherlist.map((teacher, index) => {
+            {teacherlist && teacherlist?.length > 0 ? (
+              teacherlist?.map((teacher, index) => {
                 return (
                   <TeacherTile
                     key={`teacher${index}`}
@@ -139,19 +139,19 @@ export default function AllTeachers({ footerLinks }) {
           <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
             <VStack space={6}>
               <Box>
-                <H4 color={"schools.gray"}>Designation</H4>
+                <H4 color={"schools.gray"}>{t("DESIGNATION")}</H4>
                 <BodyLarge>{teacherData?.designation}</BodyLarge>
               </Box>
               <Box>
-                <H4 color={"schools.gray"}>Qualifications</H4>
+                <H4 color={"schools.gray"}>{t("QUALIFICATIONS")}</H4>
                 <BodyLarge>{teacherData?.profQualification}</BodyLarge>
               </Box>
               <Box>
-                <H4 color={"schools.gray"}>Phone</H4>
+                <H4 color={"schools.gray"}>{t("PHONE")}</H4>
                 <BodyLarge>{teacherData?.phoneNumber}</BodyLarge>
               </Box>
               <Box>
-                <H4 color={"schools.gray"}>Date of Joining</H4>
+                <H4 color={"schools.gray"}>{t("DATE_OF_JOINING")}</H4>
                 <BodyLarge>{teacherData?.joiningDate}</BodyLarge>
               </Box>
             </VStack>
@@ -163,7 +163,7 @@ export default function AllTeachers({ footerLinks }) {
                 navigate(`/schools/teacher-details/${teacherData.id}`)
               }
             >
-              See More
+              {t("SEE_MORE")}
             </Button>
           </Box>
         </Actionsheet>
