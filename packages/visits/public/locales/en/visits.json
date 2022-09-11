@@ -7,8 +7,15 @@
   "ALLOCATED_VISITS": "Allocated Visits",
   "NO_ALLOCATED_VISITS": "No allocated visits is available",
   "ALL_ALLOCATED_VISITS": "See all your allocated schools for visits here",
+  "ALL_RECOMMENDED_VISITS": "See all your recommended schools for visits here",
   "TOTAL": "Total",
   "SCHOOLS": "Schools",
   "NOT_VISITED": "Not Visited",
-  "SHOW_MORE": "Show More"
+  "SHOW_MORE": "Show More",
+  "SORT": "Sort",
+  "BY_LAST_VISITED": "By Last Visited",
+  "LATEST_TO_OLDEST": "Latest to Oldest",
+  "OLDEST_TO_LATEST": "Oldest to Latest",
+  "BY_COMPLETED": "By Completed",
+  "VISITED": "Visited"
 }

@@ -135,7 +135,7 @@ export default function Allocatedschools({ footerLinks }) {
                       setSortModal(true);
                     }}
                   >
-                    Sort
+                    {t("SORT")}
                   </Button>
                 </HStack>
               </Box>
@@ -191,7 +191,7 @@ export default function Allocatedschools({ footerLinks }) {
         <Box w="100%" p={4} justifyContent="center" bg={"visits.white"}>
           <Box pt="0">
             <BodyMedium fontSize={12} color={"visits.gray"}>
-              By last visited
+              {t("BY_LAST_VISITED")}
             </BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
@@ -200,7 +200,7 @@ export default function Allocatedschools({ footerLinks }) {
                   name="ArrowRightUpLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Latest to Oldest</BodyLarge>
+                <BodyLarge>{t("LATEST_TO_OLDEST")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
             <Actionsheet.Item>
@@ -210,7 +210,7 @@ export default function Allocatedschools({ footerLinks }) {
                   name="ArrowRightDownLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Oldest to Latest</BodyLarge>
+                <BodyLarge>{t("OLDEST_TO_LATEST")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
           </Box>
@@ -218,7 +218,7 @@ export default function Allocatedschools({ footerLinks }) {
           <Divider my={4}></Divider>
 
           <Box pt="0">
-            <BodyMedium color={"visits.gray"}>By Completed</BodyMedium>
+            <BodyMedium color={"visits.gray"}>{t("BY_COMPLETED")}</BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
@@ -226,7 +226,7 @@ export default function Allocatedschools({ footerLinks }) {
                   name="ArrowRightUpLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Visited</BodyLarge>
+                <BodyLarge>{t("VISITED")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
             <Actionsheet.Item>
@@ -236,7 +236,7 @@ export default function Allocatedschools({ footerLinks }) {
                   name="ArrowRightDownLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Not Visited</BodyLarge>
+                <BodyLarge>{t("NOT_VISITED")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
           </Box>

@@ -104,14 +104,10 @@ export default function Recommendedschools({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: "Recommended Schools",
+        title: t("RECOMMENDED_VISITS"),
         isEnableSearchBtn: true,
       }}
-      subHeader={
-        <H2 textTransform="inherit">
-          See all your recommended schools for visits here
-        </H2>
-      }
+      subHeader={<H2 textTransform="inherit">{t("ALL_RECOMMENDED_VISITS")}</H2>}
       _appBar={{ languages: manifest.languages }}
       _subHeader={{ bg: "visits.cardBg" }}
       _footer={footerLinks}
@@ -123,12 +119,12 @@ export default function Recommendedschools({ footerLinks }) {
               <Box>
                 <HStack alignItems="center" justifyContent="space-between">
                   <Box>
-                    <H2>Schools</H2>
+                    <H2>{t("SCHOOLS")}</H2>
                     <BodyMedium>
                       {recommendedVisits &&
                         Object.keys(recommendedVisits)?.length > 0 &&
                         Object.keys(recommendedVisits)?.length}{" "}
-                      Schools not visited in last 2 months
+                      {t("SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS")}
                     </BodyMedium>
                   </Box>
                   <Button
@@ -138,7 +134,7 @@ export default function Recommendedschools({ footerLinks }) {
                       setSortModal(true);
                     }}
                   >
-                    Sort
+                    {t("SORT")}
                   </Button>
                 </HStack>
               </Box>
@@ -171,7 +167,7 @@ export default function Recommendedschools({ footerLinks }) {
                   )
                 ) : (
                   <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                    All schools are visited in a recent 2 months.
+                    {t("ALL_SCHOOLS_VISITED_LAST_TWO_MONTHS")}
                   </Box>
                 )
               ) : (
@@ -197,7 +193,9 @@ export default function Recommendedschools({ footerLinks }) {
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={"visits.white"}>
           <Box pt="0">
-            <BodyMedium color={"visits.gray"}>By last visited</BodyMedium>
+            <BodyMedium color={"visits.gray"}>
+              {t("BY_LAST_VISITED")}
+            </BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
@@ -205,7 +203,7 @@ export default function Recommendedschools({ footerLinks }) {
                   name="ArrowRightUpLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Latest to Oldest</BodyLarge>
+                <BodyLarge>{t("LATEST_TO_OLDEST")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
             <Actionsheet.Item>
@@ -215,7 +213,7 @@ export default function Recommendedschools({ footerLinks }) {
                   name="ArrowRightDownLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Oldest to Latest</BodyLarge>
+                <BodyLarge>{t("OLDEST_TO_LATEST")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
           </Box>
@@ -223,7 +221,7 @@ export default function Recommendedschools({ footerLinks }) {
           <Divider my={4}></Divider>
 
           <Box pt="0">
-            <BodyMedium color={"visits.gray"}>By Completed</BodyMedium>
+            <BodyMedium color={"visits.gray"}>{t("BY_COMPLETED")}</BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
@@ -231,7 +229,7 @@ export default function Recommendedschools({ footerLinks }) {
                   name="ArrowRightUpLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Visited</BodyLarge>
+                <BodyLarge>{t("VISITED")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
             <Actionsheet.Item>
@@ -241,7 +239,7 @@ export default function Recommendedschools({ footerLinks }) {
                   name="ArrowRightDownLineIcon"
                   color={"visits.bodyText"}
                 />
-                <BodyLarge>Not Visited</BodyLarge>
+                <BodyLarge>{t("NOT_VISITED")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
           </Box>

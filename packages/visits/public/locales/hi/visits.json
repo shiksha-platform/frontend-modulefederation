@@ -7,8 +7,15 @@
   "ALLOCATED_VISITS": "आवंटित विज़िट",
   "NO_ALLOCATED_VISITS": "कोई आवंटित विज़िट उपलब्ध नहीं है",
   "ALL_ALLOCATED_VISITS": "अपने सभी आवंटित स्कूलों को यहां देखें",
+  "ALL_RECOMMENDED_VISITS": "यहां जाने के लिए अपने सभी अनुशंसित स्कूल देखें",
   "TOTAL": "कुल",
   "SCHOOLS": "स्कूल",
   "NOT_VISITED": "देखा नहीं गया",
-  "SHOW_MORE": "और दिखाएं"
+  "SHOW_MORE": "और दिखाएं",
+  "SORT": "क्रम से लगाना",
+  "BY_LAST_VISITED": "पिछली बार देखे गए",
+  "LATEST_TO_OLDEST": "नवीनतम से सबसे पुराना",
+  "OLDEST_TO_LATEST": "सबसे पुराना से नवीनतम",
+  "BY_COMPLETED": "पूरा करके",
+  "VISITED": "विज़िटेड"
 }
