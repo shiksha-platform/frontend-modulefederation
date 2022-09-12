@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./App.css";
-import { AppShell } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import SchoolProfile from "pages/SchoolProfile";
 import AttendanceReportDashboard from "pages/reports/AttendanceReportDashboard";
 import AttendanceSectionWiseReport from "pages/reports/AttendanceSectionWiseReport";
@@ -18,6 +18,10 @@ import Question from "pages/Question";
 import AllTeachers from "pages/AllTeachers";
 
 function App() {
+  initializeI18n(
+    ["schools"],
+    `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+  );
   const routes = [
     {
       moduleName: "schools",
@@ -51,7 +55,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/attendance-report",
+      path: "/schools/attendance-report/:parentId",
       component: AttendanceReportDashboard,
     },
     {

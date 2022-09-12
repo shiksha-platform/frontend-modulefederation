@@ -55,7 +55,8 @@ const theme = {
     },
     schools: {
       ...colorTheme,
-      cardBg: '#CDECF6'
+      cardBg: '#CDECF6',
+      primaryLight: '#FFF8F7'
     },
     assessment: {
       ...colorTheme,
@@ -63,6 +64,11 @@ const theme = {
       reportDetailsSubheaderBg: '#FFCAAC',
       QuationsBoxBg: '#FEF1EE',
       achiverBoxBg: '#FFF9F9'
+    },
+    visits: {
+      ...colorTheme,
+      cardBg: '#CDECF6',
+      visitedCard: '#ECF7EB'
     },
     widgetColor: {
       400: '#7F9DAC',

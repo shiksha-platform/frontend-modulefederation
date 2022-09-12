@@ -52,6 +52,7 @@ const theme = {
       QuationsBoxBg: '#FEF1EE',
       achiverBoxBg: '#FFF9F9'
     },
+    visits: { ...colorTheme, visitedCard: '#ECF7EB' },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

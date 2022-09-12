@@ -3,7 +3,6 @@ import {
   worksheetRegistryService,
   questionRegistryService,
   getApiConfig,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -11,8 +10,6 @@ import ListOfWorksheet from "../components/WorksheetEdit/ListOfWorksheet";
 import UpdateDescriptionPage from "../components/WorksheetEdit/UpdateDescriptionPage";
 import FormWorksheet from "components/WorksheetEdit/FormWorksheet";
 import QuestionActionsheet from "../components/Actionsheet/QuestionActionsheet";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function EditWorksheet({ footerLinks, appName }) {
   const [pageName, setPageName] = React.useState();

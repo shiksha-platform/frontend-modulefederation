@@ -2,7 +2,6 @@ import {
   BodyMedium,
   H2,
   Layout,
-  overrideColorTheme,
   SearchLayout,
   mentorRegisteryService,
   Loading,
@@ -12,9 +11,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Pressable, VStack } from "native-base";
 import MySchoolsCard from "components/MySchoolsCard";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "colorTheme";
 import manifest from "manifest.json";
-const colors = overrideColorTheme(colorTheme);
 
 export default function Myvisits({ footerLinks }) {
   const { t } = useTranslation();
@@ -52,7 +49,6 @@ export default function Myvisits({ footerLinks }) {
       value[0].schoolStatus = schoolStatus;
     });
 
-    console.log({ groupBySchools });
     // Settings the list of allocated schools
     setAllocatedVisits(groupBySchools);
 
@@ -62,7 +58,6 @@ export default function Myvisits({ footerLinks }) {
     // Getting the date of 2 months ago
     const today = new Date();
     today.setMonth(today.getMonth() - 2);
-    console.log({ today });
 
     // Setting the list of recommended visits when last visit is of 2 months ago
     Object.entries(groupOfRecommendedVisits).forEach(([key, value]) => {
@@ -101,7 +96,7 @@ export default function Myvisits({ footerLinks }) {
                   )
                 )
               ) : (
-                <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                <Box bg={"visits.dangerAlert"} p={"4"} rounded={10}>
                   All schools are visited in a recent 2 months.
                 </Box>
               )
@@ -117,12 +112,10 @@ export default function Myvisits({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: "My Visits",
+        title: t("MY_VISITS"),
       }}
       subHeader={
-        <H2 textTransform="inherit">
-          View recommended and allocated schools for your visits
-        </H2>
+        <H2 textTransform="inherit">{t("RECOMMENDED_ALLOCATED_SCHOOLS")}</H2>
       }
       _appBar={{
         languages: manifest.languages,
@@ -130,17 +123,19 @@ export default function Myvisits({ footerLinks }) {
         setSearch,
         setSearchState,
       }}
-      _subHeader={{ bg: colors.lightPurple }}
+      _subHeader={{ bg: "visits.cardBg" }}
       _footer={footerLinks}
     >
       {recommendedVisits && allocatedVisits ? (
-        <Box p={6} bg={colors.white}>
+        <Box p={6} bg={"visits.white"}>
           <VStack space={6}>
             <Box>
               <VStack space={6}>
                 <Box>
-                  <H2>Recommended Visits</H2>
-                  <BodyMedium>Schools not visited in last 2 months</BodyMedium>
+                  <H2>{t("RECOMMENDED_VISITS")}</H2>
+                  <BodyMedium>
+                    {t("SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS")}
+                  </BodyMedium>
                 </Box>
                 {recommendedVisits ? (
                   Object.keys(recommendedVisits)?.length > 0 ? (
@@ -149,6 +144,7 @@ export default function Myvisits({ footerLinks }) {
                         visitIndex < 2 && (
                           <Pressable
                             onPress={() => navigate(`/schools/${key}`)}
+                            key={visitIndex}
                           >
                             <MySchoolsCard
                               key={`myvisit${visitIndex}`}
@@ -159,8 +155,8 @@ export default function Myvisits({ footerLinks }) {
                         )
                     )
                   ) : (
-                    <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                      All schools are visited in a recent 2 months.
+                    <Box bg={"visits.dangerAlert"} p={"4"} rounded={10}>
+                      {t("ALL_SCHOOLS_VISITED_LAST_TWO_MONTHS")}
                     </Box>
                   )
                 ) : (
@@ -177,7 +173,7 @@ export default function Myvisits({ footerLinks }) {
                         px="5"
                         onPress={() => navigate(`/visits/recommended-schools`)}
                       >
-                        Show More
+                        {t("SHOW_MORE")}
                       </Button>
                     </Box>
                   )}
@@ -188,7 +184,7 @@ export default function Myvisits({ footerLinks }) {
             <Box>
               <VStack space={6}>
                 <Box>
-                  <H2>Allocated Schools</H2>
+                  <H2>{t("ALLOCATED_VISITS")}</H2>
                 </Box>
 
                 {allocatedVisits ? (
@@ -198,6 +194,7 @@ export default function Myvisits({ footerLinks }) {
                         visitIndex < 2 && (
                           <Pressable
                             onPress={() => navigate(`/schools/${key}`)}
+                            key={visitIndex}
                           >
                             <MySchoolsCard
                               isVisited={
@@ -213,8 +210,8 @@ export default function Myvisits({ footerLinks }) {
                         )
                     )
                   ) : (
-                    <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-                      No allocated school is available.
+                    <Box bg={"visits.dangerAlert"} p={"4"} rounded={10}>
+                      {t("NO_ALLOCATED_VISITS")}
                     </Box>
                   )
                 ) : (
@@ -231,7 +228,7 @@ export default function Myvisits({ footerLinks }) {
                       px="5"
                       onPress={() => navigate(`/visits/allocated-schools`)}
                     >
-                      Show More
+                      {t("SHOW_MORE")}
                     </Button>
                   </Box>
                 )}

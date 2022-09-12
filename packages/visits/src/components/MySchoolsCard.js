@@ -22,9 +22,9 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
     <>
       <VStack space={6}>
         <Box
-          bg={isVisited ? "#ECF7EB" : "lightGray6"}
+          bg={isVisited ? "visits.visitedCard" : "visits.lightGray6"}
           borderRadius={10}
-          borderColor={isVisited ? "#C5DCC3" : "lightGray3"}
+          borderColor={isVisited ? "visits.green" : "visits.lightGray3"}
         >
           <Box p={4}>
             <VStack space={6}>
@@ -44,7 +44,7 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                 </Avatar>
                 <VStack>
                   <H3>{schoolData?.schoolName}</H3>
-                  <BodyMedium color={colors.subtitle}>
+                  <BodyMedium color={"visits.gray"}>
                     {typeof schoolData?.address == "string" &&
                       schoolData?.address}
                   </BodyMedium>

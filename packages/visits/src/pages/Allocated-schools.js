@@ -107,38 +107,35 @@ export default function Allocatedschools({ footerLinks }) {
   return (
     <Layout
       _header={{
-        title: "Allocated Schools",
+        title: t("ALLOCATED_VISITS"),
         isEnableSearchBtn: true,
       }}
-      subHeader={
-        <H2 textTransform="inherit">
-          See all your allocated schools for visits here
-        </H2>
-      }
+      subHeader={<H2 textTransform="inherit">{t("ALL_ALLOCATED_VISITS")}</H2>}
       _appBar={{ languages: manifest.languages }}
-      _subHeader={{ bg: colors.lightPurple }}
+      _subHeader={{ bg: "visits.cardBg" }}
       _footer={footerLinks}
     >
-      <Box p={6} bg={colors.white}>
+      <Box p={6} bg={"visits.white"}>
         <VStack space={6}>
           <Box>
             <VStack space={6}>
               <Box>
                 <HStack alignItems="center" justifyContent="space-between">
                   <Box>
-                    <H2>Schools</H2>
+                    <H2>{t("SCHOOLS")}</H2>
                     <BodyMedium>
-                      Total {totalSchools} ● Not visited {totalPendingSchools}
+                      {t("TOTAL")} {totalSchools} ● {t("NOT_VISITED")}{" "}
+                      {totalPendingSchools}
                     </BodyMedium>
                   </Box>
                   <Button
                     variant="outline"
-                    bg={colors.white}
+                    bg={"visits.white"}
                     onPress={() => {
                       setSortModal(true);
                     }}
                   >
-                    Sort
+                    {t("SORT")}
                   </Button>
                 </HStack>
               </Box>
@@ -146,10 +143,10 @@ export default function Allocatedschools({ footerLinks }) {
                 <FilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: colors.lightGray }}
+                  _actionSheet={{ bg: "visits.lightGray" }}
                   _filterButton={{
                     rightIcon: "",
-                    bg: colors.white,
+                    bg: "visits.white",
                   }}
                   resetButtonText={t("COLLAPSE")}
                   filters={defaultInputs}
@@ -179,31 +176,31 @@ export default function Allocatedschools({ footerLinks }) {
       </Box>
 
       <Actionsheet isOpen={sortModal} onClose={() => setSortModal(false)}>
-        <Actionsheet.Content alignItems={"left"} bg={colors.lightGray}>
+        <Actionsheet.Content alignItems={"left"} bg={"visits.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
               <H2>{t("Sort")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.primary}
+              color={"visits.darkGray0"}
               onPress={() => setSortModal(false)}
             />
           </HStack>
         </Actionsheet.Content>
-        <Box w="100%" p={4} justifyContent="center" bg={colors.white}>
+        <Box w="100%" p={4} justifyContent="center" bg={"visits.white"}>
           <Box pt="0">
-            <BodyMedium fontSize={12} color={colors.subtitle}>
-              By last visited
+            <BodyMedium fontSize={12} color={"visits.gray"}>
+              {t("BY_LAST_VISITED")}
             </BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
                   size="sm"
                   name="ArrowRightUpLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
-                <BodyLarge>Latest to Oldest</BodyLarge>
+                <BodyLarge>{t("LATEST_TO_OLDEST")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
             <Actionsheet.Item>
@@ -211,9 +208,9 @@ export default function Allocatedschools({ footerLinks }) {
                 <IconByName
                   size="sm"
                   name="ArrowRightDownLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
-                <BodyLarge>Oldest to Latest</BodyLarge>
+                <BodyLarge>{t("OLDEST_TO_LATEST")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
           </Box>
@@ -221,15 +218,15 @@ export default function Allocatedschools({ footerLinks }) {
           <Divider my={4}></Divider>
 
           <Box pt="0">
-            <BodyMedium color={colors.subtitle}>By Completed</BodyMedium>
+            <BodyMedium color={"visits.gray"}>{t("BY_COMPLETED")}</BodyMedium>
             <Actionsheet.Item>
               <HStack alignItems="center" p={0}>
                 <IconByName
                   size="sm"
                   name="ArrowRightUpLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
-                <BodyLarge>Visited</BodyLarge>
+                <BodyLarge>{t("VISITED")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
             <Actionsheet.Item>
@@ -237,9 +234,9 @@ export default function Allocatedschools({ footerLinks }) {
                 <IconByName
                   size="sm"
                   name="ArrowRightDownLineIcon"
-                  color={colors.bodyText}
+                  color={"visits.bodyText"}
                 />
-                <BodyLarge>Not Visited</BodyLarge>
+                <BodyLarge>{t("NOT_VISITED")}</BodyLarge>
               </HStack>
             </Actionsheet.Item>
           </Box>

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 
+// Import for translation
+import { useTranslation } from "react-i18next";
+
 // Imports for common library functions and native base components
 import { Box, VStack, Divider } from "native-base";
 import {
@@ -13,6 +16,7 @@ import {
 import SchoolAdminTile from "./SchoolAdminTile";
 
 function SchoolAdminDetailCard({ schoolId }) {
+  const { t } = useTranslation();
   const [totalStudents, setTotalStudents] = useState(null);
   const [grades, setGrades] = useState(null);
   const [genderCount, setGenderCount] = useState({
@@ -85,7 +89,7 @@ function SchoolAdminDetailCard({ schoolId }) {
       defaultCollapse={true}
       header={
         <Box py={4}>
-          <H2>Administrative Details</H2>
+          <H2>{t("ADMINISTRATIVE_DETAILS")}</H2>
         </Box>
       }
     >
@@ -94,7 +98,7 @@ function SchoolAdminDetailCard({ schoolId }) {
           <VStack space={0} bg={"schools.lightGray5"} p={4} rounded={10}>
             {/* Tile for displaying student details */}
             <SchoolAdminTile
-              key=""
+              key="1"
               title={`${totalStudents} students`}
               grades={grades}
               genderCount={genderCount}
@@ -107,7 +111,7 @@ function SchoolAdminDetailCard({ schoolId }) {
         </>
       ) : (
         <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
-          No classes available in this school
+          {t("NO_CLASSES_AVAILABLE")}
         </Box>
       )}
     </Collapsible>
