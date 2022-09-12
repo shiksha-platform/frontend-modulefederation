@@ -34,7 +34,7 @@ export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
         defaultCollapse={true}
         header={
           <Box py={4}>
-            <H2>Academic Details</H2>
+            <H2>{t("ACADEMIC_DETAILS")}</H2>
           </Box>
         }
       >
@@ -99,14 +99,14 @@ export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
                         navigate(`/schools/attendance-report/${classId}`)
                       }
                     >
-                      Attendance Reports
+                      {t("ATTENDANCE_REPORTS")}
                     </Actionsheet.Item>
                   )}
                   {config === "assessment" && (
                     <Actionsheet.Item
                       onPress={() => navigate("/schools/assessment-report")}
                     >
-                      Assessment Reports
+                      {t("ASSESSMENT_REPORTS")}
                     </Actionsheet.Item>
                   )}
                 </>

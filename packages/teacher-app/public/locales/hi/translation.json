@@ -382,5 +382,7 @@
   "ADMINISTRATIVE_DETAILS": "प्रशासनिक विवरण",
   "ACADEMIC_DETAILS": "शैक्षणिक विवरण",
   "NO_CLASSES_AVAILABLE": "इस स्कूल में कोई कक्षा उपलब्ध नहीं है",
-  "START_VISIT": "विज़िट शुरू करें"
+  "START_VISIT": "विज़िट शुरू करें",
+  "SCHOOL_OVERVIEW": "स्कूल अवलोकन",
+  "ASSESSMENT_REPORTS": "आकलन रिपोर्ट"
 }
