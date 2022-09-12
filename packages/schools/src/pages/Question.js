@@ -14,7 +14,7 @@ const Question = ({ footerLinks }) => {
       _footer={footerLinks}
     >
       <iframe
-        src="http://localhost:8005/preview?xform=http://0.0.0.0:8000/Primary_Mentoring_Form.xml"
+        src={`http://localhost:8005/preview?xform=http://0.0.0.0:8000/Primary_Mentoring_Form.xml&token=${localStorage.getItem("token")}`}
         frameBorder="0"
         marginHeight="0"
         marginWidth="0"
