@@ -11,7 +11,6 @@ import {
   Stack,
   Actionsheet,
   Link,
-  useToast,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
@@ -96,8 +95,8 @@ const Notification = ({ footerLinks, appName }) => {
     const resp1 = await getAllForUser({
       userId: localStorage.getItem("phoneNumber"),
       provider: "firebase",
-      startDate: moment(date).format("DD-MM-YYYY"),
-      endDate: moment(date).format("DD-MM-YYYY"),
+      // startDate: moment("2021-01-01").format("DD-MM-YYYY"),
+      // endDate: moment(date).format("DD-MM-YYYY"),
     });
     setNotificationInfo(resp1);
   };
@@ -169,30 +168,19 @@ const Notification = ({ footerLinks, appName }) => {
       <Stack space={1} mb="2">
         <VStack space="1">
           <Box bg="white" p="5">
-            <HStack justifyContent="space-between" alignItems="center">
-              <CalendarBar {...{ page, setPage }} />
-              {/* <Checkbox
-                colorScheme="button"
-                borderColor={colors.primary}
-                borderRadius="0"
-                _text={{ color: colors.primary, fontSize: "14px" }}
-              >
-                {t("MARK_ALL_READ")}
-              </Checkbox> */}
-              <FilterButton
-                getObject={setFilterObject}
-                _actionSheet={{ bg: "notification.cardBg" }}
-                isResettableFilter={true}
-                filters={[
-                  {
-                    name: "Module",
-                    attributeName: "module",
-                    type: "string",
-                    data: ["lessonPlans", "attendance", "worksheet"],
-                  },
-                ]}
-              />
-            </HStack>
+            <FilterButton
+              getObject={setFilterObject}
+              _actionSheet={{ bg: "notification.cardBg" }}
+              isResettableFilter={true}
+              filters={[
+                {
+                  name: "Module",
+                  attributeName: "module",
+                  type: "string",
+                  data: ["lessonPlans", "attendance", "worksheet"],
+                },
+              ]}
+            />
           </Box>
 
           <Box bg="white" p="5" roundedBottom={"xl"}>
@@ -470,11 +458,17 @@ const NotificationBox = ({ data, onPress, showMore }) => {
                 />
                 {value.messageState === "READ" ? (
                   <BodySmall>
-                    {moment.utc(value.sentTimestamp).local().format("LT")}
+                    {moment
+                      .utc(value.sentTimestamp)
+                      .local()
+                      .format("DD MMM Y LT")}
                   </BodySmall>
                 ) : (
                   <Subtitle>
-                    {moment.utc(value.sentTimestamp).local().format("LT")}
+                    {moment
+                      .utc(value.sentTimestamp)
+                      .local()
+                      .format("DD MMM Y LT")}
                   </Subtitle>
                 )}
               </HStack>

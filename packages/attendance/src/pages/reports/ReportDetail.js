@@ -211,7 +211,6 @@ export default function ReportDetail({ footerLinks, appName, setAlert }) {
               {...{ page, setPage }}
               view={calendarView}
             />
-            <IconByName name={"ListUnorderedIcon"} isDisabled />
           </HStack>
         </Box>
         <Box bg="white" p="5">
