@@ -8,6 +8,7 @@ import {
   HStack,
   Pressable,
   PresenceTransition,
+  Avatar,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -24,24 +25,85 @@ import {
   H4,
   H1,
   H3,
-  overrideColorTheme,
+  BodyLarge,
+  workHistoryRegistryService,
+  schoolRegistryService,
+  Loading,
 } from "@shiksha/common-lib";
 import AttendanceSummaryCard from "../components/AttendanceSummaryCard";
-import SelfAttedanceSheet from "../components/SelfAttedanceSheet";
+import SelfAttendanceSheet from "../components/SelfAttendanceSheet";
 import moment from "moment";
-import colorTheme from "../colorTheme";
 import TeacherEdit from "../components/TeacherEdit";
 
-const colors = overrideColorTheme(colorTheme);
-// Start editing here, save and see your changes.
-export default function Profile({ footerLinks, appName }) {
+export default function Profile({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [teacherObject, setTeacherObject] = useState({});
   const teacherId = localStorage.getItem("id");
   const token = localStorage.getItem("token");
   const [showModal, setShowModal] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [attendance, setAttendance] = React.useState({});
+  const [workHistoryData, setWorkHistoryData] = React.useState([]);
+  const [expArray, setExpArray] = React.useState([]);
   const navigate = useNavigate();
+
+  const userObject = {
+    aadhar_number: "aadhaar",
+    residential_address: "address",
+    district: "district",
+    block: "block",
+    pincode: "pincode",
+    date_of_birth: "birthDate",
+    gender: "gender",
+    social_category: "socialCategory",
+    blood_group: "bloodGroup",
+    marital_status: "maritalStatus",
+    disability: "disability",
+    designation: "leavingDesignation",
+    cadre: "cadre",
+    transfer_order_number: "transferOrderNumber",
+    date_of_order: "dateOfOrder",
+    place_of_posting: "placeOfPosting",
+    mode_of_posting: "modeOfPosting",
+    phoneNumber: "phoneNumber",
+    email: "email",
+  };
+
+  const schoolObject = {
+    EMPLOYEE_CODE: "employeeCode",
+    employment_address: "schoolAddress",
+    district: "schoolDistrict",
+    block: "schoolBlock",
+    pincode: "schoolPincode",
+    employment_type: "employmentType",
+    "present_designation/cadre": "designation",
+    qualifications: "profQualification",
+    teacher_category: "designation",
+    "subjects / subject ids": "subjectIds",
+    date_of_joining: "joiningDate",
+    reporting_officer: "reportsTo",
+    place_of_current_posting: "schoolDistrict",
+  };
+
+  const getWorkHistoryData = async () => {
+    const result = await workHistoryRegistryService.sendNotificationSearch({
+      userId: teacherId,
+    });
+
+    const arr = result.map(
+      (e) =>
+        `${e?.organizationName} ${moment(e?.dateOfJoining).format(
+          "Do MMM YYYY"
+        )} - ${moment(e?.dateOfRelieving).format("Do MMM YYYY")}`
+    );
+    setExpArray(arr);
+    console.log(result);
+    setWorkHistoryData(result);
+  };
+  const getSchoolData = async (id, resultTeacher) => {
+    const result = await schoolRegistryService.getOne({ id: id });
+    setTeacherObject({ ...resultTeacher, ...result });
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -49,7 +111,6 @@ export default function Profile({ footerLinks, appName }) {
     const getData = async () => {
       if (!ignore) {
         const resultTeacher = await userRegistryService.getOne();
-        setTeacherObject(resultTeacher);
         let thisMonthParams = {
           fromDate: moment().startOf("month").format("YYYY-MM-DD"),
           toDate: moment().format("YYYY-MM-DD"),
@@ -66,7 +127,7 @@ export default function Profile({ footerLinks, appName }) {
         const thisMonthCount = thisMonthAttendance.filter(
           (e) => e.attendance === "Present"
         ).length;
-        const thisPersantage = (thisMonthCount * 100) / thisDiffDays;
+        const thisPercentage = (thisMonthCount * 100) / thisDiffDays;
 
         let lastMonthDays = calendar(-1, "monthInDays");
         let lastMonthParams = {
@@ -86,18 +147,21 @@ export default function Profile({ footerLinks, appName }) {
         const lastMonthCount = lastMonthAttendance.filter(
           (e) => e.attendance === "Present"
         ).length;
-        const lastPersantage = (lastMonthCount * 100) / lastDiffDays;
+        const lastPercentage = (lastMonthCount * 100) / lastDiffDays;
 
         setAttendance({
-          thisMonth: thisPersantage,
-          lastMonth: lastPersantage,
+          thisMonth: thisPercentage,
+          lastMonth: lastPercentage,
         });
+        getWorkHistoryData();
+        getSchoolData(resultTeacher.schoolId, resultTeacher);
+        setLoading(false);
       }
     };
     getData();
   }, [teacherId, token]);
 
-  const handalSelfAttendance = () => {
+  const handleSelfAttendance = () => {
     setShowModal(!showModal);
     const telemetryData = telemetryFactory.interact({
       appName,
@@ -116,17 +180,21 @@ export default function Profile({ footerLinks, appName }) {
     navigate("/profile/attendance");
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <SelfAttedanceSheet
+    <SelfAttendanceSheet
       {...{
+        setAlert,
         showModal,
         setShowModal,
         appName,
-        setAttendance,
       }}
     >
       <Layout
-        imageUrl={`${window.location.origin}/class.png`}
+        //imageUrl={`${process.env.PUBLIC_URL}/class.png`}
         _appBar={{ languages: manifest.languages }}
         _header={{
           title: t("MY_CLASSES"),
@@ -134,7 +202,7 @@ export default function Profile({ footerLinks, appName }) {
             <Box minH={"150px"}>
               <Box
                 position={"absolute"}
-                bg={"profile.cardBgTransparent"}
+                //bg={"profile.cardBgTransparent"}
                 bottom={0}
                 p={5}
                 pb={8}
@@ -142,15 +210,30 @@ export default function Profile({ footerLinks, appName }) {
               >
                 <HStack alignItems="center" justifyContent="space-between">
                   <VStack>
-                    <H4 color={"profile.white"}>{t("MY_PROFILE")}</H4>
-                    <H1 color={"profile.white"}>
+                    <H4 color={"profile.bodyText"} textTransform={"capitalize"}>
+                      {t("MY_PROFILE")}
+                    </H4>
+                    <H1 color={"profile.bodyText"}>
                       {teacherObject?.firstName + " " + teacherObject?.lastName}
                     </H1>
+                    <BodyLarge color={"profile.bodyText"}>
+                      {teacherObject?.designation}
+                    </BodyLarge>
                   </VStack>
                   {/* <HStack>
-                    <IconByName color={colors.white} name="CameraLineIcon" />
-                    <IconByName color={colors.white} name="ShareLineIcon" />
+                    <IconByName color={"profile.white"} name="CameraLineIcon" />
+                    <IconByName color={"profile.white"} name="ShareLineIcon" />
                   </HStack> */}
+                  <Avatar
+                    size="48px"
+                    source={{
+                      uri: teacherObject?.image,
+                    }}
+                  >
+                    {`${teacherObject?.firstName} ${teacherObject?.lastName}`
+                      .toUpperCase()
+                      .substr(0, 2)}
+                  </Avatar>
                 </HStack>
               </Box>
             </Box>
@@ -163,11 +246,11 @@ export default function Profile({ footerLinks, appName }) {
             items={[
               {
                 keyId: 1,
-                title: t("TAKE_ATTENDANCE"),
+                title: t("MARK_ATTENDANCE"),
                 icon: "CalendarCheckLineIcon",
                 boxMinW: "177px",
                 _text: { minW: "115px" },
-                onPress: (e) => handalSelfAttendance(),
+                onPress: (e) => handleSelfAttendance(),
               },
             ]}
             type={"vertical"}
@@ -179,7 +262,7 @@ export default function Profile({ footerLinks, appName }) {
         }}
         _footer={footerLinks}
       >
-        <Stack space={1}>
+        <Stack space={2}>
           <Section title={t("ATTENDANCE")} />
           <Section>
             <Stack space={5}>
@@ -198,91 +281,88 @@ export default function Profile({ footerLinks, appName }) {
           <TeacherEdit
             header={t("PERSONAL_DETAILS")}
             teacherObject={teacherObject}
+            fieldMapper={userObject}
             onlyParameterProp={[
-              "employeeCode",
-              "joiningDate",
-              "birthDate",
+              "aadhar_number",
+              "residential_address",
+              "district",
+              "block",
+            ]}
+            moreParameterProp={[
+              "pincode",
+              "date_of_birth",
               "gender",
+              "social_category",
+              "blood_group",
+              "marital_status",
+              "disability",
             ]}
             isEditable={false}
+            seeMore={true}
+          />
+          <TeacherEdit
+            header={t("Employment Details")}
+            teacherObject={teacherObject}
+            fieldMapper={schoolObject}
+            onlyParameterProp={[
+              "EMPLOYEE_CODE",
+              "employment_address",
+              "district",
+              "block",
+            ]}
+            moreParameterProp={[
+              "pincode",
+              "employment_type",
+              "present_designation/cadre",
+              "qualifications",
+              "teacher_category",
+              "subjects / subject ids",
+              "date_of_joining",
+              "reporting_officer",
+              "place_of_current_posting",
+            ]}
+            isEditable={false}
+            seeMore={true}
+          />
+          <TeacherEdit
+            header={t("Past_Positions_and_Transfer_History")}
+            teacherObject={workHistoryData}
+            workData={workHistoryData}
+            fieldMapper={userObject}
+            nestedCollapse={true}
+            nestedHeader={expArray}
+            onlyParameterProp={["designation", "cadre"]}
+            moreParameterProp={[
+              "transfer_order_number",
+              "date_of_order",
+              "place_of_posting",
+              "mode_of_posting",
+            ]}
+            isEditable={false}
+            seeMore={false}
+            seeMoreBelowSection={true}
           />
           <TeacherEdit
             header={t("CONTACT_DETAILS")}
             teacherObject={teacherObject}
+            fieldMapper={userObject}
             setTeacherObject={setTeacherObject}
             onlyParameterProp={["phoneNumber", "email"]}
+            isEditable={false}
+            seeMore={false}
           />
         </Stack>
       </Layout>
-    </SelfAttedanceSheet>
+    </SelfAttendanceSheet>
   );
 }
 
 const Section = ({ title, button, children, _box, _title }) => (
   <Box bg={"profile.white"} p="5" {..._box}>
     <HStack alignItems={"center"} justifyContent={"space-between"} {..._title}>
-      <H3>{title}</H3>
+      <H3 color={"profile.bodyText"}>{title}</H3>
       {button}
     </HStack>
     {children}
   </Box>
 );
-
-const Collapsible = ({
-  header,
-  body,
-  defaultCollapse,
-  isHeaderBold,
-  isDisableCollapse,
-  onPressFuction,
-  collapsButton,
-  _text,
-  _icon,
-  _box,
-}) => {
-  const [collaps, setCollaps] = useState(defaultCollapse);
-
-  return (
-    <>
-      <Pressable
-        onPress={() => {
-          if (onPressFuction) {
-            onPressFuction();
-          }
-          if (!isDisableCollapse) {
-            setCollaps(!collaps);
-          }
-        }}
-      >
-        <Box {..._box}>
-          <HStack alignItems={"center"} justifyContent={"space-between"}>
-            <Text
-              fontSize={typeof isHeaderBold === "undefined" ? "14px" : ""}
-              color={"profile.gray"}
-              fontWeight="500"
-              {..._text}
-            >
-              {header}
-            </Text>
-            <IconByName
-              size="sm"
-              isDisabled={true}
-              color={
-                !collaps || collapsButton
-                  ? "profile.lightGray1"
-                  : "profile.darkGary3"
-              }
-              name={
-                !collaps || collapsButton
-                  ? "ArrowDownSLineIcon"
-                  : "ArrowUpSLineIcon"
-              }
-              {..._icon}
-            />
-          </HStack>
-        </Box>
-      </Pressable>
-      <PresenceTransition visible={collaps}>{body}</PresenceTransition>
-    </>
-  );
-};

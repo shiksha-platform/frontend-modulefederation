@@ -7,6 +7,7 @@ import {
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -57,11 +58,11 @@ export default function AssessmentSectionWiseReport({ footerLinks }) {
     <Layout
       _header={{
         title: "Class I Assessment Reports",
-        _heading: { color: "schools.white" },
       }}
+      subHeader={<H2>View Section wise Assessment report</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
-        languages: ["en"],
-        isEnableSearchBtn: true,
+        languages: manifest.languages,
       }}
       _footer={footerLinks}
     >

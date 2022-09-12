@@ -10,6 +10,7 @@ import {
   SearchLayout,
   getApiConfig,
   H2,
+  getArray,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { Box, Button, Stack, VStack } from "native-base";
@@ -26,27 +27,40 @@ const newDefaultInputs = defaultInputs.map((e) => {
     ["attributeName"]: ["gradeLevel"].includes(e.attributeName)
       ? "grade"
       : e.attributeName,
-    ["type"]: "sting",
+    ["type"]: ["subject", "gradeLevel", "source"].includes(e.attributeName)
+      ? "string"
+      : "array",
   };
 });
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function Worksheet({ footerLinks, appName }) {
+export default function Worksheet({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [filterObject, setFilterObject] = React.useState({});
   const [worksheets, setWorksheets] = React.useState([]);
   const [sortArray, setSortArray] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [worksheetLoading, setWorksheetLoading] = React.useState(true);
   const [search, setSearch] = React.useState(true);
   const [searchState, setSearchState] = React.useState(false);
-  const [sortData, setSortData] = React.useState();
+  const [inputs, setInputs] = React.useState([]);
+  // const [sortData, setSortData] = React.useState();
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
   const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
   const { state } = useParams();
 
   React.useEffect(async () => {
     const newManifest = await getApiConfig(["worksheet"]);
+    const source = getArray(newManifest?.["question-bank.questionResource"]);
+    setInputs(
+      newDefaultInputs.map((item, index) => {
+        if (item.attributeName === "source") {
+          item.data = source;
+        }
+        return item;
+      })
+    );
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
@@ -54,6 +68,28 @@ export default function Worksheet({ footerLinks, appName }) {
         ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
         : []
     );
+    // const sorts = Array.isArray(
+    //   newManifest?.["worksheet.configureWorksheetSortOptions"]
+    // )
+    //   ? newManifest?.["worksheet.configureWorksheetSortOptions"]
+    //   : newManifest?.["worksheet.configureWorksheetSortOptions"]
+    //   ? JSON.parse(newManifest?.["worksheet.configureWorksheetSortOptions"])
+    //   : [];
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    setShowButtonArray([...showButtonArray, ...buttons]);
+
+    // setSortArray(sorts);
+    setLoading(false);
+  }, []);
+
+  React.useEffect(async () => {
+    setWorksheetLoading(true);
     let params = state
       ? {
           state: { eq: state },
@@ -79,24 +115,7 @@ export default function Worksheet({ footerLinks, appName }) {
     }
     console.log("FilterData", filterData);
     setWorksheets(filterData);
-    const sorts = Array.isArray(
-      newManifest?.["worksheet.configureWorksheetSortOptions"]
-    )
-      ? newManifest?.["worksheet.configureWorksheetSortOptions"]
-      : newManifest?.["worksheet.configureWorksheetSortOptions"]
-      ? JSON.parse(newManifest?.["worksheet.configureWorksheetSortOptions"])
-      : [];
-    let buttons = [];
-    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
-      buttons = [...buttons, "Download"];
-    }
-    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
-      buttons = [...buttons, "Share"];
-    }
-    setShowButtonArray([...showButtonArray, ...buttons]);
-
-    setSortArray(sorts);
-    setLoading(false);
+    setWorksheetLoading(false);
   }, [filterObject, search.length >= 3, searchState]);
   console.log(filterObject);
   if (loading) {
@@ -123,6 +142,9 @@ export default function Worksheet({ footerLinks, appName }) {
             sortArray,
             worksheetConfig,
             showButtonArray,
+            inputs,
+            setAlert,
+            worksheetLoading,
           }}
         />
       </SearchLayout>
@@ -132,18 +154,18 @@ export default function Worksheet({ footerLinks, appName }) {
   return (
     <Layout
       _header={{
-        title: t("All Worksheets"),
-        iconComponent: (
-          <Box>
-            <SortActionsheet
-              {...{
-                appName,
-                sortArray,
-                setSortData,
-              }}
-            />
-          </Box>
-        ),
+        title: t("ALL_WORKSHEETS"),
+        // iconComponent: (
+        //   <Box>
+        //     <SortActionsheet
+        //       {...{
+        //         appName,
+        //         sortArray,
+        //         setSortData,
+        //       }}
+        //     />
+        //   </Box>
+        // ),
       }}
       _appBar={{
         languages: manifest.languages,
@@ -162,6 +184,9 @@ export default function Worksheet({ footerLinks, appName }) {
           appName,
           worksheetConfig,
           showButtonArray,
+          inputs,
+          setAlert,
+          worksheetLoading,
         }}
       />
     </Layout>
@@ -175,10 +200,14 @@ const ChildrenWorksheet = ({
   isHideCreateButton,
   setFilterObject,
   appName,
+  inputs,
+  setAlert,
+  worksheetLoading,
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { state } = useParams();
+  const ref = React.useRef(null);
 
   const handleFilter = (obejct) => {
     const telemetryData = telemetryFactory.interact({
@@ -191,8 +220,9 @@ const ChildrenWorksheet = ({
   };
 
   return (
-    <Stack>
+    <Stack bg={"white"} p={worksheetLoading ? "5" : "0"}>
       <FilterButton
+        setAlert={setAlert}
         getObject={handleFilter}
         _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: "worksheet.cardBg" }}
@@ -204,64 +234,68 @@ const ChildrenWorksheet = ({
         }}
         resetButtonText={t("COLLAPSE")}
         color={"worksheet.primary"}
-        filters={newDefaultInputs}
+        filters={inputs}
       />
-      <VStack>
-        <Box
-          bg={"worksheet.white"}
-          p="5"
-          mb="4"
-          roundedBottom={"xl"}
-          shadow={2}
-        >
-          <Stack>
-            <VStack space={3}>
-              {worksheets.length > 0 ? (
-                worksheets.map((item, index) => {
-                  return (
-                    <WorksheetBox
-                      canShowButtonArray={showButtonArray}
-                      worksheetConfig={worksheetConfig}
-                      appName={appName}
-                      canShare={true}
-                      key={index}
-                      {...{ item, url: `/worksheet/${item.id}` }}
-                    />
-                  );
-                })
-              ) : (
-                <Box
-                  p="10"
-                  my="5"
-                  alignItems={"center"}
-                  rounded="lg"
-                  bg={"worksheet.secondary"}
-                >
-                  {t("WORKSHEET_NOT_FOUND")}
-                </Box>
-              )}
-            </VStack>
-          </Stack>
-        </Box>
-      </VStack>
-      {!isHideCreateButton ? (
-        <Box
-          bg={"worksheet.white"}
-          p="5"
-          position="sticky"
-          bottom="84"
-          shadow={2}
-        >
-          <Button
-            _text={{ color: "worksheet.white" }}
-            p="3"
-            onPress={(e) => navigate("/worksheet/create")}
-          >
-            {t("CREATE_NEW_WORKSHEET")}
-          </Button>
-        </Box>
+      {worksheetLoading ? (
+        <Loading height="auto" />
       ) : (
-        <React.Fragment />
+        <VStack ref={ref}>
+          <Box
+            bg={"worksheet.white"}
+            p="5"
+            mb="4"
+            roundedBottom={"xl"}
+            shadow={2}
+          >
+            <Stack>
+              <VStack space={3}>
+                {worksheets.length > 0 ? (
+                  worksheets.map((item, index) => {
+                    return (
+                      <WorksheetBox
+                        canShowButtonArray={showButtonArray}
+                        worksheetConfig={worksheetConfig}
+                        appName={appName}
+                        canShare={true}
+                        key={index}
+                        {...{ item, url: `/worksheet/${item.id}` }}
+                      />
+                    );
+                  })
+                ) : (
+                  <Box
+                    p="10"
+                    my="5"
+                    alignItems={"center"}
+                    rounded="lg"
+                    bg={"worksheet.secondary"}
+                  >
+                    {t("WORKSHEET_NOT_FOUND")}
+                  </Box>
+                )}
+              </VStack>
+            </Stack>
+          </Box>
+          {!isHideCreateButton ? (
+            <Box
+              bg={"worksheet.white"}
+              p="5"
+              position="sticky"
+              bottom="84"
+              shadow={2}
+            >
+              <Button
+                _text={{ color: "worksheet.white" }}
+                p="3"
+                onPress={(e) => navigate("/worksheet/create")}
+              >
+                {t("CREATE_NEW_WORKSHEET")}
+              </Button>
+            </Box>
+          ) : (
+            <React.Fragment />
+          )}
+        </VStack>
       )}
     </Stack>
   );

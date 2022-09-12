@@ -2,15 +2,7 @@ import moment from "moment";
 import { Box, HStack, Text, useToast, VStack } from "native-base";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  IconByName,
-  calendar,
-  H2,
-  Caption,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import { IconByName, calendar, H2, Caption } from "@shiksha/common-lib";
 
 const FormatDate = ({ date, type }) => {
   if (type === "Month") {
@@ -107,7 +99,6 @@ export function WeekWiesBar({
 }) {
   const [weekDays, setWeekDays] = useState([]);
   const { t } = useTranslation();
-  const colors = overrideColorTheme(colorTheme);
 
   useEffect(() => {
     setWeekDays(calendar(page, "week"));
@@ -234,7 +225,7 @@ const Display = ({
                 ? activeColor
                   ? activeColor
                   : "schools.gray"
-                : "schools.darkGary3"
+                : "schools.darkGray3"
             }
             name="ArrowRightSLineIcon"
             onPress={(e) => {

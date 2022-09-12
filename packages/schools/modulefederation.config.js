@@ -4,7 +4,7 @@ module.exports = {
   name: "schools",
   exposes: {
     "./SchoolProfile": "./src/pages/SchoolProfile",
-    "./MyVisitsPage": "./src/pages/MyVisitsPage",
+    "./AllTeachers": "./src/pages/AllTeachers",
     "./AttendanceReportDashboard":
       "./src/pages/reports/AttendanceReportDashboard",
     "./AttendanceSectionWiseReport":
@@ -26,6 +26,7 @@ module.exports = {
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
+    attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

@@ -5,6 +5,7 @@ import {
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -56,8 +57,7 @@ export default function AssessmentReportDashboard({ footerLinks }) {
       subHeader={<H2>View Class wise Assessment report</H2>}
       _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
-        languages: ["en"],
-        isEnableSearchBtn: true,
+        languages: manifest.languages,
       }}
       _footer={footerLinks}
     >

@@ -36,7 +36,7 @@
   "NOTES": "Notes",
   "MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH": "Monthly report will be generated on the last day of every month.",
   "SEE_MORE": "See more",
-  "ABSENT_CONSECUTIVE_3_DAYS": "Absent Consecutive 3 Days",
+  "ABSENT_CONSECUTIVE_3_DAYS": "Absent consecutive 3 days",
   "DAYS": "Days",
   "STUDENT_WISE_ATTENDANCE": "Student Wise Attendance",
   "SELECT_CLASS_MARK_ATTENDANCE": "Choose the class for which you wish to mark attendance",
@@ -63,8 +63,11 @@
   "RETRY": "Retry",
   "DONE": "Done",
   "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "No student has achieved 100% attendance this week",
+  "NO_STUDENT_HAS_ACHIEVED": "No student has achieved 100%",
   "NO_STUDENT_HAS_BEEN_ABSENT": "No student has been absent for more than 3 days",
   "SEND_ANOTHER_MESSAGE": "Send another message",
   "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "View messages being sent by admin",
-  "REPORT_CONFIG_TYPE_NOT_FOUND": "Report config type not found"
+  "REPORT_CONFIG_TYPE_NOT_FOUND": "Report config type not found",
+  "YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE": "You have successfully uploaded your image and marked your attendance for the day.",
+  "YOU_SUCCESS_ATTENDANCE": "You have successfully marked your attendance for the day."
 }

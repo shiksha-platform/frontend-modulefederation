@@ -10,7 +10,7 @@ const interfaceData = {
   phoneNumber: 'studentPhoneNumber',
   lastName: 'lastName',
   aadhaar: 'aadhaar',
-  classId: 'classId',
+  groupId: 'groupId',
   schoolId: 'schoolId',
   refId: 'studentRefId',
   birthDate: 'birthDate',
@@ -25,7 +25,7 @@ const interfaceData = {
   singleGirl: 'singleGirl',
   socialCategory: 'socialCategory',
   admissionNo: 'refId1',
-  currentClassID: 'classId',
+  currentClassID: 'groupId',
   email: 'studentEmail',
   address: 'address',
   gender: 'gender'
@@ -105,6 +105,28 @@ export const update = async (data = {}, headers = {}) => {
   )
   if (result?.data) {
     return result
+  } else {
+    return {}
+  }
+}
+
+export const getAllStudents = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/student/search',
+    { filters },
+    {
+      headers
+    }
+  )
+  if (result?.data?.data) {
+    const studentData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    return studentData
   } else {
     return {}
   }

@@ -8,6 +8,7 @@ import {
   overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
+import manifest from "manifest.json";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -61,7 +62,6 @@ export default function AssessmentDetailedReport({ footerLinks }) {
     <Layout
       _header={{
         title: "Report Details",
-        _heading: { color: "schools.white" },
         subHeading: (
           <VStack>
             <H3 color={"schools.white"}>{t("Summative Assessment 1")}</H3>
@@ -81,8 +81,10 @@ export default function AssessmentDetailedReport({ footerLinks }) {
         ),
         _subHeading: { color: "schools.white" },
       }}
+      subHeader={<H2>View Detailed view of Assessment report</H2>}
+      _subHeader={{ bg: "schools.cardBg" }}
       _appBar={{
-        languages: ["en"],
+        languages: manifest.languages,
       }}
       _footer={footerLinks}
     >

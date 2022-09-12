@@ -58,8 +58,7 @@ export const create = async (
     headers: header
   })
   if (result.data) {
-    let { Like } = result.data?.data?.result
-    return Like
+    return result.data?.data?.likeId
   } else {
     return false
   }

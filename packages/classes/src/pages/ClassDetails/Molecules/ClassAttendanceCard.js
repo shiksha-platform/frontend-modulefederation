@@ -61,7 +61,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
           <VStack space={2}>
             <HStack justifyContent={"space-between"} alignItems="center">
               <Text bold>{t("STATUS")}</Text>
-              <IconByName name="More2LineIcon" />
+              {/* <IconByName name="More2LineIcon" /> */}
             </HStack>
             <ProgressBar
               isTextInBar

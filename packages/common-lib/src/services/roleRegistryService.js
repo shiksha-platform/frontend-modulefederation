@@ -15,24 +15,29 @@ const interfaceData = {
 let only = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
-  let headers = {
-    ...header,
-    headers: {
-      ...header.header,
-      Authorization: 'Bearer ' + localStorage.getItem('token')
+  try {
+    let headers = {
+      ...header,
+      headers: {
+        ...header.header,
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
     }
-  }
-  const result = await post(
-    process.env.REACT_APP_API_URL + '/role/search',
-    { filters: params, limit: limit },
-    {
-      headers: headers?.headers ? headers?.headers : {}
-    }
-  )
+    const result = await post(
+      process.env.REACT_APP_API_URL + '/role/search',
+      { filters: params, limit: limit },
+      {
+        headers: headers?.headers ? headers?.headers : {}
+      }
+    )
 
-  if (result.data.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
-  } else {
+    if (result.data.data) {
+      return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    } else {
+      return []
+    }
+  } catch (e) {
+    console.log(e.message)
     return []
   }
 }

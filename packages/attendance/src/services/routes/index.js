@@ -5,5 +5,5 @@ export const navigationRoute = {
   reportCompare: "attendance/reportCompare/:classId",
   sendSms: "students/sendSms/:studentId",
   sendSmsStudentId: "attendance/sendSms/:studentId",
-  fourOfour: "*",
+  fourOfour: "/",
 };

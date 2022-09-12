@@ -4,7 +4,8 @@ import {
   BodyLarge,
   H2,
   IconByName,
-  overrideColorTheme,
+  questionRegistryService,
+  getArray,
 } from "@shiksha/common-lib";
 import {
   HStack,
@@ -14,14 +15,13 @@ import {
   Actionsheet,
   Box,
   Pressable,
+  ScrollView,
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { defaultInputs, autoGenerateInputs } from "config/worksheetConfig";
 import AlertValidationModal from "components/AlertValidationModal";
 import moment from "moment";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 const getValueByType = (value, type = "array") => {
   return value ? value : type !== "array" ? "" : [];
@@ -46,9 +46,6 @@ const newDefaultInputs = defaultInputs.map((e) => {
       : "array",
   };
 });
-
-const getArray = (item) =>
-  Array.isArray(item) ? item : item ? JSON.parse(item) : [];
 
 export default function Form({
   manifest,
@@ -138,11 +135,110 @@ export default function Form({
     setWorksheetStartTime(moment());
   };
 
+  const handelSelect = (value) => {
+    if (type === "array") {
+      if (valueArr.includes(value)) {
+        const newData = formObject[attributeName].filter((e) => value !== e);
+        setFormObject({
+          ...formObject,
+          [attributeName]: newData.length > 0 ? newData : null,
+        });
+      } else {
+        setFormObject({
+          ...formObject,
+          [attributeName]: [...valueArr, value],
+        });
+      }
+    } else if (valueArr === value) {
+      setFormObject({
+        ...formObject,
+        [attributeName]: type === "stingValueArray" ? [] : "",
+      });
+    } else {
+      const newData = {
+        ...formObject,
+        [attributeName]: type === "stingValueArray" ? [value] : value,
+      };
+      setDependentData(formData, value);
+      setFormObject(newData);
+    }
+  };
+
+  const handelSetFormData = (data) => {
+    if (data?.dependent) {
+      let dependent = ["gradeLevel"].includes(data.dependent)
+        ? "grade"
+        : data.dependent;
+      if (!formObject[dependent]) {
+        const nameData = newDefaultInputs.find(
+          (e) => e.attributeName === dependent
+        );
+        setAlertMessage(
+          <BodyLarge>
+            Please select the <H2>{nameData.name}</H2> first
+          </BodyLarge>
+        );
+      } else {
+        setFormData(data);
+      }
+    } else {
+      setFormData(data);
+    }
+  };
+
+  const setDependentData = async (object = null, value = null) => {
+    if (object && value) {
+      let attributeName = ["grade"].includes(object.attributeName)
+        ? "gradeLevel"
+        : object.attributeName;
+      const nameData = inputs.find((e) => e.dependent === attributeName);
+
+      if (nameData?.urlName === "getSubjectsList") {
+        const selectData = await questionRegistryService.getSubjectsList({
+          adapter: formObject?.source,
+          gradeLevel: value,
+        });
+        setInputs(
+          inputs.map((e) => {
+            if (e.attributeName === nameData.attributeName) {
+              return { ...e, data: selectData.map((e) => e.code) };
+            }
+            return e;
+          })
+        );
+      } else if (nameData?.urlName === "getTopicsList") {
+        const selectData = await questionRegistryService.getTopicsList({
+          adapter: formObject?.source,
+          subject: value,
+        });
+        setInputs(
+          inputs.map((e) => {
+            if (e.attributeName === nameData.attributeName) {
+              return { ...e, data: selectData };
+            }
+            return e;
+          })
+        );
+      }
+    } else {
+      inputs.forEach(async (data) => {
+        let valueData = object
+          ? Array.isArray(object?.[data.attributeName])
+            ? object?.[data.attributeName]?.[0]
+            : object?.[data.attributeName]
+          : Array.isArray(formObject?.[data.attributeName])
+          ? formObject?.[data.attributeName]?.[0]
+          : formObject?.[data.attributeName];
+        await setDependentData(data, valueData);
+      });
+    }
+  };
+
   return (
     <Stack space={1} mb="2">
       <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
       <FormInput
-        {...{ formObject, setFormObject, formData, setFormData }}
+        {...{ formObject, setFormData: handelSetFormData }}
         data={inputs}
       />
       <Box
@@ -192,117 +288,93 @@ export default function Form({
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg={"worksheet.white"} width={"100%"}>
-          {type === "array" ? (
-            <Pressable
-              p="3"
-              onPress={(e) => {
-                if (
-                  formData?.data &&
-                  valueArr &&
-                  formData?.data?.length === valueArr?.length
-                ) {
-                  setFormObject({
-                    ...formObject,
-                    [formData?.attributeName]: null,
-                  });
-                } else {
-                  setFormObject({
-                    ...formObject,
-                    [formData?.attributeName]: formData.data,
-                  });
-                }
-              }}
-            >
-              <HStack space="2" colorScheme="button" alignItems="center">
-                <IconByName
-                  isDisabled
-                  color={
+        <Box bg={"worksheet.white"} width={"100%"} maxH="80%">
+          <ScrollView>
+            {type === "array" ? (
+              <Pressable
+                p="3"
+                onPress={(e) => {
+                  if (
                     formData?.data &&
                     valueArr &&
                     formData?.data?.length === valueArr?.length
-                      ? "worksheet.primary"
-                      : "worksheet.lightGray2"
+                  ) {
+                    setFormObject({
+                      ...formObject,
+                      [formData?.attributeName]: null,
+                    });
+                  } else {
+                    setFormObject({
+                      ...formObject,
+                      [formData?.attributeName]: formData.data,
+                    });
                   }
-                  name={
-                    formData?.data &&
-                    valueArr &&
-                    formData?.data?.length === valueArr?.length
-                      ? "CheckboxLineIcon"
-                      : "CheckboxBlankLineIcon"
-                  }
-                />
-                <Text>{t("Select All")}</Text>
-              </HStack>
-            </Pressable>
-          ) : (
-            ""
-          )}
-          {formData?.data &&
-            formData?.data.map((value, index) => {
-              return (
-                <Pressable
-                  p="3"
-                  key={index}
-                  onPress={(e) => {
-                    if (type === "array") {
-                      if (valueArr.includes(value)) {
-                        const newData = formObject[attributeName].filter(
-                          (e) => value !== e
-                        );
-                        setFormObject({
-                          ...formObject,
-                          [attributeName]: newData.length > 0 ? newData : null,
-                        });
-                      } else {
-                        setFormObject({
-                          ...formObject,
-                          [attributeName]: [...valueArr, value],
-                        });
-                      }
-                    } else if (valueArr === value) {
-                      setFormObject({
-                        ...formObject,
-                        [attributeName]: type === "stingValueArray" ? [] : "",
-                      });
-                    } else {
-                      setFormObject({
-                        ...formObject,
-                        [attributeName]:
-                          type === "stingValueArray" ? [value] : value,
-                      });
+                }}
+              >
+                <HStack space="2" colorScheme="button" alignItems="center">
+                  <IconByName
+                    isDisabled
+                    color={
+                      formData?.data &&
+                      valueArr &&
+                      formData?.data?.length === valueArr?.length
+                        ? "worksheet.primary"
+                        : "worksheet.lightGray2"
                     }
-                  }}
-                  bg={
-                    (type !== "array" && valueArr === value) ||
-                    (type === "stingValueArray" && valueArr.includes(value))
-                      ? "worksheet.lightGray2"
-                      : "worksheet.white"
-                  }
-                >
-                  <HStack space="2" colorScheme="button" alignItems="center">
-                    {type === "array" ? (
-                      <IconByName
-                        isDisabled
-                        color={
-                          valueArr.includes(value)
-                            ? "worksheet.primary"
-                            : "worksheet.lightGray2"
-                        }
-                        name={
-                          valueArr.includes(value)
-                            ? "CheckboxLineIcon"
-                            : "CheckboxBlankLineIcon"
-                        }
-                      />
-                    ) : (
-                      ""
-                    )}
-                    <Text>{value}</Text>
-                  </HStack>
-                </Pressable>
-              );
-            })}
+                    name={
+                      formData?.data &&
+                      valueArr &&
+                      formData?.data?.length === valueArr?.length
+                        ? "CheckboxLineIcon"
+                        : "CheckboxBlankLineIcon"
+                    }
+                  />
+                  <Text>{t("Select All")}</Text>
+                </HStack>
+              </Pressable>
+            ) : (
+              ""
+            )}
+            {formData?.data &&
+              formData?.data.map((item, index) => {
+                let value = item?.value ? item?.value : item;
+                let label = item?.label ? item?.label : item;
+                return (
+                  <Pressable
+                    p="3"
+                    key={index}
+                    onPress={() => handelSelect(value)}
+                    bg={
+                      (type !== "array" && valueArr === value) ||
+                      (type === "stingValueArray" && valueArr.includes(value))
+                        ? "worksheet.lightGray2"
+                        : "worksheet.white"
+                    }
+                  >
+                    <HStack space="2" colorScheme="button" alignItems="center">
+                      {type === "array" ? (
+                        <IconByName
+                          isDisabled
+                          color={
+                            valueArr.includes(value)
+                              ? "worksheet.primary"
+                              : "worksheet.lightGray2"
+                          }
+                          name={
+                            valueArr.includes(value)
+                              ? "CheckboxLineIcon"
+                              : "CheckboxBlankLineIcon"
+                          }
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <Text>{label}</Text>
+                    </HStack>
+                  </Pressable>
+                );
+              })}
+          </ScrollView>
           <Box p="5">
             <Button
               colorScheme="button"
@@ -318,13 +390,7 @@ export default function Form({
   );
 }
 
-const FormInput = ({
-  data,
-  formObject,
-  setFormObject,
-  formData,
-  setFormData,
-}) => {
+const FormInput = ({ data, formObject, setFormData }) => {
   const { t } = useTranslation();
   return (
     data &&
@@ -339,7 +405,7 @@ const FormInput = ({
           justifyContent="space-between"
         >
           <BodyLarge>
-            {t(item.name)}{" "}
+            {t(item.name)}
             {item.required ? (
               <Text color={"worksheet.primary"}>*</Text>
             ) : (
@@ -353,7 +419,10 @@ const FormInput = ({
               ? { variant: item.buttonVariant }
               : {
                   variant: "outline",
-                  _text: { color: "button.500", textTransform: "inherit" },
+                  _text: {
+                    color: "worksheet.primary",
+                    textTransform: "inherit",
+                  },
                 })}
             rounded="full"
             colorScheme="button"

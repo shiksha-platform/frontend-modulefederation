@@ -19,8 +19,6 @@ import {
   telemetryFactory,
   H2,
   H3,
-  H4,
-  H5,
   capture,
   calendar,
   getStudentsPresentAbsent,
@@ -131,9 +129,8 @@ export default function SendSMS({ footerLinks, appName }) {
         title: t("Message Sent By Admin"),
         subHeading: (
           <BodyLarge>
-            {(classObject?.name ? "Class " + classObject?.name : "") +
-              " • " +
-              (classObject?.section ? " Sec " + classObject?.section : "")}
+            {(classObject?.name ? classObject?.name : "") +
+              (classObject?.section ? " • Sec " + classObject?.section : "")}
           </BodyLarge>
         ),
         _subHeading: { fontWeight: 500 },
@@ -155,9 +152,8 @@ export default function SendSMS({ footerLinks, appName }) {
       <VStack space="1">
         <Box bg={colors.white} p="5">
           <BodyLarge>
-            {(classObject?.name ? "Class " + classObject?.name : "") +
-              " • " +
-              (classObject?.section ? " Sec " + classObject?.section : "")}
+            {(classObject?.name ? classObject?.name : "") +
+              (classObject?.section ? " • Sec " + classObject?.section : "")}
           </BodyLarge>
           <Caption>
             {t("TOTAL")}: {students.length} • {t("PRESENT")}:
@@ -227,7 +223,9 @@ export default function SendSMS({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <H2 bold={true}>{t("ABSENT_CONSECUTIVE_3_DAYS")}</H2>
+                    <H2 textTransform={"none"}>
+                      {t("ABSENT_CONSECUTIVE_3_DAYS")}
+                    </H2>
                     <Caption>
                       {absentStudents?.length + " " + t("STUDENTS")}
                     </Caption>

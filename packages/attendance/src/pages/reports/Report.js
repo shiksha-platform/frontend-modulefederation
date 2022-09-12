@@ -17,6 +17,7 @@ import {
   Subtitle,
   getApiConfig,
   getArray,
+  Loading,
 } from "@shiksha/common-lib";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
@@ -26,7 +27,7 @@ import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function Report({ footerLinks }) {
+export default function Report({ footerLinks, config }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const [classes, setClasses] = useState([]);
@@ -35,9 +36,9 @@ export default function Report({ footerLinks }) {
   const [attendance, setAttendance] = useState({});
   const [calendarView, setCalendarView] = React.useState();
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
-  const [manifest, setManifest] = React.useState();
   const titleName = t("ATTENDANCE_REPORTS");
   const [reportTypes, setReportTypes] = React.useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(async () => {
@@ -55,9 +56,7 @@ export default function Report({ footerLinks }) {
     let ignore = false;
 
     const getData = async () => {
-      const newManifest = await getApiConfig();
-      setManifest(newManifest);
-      const arr = getArray(newManifest?.["Attendance.report_types"]);
+      const arr = getArray(config?.["Attendance.report_types"]);
       setReportTypes(arr);
       if (arr.includes("daily-report")) {
         setCalendarView("days");
@@ -78,6 +77,7 @@ export default function Report({ footerLinks }) {
       }
     };
     getData();
+    setLoading(false);
     return () => {
       ignore = true;
     };
@@ -98,6 +98,10 @@ export default function Report({ footerLinks }) {
     const studentData = await studentRegistryService.getAll({ classId });
     setStudents({ ...students, [classId]: studentData });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!calendarView) {
     return (
@@ -205,10 +209,10 @@ export default function Report({ footerLinks }) {
               onPressFuction={(e) => getAttendance(item.id)}
               header={
                 <VStack>
-                  <H2>{item.name}</H2>
-                  <Caption>
-                    {index % 2 === 0 ? t("MORNING") : t("MID_DAY_MEAL")}
-                  </Caption>
+                  <H2>
+                    {(item?.name ? item?.name : "") +
+                      (item?.section ? " • Sec " + item?.section : "")}
+                  </H2>
                 </VStack>
               }
             >

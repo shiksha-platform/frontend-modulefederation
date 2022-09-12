@@ -69,9 +69,6 @@ export const getOne = async (filters = {}, header = {}) => {
     )
     if (result?.data?.data) {
       let mapResult = mapInterfaceData(result.data.data, interfaceData)
-      mapResult.id = mapResult.id?.startsWith('1-')
-        ? mapResult.id?.replace('1-', '')
-        : mapResult.id
       return mapResult
     } else {
       return {}
@@ -104,8 +101,7 @@ export const create = async (data, header = {}) => {
     }
   )
   if (result.data) {
-    let { Worksheet } = result.data?.data?.result
-    return Worksheet
+    return result.data?.data?.worksheetId
   } else {
     return false
   }

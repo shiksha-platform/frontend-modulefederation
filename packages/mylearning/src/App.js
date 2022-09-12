@@ -50,7 +50,7 @@ function App() {
     },
     {
       moduleName: "mylearning",
-      path: "*",
+      path: "/",
       component: MyLearning,
     },
   ];

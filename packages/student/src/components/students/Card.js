@@ -119,7 +119,6 @@ const SubCard = ({
       {typeof img === "undefined" || img === true ? (
         <Avatar
           size="40px"
-          bg={item?.avatarUrl ? "" : "amber.500"}
           {...(item?.avatarUrl ? { source: { uri: item.avatarUrl } } : {})}
           rounded="lg"
         >
@@ -178,7 +177,7 @@ const SubCard = ({
             <Text color={"student.lightGray1"}>{" • "}</Text>
             <Text>{t("ROLL_NUMBER") + "."} </Text>
             {item.admissionNo ? (
-              <Text>{item.admissionNo.toString().padStart(2, "0")}</Text>
+              item.admissionNo.toString().padStart(2, "0")
             ) : (
               <Text italic>{t("NOT_ENTERED")}</Text>
             )}
@@ -190,14 +189,14 @@ const SubCard = ({
             ) : (
               <HStack space={1}>
                 <Text>{t("ROLL_NUMBER") + "."}</Text>
-                {item.admissionNo ? (
-                  <Text>{item.admissionNo.toString().padStart(2, "0")}</Text>
+                {item.id ? (
+                  <Text>{item.id.toString().padStart(2, "0")}</Text>
                 ) : (
                   <Text italic>{t("NOT_ENTERED")}</Text>
                 )}
                 <Text>{t("FATHERS_NAME")}:</Text>
-                {item.fathersName ? (
-                  <Text>{item.fathersName}</Text>
+                {item.parentName ? (
+                  <Text>{item.parentName}</Text>
                 ) : (
                   <Text italic>{t("NOT_ENTERED")}</Text>
                 )}
@@ -250,7 +249,8 @@ export default function Card({
       let classObj = await classRegistryService.getOne({
         id: e.currentClassID,
       });
-      item.className = classObj?.className;
+
+      setStudentObject({ ...studentObject, className: classObj?.name });
     }
     setOpen(true);
     const telemetryData = telemetryFactory.interact({
@@ -280,7 +280,7 @@ export default function Card({
       <PressableNew href={href ? href : null}>
         <SubCard
           {...{
-            item,
+            item: studentObject,
             img,
             type,
             textTitle,
@@ -298,20 +298,20 @@ export default function Card({
           <IconByName
             onPress={(e) => handalOpenPoup(item)}
             size="sm"
-            color={"student.darkGary0s"}
+            color={"student.darkGray0s"}
             name="ArrowDownSLineIcon"
             {..._arrow}
           />
           <Actionsheet isOpen={open} onClose={(e) => setOpen(false)}>
             <Actionsheet.Content
-              bg={"student.successAlerts"}
+              bg={"student.successAlert"}
               alignItems="inherit"
             >
               <HStack justifyContent={"space-between"}>
                 <Box px="3" py="4" pt="0">
                   <SubCard
                     {...{
-                      item,
+                      item: studentObject,
                       img,
                       type: type ? type : "card",
                       textTitle,

@@ -32,14 +32,19 @@ function App() {
       path: "/notification/outbox",
       component: Outbox,
     },
-    { moduleName: "notification", path: "*", component: Notification },
+    { moduleName: "notification", path: "/", component: Notification },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
 
   return (
     <AppShell
       routes={routes}
       AuthComponent={LoginComponent}
+      skipLogin={skipLogin}
       _authComponent={{ swPath: "/modules/notification" }}
     />
   );

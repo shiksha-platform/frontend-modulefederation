@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapsible, IconByName } from "@shiksha/common-lib";
+import { Collapsible } from "@shiksha/common-lib";
 import { HStack, Text, VStack, Box, useTheme } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Pie } from "react-chartjs-2";
@@ -23,7 +23,7 @@ const ClassDetailsPanel = ({ students }) => {
             <VStack space={2}>
               <HStack justifyContent={"space-between"} alignItems="center">
                 <Text bold>{t("CLASS_TEACHER")}</Text>
-                <IconByName name="More2LineIcon" />
+                {/* <IconByName name="More2LineIcon" /> */}
               </HStack>
               <Text>
                 <Text bold>{t("NAME")}: </Text>
@@ -35,7 +35,7 @@ const ClassDetailsPanel = ({ students }) => {
             <VStack space={2}>
               <HStack justifyContent={"space-between"} alignItems="center">
                 <Text bold>{t("CLASS_STRENGTH")}</Text>
-                <IconByName name="More2LineIcon" />
+                {/* <IconByName name="More2LineIcon" /> */}
               </HStack>
               <HStack space={6} alignItems="center">
                 <VStack>
@@ -82,7 +82,7 @@ const ClassDetailsPanel = ({ students }) => {
             <VStack space={2}>
               <HStack justifyContent={"space-between"} alignItems="center">
                 <Text bold>{t("DETAILS")}</Text>
-                <IconByName name="More2LineIcon" />
+                {/* <IconByName name="More2LineIcon" /> */}
               </HStack>
               <HStack space="2" alignItems="center">
                 <Text>
