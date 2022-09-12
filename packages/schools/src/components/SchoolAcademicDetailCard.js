@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-export default function SchoolAcademicDetailCard({ schoolId }) {
+export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [classId, setClassId] = React.useState();
@@ -90,16 +90,28 @@ export default function SchoolAcademicDetailCard({ schoolId }) {
           </HStack>
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
-          <Actionsheet.Item
-            onPress={() => navigate(`/schools/attendance-report/${classId}`)}
-          >
-            Attendance Reports
-          </Actionsheet.Item>
-          <Actionsheet.Item
-            onPress={() => navigate("/schools/assessment-report")}
-          >
-            Assessment Reports
-          </Actionsheet.Item>
+          {configReport && configReport?.length > 0
+            ? configReport?.map((config) => (
+                <>
+                  {config === "attendance" && (
+                    <Actionsheet.Item
+                      onPress={() =>
+                        navigate(`/schools/attendance-report/${classId}`)
+                      }
+                    >
+                      Attendance Reports
+                    </Actionsheet.Item>
+                  )}
+                  {config === "assessment" && (
+                    <Actionsheet.Item
+                      onPress={() => navigate("/schools/assessment-report")}
+                    >
+                      Assessment Reports
+                    </Actionsheet.Item>
+                  )}
+                </>
+              ))
+            : "No Reports found"}
         </Box>
       </Actionsheet>
     </>

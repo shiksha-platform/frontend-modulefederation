@@ -5,8 +5,9 @@ import { BodyLarge, H2, H4 } from "@shiksha/common-lib";
 // Import for translation
 import { useTranslation } from "react-i18next";
 
-function SchoolAddressCard({ schoolData }) {
+function SchoolAddressCard({ schoolData, configSchoolDetails }) {
   const { t } = useTranslation();
+  console.log({ configSchoolDetails });
   return (
     schoolData && (
       <>
@@ -20,109 +21,137 @@ function SchoolAddressCard({ schoolData }) {
               <H2>{t("SCHOOL_OVERVIEW")}</H2>
             </Box>
             <Divider />
-            <Box p={4}>
-              <VStack space={6}>
-                <Box>
-                  <H4 color={"schools.gray"}>{t("ADDRESS")}</H4>
-                  <BodyLarge>
-                    {typeof schoolData?.address == "string" &&
-                      schoolData?.address}
-                  </BodyLarge>
-                </Box>
+            {configSchoolDetails && configSchoolDetails?.length > 0 ? (
+              configSchoolDetails?.map((config) => (
+                <Box p={4}>
+                  <VStack space={6}>
+                    {config === "address" && (
+                      <Box>
+                        <H4 color={"schools.gray"}>{t("ADDRESS")}</H4>
+                        <BodyLarge>
+                          {typeof schoolData?.address == "string" &&
+                            schoolData?.address}
+                        </BodyLarge>
+                      </Box>
+                    )}
 
-                <Box>
-                  <HStack
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                    flexWrap={"wrap"}
-                  >
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("DISTRICT")}</H4>
-                      <BodyLarge>{schoolData?.district}</BodyLarge>
-                    </Box>
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("BLOCK")}</H4>
-                      <BodyLarge>{schoolData?.block}</BodyLarge>
-                    </Box>
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                        marginTop: "10px",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("CLUSTER")}</H4>
-                      <BodyLarge>{schoolData?.cluster}</BodyLarge>
-                    </Box>
-                  </HStack>
-                </Box>
+                    <Box>
+                      <HStack
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        flexWrap={"wrap"}
+                      >
+                        {config === "district" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("DISTRICT")}</H4>
+                            <BodyLarge>{schoolData?.district}</BodyLarge>
+                          </Box>
+                        )}
 
-                <Box>
-                  <HStack
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                    flexWrap={"wrap"}
-                  >
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("HEADMASTER")}</H4>
-                      <BodyLarge>{schoolData?.headMaster}</BodyLarge>
+                        {config === "block" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("BLOCK")}</H4>
+                            <BodyLarge>{schoolData?.block}</BodyLarge>
+                          </Box>
+                        )}
+
+                        {config === "cluster" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("CLUSTER")}</H4>
+                            <BodyLarge>{schoolData?.cluster}</BodyLarge>
+                          </Box>
+                        )}
+                      </HStack>
                     </Box>
 
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("CONTACT")}</H4>
-                      <BodyLarge>{schoolData?.phoneNumber}</BodyLarge>
-                    </Box>
-                  </HStack>
-                </Box>
+                    <Box>
+                      <HStack
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        flexWrap={"wrap"}
+                      >
+                        {config === "headMaster" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("HEADMASTER")}</H4>
+                            <BodyLarge>{schoolData?.headMaster}</BodyLarge>
+                          </Box>
+                        )}
 
-                <Box>
-                  <HStack
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                    flexWrap={"wrap"}
-                  >
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("MEDIUM")}</H4>
-                      <BodyLarge>{schoolData?.mediumOfInstruction}</BodyLarge>
+                        {config === "phoneNumber" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("CONTACT")}</H4>
+                            <BodyLarge>{schoolData?.phoneNumber}</BodyLarge>
+                          </Box>
+                        )}
+                      </HStack>
                     </Box>
-                    <Box
-                      style={{
-                        flex: "0 0 50%",
-                        maxWidth: "50%",
-                      }}
-                    >
-                      <H4 color={"schools.gray"}>{t("BOARD")}</H4>
-                      <BodyLarge>{schoolData?.board}</BodyLarge>
+
+                    <Box>
+                      <HStack
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        flexWrap={"wrap"}
+                      >
+                        {config === "mediumOfInstruction" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("MEDIUM")}</H4>
+                            <BodyLarge>
+                              {schoolData?.mediumOfInstruction}
+                            </BodyLarge>
+                          </Box>
+                        )}
+
+                        {config === "board" && (
+                          <Box
+                            style={{
+                              flex: "0 0 50%",
+                              maxWidth: "50%",
+                            }}
+                          >
+                            <H4 color={"schools.gray"}>{t("BOARD")}</H4>
+                            <BodyLarge>{schoolData?.board}</BodyLarge>
+                          </Box>
+                        )}
+                      </HStack>
                     </Box>
-                  </HStack>
+                  </VStack>
                 </Box>
-              </VStack>
-            </Box>
+              ))
+            ) : (
+              <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                No School details available
+              </Box>
+            )}
           </Box>
         </VStack>
       </>

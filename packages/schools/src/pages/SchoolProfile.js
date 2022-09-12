@@ -26,7 +26,7 @@ import SchoolAcademicDetailCard from "components/SchoolAcademicDetailCard";
 import TeacherListCard from "components/TeacherListCard";
 import PastVisitCard from "components/PastVisitCard";
 
-export default function SchoolProfile({ footerLinks }) {
+export default function SchoolProfile({ footerLinks, config }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -96,11 +96,21 @@ export default function SchoolProfile({ footerLinks }) {
               <Box>
                 <VStack space={6}>
                   {/* General School details */}
-                  <SchoolAddressCard schoolData={schoolData} />
+                  <SchoolAddressCard
+                    schoolData={schoolData}
+                    configSchoolDetails={JSON.parse(
+                      config["schooldetails.schools_fields"]
+                    )}
+                  />
 
                   {/* Administrative School details */}
                   <SchoolAdminDetailCard schoolId={id} />
-                  <SchoolAcademicDetailCard schoolId={id} />
+                  <SchoolAcademicDetailCard
+                    schoolId={id}
+                    configReport={JSON.parse(
+                      config["schooldetails.school-report"]
+                    )}
+                  />
 
                   {/* List of all teachers with symbols those who are allocated */}
                   <TeacherListCard
