@@ -22,6 +22,8 @@ function App() {
     ["schools"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
   );
+  const ReportDetails = React.lazy(() => import("assessment/ReportDetails"));
+
   const routes = [
     {
       moduleName: "schools",
@@ -40,13 +42,13 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/assessment-report",
+      path: "/schools/assessment-report/:classId",
       component: AssessmentReportDashboard,
     },
     {
       moduleName: "schools",
-      path: "/schools/assessment-section-report",
-      component: AssessmentSectionWiseReport,
+      path: "/schools/assessment-section-report/:classId/:subject/:date",
+      component: ReportDetails,
     },
     {
       moduleName: "schools",

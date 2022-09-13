@@ -38,7 +38,9 @@ export default function NewVisitPage({ footerLinks }) {
     const data = await mentorRegisteryService.getAllAllocatedSchools({
       mentorId: localStorage.getItem("id"),
       schoolId,
+      status: "pending",
     });
+    console.log({ data });
     setVisitData(data);
   }, []);
 

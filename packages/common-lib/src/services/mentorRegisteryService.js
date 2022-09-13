@@ -44,8 +44,8 @@ export const getAllAllocatedSchools = async (
     }
   )
 
-  if (result.data.data) {
-    return await getData(result.data.data)
+  if (result?.data?.data) {
+    return await getData(result?.data?.data)
   } else {
     return []
   }
@@ -63,8 +63,17 @@ const getDataOne = async (object) => {
   data = await schoolRegisteryService.getSchoolById({
     id: item.schoolId
   })
-  teacherData = await userRegistryService.getUserById(item.teacherId)
-  mentorData = await userRegistryService.getUserById(item.mentorId)
+  teacherData = await userRegistryService.getAll({
+    userId: { eq: item.teacherId }
+  })
+  mentorData = await userRegistryService.getAll({
+    userId: { eq: item.mentorId }
+  })
 
-  return { ...item, schoolData: data, teacherData, mentorData }
+  return {
+    ...item,
+    schoolData: data,
+    teacherData: teacherData[0],
+    mentorData: mentorData[0]
+  }
 }

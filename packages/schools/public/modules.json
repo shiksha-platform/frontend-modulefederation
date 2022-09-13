@@ -4,5 +4,8 @@
   },
   "attendance": {
     "url": "http://localhost:3002/modules/attendance"
+  },
+  "assessment": {
+    "url": "http://localhost:3009/modules/assessment"
   }
 }

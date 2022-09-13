@@ -3,7 +3,6 @@ import {
   IconByName,
   Layout,
   FilterButton,
-  overrideColorTheme,
   BodyMedium,
   BodyLarge,
   mentorRegisteryService,
@@ -23,30 +22,19 @@ import {
   Pressable,
 } from "native-base";
 import MySchoolsCard from "components/MySchoolsCard";
-import colorTheme from "../colorTheme";
+
 import manifest from "manifest.json";
-const colors = overrideColorTheme(colorTheme);
+
 const defaultInputs = [
   {
     name: "District",
-    attributeName: "year",
-    data: ["District1", "District2", "District3", "District4", "District5"],
+    attributeName: "district",
+    data: [],
   },
   {
     name: "Block",
     attributeName: "block",
-    data: [
-      "Block 1",
-      "Block 2",
-      "Block 3",
-      "Block 4",
-      "Block 5",
-      "Block 6",
-      "Block 7",
-      "Block 8",
-      "Block 9",
-      "Block 10",
-    ],
+    data: [],
   },
 ];
 
@@ -54,6 +42,7 @@ export default function Recommendedschools({ footerLinks }) {
   const { t } = useTranslation();
   const [recommendedVisits, setRecommendedVisits] = useState();
   const [sortModal, setSortModal] = useState(false);
+  const [input, setInput] = useState(defaultInputs);
 
   const [filterObject, setFilterObject] = React.useState({});
   const navigate = useNavigate();
@@ -74,6 +63,8 @@ export default function Recommendedschools({ footerLinks }) {
       return group;
     }, {});
 
+    const districts = new Set(),
+      blocks = new Set();
     // Getting the last Visited date of mentor for schools and setting the status to pending even if one teacher is not visited
     Object.entries(groupBySchools).forEach(([key, value]) => {
       let lastVisitedMilliSeconds = new Date(0).getTime(),
@@ -85,7 +76,25 @@ export default function Recommendedschools({ footerLinks }) {
         }
       });
       value[0].schoolLastVisited = schoolLastVisited;
+
+      if (value[0]?.schoolData?.district !== "")
+        districts.add(value[0]?.schoolData?.district);
+      if (value[0]?.schoolData?.block !== "")
+        blocks.add(value[0]?.schoolData?.block);
     });
+
+    setInput([
+      {
+        name: t("DISTRICT"),
+        attributeName: "district",
+        data: Array.from(districts),
+      },
+      {
+        name: t("BLOCK"),
+        attributeName: "block",
+        data: Array.from(blocks),
+      },
+    ]);
 
     // Getting the date of 2 months ago
     const today = new Date();
@@ -143,13 +152,14 @@ export default function Recommendedschools({ footerLinks }) {
                 <FilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: "visits.lightGray" }}
+                  _actionSheet={{ bg: "visits.cardBg" }}
                   _filterButton={{
                     rightIcon: "",
                     bg: "visits.white",
+                    color: "visits.primary",
                   }}
                   resetButtonText={t("COLLAPSE")}
-                  filters={defaultInputs}
+                  filters={input}
                 />
               </Box>
               {recommendedVisits ? (
@@ -182,7 +192,7 @@ export default function Recommendedschools({ footerLinks }) {
         <Actionsheet.Content alignItems={"left"} bg={"visits.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
-              <H2>{t("Sort")}</H2>
+              <H2>{t("SORT")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"

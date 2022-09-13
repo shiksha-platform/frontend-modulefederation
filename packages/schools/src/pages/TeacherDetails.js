@@ -36,18 +36,11 @@ import {
   useTheme,
 } from "native-base";
 
-// Imports for Circular Progressbar
-import {
-  buildStyles,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
-
 // Import for moment library
 import moment from "moment";
 import AttendanceSummaryCard from "components/AttendanceSummaryCard";
 
 const TeacherDetails = ({ footerLinks }) => {
-  const { colors } = useTheme();
   const navigate = useNavigate();
   const { teacherId } = useParams();
   const [teacherlist, setTeacherList] = useState();
@@ -254,7 +247,7 @@ const TeacherDetails = ({ footerLinks }) => {
           </Button>
         </Collapsible>
       </Box>
-      <Box px={5} bg={"schools.white"} mt={4}>
+      {/* <Box px={5} bg={"schools.white"} mt={4}>
         <Collapsible header="Class Result">
           <Divider marginY={6} />
           <HStack
@@ -289,7 +282,7 @@ const TeacherDetails = ({ footerLinks }) => {
             <IconByName name="ArrowRightSLineIcon" color={"schools.darkGray"} />
           </HStack>
         </Collapsible>
-      </Box>
+      </Box> */}
       <Box p={5} bg={"schools.white"} mt={4}>
         <Collapsible header="Past Visit Details">
           <Divider marginY={6} />

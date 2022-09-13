@@ -208,14 +208,14 @@ const ChildrenWorksheet = ({
   const { state } = useParams();
   const ref = React.useRef(null);
 
-  const handleFilter = (obejct) => {
+  const handleFilter = (object) => {
     const telemetryData = telemetryFactory.interact({
       appName,
       type: "Worksheet-Filter",
-      filterObject: obejct,
+      filterObject: object,
     });
     capture("INTERACT", telemetryData);
-    setFilterObject(obejct);
+    setFilterObject(object);
   };
 
   return (
