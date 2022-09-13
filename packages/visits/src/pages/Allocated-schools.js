@@ -23,31 +23,18 @@ import {
 } from "native-base";
 import { useNavigate } from "react-router-dom";
 import MySchoolsCard from "../components/MySchoolsCard";
-import colorTheme from "../colorTheme";
 import manifest from "manifest.json";
-const colors = overrideColorTheme(colorTheme);
 
 const defaultInputs = [
   {
     name: "District",
-    attributeName: "year",
-    data: ["District1", "District2", "District3", "District4", "District5"],
+    attributeName: "district",
+    data: [],
   },
   {
     name: "Block",
     attributeName: "block",
-    data: [
-      "Block 1",
-      "Block 2",
-      "Block 3",
-      "Block 4",
-      "Block 5",
-      "Block 6",
-      "Block 7",
-      "Block 8",
-      "Block 9",
-      "Block 10",
-    ],
+    data: [],
   },
 ];
 export default function Allocatedschools({ footerLinks }) {
@@ -56,24 +43,37 @@ export default function Allocatedschools({ footerLinks }) {
   const [totalSchools, setTotalSchools] = useState();
   const [totalPendingSchools, setTotalPendingSchools] = useState();
   const [sortModal, setSortModal] = useState(false);
+  const [input, setInput] = useState(defaultInputs);
 
-  const [filterObject, setFilterObject] = React.useState({});
+  const [filterObject, setFilterObject] = React.useState([]);
   const navigate = useNavigate();
-  const callBackFilterObject = React.useCallback((e) => {
-    setFilterObject();
-  }, []);
-
+  const callBackFilterObject = (object) => setFilterObject(object);
   useEffect(async () => {
     const data = await mentorRegisteryService.getAllAllocatedSchools({
       mentorId: localStorage.getItem("id"),
     });
 
     const groupBySchools = data.reduce((group, school) => {
+      // if (filterObject && filterObject?.district?.length > 0) {
+      //   filterObject?.district?.map((filter) => {
+      //     const { schoolId } = school;
+      //     group[schoolId] = group[schoolId] ?? [];
+      //     if (filter === school?.schoolData?.district) {
+      //       group[schoolId].push(school);
+      //       return group;
+      //     }
+      //   });
+      //   return;
+      // } else {
       const { schoolId } = school;
       group[schoolId] = group[schoolId] ?? [];
       group[schoolId].push(school);
       return group;
+      // }
     }, {});
+
+    const districts = new Set(),
+      blocks = new Set();
 
     // Getting the last Visited date of mentor for schools and setting the status to pending even if one teacher is not visited
     Object.entries(groupBySchools).forEach(([key, value]) => {
@@ -91,7 +91,25 @@ export default function Allocatedschools({ footerLinks }) {
       });
       value[0].schoolLastVisited = schoolLastVisited;
       value[0].schoolStatus = schoolStatus;
+
+      if (value[0]?.schoolData?.district !== "")
+        districts.add(value[0]?.schoolData?.district);
+      if (value[0]?.schoolData?.block !== "")
+        blocks.add(value[0]?.schoolData?.block);
     });
+
+    setInput([
+      {
+        name: t("DISTRICT"),
+        attributeName: "district",
+        data: Array.from(districts),
+      },
+      {
+        name: t("BLOCK"),
+        attributeName: "block",
+        data: Array.from(blocks),
+      },
+    ]);
 
     // Settings the list of allocated schools
     setAllocatedVisits(groupBySchools);
@@ -102,7 +120,7 @@ export default function Allocatedschools({ footerLinks }) {
       if (value[0]?.schoolStatus == "pending") count++;
     });
     setTotalPendingSchools(count);
-  }, []);
+  }, [filterObject]);
 
   return (
     <Layout
@@ -143,13 +161,14 @@ export default function Allocatedschools({ footerLinks }) {
                 <FilterButton
                   getObject={callBackFilterObject}
                   object={filterObject}
-                  _actionSheet={{ bg: "visits.lightGray" }}
+                  _actionSheet={{ bg: "visits.cardBg" }}
                   _filterButton={{
                     rightIcon: "",
                     bg: "visits.white",
+                    color: "visits.primary",
                   }}
                   resetButtonText={t("COLLAPSE")}
-                  filters={defaultInputs}
+                  filters={input}
                 />
               </Box>
               {allocatedVisits && Object.keys(allocatedVisits)?.length > 0 ? (
@@ -179,7 +198,7 @@ export default function Allocatedschools({ footerLinks }) {
         <Actionsheet.Content alignItems={"left"} bg={"visits.cardBg"}>
           <HStack justifyContent={"space-between"}>
             <Stack p={5} pt={2} pb="15px">
-              <H2>{t("Sort")}</H2>
+              <H2>{t("SORT")}</H2>
             </Stack>
             <IconByName
               name="CloseCircleLineIcon"
