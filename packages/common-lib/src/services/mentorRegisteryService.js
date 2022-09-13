@@ -43,9 +43,9 @@ export const getAllAllocatedSchools = async (
       params
     }
   )
-
-  if (result.data.data) {
-    return await getData(result.data.data)
+  console.log(result?.data?.data)
+  if (result?.data?.data) {
+    return await getData(result?.data?.data)
   } else {
     return []
   }

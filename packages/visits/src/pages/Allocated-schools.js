@@ -45,22 +45,31 @@ export default function Allocatedschools({ footerLinks }) {
   const [sortModal, setSortModal] = useState(false);
   const [input, setInput] = useState(defaultInputs);
 
-  const [filterObject, setFilterObject] = React.useState({});
+  const [filterObject, setFilterObject] = React.useState([]);
   const navigate = useNavigate();
-  const callBackFilterObject = React.useCallback((e) => {
-    setFilterObject();
-  }, []);
-
+  const callBackFilterObject = (object) => setFilterObject(object);
   useEffect(async () => {
     const data = await mentorRegisteryService.getAllAllocatedSchools({
       mentorId: localStorage.getItem("id"),
     });
 
     const groupBySchools = data.reduce((group, school) => {
+      // if (filterObject && filterObject?.district?.length > 0) {
+      //   filterObject?.district?.map((filter) => {
+      //     const { schoolId } = school;
+      //     group[schoolId] = group[schoolId] ?? [];
+      //     if (filter === school?.schoolData?.district) {
+      //       group[schoolId].push(school);
+      //       return group;
+      //     }
+      //   });
+      //   return;
+      // } else {
       const { schoolId } = school;
       group[schoolId] = group[schoolId] ?? [];
       group[schoolId].push(school);
       return group;
+      // }
     }, {});
 
     const districts = new Set(),
@@ -111,7 +120,7 @@ export default function Allocatedschools({ footerLinks }) {
       if (value[0]?.schoolStatus == "pending") count++;
     });
     setTotalPendingSchools(count);
-  }, []);
+  }, [filterObject]);
 
   return (
     <Layout
