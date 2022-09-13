@@ -1,7 +1,18 @@
-const { IconByName, BodyMedium } = require("@shiksha/common-lib");
+import React from "react";
+import { useTranslation } from "react-i18next";
+
+const { IconByName, BodyMedium, BodyLarge } = require("@shiksha/common-lib");
 const { VStack, HStack } = require("native-base");
 
-export default function AttributeComponent({ data, object }) {
+export default function AttributeComponent({
+  data,
+  object,
+  _vstack,
+  _hstack,
+  _childVstack,
+  _label,
+  _attribute,
+}) {
   const { t } = useTranslation();
 
   const elements = data.reduce((resultArray, item, index) => {
@@ -14,28 +25,39 @@ export default function AttributeComponent({ data, object }) {
   }, []);
 
   return (
-    <VStack space="2">
+    <VStack space="2" {..._vstack}>
       {elements.map((attributes, index) => (
-        <HStack key={index} space="2">
+        <HStack key={index} space="2" {..._hstack}>
           {attributes.map((item, subIndex) => (
-            <HStack key={subIndex} space="1" alignItems="baseline" flex={1}>
-              <IconByName
-                isDisabled
-                name={item.icon}
-                _icon={{ size: 14 }}
-                color="darkGray4"
-                p="0"
-              />
-              <BodyMedium color="darkGray4">
-                {t(item?.label) +
-                  " : " +
-                  (object?.[item.attribute]
-                    ? Array.isArray(object?.[item.attribute])
-                      ? object?.[item.attribute].length
-                      : object?.[item.attribute]
-                    : "")}
+            <VStack
+              key={subIndex}
+              space="1"
+              alignItems="baseline"
+              flex={1}
+              {..._childVstack}
+            >
+              {item.icon ? (
+                <IconByName
+                  isDisabled
+                  name={item.icon}
+                  _icon={{ size: 14 }}
+                  color="darkGray4"
+                  p="0"
+                />
+              ) : (
+                <React.Fragment />
+              )}
+              <BodyLarge color="darkGray4" {..._label}>
+                {t(item?.label)}
+              </BodyLarge>
+              <BodyMedium color="darkGray4" {..._attribute}>
+                {object?.[item.attribute]
+                  ? Array.isArray(object?.[item.attribute])
+                    ? object?.[item.attribute].length
+                    : object?.[item.attribute]
+                  : ""}
               </BodyMedium>
-            </HStack>
+            </VStack>
           ))}
         </HStack>
       ))}
