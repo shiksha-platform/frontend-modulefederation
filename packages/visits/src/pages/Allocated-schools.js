@@ -48,55 +48,64 @@ export default function Allocatedschools({ footerLinks }) {
   const [filterObject, setFilterObject] = React.useState([]);
   const navigate = useNavigate();
   const callBackFilterObject = (object) => setFilterObject(object);
+
   useEffect(async () => {
+    const districts = new Set();
     const data = await mentorRegisteryService.getAllAllocatedSchools({
       mentorId: localStorage.getItem("id"),
     });
 
     const groupBySchools = data.reduce((group, school) => {
-      // if (filterObject && filterObject?.district?.length > 0) {
-      //   filterObject?.district?.map((filter) => {
-      //     const { schoolId } = school;
-      //     group[schoolId] = group[schoolId] ?? [];
-      //     if (filter === school?.schoolData?.district) {
-      //       group[schoolId].push(school);
-      //       return group;
-      //     }
-      //   });
-      //   return;
-      // } else {
-      const { schoolId } = school;
-      group[schoolId] = group[schoolId] ?? [];
-      group[schoolId].push(school);
-      return group;
-      // }
+      districts.add(school?.schoolData?.district);
+      let filterKeys = Object.keys(filterObject);
+      if (filterKeys?.length > 0) {
+        let boolean = filterKeys.map((item) => {
+          return filterObject[item]?.includes(school?.schoolData?.[item]);
+        });
+
+        if (group && boolean && !boolean.includes(false)) {
+          const { schoolId } = school;
+          return {
+            ...(group ? group : {}),
+            [schoolId]: [...(group[schoolId] ? group[schoolId] : []), school],
+          };
+        } else {
+          return group;
+        }
+      } else {
+        const { schoolId } = school;
+        return {
+          ...(group ? group : {}),
+          [schoolId]: [...(group[schoolId] ? group[schoolId] : []), school],
+        };
+      }
     }, {});
 
-    const districts = new Set(),
-      blocks = new Set();
+    const blocks = new Set();
 
     // Getting the last Visited date of mentor for schools and setting the status to pending even if one teacher is not visited
-    Object.entries(groupBySchools).forEach(([key, value]) => {
-      let lastVisitedMiliSeconds = new Date(0).getMilliseconds(),
-        schoolStatus = "visited",
-        schoolLastVisited;
-      value?.forEach((school) => {
-        if (school?.status === "pending") schoolStatus = "pending";
-        if (
-          new Date(school?.lastVisited).getMilliseconds() >
-          lastVisitedMiliSeconds
-        )
-          lastVisitedMiliSeconds = new Date(school?.lastVisited);
-        schoolLastVisited = school?.lastVisited;
-      });
-      value[0].schoolLastVisited = schoolLastVisited;
-      value[0].schoolStatus = schoolStatus;
+    {
+      groupBySchools &&
+        Object.entries(groupBySchools).forEach(([key, value]) => {
+          let lastVisitedMiliSeconds = new Date(0).getMilliseconds(),
+            schoolStatus = "visited",
+            schoolLastVisited;
+          value?.forEach((school) => {
+            if (school?.status === "pending") schoolStatus = "pending";
+            if (
+              new Date(school?.lastVisited).getMilliseconds() >
+              lastVisitedMiliSeconds
+            )
+              lastVisitedMiliSeconds = new Date(school?.lastVisited);
+            schoolLastVisited = school?.lastVisited;
+          });
+          value[0].schoolLastVisited = schoolLastVisited;
+          value[0].schoolStatus = schoolStatus;
 
-      if (value[0]?.schoolData?.district !== "")
-        districts.add(value[0]?.schoolData?.district);
-      if (value[0]?.schoolData?.block !== "")
-        blocks.add(value[0]?.schoolData?.block);
-    });
+          if (value[0]?.schoolData?.block !== "")
+            blocks.add(value[0]?.schoolData?.block);
+        });
+    }
 
     setInput([
       {
@@ -174,7 +183,10 @@ export default function Allocatedschools({ footerLinks }) {
               {allocatedVisits && Object.keys(allocatedVisits)?.length > 0 ? (
                 Object.entries(allocatedVisits).map(
                   ([key, visit], visitIndex) => (
-                    <Pressable onPress={() => navigate(`/schools/${key}`)}>
+                    <Pressable
+                      onPress={() => navigate(`/schools/${key}`)}
+                      key={key}
+                    >
                       <MySchoolsCard
                         isVisited={
                           visit[0]?.schoolStatus == "visited" ? true : false
