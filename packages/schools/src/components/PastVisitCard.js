@@ -15,7 +15,6 @@ function PastVisitCard({ schoolId }) {
     const pastDetails = await mentorRegisteryService.getAllAllocatedSchools({
       schoolId,
     });
-    console.log({ pastDetails });
     setPastDetails(pastDetails);
   }, []);
 
