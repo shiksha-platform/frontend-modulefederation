@@ -1,89 +1,45 @@
-import React from "react";
-import {
-  Box,
-  Center,
-  VStack,
-  Text,
-  HStack,
-  Avatar,
-  Divider,
-  Spacer,
-  Pressable,
-  Button,
-} from "native-base";
-import {
-  DEFAULT_THEME,
-  H2,
-  IconByName,
-  Collapsible,
-  ProgressBar,
-  Tab,
-  overrideColorTheme,
-  BodyMedium,
-} from "@shiksha/common-lib";
+import { assessmentRegistryService } from "@shiksha/common-lib";
+import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import colorTheme from "../../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import report from "utils/report";
 
-function ClassWiseSubjectProgress() {
+const ORAL_ASSESSMENT = "Oral Assessment";
+const WRITTEN_ASSESSMENT = "Written Assessment";
+
+function ClassWiseSubjectProgress({ students, classId, subject }) {
   const { t } = useTranslation();
-  const [progressData, setProgressData] = React.useState([
-    {
-      name: "22 Present",
-      color: "schools.green",
-      value: 22,
-    },
-    {
-      name: "4 Absent",
-      color: "schools.absent",
-      value: 4,
-    },
-    {
-      name: "1 Unmarked",
-      color: "schools.unmarked",
-      value: 1,
-    },
-  ]);
+  const ReportCard = React.lazy(() => import("assessment/ReportCard"));
+  const [progressAssessmentWritten, setProgressAssessmentWritten] =
+    React.useState([]);
+  const [progressAssessmentOral, setProgressAssessmentOral] = React.useState(
+    []
+  );
+
+  React.useEffect(async () => {
+    const assessmentData = await assessmentRegistryService
+      .getAllAssessment({
+        groupId: classId,
+        subject: subject,
+      })
+      .catch((e) => console.log(e.message));
+    setProgressAssessmentWritten(
+      report(students, assessmentData, WRITTEN_ASSESSMENT)
+    );
+    setProgressAssessmentOral(
+      report(students, assessmentData, ORAL_ASSESSMENT)
+    );
+  }, [classId, subject]);
 
   return (
     <React.Fragment>
-      <VStack space={6}>
-        <HStack alignItems="center" justifyContent="space-between">
-          <BodyMedium w={"20%"}>Girls</BodyMedium>
-          <Box w={"80%"}>
-            <ProgressBar data={progressData} />
-          </Box>
-        </HStack>
-
-        <HStack alignItems="center" justifyContent="space-between">
-          <BodyMedium w={"20%"}>Boys</BodyMedium>
-          <Box w={"80%"}>
-            <ProgressBar data={progressData} />
-          </Box>
-        </HStack>
-
-        <HStack alignItems="center" justifyContent="space-between">
-          <BodyMedium w={"20%"}>Total</BodyMedium>
-          <Box w={"80%"}>
-            <ProgressBar data={progressData} />
-          </Box>
-        </HStack>
-
-        <HStack alignItems="center" justifyContent="space-between">
-          <HStack alignItems="center">
-            <Box bg={"schools.green"} w="15px" h="15px" rounded={4} />
-            <BodyMedium mx={2}>Passed</BodyMedium>
-          </HStack>
-          <HStack alignItems="center">
-            <Box bg={"schools.absent"} w="15px" h="15px" rounded={4} />
-            <BodyMedium mx={2}>Failed</BodyMedium>
-          </HStack>
-          <HStack alignItems="center">
-            <Box bg={"schools.unmarked"} w="15px" h="15px" rounded={4} />
-            <BodyMedium mx={2}>Not attempted</BodyMedium>
-          </HStack>
-        </HStack>
-      </VStack>
+      <Suspense fallback="loading...">
+        <ReportCard
+          {...{
+            writtenData: progressAssessmentWritten,
+            oralData: progressAssessmentOral,
+          }}
+        />
+      </Suspense>
     </React.Fragment>
   );
 }

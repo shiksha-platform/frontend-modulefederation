@@ -96,7 +96,7 @@ export default function SchoolAcademicDetailCard({ schoolId }) {
             Attendance Reports
           </Actionsheet.Item>
           <Actionsheet.Item
-            onPress={() => navigate("/schools/assessment-report")}
+            onPress={() => navigate(`/schools/assessment-report/${classId}`)}
           >
             Assessment Reports
           </Actionsheet.Item>
