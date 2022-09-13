@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 function SchoolAddressCard({ schoolData, configSchoolDetails }) {
   const { t } = useTranslation();
-  console.log({ configSchoolDetails });
+
   return (
     schoolData && (
       <>
@@ -34,96 +34,67 @@ function SchoolAddressCard({ schoolData, configSchoolDetails }) {
                         </BodyLarge>
                       </Box>
                     )}
-
-                    <Box>
+                    {["district", "block", "cluster"].includes(config) ? (
                       <HStack
                         alignItems={"center"}
                         justifyContent={"space-between"}
                         flexWrap={"wrap"}
                       >
                         {config === "district" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("DISTRICT")}</H4>
                             <BodyLarge>{schoolData?.district}</BodyLarge>
                           </Box>
                         )}
 
                         {config === "block" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("BLOCK")}</H4>
                             <BodyLarge>{schoolData?.block}</BodyLarge>
                           </Box>
                         )}
 
                         {config === "cluster" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("CLUSTER")}</H4>
                             <BodyLarge>{schoolData?.cluster}</BodyLarge>
                           </Box>
                         )}
                       </HStack>
-                    </Box>
-
-                    <Box>
+                    ) : (
+                      <React.Fragment />
+                    )}
+                    {["headMaster", "phoneNumber"].includes(config) ? (
                       <HStack
                         alignItems={"center"}
                         justifyContent={"space-between"}
                         flexWrap={"wrap"}
                       >
                         {config === "headMaster" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("HEADMASTER")}</H4>
                             <BodyLarge>{schoolData?.headMaster}</BodyLarge>
                           </Box>
                         )}
 
                         {config === "phoneNumber" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("CONTACT")}</H4>
                             <BodyLarge>{schoolData?.phoneNumber}</BodyLarge>
                           </Box>
                         )}
                       </HStack>
-                    </Box>
-
-                    <Box>
+                    ) : (
+                      <React.Fragment />
+                    )}
+                    {["mediumOfInstruction", "board"].includes(config) ? (
                       <HStack
                         alignItems={"center"}
                         justifyContent={"space-between"}
                         flexWrap={"wrap"}
                       >
                         {config === "mediumOfInstruction" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("MEDIUM")}</H4>
                             <BodyLarge>
                               {schoolData?.mediumOfInstruction}
@@ -132,18 +103,15 @@ function SchoolAddressCard({ schoolData, configSchoolDetails }) {
                         )}
 
                         {config === "board" && (
-                          <Box
-                            style={{
-                              flex: "0 0 50%",
-                              maxWidth: "50%",
-                            }}
-                          >
+                          <Box>
                             <H4 color={"schools.gray"}>{t("BOARD")}</H4>
                             <BodyLarge>{schoolData?.board}</BodyLarge>
                           </Box>
                         )}
                       </HStack>
-                    </Box>
+                    ) : (
+                      <React.Fragment />
+                    )}
                   </VStack>
                 </Box>
               ))

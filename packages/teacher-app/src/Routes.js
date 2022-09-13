@@ -379,13 +379,13 @@ export const routes = [
   },
   {
     moduleName: "schools",
-    path: "/schools/assessment-report",
+    path: "/schools/assessment-report/:classId",
     component: AssessmentReportDashboard,
   },
   {
     moduleName: "schools",
-    path: "/schools/assessment-section-report",
-    component: AssessmentSectionWiseReport,
+    path: "/schools/assessment-section-report/:classId/:subject/:date",
+    component: ReportDetails,
   },
   {
     moduleName: "schools",

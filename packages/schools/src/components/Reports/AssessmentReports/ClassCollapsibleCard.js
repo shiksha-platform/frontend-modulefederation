@@ -1,100 +1,42 @@
-import React from "react";
+import React, { Suspense } from "react";
+import { Box, VStack, Divider, Button } from "native-base";
 import {
-  Box,
-  Center,
-  VStack,
-  Text,
-  HStack,
-  Avatar,
-  Divider,
-  Spacer,
-  Pressable,
-  Button,
-} from "native-base";
-import {
-  DEFAULT_THEME,
   H2,
-  IconByName,
   Collapsible,
   ProgressBar,
   Tab,
-  overrideColorTheme,
   BodyLarge,
   H4,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import ClassWiseSubjectProgress from "./ClassWiseSubjectProgress";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 // const MyClassRoute = React.lazy(() => import("classes/MyClassRoute"));
 // const TimeTableRoute = React.lazy(() => import("calendar/TimeTableRoute"));
-function ClassCollapsibleCard() {
+function ClassCollapsibleCard({ item, subjects, defaultCollapse }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [students, setStudents] = React.useState([]);
 
-  const routes = [
-    {
-      title: t("SCIENCE"),
-      component: (
-        <Box py={4}>
-          <ClassWiseSubjectProgress />
-        </Box>
-      ),
-    },
-    {
-      title: t("MATHS"),
-      component: (
-        <Box py={4}>
-          <ClassWiseSubjectProgress />
-        </Box>
-      ),
-    },
-    {
-      title: t("ENGLISH"),
-      component: (
-        <Box py={4}>
-          <ClassWiseSubjectProgress />
-        </Box>
-      ),
-    },
-    {
-      title: t("HISTORY"),
-      component: (
-        <Box py={4}>
-          <ClassWiseSubjectProgress />
-        </Box>
-      ),
-    },
-    {
-      title: t("GEO"),
-      component: (
-        <Box py={4}>
-          <ClassWiseSubjectProgress />
-        </Box>
-      ),
-    },
-  ];
+  React.useEffect(async () => {
+    const studentData = await studentRegistryService.getAll({
+      classId: item?.id,
+      sortBy: "admissionNo",
+    });
+    setStudents(studentData);
+  }, []);
 
-  const [progressData2, setProgressData2] = React.useState([
-    {
-      name: "16 Assessed",
-      color: "schools.green",
-      value: 16,
-    },
-    {
-      name: "4 Pending",
-      color: "schools.gray",
-      value: 4,
-    },
-  ]);
   return (
     <Collapsible
-      defaultCollapse={true}
+      defaultCollapse={defaultCollapse}
       header={
         <Box py={4}>
-          <H2>Class I</H2>
+          <H2>
+            {(item?.name ? item?.name : "") +
+              (item?.section ? " • Sec " + item?.section : "")}
+          </H2>
         </Box>
       }
     >
@@ -108,42 +50,47 @@ function ClassCollapsibleCard() {
               <Box>
                 <VStack space={6}>
                   <Box>
-                    <Tab routes={routes} />
+                    <Tab
+                      _box={{
+                        display: "flex",
+                        overflowX: "auto",
+                        p: "2",
+                      }}
+                      _item={{ flex: "none" }}
+                      routes={subjects.map((subject) => {
+                        return {
+                          title: subject.name,
+                          component: (
+                            <VStack space={4}>
+                              <ClassWiseSubjectProgress
+                                {...{
+                                  students,
+                                  classId: item?.id,
+                                  subject: subject.code,
+                                }}
+                              />
+                              <Box p={2}>
+                                <Button
+                                  variant={"outline"}
+                                  onPress={() => {
+                                    navigate(
+                                      `/schools/assessment-section-report/${item?.id}/${subject.code}/allDates`
+                                    );
+                                  }}
+                                >
+                                  See Full Report
+                                </Button>
+                              </Box>
+                            </VStack>
+                          ),
+                        };
+                      })}
+                    />
                     <Divider />
-                  </Box>
-                  <Box>
-                    <VStack space={4}>
-                      <BodyLarge>
-                        Average Class Score is <H2>18</H2>
-                        <H4>/25</H4>
-                      </BodyLarge>
-                      <ProgressBar
-                        isTextShow
-                        legendType="separated"
-                        h="35px"
-                        _bar={{ rounded: "md" }}
-                        isLabelCountHide
-                        data={progressData2}
-                      />
-                    </VStack>
                   </Box>
                 </VStack>
               </Box>
             </VStack>
-          </Box>
-
-          <Divider m={0} />
-
-          {/*bordered box*/}
-          <Box p={2}>
-            <Button
-              variant={"outline"}
-              onPress={() => {
-                navigate("/schools/assessment-section-report");
-              }}
-            >
-              See Section Wise Report
-            </Button>
           </Box>
         </VStack>
       </>

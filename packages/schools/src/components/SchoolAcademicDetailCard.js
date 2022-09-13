@@ -104,7 +104,9 @@ export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
                   )}
                   {config === "assessment" && (
                     <Actionsheet.Item
-                      onPress={() => navigate("/schools/assessment-report")}
+                      onPress={() =>
+                        navigate(`/schools/assessment-report/${classId}`)
+                      }
                     >
                       {t("ASSESSMENT_REPORTS")}
                     </Actionsheet.Item>

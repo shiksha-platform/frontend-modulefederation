@@ -36,9 +36,12 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
   let { classId, subject, date } = useParams();
   classId = classId ? classId : "ce045222-52a8-4a0a-8266-9220f63baba7";
   subject = subject ? subject : "english";
-  date = date
-    ? moment(date).format("YYYY-MM-DD")
-    : moment().format("YYYY-MM-DD");
+  date =
+    date === "allDates"
+      ? date
+      : date
+      ? moment(date).format("YYYY-MM-DD")
+      : moment().format("YYYY-MM-DD");
   const [classObject, setClassObject] = React.useState({});
   const [reportStartTime, setReportStartTime] = React.useState();
   const [students, setStudents] = React.useState([]);
@@ -93,13 +96,14 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
   const getAssessments = async () => {
     let classObj = await classRegistryService.getOne({ id: classId });
     setClassObject(classObj);
-
-    const param = {
-      fromDate: date,
-      toDate: date,
-      groupId: classId,
-      subject,
-    };
+    let param = { groupId: classId, subject };
+    if (date !== "allDates") {
+      param = {
+        ...param,
+        fromDate: date,
+        toDate: date,
+      };
+    }
 
     const data = await assessmentRegistryService
       .getAllAssessment(param)
