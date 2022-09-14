@@ -65,7 +65,7 @@ const Collapsible = ({
           }
         }}
       >
-        <Stack space={2}>{isOpen ? children : <React.Fragment />}</Stack>
+        {isOpen ? children : <React.Fragment />}
       </PresenceTransition>
     </Box>
   )

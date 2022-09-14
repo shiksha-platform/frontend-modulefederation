@@ -155,7 +155,7 @@ export default function Allocatedschools({ footerLinks }) {
                       {totalPendingSchools}
                     </BodyMedium>
                   </Box>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     bg={"visits.white"}
                     onPress={() => {
@@ -163,7 +163,7 @@ export default function Allocatedschools({ footerLinks }) {
                     }}
                   >
                     {t("SORT")}
-                  </Button>
+                  </Button> */}
                 </HStack>
               </Box>
               <Box>
@@ -180,23 +180,29 @@ export default function Allocatedschools({ footerLinks }) {
                   filters={input}
                 />
               </Box>
-              {allocatedVisits && Object.keys(allocatedVisits)?.length > 0 ? (
-                Object.entries(allocatedVisits).map(
-                  ([key, visit], visitIndex) => (
-                    <Pressable
-                      onPress={() => navigate(`/schools/${key}`)}
-                      key={key}
-                    >
-                      <MySchoolsCard
-                        isVisited={
-                          visit[0]?.schoolStatus == "visited" ? true : false
-                        }
-                        key={`myvisit${visitIndex}`}
-                        schoolData={visit[0]?.schoolData}
-                        lastVisited={visit[0]?.schoolLastVisited}
-                      />
-                    </Pressable>
+              {allocatedVisits ? (
+                Object.keys(allocatedVisits)?.length > 0 ? (
+                  Object.entries(allocatedVisits).map(
+                    ([key, visit], visitIndex) => (
+                      <Pressable
+                        onPress={() => navigate(`/schools/${key}`)}
+                        key={key}
+                      >
+                        <MySchoolsCard
+                          isVisited={
+                            visit[0]?.schoolStatus == "visited" ? true : false
+                          }
+                          key={`myvisit${visitIndex}`}
+                          schoolData={visit[0]?.schoolData}
+                          lastVisited={visit[0]?.schoolLastVisited}
+                        />
+                      </Pressable>
+                    )
                   )
+                ) : (
+                  <Box bg={"schools.dangerAlert"} p={"4"} rounded={10}>
+                    {t("NO_ALLOCATED_VISITS")}
+                  </Box>
                 )
               ) : (
                 <Loading height={"200px"} />
