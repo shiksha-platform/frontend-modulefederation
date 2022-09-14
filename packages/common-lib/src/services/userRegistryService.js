@@ -74,11 +74,17 @@ export const getOne = async (params = {}, header = {}) => {
     ...header
   }
 
-  const result = await get(`${process.env.REACT_APP_API_URL}/user`, {
-    params,
-    headers
-  }).catch((error) => error)
-  if (result.data) {
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/user/${params.id}`,
+    {
+      params,
+      headers
+    }
+  ).catch((error) => error)
+  if (result.data && params.id) {
+    console.log(result.data.data)
+    return mapInterfaceData(result.data.data, interfaceData)
+  } else if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData)
   } else {
     return {}

@@ -95,12 +95,14 @@ export const update = async (
   }
 }
 
-const getDataWithUser = async (data) => {
+export const getDataWithUser = async (data) => {
   return await Promise.all(
     data.map(async (item) => {
       let userData = {}
+      console.log(item)
       if (item.userType === 'Teacher' || true) {
-        userData = await userRegistryService.getOne({ id: item.userId })
+        console.log(item.userId, 'USER ID')
+        userData = await userRegistryService.getOne({ id: item?.userId })
       }
       return { ...item, userData }
     })
