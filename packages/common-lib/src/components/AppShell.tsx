@@ -82,6 +82,7 @@ function AppShell({
     return (
       <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
         <PushNotification />
+        {/* <FloatingVideoPlayer /> */}
         <React.Suspense fallback={<Loading />}>
           <AuthComponent {...{ colors }} {..._authComponent} />
         </React.Suspense>
