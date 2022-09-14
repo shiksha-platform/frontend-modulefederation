@@ -29,14 +29,15 @@ export default function SubjectFilterButton({
 
   let subjectData;
   useEffect(async () => {
-    subjectData = await userRegistryService.getUserById(data);
-  }, []);
+    subjectData = await userRegistryService.getAll({ userId: { eq: data } });
+    console.log({ subjectData });
+  }, [data]);
 
   return (
     <Box roundedBottom={"xl"}>
       <VStack space={2}>
         <H4>Subject</H4>
-        <Pressable onPress={() => setFilterData(subjectData?.subjectIds)}>
+        <Pressable onPress={() => setFilterData(subjectData[0]?.subjectIds)}>
           <Box
             rounded={10}
             borderWidth={1}
@@ -56,7 +57,6 @@ export default function SubjectFilterButton({
             </HStack>
           </Box>
         </Pressable>
-
         {filterData && (
           <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
             <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>

@@ -42,7 +42,7 @@ export default function NewVisitPage({ footerLinks }) {
     });
     console.log({ data });
     setVisitData(data);
-  }, []);
+  }, [schoolId]);
 
   return (
     <Layout
@@ -71,10 +71,7 @@ export default function NewVisitPage({ footerLinks }) {
                 {selectedTeacher && (
                   <Box>
                     <ClassFilterButton
-                      data={selectedTeacher?.id?.slice(
-                        2,
-                        selectedTeacher?.id?.length
-                      )}
+                      data={selectedTeacher?.id}
                       selectedClass={selectedClass}
                       setSelectedClass={setSelectedClass}
                     />
@@ -84,10 +81,7 @@ export default function NewVisitPage({ footerLinks }) {
                 {selectedTeacher && selectedClass && (
                   <Box>
                     <SubjectFilterButton
-                      data={selectedTeacher?.id?.slice(
-                        2,
-                        selectedTeacher?.id?.length
-                      )}
+                      data={selectedTeacher?.id}
                       selectedSubject={selectedSubject}
                       setSelectedSubject={setSelectedSubject}
                     />

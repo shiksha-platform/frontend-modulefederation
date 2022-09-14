@@ -39,7 +39,7 @@ const defaultInputs = [
 ];
 export default function Allocatedschools({ footerLinks }) {
   const { t } = useTranslation();
-  const [allocatedVisits, setAllocatedVisits] = useState([]);
+  const [allocatedVisits, setAllocatedVisits] = useState(null);
   const [totalSchools, setTotalSchools] = useState();
   const [totalPendingSchools, setTotalPendingSchools] = useState();
   const [sortModal, setSortModal] = useState(false);

@@ -40,7 +40,7 @@ const defaultInputs = [
 
 export default function Recommendedschools({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState();
+  const [recommendedVisits, setRecommendedVisits] = useState(null);
   const [sortModal, setSortModal] = useState(false);
   const [input, setInput] = useState(defaultInputs);
 
