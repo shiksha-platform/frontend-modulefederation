@@ -9,7 +9,6 @@ const ReportDetail = React.lazy(() => import("attendance/ReportDetail"));
 const SendSMS = React.lazy(() => import("attendance/SendSMS"));
 const TeachingDetail = React.lazy(() => import("worksheet/TeachingDetail"));
 const WorksheetShare = React.lazy(() => import("worksheet/WorksheetShare"));
-const QuestionBank = React.lazy(() => import("worksheet/QuestionBank"));
 const Worksheet = React.lazy(() => import("worksheet/Worksheet"));
 const WorksheetQuestionBank = React.lazy(() =>
   import("worksheet/WorksheetQuestionBank")
@@ -123,11 +122,6 @@ export const routes = [
     moduleName: "worksheet",
     path: "/worksheet/:worksheetId/share",
     component: WorksheetShare,
-  },
-  {
-    moduleName: "worksheet",
-    path: "/worksheet/questionBank",
-    component: QuestionBank,
   },
   {
     moduleName: "worksheet",

@@ -11,6 +11,7 @@ module.exports = {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
     assessment: `assessment@[window.appModules.assessment.url]/moduleEntry.js`,
     students: `students@[window.appModules.students.url]/moduleEntry.js`,
+    profile: `profile@[window.appModules.profile.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

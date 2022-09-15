@@ -105,7 +105,7 @@ export default function StudentQuestionsReport({
                       </HStack>
                     </VStack>
                   </HStack>
-                  <RoundedProgressBar
+                  {/* <RoundedProgressBar
                     _vstack={{ space: 0 }}
                     values={[score, totalScore]}
                     colors={[
@@ -116,7 +116,7 @@ export default function StudentQuestionsReport({
                     size="35px"
                     title={{ text: score, fontSize: "12px" }}
                     legend={{ text: "Total Score", fontSize: "10px" }}
-                  />
+                  /> */}
                 </HStack>
               </Box>
 

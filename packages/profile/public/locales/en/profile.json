@@ -48,5 +48,7 @@
   "LAST_MONTH": "LAST MONTH",
   "SEE_MORE": "SEE MORE",
   "SEE_LESS": "SEE LESS",
-  "MY_MONTHLY_ATTENDANCE": "My attendance trend over the last 3 months"
+  "MY_MONTHLY_ATTENDANCE": "My attendance trend over the last 3 months",
+  "MY_MONTHLY_ATTENDANCE_WEEK": "My attendance trend over the past 3 weeks",
+  "MY_MONTHLY_ATTENDANCE_DAY": "My attendance trend over the past 3 days"
 }

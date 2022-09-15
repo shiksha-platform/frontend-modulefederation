@@ -1,22 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  Button,
-  Stack,
-  Box,
-  VStack,
-  HStack,
-  Pressable,
-  PresenceTransition,
-  Avatar,
-} from "native-base";
+import { Button, Stack, Box, VStack, HStack, Avatar } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import manifest from "../manifest.json";
 import {
   calendar,
   capture,
-  IconByName,
   Layout,
   Menu,
   telemetryFactory,
@@ -35,7 +24,7 @@ import SelfAttendanceSheet from "../components/SelfAttendanceSheet";
 import moment from "moment";
 import TeacherEdit from "../components/TeacherEdit";
 
-export default function Profile({ footerLinks, appName, setAlert }) {
+export default function Profile({ footerLinks, appName, setAlert, config }) {
   const { t } = useTranslation();
   const [teacherObject, setTeacherObject] = useState({});
   const teacherId = localStorage.getItem("id");
@@ -59,7 +48,7 @@ export default function Profile({ footerLinks, appName, setAlert }) {
     blood_group: "bloodGroup",
     marital_status: "maritalStatus",
     disability: "disability",
-    designation: "leavingDesignation",
+    leavingDesignation: "leavingDesignation",
     cadre: "cadre",
     transfer_order_number: "transferOrderNumber",
     date_of_order: "dateOfOrder",
@@ -97,7 +86,6 @@ export default function Profile({ footerLinks, appName, setAlert }) {
         )} - ${moment(e?.dateOfRelieving).format("Do MMM YYYY")}`
     );
     setExpArray(arr);
-    console.log(result);
     setWorkHistoryData(result);
   };
   const getSchoolData = async (id, resultTeacher) => {
@@ -129,11 +117,12 @@ export default function Profile({ footerLinks, appName, setAlert }) {
         ).length;
         const thisPercentage = (thisMonthCount * 100) / thisDiffDays;
 
-        let lastMonthDays = calendar(-1, "monthInDays");
         let lastMonthParams = {
-          fromDate: lastMonthDays?.[0]?.format("YYYY-MM-DD"),
-          toDate:
-            lastMonthDays?.[lastMonthDays.length - 1]?.format("YYYY-MM-DD"),
+          fromDate: moment()
+            .add(-1, "month")
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+          toDate: moment().add(-1, "month").endOf("month").format("YYYY-MM-DD"),
           userId: localStorage.getItem("id"),
         };
         const lastDiffDays = moment(lastMonthParams.toDate).diff(
@@ -148,6 +137,11 @@ export default function Profile({ footerLinks, appName, setAlert }) {
           (e) => e.attendance === "Present"
         ).length;
         const lastPercentage = (lastMonthCount * 100) / lastDiffDays;
+
+        // console.log(
+        //   `(${thisMonthCount} * 100) / ${thisDiffDays} ${thisPercentage}`,
+        //   `(${lastMonthCount} * 100) / ${lastDiffDays} ${lastPercentage}`
+        // );
 
         setAttendance({
           thisMonth: thisPercentage,
@@ -324,24 +318,29 @@ export default function Profile({ footerLinks, appName, setAlert }) {
             isEditable={false}
             seeMore={true}
           />
-          <TeacherEdit
-            header={t("Past_Positions_and_Transfer_History")}
-            teacherObject={workHistoryData}
-            workData={workHistoryData}
-            fieldMapper={userObject}
-            nestedCollapse={true}
-            nestedHeader={expArray}
-            onlyParameterProp={["designation", "cadre"]}
-            moreParameterProp={[
-              "transfer_order_number",
-              "date_of_order",
-              "place_of_posting",
-              "mode_of_posting",
-            ]}
-            isEditable={false}
-            seeMore={false}
-            seeMoreBelowSection={true}
-          />
+          {config["servicedetails.allow-display-past-workhistory"] &&
+          config["servicedetails.allow-display-past-workhistory"] === "true" ? (
+            <TeacherEdit
+              header={t("Past_Positions_and_Transfer_History")}
+              teacherObject={workHistoryData}
+              workData={workHistoryData}
+              fieldMapper={userObject}
+              nestedCollapse={true}
+              nestedHeader={expArray}
+              onlyParameterProp={["leavingDesignation", "cadre"]}
+              moreParameterProp={[
+                "transfer_order_number",
+                "date_of_order",
+                "place_of_posting",
+                "mode_of_posting",
+              ]}
+              isEditable={false}
+              seeMore={false}
+              seeMoreBelowSection={true}
+            />
+          ) : (
+            <React.Fragment />
+          )}
           <TeacherEdit
             header={t("CONTACT_DETAILS")}
             teacherObject={teacherObject}

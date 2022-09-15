@@ -22,6 +22,7 @@ export default function QumlTest({
   questionIds,
   footerLinks,
   setAlert,
+  config,
 }) {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState(false);
@@ -39,7 +40,7 @@ export default function QumlTest({
       subject: selectedSubject,
       type: selectedAssessmentType,
       questions: questionIds,
-      source: "diksha",
+      source: config["spot-assessment.questionSource"],
       answersheet: JSON.stringify(qumlResult[0]),
       studentId: selectedStudent.id,
       teacherId: localStorage.getItem("id"),

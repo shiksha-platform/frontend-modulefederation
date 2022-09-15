@@ -233,7 +233,15 @@ export default function AttendanceReport({ footerLinks, appName, config }) {
         <VStack space={5} bg={"profile.white"} p="5">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
-              <H2 textTransform="none">{t("MY_MONTHLY_ATTENDANCE")}</H2>
+              <H2 textTransform="none">
+                {t(
+                  calendarView === "days"
+                    ? "MY_MONTHLY_ATTENDANCE_DAY"
+                    : calendarView === "weeks"
+                    ? "MY_MONTHLY_ATTENDANCE_WEEK"
+                    : "MY_MONTHLY_ATTENDANCE"
+                )}
+              </H2>
             </Box>
           </HStack>
           <Box bg={"profile.reportBoxBg"} rounded="10px">

@@ -35,7 +35,8 @@ export default function RoundedProgressBar({
               ],
             }}
           />
-          {title && title.text && (
+
+          {title && title?.text ? (
             <Text
               position="absolute"
               top="50%"
@@ -45,6 +46,8 @@ export default function RoundedProgressBar({
             >
               {title.text}
             </Text>
+          ) : (
+            <React.Fragment />
           )}
         </Box>
         {legend && legend.text && (
