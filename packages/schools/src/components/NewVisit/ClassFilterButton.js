@@ -24,7 +24,7 @@ export default function ClassFilterButton({
   setSelectedClass,
 }) {
   const { t } = useTranslation();
-
+  console.log("ClassFilterButton", data);
   const [filterData, setFilterData] = useState();
 
   let classData;
@@ -32,7 +32,7 @@ export default function ClassFilterButton({
     classData = await classRegistryService.getAllData({
       teacherId: { eq: data },
     });
-  }, []);
+  }, [data]);
 
   return (
     <Box roundedBottom={"xl"}>
@@ -58,7 +58,7 @@ export default function ClassFilterButton({
             </HStack>
           </Box>
         </Pressable>
-
+        {/* "cbd32ee8-16c1-40fb-a19c-4eb5c287715c" */}
         {filterData && (
           <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
             <Actionsheet.Content alignItems={"left"} bg={"schools.cardBg"}>

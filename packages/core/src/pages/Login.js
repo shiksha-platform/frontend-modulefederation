@@ -62,7 +62,7 @@ export default function Login({ swPath }) {
     }
     return true;
   };
-  console.log({ colors });
+
   const handleLogin = async () => {
     if (validate()) {
       const fcmToken = await getUserToken(swPath);
@@ -72,18 +72,12 @@ export default function Login({ swPath }) {
         credentials?.username,
         credentials?.password
       );
-      /* const result = {
-          data:{
-            "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGRC0yV2pkaVJfQjV3OVZVc1Nsdjh6b21vMmN1ejlHalVSd1hUQzBDU3NZIn0.eyJleHAiOjE2NDYxNjUxMzMsImlhdCI6MTY0NjEyOTEzMywianRpIjoiNGExODhkMjQtODMyNS00M2NkLWE1ODgtMzNlZjA4ZTc4NzU2IiwiaXNzIjoiaHR0cHM6Ly9kZXYtc2hpa3NoYS51bml0ZWZyYW1ld29yay5pby9hdXRoL3JlYWxtcy9zdW5iaXJkLXJjIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjViMzRiMGE4LTUyMDktNDFiNi04ZWNhLTMzOWU3YzIwOTkzYSIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlZ2lzdHJ5LWZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjM0ZmE4OTJiLWI4MTMtNDg2Ni1hMmNkLTUzZDBlOTgwNjRlMyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYXR0ZW5kYW5jZS1tYW5hZ2VtZW50Iiwib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXN1bmJpcmQtcmMiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYXNod2luMkBnbWFpbC5jb20iLCJlbWFpbCI6ImFzaHdpbjJAZ21haWwuY29tIn0.S-YAVlsaiGQ8g8uVVTRdn9gTpA3xL5qh94DSfppuv28qLqCRbw7fmAJtBqK-TGO42vZwZWelOT49LN6znkEncTcvvcMe4iWSm1dU0cOqwn0piQt7lrMQ2RLPYGThPJK98ixHgcieODibWoWLK8tyeb6LJqfyw0gS0UCzxMJQn0R5ABFjRO7tThjBeuNZmP7b03WZIEi7aGQmB3XB9i6Ge9AaQHIUNbz9pCjqdkm0CjNG6qS3pgfX2dKHG1Y2T55ziSHWi5LySFzagAkRvveeh-4tghpxwPHvAXtepGSsOQWkEG8xnZCIyingjOt0snqDt0p1bF4thnTblIaq1LRGaQ"
-          }
-        }
-        */
       if (result?.data) {
         let token = result.data.access_token;
         localStorage.setItem("token", token);
 
         const resultTeacher = await userRegistryService.getOne();
-        if (resultTeacher.id) {
+        if (resultTeacher?.id) {
           try {
             let { id } = resultTeacher;
             localStorage.setItem("id", id);
@@ -102,7 +96,7 @@ export default function Login({ swPath }) {
             localStorage.setItem("schoolId", resultTeacher.schoolId);
             localStorage.setItem("phoneNumber", resultTeacher.phoneNumber);
           } catch (e) {
-            localStorage.setItem("token", "");
+            localStorage.removeItem("token");
             console.log({ e });
           }
           try {
@@ -114,14 +108,15 @@ export default function Login({ swPath }) {
             localStorage.setItem("fcmToken", "");
             console.log({ e });
           }
-          //window.location.reload();
-
           eventBus.publish("AUTH", {
             eventType: "LOGIN_SUCCESS",
             data: {
               token: token,
             },
           });
+        } else {
+          localStorage.removeItem("token");
+          setErrors({ alert: t("PLEASE_ENTER_VALID_CREDENTIALS") });
         }
       } else {
         localStorage.removeItem("token");

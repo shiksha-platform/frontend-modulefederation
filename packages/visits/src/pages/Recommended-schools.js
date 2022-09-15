@@ -40,7 +40,7 @@ const defaultInputs = [
 
 export default function Recommendedschools({ footerLinks }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState();
+  const [recommendedVisits, setRecommendedVisits] = useState(null);
   const [sortModal, setSortModal] = useState(false);
   const [input, setInput] = useState(defaultInputs);
 
@@ -136,7 +136,7 @@ export default function Recommendedschools({ footerLinks }) {
                       {t("SCHOOLS_NOT_VISITED_LAST_TWO_MONTHS")}
                     </BodyMedium>
                   </Box>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     bg={"visits.white"}
                     onPress={() => {
@@ -144,7 +144,7 @@ export default function Recommendedschools({ footerLinks }) {
                     }}
                   >
                     {t("SORT")}
-                  </Button>
+                  </Button> */}
                 </HStack>
               </Box>
 

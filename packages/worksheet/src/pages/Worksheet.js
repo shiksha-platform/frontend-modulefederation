@@ -113,10 +113,11 @@ export default function Worksheet({ footerLinks, appName, setAlert }) {
     } else {
       filterData = data.filter((e) => e.name);
     }
+    console.log("FilterData", filterData);
     setWorksheets(filterData);
     setWorksheetLoading(false);
   }, [filterObject, search.length >= 3, searchState]);
-
+  console.log(filterObject);
   if (loading) {
     return <Loading />;
   }

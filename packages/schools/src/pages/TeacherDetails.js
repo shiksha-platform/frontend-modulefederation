@@ -189,7 +189,7 @@ const TeacherDetails = ({ footerLinks }) => {
             <Box>
               <H2 color={"schools.absent"}>Very Bad</H2>
               <BodySmall color={"schools.absent"}>
-                You have been absent all days this month
+                You are not regular this month.
               </BodySmall>
             </Box>
           </HStack>
@@ -247,42 +247,6 @@ const TeacherDetails = ({ footerLinks }) => {
           </Button>
         </Collapsible>
       </Box>
-      {/* <Box px={5} bg={"schools.white"} mt={4}>
-        <Collapsible header="Class Result">
-          <Divider marginY={6} />
-          <HStack
-            mx={2}
-            borderColor="schools.lightGray3"
-            bg={"schools.lightGray5"}
-            borderWidth={1}
-            borderRadius={10}
-            p={4}
-            justifyContent="space-between"
-          >
-            <Box>
-              <H3>VI A</H3>
-              <BodyMedium>65 Students</BodyMedium>
-            </Box>
-            <IconByName name="ArrowRightSLineIcon" color={"schools.darkGray"} />
-          </HStack>
-          <HStack
-            mx={2}
-            my={4}
-            borderColor="schools.lightGray3"
-            bg={"schools.lightGray5"}
-            borderWidth={1}
-            borderRadius={10}
-            p={4}
-            justifyContent="space-between"
-          >
-            <Box>
-              <H3>VII A</H3>
-              <BodyMedium>69 Students</BodyMedium>
-            </Box>
-            <IconByName name="ArrowRightSLineIcon" color={"schools.darkGray"} />
-          </HStack>
-        </Collapsible>
-      </Box> */}
       <Box p={5} bg={"schools.white"} mt={4}>
         <Collapsible header="Past Visit Details">
           <Divider marginY={6} />

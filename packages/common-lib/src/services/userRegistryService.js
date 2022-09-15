@@ -68,17 +68,22 @@ export const getAll = async (filters = {}, header = {}) => {
   }
 }
 
-export const getOne = async (params = {}, header = {}) => {
+export const getOne = async ({ id, ...params } = {}, header = {}) => {
   let headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     ...header
   }
-
-  const result = await get(`${process.env.REACT_APP_API_URL}/user`, {
+  let url = `${process.env.REACT_APP_API_URL}/user`
+  if (id) {
+    url = `${process.env.REACT_APP_API_URL}/user/${id}`
+  }
+  const result = await get(url, {
     params,
     headers
   }).catch((error) => error)
-  if (result.data) {
+  if (result.data && id) {
+    return mapInterfaceData(result.data.data, interfaceData)
+  } else if (result.data) {
     return mapInterfaceData(result.data.data[0], interfaceData)
   } else {
     return {}
