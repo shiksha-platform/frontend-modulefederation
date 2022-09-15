@@ -1,0 +1,41 @@
+name: CICD
+on: 
+  push: 
+    branches:
+      - prod
+jobs:
+  build:
+    name: build-deploy-to-sandbox
+    environment: prod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          yarn install
+          yarn workspace @shiksha/common-lib build
+          yarn install
+          yarn build
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_HOST }}
+      - name: Adding known hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts          
+      - name: Copy Package
+        run: |
+          sh ./scripts/pack-prod-build.sh
+          rsync shiksha-ui.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/sandbox.shikshaplatform.io/shiksha-ui.tar
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/shiksha-prod/public
+            rm -rf *
+            cp ../shiksha-ui.tar ./
+            tar -xvf shiksha-ui.tar .
