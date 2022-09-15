@@ -12,6 +12,7 @@ import {
   assessmentRegistryService,
   studentRegistryService,
   classRegistryService,
+  getArray,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React from "react";
@@ -31,7 +32,12 @@ Chart.register(ArcElement, Tooltip, Legend);
 const ORAL_ASSESSMENT = "Oral Assessment";
 const WRITTEN_ASSESSMENT = "Written Assessment";
 
-export default function ReportDetails({ footerLinks, appName, setAlert }) {
+export default function ReportDetails({
+  footerLinks,
+  appName,
+  setAlert,
+  config,
+}) {
   const { t } = useTranslation();
   let { classId, subject, date } = useParams();
   classId = classId ? classId : "ce045222-52a8-4a0a-8266-9220f63baba7";
@@ -56,6 +62,7 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
 
   const [averageScoreWritten, setaverageScoreWritten] = React.useState();
   const [averageScoreOral, setaverageScoreOral] = React.useState();
+  const [access, setAccess] = React.useState();
 
   // const _handleSpotAssessmentFullReportShare = () => {
   //   const telemetryData = telemetryFactory.interact({
@@ -94,6 +101,8 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
   };
 
   const getAssessments = async () => {
+    setAccess(getArray(config["spot-assessment.dataPoints"]));
+
     let classObj = await classRegistryService.getOne({ id: classId });
     setClassObject(classObj);
     let param = { groupId: classId, subject };
@@ -205,116 +214,133 @@ export default function ReportDetails({ footerLinks, appName, setAlert }) {
       <Stack space={1} mb="2" shadow={2}>
         <Box>
           <VStack space={2}>
-            <Box p={4} bg={colors.white}>
-              <HStack alignItems="center" justifyContent="space-between">
-                <H2>{moment(date).format("DD MMM Y")}</H2>
-              </HStack>
-            </Box>
+            {date !== "allDates" ? (
+              <Box p={4} bg={colors.white}>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <H2>{moment(date).format("DD MMM Y")}</H2>
+                </HStack>
+              </Box>
+            ) : (
+              <React.Fragment />
+            )}
+            {access && access.includes("overall-class-participation") ? (
+              <Box p={4} bg={colors.white}>
+                <VStack space={6}>
+                  <Box>
+                    <VStack space={2}>
+                      <H2>{t("CLASS_PARTICIPATION_IN_ORAL_ASSESSMENTS")}</H2>
+                      <Box borderRadius="md">
+                        <VStack>
+                          <Box
+                            px="4"
+                            py={2}
+                            bg={colors.scoreCardIcon2}
+                            roundedTop="6"
+                          >
+                            <HStack alignItems="center">
+                              <IconByName
+                                name="EmotionSadLineIcon"
+                                pr="0"
+                                color={colors.white}
+                              />
+                              <Subtitle color={colors.white}>
+                                Poor overall performance!
+                              </Subtitle>
+                            </HStack>
+                          </Box>
+                          <Box p="4" bg={colors.QuationsBoxContentBg}>
+                            <VStack flex="auto" alignContent={"center"}>
+                              <ProgressBar
+                                isTextShow
+                                legendType="separated"
+                                h="35px"
+                                _bar={{ rounded: "md", mb: "2" }}
+                                isLabelCountHide
+                                data={progressAssessmentOral}
+                              />
+                            </VStack>
+                          </Box>
+                          <Box
+                            p="4"
+                            bg={colors.QuationsBoxBg}
+                            borderBottomRadius={6}
+                            textAlign="center"
+                          >
+                            <Subtitle>{averageScoreOral}</Subtitle>
+                          </Box>
+                        </VStack>
+                      </Box>
+                    </VStack>
+                  </Box>
 
-            <Box p={4} bg={colors.white}>
-              <VStack space={6}>
-                <Box>
-                  <VStack space={2}>
-                    <H2>{t("CLASS_PARTICIPATION_IN_ORAL_ASSESSMENTS")}</H2>
-                    <Box borderRadius="md">
-                      <VStack>
-                        <Box
-                          px="4"
-                          py={2}
-                          bg={colors.scoreCardIcon2}
-                          roundedTop="6"
-                        >
-                          <HStack alignItems="center">
-                            <IconByName
-                              name="EmotionSadLineIcon"
-                              pr="0"
-                              color={colors.white}
-                            />
-                            <Subtitle color={colors.white}>
-                              Poor overall performance!
-                            </Subtitle>
-                          </HStack>
-                        </Box>
-                        <Box p="4" bg={colors.QuationsBoxContentBg}>
-                          <VStack flex="auto" alignContent={"center"}>
-                            <ProgressBar
-                              isTextShow
-                              legendType="separated"
-                              h="35px"
-                              _bar={{ rounded: "md", mb: "2" }}
-                              isLabelCountHide
-                              data={progressAssessmentOral}
-                            />
-                          </VStack>
-                        </Box>
-                        <Box
-                          p="4"
-                          bg={colors.QuationsBoxBg}
-                          borderBottomRadius={6}
-                          textAlign="center"
-                        >
-                          <Subtitle>{averageScoreOral}</Subtitle>
-                        </Box>
-                      </VStack>
-                    </Box>
-                  </VStack>
-                </Box>
+                  <Box>
+                    <VStack space={2}>
+                      <H2>{t("CLASS_PARTICIPATION_IN_WRITTEN_ASSESSMENTS")}</H2>
+                      <Box borderRadius="md">
+                        <VStack>
+                          <Box
+                            px="4"
+                            py={2}
+                            bg={colors.scoreCardIcon2}
+                            roundedTop="6"
+                          >
+                            <HStack alignItems="center">
+                              <IconByName
+                                name="EmotionSadLineIcon"
+                                pr="0"
+                                color={colors.white}
+                              />
+                              <Subtitle color={colors.white}>
+                                Poor overall performance!
+                              </Subtitle>
+                            </HStack>
+                          </Box>
+                          <Box p="4" bg={colors.QuationsBoxContentBg}>
+                            <VStack flex="auto" alignContent={"center"}>
+                              <ProgressBar
+                                isTextShow
+                                legendType="separated"
+                                h="35px"
+                                _bar={{ rounded: "md", mb: "2" }}
+                                isLabelCountHide
+                                data={progressAssessmentWritten}
+                              />
+                            </VStack>
+                          </Box>
+                          <Box
+                            p="4"
+                            bg={colors.QuationsBoxBg}
+                            borderBottomRadius={6}
+                            textAlign="center"
+                          >
+                            <Subtitle>{averageScoreWritten}</Subtitle>
+                          </Box>
+                        </VStack>
+                      </Box>
+                    </VStack>
+                  </Box>
+                </VStack>
+              </Box>
+            ) : (
+              <React.Fragment />
+            )}
 
-                <Box>
-                  <VStack space={2}>
-                    <H2>{t("CLASS_PARTICIPATION_IN_WRITTEN_ASSESSMENTS")}</H2>
-                    <Box borderRadius="md">
-                      <VStack>
-                        <Box
-                          px="4"
-                          py={2}
-                          bg={colors.scoreCardIcon2}
-                          roundedTop="6"
-                        >
-                          <HStack alignItems="center">
-                            <IconByName
-                              name="EmotionSadLineIcon"
-                              pr="0"
-                              color={colors.white}
-                            />
-                            <Subtitle color={colors.white}>
-                              Poor overall performance!
-                            </Subtitle>
-                          </HStack>
-                        </Box>
-                        <Box p="4" bg={colors.QuationsBoxContentBg}>
-                          <VStack flex="auto" alignContent={"center"}>
-                            <ProgressBar
-                              isTextShow
-                              legendType="separated"
-                              h="35px"
-                              _bar={{ rounded: "md", mb: "2" }}
-                              isLabelCountHide
-                              data={progressAssessmentWritten}
-                            />
-                          </VStack>
-                        </Box>
-                        <Box
-                          p="4"
-                          bg={colors.QuationsBoxBg}
-                          borderBottomRadius={6}
-                          textAlign="center"
-                        >
-                          <Subtitle>{averageScoreWritten}</Subtitle>
-                        </Box>
-                      </VStack>
-                    </Box>
-                  </VStack>
-                </Box>
-              </VStack>
-            </Box>
-            <AssessmentAchieverCard students={achieverStudents} />
-            <StudentQuestionsReport
-              students={assessmentStudents}
-              track={track}
-              {...{ classId, subject, date }}
-              limit={2}
-            />
+            {access && access.includes("100%-achievers") ? (
+              <AssessmentAchieverCard students={achieverStudents} />
+            ) : (
+              <React.Fragment />
+            )}
+
+            {access && access.includes("student-wise-assesment") ? (
+              <StudentQuestionsReport
+                students={assessmentStudents}
+                track={track}
+                {...{ classId, subject, date }}
+                limit={2}
+              />
+            ) : (
+              <React.Fragment />
+            )}
           </VStack>
         </Box>
       </Stack>

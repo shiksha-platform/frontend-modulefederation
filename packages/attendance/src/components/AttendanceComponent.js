@@ -122,6 +122,7 @@ export const MultipalAttendance = ({
   const [startTime, setStartTime] = useState();
   const holidays = [];
   const fullName = localStorage.getItem("fullName");
+  const buttonRef = React.useRef(null);
   useEffect(() => {
     if (showModal) setStartTime(moment());
   }, [showModal]);
@@ -303,7 +304,7 @@ export const MultipalAttendance = ({
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
-                    onPress={(e) => setShowModal(false)}
+                    onPress={(e) => modalClose(false)}
                     color={colors.white}
                   />
                 </HStack>
@@ -367,6 +368,7 @@ export const MultipalAttendance = ({
 
                     <Button.Group>
                       <Button
+                        ref={buttonRef}
                         variant="outline"
                         flex="1"
                         textTransform="capitalize"
@@ -384,7 +386,12 @@ export const MultipalAttendance = ({
                           );
                         }}
                       >
-                        {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
+                        <BodyLarge
+                          maxW={buttonRef?.current?.clientWidth - 16}
+                          color={"profile.primary"}
+                        >
+                          {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
+                        </BodyLarge>
                       </Button>
                       <Button
                         flex="1"

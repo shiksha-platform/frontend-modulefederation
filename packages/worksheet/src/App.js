@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { AppShell, initializeI18n } from "@shiksha/common-lib";
-import QuestionBank from "pages/QuestionBank";
 import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";
 import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
@@ -36,11 +35,6 @@ function App() {
       moduleName: "worksheet",
       path: "/worksheet/:worksheetId/share",
       component: WorksheetShare,
-    },
-    {
-      moduleName: "worksheet",
-      path: "/worksheet/questionBank",
-      component: QuestionBank,
     },
     {
       moduleName: "worksheet",

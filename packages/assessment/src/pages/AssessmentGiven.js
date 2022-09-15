@@ -98,11 +98,12 @@ export default function AssessmentGiven(props) {
   };
 
   const handleStartAssessment = async () => {
+    const { config } = props;
     if (!isRepeat) {
       setFetchingQuestion(true);
-      const limit = 4;
+      const limit = config["spot-assessment.limitOfNumberOfQuestions"];
       let data = {
-        adapter: "diksha",
+        adapter: config["spot-assessment.questionSource"],
         limit,
         subject: subject,
         bloomsLevel: selectedCompetencies || "application",

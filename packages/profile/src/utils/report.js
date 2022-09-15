@@ -50,7 +50,7 @@ const getReportData = async (calendarView, day) => {
 
 const formatDate = (date, type) => {
   if (["Month", "month"].includes(type)) {
-    return moment(date?.from).format("MMMM Y");
+    return moment(date?.fromDate).format("MMMM Y");
   } else if (["Week", "week", "weeks"].includes(type)) {
     return (
       moment(date?.fromDate).format("D MMM") +
@@ -58,6 +58,6 @@ const formatDate = (date, type) => {
       moment(date?.toDate).format("D MMM")
     );
   } else {
-    return moment(date).format("D MMM, Y");
+    return moment(date?.fromDate).format("D MMM, Y");
   }
 };

@@ -47,5 +47,7 @@
   "LAST_MONTH": "पिछला महीना",
   "SEE_MORE": "और देखें",
   "SEE_LESS": "कम देखें",
-  "MY_MONTHLY_ATTENDANCE": "मेरी मासिक उपस्थिति"
+  "MY_MONTHLY_ATTENDANCE": "मेरी मासिक उपस्थिति",
+  "MY_MONTHLY_ATTENDANCE_WEEK": "पिछले 3 हफ़्तों में मेरी उपस्थिति का रुझान",
+  "MY_MONTHLY_ATTENDANCE_DAY": "पिछले 3 दिनों में मेरी उपस्थिति का रुझान"
 }

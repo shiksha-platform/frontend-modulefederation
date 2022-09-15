@@ -9,7 +9,6 @@ import {
   BodyLarge,
   H2,
   H1,
-  overrideColorTheme,
   getApiConfig,
   getArray,
 } from "@shiksha/common-lib";
@@ -29,14 +28,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Camera from "./Camera";
 import moment from "moment";
-import colorTheme from "../colorTheme";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 const ON_LEAVE = "Onleave";
 
-const colors = overrideColorTheme(colorTheme);
 const newMarkList = [
   {
     icon: "CheckboxCircleLineIcon",
@@ -193,9 +190,6 @@ export default function SelfAttendanceSheet({
             remark: newAttedance.remark,
           },
           {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
             onlyParameter: [
               "schoolId",
               "studentId",
@@ -234,9 +228,22 @@ export default function SelfAttendanceSheet({
       setSelfAttendance(newAttedance);
       attendanceRegistryService
         .create(newAttedance, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+          onlyParameter: [
+            "schoolId",
+            "studentId",
+            "topicId",
+            "attendance",
+            "date",
+            "classId",
+            "teacherId",
+            "admissionNo",
+            "currentClassID",
+            "email",
+            "remark",
+            "latitude",
+            "longitude",
+            "image",
+          ],
         })
         .then((e) => {
           setLoding(false);
@@ -321,7 +328,6 @@ export default function SelfAttendanceSheet({
   }, []);
 
   const handleGoBack = () => {
-    navigate("/");
     setDone(false);
     setCameraModal(false);
     setLocationModal(false);
@@ -365,7 +371,6 @@ export default function SelfAttendanceSheet({
     var data = {};
     if (navigator.geolocation) {
       var position = await getPosition();
-      console.log(position);
       if (!returnData) {
         setSelfAttendance({
           ...selfAttendance,

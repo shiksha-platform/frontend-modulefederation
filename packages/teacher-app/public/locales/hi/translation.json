@@ -196,6 +196,8 @@
   "MY_CLASS_RESULT": "मेरी कक्षा का परिणाम",
   "MY_PROFILE": "मेरी प्रोफाइल",
   "MY_MONTHLY_ATTENDANCE": "मेरी मासिक उपस्थिति",
+  "MY_MONTHLY_ATTENDANCE_WEEK": "पिछले 3 हफ़्तों में मेरी उपस्थिति का रुझान",
+  "MY_MONTHLY_ATTENDANCE_DAY": "पिछले 3 दिनों में मेरी उपस्थिति का रुझान",
   "MY_ATTENDANCE": "मेरी उपस्थिति",
   "ATTENDANCE_DETAILS": "उपस्थिति विवरण",
   "ATTENDANCE_MARKED": "उपस्थिति चिह्नित",
