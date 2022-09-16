@@ -1,11 +1,11 @@
-name: CICD
+name: CICD_PROD
 on: 
   push: 
     branches:
       - prod
 jobs:
   build:
-    name: build-deploy-to-sandbox
+    name: build-deploy-to-prod
     environment: prod
     runs-on: ubuntu-latest
     steps:
