@@ -9,8 +9,8 @@ import {
   BodyLarge,
   H2,
   H1,
-  overrideColorTheme,
   getApiConfig,
+  getArray,
 } from "@shiksha/common-lib";
 import {
   Actionsheet,
@@ -21,8 +21,6 @@ import {
   Modal,
   Pressable,
   Stack,
-  Toast,
-  useToast,
   VStack,
 } from "native-base";
 import React from "react";
@@ -30,15 +28,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Camera from "./Camera";
 import moment from "moment";
-import colorTheme from "../colorTheme";
-import Profile from "pages/Profile";
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
 const UNMARKED = "Unmarked";
 const ON_LEAVE = "Onleave";
 
-const colors = overrideColorTheme(colorTheme);
 const newMarkList = [
   {
     icon: "CheckboxCircleLineIcon",
@@ -115,12 +110,13 @@ const newSpecialDutyList = [
   },
 ];
 
-export default function SelfAttedanceSheet({
+export default function SelfAttendanceSheet({
   children,
   showModal,
   setShowModal,
   setAttendance,
   appName,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const [specialDutyModal, setSpecialDutyModal] = React.useState(false);
@@ -169,15 +165,12 @@ export default function SelfAttedanceSheet({
     capture("INTERACT", telemetryData);
     handleMarkAttendance(newAttedance);
   };
-
   const markSelfAttendance = (image) => {
     if (image) {
       setLoding(true);
       setCameraUrl(image);
       let newAttedance = {
         ...selfAttendance,
-        date: moment().format("YYYY-MM-DD"),
-        studentId: localStorage.getItem("id"),
         image: image,
       };
       handleMarkAttendance(newAttedance);
@@ -197,9 +190,6 @@ export default function SelfAttedanceSheet({
             remark: newAttedance.remark,
           },
           {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
             onlyParameter: [
               "schoolId",
               "studentId",
@@ -222,18 +212,50 @@ export default function SelfAttedanceSheet({
           setLoding(false);
           handleTelemetry(newAttedance);
           if (setAttendance) setAttendance(newAttedance);
+        })
+        .catch((e) => {
+          setLoding(false);
+          setCameraModal(false);
+          setLocationModal(false);
+          setAlert ? setAlert(e.message) : console.log(e.message);
         });
     } else {
+      newAttedance = {
+        ...newAttedance,
+        date: moment().format("YYYY-MM-DD"),
+        studentId: localStorage.getItem("id"),
+      };
+      setSelfAttendance(newAttedance);
       attendanceRegistryService
         .create(newAttedance, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+          onlyParameter: [
+            "schoolId",
+            "studentId",
+            "topicId",
+            "attendance",
+            "date",
+            "classId",
+            "teacherId",
+            "admissionNo",
+            "currentClassID",
+            "email",
+            "remark",
+            "latitude",
+            "longitude",
+            "image",
+          ],
         })
         .then((e) => {
           setLoding(false);
           handleTelemetry(newAttedance);
+          setSelfAttendance({ ...newAttedance, id: e });
           if (setAttendance) setAttendance(newAttedance);
+        })
+        .catch((e) => {
+          setLoding(false);
+          setCameraModal(false);
+          setLocationModal(false);
+          setAlert ? setAlert(e.message) : console.log(e.message);
         });
     }
   };
@@ -243,19 +265,13 @@ export default function SelfAttedanceSheet({
     async function getData() {
       let newConfig = await getApiConfig(["attendance"]);
       setConfig(newConfig);
-      const status =
-        newConfig && newConfig["attendance_states_of_staff"]
-          ? newConfig["attendance_states_of_staff"]
-          : [];
+      const status = getArray(newConfig["attendance_states_of_staff"]);
       const newData = newMarkList.filter((e) => {
         return status.includes(e.value);
       });
       setMarkList(newData);
 
-      const specialDutyStatus =
-        newConfig && newConfig["specialDuties"]
-          ? newConfig["specialDuties"]
-          : [];
+      const specialDutyStatus = getArray(newConfig["specialDuties"]);
       const newDataSpecialDuty = newSpecialDutyList.filter((e) => {
         return specialDutyStatus.includes(e.value);
       });
@@ -312,7 +328,6 @@ export default function SelfAttedanceSheet({
   }, []);
 
   const handleGoBack = () => {
-    navigate("/");
     setDone(false);
     setCameraModal(false);
     setLocationModal(false);
@@ -336,8 +351,7 @@ export default function SelfAttedanceSheet({
       setDone(true);
       setCameraModal(false);
       handleMarkAttendance(selfAttendance);
-    }
-    if (config && config["captureLocation"] === "true") {
+    } else if (config && config["captureLocation"] === "true") {
       setLocationModal(true);
     } else if (config && config["capture_selfie"] === "true") {
       setCameraModal(true);
@@ -348,18 +362,31 @@ export default function SelfAttedanceSheet({
     setShowModal(false);
   };
 
-  const getLocation = () => {
+  const getLocation = async (returnData = false) => {
+    const getPosition = () => {
+      return new Promise((res, rej) => {
+        navigator.geolocation.getCurrentPosition(res, rej);
+      });
+    };
+    var data = {};
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((e) => {
+      var position = await getPosition();
+      if (!returnData) {
         setSelfAttendance({
           ...selfAttendance,
-          latitude: e.coords.latitude,
-          longitude: e.coords.longitude,
+          latitude: position?.coords?.latitude,
+          longitude: position?.coords?.longitude,
         });
-      });
+      } else {
+        data = {
+          latitude: position?.coords?.latitude,
+          longitude: position?.coords?.longitude,
+        };
+      }
     } else {
       console.log("Geolocation is not supported by this browser.");
     }
+    return data;
   };
 
   if (showModal && config && config["captureSelfAttendace"] === "false") {
@@ -437,15 +464,19 @@ export default function SelfAttedanceSheet({
         p="5"
       >
         <VStack space="55px" alignItems="center">
-          <Image
-            ref={myRef}
-            source={{
-              uri: cameraUrl,
-            }}
-            rounded="full"
-            alt=""
-            size="250px"
-          />
+          {cameraUrl ? (
+            <Image
+              ref={myRef}
+              source={{
+                uri: cameraUrl,
+              }}
+              rounded="full"
+              alt=""
+              size="250px"
+            />
+          ) : (
+            <React.Fragment />
+          )}
           <VStack space="3" alignItems="center">
             <IconByName
               name="CheckboxCircleLineIcon"
@@ -458,7 +489,9 @@ export default function SelfAttedanceSheet({
             <BodyMedium textAlign="center" textTransform="inherit">
               {selfAttendance.attendance === PRESENT &&
               selfAttendance.name !== selfAttendance.remark
-                ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
+                ? config && config["capture_selfie"] === "true"
+                  ? t("YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE")
+                  : t("YOU_SUCCESS_ATTENDANCE")
                 : ""}
             </BodyMedium>
           </VStack>
@@ -516,13 +549,17 @@ export default function SelfAttedanceSheet({
                   <Button
                     flex={1}
                     _text={{ color: "profile.white" }}
-                    onPress={() => {
-                      getLocation();
+                    onPress={async () => {
                       setLocationModal(false);
                       if (config && config["capture_selfie"] === "true") {
+                        getLocation();
                         setCameraModal(true);
                       } else {
-                        handleMarkAttendance(selfAttendance);
+                        const location = await getLocation(true);
+                        handleMarkAttendance({
+                          ...selfAttendance,
+                          ...location,
+                        });
                       }
                     }}
                   >

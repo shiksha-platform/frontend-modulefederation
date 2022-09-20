@@ -63,8 +63,11 @@
   "LAST_MONTH": "पिछला महीना",
   "CANCEL": "रद्द करना",
   "NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK": "इस सप्ताह किसी भी छात्र ने 100% उपस्थिति हासिल नहीं की है",
+  "NO_STUDENT_HAS_ACHIEVED": "इस सप्ताह किसी भी छात्र ने 100%",
   "NO_STUDENT_HAS_BEEN_ABSENT": "कोई भी छात्र 3 दिनों से अधिक समय से अनुपस्थित नहीं है",
   "SEND_ANOTHER_MESSAGE": "एक और संदेश भेजें",
   "VIEW_MESSAGES_BEING_SENT_BY_ADMIN": "व्यवस्थापक से भेजें जा रहे संदेश देखें",
-  "REPORT_CONFIG_TYPE_NOT_FOUND": "रिपोर्ट कॉन्फ़िगरेशन प्रकार नहीं मिला"
+  "REPORT_CONFIG_TYPE_NOT_FOUND": "रिपोर्ट कॉन्फ़िगरेशन प्रकार नहीं मिला",
+  "YOU_SUCCESS_UPLOAD_IMAGE_ATTENDANCE": "आपने अपनी छवि सफलतापूर्वक अपलोड कर दी है और दिन के लिए अपनी उपस्थिति दर्ज कर ली है।",
+  "YOU_SUCCESS_ATTENDANCE": "आपने दिन के लिए अपनी उपस्थिति को सफलतापूर्वक चिह्नित कर लिया है।"
 }

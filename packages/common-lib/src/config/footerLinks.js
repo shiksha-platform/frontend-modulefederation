@@ -14,13 +14,6 @@ export default [
     routeparameters: {}
   },
   {
-    title: 'SCHOOL',
-    icon: 'GovernmentLineIcon',
-    moduleName: 'schools',
-    route: '/schools',
-    routeparameters: {}
-  },
-  {
     title: 'TEACHING',
     icon: 'BookOpenLineIcon',
     moduleName: 'worksheet',

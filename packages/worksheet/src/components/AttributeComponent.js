@@ -31,10 +31,10 @@ export default function AttributeComponent({ data, object }) {
                 isDisabled
                 name={item.icon}
                 _icon={{ size: 14 }}
-                color="worksheet.darkGary4"
+                color="worksheet.darkGray4"
                 p="0"
               />
-              <BodyMedium color="worksheet.darkGary4">
+              <BodyMedium color="worksheet.darkGray4">
                 {t(item?.label) +
                   " : " +
                   (object?.[item.attribute]

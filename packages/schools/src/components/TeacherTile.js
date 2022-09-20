@@ -1,47 +1,13 @@
-import React, { useState } from "react";
-import {
-  Collapsible,
-  IconByName,
-  attendanceRegistryService,
-  ProgressBar,
-  getUniqAttendance,
-  H3,
-  BodyMedium,
-} from "@shiksha/common-lib";
-import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-  Divider,
-  Actionsheet,
-  Checkbox,
-  Avatar,
-  Spacer,
-  Pressable,
-} from "native-base";
+import React from "react";
+import { IconByName, H2, H3 } from "@shiksha/common-lib";
+import { HStack, VStack, Box, Avatar, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
-import { Link, useNavigate } from "react-router-dom";
-import { H2, overrideColorTheme } from "@shiksha/common-lib";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
-// import StudentDetailCard from "./StudentDetail";
 
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
-
-const TeacherTile = ({ index, teacher, setTeacherDetailModal }) => {
-  const navigate = useNavigate();
+const TeacherTile = ({ index, teacher, setTeacherData, visitedData }) => {
   const { t } = useTranslation();
-
   return (
     <React.Fragment>
-      <Pressable onPress={() => setTeacherDetailModal(true)}>
+      <Pressable onPress={() => setTeacherData(teacher)}>
         <Box bg={"schools.lightGray5"} p={4} rounded={10}>
           <HStack alignItems="center" justifyContent="space-between">
             <Box>
@@ -50,9 +16,14 @@ const TeacherTile = ({ index, teacher, setTeacherDetailModal }) => {
                   size="48px"
                   borderRadius="md"
                   source={{
-                    uri: "https://via.placeholder.com/50x50.png",
+                    uri: teacher?.image ? teacher?.image : "",
                   }}
-                />
+                  bg={"schools.primary"}
+                >
+                  <H2 color={"schools.white"}>
+                    {teacher?.firstName?.slice(0, 2)?.toUpperCase()}
+                  </H2>
+                </Avatar>
                 <VStack>
                   <H3
                     color={"schools.bodyText"}
@@ -60,20 +31,34 @@ const TeacherTile = ({ index, teacher, setTeacherDetailModal }) => {
                       color: "warmGray.50",
                     }}
                   >
-                    {index + 1} . {teacher.name}
+                    {index + 1} . {`${teacher?.firstName} ${teacher?.lastName}`}
                   </H3>
-                  <BodyMedium color={"schools.gray"}>
-                    Class Teacher: {teacher.class}
-                  </BodyMedium>
                 </VStack>
               </HStack>
             </Box>
+            <Box>
+              <HStack>
+                {visitedData &&
+                  visitedData?.find(
+                    (data) => data?.teacherId === teacher?.id
+                  ) && (
+                    <Box>
+                      <IconByName
+                        _icon={{ size: "22" }}
+                        borderRadius="full"
+                        bg={"schools.primary"}
+                        color={"schools.white"}
+                        name="UserLineIcon"
+                      />
+                    </Box>
+                  )}
 
-            <IconByName
-              name="ArrowRightSLineIcon"
-              color={"schools.lightGray"}
-              // onPress={() => setSortModal(false)}
-            />
+                <IconByName
+                  name="ArrowRightSLineIcon"
+                  color={"schools.lightGray"}
+                />
+              </HStack>
+            </Box>
           </HStack>
         </Box>
       </Pressable>

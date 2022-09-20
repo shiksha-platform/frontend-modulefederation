@@ -4,15 +4,12 @@ import {
   Layout,
   Loading,
   useWindowSize,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import WorksheetBox from "components/WorksheetBox";
 import { Button, Box, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function SuccessPage({
   handleBackButton,

@@ -21,7 +21,7 @@ const ClassStudentsPanel = ({ classObject, students }) => {
               <Box
                 borderBottomWidth="1"
                 _dark={{
-                  borderColor: "classes.darkGary3",
+                  borderColor: "classes.darkGray3",
                 }}
                 borderColor={"classes.lightGray3"}
                 pr="1"
@@ -35,18 +35,24 @@ const ClassStudentsPanel = ({ classObject, students }) => {
             keyExtractor={(item) => item.id}
           />
         </Box>
-        <Box px="5">
-          <Button
-            mt="2"
-            variant="outline"
-            colorScheme="button"
-            onPress={(e) =>
-              navigate(`/class/students/${classObject?.id?.replace("1-", "")}`)
-            }
-          >
-            {t("SHOW_ALL_STUDENTS")}
-          </Button>
-        </Box>
+        {students?.length > 4 ? (
+          <Box px="5">
+            <Button
+              mt="2"
+              variant="outline"
+              colorScheme="button"
+              onPress={(e) =>
+                navigate(
+                  `/class/students/${classObject?.id?.replace("1-", "")}`
+                )
+              }
+            >
+              {t("SHOW_ALL_STUDENTS")}
+            </Button>
+          </Box>
+        ) : (
+          <React.Fragment />
+        )}
       </VStack>
     </Collapsible>
   );

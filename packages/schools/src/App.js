@@ -1,9 +1,8 @@
 import React from "react";
 
 import "./App.css";
-import { AppShell } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import SchoolProfile from "pages/SchoolProfile";
-import Myvisitspage from "pages/MyVisitsPage";
 import AttendanceReportDashboard from "pages/reports/AttendanceReportDashboard";
 import AttendanceSectionWiseReport from "pages/reports/AttendanceSectionWiseReport";
 import AttendanceDetailedReport from "pages/reports/AttendanceDetailedReport";
@@ -16,12 +15,19 @@ import NewVisitPage from "pages/visit/NewVisitPage";
 import VisitSubmit from "pages/visit/VisitSubmit";
 import TeacherVisitReport from "pages/TeacherVisitReport";
 import Question from "pages/Question";
+import AllTeachers from "pages/AllTeachers";
 
 function App() {
+  initializeI18n(
+    ["schools"],
+    `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+  );
+  const ReportDetails = React.lazy(() => import("assessment/ReportDetails"));
+
   const routes = [
     {
       moduleName: "schools",
-      path: "/schools/new-visit",
+      path: "/schools/new-visit/:schoolId",
       component: NewVisitPage,
     },
     {
@@ -36,13 +42,13 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/assessment-report",
+      path: "/schools/assessment-report/:classId",
       component: AssessmentReportDashboard,
     },
     {
       moduleName: "schools",
-      path: "/schools/assessment-section-report",
-      component: AssessmentSectionWiseReport,
+      path: "/schools/assessment-section-report/:classId/:subject/:date",
+      component: ReportDetails,
     },
     {
       moduleName: "schools",
@@ -51,7 +57,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "/schools/attendance-report",
+      path: "/schools/attendance-report/:parentId",
       component: AttendanceReportDashboard,
     },
     {
@@ -66,8 +72,8 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "schools/my-visits",
-      component: Myvisitspage,
+      path: "/schools/teachers/:schoolId",
+      component: AllTeachers,
     },
     {
       moduleName: "schools",
@@ -77,12 +83,12 @@ function App() {
     ,
     {
       moduleName: "schools",
-      path: "/schools/teacher-details",
+      path: "/schools/teacher-details/:teacherId",
       component: TeacherDetails,
     },
     {
       moduleName: "schools",
-      path: "/schools/teacher-attendance-report",
+      path: "/schools/teacher-attendance-report/:teacherId",
       component: TeacherAttendanceReport,
     },
     {
@@ -92,7 +98,7 @@ function App() {
     },
     {
       moduleName: "schools",
-      path: "*",
+      path: "/",
       component: SchoolProfile,
     },
   ];

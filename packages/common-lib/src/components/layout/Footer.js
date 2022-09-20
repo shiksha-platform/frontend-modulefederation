@@ -1,27 +1,32 @@
 import React, { useEffect } from 'react'
-import { Box, Text, HStack, Center, Stack } from 'native-base'
+import { Box, Text, HStack, Center, Stack, Pressable } from 'native-base'
 import IconByName from '../IconByName'
 import { useTranslation } from 'react-i18next'
-import { Link, generatePath } from 'react-router-dom'
+import { generatePath, useNavigate } from 'react-router-dom'
 import { useWindowSize } from '../helper'
 
 export default function Footer({ menues, routeDynamics, ...props }) {
   const [selected, setSelected] = React.useState(0)
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const [width, Height] = useWindowSize()
   const footerMenus = menues
 
   useEffect(() => {
     let path = window?.location?.pathname.toString()
-    if (path.startsWith('/attendance') || path.startsWith('/class')) {
+    if (
+      path.startsWith('/attendance') ||
+      path.startsWith('/class') ||
+      path.startsWith('/assessment')
+    ) {
       setSelected('classes')
     } else if (path.startsWith('/worksheet')) {
       setSelected('worksheet')
     } else if (path.startsWith('/mylearning')) {
       setSelected('mylearning')
-    } else if (path.startsWith('/schools')) {
-      setSelected('schools')
+    } else if (path.startsWith('/visits') || path.startsWith('/schools')) {
+      setSelected('visits')
     } else {
       setSelected('app')
     }
@@ -29,18 +34,18 @@ export default function Footer({ menues, routeDynamics, ...props }) {
 
   const PressableNew = ({ item, children, ...prop }) => {
     return item?.route ? (
-      <Box {...prop}>
-        <Link
-          style={{ textDecoration: 'none' }}
-          to={
+      <Pressable
+        {...prop}
+        onPress={() => {
+          navigate(
             routeDynamics
               ? generatePath(item.route, { ...{ id: item.id } })
               : item.route
-          }
-        >
-          {children}
-        </Link>
-      </Box>
+          )
+        }}
+      >
+        {children}
+      </Pressable>
     ) : (
       <Box {...prop}>{children}</Box>
     )
@@ -67,7 +72,7 @@ export default function Footer({ menues, routeDynamics, ...props }) {
                 }
               >
                 <Center>
-                  <IconByName name={item.icon} />
+                  <IconByName name={item.icon} isDisabled p='2' />
                   <Text fontSize='12'>{t(item.title)}</Text>
                 </Center>
               </Text>

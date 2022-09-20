@@ -1,12 +1,16 @@
 import React from "react";
 
 import "./App.css";
-import { AppShell } from "@shiksha/common-lib";
-import Myvisits from "./pages/Myvisits";
-import Recommendedschools from "./pages/Recommended-schools";
-import Allocatedschools from "./pages/Allocated-schools";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
+import Myvisits from "pages/Myvisits";
+import Recommendedschools from "pages/Recommended-schools";
+import Allocatedschools from "pages/Allocated-schools";
 
 function App() {
+  initializeI18n(
+    ["visits"],
+    `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+  );
   const routes = [
     {
       moduleName: "visits",
@@ -25,7 +29,7 @@ function App() {
     },
     {
       moduleName: "visits",
-      path: "*",
+      path: "/",
       component: Myvisits,
     },
   ];
@@ -36,6 +40,7 @@ function App() {
       routes={routes}
       AuthComponent={LoginComponent}
       basename={process.env.PUBLIC_URL}
+      _authComponent={{ swPath: "/modules/visits" }}
     />
   );
 }

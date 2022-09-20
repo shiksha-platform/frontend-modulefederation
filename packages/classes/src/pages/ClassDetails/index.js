@@ -70,7 +70,13 @@ const ClassDetails = ({ footerLinks }) => {
             : `${window.location.origin}/class.png`
           : ""
       }
-      _header={_header({ name: classObject.name, classId, getClass })}
+      _header={_header({
+        name: `${classObject?.name} ${
+          classObject?.section ? "• Sec " + classObject?.section : ""
+        }`,
+        classId,
+        getClass,
+      })}
       _appBar={{ languages: manifest.languages }}
       subHeader={
         <Menu
@@ -104,7 +110,7 @@ const ClassDetails = ({ footerLinks }) => {
           classObject={classObject}
           students={students}
         ></ClassStudentsPanel>
-        <ClassSubjectsPanel />
+        <ClassSubjectsPanel classObject={classObject} students={students} />
         <ClassDetailsPanel students={students} />
       </Stack>
     </Layout>

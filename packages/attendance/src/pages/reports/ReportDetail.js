@@ -39,7 +39,7 @@ import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function ReportDetail({ footerLinks, appName }) {
+export default function ReportDetail({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId, view } = useParams();
@@ -182,14 +182,14 @@ export default function ReportDetail({ footerLinks, appName }) {
       _header={{
         title: t("REPORT_DETAILS"),
         subHeading:
-          (classObject?.name ? "Class " + classObject?.name : "") +
-          (classObject?.section ? " Sec " + classObject?.section : ""),
+          (classObject?.name ? classObject?.name : "") +
+          (classObject?.section ? " • Sec " + classObject?.section : ""),
       }}
       subHeader={
         <Stack>
           <H2>
-            {(classObject?.name ? "Class " + classObject?.name : "") +
-              (classObject?.section ? " Sec " + classObject?.section : "")}
+            {(classObject?.name ? classObject?.name : "") +
+              (classObject?.section ? "• Sec " + classObject?.section : "")}
           </H2>
           <Caption>
             {t("TOTAL")}: {students.length} {t("PRESENT")}:
@@ -211,7 +211,6 @@ export default function ReportDetail({ footerLinks, appName }) {
               {...{ page, setPage }}
               view={calendarView}
             />
-            <IconByName name={"ListUnorderedIcon"} isDisabled />
           </HStack>
         </Box>
         <Box bg="white" p="5">
@@ -353,7 +352,7 @@ export default function ReportDetail({ footerLinks, appName }) {
               header={
                 <>
                   <VStack>
-                    <Text bold fontSize={"md"} textTransform="inherit">
+                    <Text bold fontSize={"md"} textTransform="none">
                       {t("ABSENT_CONSECUTIVE_3_DAYS")}
                     </Text>
                     <Text fontSize={"xs"}>
@@ -449,6 +448,7 @@ export default function ReportDetail({ footerLinks, appName }) {
                   data={students}
                   renderItem={({ item, index }) => (
                     <AttendanceComponent
+                      setAlert={setAlert}
                       isEditDisabled
                       page={page}
                       student={item}

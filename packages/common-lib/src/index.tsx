@@ -13,6 +13,7 @@ import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
 import FilterButton from './components/FilterButton'
+import SchoolCard from './components/SchoolCard'
 import * as userRegistryService from './services/userRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
@@ -22,19 +23,25 @@ import * as questionRegistryService from './services/questionRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
+import * as lessonPlansRegistryService from './services/lessonPlansRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
 import * as courseRegistryService from './services/courseRegistryService'
 import * as coursetrackingRegistryService from './services/coursetrackingRegistryService'
 import * as filterDataRegistryService from './services/filterDataRegistryService'
-
+import * as mentorRegisteryService from './services/mentorRegisteryService'
+import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
+import * as workHistoryRegistryService from './services/workHistoryRegistryService'
+import * as schoolRegistryService from './services/schoolRegistryService'
 import {
   getAllForUser,
   sendReadReceipt
 } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
+import { useAuthFlow } from './hooks/useAuthFlow'
+import StarRating from './components/StarRating'
 export {
   AppBar,
   Header,
@@ -53,6 +60,7 @@ export {
   ProgressBar,
   Tab,
   Loading,
+  SchoolCard,
   userRegistryService,
   classRegistryService,
   attendanceRegistryService,
@@ -65,12 +73,19 @@ export {
   getApiConfig,
   getAllForUser,
   sendReadReceipt,
+  lessonPlansRegistryService,
   templateRegistryService,
   notificationRegistryService,
   roleRegistryService,
   courseRegistryService,
   coursetrackingRegistryService,
-  filterDataRegistryService
+  filterDataRegistryService,
+  useAuthFlow,
+  workHistoryRegistryService,
+  schoolRegistryService,
+  mentorRegisteryService,
+  schoolRegisteryService,
+  StarRating
 }
 
 export * from './services/Auth'

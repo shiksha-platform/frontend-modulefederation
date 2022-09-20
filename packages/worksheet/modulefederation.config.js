@@ -5,7 +5,6 @@ module.exports = {
   exposes: {
     "./App": "./src/App",
     "./TeachingDetail": "./src/pages/TeachingDetail",
-    "./QuestionBank": "./src/pages/QuestionBank",
     "./Worksheet": "./src/pages/Worksheet",
     "./WorksheetShare": "./src/pages/WorksheetShare",
     "./WorksheetQuestionBank": "./src/pages/WorksheetQuestionBank",

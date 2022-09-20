@@ -99,7 +99,7 @@ export default function LearningBox({
         context: "CourseTracking",
         type: "like",
       };
-      const { osid } = await likeRegistryService.create(newData);
+      const osid = await likeRegistryService.create(newData);
       const telemetryData = telemetryFactory.interact({
         appName,
         type: "Course-Like",

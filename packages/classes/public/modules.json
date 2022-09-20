@@ -4,5 +4,11 @@
   },
   "students": {
     "url": "http://localhost:3006/modules/student"
+  },
+  "assessment": {
+    "url": "http://localhost:3009/modules/assessment"
+  },
+  "profile": {
+    "url": "http://localhost:3008/modules/profile"
   }
 }

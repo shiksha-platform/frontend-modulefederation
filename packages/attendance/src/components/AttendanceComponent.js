@@ -122,6 +122,7 @@ export const MultipalAttendance = ({
   const [startTime, setStartTime] = useState();
   const holidays = [];
   const fullName = localStorage.getItem("fullName");
+  const buttonRef = React.useRef(null);
   useEffect(() => {
     if (showModal) setStartTime(moment());
   }, [showModal]);
@@ -295,12 +296,15 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_SUMMARY_REPORT")}
                     </H2>
                     <BodySmall color={colors.white}>
-                      {classObject?.title ?? ""}
+                      {(classObject?.name ? classObject?.name : "") +
+                        (classObject?.section
+                          ? " • Sec " + classObject?.section
+                          : "")}
                     </BodySmall>
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
-                    onPress={(e) => setShowModal(false)}
+                    onPress={(e) => modalClose(false)}
                     color={colors.white}
                   />
                 </HStack>
@@ -342,7 +346,7 @@ export const MultipalAttendance = ({
                       ],
                       footer: (
                         <HStack justifyContent={"space-between"}>
-                          <Subtitle textTransform="capitalize">
+                          <Subtitle textTransform="none">
                             {t("ATTENDANCE_TAKEN_BY")}
                           </Subtitle>
                           <Subtitle color={colors.successAlertText}>
@@ -364,10 +368,10 @@ export const MultipalAttendance = ({
 
                     <Button.Group>
                       <Button
+                        ref={buttonRef}
                         variant="outline"
                         flex="1"
                         textTransform="capitalize"
-                        wordBreak="break-word"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,
@@ -382,14 +386,16 @@ export const MultipalAttendance = ({
                           );
                         }}
                       >
-                        {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
+                        <BodyLarge
+                          maxW={buttonRef?.current?.clientWidth - 16}
+                          color={"profile.primary"}
+                        >
+                          {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
+                        </BodyLarge>
                       </Button>
                       <Button
-                        _text={{
-                          color: colors.white,
-                          textTransform: "capitalize",
-                        }}
                         flex="1"
+                        textTransform="capitalize"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,
@@ -512,6 +518,7 @@ export default function AttendanceComponent({
   appName,
   manifest,
   setLastAttedance,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -564,6 +571,7 @@ export default function AttendanceComponent({
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
+
     if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
       if (dataObject.attendanceId) {
         attendanceRegistryService
@@ -592,7 +600,10 @@ export default function AttendanceComponent({
             setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
-          });
+          })
+          .catch((e) =>
+            setAlert ? setAlert(e.message) : console.log(e.message)
+          );
       } else {
         attendanceRegistryService
           .create({
@@ -605,11 +616,17 @@ export default function AttendanceComponent({
             teacherId: teacherId,
           })
           .then((e) => {
-            setAttendance([...attendance, dataObject]);
+            setAttendance([
+              ...attendance,
+              { ...dataObject, id: e, attendanceId: e },
+            ]);
             setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
-          });
+          })
+          .catch((e) =>
+            setAlert ? setAlert(e.message) : console.log(e.message)
+          );
       }
     } else {
       setLoading({});

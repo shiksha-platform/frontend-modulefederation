@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { AppShell, initializeI18n } from "@shiksha/common-lib";
-import QuestionBank from "pages/QuestionBank";
 import Teaching from "pages/Teaching";
 import TeachingDetail from "pages/TeachingDetail";
 import WorksheetQuestionBank from "pages/WorksheetQuestionBank";
@@ -29,18 +28,13 @@ function App() {
     },
     {
       moduleName: "worksheet",
-      path: "/worksheet/:classId/view",
+      path: "/worksheet/:classId/:subject",
       component: TeachingDetail,
     },
     {
       moduleName: "worksheet",
       path: "/worksheet/:worksheetId/share",
       component: WorksheetShare,
-    },
-    {
-      moduleName: "worksheet",
-      path: "/worksheet/questionBank",
-      component: QuestionBank,
     },
     {
       moduleName: "worksheet",
@@ -64,17 +58,22 @@ function App() {
     },
     {
       moduleName: "worksheet",
-      path: "*",
+      path: "/",
       component: Teaching,
     },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
 
   return (
     <AppShell
       basename={process.env.PUBLIC_URL}
       routes={routes}
       AuthComponent={LoginComponent}
+      skipLogin={skipLogin}
       _authComponent={{ swPath: "/modules/worksheet" }}
     />
   );

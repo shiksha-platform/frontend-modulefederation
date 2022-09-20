@@ -1,0 +1,99 @@
+{
+  "@type": "samagraos.app.manifest",
+  "@version": "1",
+  "name": "Samagra Shiksha",
+  "short_name": "samagra-shiksha",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "display": "browser",
+  "orientation": "portrait",
+
+  "menus": {
+    "hamburger": [
+      {
+        "title": "MY_CLASSES",
+        "icon": "email",
+        "module": "Registry",
+        "route": "/apps/registry/view",
+        "routeparameters": {}
+      },
+      {
+        "title": "View Attendance",
+        "icon": "home",
+        "module": "Attendance",
+        "route": "/apps/attendance/view",
+        "routeparameters": {}
+      }
+    ],
+    "main": [
+      {
+        "title": "MY_CLASSES",
+        "icon": "users",
+        "module": "Registry",
+        "route": "/classes",
+        "routeparameters": {}
+      }
+    ],
+    "footer": [
+      {
+        "title": "HOME",
+        "icon": "Home4LineIcon",
+        "module": "Registry",
+        "route": "/",
+        "routeparameters": {}
+      },
+      {
+        "title": "CLASSES",
+        "icon": "TeamLineIcon",
+        "module": "Registry",
+        "route": "/classes",
+        "routeparameters": {}
+      },
+      {
+        "title": "SCHOOL",
+        "icon": "GovernmentLineIcon",
+        "module": "Registry",
+        "route": "/",
+        "routeparameters": {}
+      },
+      {
+        "title": "MATERIALS",
+        "icon": "BookOpenLineIcon",
+        "module": "Registry",
+        "route": "/",
+        "routeparameters": {}
+      },
+      {
+        "title": "CAREER",
+        "icon": "UserLineIcon",
+        "module": "Registry",
+        "route": "/",
+        "routeparameters": {}
+      }
+    ]
+  },
+  "roles": [
+    { "id": "school-admin", "title": "School Admin" },
+
+    { "id": "school-teacher", "title": "School Teacher" }
+  ],
+
+  "config": [{}],
+  "languages": [
+    {
+      "title": "English",
+      "path": "./samagra-shiksha.en-gb.json",
+      "overridePath": "./override-samagra-shiksha.en-gb.json",
+      "code": "en"
+    },
+    {
+      "title": "Hindi",
+      "path": "./samagra-shiksha.hi-in.json",
+      "overridePath": "./override-samagra-shiksha.hi-in.json",
+      "code": "hi"
+    }
+  ],
+  "api_url": "https://dev.shikshaplatform.io",
+  "auth_url": "https://dev-shiksha.uniteframework.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
+  "maxWidth": "1080"
+}

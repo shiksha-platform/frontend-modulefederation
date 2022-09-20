@@ -1,16 +1,8 @@
-import {
-  IconByName,
-  Subtitle,
-  useWindowSize,
-  overrideColorTheme,
-} from "@shiksha/common-lib";
+import { IconByName, Subtitle, useWindowSize } from "@shiksha/common-lib";
 import { Box, HStack, Image, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Webcam from "react-webcam";
-import colorTheme from "../colorTheme";
-
-const colors = overrideColorTheme(colorTheme);
 
 export default function Camera({
   cameraModal,
@@ -50,7 +42,7 @@ export default function Camera({
           position="fixed"
           zIndex={100}
           {...{ width, height }}
-          bg="profile.darkGary0"
+          bg="profile.darkGray0"
         >
           <Box p="20px" ref={topElement}>
             <HStack

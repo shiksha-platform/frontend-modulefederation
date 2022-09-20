@@ -56,8 +56,7 @@ export const create = async (
     }
   )
   if (result.data) {
-    let { Comment } = result.data?.data?.result
-    return Comment
+    return result.data?.data?.commentId
   } else {
     return false
   }

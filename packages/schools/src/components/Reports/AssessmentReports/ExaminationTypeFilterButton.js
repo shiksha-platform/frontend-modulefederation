@@ -28,7 +28,7 @@ export default function ExaminationTypeFilterButton({
   const value = {
     name: "Examinations",
     attributeName: "examinations",
-    data: ["State Examinations", "Spot Assessments"],
+    data: ["Spot Assessments"],
   };
 
   const [filterData, setFilterData] = React.useState(false);
@@ -61,7 +61,7 @@ export default function ExaminationTypeFilterButton({
       <Actionsheet isOpen={filterData} onClose={() => setFilterData()}>
         <Actionsheet.Content
           alignItems={"left"}
-          bg={"schools.lightGray"}
+          bg={"schools.cardBg"}
           {..._actionSheet}
         >
           <HStack justifyContent={"space-between"}>
