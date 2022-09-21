@@ -1,18 +1,10 @@
-import {
-  H1,
-  H3,
-  IconByName,
-  overrideColorTheme,
-  telemetryFactory,
-  capture,
-} from "@shiksha/common-lib";
-import { HStack, Stack, Button, Box, VStack, Pressable } from "native-base";
+import { H1, IconByName } from "@shiksha/common-lib";
+import { Button, Box, VStack, Pressable } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import "App.css";
 
 const HtmlPrint = ({ html }) => {
   const createMarkup = (markup) => {
@@ -44,58 +36,57 @@ export default function WorksheetTemplate({
   };
 
   return (
-    <Box>
-      <Box bg={"worksheet.cardBg"} p="5" {..._box}>
-        <Carousel
-          showArrows={false}
-          showThumbs={false}
-          showStatus={false}
-          renderIndicator={(nextFun, value) => {
+    <Box bg={"worksheet.cardBg"} p="5" {..._box}>
+      <Carousel
+        showArrows={false}
+        showThumbs={false}
+        showStatus={false}
+        renderIndicator={(nextFun, value) => {
+          return (
+            <IconByName
+              onPress={(e) => nextFun()}
+              display="inline-block"
+              name={
+                value ? "RecordCircleFillIcon" : "CheckboxBlankCircleLineIcon"
+              }
+              color={"worksheet.primary"}
+              p="1"
+            />
+          );
+        }}
+      >
+        {Array.isArray(templates) &&
+          templates.map((item, index) => {
+            const color =
+              selected === item.id
+                ? _templateBox?.activeColor
+                : _templateBox?.bg;
             return (
-              <IconByName
-                onPress={(e) => nextFun()}
-                display="inline-block"
-                name={
-                  value ? "RecordCircleFillIcon" : "CheckboxBlankCircleLineIcon"
-                }
-                color={"worksheet.primary"}
-                p="1"
-              />
-            );
-          }}
-        >
-          {Array.isArray(templates) &&
-            templates.map((item, index) => {
-              const color =
-                selected === item.id
-                  ? _templateBox?.activeColor
-                  : _templateBox?.bg;
-              return (
-                <Pressable
-                  key={index}
-                  mb="10"
-                  onPress={(e) => handleTemplateSelect(item.id)}
-                >
-                  <Box {..._fullTemplateBox}>
-                    <Box p="5" alignItems="center" {..._templateBox} bg={color}>
-                      <HtmlPrint html={item?.body} />
-                    </Box>
-                    <VStack px="5" py="2">
-                      <H1>
-                        {t("TEMPLATE_NO")}. {index + 1}
-                      </H1>
-                    </VStack>
+              <Pressable
+                key={index}
+                mb="10"
+                onPress={(e) => handleTemplateSelect(item.id)}
+              >
+                <Box {..._fullTemplateBox}>
+                  <Box p="5" alignItems="center" {..._templateBox} bg={color}>
+                    <HtmlPrint html={item?.body} />
                   </Box>
-                </Pressable>
-              );
-            })}
-        </Carousel>
-      </Box>
+                  <VStack px="5" py="2">
+                    <H1>
+                      {t("TEMPLATE_NO")}. {index + 1}
+                    </H1>
+                  </VStack>
+                </Box>
+              </Pressable>
+            );
+          })}
+      </Carousel>
       <Box
         bg={"worksheet.white"}
         p="5"
         position="sticky"
         bottom="85"
+        zIndex={2}
         shadow={2}
       >
         <Button.Group>

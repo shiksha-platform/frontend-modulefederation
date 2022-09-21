@@ -1,6 +1,5 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
 
 const interfaceData = {
   id: 'studentId',
@@ -43,7 +42,7 @@ export const getAll = async ({ sortBy, ...params }, header = {}) => {
     {
       headers
     }
-  )
+  ).catch((e) => e)
   if (result?.data?.data && result.data.data.length) {
     const studentData = result.data.data.map((e) =>
       mapInterfaceData(e, interfaceData)
