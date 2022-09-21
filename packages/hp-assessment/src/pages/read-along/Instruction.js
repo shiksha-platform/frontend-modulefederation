@@ -30,7 +30,7 @@ import React from "react";
 export default function ReadAlongInstruction() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const groupName = localStorage.getItem('hp-assessment-groupName') || '';
+  const groupName = localStorage.getItem("hp-assessment-groupName") || "";
   const [width, height] = useWindowSize();
   const [loading, setLoading] = useState(false);
   const [showModalTemplate, setShowModalTemplate] = useState(true);
@@ -38,27 +38,26 @@ export default function ReadAlongInstruction() {
   let count = 0;
 
   const isReadAlongInstalled = () => {
-    androidInteract.checkForReadAlong()
-  }
+    androidInteract.checkForReadAlong();
+  };
 
   const onPackageChecked = (packageName, isInstalled) => {
-    if(isInstalled){
+    if (isInstalled) {
       _handleReadAlongOpen();
-    }else{
+    } else {
       navigate("/hpAssessment/read-along-not-installed");
     }
-  }
+  };
 
   const _handleReadAlongOpen = () => {
-    if(ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length){
+    if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
       androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
-    }else{
-
+    } else {
     }
   };
 
   const onReadAlongResult = (correctWords, timeTaken) => {
-   /* document.getElementById("results").innerHTML =
+    /* document.getElementById("results").innerHTML =
       "Read Along : Correct words : " +
       correctWords +
       " : Time taken : " +
@@ -67,15 +66,15 @@ export default function ReadAlongInstruction() {
 
     localStorage.setItem(
       `hp-assessment-oral-test-result-${count}`,
-      JSON.stringify([{children: [{score: correctWords/timeTaken}]}])
+      JSON.stringify([{ children: [{ score: correctWords / timeTaken }] }])
     );
-    if(count < ORFConfig?.book_ids.length-1){
+    if (count < ORFConfig?.book_ids.length - 1) {
       _handleReadAlongOpen();
       count++;
     }
 
     navigate("/hpAssessment/oral-assessment-success");
-  }
+  };
 
   const getORFConfig = async () => {
     const data = await hpAssessmentRegistryService.getOrfAssessmentConfig({
@@ -84,9 +83,9 @@ export default function ReadAlongInstruction() {
 
     setORFConfig(data);
     // calculateTrackingData(list);
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     window.addEventListener(
       "onReadAlongResult",
       (event) => {
@@ -108,7 +107,7 @@ export default function ReadAlongInstruction() {
     };
 
     getORFConfig();
-  }, [])
+  }, []);
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -186,7 +185,9 @@ export default function ReadAlongInstruction() {
             py={3}
             _text={{ color: "hpAssessment.white" }}
             // onPress={isReadAlongInstalled}
-            onPress={() => {navigate("/hpAssessment/oral-assessment-success");}}
+            onPress={() => {
+              navigate("/hpAssessment/oral-assessment-success");
+            }}
           >
             आगे बढ़े
           </Button>

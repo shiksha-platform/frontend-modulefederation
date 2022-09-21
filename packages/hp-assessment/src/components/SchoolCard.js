@@ -54,21 +54,24 @@ function SchoolCard({ schoolId, groupIds, status }) {
   const getSchoolDetail = async (id) => {
     let list = [];
     const detail = await hpAssessmentRegistryService.getSchoolDetail(id);
-    for(let i = 1; i < 4; i++ ){
+    for (let i = 1; i < 4; i++) {
       const params = {
-        "limit": 1,
-        "page": 1,
-        "filters": {"school_id": id, "grade_number": i}
-      }
-      list.push(hpAssessmentRegistryService.studentSearch(params))
+        limit: 1,
+        page: 1,
+        filters: { school_id: id, grade_number: i },
+      };
+      list.push(hpAssessmentRegistryService.studentSearch(params));
     }
 
     await Promise.all(list).then((res) => {
       const total = res.reduce((sum, item) => {
-        return (typeof sum !== "number" ? sum?.data?.total : sum ) + Number(item.data.total)
-      })
-      detail['totalStudents'] = total;
-    })
+        return (
+          (typeof sum !== "number" ? sum?.data?.total : sum) +
+          Number(item.data.total)
+        );
+      });
+      detail["totalStudents"] = total;
+    });
     detail["assessmentStatus"] = status;
     setSchoolDetail(detail);
   };

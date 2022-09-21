@@ -8,7 +8,8 @@ import {
   capture,
   classRegistryService,
   hpAssessmentRegistryService,
-  assessmentRegistryService, studentRegistryService
+  assessmentRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -137,7 +138,7 @@ export default function ClassDetails({ appName }) {
       res.groupMembershipId = data[key].groupMembershipId;
       list.push(res);
       if (key == data.length - 1) {
-        setTotalStudentCount(list.length)
+        setTotalStudentCount(list.length);
       }
     }
     setLoading(false);
@@ -147,7 +148,6 @@ export default function ClassDetails({ appName }) {
     getClassDetails();
     getAssessmentDetails();
     getStudentsList();
-
   }, []);
 
   return (

@@ -20,7 +20,8 @@ import {
   Caption,
   overrideColorTheme,
   hpAssessmentRegistryService,
-  classRegistryService, studentRegistryService
+  classRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -103,48 +104,48 @@ export default function SchoolAcademicDetailCard() {
     const promiseList = grades.map((item, i) => {
       return hpAssessmentRegistryService.getGroupDetailsById(item);
     });
-    Promise.all(promiseList).then((res)=> {
-      const formattedResponse = res.map(item => {
-        return item.data.data
-      })
+    Promise.all(promiseList).then((res) => {
+      const formattedResponse = res.map((item) => {
+        return item.data.data;
+      });
       getStudentDetails(formattedResponse);
-    })
+    });
   };
 
   const getStudentDetails = (formattedResponse) => {
     const newFormattedResponse = formattedResponse.map(async (item, i) => {
       const params = {
-        "limit": 20,
-        "page": 1,
-        "filters": {"school_id": item.schoolId, "grade_number": item.gradeLevel}
-      }
+        limit: 20,
+        page: 1,
+        filters: { school_id: item.schoolId, grade_number: item.gradeLevel },
+      };
       const data = await hpAssessmentRegistryService.studentSearch(params);
-      return {...item, totalStudent: data?.data?.total}
+      return { ...item, totalStudent: data?.data?.total };
     });
 
     setFormattedResponse(newFormattedResponse);
-  }
+  };
 
   const setFormattedResponse = async (newFormattedResponse) => {
     await Promise.all(newFormattedResponse).then((res) => {
       getMembershipList(res);
-    })
-  }
+    });
+  };
 
   const getMembershipList = (res) => {
     const resWithStatus = res.map(async (item, i) => {
       const params = {
-        "limit": 20,
-        "page": 1,
-        "filters": { groupId: { _eq: item.groupId } }
-      }
+        limit: 20,
+        page: 1,
+        filters: { groupId: { _eq: item.groupId } },
+      };
       const {
         data: { data },
       } = await hpAssessmentRegistryService.getGroupMembershipSearch(params);
       const allStatus = data.map((key) => {
-        return key.status
-      })
-      return {...item, allStatus}
+        return key.status;
+      });
+      return { ...item, allStatus };
     });
 
     setGradeDataWithStaus(resWithStatus);
@@ -174,26 +175,25 @@ export default function SchoolAcademicDetailCard() {
     await Promise.all(resWithStatus).then((res) => {
       setGradeList(res);
       // getMembershipList(res);
-    })
-  }
+    });
+  };
 
   const checkTileStatus = (statusArray) => {
     const isPending = statusArray.every((item) => {
-      return item === ""
-    })
+      return item === "";
+    });
 
     const isCompleted = statusArray.every((item) => {
-      return item != ""
-    })
-    if(isPending){
-      return 'PENDING'
+      return item != "";
+    });
+    if (isPending) {
+      return "PENDING";
+    } else if (isCompleted) {
+      return "COMPLETED";
+    } else {
+      return "ONGOING";
     }
-    else if(isCompleted){
-      return 'COMPLETED'
-    }else{
-      return 'ONGOING'
-    }
-  }
+  };
 
   useEffect(() => {
     getGroupsUnderSchool();
@@ -224,8 +224,16 @@ export default function SchoolAcademicDetailCard() {
                     <HStack alignItems="center" justifyContent="space-between">
                       <Box>
                         <VStack>
-                          <BodyLarge>{item.gradeLevel == 1 ? 'Grade I' : (item.gradeLevel == 2 ? 'Grade II' : 'Grade III')}</BodyLarge>
-                          <Caption color={colors.gray}>{item.totalStudent} Students</Caption>
+                          <BodyLarge>
+                            {item.gradeLevel == 1
+                              ? "Grade I"
+                              : item.gradeLevel == 2
+                              ? "Grade II"
+                              : "Grade III"}
+                          </BodyLarge>
+                          <Caption color={colors.gray}>
+                            {item.totalStudent} Students
+                          </Caption>
                         </VStack>
                       </Box>
                       <IconByName

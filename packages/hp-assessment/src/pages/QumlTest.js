@@ -17,10 +17,9 @@ import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
 import colorTheme from "../colorTheme";
 import { QUMLBaseURL } from "assets/constants";
 const colors = overrideColorTheme(colorTheme);
-const STATUS_NIPUN = 'NIPUN'
-const STATUS_NIPUN_READY = 'NIPUN_READY'
-const STATUS_ABSENT = 'ABSENT'
-
+const STATUS_NIPUN = "NIPUN";
+const STATUS_NIPUN_READY = "NIPUN_READY";
+const STATUS_ABSENT = "ABSENT";
 
 export default function QumlTest({
   appName,
@@ -46,12 +45,12 @@ export default function QumlTest({
 
   const startAssessment = async (qumlResult) => {
     setLoading(true);
-    const className = localStorage.getItem("hp-assessment-groupName") || '';
+    const className = localStorage.getItem("hp-assessment-groupName") || "";
 
-    if(className === '1' || className === '2') {
+    if (className === "1" || className === "2") {
       startGradeOneAssessment(qumlResult);
-    }else {
-      startGradeThreeAssessment(qumlResult)
+    } else {
+      startGradeThreeAssessment(qumlResult);
     }
 
     /*const params = {
@@ -80,11 +79,13 @@ export default function QumlTest({
       type: "Oral Assessment",
       questions: questionIds.split(","),
       source: "diksha",
-      answersheet: localStorage.getItem('hp-assessment-oral-test-result-0') || JSON.stringify([{children: [{score: 5}]}]),
+      answersheet:
+        localStorage.getItem("hp-assessment-oral-test-result-0") ||
+        JSON.stringify([{ children: [{ score: 5 }] }]),
       studentId: selectedStudentId,
-      teacherId: localStorage.getItem("id") || '',
-      groupId: localStorage.getItem('hp-assessment-groupId') || '',
-      status: STATUS_NIPUN
+      teacherId: localStorage.getItem("id") || "",
+      groupId: localStorage.getItem("hp-assessment-groupId") || "",
+      status: STATUS_NIPUN,
     };
 
     const data2 = {
@@ -92,11 +93,13 @@ export default function QumlTest({
       type: "Oral Assessment",
       questions: questionIds.split(","),
       source: "diksha",
-      answersheet: localStorage.getItem('hp-assessment-oral-test-result-1') || JSON.stringify([{children: [{score: 5}]}]),
+      answersheet:
+        localStorage.getItem("hp-assessment-oral-test-result-1") ||
+        JSON.stringify([{ children: [{ score: 5 }] }]),
       studentId: selectedStudentId,
-      teacherId: localStorage.getItem("id") || '',
-      groupId: localStorage.getItem('hp-assessment-groupId') || '',
-      status: STATUS_NIPUN
+      teacherId: localStorage.getItem("id") || "",
+      groupId: localStorage.getItem("hp-assessment-groupId") || "",
+      status: STATUS_NIPUN,
     };
 
     const data3 = {
@@ -106,9 +109,9 @@ export default function QumlTest({
       source: "diksha",
       answersheet: JSON.stringify(qumlResult),
       studentId: selectedStudentId,
-      teacherId: localStorage.getItem("id") || '',
-      groupId: localStorage.getItem('hp-assessment-groupId') || '',
-      status: STATUS_NIPUN
+      teacherId: localStorage.getItem("id") || "",
+      groupId: localStorage.getItem("hp-assessment-groupId") || "",
+      status: STATUS_NIPUN,
     };
 
     // const result1 = await assessmentRegistryService.createUpdateAssessment(data1);
@@ -119,10 +122,10 @@ export default function QumlTest({
 
     Promise.all(promiseArray).then((res) => {
       // getAssessmentData(res, res[2].data?.insert_trackassessment_one?.trackAssessmentId || "")
-      console.log('response', res);
+      console.log("response", res);
       setLoading(false);
-    })
-  }
+    });
+  };
 
   const startGradeThreeAssessment = async (qumlResult) => {
     const params = {};
@@ -131,11 +134,13 @@ export default function QumlTest({
       type: "Oral Assessment",
       questions: questionIds.split(","),
       source: "diksha",
-      answersheet: localStorage.getItem('hp-assessment-oral-test-result-0') || JSON.stringify([{ correctWords: '24', timeTaken: '120' }]),
+      answersheet:
+        localStorage.getItem("hp-assessment-oral-test-result-0") ||
+        JSON.stringify([{ correctWords: "24", timeTaken: "120" }]),
       studentId: selectedStudentId,
-      teacherId: localStorage.getItem("id") || '',
-      groupId: localStorage.getItem('hp-assessment-groupId') || '',
-      status: STATUS_NIPUN
+      teacherId: localStorage.getItem("id") || "",
+      groupId: localStorage.getItem("hp-assessment-groupId") || "",
+      status: STATUS_NIPUN,
     };
 
     const data2 = {
@@ -145,9 +150,9 @@ export default function QumlTest({
       source: "diksha",
       answersheet: JSON.stringify(qumlResult),
       studentId: selectedStudentId,
-      teacherId: localStorage.getItem("id") || '',
-      groupId: localStorage.getItem('hp-assessment-groupId') || '',
-      status: STATUS_NIPUN
+      teacherId: localStorage.getItem("id") || "",
+      groupId: localStorage.getItem("hp-assessment-groupId") || "",
+      status: STATUS_NIPUN,
     };
 
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data1));
@@ -155,11 +160,10 @@ export default function QumlTest({
 
     Promise.all(promiseArray).then((res) => {
       // getAssessmentData(res, res[1].data?.insert_trackassessment_one?.trackAssessmentId || "")
-      console.log('response', res);
+      console.log("response", res);
       setLoading(false);
-    })
-  }
-
+    });
+  };
 
   const getAssessmentData = async (result, id) => {
     const assessmentDetails =

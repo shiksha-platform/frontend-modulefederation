@@ -1,20 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  BodyLarge,
-  Loading,
-  useWindowSize,
-} from "@shiksha/common-lib";
-import {
-  HStack,
-  VStack,
-  Box,
-  Avatar,
-  Pressable,
-} from "native-base";
+import { BodyLarge, Loading, useWindowSize } from "@shiksha/common-lib";
+import { HStack, VStack, Box, Avatar, Pressable } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import nipun_badge from "../stories/assets/nipun_badge.svg";
-
 
 const TileBasedOnStatus = ({
   status,

@@ -18,12 +18,14 @@ export default function ClassParticipationCollapsibleCard({
   totalStudentCount,
   presentStudentCount,
   absentStudentCount,
-  unmarkedStudentCount
+  unmarkedStudentCount,
 }) {
   const { t } = useTranslation();
   const progressAssessment = [
     {
-      name: `${totalStudentCount - (unmarkedStudentCount + absentStudentCount)} Present`,
+      name: `${
+        totalStudentCount - (unmarkedStudentCount + absentStudentCount)
+      } Present`,
       color: "hpAssessment.success",
       value: totalStudentCount - (unmarkedStudentCount + absentStudentCount),
     },
@@ -33,9 +35,7 @@ export default function ClassParticipationCollapsibleCard({
       value: absentStudentCount,
     },
     {
-      name: `${
-        unmarkedStudentCount
-      } Unmarked`,
+      name: `${unmarkedStudentCount} Unmarked`,
       color: "hpAssessment.unmarked",
       value: unmarkedStudentCount,
     },
