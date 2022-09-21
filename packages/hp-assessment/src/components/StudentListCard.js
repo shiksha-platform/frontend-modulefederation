@@ -1,41 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
-  Collapsible,
-  overrideColorTheme,
-  H2,
-  Caption,
   BodyLarge,
-  studentRegistryService,
   Loading,
-  questionRegistryService,
-  IconByName,
-  telemetryFactory,
-  capture,
-  assessmentRegistryService,
-  H3,
   useWindowSize,
 } from "@shiksha/common-lib";
 import {
   HStack,
   VStack,
   Box,
-  Divider,
   Avatar,
-  Spacer,
   Pressable,
-  Button,
-  Actionsheet,
-  Stack,
-  Checkbox,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import colorTheme from "../colorTheme";
 import nipun_badge from "../stories/assets/nipun_badge.svg";
-const colors = overrideColorTheme(colorTheme);
-const PRESENT = "Present";
-const ABSENT = "Absent";
-const UNMARKED = "Unmarked";
+
 
 const TileBasedOnStatus = ({
   status,
@@ -49,7 +28,7 @@ const TileBasedOnStatus = ({
         onPress={() => {
           setSelectedStudent(student);
         }}
-        isDisabled={student.attendance === "Absent"}
+        isDisabled={student.membershipStatus === "ABSENT"}
         _disabled={{ cursor: "not-allowed" }}
       >
         <Box
@@ -64,11 +43,11 @@ const TileBasedOnStatus = ({
       </Pressable>
     );
   }
-  if (status === "nipun_ready" || status === "nipun") {
+  if (status === "COMPLETED") {
     return (
       <Pressable
         onPress={() => setSelectedStudent(student)}
-        isDisabled={student.attendance === "Absent"}
+        isDisabled={student.membershipStatus === "COMPLETED"}
         _disabled={{ cursor: "not-allowed" }}
       >
         <Box
@@ -86,7 +65,7 @@ const TileBasedOnStatus = ({
   return (
     <Pressable
       onPress={() => setSelectedStudent(student)}
-      isDisabled={student.status === "Absent"}
+      isDisabled={student.membershipStatus === "ABSENT"}
       _disabled={{ cursor: "not-allowed" }}
     >
       <Box
@@ -128,6 +107,7 @@ const StudentListCard = ({
     <TileBasedOnStatus
       setSelectedStudent={setSelectedStudent}
       student={student}
+      status={student.membershipStatus}
     >
       <HStack alignItems="center" justifyContent="space-between">
         <Box>

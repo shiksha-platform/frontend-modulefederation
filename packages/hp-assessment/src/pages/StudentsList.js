@@ -5,12 +5,12 @@ import {
   classRegistryService,
   H2,
   H3,
-  hpAssessmentRegistryService,
+  hpAssessmentRegistryService, IconByName,
   Layout,
   Loading,
   overrideColorTheme,
   studentRegistryService,
-  useWindowSize,
+  useWindowSize
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -33,6 +33,10 @@ import manifest from "assessment/src/manifest.json";
 
 const colors = overrideColorTheme(colorTheme);
 
+const STATUS_NIPUN = 'NIPUN'
+const STATUS_NIPUN_READY = 'NIPUN_READY'
+const STATUS_ABSENT = 'ABSENT'
+
 export default function StudentsListPage({
   setPageName,
   handleBackButton,
@@ -45,10 +49,12 @@ export default function StudentsListPage({
   const [title, setTitle] = useState();
   const [width, height] = useWindowSize();
   // let { classId } = useParams();
-  /*const classId =
+  const currentDate = moment().format('YYYY-MM-DD');
+  const absentPercentThreshold = 30;
+  const classId =
     localStorage.getItem("hp-assessment-groupId") ||
-    "2bd698db-49a4-4811-943d-9954f8c1f377";*/
-  const classId = "ce045222-52a8-4a0a-8266-9220f63baba7";
+    "2bd698db-49a4-4811-943d-9954f8c1f377";
+  // const classId = "ce045222-52a8-4a0a-8266-9220f63baba7";
   const [classObject, setClassObject] = useState({});
 
   const [studentList, setStudentlist] = useState([]);
@@ -56,13 +62,15 @@ export default function StudentsListPage({
   const [loading, setLoading] = React.useState(true);
 
   const [attendanceData, setAttendanceData] = useState({});
-  const [totalStudentCount, setTotalStudentCount] = useState(20);
+  const [totalStudentCount, setTotalStudentCount] = useState(0);
   const [presentStudentCount, setPresentStudentCount] = useState(0);
+  const [absentStudentCount, setAbsentStudentCount] = useState(0);
+  const [absentStudentPercent, setAbsentStudentPercent] = useState(0);
   const [selectedStudent, setSelectedStudent] = useState();
 
-  const _handleStudentAbsentMarking = async () => {
+  const _handleStudentAbsentMarking = () => {
     setLoading(true);
-    const type = ["Written Assessment", "Oral Assessment"];
+    /*const type = ["Written Assessment", "Oral Assessment"];
     type.forEach((item, i, arr) => {
       const data = {
         type: item,
@@ -70,14 +78,19 @@ export default function StudentsListPage({
         studentId: selectedStudent?.id,
         teacherId:
           localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
-        status: "Absent",
+        status: STATUS_ABSENT,
       };
       assessmentRegistryService.createUpdateAssessment(data).then((res) => {
         if (i === arr.length - 1) {
           setLoading(false);
         }
       });
-    });
+    });*/
+
+
+    hpAssessmentRegistryService.updateGroupMembersById(selectedStudent.groupMembershipId, {status: STATUS_ABSENT}).then(() => {
+      setSelectedStudent();
+    }).then(getStudentsList)
   };
 
   const getStudentsList = async () => {
@@ -90,17 +103,22 @@ export default function StudentsListPage({
     const {
       data: { data },
     } = await hpAssessmentRegistryService.getGroupMembershipSearch(param);
+    setAbsentStudentCount(
+      data.filter((item) => {
+        return item.status === STATUS_ABSENT && currentDate === moment(item.updated_at).format('YYYY-MM-DD')
+      }).length
+    );
     for (const key in data) {
       const res = await studentRegistryService.getOne({ id: data[key].userId });
+      res.membershipStatus = data[key].status !== STATUS_ABSENT ? data[key].status : (currentDate === moment(data[key].updated_at).format('YYYY-MM-DD') ? data[key].status : '' );
+      res.groupMembershipId = data[key].groupMembershipId;
       list.push(res);
       if (key == data.length - 1) {
         setStudentlist(list);
+        setTotalStudentCount(list.length)
       }
     }
     setLoading(false);
-
-    // track assessment api (studentId, groupId)should be called too to get status and match them with this list and show status
-    //this needs to be called for each entry and show student detail
   };
 
   const getClassDetails = async () => {
@@ -113,6 +131,12 @@ export default function StudentsListPage({
     getClassDetails();
   }, []);
 
+  useEffect(()=> {
+    setAbsentStudentPercent(
+      Math.round((absentStudentCount / totalStudentCount) * 100)
+    )
+  }, [totalStudentCount, absentStudentCount])
+
   if (loading) {
     return <Loading height={height - height / 2} />;
   }
@@ -120,7 +144,7 @@ export default function StudentsListPage({
   return (
     <Layout
       _header={{
-        title: `Grade ${classObject?.name || "-"}`,
+        title: `${classObject?.name || "-"}`,
       }}
       _appBar={{
         languages: ["en"],
@@ -140,7 +164,7 @@ export default function StudentsListPage({
                 </Caption>{" "}
                 <Caption color="hpAssessment.white">
                   {" "}
-                  {t("Present ") + presentStudentCount}
+                  {t("Absent ") + absentStudentCount}
                 </Caption>
               </HStack>
             </>
@@ -201,39 +225,73 @@ export default function StudentsListPage({
         </VStack>
       </Box>
       <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
-        <HStack justifyContent={"space-between"}>
-          <Button
-            colorScheme="hpButton"
-            variant="outline"
-            w="45%"
-            mr="2"
-            isDisabled={!(selectedStudent && selectedStudent.id)}
-            _disabled={{ cursor: "not-allowed" }}
-            onPress={() => _handleStudentAbsentMarking()}
-          >
-            {t("Mark Absent")}
-          </Button>
-
-          <Button
-            colorScheme="hpButton"
-            w="50%"
-            ml="2"
-            _text={{
-              color: colors.white,
-            }}
-            isDisabled={!(selectedStudent && selectedStudent.id)}
-            _disabled={{ cursor: "not-allowed" }}
-            onPress={() => {
-              localStorage.setItem(
-                "hp-assessment-selectedStudentId",
-                selectedStudent.id
-              );
-              navigate("/hpAssessment/read-along-instruction");
-            }}
-          >
-            {t("Continue Assessment")}
-          </Button>
-        </HStack>
+        <VStack space={4}>
+          {
+            absentStudentPercent > absentPercentThreshold ?
+              <>
+                <HStack alignItems="center">
+                  <Caption color={'hpAssessment.error'} textTransform='none'>Too many students are absent, can't proceed futher. Please visit grade tomorrow.</Caption>
+                </HStack>
+                <HStack justifyContent={"space-between"}>
+                  <Button
+                    colorScheme="hpButton"
+                    variant="outline"
+                    w="45%"
+                    mr="2"
+                    isDisabled={true}
+                    _disabled={{ cursor: "not-allowed" }}
+                  >
+                    {t("Mark Absent")}
+                  </Button>
+                  <Button
+                    colorScheme="hpButton"
+                    w="50%"
+                    ml="2"
+                    _text={{
+                      color: colors.white,
+                    }}
+                    isDisabled={true}
+                    _disabled={{ cursor: "not-allowed" }}
+                  >
+                    {t("Continue Assessment")}
+                  </Button>
+                </HStack>
+              </>
+              :
+              <HStack justifyContent={"space-between"}>
+                <Button
+                  colorScheme="hpButton"
+                  variant="outline"
+                  w="45%"
+                  mr="2"
+                  isDisabled={!(selectedStudent && selectedStudent.id)}
+                  _disabled={{ cursor: "not-allowed" }}
+                  onPress={() => _handleStudentAbsentMarking()}
+                >
+                  {t("Mark Absent")}
+                </Button>
+                <Button
+                  colorScheme="hpButton"
+                  w="50%"
+                  ml="2"
+                  _text={{
+                    color: colors.white,
+                  }}
+                  isDisabled={!(selectedStudent && selectedStudent.id)}
+                  _disabled={{ cursor: "not-allowed" }}
+                  onPress={() => {
+                    localStorage.setItem(
+                      "hp-assessment-selectedStudentId",
+                      selectedStudent.id
+                    );
+                    navigate("/hpAssessment/read-along-instruction");
+                  }}
+                >
+                  {t("Continue Assessment")}
+                </Button>
+              </HStack>
+          }
+        </VStack>
       </Box>
     </Layout>
   );

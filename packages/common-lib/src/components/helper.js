@@ -124,6 +124,11 @@ export const DEFAULT_THEME = async (theme) => {
 }
 
 export const getAppshellData = async (routes = [], role = '') => {
+  return {
+    newTheme: await DEFAULT_THEME('joyFull'),
+    newRoutes: routes,
+    newFooterLinks: footerLinks
+  }
   try {
     if (role === '') {
       role = await getRole()

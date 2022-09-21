@@ -52,7 +52,23 @@ function SchoolCard({ schoolId, groupIds, status }) {
   const [schoolDetail, setSchoolDetail] = useState({});
 
   const getSchoolDetail = async (id) => {
+    let list = [];
     const detail = await hpAssessmentRegistryService.getSchoolDetail(id);
+    for(let i = 1; i < 4; i++ ){
+      const params = {
+        "limit": 1,
+        "page": 1,
+        "filters": {"school_id": id, "grade_number": i}
+      }
+      list.push(hpAssessmentRegistryService.studentSearch(params))
+    }
+
+    await Promise.all(list).then((res) => {
+      const total = res.reduce((sum, item) => {
+        return (typeof sum !== "number" ? sum?.data?.total : sum ) + Number(item.data.total)
+      })
+      detail['totalStudents'] = total;
+    })
     detail["assessmentStatus"] = status;
     setSchoolDetail(detail);
   };
@@ -163,7 +179,7 @@ function SchoolCard({ schoolId, groupIds, status }) {
                         />
                         <Caption color={colors.gray}>{t("Cluster")}</Caption>
                       </HStack>
-                      <Caption>{t("Gandhi Nagar")}</Caption>
+                      <Caption>{schoolDetail?.cluster}</Caption>
                     </VStack>
                   </Box>
 
@@ -181,7 +197,7 @@ function SchoolCard({ schoolId, groupIds, status }) {
                           {t("Enrollment in Grade 1-3")}
                         </Caption>
                       </HStack>
-                      <Caption>200</Caption>
+                      <Caption>{schoolDetail?.totalStudents}</Caption>
                     </VStack>
                   </Box>
 

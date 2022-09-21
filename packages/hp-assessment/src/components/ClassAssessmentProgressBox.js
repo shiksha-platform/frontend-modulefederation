@@ -20,6 +20,7 @@ export default function SchoolAssessmentProgressBox() {
   let assessmentList = [];
   const grades = localStorage.getItem("hp-assessment-grades").split(",");
   const [assessmentData, setAssessmentData] = React.useState([]);
+  let assessmentAPICount = 0;
 
   const calculateAssessmentResults = (assessmentsData, gradeData, i) => {
     const nipunStudent = Math.floor(
@@ -39,7 +40,8 @@ export default function SchoolAssessmentProgressBox() {
       nipunReadyStudent,
       gradeName: gradeData?.name,
     });
-    if (i + 1 === grades.length) {
+    ++assessmentAPICount;
+    if (assessmentAPICount === grades.length) {
       setAssessmentData(assessmentList);
     }
   };

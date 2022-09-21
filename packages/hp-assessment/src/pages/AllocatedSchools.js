@@ -30,7 +30,6 @@ export default function AllocatedSchools() {
 
   function calculateTrackingData(list) {
     const groupedList = formatData(list, "schoolId");
-
     let pendingCount = 0;
     let schoolStatus = "";
     for (let key in groupedList) {

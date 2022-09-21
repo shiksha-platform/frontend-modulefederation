@@ -8,7 +8,7 @@ import {
   capture,
   classRegistryService,
   hpAssessmentRegistryService,
-  assessmentRegistryService,
+  assessmentRegistryService, studentRegistryService
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -30,9 +30,10 @@ export default function ClassDetails({ appName }) {
   const [assessmentStartTime, setAssessmentStartTime] = useState();
   const [classObject, setClassObject] = useState({});
   const [assessmentsData, setAssessmentsData] = React.useState([]);
-  const [totalStudentCount, setTotalStudentCount] = React.useState(20);
-  const [presentStudentCount, setPresentStudentCount] = React.useState(0);
+  const [totalStudentCount, setTotalStudentCount] = React.useState(0);
+  // const [presentStudentCount, setPresentStudentCount] = React.useState(0);
   const [absentStudentCount, setAbsentStudentCount] = React.useState(0);
+  const [unmarkedStudentCount, setUnmarkedStudentCount] = React.useState(0);
   const [nipunStudentCount, setNipunStudentCount] = React.useState(0);
   const [nipunReadyStudentCount, setNipunReadyStudentCount] = React.useState(0);
 
@@ -58,17 +59,17 @@ export default function ClassDetails({ appName }) {
     const params = {
       fromDate: "01-01-2022",
       toDate: "08-25-2022",
-      groupId: "ce045222-52a8-4a0a-8266-9220f63baba7",
+      groupId: classId,
       subject: "English",
       // groupId: localStorage.getItem("hp-assessment-groupId") || "300bd6a6-ee1f-424a-a763-9db8b08a19e9",
     };
     const data = await assessmentRegistryService.getFilteredAssessments(params);
-    calculateParticipantData(data);
+    // calculateParticipantData(data);
     calculateAssessmentResults(data);
     setAssessmentsData(data);
   };
 
-  const calculateParticipantData = (assessmentsData) => {
+  /*const calculateParticipantData = (assessmentsData) => {
     const presentStudent = Math.floor(
       assessmentsData.filter((item) => {
         return item.status === "COMPLETED";
@@ -83,6 +84,23 @@ export default function ClassDetails({ appName }) {
 
     setAbsentStudentCount(absentStudent);
     setPresentStudentCount(presentStudent);
+  };*/
+
+  const calculateParticipantData = (membershipData) => {
+    const unmarkedStudent = Math.floor(
+      membershipData.filter((item) => {
+        return item.status === "";
+      }).length
+    );
+
+    const absentStudent = Math.floor(
+      membershipData.filter((item) => {
+        return item.status === "ABSENT";
+      }).length
+    );
+
+    setAbsentStudentCount(absentStudent);
+    setUnmarkedStudentCount(unmarkedStudent);
   };
 
   const calculateAssessmentResults = (assessmentsData) => {
@@ -102,16 +120,41 @@ export default function ClassDetails({ appName }) {
     setNipunReadyStudentCount(nipunReadyStudent);
   };
 
+  const getStudentsList = async () => {
+    let list = [];
+    const param = {
+      limit: "20",
+      page: 1,
+      filters: { groupId: { _eq: classId } },
+    };
+    const {
+      data: { data },
+    } = await hpAssessmentRegistryService.getGroupMembershipSearch(param);
+    calculateParticipantData(data);
+    for (const key in data) {
+      const res = await studentRegistryService.getOne({ id: data[key].userId });
+      res.membershipStatus = data[key].status;
+      res.groupMembershipId = data[key].groupMembershipId;
+      list.push(res);
+      if (key == data.length - 1) {
+        setTotalStudentCount(list.length)
+      }
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
     getClassDetails();
     getAssessmentDetails();
+    getStudentsList();
+
   }, []);
 
   return (
     <Layout
       _header={{
         title: "Class Details",
-        subHeading: ` Grade ${classObject?.name || "-"}`,
+        subHeading: `${classObject?.name || "-"}`,
       }}
       _appBar={{
         languages: ["en"],
@@ -162,8 +205,9 @@ export default function ClassDetails({ appName }) {
             <ClassParticipationCollapsibleCard
               assessmentsData={assessmentsData}
               totalStudentCount={totalStudentCount}
-              presentStudentCount={presentStudentCount}
+              // presentStudentCount={presentStudentCount}
               absentStudentCount={absentStudentCount}
+              unmarkedStudentCount={unmarkedStudentCount}
             />
             <ClassAssessmentResultCollapsibleCard
               assessmentsData={assessmentsData}

@@ -39,7 +39,7 @@ export default function OralAssessmentSuccessPage({
       limit,
       subject: "Mathematics",
       // bloomsLevel: selectedCompetencies || "application",
-      className: localStorage.getItem("hp-assessment-groupName"),
+      className: `Class ${localStorage.getItem("hp-assessment-groupName") || ''}`,
     };
     const questions = await questionRegistryService.getAllQuestions(data);
     let questionIds = questions.map((question) => {

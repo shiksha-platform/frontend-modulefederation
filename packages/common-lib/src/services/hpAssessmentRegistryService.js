@@ -272,3 +272,60 @@ export const getGroupMembershipSearch = async (data = {}, header = {}) => {
     return {}
   }
 }
+
+export const updateGroupMembersById = async (id, data = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await coreUpdate(
+    process.env.REACT_APP_API_URL + '/groupmembership/' + id,
+    data,
+    {
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
+  } else {
+    return {}
+  }
+}
+
+export const studentSearch = async (data = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/student/search/',
+    data,
+    {
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
+  } else {
+    return {}
+  }
+}
+
+export const getOrfAssessmentConfig = async (data = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    process.env.REACT_APP_API_URL + '/orfAssessmentConfig/',
+    {
+      data,
+      headers: headers ? headers : {}
+    }
+  )
+  if (result?.data) {
+    return result
+  } else {
+    return {}
+  }
+}

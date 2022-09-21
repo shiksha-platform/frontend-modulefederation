@@ -30,28 +30,85 @@ import React from "react";
 export default function ReadAlongInstruction() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const groupName = localStorage.getItem('hp-assessment-groupName') || '';
   const [width, height] = useWindowSize();
   const [loading, setLoading] = useState(false);
   const [showModalTemplate, setShowModalTemplate] = useState(true);
+  const [ORFConfig, setORFConfig] = useState({});
+  let count = 0;
+
+  const isReadAlongInstalled = () => {
+    androidInteract.checkForReadAlong()
+  }
+
+  const onPackageChecked = (packageName, isInstalled) => {
+    if(isInstalled){
+      _handleReadAlongOpen();
+    }else{
+      navigate("/hpAssessment/read-along-not-installed");
+    }
+  }
 
   const _handleReadAlongOpen = () => {
-    androidInteract.triggerReadAlong("hp_g3_hinP4");
+    if(ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length){
+      androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
+    }else{
+
+    }
   };
 
-  function onReadAlongResult(correctWords, timeTaken) {
-    document.getElementById("results").innerHTML =
+  const onReadAlongResult = (correctWords, timeTaken) => {
+   /* document.getElementById("results").innerHTML =
       "Read Along : Correct words : " +
       correctWords +
       " : Time taken : " +
       timeTaken +
-      " seconds";
+      " seconds";*/
 
     localStorage.setItem(
-      "hp-assessment-oral-test-result",
-      JSON.stringify({ correctWords, timeTaken })
+      `hp-assessment-oral-test-result-${count}`,
+      JSON.stringify([{children: [{score: correctWords/timeTaken}]}])
     );
+    if(count < ORFConfig?.book_ids.length-1){
+      _handleReadAlongOpen();
+      count++;
+    }
+
     navigate("/hpAssessment/oral-assessment-success");
   }
+
+  const getORFConfig = async () => {
+    const data = await hpAssessmentRegistryService.getOrfAssessmentConfig({
+      group: groupName,
+    });
+
+    setORFConfig(data);
+    // calculateTrackingData(list);
+  }
+
+  useEffect(()=> {
+    window.addEventListener(
+      "onReadAlongResult",
+      (event) => {
+        onReadAlongResult(event?.correctWords, event?.timeTaken);
+      },
+      false
+    );
+
+    window.addEventListener(
+      "onPackageChecked",
+      (event) => {
+        onPackageChecked(event?.packageName, event?.isInstalled);
+      },
+      false
+    );
+
+    return () => {
+      window.removeEventListener("onReadAlongResult", (val) => {});
+    };
+
+    getORFConfig();
+  }, [])
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -61,7 +118,6 @@ export default function ReadAlongInstruction() {
     <Layout
       _header={{
         title: "अनुदेश",
-        // subHeading: "अभ्यास हेतु विषय सम्बन्धी निर्देश",
         isEnableSearchBtn: true,
       }}
       subHeader={
@@ -129,7 +185,8 @@ export default function ReadAlongInstruction() {
             colorScheme="hpButton"
             py={3}
             _text={{ color: "hpAssessment.white" }}
-            onPress={_handleReadAlongOpen}
+            // onPress={isReadAlongInstalled}
+            onPress={() => {navigate("/hpAssessment/oral-assessment-success");}}
           >
             आगे बढ़े
           </Button>
