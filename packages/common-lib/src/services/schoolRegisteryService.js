@@ -18,6 +18,7 @@ const interfaceData = {
   village: 'village',
   block: 'block',
   district: 'district',
+  cluster: 'cluster',
   stateId: 'stateId',
   pincode: 'pincode',
   locationId: 'locationId',
@@ -26,7 +27,9 @@ const interfaceData = {
   latitude: 'latitude',
   longitude: 'longitude',
   metaData: 'metaData',
-  deactivationReason: 'deactivationReason'
+  deactivationReason: 'deactivationReason',
+  headMaster: 'headMaster',
+  board: 'board'
 }
 
 let only = Object.keys(interfaceData)

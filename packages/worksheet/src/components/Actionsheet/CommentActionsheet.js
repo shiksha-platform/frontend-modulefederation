@@ -57,7 +57,7 @@ export default function Comment({
         status: "Publish",
         comment,
       };
-      const { osid } = await commentRegistryService.create(newData);
+      const osid = await commentRegistryService.create(newData);
       setCommets([
         ...comments,
         {
@@ -97,7 +97,6 @@ export default function Comment({
                 <HStack space="2" alignItems="center">
                   <Avatar
                     size="35px"
-                    bg="amber.500"
                     source={{
                       uri: item?.userData?.image,
                     }}

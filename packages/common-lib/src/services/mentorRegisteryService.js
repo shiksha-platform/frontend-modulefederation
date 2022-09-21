@@ -1,4 +1,8 @@
-import { schoolRegisteryService } from '..'
+import {
+  schoolRegisteryService,
+  userRegistryService,
+  classRegistryService
+} from '..'
 import mapInterfaceData from './mapInterfaceData'
 import { get, post, update as coreUpdate } from './RestClient'
 
@@ -14,7 +18,8 @@ const interfaceData = {
   scheduleVisitDate: 'scheduleVisitDate',
   visitDate: 'visitDate',
   feedback: 'feedback',
-  status: 'status'
+  status: 'status',
+  lastVisited: 'lastVisited'
 }
 
 let only = Object.keys(interfaceData)
@@ -39,8 +44,8 @@ export const getAllAllocatedSchools = async (
     }
   )
 
-  if (result.data.data) {
-    return await getData(result.data.data)
+  if (result?.data?.data) {
+    return await getData(result?.data?.data)
   } else {
     return []
   }
@@ -51,10 +56,24 @@ const getData = async (data) => {
 }
 
 const getDataOne = async (object) => {
-  let data = {}
+  let data = {},
+    teacherData = {},
+    mentorData = {}
   const item = mapInterfaceData(object, interfaceData)
   data = await schoolRegisteryService.getSchoolById({
     id: item.schoolId
   })
-  return { ...item, schoolData: data }
+  teacherData = await userRegistryService.getAll({
+    userId: { eq: item.teacherId }
+  })
+  mentorData = await userRegistryService.getAll({
+    userId: { eq: item.mentorId }
+  })
+
+  return {
+    ...item,
+    schoolData: data,
+    teacherData: teacherData[0],
+    mentorData: mentorData[0]
+  }
 }

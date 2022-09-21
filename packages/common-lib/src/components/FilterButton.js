@@ -13,6 +13,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import IconByName from './IconByName'
 import { BodyLarge, H2 } from './layout/HeaderTags'
+import * as questionRegistryService from '../services/questionRegistryService'
 
 const getValueByType = (value, type = 'array') => {
   return value ? value : type !== 'array' ? '' : []
@@ -33,6 +34,7 @@ const FilterButton = ({
   filterButtonText,
   resetButtonText,
   isResettableFilter,
+  setAlert,
   _box,
   _filterButton,
   _resetButton,
@@ -42,6 +44,7 @@ const FilterButton = ({
 }) => {
   const { t } = useTranslation()
   const [filtered, setFiltered] = React.useState(false)
+  const [inputs, setInputs] = React.useState([])
   const [groupValue, setGroupValue] = React.useState(object ? object : {})
   const [formData, setFormData] = React.useState({})
   const attributeName = getAttribute(formData)
@@ -67,15 +70,74 @@ const FilterButton = ({
         ...groupValue,
         [attributeName]: type === 'stingValueArray' ? [] : ''
       })
-      setFormData({})
     } else {
+      setDependentData(formData, value)
       setGroupValue({
         ...groupValue,
         [attributeName]: type === 'stingValueArray' ? [value] : value
       })
-      setFormData({})
     }
   }
+
+  const handelSetFormData = (data) => {
+    if (data?.dependent) {
+      let dependent = ['gradeLevel'].includes(data.dependent)
+        ? 'grade'
+        : data.dependent
+      if (!groupValue[dependent]) {
+        const nameData = inputs.find((e) => e.attributeName === dependent)
+        if (setAlert) {
+          setAlert(
+            <BodyLarge>
+              Please select the <H2>{nameData.name}</H2> first
+            </BodyLarge>
+          )
+        }
+      } else {
+        setFormData(data)
+      }
+    } else {
+      setFormData(data)
+    }
+  }
+
+  const setDependentData = async (data, value) => {
+    let attributeName = ['grade'].includes(data.attributeName)
+      ? 'gradeLevel'
+      : data.attributeName
+    const nameData = inputs.find((e) => e.dependent === attributeName)
+    if (nameData?.urlName === 'getSubjectsList') {
+      const selectData = await questionRegistryService.getSubjectsList({
+        adapter: groupValue?.source,
+        gradeLevel: value
+      })
+      setInputs(
+        inputs.map((e) => {
+          if (e.attributeName === nameData.attributeName) {
+            return { ...e, data: selectData.map((e) => e.code) }
+          }
+          return e
+        })
+      )
+    } else if (nameData?.urlName === 'getTopicsList') {
+      const selectData = await questionRegistryService.getTopicsList({
+        adapter: groupValue?.source,
+        subject: value
+      })
+      setInputs(
+        inputs.map((e) => {
+          if (e.attributeName === nameData.attributeName) {
+            return { ...e, data: selectData }
+          }
+          return e
+        })
+      )
+    }
+  }
+
+  React.useEffect(() => {
+    setInputs(filters)
+  }, [filters])
 
   return (
     <Box bg='white' roundedBottom={'xl'} {..._box}>
@@ -98,20 +160,22 @@ const FilterButton = ({
         ) : (
           <ScrollView horizontal={true}>
             <HStack justifyContent='end' alignItems='center'>
-              {filters.map((value, index) => {
+              {inputs.map((value, index) => {
                 const attributeName = value.attributeName
                   ? value.attributeName
                   : value.name
-                const isSelect = Array.isArray(groupValue?.[attributeName])
-                  ? groupValue?.[attributeName].filter((e) =>
-                      value?.data.includes(e)
-                    ).length
-                  : value?.data.includes(groupValue?.[attributeName])
+                const isSelect =
+                  groupValue[attributeName] &&
+                  Array.isArray(groupValue[attributeName])
+                    ? groupValue[attributeName][0]
+                    : groupValue[attributeName]
+                    ? groupValue[attributeName]
+                    : false
                 const overrideBtnProp = isSelect
-                  ? { ..._button, bg: 'button.500' }
+                  ? { ..._button, bg: 'primary' }
                   : _button
                 const overrideOptionBtnProp = isSelect
-                  ? { ..._optionButton, bg: 'button.500' }
+                  ? { ..._optionButton, bg: 'primary' }
                   : _optionButton
                 return (
                   <Button
@@ -122,29 +186,31 @@ const FilterButton = ({
                     px='5'
                     rightIcon={
                       <IconByName
-                        color={isSelect ? 'white' : 'button.500'}
+                        color={isSelect ? 'white' : 'primary'}
                         name='ArrowDownSLineIcon'
                         isDisabled
                       />
                     }
                     onPress={(e) => {
-                      if (value?.data && value?.data.length > 0) {
-                        setFormData(value)
-                      }
+                      handelSetFormData(value)
                     }}
                     {...overrideBtnProp}
                     {...overrideOptionBtnProp}
                   >
-                    <Text color={isSelect ? 'white' : 'button.500'}>
+                    <Text color={isSelect ? 'white' : 'primary'}>
                       {isSelect ? '' : value.name}
                       {isSelect ? (
                         <Tooltip
                           label={groupValue?.[attributeName].toString()}
                           openDelay={50}
+                          bg='white'
                         >
-                          {Array.isArray(groupValue?.[attributeName])
-                            ? groupValue?.[attributeName][0]
-                            : groupValue?.[attributeName]}
+                          {groupValue[attributeName] &&
+                          Array.isArray(groupValue[attributeName])
+                            ? groupValue[attributeName][0]
+                            : groupValue[attributeName]
+                            ? groupValue[attributeName]
+                            : `Select ${t(value.name)}`}
                         </Tooltip>
                       ) : (
                         <React.Fragment />
@@ -183,126 +249,135 @@ const FilterButton = ({
           </ScrollView>
         )}
       </HStack>
-      <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
-        <Actionsheet.Content
-          alignItems={'left'}
-          bg='classCard.500'
-          {..._actionSheet}
-        >
-          <HStack justifyContent={'space-between'}>
-            <Stack p={5} pt={2} pb='15px'>
-              <H2>
-                {`${t('Select')} ${formData?.name ? formData?.name : ''}`}
-              </H2>
-            </Stack>
-            <IconByName
-              name='CloseCircleLineIcon'
-              color='classCard.900'
-              onPress={(e) => setFormData({})}
-            />
-          </HStack>
-        </Actionsheet.Content>
-        <Box bg='white' width={'100%'}>
-          {type === 'array' ? (
-            <Pressable
-              p='3'
-              onPress={(e) => {
-                if (
-                  formData?.data &&
-                  valueArr &&
-                  formData?.data?.length === valueArr?.length
-                ) {
-                  setGroupValue({
-                    ...groupValue,
-                    [formData?.attributeName]: null
-                  })
-                } else {
-                  setGroupValue({
-                    ...groupValue,
-                    [formData?.attributeName]: formData.data
-                  })
-                }
-              }}
-            >
-              <HStack space='2' colorScheme='button' alignItems='center'>
-                <IconByName
-                  isDisabled
-                  color={
-                    formData?.data &&
-                    valueArr &&
-                    formData?.data?.length === valueArr?.length
-                      ? 'button.500'
-                      : 'gray.300'
-                  }
-                  name={
-                    formData?.data &&
-                    valueArr &&
-                    formData?.data?.length === valueArr?.length
-                      ? 'CheckboxLineIcon'
-                      : 'CheckboxBlankLineIcon'
-                  }
-                />
-                <Text>{t('Select All')}</Text>
-              </HStack>
-            </Pressable>
-          ) : (
-            <React.Fragment />
-          )}
-          {formData?.data &&
-            formData?.data.map((value, index) => {
-              return (
+
+      {formData?.name ? (
+        <Actionsheet isOpen={formData?.name} onClose={() => setFormData({})}>
+          <Actionsheet.Content
+            alignItems={'left'}
+            bg='classCard.500'
+            {..._actionSheet}
+          >
+            <HStack justifyContent={'space-between'}>
+              <Stack p={5} pt={2} pb='15px'>
+                <H2>
+                  {`${t('Select')} ${formData?.name ? formData?.name : ''}`}
+                </H2>
+              </Stack>
+              <IconByName
+                name='CloseCircleLineIcon'
+                color='classCard.900'
+                onPress={(e) => setFormData({})}
+              />
+            </HStack>
+          </Actionsheet.Content>
+          <Box bg={'white'} width={'100%'} maxH='80%'>
+            <ScrollView>
+              {type === 'array' ? (
                 <Pressable
                   p='3'
-                  key={index}
-                  onPress={(e) => handleSelectVlaue(value)}
-                  bg={
-                    (type !== 'array' && valueArr === value) ||
-                    (type === 'stingValueArray' && valueArr.includes(value))
-                      ? 'gray.200'
-                      : 'white'
-                  }
+                  onPress={(e) => {
+                    if (
+                      formData?.data &&
+                      valueArr &&
+                      formData?.data?.length === valueArr?.length
+                    ) {
+                      setGroupValue({
+                        ...groupValue,
+                        [formData?.attributeName]: null
+                      })
+                    } else {
+                      setGroupValue({
+                        ...groupValue,
+                        [formData?.attributeName]: formData.data
+                      })
+                    }
+                  }}
                 >
                   <HStack space='2' colorScheme='button' alignItems='center'>
-                    {type === 'array' ? (
-                      <IconByName
-                        isDisabled
-                        color={
-                          valueArr.includes(value) ? 'button.500' : 'gray.300'
-                        }
-                        name={
-                          valueArr.includes(value)
-                            ? 'CheckboxLineIcon'
-                            : 'CheckboxBlankLineIcon'
-                        }
-                      />
-                    ) : (
-                      ''
-                    )}
-                    <Text>{value}</Text>
+                    <IconByName
+                      isDisabled
+                      color={
+                        formData?.data &&
+                        valueArr &&
+                        formData?.data?.length === valueArr?.length
+                          ? 'primary'
+                          : 'gray'
+                      }
+                      name={
+                        formData?.data &&
+                        valueArr &&
+                        formData?.data?.length === valueArr?.length
+                          ? 'CheckboxLineIcon'
+                          : 'CheckboxBlankLineIcon'
+                      }
+                    />
+                    <Text>{t('Select All')}</Text>
                   </HStack>
                 </Pressable>
-              )
-            })}
-          {type === 'array' ? (
+              ) : (
+                <React.Fragment />
+              )}
+              {formData?.data &&
+                formData?.data.map((item, index) => {
+                  let value = item?.value ? item?.value : item
+                  let label = item?.label ? item?.label : item
+                  return (
+                    <Pressable
+                      p='3'
+                      key={index}
+                      onPress={(e) => handleSelectVlaue(value)}
+                      bg={
+                        (type !== 'array' && valueArr === value) ||
+                        (type === 'stingValueArray' && valueArr.includes(value))
+                          ? 'lightGray2'
+                          : 'white'
+                      }
+                    >
+                      <HStack
+                        space='2'
+                        colorScheme='button'
+                        alignItems='center'
+                      >
+                        {type === 'array' ? (
+                          <IconByName
+                            isDisabled
+                            color={
+                              valueArr.includes(value) ? 'primary' : 'gray'
+                            }
+                            name={
+                              valueArr.includes(value)
+                                ? 'CheckboxLineIcon'
+                                : 'CheckboxBlankLineIcon'
+                            }
+                          />
+                        ) : (
+                          ''
+                        )}
+                        <Text>{label}</Text>
+                      </HStack>
+                    </Pressable>
+                  )
+                })}
+            </ScrollView>
             <Box p='5'>
               <Button
                 colorScheme='button'
                 _text={{ color: 'white' }}
                 onPress={(e) => {
+                  setFormData({})
                   if (getObject) {
                     getObject(groupValue)
                   }
-                  setFormData({})
                 }}
               >
                 {t('SELECT')}
               </Button>
             </Box>
-          ) : (
-            <React.Fragment />
-          )}
-        </Box>
-      </Actionsheet>
+          </Box>
+        </Actionsheet>
+      ) : (
+        <React.Fragment />
+      )}
     </Box>
   )
 }

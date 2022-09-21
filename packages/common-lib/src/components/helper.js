@@ -133,9 +133,9 @@ export const getAppshellData = async (routes = [], role = '') => {
     if (role === '') {
       role = await getRole()
     }
-    const adminTheme = await getApiConfig(['theme', 'roles'])
-    const themeName = JSON.parse(adminTheme['theme.forModules'])
-    const modules = adminTheme[`roles.${role?.toLowerCase()}`]
+    const config = await getApiConfig()
+    const themeName = JSON.parse(config['theme.forModules'])
+    const modules = config[`roles.${role?.toLowerCase()}`]
     const newRoutes = routes.filter((item) =>
       modules?.includes(item.moduleName)
     )
@@ -143,13 +143,14 @@ export const getAppshellData = async (routes = [], role = '') => {
       modules?.includes(item.moduleName)
     )
     const newTheme = await DEFAULT_THEME(themeName)
-    return { newTheme, newRoutes, newFooterLinks }
+    return { newTheme, newRoutes, newFooterLinks, config }
   } catch (e) {
     console.error('Catch-error:', e.message)
     return {
       newTheme: await DEFAULT_THEME('joyFull'),
       newRoutes: [],
-      newFooterLinks: []
+      newFooterLinks: [],
+      config: {}
     }
   }
 }
@@ -177,3 +178,12 @@ export const getTokernUserInfo = (token = '') => {
 
 export const getArray = (item) =>
   Array.isArray(item) ? item : item ? JSON.parse(item) : []
+
+export const chunk = (array, chunk) => {
+  return [].concat.apply(
+    [],
+    array.map(function (elem, i) {
+      return i % chunk ? [] : [array.slice(i, i + chunk)]
+    })
+  )
+}

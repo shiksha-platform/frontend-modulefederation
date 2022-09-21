@@ -129,9 +129,8 @@ export default function SendSMS({ footerLinks, appName }) {
         title: t("Message Sent By Admin"),
         subHeading: (
           <BodyLarge>
-            {(classObject?.name ? "Class " + classObject?.name : "") +
-              " • " +
-              (classObject?.section ? " Sec " + classObject?.section : "")}
+            {(classObject?.name ? classObject?.name : "") +
+              (classObject?.section ? " • Sec " + classObject?.section : "")}
           </BodyLarge>
         ),
         _subHeading: { fontWeight: 500 },
@@ -153,9 +152,8 @@ export default function SendSMS({ footerLinks, appName }) {
       <VStack space="1">
         <Box bg={colors.white} p="5">
           <BodyLarge>
-            {(classObject?.name ? "Class " + classObject?.name : "") +
-              " • " +
-              (classObject?.section ? " Sec " + classObject?.section : "")}
+            {(classObject?.name ? classObject?.name : "") +
+              (classObject?.section ? " • Sec " + classObject?.section : "")}
           </BodyLarge>
           <Caption>
             {t("TOTAL")}: {students.length} • {t("PRESENT")}:

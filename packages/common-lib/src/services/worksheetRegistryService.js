@@ -69,9 +69,6 @@ export const getOne = async (filters = {}, header = {}) => {
     )
     if (result?.data?.data) {
       let mapResult = mapInterfaceData(result.data.data, interfaceData)
-      mapResult.id = mapResult.id?.startsWith('1-')
-        ? mapResult.id?.replace('1-', '')
-        : mapResult.id
       return mapResult
     } else {
       return {}
@@ -129,6 +126,27 @@ export const update = async (data = {}, headers = {}) => {
   if (result.data) {
     return result
   } else {
+    return {}
+  }
+}
+
+export const share = async ({ ...params }, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  try {
+    const result = await post(
+      `${process.env.REACT_APP_API_URL}/worksheet/share`,
+      null,
+      { headers, params: params }
+    )
+    if (result?.data?.data) {
+      return result?.data?.data
+    } else {
+      return {}
+    }
+  } catch {
     return {}
   }
 }

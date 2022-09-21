@@ -1,6 +1,5 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
 
 const interfaceData = {
   id: 'studentId',
@@ -43,7 +42,7 @@ export const getAll = async ({ sortBy, ...params }, header = {}) => {
     {
       headers
     }
-  )
+  ).catch((e) => e)
   if (result?.data?.data && result.data.data.length) {
     const studentData = result.data.data.map((e) =>
       mapInterfaceData(e, interfaceData)
@@ -105,6 +104,28 @@ export const update = async (data = {}, headers = {}) => {
   )
   if (result?.data) {
     return result
+  } else {
+    return {}
+  }
+}
+
+export const getAllStudents = async (filters = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/student/search',
+    { filters },
+    {
+      headers
+    }
+  )
+  if (result?.data?.data) {
+    const studentData = result.data.data.map((e) =>
+      mapInterfaceData(e, interfaceData)
+    )
+    return studentData
   } else {
     return {}
   }

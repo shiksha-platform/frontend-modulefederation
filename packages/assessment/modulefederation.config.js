@@ -5,7 +5,11 @@ module.exports = {
   exposes: {
     "./App": "./src/App",
     "./Assessment": "./src/pages",
+    "./AssessmentGiven": "./src/pages/AssessmentGiven",
+    "./StudentReport": "./src/pages/StudentReport",
     "./ExamScores": "./src/pages/ExamScores",
+    "./PastAssessments": "./src/pages/PastAssessments",
+    "./ReportCard": "./src/components/ReportCard",
     "./SuccessPublicationReport":
       "./src/components/SpotAssessment/successPublicationReport",
     "./ReportDetails": "./src/components/SpotAssessment/ReportDetails",

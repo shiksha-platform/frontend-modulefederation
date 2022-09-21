@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const ExamScoresCard = ({ setPageName }) => {
+const ExamScoresCard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
@@ -51,35 +51,6 @@ const ExamScoresCard = ({ setPageName }) => {
     setSelectedExam(exam);
   };
 
-  /*React.useEffect(() => {
-    const getData = async () => {
-      let params = {
-        fromDate: moment().format("YYYY-MM-DD"),
-        toDate: moment().format("YYYY-MM-DD"),
-      };
-      let attendanceData = await attendanceRegistryService.getAll(params);
-      let lengthAttendance = 0;
-      const data = [PRESENT, ABSENT, UNMARKED].map((item, index) => {
-        const attendance = getUniqAttendance(attendanceData, item, students);
-        let count = 0;
-        lengthAttendance += attendance.length;
-        if (item === UNMARKED) {
-          count = attendance.length + (students.length - lengthAttendance);
-        } else {
-          count = attendance.length;
-        }
-        return {
-          name: count + " " + item,
-          color: `attendance${item}.500`,
-          value: count,
-        };
-      });
-
-      setProgressAttendance(data);
-    };
-    getData();
-  }, [students]);*/
-
   return (
     <>
       <VStack space={2}>
@@ -94,7 +65,6 @@ const ExamScoresCard = ({ setPageName }) => {
               <HStack justifyContent={"center"} alignItems="center">
                 <IconByName name="TimeLineIcon" pr="0" color={colors.white} />
                 <Subtitle color={colors.white}>
-                  {" "}
                   4 Days left! Submit assessment scores now.
                 </Subtitle>
               </HStack>

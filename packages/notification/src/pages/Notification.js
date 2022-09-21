@@ -11,8 +11,6 @@ import {
   Stack,
   Actionsheet,
   Link,
-  ScrollView,
-  useToast,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import jwt_decode from "jwt-decode";
@@ -21,22 +19,16 @@ import {
   BodyMedium,
   BodySmall,
   capture,
-  H1,
   H2,
   IconByName,
   Layout,
   Subtitle,
   overrideColorTheme,
-  Tab,
-  notificationRegistryService,
   getApiConfig,
   FilterButton,
-  Form,
   telemetryFactory,
-  userRegistryService,
   getAllForUser,
   sendReadReceipt,
-  H4,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
@@ -49,27 +41,16 @@ const Notification = ({ footerLinks, appName }) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalMore, setShowModalMore] = useState(false);
   const [filterData, setFilterData] = useState(false);
-  const [clicked, setClicked] = useState(false);
   const [notification, setNotification] = useState({});
   const [groupValue, setGroupValue] = useState([]);
   const [showModalInbox, setShowModalInbox] = useState(false);
   const [notificationInfo, setNotificationInfo] = useState([]);
   const [date, setDate] = useState({});
-  const [refinedData, setRefinedData] = useState("");
   const [filterObject, setFilterObject] = useState({});
   const [showMore, setShowMore] = useState(false);
-  const [isTokenFound, setTokenFound] = useState(false);
   const [validUsers, setValidUsers] = useState("");
-  const [show, setShow] = useState(false);
-  const toast = useToast();
   const { realm_access } = jwt_decode(localStorage.getItem("token"));
   const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
-
-  const line2style = {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-  };
 
   const getDateFromCalendar = () => {
     setDate(moment().add(page, "days"));
@@ -99,7 +80,6 @@ const Notification = ({ footerLinks, appName }) => {
 
   const getConfigData = async () => {
     const Response = await getApiConfig();
-    console.log(Response);
     //setConfigData(Response);
     const ValidUsersResp = Array.isArray(
       Response["attendance.allowed_role_to_send_attendance_notification"]
@@ -111,14 +91,12 @@ const Notification = ({ footerLinks, appName }) => {
     setValidUsers(ValidUsersResp);
   };
 
-  console.log(validUsers);
-
   const GetAllNotifications = async () => {
     const resp1 = await getAllForUser({
       userId: localStorage.getItem("phoneNumber"),
       provider: "firebase",
-      startDate: moment(date).format("DD-MM-YYYY"),
-      endDate: moment(date).format("DD-MM-YYYY"),
+      // startDate: moment("2021-01-01").format("DD-MM-YYYY"),
+      // endDate: moment(date).format("DD-MM-YYYY"),
     });
     setNotificationInfo(resp1);
   };
@@ -126,8 +104,6 @@ const Notification = ({ footerLinks, appName }) => {
   useEffect(() => {
     getDateFromCalendar();
   }, [page]);
-
-  console.log(realm_access?.roles[1].toLowerCase());
 
   //CURRENTLY THERE ARE NO FILTERS SUPPORTED BY HISTORY API
   // const getFilterDetails = () => {
@@ -137,7 +113,6 @@ const Notification = ({ footerLinks, appName }) => {
   //     ...filterObject, osCreatedAt: latestDate
   //   }
   //   const keyarr = Object.keys(filterObject1);
-  //   console.log(keyarr);
   //   keyarr.forEach((item) => {
   //     newFilterObject = {
   //       ...newFilterObject,
@@ -165,12 +140,11 @@ const Notification = ({ footerLinks, appName }) => {
         iconComponent: (
           <Button
             rounded="full"
-            colorScheme="button"
             variant="outline"
             bg={colors.notificationbtnBg}
             px="5"
             py="4px"
-            _text={{ textTransform: "capitalize", fontSize: "14px" }}
+            _text={{ textTransform: "capitalize" }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalInbox(true)}
           >
@@ -194,32 +168,21 @@ const Notification = ({ footerLinks, appName }) => {
       <Stack space={1} mb="2">
         <VStack space="1">
           <Box bg="white" p="5">
-            <HStack justifyContent="space-between" alignItems="center">
-              <CalendarBar {...{ page, setPage }} />
-              {/* <Checkbox
-                colorScheme="button"
-                borderColor={colors.primary}
-                borderRadius="0"
-                _text={{ color: colors.primary, fontSize: "14px" }}
-              >
-                {t("MARK_ALL_READ")}
-              </Checkbox> */}
-            </HStack>
+            <FilterButton
+              getObject={setFilterObject}
+              _actionSheet={{ bg: "notification.cardBg" }}
+              isResettableFilter={true}
+              filters={[
+                {
+                  name: "Module",
+                  attributeName: "module",
+                  type: "string",
+                  data: ["lessonPlans", "attendance", "worksheet"],
+                },
+              ]}
+            />
           </Box>
-          <FilterButton
-            getObject={setFilterObject}
-            _box={{ p: 5 }}
-            _actionSheet={{ bg: "worksheetCard.500" }}
-            isResettableFilter={true}
-            filters={[
-              {
-                name: "Module",
-                attributeName: "module",
-                type: "string",
-                data: ["lessonPlans", "attendance", "worksheet"],
-              },
-            ]}
-          />
+
           <Box bg="white" p="5" roundedBottom={"xl"}>
             <NotificationBox
               data={notificationInfo}
@@ -230,15 +193,13 @@ const Notification = ({ footerLinks, appName }) => {
                 handleTelemetry(notification);
               }}
             />
-          </Box>
-          <Box alignItems="center" p="3">
             <Pressable
               alignItems="center"
               onPress={() =>
                 showMore ? setShowMore(false) : setShowMore(true)
               }
             >
-              <Text color="button.500">
+              <Text color="notification.primary">
                 {showMore ? t("SHOW_LESS") : t("SHOW_MORE")}
               </Text>
             </Pressable>
@@ -277,11 +238,11 @@ const Notification = ({ footerLinks, appName }) => {
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"} _text={{}}>
-            <BodyLarge p="5" color={colors.coolGraylight}>
+          <Box bg={"notification.white"} width={"100%"} _text={{}}>
+            <BodyLarge p="5" color={"notification.darkGray2"}>
               {t("MARK_AS_READ")}
             </BodyLarge>
-            <BodyLarge p="5" color={colors.coolGraylight}>
+            <BodyLarge p="5" color={"notification.darkGray2"}>
               {t("DELETE_MESSAGES")}
             </BodyLarge>
             <Box p="5">
@@ -433,19 +394,12 @@ const Notification = ({ footerLinks, appName }) => {
   );
 };
 
-const NotificationBox = ({
-  data,
-  onPressMore,
-  onPress,
-  showMore,
-  setShowMore,
-}) => {
+const NotificationBox = ({ data, onPress, showMore }) => {
   const line2style = {
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
-  console.log(data);
 
   const readReceipt = async (id) => {
     const resp1 = await sendReadReceipt({
@@ -504,11 +458,17 @@ const NotificationBox = ({
                 />
                 {value.messageState === "READ" ? (
                   <BodySmall>
-                    {moment.utc(value.sentTimestamp).local().format("LT")}
+                    {moment
+                      .utc(value.sentTimestamp)
+                      .local()
+                      .format("DD MMM Y LT")}
                   </BodySmall>
                 ) : (
                   <Subtitle>
-                    {moment.utc(value.sentTimestamp).local().format("LT")}
+                    {moment
+                      .utc(value.sentTimestamp)
+                      .local()
+                      .format("DD MMM Y LT")}
                   </Subtitle>
                 )}
               </HStack>

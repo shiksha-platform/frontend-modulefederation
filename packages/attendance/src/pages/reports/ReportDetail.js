@@ -182,14 +182,14 @@ export default function ReportDetail({ footerLinks, appName, setAlert }) {
       _header={{
         title: t("REPORT_DETAILS"),
         subHeading:
-          (classObject?.name ? "Class " + classObject?.name : "") +
-          (classObject?.section ? " Sec " + classObject?.section : ""),
+          (classObject?.name ? classObject?.name : "") +
+          (classObject?.section ? " • Sec " + classObject?.section : ""),
       }}
       subHeader={
         <Stack>
           <H2>
-            {(classObject?.name ? "Class " + classObject?.name : "") +
-              (classObject?.section ? " Sec " + classObject?.section : "")}
+            {(classObject?.name ? classObject?.name : "") +
+              (classObject?.section ? "• Sec " + classObject?.section : "")}
           </H2>
           <Caption>
             {t("TOTAL")}: {students.length} {t("PRESENT")}:
@@ -211,7 +211,6 @@ export default function ReportDetail({ footerLinks, appName, setAlert }) {
               {...{ page, setPage }}
               view={calendarView}
             />
-            <IconByName name={"ListUnorderedIcon"} isDisabled />
           </HStack>
         </Box>
         <Box bg="white" p="5">

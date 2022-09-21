@@ -3,6 +3,7 @@ import { Box, VStack, HStack, Avatar, Divider } from "native-base";
 import {
   BodyMedium,
   DEFAULT_THEME,
+  H2,
   H3,
   IconByName,
   overrideColorTheme,
@@ -21,9 +22,9 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
     <>
       <VStack space={6}>
         <Box
-          bg={isVisited ? "#ECF7EB" : "lightGray6"}
+          bg={isVisited ? "visits.visitedCard" : "visits.lightGray6"}
           borderRadius={10}
-          borderColor={isVisited ? "#C5DCC3" : "lightGray3"}
+          borderColor={isVisited ? "visits.green" : "visits.lightGray3"}
         >
           <Box p={4}>
             <VStack space={6}>
@@ -33,13 +34,19 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                   mr={4}
                   borderRadius="md"
                   source={{
-                    uri: "https://via.placeholder.com/50x50.png",
+                    uri: schoolData?.image ? schoolData?.image : "",
                   }}
-                />
+                  bg="schools.primary"
+                >
+                  <H2 color="schools.white">
+                    {schoolData?.schoolName?.slice(0, 2).toUpperCase()}
+                  </H2>
+                </Avatar>
                 <VStack>
                   <H3>{schoolData?.schoolName}</H3>
-                  <BodyMedium color={colors.subtitle}>
-                    {schoolData?.district}
+                  <BodyMedium color={"visits.gray"}>
+                    {typeof schoolData?.address == "string" &&
+                      schoolData?.address}
                   </BodyMedium>
                 </VStack>
               </HStack>
@@ -89,6 +96,31 @@ function MySchoolsCard({ isVisited, schoolData, lastVisited }) {
                   </BodyMedium>
                 </VStack>
               </div>
+
+              {schoolData?.cluster != "" && (
+                <div
+                  style={{
+                    flex: "0 0 50%",
+                    maxWidth: "50%",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <VStack>
+                    <HStack alignItems="center">
+                      <IconByName
+                        size="12px"
+                        mr={2}
+                        name="GovernmentLineIcon"
+                      />
+                      <BodyMedium color="#666" fontSize="12">
+                        Cluster
+                      </BodyMedium>
+                    </HStack>
+                    <BodyMedium>{schoolData?.cluster}</BodyMedium>
+                  </VStack>
+                </div>
+              )}
+
               {lastVisited && (
                 <div
                   style={{

@@ -113,10 +113,7 @@ export const getSubjectsList = async (params = {}, header = {}) => {
   const adapter = params.adapter ? params.adapter : defaultAdapter
   const result = await get(
     `${process.env.REACT_APP_API_URL}/question/${adapter}/subjectlist`,
-    params,
-    {
-      headers
-    }
+    { params, headers }
   )
 
   if (result.data && result.data.data) {
@@ -195,9 +192,7 @@ export const getAllAssessment = async (params = {}, header = {}) => {
   const result = await post(
     `${process.env.REACT_APP_API_URL}/trackassessment/search`,
     params,
-    {
-      headers
-    }
+    { params, headers }
   )
 
   if (result.data && result.data.data) {

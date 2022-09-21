@@ -29,6 +29,7 @@ import {
   Checkbox,
   VStack,
   Center,
+  ScrollView,
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
@@ -77,14 +78,15 @@ export default function FormNotification({
   };
 
   const getClassData = async () => {
-    const Response = await classRegistryService.getAllData({
-      //limit: "",
-      filters: {},
-    });
+    const Response = await classRegistryService.getAllData({});
     let GroupWithId = [];
     Response.forEach((e) => {
-      GroupWithId = [...GroupWithId, { ["title"]: e.title, ["id"]: e.id }];
+      GroupWithId = [
+        ...GroupWithId,
+        { ["title"]: `${e?.name} Sec ${e?.section}`, ["id"]: e.id },
+      ];
     });
+
     setClassData(GroupWithId);
   };
 
@@ -129,7 +131,6 @@ export default function FormNotification({
   };
 
   const getTriggerEvents = (moduleName) => {
-    console.log(moduleName, "ModuleName");
     const moduleSmall = moduleName.toLowerCase();
     const eventConfig =
       configData[
@@ -138,8 +139,6 @@ export default function FormNotification({
     const triggers = eventConfig !== undefined ? checkJSON(eventConfig) : [];
     setETriggers(triggers);
   };
-
-  console.log(eTriggers, "ETriggers");
 
   useEffect(() => {
     getConfigData();
@@ -152,7 +151,6 @@ export default function FormNotification({
 
   useEffect(() => {
     if (templates.length > 0) {
-      console.log("in template");
       setDateTime({
         ...dateTime,
         Template: templates[0].body,
@@ -300,44 +298,46 @@ export default function FormNotification({
             />
           </HStack>
         </Actionsheet.Content>
-        <Box bg="notification.white" width={"100%"}>
-          {dateTimeData?.data &&
-            dateTimeData.data.map((value, index) => {
-              return (
-                <Pressable
-                  key={index}
-                  p="5"
-                  onPress={(e) => {
-                    // { dateTimeData.name == "Group" ? setDateTime({ ...dateTime, [dateTimeData.name]: { ["id"]: value.id, ["title"]: value.title } }) : setDateTime({ ...dateTime, [dateTimeData.name]: value }) }
-                    {
-                      dateTimeData.name == "Group"
-                        ? setDateTime({
-                            ...dateTime,
-                            [dateTimeData.name]: value.title,
-                            ["GroupId"]: value.id,
-                          })
-                        : setDateTime({
-                            ...dateTime,
-                            [dateTimeData.name]: value,
-                          });
+        <Box bg="notification.white" width="100%" maxH="80%">
+          <ScrollView>
+            {dateTimeData?.data &&
+              dateTimeData.data.map((value, index) => {
+                return (
+                  <Pressable
+                    key={index}
+                    p="5"
+                    onPress={(e) => {
+                      // { dateTimeData.name == "Group" ? setDateTime({ ...dateTime, [dateTimeData.name]: { ["id"]: value.id, ["title"]: value.title } }) : setDateTime({ ...dateTime, [dateTimeData.name]: value }) }
+                      {
+                        dateTimeData.name == "Group"
+                          ? setDateTime({
+                              ...dateTime,
+                              [dateTimeData.name]: value.title,
+                              ["GroupId"]: value.id,
+                            })
+                          : setDateTime({
+                              ...dateTime,
+                              [dateTimeData.name]: value,
+                            });
+                      }
+                      handleTelemetry(dateTimeData.name, value);
+                    }}
+                    bg={
+                      dateTime[dateTimeData.name] === value
+                        ? "notification.lightGray2"
+                        : dateTimeData.name === "Group" &&
+                          dateTime[dateTimeData.name] === value.title
+                        ? "notification.lightGray2"
+                        : ""
                     }
-                    handleTelemetry(dateTimeData.name, value);
-                  }}
-                  bg={
-                    dateTime[dateTimeData.name] === value
-                      ? "notification.lightGray2"
-                      : dateTimeData.name === "Group" &&
-                        dateTime[dateTimeData.name] === value.title
-                      ? "notification.lightGray2"
-                      : ""
-                  }
-                >
-                  <Text colorScheme="button">
-                    {dateTimeData.name == "Group" ? t(value.title) : t(value)}
-                  </Text>
-                </Pressable>
-              );
-            })}
+                  >
+                    <Text colorScheme="button">
+                      {dateTimeData.name == "Group" ? t(value.title) : t(value)}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+          </ScrollView>
           <Box p="5">
             <Button
               colorScheme="button"
@@ -377,21 +377,23 @@ const FormInput = ({
           {t(`Choose ${item.name}`)}
         </Text>
         <Button
-          {...(item?.buttonVariant
-            ? { variant: item.buttonVariant }
-            : {
-                variant: "outline",
-                _text: { color: "notification.primary" },
-              })}
+          variant={dateTime[item.name] ? "solid" : "outline"}
           rounded="full"
-          colorScheme="button"
-          px="5"
+          px="4"
           py="1"
-          bg="notification.white"
-          _text={{ textTransform: "capitelize" }}
+          _text={{
+            textTransform: "capitelize",
+            color: dateTime[item.name]
+              ? "notification.white"
+              : "notification.primary",
+          }}
           rightIcon={
             <IconByName
-              color={item?.buttonVariant ? "button.500" : "button.500"}
+              color={
+                dateTime[item.name]
+                  ? "notification.white"
+                  : "notification.primary"
+              }
               name="ArrowDownSLineIcon"
               isDisabled
             />

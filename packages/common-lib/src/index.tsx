@@ -24,17 +24,22 @@ import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
 import * as hpAssessmentRegistryService from './services/hpAssessmentRegistryService'
+import * as lessonPlansRegistryService from './services/lessonPlansRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
 import * as mentorRegisteryService from './services/mentorRegisteryService'
 import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
+import * as workHistoryRegistryService from './services/workHistoryRegistryService'
+import * as schoolRegistryService from './services/schoolRegistryService'
 import {
   getAllForUser,
   sendReadReceipt
 } from './services/firebaseHistoryRegistryService'
 import AppRoutesContainer from './components/AppRoutesContainer'
+import { useAuthFlow } from './hooks/useAuthFlow'
+import StarRating from './components/StarRating'
 export {
   AppBar,
   Header,
@@ -66,12 +71,17 @@ export {
   getApiConfig,
   getAllForUser,
   sendReadReceipt,
+  lessonPlansRegistryService,
   templateRegistryService,
   notificationRegistryService,
+  useAuthFlow,
   roleRegistryService,
+  workHistoryRegistryService,
+  schoolRegistryService,
   mentorRegisteryService,
+  hpAssessmentRegistryService,
   schoolRegisteryService,
-  hpAssessmentRegistryService
+  StarRating
 }
 
 export * from './services/Auth'

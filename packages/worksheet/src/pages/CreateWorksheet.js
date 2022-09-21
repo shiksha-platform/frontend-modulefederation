@@ -5,7 +5,6 @@ import {
   Layout,
   H2,
   questionRegistryService,
-  overrideColorTheme,
   getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
@@ -17,8 +16,6 @@ import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage
 import ListOfQuestions from "../components/CreateWorksheet/ListOfQuestions";
 import { defaultInputs, autoGenerateInputs } from "../config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -90,13 +87,14 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         if (newQuestions.length <= 0) {
           setAlertMessage(t("QUESTION_NOT_FOUND"));
           setPageName();
+          setFormObject({});
         } else {
           setAlertMessage();
         }
       }
       setLoading(false);
     }
-  }, [formObject, ["ListOfQuestions", "WorksheetTemplate"].includes(pageName)]);
+  }, [formObject, ["ListOfQuestions"].includes(pageName)]);
 
   if (loading) {
     return <Loading />;
@@ -117,7 +115,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       }
     } else if (pageName === "filterData") {
       setPageName("ListOfQuestions");
-    } else if (["ListOfQuestions", "WorksheetTemplate"].includes(pageName)) {
+    } else if (["ListOfQuestions"].includes(pageName)) {
       setPageName("");
     } else {
       navigate(-1);

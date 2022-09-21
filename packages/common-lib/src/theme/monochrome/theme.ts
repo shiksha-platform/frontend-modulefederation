@@ -56,6 +56,14 @@ const theme = {
       notificationBg: '#E0DFF6'
     },
     schools: { ...colorTheme },
+    assessment: {
+      ...colorTheme,
+      primaryLight: '#FFF8F7',
+      reportDetailsSubheaderBg: '#FFCAAC',
+      QuationsBoxBg: '#FEF1EE',
+      achiverBoxBg: '#FFF9F9'
+    },
+    visits: { ...colorTheme, visitedCard: '#ECF7EB' },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',
@@ -118,7 +126,28 @@ const theme = {
         _text: {
           textTransform: 'uppercase',
           fontSize: '12px',
-          fontWeight: '600'
+          fontWeight: '600',
+          color: 'white'
+        }
+      },
+      variants: {
+        solid: (e: any) => {
+          return {
+            _text: {
+              color: 'white'
+            }
+          }
+        }
+      }
+    },
+    Avatar: {
+      baseStyle: {
+        rounded: 'lg'
+      },
+      defaultProps: {
+        bg: 'primary',
+        _text: {
+          color: 'white'
         }
       }
     }

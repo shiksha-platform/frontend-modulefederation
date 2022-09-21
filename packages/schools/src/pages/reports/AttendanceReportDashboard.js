@@ -1,130 +1,277 @@
+import { Box, Menu, Button, Text, VStack, Center } from "native-base";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import CalendarBar from "../../components/CalendarBar";
 import {
-  H2,
-  H3,
   IconByName,
   Layout,
-  overrideColorTheme,
+  Collapsible,
+  capture,
+  calendar,
+  classRegistryService,
+  studentRegistryService,
+  H1,
+  H2,
+  Subtitle,
+  getArray,
+  Loading,
+  attendanceRegistryService,
 } from "@shiksha/common-lib";
-import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
-import {
-  Box,
-  HStack,
-  Text,
-  VStack,
-  Button,
-  Actionsheet,
-  Stack,
-  Divider,
-  Avatar,
-  Pressable,
-} from "native-base";
+import ReportSummary from "../../components/Reports/AttendanceReports/ReportSummary";
+import { useNavigate, useParams } from "react-router-dom";
+import manifestLocal from "../../manifest.json";
 
-import ClassCollapsibleCard from "../../components/Reports/AttendanceReports/ClassCollapsibleCard";
-import CalendarBar from "../../components/CalendarBar";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
-
-export default function AttendanceReportDashboard({ footerLinks }) {
+export default function Report({ footerLinks, config }) {
   const { t } = useTranslation();
-  const [recommendedVisits, setRecommendedVisits] = useState([{}, {}, {}, {}]);
-  const [teacherDetailModal, setTeacherDetailModal] = useState(false);
-  const [calendarView, setCalendarView] = useState();
-  const [weekPage, setWeekPage] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [weekDays, setWeekDays] = useState([]);
+  const [page, setPage] = useState(0);
+  const [classes, setClasses] = useState([]);
+  const teacherId = localStorage.getItem("id");
+  const [students, setStudents] = useState([]);
+  const [attendance, setAttendance] = useState({});
+  const [calendarView, setCalendarView] = React.useState();
+  const [makeDefaultCollapse, setMakeDefaultCollapse] = useState([]);
+  const titleName = t("ATTENDANCE_REPORTS");
+  const [reportTypes, setReportTypes] = React.useState();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { parentId } = useParams();
+
+  useEffect(async () => {
+    let ignore = false;
+    if (!ignore) {
+      if (classes[0]?.id) {
+        getAttendance(classes[0].id);
+        setMakeDefaultCollapse([classes[0].id]);
+      }
+    }
+    return () => {
+      ignore = true;
+    };
+  }, [page, calendarView, classes]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    const getData = async () => {
+      const responceClass = await classRegistryService.getAllData({
+        parentId: { eq: parentId },
+        type: { eq: "class" },
+      });
+      if (!ignore) {
+        if (responceClass[0].id) getAttendance(responceClass[0].id);
+        setClasses(responceClass);
+      }
+    };
+    getData();
+    return () => {
+      ignore = true;
+    };
+  }, [teacherId]);
+
+  useEffect(() => {
+    setLoading(true);
+    const arr = getArray(config?.["Attendance.report_types"]);
+    setReportTypes(arr);
+    if (arr.includes("daily-report")) {
+      setCalendarView("days");
+    } else if (arr.includes("weekly-report")) {
+      setCalendarView("week");
+    } else if (arr.includes("monthly-report")) {
+      setCalendarView("monthInDays");
+    }
+    if (config) setLoading(false);
+  }, [config]);
+
+  useEffect(() => {
+    capture("PAGE");
+  }, []);
+
+  const getAttendance = async (classId) => {
+    if (calendarView) {
+      let weekdays = calendar(page, calendarView);
+      let params = {
+        fromDate: weekdays?.[0]?.format("Y-MM-DD"),
+        toDate: weekdays?.[weekdays.length - 1]?.format("Y-MM-DD"),
+      };
+      const attendanceData = await attendanceRegistryService.getAll(params);
+      setAttendance({ ...attendance, [classId]: attendanceData });
+      const studentData = await studentRegistryService.getAll({ classId });
+      setStudents({ ...students, [classId]: studentData });
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!calendarView) {
+    return (
+      <Center>
+        <Center bg="attendace.cardBg" height={window.innerHeight}>
+          <H1 textTransform="inherit">{t("REPORT_CONFIG_TYPE_NOT_FOUND")}</H1>
+        </Center>
+      </Center>
+    );
+  }
 
   return (
     <Layout
       _header={{
-        title: "Attendance Reports",
+        title: (
+          <VStack>
+            {titleName.split(" ").map((item, subIndex) => (
+              <H1 key={subIndex}>{item}</H1>
+            ))}
+          </VStack>
+        ),
+        iconComponent: (
+          <Menu
+            w="120"
+            placement="bottom right"
+            trigger={(triggerProps) => {
+              return (
+                <Button
+                  {...triggerProps}
+                  rounded="20"
+                  px={5}
+                  py="7px"
+                  _text={{
+                    color: "schools.white",
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                    fontWeight: "500",
+                    textTransform: "capitalize",
+                  }}
+                  rightIcon={
+                    <IconByName
+                      color={"schools.white"}
+                      name="ArrowDownSLineIcon"
+                      isDisabled
+                      p="0"
+                    />
+                  }
+                >
+                  {calendarView === "monthInDays"
+                    ? t("MONTH_VIEW")
+                    : calendarView === "week"
+                    ? t("WEEK_VIEW")
+                    : t("TODAY_VIEW")}
+                </Button>
+              );
+            }}
+          >
+            {reportTypes.includes("daily-report") ? (
+              <Menu.Item onPress={(item) => setCalendarView("days")}>
+                {t("TODAY_VIEW")}
+              </Menu.Item>
+            ) : (
+              <React.Fragment />
+            )}
+
+            {reportTypes.includes("weekly-report") ? (
+              <Menu.Item onPress={(item) => setCalendarView("week")}>
+                {t("WEEK_VIEW")}
+              </Menu.Item>
+            ) : (
+              <React.Fragment />
+            )}
+
+            {reportTypes.includes("monthly-report") ? (
+              <Menu.Item onPress={(item) => setCalendarView("monthInDays")}>
+                {t("MONTH_VIEW")}
+              </Menu.Item>
+            ) : (
+              <React.Fragment />
+            )}
+          </Menu>
+        ),
       }}
-      subHeader={<H2>View Class wise attendance report</H2>}
+      _appBar={{ languages: manifestLocal.languages }}
+      subHeader={
+        <CalendarBar
+          view={calendarView}
+          activeColor={"schools.grayIndark"}
+          _box={{ p: 0, bg: "transparent" }}
+          {...{ page, setPage }}
+        />
+      }
       _subHeader={{ bg: "schools.cardBg" }}
-      _appBar={{
-        languages: ["en"],
-        isEnableSearchBtn: true,
-      }}
       _footer={footerLinks}
     >
-      <Box p={6} bg={"schools.white"}>
-        <VStack space={6}>
-          <Box>
-            <HStack
-              space="4"
-              justifyContent="space-between"
-              alignItems="center"
+      <Box bg={"schools.white"} mb="4" roundedBottom={"xl"} shadow={2}>
+        {classes.map((item, index) => (
+          <Box
+            key={index}
+            borderBottomWidth={1}
+            borderBottomColor={"schools.coolGray"}
+          >
+            <Collapsible
+              defaultCollapse={
+                makeDefaultCollapse.filter((e) => e === item.id).length
+              }
+              onPressFuction={(e) => {
+                if (makeDefaultCollapse.filter((e) => e === item.id).length) {
+                  setMakeDefaultCollapse(
+                    makeDefaultCollapse.filter((e) => e !== item.id)
+                  );
+                } else {
+                  setMakeDefaultCollapse([...makeDefaultCollapse, item.id]);
+                }
+                getAttendance(item.id);
+              }}
+              header={
+                <VStack>
+                  <H2>
+                    {(item?.name ? item?.name : "") +
+                      (item?.section ? " • Sec " + item?.section : "")}
+                  </H2>
+                </VStack>
+              }
             >
-              <CalendarBar
-                view={calendarView}
-                setPage={setWeekPage}
-                page={weekPage}
-                _box={{ p: 0, bg: "transparent" }}
-              />
-              <Stack>
-                <Button
-                  rightIcon={
-                    <IconByName name="ArrowDownSLineIcon" isDisabled />
-                  }
-                  onPress={(e) => setShowModal(true)}
+              <VStack py="4">
+                <ReportSummary
+                  {...{
+                    config,
+                    page,
+                    calendarView,
+                    students: students[item.id] ? students[item.id] : [],
+                    attendance: attendance[item.id]
+                      ? [attendance[item.id]]
+                      : [],
+                  }}
+                />
+                <Subtitle
+                  py="5"
+                  px="10px"
+                  color={"schools.grayInLight"}
+                  textTransform="inherit"
                 >
-                  <>
-                    {calendarView === "month"
-                      ? t("MONTH VIEW")
-                      : calendarView === "week"
-                      ? t("WEEK VIEW")
-                      : t("TODAY VIEW")}
-                  </>
+                  <Text bold color={"schools.darkGray"} textTransform="inherit">
+                    {t("NOTES")}
+                    {": "}
+                  </Text>
+                  {t("MONTHLY_REPORT_WILL_GENRRATED_LAST_DAY_EVERY_MONTH")}
+                </Subtitle>
+                <Button
+                  variant="outline"
+                  colorScheme={"button"}
+                  onPress={(e) =>
+                    navigate(
+                      "/attendance/report/" +
+                        (item.id.startsWith("1-")
+                          ? item.id.replace("1-", "")
+                          : item.id) +
+                        "/" +
+                        calendarView
+                    )
+                  }
+                >
+                  {t("SEE_FULL_REPORT")}
                 </Button>
-                <Actionsheet isOpen={showModal}>
-                  <Actionsheet.Content
-                    p="3"
-                    alignItems={"left"}
-                    bg={"schools.cardBg"}
-                  >
-                    <HStack justifyContent={"space-between"}>
-                      <Stack p={5} pt={2} pb="15px">
-                        <H2>{t("SELECT_VIEW")}</H2>
-                      </Stack>
-                      <IconByName
-                        name="CloseCircleLineIcon"
-                        onPress={(e) => setShowModal(false)}
-                        color={"schools.darkGray"}
-                      />
-                    </HStack>
-                  </Actionsheet.Content>
-
-                  <Box w="100%" bg={"white"}>
-                    {[
-                      { name: t("TODAY_VIEW"), value: "day" },
-                      { name: t("WEEK_VIEW"), value: "week" },
-                      { name: t("MONTH_VIEW"), value: "monthInDays" },
-                      { name: t("CHOOSE_DATE"), value: "date" },
-                    ].map((item, index) => {
-                      return (
-                        <Pressable
-                          key={index}
-                          p="5"
-                          onPress={(e) => {
-                            setCalendarView(item.value);
-                            setShowModal(false);
-                          }}
-                        >
-                          <Text>{item.name}</Text>
-                        </Pressable>
-                      );
-                    })}
-                  </Box>
-                </Actionsheet>
-              </Stack>
-            </HStack>
+              </VStack>
+            </Collapsible>
           </Box>
-          <VStack space={6}>
-            <ClassCollapsibleCard />
-            <ClassCollapsibleCard />
-            <ClassCollapsibleCard />
-          </VStack>
-        </VStack>
+        ))}
       </Box>
     </Layout>
   );

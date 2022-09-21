@@ -12,6 +12,7 @@
   "TOPIC": "Topic",
   "SORT": "sort",
   "SEE_ALL_WORKSHEETS": "See all worksheets",
+  "ALL_WORKSHEETS": "all worksheets",
   "SEE_ALL_DRAFTS": "See all drafts",
   "CREATE_NEW_WORKSHEET": "Create new worksheet",
   "FILTER": "Filter",
@@ -54,5 +55,7 @@
   "PLEASE_SELECT_AT_LEAST_ONE_QUESTION": "Please select at least one question",
   "PLEASE_SELECT_SOURCE": "Please select source",
   "ENTER_TITLE_HINT": "Enter title hint",
-  "TEMPLATE_NO": "Template No"
+  "TEMPLATE_NO": "Template No",
+  "SELECT_STUDENTS": "Select Students",
+  "STUDENTS": "Students"
 }

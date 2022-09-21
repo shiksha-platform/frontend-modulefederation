@@ -299,35 +299,35 @@ const TimeTableRoute = () => {
               <HStack space="2">
                 <IconByName name="MapPinLineIcon" isDisabled />
                 <BodyLarge>{t("LOCATION")}</BodyLarge>
-                <BodyMedium color="calendar.darkGary4">
+                <BodyMedium color="calendar.darkGray4">
                   {selectedEvent?.subTitle}
                 </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="TimeLineIcon" isDisabled />
                 <BodyLarge>{t("Time")}</BodyLarge>
-                <BodyMedium color="calendar.darkGary4">
+                <BodyMedium color="calendar.darkGray4">
                   {selectedEvent?.timeText}
                 </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="CalendarEventLineIcon" isDisabled />
                 <BodyLarge>{t("Date")}</BodyLarge>
-                <BodyMedium color="calendar.darkGary4">
+                <BodyMedium color="calendar.darkGray4">
                   {moment(selectedEvent?.start).format("DD, MMM Y")}
                 </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="UserFollowLineIcon" isDisabled />
                 <BodyLarge>{t("ORGANIZER")}</BodyLarge>
-                <BodyMedium color="calendar.darkGary4">
+                <BodyMedium color="calendar.darkGray4">
                   {selectedEvent?.organizer}
                 </BodyMedium>
               </HStack>
               <HStack space="2">
                 <IconByName name="TeamLineIcon" isDisabled />
                 <BodyLarge>{t("ATTENDANCE")}</BodyLarge>
-                <BodyMedium color="calendar.darkGary4">
+                <BodyMedium color="calendar.darkGray4">
                   {selectedEvent?.subTitle}
                 </BodyMedium>
               </HStack>
@@ -398,7 +398,7 @@ const TimeTableRoute = () => {
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="MapPinLineIcon"
-                        color="calendar.darkGary4"
+                        color="calendar.darkGray4"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
@@ -409,7 +409,7 @@ const TimeTableRoute = () => {
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="TimeLineIcon"
-                        color="calendar.darkGary4"
+                        color="calendar.darkGray4"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
@@ -420,7 +420,7 @@ const TimeTableRoute = () => {
                     <HStack space="1" alignItems="center">
                       <IconByName
                         name="CalendarEventLineIcon"
-                        color="calendar.darkGary4"
+                        color="calendar.darkGray4"
                         isDisabled
                         _icon={{ size: "14" }}
                       />
@@ -682,7 +682,7 @@ const Sheet = ({
                               ? "calendar.white"
                               : "calendar.gray"
                           }
-                          _icon={{ size: "18", color: "calendar.darkGary4" }}
+                          _icon={{ size: "18", color: "calendar.darkGray4" }}
                         />
                       ) : (
                         ""

@@ -89,7 +89,7 @@ export default function WorksheetBox({
         context: "Worksheet",
         type: "like",
       };
-      const { osid } = await likeRegistryService.create(newData);
+      const osid = await likeRegistryService.create(newData);
       const telemetryData = telemetryFactory.interact({
         appName,
         type: "Worksheet-Like",
@@ -214,7 +214,7 @@ export default function WorksheetBox({
         </HStack>
         {worksheetConfig?.includes("description") || true ? (
           <BodyMedium
-            color={"worksheet.darkGary4"}
+            color={"worksheet.darkGray4"}
             style={{
               overflow: "hidden",
               textOverflow: "ellipsis",

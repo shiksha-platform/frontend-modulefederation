@@ -2,7 +2,7 @@ import { Box, HStack, useToast, VStack, Alert } from 'native-base'
 import React from 'react'
 import { H3, BodySmall } from './layout/HeaderTags'
 
-export default function AlertComponent({ alert, setAlert }) {
+function AlertComponent({ alert, setAlert }) {
   const toast = useToast()
 
   React.useEffect(() => {
@@ -11,10 +11,13 @@ export default function AlertComponent({ alert, setAlert }) {
         description = null
       let toastElement = {}
       let type = 'primary'
-      if (typeof alert === 'object') {
+      if (typeof alert === 'object' && (alert?.title || alert?.description)) {
         title = alert?.title
         description = alert?.description
-        type = alert?.type?.toLowerCase()
+        type =
+          typeof alert?.type === 'string'
+            ? alert?.type?.toLowerCase()
+            : 'success'
       } else {
         description = alert
       }
@@ -53,3 +56,4 @@ export default function AlertComponent({ alert, setAlert }) {
   }, [alert])
   return <React.Fragment />
 }
+export default React.memo(AlertComponent)

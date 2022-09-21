@@ -51,6 +51,7 @@ export default function ListOfQuestions({
   setPageName,
   formObject,
   setFormObject,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const [selectData, setSelectData] = React.useState([]);
@@ -192,6 +193,7 @@ export default function ListOfQuestions({
       {!isSuccess ? (
         <Box>
           <FilterButton
+            setAlert={setAlert}
             getObject={handleFilter}
             object={formObject}
             _actionSheet={{ bg: "worksheet.cardBg" }}
