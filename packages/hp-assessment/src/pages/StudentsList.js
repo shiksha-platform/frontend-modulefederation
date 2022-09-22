@@ -51,7 +51,7 @@ export default function StudentsListPage({
   const [width, height] = useWindowSize();
   // let { classId } = useParams();
   const currentDate = moment().format("YYYY-MM-DD");
-  const absentPercentThreshold = 30;
+  const absentPercentThreshold = 80;
   const classId =
     localStorage.getItem("hp-assessment-groupId") ||
     "2bd698db-49a4-4811-943d-9954f8c1f377";
