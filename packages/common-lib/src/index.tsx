@@ -23,6 +23,7 @@ import * as questionRegistryService from './services/questionRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
+import * as hpAssessmentRegistryService from './services/hpAssessmentRegistryService'
 import * as lessonPlansRegistryService from './services/lessonPlansRegistryService'
 import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
@@ -78,6 +79,7 @@ export {
   workHistoryRegistryService,
   schoolRegistryService,
   mentorRegisteryService,
+  hpAssessmentRegistryService,
   schoolRegisteryService,
   StarRating
 }

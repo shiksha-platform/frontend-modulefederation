@@ -1,6 +1,7 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
 import * as questionRegistryService from './questionRegistryService'
+import * as studentRegistryService from './studentRegistryService'
 
 const interfaceData = {
   id: 'groupId',
@@ -93,7 +94,7 @@ export const updateImage = async (data = {}, header = {}) => {
 }
 
 export const getAllData = async (
-  { coreData, ...filters } = {},
+  { coreData, studentResponseType, ...filters } = {},
   header = {}
 ) => {
   let headers = {
@@ -113,7 +114,7 @@ export const getAllData = async (
       return result.data.data
     }
     if (coreData === 'getStudents') {
-      return await getStudents(result.data.data)
+      return await getStudents(result.data.data, studentResponseType)
     }
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
@@ -189,18 +190,26 @@ const getDataWithSubjectOne = async (object) => {
   })
 }
 
-export const getStudents = async (data) => {
-  return await Promise.all(data.map(async (item) => await getStudent(item)))
+export const getStudents = async (data, type = '') => {
+  return await Promise.all(
+    data.map(async (item) => await getStudent(item, type))
+  )
 }
 
-const getStudent = async (object) => {
+const getStudent = async (object, type = '') => {
   let studentData = []
   const item = mapInterfaceData(object, interfaceData)
   if (item.id) {
-    studentData = await getChild({
-      groupId: item.id,
-      role: 'Student'
-    })
+    if (type === 'core') {
+      studentData = await studentRegistryService.getAll({
+        classId: item.id
+      })
+    } else {
+      studentData = await getChild({
+        groupId: item.id,
+        role: 'Student'
+      })
+    }
   }
   return { ...item, studentData }
 }
