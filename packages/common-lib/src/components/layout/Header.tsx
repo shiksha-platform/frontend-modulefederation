@@ -19,7 +19,7 @@ export default function Header({
     !customeComponent ? (
       <Box {..._box} py={7} px={5}>
         <HStack justifyContent='space-between' alignItems='center' space='1'>
-          <VStack>
+          <VStack flex={1}>
             {subHeadingComponent ? (
               subHeadingComponent
             ) : (

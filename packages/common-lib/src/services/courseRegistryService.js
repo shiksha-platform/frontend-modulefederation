@@ -6,7 +6,8 @@ const interfaceData = {
   name: 'name',
   posterImage: 'posterImage',
   subject: 'subject',
-  description: 'description'
+  description: 'description',
+  children: 'children'
 }
 
 let only = Object.keys(interfaceData)
@@ -42,7 +43,10 @@ export const getOne = async ({ id, adapter }, header = {}) => {
   }
   try {
     const result = await get(
-      process.env.REACT_APP_API_URL + '/course/' + adapter + '/courseid',
+      process.env.REACT_APP_API_URL +
+        '/course/' +
+        adapter +
+        '/hierarchy/courseid',
       {
         params: { courseId: id },
         headers

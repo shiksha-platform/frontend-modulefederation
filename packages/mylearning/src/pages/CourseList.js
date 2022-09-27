@@ -228,27 +228,27 @@ export default function MyLearning({ footerLinks, appName }) {
     <Layout
       _header={{
         title: getTitle(),
-        iconComponent: (
-          <Button
-            rounded="full"
-            variant="outline"
-            bg={"mylearning.primaryLight"}
-            px={4}
-            py={1}
-            rightIcon={
-              <IconByName
-                name="ArrowDownSLineIcon"
-                isDisabled
-                _icon={{ size: 20 }}
-              />
-            }
-            onPress={(e) => setShowModalSort(true)}
-          >
-            <BodyLarge textTransform="capitalize" color={"mylearning.primary"}>
-              {t("SORT")}
-            </BodyLarge>
-          </Button>
-        ),
+        // iconComponent: (
+        //   <Button
+        //     rounded="full"
+        //     variant="outline"
+        //     bg={"mylearning.primaryLight"}
+        //     px={4}
+        //     py={1}
+        //     rightIcon={
+        //       <IconByName
+        //         name="ArrowDownSLineIcon"
+        //         isDisabled
+        //         _icon={{ size: 20 }}
+        //       />
+        //     }
+        //     onPress={(e) => setShowModalSort(true)}
+        //   >
+        //     <BodyLarge textTransform="capitalize" color={"mylearning.primary"}>
+        //       {t("SORT")}
+        //     </BodyLarge>
+        //   </Button>
+        // ),
       }}
       _appBar={{
         languages: manifest.languages,
@@ -321,13 +321,13 @@ const Children = ({
 
   return (
     <Stack>
-      <FilterButton
+      {/* <FilterButton
         getObject={handleFilter}
         _box={{ pt: 5, px: 5 }}
         _actionSheet={{ bg: "mylearning.cardBg" }}
         resetButtonText={t("COLLAPSE")}
         filters={filters}
-      />
+      /> */}
       <VStack>
         <Box
           bg={"mylearning.white"}
@@ -424,8 +424,4 @@ const Children = ({
       </Actionsheet>
     </Stack>
   );
-};
-
-const LessonPlans = () => {
-  return <h4>LessonPlans</h4>;
 };

@@ -50,6 +50,7 @@ import RefreshLineIcon from 'remixicon-react/RefreshLineIcon'
 import UserStarLineIcon from 'remixicon-react/UserStarLineIcon'
 import UserUnfollowLineIcon from 'remixicon-react/UserUnfollowLineIcon'
 import BookMarkLineIcon from 'remixicon-react/BookmarkLineIcon'
+import BookMarkFillIcon from 'remixicon-react/BookmarkFillIcon'
 import BookLineIcon from 'remixicon-react/BookLineIcon'
 import SearchEyeLineIcon from 'remixicon-react/SearchEyeLineIcon'
 import SearchLineIcon from 'remixicon-react/SearchLineIcon'
@@ -515,6 +516,15 @@ export default function IconByName({ _icon, ...props }) {
         />
       )
       break
+    case 'BookMarkFillIcon':
+      icon = (
+        <IconButton
+          {...props}
+          icon={<BookMarkFillIcon {...(_icon ? _icon : {})} />}
+        />
+      )
+      break
+
     case 'BookLineIcon':
       icon = (
         <IconButton

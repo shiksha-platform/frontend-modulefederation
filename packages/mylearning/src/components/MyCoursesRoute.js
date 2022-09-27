@@ -1,7 +1,6 @@
 import React from "react";
 import {
   H2,
-  overrideColorTheme,
   Loading,
   telemetryFactory,
   capture,

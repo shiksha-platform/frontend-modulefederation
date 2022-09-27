@@ -42,6 +42,7 @@ import {
 import AppRoutesContainer from './components/AppRoutesContainer'
 import { useAuthFlow } from './hooks/useAuthFlow'
 import StarRating from './components/StarRating'
+import InfiniteScroll from './components/InfiniteScroll'
 export {
   AppBar,
   Header,
@@ -85,7 +86,8 @@ export {
   schoolRegistryService,
   mentorRegisteryService,
   schoolRegisteryService,
-  StarRating
+  StarRating,
+  InfiniteScroll
 }
 
 export * from './services/Auth'

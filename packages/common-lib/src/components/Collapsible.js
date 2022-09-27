@@ -21,7 +21,7 @@ const Collapsible = ({
   }, [defaultCollapse, !defaultCollapse])
 
   return (
-    <Box bg='white' p={4}>
+    <Box bg='white' p={4} {..._box}>
       <Pressable
         onPress={() => {
           if (!isDisableCollapse) setIsOpen(!isOpen)

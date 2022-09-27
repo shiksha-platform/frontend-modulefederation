@@ -70,7 +70,12 @@ const theme = {
       cardBg: '#CDECF6',
       visitedCard: '#ECF7EB'
     },
-    mylearning: { ...colorTheme, cardBg: '#F9CCE4' },
+    mylearning: {
+      ...colorTheme,
+      primaryLight: '#FFF8F7',
+      primaryDark: '#C79AB2',
+      cardBg: '#F9CCE4'
+    },
     widgetColor: {
       400: '#7F9DAC',
       500: '#DDD8F3',

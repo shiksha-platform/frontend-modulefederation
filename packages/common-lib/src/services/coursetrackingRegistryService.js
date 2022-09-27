@@ -26,17 +26,13 @@ let only = Object.keys(interfaceData)
 export const getAll = async ({ ...params } = {}, header = {}) => {
   let headers = {
     ...header,
-    headers: {
-      ...header.header,
-      Authorization: 'Bearer ' + localStorage.getItem('token')
-    }
+    Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await post(
     process.env.REACT_APP_API_URL + '/coursetracking/search',
     null,
     { params, headers }
   )
-
   if (result.data.data) {
     return await getDataWithCourse(result.data.data)
   } else {
@@ -57,7 +53,10 @@ export const getOne = async (filters = {}, header = {}) => {
       }
     )
     if (result?.data?.data) {
-      return await getDataWithCourseOne(result?.data?.data)
+      const data = result?.data?.data[0]
+        ? result?.data?.data[0]
+        : result?.data?.data
+      return await getDataWithCourseOne(data)
     } else {
       return {}
     }

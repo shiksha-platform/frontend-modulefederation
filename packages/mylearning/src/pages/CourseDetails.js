@@ -1,23 +1,23 @@
 import React from "react";
 import {
   BodySmall,
+  H1,
   H2,
   IconByName,
   Layout,
-  Collapse,
-  overrideColorTheme,
   Collapsible,
+  coursetrackingRegistryService,
+  likeRegistryService,
+  Loading,
+  useWindowSize,
+  H3,
 } from "@shiksha/common-lib";
-import { Box, HStack, VStack } from "native-base";
+import { Box, HStack, Pressable, VStack } from "native-base";
 import manifestLocal from "../manifest.json";
-import { courses as coursesData } from "../config/mylearning";
-import colorTheme from "../colorTheme";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import CourseBox from "../components/CourseBox";
-import VideoBox from "components/VideoBox";
-
-const colors = overrideColorTheme(colorTheme);
+import SunbirdVideoPlayer from "components/SunbirdVideoPlayer";
 
 export default function CourseDetails({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -25,38 +25,90 @@ export default function CourseDetails({ footerLinks, appName }) {
   const [showModule, setShowModule] = React.useState(false);
   const [like, setLike] = React.useState({});
   const { id } = useParams();
+  const [playerContent, setPlayerContent] = React.useState();
+  const [width, height] = useWindowSize();
+  const [loading, setLoading] = React.useState(true);
 
   const handleLike = async () => {
     if (like.id) {
-      //   const result = await likeRegistryService.distory({
-      //     id: like.id,
-      //   });
-      setLike({});
+      const result = await likeRegistryService.distory({
+        id: like.id,
+      });
+      setLike(like);
     } else {
-      //   let newData = {
-      //     contextId: id,
-      //     context: "course",
-      //     type: "like",
-      //   };
-      //   const { osid } = await likeRegistryService.create(newData);
-      //   setLike({ ...newData, id: osid });
-      setLike({});
+      let newData = {
+        userId: localStorage.getItem("id"),
+        contextId: id,
+        context: "course",
+        type: "like",
+      };
+      const likeId = await likeRegistryService.create(newData);
+      setLike({ ...newData, id: likeId });
     }
   };
 
   React.useEffect(async () => {
-    setCourse(coursesData.find((e) => e.id == id));
+    const result = await coursetrackingRegistryService.getOne({ id });
+    setCourse(result);
+
+    let newData = {
+      userId: { eq: localStorage.getItem("id") },
+      contextId: { eq: result?.id },
+      context: { eq: "course" },
+      type: { eq: "like" },
+    };
+    const data = await likeRegistryService
+      .getAll(newData)
+      .catch((e) => console.log(e.message));
+    setLike(data[0] ? data[0] : null);
+    const localPlayerContent = localStorage.getItem("playerContent");
+    if (localPlayerContent) {
+      setPlayerContent(JSON.parse(localPlayerContent));
+    }
+    setLoading(false);
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (playerContent) {
+    return (
+      <Loading
+        _center={{ alignItems: "center", width: "100%" }}
+        customComponent={
+          <VStack {...{ width }}>
+            <IconByName
+              name="CloseCircleLineIcon"
+              onPress={() => {
+                setPlayerContent();
+                localStorage.removeItem("playerContent");
+              }}
+              position="absolute"
+              zIndex="10"
+              right="4px"
+              top="4px"
+              _icon={{ size: 40 }}
+              bg="white"
+              p="0"
+              rounded="full"
+            />
+            <SunbirdVideoPlayer {...playerContent} />
+          </VStack>
+        }
+      />
+    );
+  }
 
   return (
     <Layout
       _header={{
-        title: course?.name,
+        headingComponent: <H1>{course?.name}</H1>,
         iconComponent: (
           <HStack>
             <IconByName
-              name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-              color={like.id ? colors.primary : colors.black}
+              name={like?.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+              color={like?.id ? "mylearning.primary" : "mylearning.black"}
               onPress={handleLike}
             />
             <IconByName name="ShareLineIcon" />
@@ -73,15 +125,15 @@ export default function CourseDetails({ footerLinks, appName }) {
           />
         </HStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
-      bg={colors.white}
+      _subHeader={{ bg: "mylearning.cardBg" }}
+      bg={"mylearning.white"}
       _appBar={{
         languages: manifestLocal.languages,
       }}
       _footer={footerLinks}
     >
       <VStack space="2">
-        <Box bg={colors.white} p="5">
+        <Box bg={"mylearning.white"} p="5">
           <VStack space="2">
             <CourseBox
               {...{
@@ -93,9 +145,9 @@ export default function CourseDetails({ footerLinks, appName }) {
               }}
             />
             <Box
-              bg={colors.courseDetailsBoxBg}
+              bg={"mylearning.primaryLight"}
               borderWidth="1"
-              borderColor={colors.courseDetailsBoxBorder}
+              borderColor={"mylearning.primaryDark"}
               rounded="md"
             >
               <HStack alignItems="center" space={1}>
@@ -111,66 +163,67 @@ export default function CourseDetails({ footerLinks, appName }) {
             </Box>
           </VStack>
         </Box>
-        <Box bg={colors.white}>
-          <Collapsible
-            defaultCollapse={true}
-            header={
-              <VStack>
-                <H2 px={2} fontWeight={600}>
-                  {t("Video 1")}
-                </H2>
+        {course?.children ? (
+          course?.children.map((item, index) => (
+            <Collapsible
+              key={index}
+              _header={{ bg: "mylearning.white", p: 5 }}
+              _box={{ bg: "transparent", p: 0 }}
+              defaultCollapse={!index}
+              header={
+                <VStack>
+                  <H2 px={2}>{item?.name}</H2>
+                </VStack>
+              }
+              fontSize="2px"
+            >
+              <VStack space={5} p={5}>
+                {item?.children ? (
+                  item?.children.map((subItem, subIndex) => (
+                    <Pressable
+                      bg={"mylearning.white"}
+                      key={subIndex}
+                      onPress={() => {
+                        localStorage.setItem(
+                          "playerContent",
+                          JSON.stringify({
+                            mode: "false",
+                            ...subItem,
+                          })
+                        );
+                        setLoading(true);
+                        window.location.reload();
+                      }}
+                      p="5"
+                      rounded={"lg"}
+                      shadow={4}
+                    >
+                      <HStack justifyContent={"space-between"}>
+                        <H2>{subItem?.name}</H2>
+                        <H3>
+                          {subItem?.mimeType === "application/pdf"
+                            ? "PDF"
+                            : subItem?.mimeType === "video/mp4"
+                            ? "Video"
+                            : [
+                                "application/vnd.sunbird.question",
+                                "application/vnd.sunbird.questionset",
+                              ].includes(subItem?.mimeType)
+                            ? "QUML"
+                            : ""}
+                        </H3>
+                      </HStack>
+                    </Pressable>
+                  ))
+                ) : (
+                  <React.Fragment />
+                )}
               </VStack>
-            }
-            fontSize="2px"
-          ></Collapsible>
-        </Box>
-        <Box bg={colors.white}>
-          <Collapsible
-            defaultCollapse={true}
-            header={
-              <VStack>
-                <H2 px={2} fontWeight={600}>
-                  {t("Video 2")}
-                </H2>
-              </VStack>
-            }
-            fontSize="2px"
-          >
-            <Box py="5">
-              <VideoBox
-                appName={appName}
-                canShare={true}
-                {...{
-                  item: course,
-                  url: `/mylearning/video/${course.id}/view`,
-                }}
-              />
-            </Box>
-          </Collapsible>
-        </Box>
-        <Box bg={colors.white}>
-          <Collapsible
-            defaultCollapse={true}
-            header={
-              <VStack>
-                <H2 px={2}>{t("Class Test")}</H2>
-              </VStack>
-            }
-            fontSize="2px"
-          ></Collapsible>
-        </Box>
-
-        <Box bg={colors.white}>
-          <Collapsible
-            defaultCollapse={true}
-            header={
-              <VStack>
-                <H2 px={2}>{t("Surprise test")}</H2>
-              </VStack>
-            }
-            fontSize="2px"
-          ></Collapsible>
-        </Box>
+            </Collapsible>
+          ))
+        ) : (
+          <React.Fragment />
+        )}
       </VStack>
     </Layout>
   );

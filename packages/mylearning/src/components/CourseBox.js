@@ -25,10 +25,10 @@ const ASSIGNED = "Assigned";
 const COMPLETED = "Completed";
 
 const AttributeData = [
-  { icon: "TimeLineIcon", label: "DURATION", attribute: "duration" },
-  { icon: "CalendarCheckLineIcon", label: "DUE_DATE", attribute: "dueDate" },
+  // { icon: "TimeLineIcon", label: "DURATION", attribute: "duration" },
+  // { icon: "CalendarCheckLineIcon", label: "DUE_DATE", attribute: "dueDate" },
   { icon: "BookLineIcon", label: "SOURCE", attribute: "source" },
-  { icon: "AccountBoxLineIcon", label: "TAKEN_BY", attribute: "takenBy" },
+  // { icon: "AccountBoxLineIcon", label: "TAKEN_BY", attribute: "takenBy" },
 ];
 
 export default function LearningBox({
@@ -74,7 +74,7 @@ export default function LearningBox({
   }, []);
 
   const getLikes = async () => {
-    const result = await coursetrackingRegistryService.getLikes(item.id);
+    const result = await coursetrackingRegistryService.getLikes(item?.id);
     const newData = result.find((e, index) => e.userId === authUserId);
     setLikes(result ? result : []);
     setLike(newData ? newData : {});
@@ -126,13 +126,14 @@ export default function LearningBox({
     // navigate(`/mylearning/${item.id}/share`);
   };
 
-  const RightButton = () => {
+  const RightButton = (propData) => {
     let props = {
       name: "InformationLineIcon",
       _icon: { size: 25 },
       bg: colors.white,
       p: 1,
       rounded: "full",
+      ...propData,
     };
 
     return <IconByName {...props} {..._addIconButton} />;
@@ -149,28 +150,28 @@ export default function LearningBox({
       <VStack space={4}>
         {!isHeaderHide ? (
           <HStack justifyContent="space-between" alignItems="flex-start">
-            <Pressable onPress={() => (url ? navigate(url) : "")}>
+            <Pressable onPress={() => (url ? navigate(url) : "")} flex={1}>
               <HStack space={2} alignItems="center">
-                {item.posterImage ? (
-                  <Avatar
-                    bg={randomColors[random]}
-                    size="57"
-                    rounded="md"
-                    source={{
-                      uri: item.posterImage,
-                    }}
-                    style={{ borderRadius: "6px" }}
-                  />
-                ) : (
-                  <Avatar bg={randomColors[random]} size="57" rounded="md">
-                    <H2 color="white">
-                      {item.name?.toUpperCase().trim().substr(0, 2)}
-                    </H2>
-                  </Avatar>
-                )}
-                <Stack space="1">
+                <Avatar
+                  bg={randomColors[random]}
+                  size="57"
+                  rounded="md"
+                  {...(item.posterImage
+                    ? {
+                        source: {
+                          uri: item.posterImage,
+                        },
+                      }
+                    : {})}
+                  style={{ borderRadius: "6px" }}
+                >
+                  <H2 color="white">
+                    {item?.name?.toUpperCase().trim().substr(0, 2)}
+                  </H2>
+                </Avatar>
+                <Stack space="1" flex={1}>
                   <VStack space="1px">
-                    <H2>{item.name}</H2>
+                    <H2>{item?.name}</H2>
                   </VStack>
                   <HStack space={1} alignItems="center">
                     <IconByName
@@ -187,7 +188,7 @@ export default function LearningBox({
                 </Stack>
               </HStack>
             </Pressable>
-            <RightButton />
+            <RightButton flex={1 / 15} alignItems="flex-end" />
           </HStack>
         ) : (
           <React.Fragment />
@@ -202,12 +203,12 @@ export default function LearningBox({
             WebkitBoxOrient: "vertical",
           }}
         >
-          {item.description}
+          {item?.description}
         </BodyMedium>
         <AttributeComponent data={AttributeData} object={item} />
-        <HStack space="4" alignItems="center">
+        {/* <HStack space="4" alignItems="center">
           <BodySmall>{t("PROGRESS")}</BodySmall>
-          <ProgressBar
+           <ProgressBar
             flex="1"
             sufix={"%"}
             data={[
@@ -221,7 +222,7 @@ export default function LearningBox({
               },
             ]}
           />
-        </HStack>
+        </HStack> */}
         <HStack space="5">
           {!showButtonArray || showButtonArray.includes("Like") ? (
             <Box shadow="2" p="2" rounded="full">
