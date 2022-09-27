@@ -130,6 +130,27 @@ export const update = async (data = {}, headers = {}) => {
   }
 }
 
+export const share = async ({ ...params }, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  try {
+    const result = await post(
+      `${process.env.REACT_APP_API_URL}/worksheet/share`,
+      null,
+      { headers, params: params }
+    )
+    if (result?.data?.data) {
+      return result?.data?.data
+    } else {
+      return {}
+    }
+  } catch {
+    return {}
+  }
+}
+
 export const downloadWorksheet = async ({ id, ...params }, header = {}) => {
   let headers = {
     ...header,
