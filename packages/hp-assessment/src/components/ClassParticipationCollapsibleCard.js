@@ -14,9 +14,7 @@ import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 export default function ClassParticipationCollapsibleCard({
-  assessmentsData,
   totalStudentCount,
-  presentStudentCount,
   absentStudentCount,
   unmarkedStudentCount,
 }) {
@@ -51,9 +49,7 @@ export default function ClassParticipationCollapsibleCard({
             <HStack alignItems={"center"}>
               <Caption>
                 {t("Total Students for Evaluation ") + totalStudentCount}
-              </Caption>{" "}
-              <Caption fontSize={2}> •</Caption>{" "}
-              <Caption> {t("Present ") + presentStudentCount}</Caption>
+              </Caption>
             </HStack>
           </Box>
         }

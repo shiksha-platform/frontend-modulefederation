@@ -25,14 +25,14 @@ import { useTranslation } from "react-i18next";
 const colors = overrideColorTheme(colorTheme);
 
 const CardBasedOnStatus = ({ status, children }) => {
-  if (status === "visited") {
+  if (status === "VISITED") {
     return (
       <Box bg="hpAssessment.ongoing" borderRadius={10}>
         {children}
       </Box>
     );
   }
-  if (status === "nipun_ready" || status === "nipun") {
+  if (status === "NIPUN_READY" || status === "NIPUN") {
     return (
       <Box bg="hpAssessment.completed" borderRadius={10}>
         {children}
@@ -46,10 +46,11 @@ const CardBasedOnStatus = ({ status, children }) => {
   );
 };
 
-function SchoolCard({ schoolId, groupIds, status }) {
+function SchoolCard({ schoolId, groupIds, scheduleVisitDate, monitorId }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [schoolDetail, setSchoolDetail] = useState({});
+  const [schoolStatus, setSchoolStatus] = useState('');
 
   const getSchoolDetail = async (id) => {
     let list = [];
@@ -76,6 +77,15 @@ function SchoolCard({ schoolId, groupIds, status }) {
     setSchoolDetail(detail);
   };
 
+  const getSchoolStatus = async () => {
+    const reqData = {
+      evaluation_date: scheduleVisitDate,
+      monitorId: monitorId
+    }
+    const data = await hpAssessmentRegistryService.getSchoolStatus(schoolId, reqData);
+    setSchoolStatus(data.nipun_status);
+  }
+
   const _handleSchoolSelect = () => {
     localStorage.setItem("hp-assessment-school", JSON.stringify(schoolDetail));
     localStorage.setItem("hp-assessment-grades", groupIds);
@@ -84,13 +94,14 @@ function SchoolCard({ schoolId, groupIds, status }) {
 
   useEffect(() => {
     getSchoolDetail(schoolId);
+    getSchoolStatus();
   }, []);
 
   return (
     <>
       <VStack space={6}>
         <Pressable onPress={_handleSchoolSelect}>
-          <CardBasedOnStatus status={status}>
+          <CardBasedOnStatus status={schoolStatus}>
             <>
               <Box p={4}>
                 <HStack alignItems="center" justifyContent="space-between">
@@ -112,7 +123,7 @@ function SchoolCard({ schoolId, groupIds, status }) {
                       </VStack>
                     </HStack>
                   </Box>
-                  {status === "nipun" && (
+                  {schoolStatus === "NIPUN" && (
                     <Box alignItems="end">
                       <img
                         src={nipun_badge}

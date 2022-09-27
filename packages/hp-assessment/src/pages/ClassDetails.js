@@ -20,6 +20,7 @@ import nipun_badge from "../stories/assets/nipun_badge.svg";
 import colorTheme from "../colorTheme";
 import ClassAssessmentResultCollapsibleCard from "../components/ClassAssessmentResultCollapsibleCard";
 import ClassParticipationCollapsibleCard from "../components/ClassParticipationCollapsibleCard";
+import {STATUS_NIPUN, STATUS_NIPUN_READY, STATUS_ABSENT, STATUS_COMPLETED, STATUS_NONE} from "../assets/constants";
 const colors = overrideColorTheme(colorTheme);
 
 export default function ClassDetails({ appName }) {
@@ -56,7 +57,7 @@ export default function ClassDetails({ appName }) {
     setClassObject(classObj);
   };
 
-  const getAssessmentDetails = async () => {
+  /*const getAssessmentDetails = async () => {
     const params = {
       fromDate: "01-01-2022",
       toDate: "08-25-2022",
@@ -68,35 +69,18 @@ export default function ClassDetails({ appName }) {
     // calculateParticipantData(data);
     calculateAssessmentResults(data);
     setAssessmentsData(data);
-  };
-
-  /*const calculateParticipantData = (assessmentsData) => {
-    const presentStudent = Math.floor(
-      assessmentsData.filter((item) => {
-        return item.status === "COMPLETED";
-      }).length / 2
-    );
-
-    const absentStudent = Math.floor(
-      assessmentsData.filter((item) => {
-        return item.status === "ABSENT";
-      }).length / 2
-    );
-
-    setAbsentStudentCount(absentStudent);
-    setPresentStudentCount(presentStudent);
   };*/
 
   const calculateParticipantData = (membershipData) => {
     const unmarkedStudent = Math.floor(
       membershipData.filter((item) => {
-        return item.status === "";
+        return item.status === STATUS_NONE;
       }).length
     );
 
     const absentStudent = Math.floor(
       membershipData.filter((item) => {
-        return item.status === "ABSENT";
+        return item.status === STATUS_ABSENT;
       }).length
     );
 
@@ -107,14 +91,14 @@ export default function ClassDetails({ appName }) {
   const calculateAssessmentResults = (assessmentsData) => {
     const nipunStudent = Math.floor(
       assessmentsData.filter((item) => {
-        return item.status === "nipun";
-      }).length / 2
+        return item.status === STATUS_NIPUN;
+      }).length
     );
 
     const nipunReadyStudent = Math.floor(
       assessmentsData.filter((item) => {
-        return item.status === "COMPLETED";
-      }).length / 2
+        return item.status === STATUS_NIPUN_READY;
+      }).length
     );
 
     setNipunStudentCount(nipunStudent);
@@ -132,6 +116,7 @@ export default function ClassDetails({ appName }) {
       data: { data },
     } = await hpAssessmentRegistryService.getGroupMembershipSearch(param);
     calculateParticipantData(data);
+    calculateAssessmentResults(data);
     for (const key in data) {
       const res = await studentRegistryService.getOne({ id: data[key].userId });
       res.membershipStatus = data[key].status;
@@ -146,7 +131,7 @@ export default function ClassDetails({ appName }) {
 
   useEffect(() => {
     getClassDetails();
-    getAssessmentDetails();
+    // getAssessmentDetails();
     getStudentsList();
   }, []);
 
@@ -205,7 +190,6 @@ export default function ClassDetails({ appName }) {
             <ClassParticipationCollapsibleCard
               assessmentsData={assessmentsData}
               totalStudentCount={totalStudentCount}
-              // presentStudentCount={presentStudentCount}
               absentStudentCount={absentStudentCount}
               unmarkedStudentCount={unmarkedStudentCount}
             />

@@ -96,7 +96,6 @@ export default function AllocatedSchools() {
 
       groupedList[key]["schoolStatus"] = schoolStatus;
     }
-
     setTrackingList(groupedList);
     setPendingSchools(pendingCount);
     setLoading(false);
@@ -110,9 +109,13 @@ export default function AllocatedSchools() {
           schoolId: "",
           status: [],
           groupIds: [],
+          scheduleVisitDate: '',
+          monitorId: ''
         };
       }
       acc[key].schoolId = obj.schoolId;
+      acc[key].scheduleVisitDate = obj.scheduleVisitDate;
+      acc[key].monitorId = obj.monitorId;
       acc[key].status.push(obj.status);
       acc[key].groupIds.push(obj.groupId);
       return acc;
@@ -212,6 +215,8 @@ export default function AllocatedSchools() {
             return (
               <SchoolCard
                 status={trackingList[key].schoolStatus}
+                monitorId={trackingList[key].monitorId}
+                scheduleVisitDate={trackingList[key].scheduleVisitDate}
                 schoolId={key}
                 groupIds={trackingList[key].groupIds}
                 key={key + Math.random()}

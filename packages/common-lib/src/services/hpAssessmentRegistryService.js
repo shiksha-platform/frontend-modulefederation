@@ -216,6 +216,25 @@ export const getSchoolDetail = async (id, header = {}) => {
   }
 }
 
+export const getSchoolStatus = async (id, data, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/school/${id}/evaluation-status/?evaluation_date=${data.evaluation_date}&monitor_id=${data.monitorId}`,
+    {
+      headers
+    }
+  )
+
+  if (result && result.data) {
+    return result.data
+  } else {
+    return {}
+  }
+}
+
 export const getGroupDetailsById = async (id, data = {}, header = {}) => {
   const headers = {
     ...header,
@@ -225,7 +244,7 @@ export const getGroupDetailsById = async (id, data = {}, header = {}) => {
     process.env.REACT_APP_API_URL + '/group/' + id,
     data,
     {
-      headers: headers ? headers : {}
+      headers: headers || {}
     }
   )
   if (result?.data) {
@@ -244,7 +263,7 @@ export const getGroupMembersById = async (id, data = {}, header = {}) => {
     process.env.REACT_APP_API_URL + '/groupmembership/' + id,
     data,
     {
-      headers: headers ? headers : {}
+      headers: headers || {}
     }
   )
   if (result?.data) {
@@ -263,7 +282,7 @@ export const getGroupMembershipSearch = async (data = {}, header = {}) => {
     process.env.REACT_APP_API_URL + '/groupmembership/search/',
     data,
     {
-      headers: headers ? headers : {}
+      headers: headers || {}
     }
   )
   if (result?.data) {
@@ -282,7 +301,7 @@ export const updateGroupMembersById = async (id, data = {}, header = {}) => {
     process.env.REACT_APP_API_URL + '/groupmembership/' + id,
     data,
     {
-      headers: headers ? headers : {}
+      headers: headers || {}
     }
   )
   if (result?.data) {
@@ -301,7 +320,7 @@ export const studentSearch = async (data = {}, header = {}) => {
     process.env.REACT_APP_API_URL + '/student/search/',
     data,
     {
-      headers: headers ? headers : {}
+      headers: headers || {}
     }
   )
   if (result?.data) {
@@ -320,7 +339,7 @@ export const getOrfAssessmentConfig = async (data = {}, header = {}) => {
     process.env.REACT_APP_API_URL + '/orfAssessmentConfig/',
     {
       data,
-      headers: headers ? headers : {}
+      headers: headers || {}
     }
   )
   if (result?.data) {

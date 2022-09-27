@@ -10,7 +10,7 @@ import {
   BodySmall,
   BodyMedium,
   hpAssessmentRegistryService,
-  assessmentRegistryService,
+  assessmentRegistryService, studentRegistryService
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -61,6 +61,32 @@ export default function SchoolAssessmentProgressBox() {
     } = await hpAssessmentRegistryService.getGroupDetailsById(id);
     calculateAssessmentResults(assessmentData, data, i);
   };
+
+
+  // need to call this api with all three class ids
+  /*const getStudentsList = async () => {
+    let list = [];
+    const param = {
+      limit: "20",
+      page: 1,
+      filters: { groupId: { _eq: classId } },
+    };
+    const {
+      data: { data },
+    } = await hpAssessmentRegistryService.getGroupMembershipSearch(param);
+    calculateParticipantData(data);
+    calculateAssessmentResults(data);
+    for (const key in data) {
+      const res = await studentRegistryService.getOne({ id: data[key].userId });
+      res.membershipStatus = data[key].status;
+      res.groupMembershipId = data[key].groupMembershipId;
+      list.push(res);
+      if (key == data.length - 1) {
+        setTotalStudentCount(list.length);
+      }
+    }
+    setLoading(false);
+  };*/
 
   useEffect(() => {
     grades.forEach((item, i) => {
