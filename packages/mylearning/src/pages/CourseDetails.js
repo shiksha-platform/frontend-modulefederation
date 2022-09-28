@@ -77,7 +77,7 @@ export default function CourseDetails({ footerLinks, appName }) {
       <Loading
         _center={{ alignItems: "center", width: "100%" }}
         customComponent={
-          <VStack {...{ width }}>
+          <VStack {...{ width, height }}>
             <IconByName
               name="CloseCircleLineIcon"
               onPress={() => {
@@ -210,6 +210,11 @@ export default function CourseDetails({ footerLinks, appName }) {
                                 "application/vnd.sunbird.questionset",
                               ].includes(subItem?.mimeType)
                             ? "QUML"
+                            : [
+                                "application/vnd.ekstep.ecml-archive",
+                                "application/vnd.ekstep.html-archive",
+                              ].includes(subItem?.mimeType)
+                            ? "Content"
                             : ""}
                         </H3>
                       </HStack>
