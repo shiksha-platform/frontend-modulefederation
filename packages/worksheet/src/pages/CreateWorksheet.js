@@ -72,7 +72,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       } else if (!limit?.limit && createType === "auto") {
         setAlertMessage(t("PLEASE_SELECT_LIMIT"));
         setPageName();
-      } else {
+      } else if (pageName !== "AddDescriptionPage") {
         let data = {
           adapter: formObject.source,
           limit: 10,
