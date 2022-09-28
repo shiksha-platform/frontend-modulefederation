@@ -38,5 +38,7 @@
   "RESET_FILTER": "फ़िल्टर रीसेट करें",
   "COLLAPSE": "गिर जाना",
   "TEACHERS_LIKE_THIS": "यह शिक्षक पसंद",
-  "COMMENTS": "टिप्पणियाँ"
+  "COMMENTS": "टिप्पणियाँ",
+  "ENTER_TITLE_HINT": "शीर्षक संकेत दर्ज करें",
+  "TYPE_TO_START_SEARCHING_LEARNING": "सीखना शुरू करने के लिए टाइप करें"
 }

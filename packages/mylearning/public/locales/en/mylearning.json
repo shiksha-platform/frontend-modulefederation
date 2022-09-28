@@ -39,5 +39,7 @@
   "COLLAPSE": "Collapse",
   "SEE_COURSE_CONTENTS": "See course contents",
   "TEACHERS_LIKE_THIS": "Teachers like this",
-  "COMMENTS": "comments"
+  "COMMENTS": "comments",
+  "ENTER_TITLE_HINT": "Enter title hint",
+  "TYPE_TO_START_SEARCHING_LEARNING": "Type to start searching learning"
 }

@@ -5,8 +5,7 @@ import {
   distory as distoryRequest
 } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
-import { getDataWithUser } from './commentRegistryService'
+import * as userRegistryService from './userRegistryService'
 
 const interfaceData = {
   id: 'likeId',
@@ -30,10 +29,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    const newData = result.data.data.map((e) =>
-      mapInterfaceData(e, interfaceData)
-    )
-    return await getDataWithUser(newData)
+    return await getDataWithRelational(result.data.data)
   } else {
     return []
   }
@@ -111,4 +107,19 @@ export const distory = async (data = {}, headers = {}) => {
   } else {
     return {}
   }
+}
+
+const getDataWithRelational = async (data) => {
+  return await Promise.all(
+    data.map(async (item) => await getDataWithRelationalOne(item))
+  )
+}
+
+const getDataWithRelationalOne = async (object) => {
+  let userData = {}
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.userId) {
+    userData = await userRegistryService.getOne({ id: item.userId })
+  }
+  return { ...item, userData }
 }

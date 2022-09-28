@@ -45,6 +45,7 @@ const theme = {
       notificationBg: '#E0DFF6'
     },
     schools: { ...colorTheme },
+    mylearning: { ...colorTheme },
     assessment: {
       ...colorTheme,
       primaryLight: '#FFF8F7',

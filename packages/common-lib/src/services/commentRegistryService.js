@@ -28,10 +28,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    const newData = result.data.data.map((e) =>
-      mapInterfaceData(e, interfaceData)
-    )
-    return await getDataWithUser(newData)
+    return await getDataWithRelational(result.data.data)
   } else {
     return []
   }
@@ -95,16 +92,17 @@ export const update = async (
   }
 }
 
-export const getDataWithUser = async (data) => {
+const getDataWithRelational = async (data) => {
   return await Promise.all(
-    data.map(async (item) => {
-      let userData = {}
-      console.log(item)
-      if (item.userType === 'Teacher' || true) {
-        console.log(item.userId, 'USER ID')
-        userData = await userRegistryService.getOne({ id: item?.userId })
-      }
-      return { ...item, userData }
-    })
+    data.map(async (item) => await getDataWithRelationalOne(item))
   )
+}
+
+const getDataWithRelationalOne = async (object) => {
+  let userData = {}
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.userId) {
+    userData = await userRegistryService.getOne({ id: item.userId })
+  }
+  return { ...item, userData }
 }

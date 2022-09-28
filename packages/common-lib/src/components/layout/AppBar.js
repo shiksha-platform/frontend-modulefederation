@@ -127,7 +127,7 @@ export default function AppBar({
                 />
               )}
             </HStack>
-            {titleComponent ? { titleComponent } : <React.Fragment />}
+            {titleComponent ? titleComponent : <React.Fragment />}
             <HStack alignItems={'center'}>
               {!searchInput && isEnableSearchBtn ? (
                 <IconByName

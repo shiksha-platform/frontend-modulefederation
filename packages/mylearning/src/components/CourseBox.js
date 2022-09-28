@@ -9,9 +9,10 @@ import {
   BodySmall,
   BodyMedium,
   ProgressBar,
+  coursetrackingRegistryService,
 } from "@shiksha/common-lib";
 import { Avatar, Box, HStack, Pressable, Stack, VStack } from "native-base";
-import React from "react";
+import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -24,10 +25,10 @@ const ASSIGNED = "Assigned";
 const COMPLETED = "Completed";
 
 const AttributeData = [
-  { icon: "TimeLineIcon", label: "DURATION", attribute: "duration" },
-  { icon: "CalendarCheckLineIcon", label: "DUE_DATE", attribute: "dueDate" },
+  // { icon: "TimeLineIcon", label: "DURATION", attribute: "duration" },
+  // { icon: "CalendarCheckLineIcon", label: "DUE_DATE", attribute: "dueDate" },
   { icon: "BookLineIcon", label: "SOURCE", attribute: "source" },
-  { icon: "AccountBoxLineIcon", label: "TAKEN_BY", attribute: "takenBy" },
+  // { icon: "AccountBoxLineIcon", label: "TAKEN_BY", attribute: "takenBy" },
 ];
 
 export default function LearningBox({
@@ -53,25 +54,35 @@ export default function LearningBox({
   const [comments, setComments] = React.useState([]);
   const [random, setRandom] = React.useState();
   const { sub } = jwt_decode(localStorage.getItem("token"));
+  const authUserId = localStorage.getItem("id");
 
   React.useEffect(async (e) => {
-    setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
-    await getLikes();
-    await getComments();
-    if (item.state === "DRAFT") {
-      setShowButtonArray(["Like"]);
-    } else {
-      setShowButtonArray(canShowButtonArray);
+    let isMounted = true;
+    if (isMounted) {
+      setRandom(Math.floor(Math.random() * (4 - 1) + 1) - 1);
+      await getLikes();
+      await getComments();
+      if (item.state === "DRAFT") {
+        setShowButtonArray(["Like"]);
+      } else {
+        setShowButtonArray(canShowButtonArray);
+      }
     }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const getLikes = async () => {
-    setLikes([]);
-    setLike({});
+    const result = await coursetrackingRegistryService.getLikes(item?.id);
+    const newData = result.find((e, index) => e.userId === authUserId);
+    setLikes(result ? result : []);
+    setLike(newData ? newData : {});
   };
 
   const getComments = async () => {
-    setComments([]);
+    const result = await coursetrackingRegistryService.getComments(item.id);
+    setComments(result ? result : []);
   };
 
   const handleLike = async () => {
@@ -85,17 +96,16 @@ export default function LearningBox({
     } else {
       let newData = {
         contextId: item?.id,
-        context: "MyLearning",
+        context: "CourseTracking",
         type: "like",
       };
       const osid = await likeRegistryService.create(newData);
       const telemetryData = telemetryFactory.interact({
         appName,
-        type: "MyLearning-Like",
-        MyLearningId: item?.id,
+        type: "Course-Like",
+        courseId: item?.courseId,
+        source: item.source,
         subject: item?.subject,
-        grade: item?.grade,
-        topic: item?.topic,
       });
       capture("INTERACT", telemetryData);
       const newObject = { ...newData, id: osid };
@@ -107,40 +117,23 @@ export default function LearningBox({
   const handleShare = () => {
     const telemetryData = telemetryFactory.interact({
       appName,
-      type: "MyLearning-Share",
-      myLearningId: item?.id,
+      type: "Course-Share",
+      courseId: item?.courseId,
+      source: item.source,
       subject: item?.subject,
-      grade: item?.grade,
-      topic: item?.topic,
     });
     capture("INTERACT", telemetryData);
     // navigate(`/mylearning/${item.id}/share`);
   };
 
-  const handleAddToTimeline = () => {
-    if (item.state === "DRAFT") {
-      // navigate(`/mylearning/${item.id}/edit`);
-    } else {
-      const telemetryData = telemetryFactory.interact({
-        appName,
-        type: "MyLearning-Add-To-Timeline",
-        myLearningId: item?.id,
-        subject: item?.subject,
-        grade: item?.grade,
-        topic: item?.topic,
-      });
-      capture("INTERACT", telemetryData);
-    }
-  };
-
-  const RightButton = () => {
+  const RightButton = (propData) => {
     let props = {
       name: "InformationLineIcon",
       _icon: { size: 25 },
       bg: colors.white,
       p: 1,
-      onPress: handleAddToTimeline,
       rounded: "full",
+      ...propData,
     };
 
     return <IconByName {...props} {..._addIconButton} />;
@@ -157,16 +150,28 @@ export default function LearningBox({
       <VStack space={4}>
         {!isHeaderHide ? (
           <HStack justifyContent="space-between" alignItems="flex-start">
-            <Pressable onPress={() => (url ? navigate(url) : "")}>
+            <Pressable onPress={() => (url ? navigate(url) : "")} flex={1}>
               <HStack space={2} alignItems="center">
-                <Avatar bg={randomColors[random]} size="57" rounded="md">
-                  <H2 color={colors.white}>
-                    {item.name?.toUpperCase().substr(0, 1)}
+                <Avatar
+                  bg={randomColors[random]}
+                  size="57"
+                  rounded="md"
+                  {...(item.posterImage
+                    ? {
+                        source: {
+                          uri: item.posterImage,
+                        },
+                      }
+                    : {})}
+                  style={{ borderRadius: "6px" }}
+                >
+                  <H2 color="white">
+                    {item?.name?.toUpperCase().trim().substr(0, 2)}
                   </H2>
                 </Avatar>
-                <Stack space="1">
+                <Stack space="1" flex={1}>
                   <VStack space="1px">
-                    <H2>{item.name}</H2>
+                    <H2>{item?.name}</H2>
                   </VStack>
                   <HStack space={1} alignItems="center">
                     <IconByName
@@ -183,7 +188,7 @@ export default function LearningBox({
                 </Stack>
               </HStack>
             </Pressable>
-            <RightButton />
+            <RightButton flex={1 / 15} alignItems="flex-end" />
           </HStack>
         ) : (
           <React.Fragment />
@@ -198,12 +203,12 @@ export default function LearningBox({
             WebkitBoxOrient: "vertical",
           }}
         >
-          {item.description}
+          {item?.description}
         </BodyMedium>
         <AttributeComponent data={AttributeData} object={item} />
-        <HStack space="4" alignItems="center">
+        {/* <HStack space="4" alignItems="center">
           <BodySmall>{t("PROGRESS")}</BodySmall>
-          <ProgressBar
+           <ProgressBar
             flex="1"
             sufix={"%"}
             data={[
@@ -217,7 +222,7 @@ export default function LearningBox({
               },
             ]}
           />
-        </HStack>
+        </HStack> */}
         <HStack space="5">
           {!showButtonArray || showButtonArray.includes("Like") ? (
             <Box shadow="2" p="2" rounded="full">

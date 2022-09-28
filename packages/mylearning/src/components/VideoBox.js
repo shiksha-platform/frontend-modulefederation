@@ -129,7 +129,7 @@ export default function VideoBox({
       onPress: handleAddToTimeline,
       rounded: "full",
     };
-    if (item.state === "DRAFT") {
+    if (item?.state === "DRAFT") {
       props = {
         ...props,
         name: "EditBoxLineIcon",
@@ -192,7 +192,7 @@ export default function VideoBox({
                         WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {item.name}
+                      {item?.name}
                     </BodyLarge>
                   </Pressable>
                   <RightButton />
@@ -207,7 +207,7 @@ export default function VideoBox({
                     WebkitBoxOrient: "vertical",
                   }}
                 >
-                  {item.description}
+                  {item?.description}
                 </Caption>
               </VStack>
               <AttributeComponent data={AttributeData} object={item} />
