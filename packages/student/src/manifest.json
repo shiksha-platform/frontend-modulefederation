@@ -94,6 +94,6 @@
     }
   ],
 
-  "auth_url": "https://dev-shiksha.uniteframework.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
+  "auth_url": "https://shiksha-prod.shikshaplatform.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
   "maxWidth": "1080"
 }
