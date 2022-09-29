@@ -27,6 +27,9 @@ import * as lessonPlansRegistryService from './services/lessonPlansRegistryServi
 import * as templateRegistryService from './services/templateRegistryService'
 import * as notificationRegistryService from './services/notificationRegistryService'
 import * as roleRegistryService from './services/roleRegistryService'
+import * as courseRegistryService from './services/courseRegistryService'
+import * as coursetrackingRegistryService from './services/coursetrackingRegistryService'
+import * as filterDataRegistryService from './services/filterDataRegistryService'
 import * as mentorRegisteryService from './services/mentorRegisteryService'
 import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
@@ -39,6 +42,7 @@ import {
 import AppRoutesContainer from './components/AppRoutesContainer'
 import { useAuthFlow } from './hooks/useAuthFlow'
 import StarRating from './components/StarRating'
+import InfiniteScroll from './components/InfiniteScroll'
 export {
   AppBar,
   Header,
@@ -73,13 +77,17 @@ export {
   lessonPlansRegistryService,
   templateRegistryService,
   notificationRegistryService,
-  useAuthFlow,
   roleRegistryService,
+  courseRegistryService,
+  coursetrackingRegistryService,
+  filterDataRegistryService,
+  useAuthFlow,
   workHistoryRegistryService,
   schoolRegistryService,
   mentorRegisteryService,
   schoolRegisteryService,
-  StarRating
+  StarRating,
+  InfiniteScroll
 }
 
 export * from './services/Auth'

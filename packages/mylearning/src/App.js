@@ -15,48 +15,55 @@ function App() {
   const routes = [
     {
       moduleName: "mylearning",
-      path: "/mylearning/list/:state",
+      path: "/mylearning",
       component: CourseList,
     },
-    {
-      moduleName: "mylearning",
-      path: "/mylearning/list",
-      component: CourseList,
-    },
+    // {
+    //   moduleName: "mylearning",
+    //   path: "/mylearning/list/:state",
+    //   component: CourseList,
+    // },
+    // {
+    //   moduleName: "mylearning",
+    //   path: "/mylearning/list",
+    //   component: CourseList,
+    // },
     {
       moduleName: "mylearning",
       path: "/mylearning/:id/view",
       component: CourseDetails,
     },
-    {
-      moduleName: "mylearning",
-      path: "/mylearning/video/list/:state",
-      component: VideoList,
-    },
-    {
-      moduleName: "mylearning",
-      path: "/mylearning/video/list",
-      component: VideoList,
-    },
-    {
-      moduleName: "mylearning",
-      path: "/mylearning/video/:id/view",
-      component: VideoDetails,
-    },
-    {
-      moduleName: "mylearning",
-      path: "/mylearning",
-      component: MyLearning,
-    },
-    {
-      moduleName: "mylearning",
-      path: "/",
-      component: MyLearning,
-    },
+    // {
+    //   moduleName: "mylearning",
+    //   path: "/mylearning/video/list/:state",
+    //   component: VideoList,
+    // },
+    // {
+    //   moduleName: "mylearning",
+    //   path: "/mylearning/video/list",
+    //   component: VideoList,
+    // },
+    // {
+    //   moduleName: "mylearning",
+    //   path: "/mylearning/video/:id/view",
+    //   component: VideoDetails,
+    // },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
 
-  return <AppShell routes={routes} AuthComponent={LoginComponent} />;
+  return (
+    <AppShell
+      basename={process.env.PUBLIC_URL}
+      routes={routes}
+      AuthComponent={LoginComponent}
+      skipLogin={skipLogin}
+      _authComponent={{ swPath: "/modules/worksheet" }}
+    />
+  );
 }
 
 export default App;

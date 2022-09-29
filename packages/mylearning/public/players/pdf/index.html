@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunbird PDF player</title>
+    <style>
+      .player-grid {
+        height: 90vh;
+        width: 90%;
+        margin: 0 auto;
+        display: grid;
+        gap: 1.5rem;
+        padding-top: 4rem;
+
+        @media screen and (max-width: 768px) {
+          grid-template-columns: 100%;
+          gap: 0px;
+        }
+      }
+    </style>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="player-grid" id="my-player"></div>
+    <script type="text/javascript" src="sunbird-pdf-player.js"></script>
+    <script type="text/javascript">
+      const playerConfig = {
+        context: {
+          mode: "play",
+          authToken: "",
+          sid: "7283cf2e-d215-9944-b0c5-269489c6fa56",
+          did: "3c0a3724311fe944dec5df559cc4e006",
+          uid: "anonymous",
+          channel: "505c7c48ac6dc1edc9b08f21db5a571d",
+          pdata: {
+            id: "prod.diksha.portal",
+            ver: "3.2.12",
+            pid: "sunbird-portal.contentplayer",
+          },
+          contextRollup: { l1: "505c7c48ac6dc1edc9b08f21db5a571d" },
+          tags: [""],
+          cdata: [],
+          timeDiff: 0,
+          objectRollup: {},
+          host: "",
+          endpoint: "",
+          userData: {
+            firstName: "Vivek",
+            lastName: "Kasture",
+          },
+        },
+        config: {
+          traceId: "afhjgh",
+          sideMenu: {
+            showShare: true,
+            showDownload: true,
+            showReplay: true,
+            showExit: true,
+          },
+        },
+        metadata: {
+          compatibilityLevel: 4,
+          copyright: "Tamilnadu",
+          keywords: ["b301epdf", "b302epdf", "epdf", "1epdft1"],
+          subject: ["Tamil"],
+          channel: "01235953109336064029450",
+          language: ["English"],
+          mimeType: "application/pdf",
+          objectType: "Content",
+          gradeLevel: ["Class 1"],
+          appIcon:
+            "https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291455031832576019477/artifact/3_1535000262441.thumb.png",
+          primaryCategory: "Teacher Resource",
+          artifactUrl:
+            "https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/assets/do_31291455031832576019477/b301b302_std_1_tamilenglish_lang_term-1_opt.pdf",
+          contentType: "FocusSpot",
+          identifier: "do_31291455031832576019477",
+          audience: ["Teacher"],
+          visibility: "Default",
+          mediaType: "content",
+          osId: "org.ekstep.quiz.app",
+          languageCode: ["en"],
+          license: "CC BY 4.0",
+          name: "B301,B302_STD_1_TAMIL,ENGLISH_LANG_TERM 1_OPT",
+          status: "Live",
+          code: "43e68089-997e-49a4-902a-6262e5654515",
+          description: "epdf",
+          streamingUrl:
+            "https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/assets/do_31291458881611366418883/b331332333_std_5_mathssciencesocial_tm_term-1_opt.pdf",
+          medium: ["Tamil"],
+          createdOn: "2019-12-16T07:59:53.154+0000",
+          copyrightYear: 2019,
+          additionalCategories: ["Focus Spot"],
+          lastUpdatedOn: "2019-12-16T11:52:56.405+0000",
+          creator: "SCERT 2 ECONTENTS",
+          pkgVersion: 1,
+          versionKey: "1576497176405",
+          framework: "tn_k-12_5",
+          createdBy: "f4f80b17-8609-44b9-b781-b79df5cf7e8d",
+          board: "State (Tamil Nadu)",
+          resourceType: "Read",
+          licenseDetails: {
+            name: "CC BY 4.0",
+            url: "https://creativecommons.org/licenses/by/4.0/legalcode",
+            description: "For details see below:",
+          },
+        },
+        data: {},
+      };
+      const pdfElement = document.createElement("sunbird-pdf-player");
+      pdfElement.setAttribute("player-config", JSON.stringify(playerConfig));
+
+      pdfElement.addEventListener("playerEvent", (event) => {
+        console.log("On playerEvent", event);
+      });
+
+      pdfElement.addEventListener("telemetryEvent", (event) => {
+        console.log("On telemetryEvent", event);
+      });
+
+      const myPlayer = document.getElementById("my-player");
+      myPlayer.appendChild(pdfElement);
+    </script>
+  </body>
+</html>
+
+<!-- 
+1. add new application - ng g application pdf-player-wc
+2. ng add @angular/elements
+3. Update app module in pdf-player-wc and angular.json for the assets and scripts copy
+-- Add createCustomElement
+-- Remove bootstrap array
+-- add components in declaration
+4. create web-component folder -- create index.html inside it
+5. npm i concat fs-extra -D
+6. npm i reflect-metadata --save and import it in main.ts of pdf-player-wc
+7. npm i http-server -D // App needs a server to serve the file
+8. Add script in package.json
+9. Create build-wc.js file in root folder - add script to concat the files and make one script file and copying the
+assets folder
+10. Run with following commands:
+-- npm run build-web-component
+-- http-server --cors web-component .
+
+ -->

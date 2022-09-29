@@ -22,6 +22,7 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
 export default function Comment({
@@ -30,15 +31,16 @@ export default function Comment({
   item,
   context,
   comments,
-  setCommets,
+  setComments,
+  _actionSheetContent,
 }) {
   const { t } = useTranslation();
-  const [comment, setCommet] = React.useState("");
+  const [comment, setComment] = React.useState("");
   const [error, setError] = React.useState();
 
   const handleInput = (event) => {
     const value = event.target.value;
-    setCommet(value);
+    setComment(value);
     if (!value) {
       setError(t("ENTER_COMMENT"));
     } else {
@@ -54,8 +56,8 @@ export default function Comment({
         comment,
       };
       const { osid } = await commentRegistryService.create(newData);
-      setCommets([...comments, { ...newData, id: osid }]);
-      setCommet("");
+      setComments([...comments, { ...newData, id: osid }]);
+      setComment("");
     } else {
       setError(t("ENTER_COMMENT"));
     }
@@ -66,7 +68,11 @@ export default function Comment({
       isOpen={showModuleComments}
       onClose={() => setShowModuleComments(false)}
     >
-      <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+      <Actionsheet.Content
+        alignItems={"left"}
+        bg={colors.cardBg}
+        {..._actionSheetContent}
+      >
         <HStack justifyContent={"space-between"}>
           <Stack p={5} pt={1} pb="15px">
             <H2>{t("COMMENTS")}</H2>
@@ -85,16 +91,29 @@ export default function Comment({
               <Avatar
                 size="md"
                 bg={colors.success}
-                source={{
-                  uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-                }}
+                {...(item?.userData?.image &&
+                item?.userData?.image !== "" &&
+                item?.userData?.image !== "string"
+                  ? {
+                      source: {
+                        uri: item?.userData?.image,
+                      },
+                    }
+                  : {})}
               >
-                AJ
+                <H2 color="white">
+                  {`${item?.userData?.firstName} ${item?.userData?.lastName}`
+                    ?.toUpperCase()
+                    .trim()
+                    .substr(0, 2)}
+                </H2>
               </Avatar>
               <VStack>
-                <BodyLarge>{t("Mrs. Jina Jain")}</BodyLarge>
+                <BodyLarge>
+                  {item?.userData?.firstName} {item?.userData?.lastName}
+                </BodyLarge>
                 <Subtitle color={colors.lightGray2}>
-                  {t("12 January, 4:00PM")}
+                  {moment(item.createdAt).format("DD MMM YYYY")}
                 </Subtitle>
               </VStack>
             </HStack>

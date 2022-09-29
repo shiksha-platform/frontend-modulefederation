@@ -7,7 +7,8 @@ import {
   ScrollView,
   Stack,
   Text,
-  Tooltip
+  Tooltip,
+  VStack
 } from 'native-base'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
