@@ -207,7 +207,7 @@ const getStudent = async (object, type = '') => {
     } else {
       studentData = await getChild({
         groupId: item.id,
-        role: 'student'
+        role: 'Student'
       })
     }
   }
