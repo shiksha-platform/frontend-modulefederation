@@ -48,11 +48,10 @@ function SchoolAdminDetailCard({ schoolId }) {
     arrayUniqueGradeSet.map(async (grade, i) => {
       const studentGradeData = await studentRegistryService.getAllStudents({
         schoolId: { eq: schoolId },
-        groupId: { eq: grade },
+        groupId: { eq: grade ? grade : "" },
       });
       totalStudentsInGrade[i] = studentGradeData.length;
     });
-    console.log("TOTALSTUDENT");
     // totalStudents.map((abc) => console.log(abc));
 
     // Get male students count of particular school
