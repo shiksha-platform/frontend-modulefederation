@@ -6,13 +6,9 @@
   "description": "",
   "publishedDate": "",
   "icon": "assets/createquestion.png",
-  "languages": [
-    "English"
-  ],
+  "languages": ["English"],
   "categories": [],
-  "keywords": [
-    "mtfplugin"
-  ],
+  "keywords": ["mtfplugin"],
   "targets": [
     {
       "id": "org.ekstep.questionset",
@@ -41,9 +37,7 @@
       "h": 80,
       "fill": "#DCDCDC"
     },
-    "configManifest": [
-      {}
-    ],
+    "configManifest": [{}],
     "help": {
       "src": "editor/help.md",
       "dataType": "text"
@@ -84,9 +78,9 @@
         "src": "renderer/js/mtftemplate.js"
       },
       {
-        "id":"org.ekstep.questionunit.mtf-1.0-audio.png",
-        "type":"image",
-        "src":"renderer/assets/audio.png",
+        "id": "org.ekstep.questionunit.mtf-1.0-audio.png",
+        "type": "image",
+        "src": "renderer/assets/audio.png",
         "assetId": "org.ekstep.questionunit.mtf-1.0-audio.png"
       }
     ]

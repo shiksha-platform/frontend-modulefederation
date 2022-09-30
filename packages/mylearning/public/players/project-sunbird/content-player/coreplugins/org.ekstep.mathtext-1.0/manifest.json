@@ -117,13 +117,7 @@
     ]
   },
   "icon": "assets/icon.png",
-  "languages": [
-    "English"
-  ],
-  "categories": [
-    ""
-  ],
-  "keywords": [
-    ""
-  ]
+  "languages": ["English"],
+  "categories": [""],
+  "keywords": [""]
 }

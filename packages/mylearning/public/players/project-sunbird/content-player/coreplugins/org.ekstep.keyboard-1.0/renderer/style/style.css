@@ -46,7 +46,6 @@
   font-weight: bold;
 }
 
-
 .parentDivMainKeyboard,
 #parentDivNumericKeyboard {
   width: 100%;
@@ -100,7 +99,7 @@
   border: none;
   margin: 2px;
   width: 60%;
-  background: #D7D7D7;
+  background: #d7d7d7;
   border-radius: 3px;
   height: 30px;
   display: inline-block;
@@ -198,7 +197,7 @@
   display: inline-block;
 }
 
-.special_keys>span {
+.special_keys > span {
   vertical-align: middle;
 }
 
@@ -228,7 +227,7 @@ img.qc-language-icon {
   text-align: center;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center
+  justify-content: center;
 }
 
 .qc-keyboard-bottom {

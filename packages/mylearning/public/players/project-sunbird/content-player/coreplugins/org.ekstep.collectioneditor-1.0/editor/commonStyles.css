@@ -1,15 +1,19 @@
 body {
-  min-width: 525px !important; }
+  min-width: 525px !important;
+}
 
 .no-margin-no-padding {
   margin: 0 !important;
-  padding: 0 !important; }
+  padding: 0 !important;
+}
 
 .no-margin {
-  margin: 0 !important; }
+  margin: 0 !important;
+}
 
 .no-padding {
-  padding: 0 !important; }
+  padding: 0 !important;
+}
 
 .xy-mid-align {
   position: absolute !important;
@@ -17,4 +21,5 @@ body {
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  margin: auto !important; }
+  margin: auto !important;
+}

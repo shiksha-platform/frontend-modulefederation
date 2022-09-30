@@ -8,13 +8,16 @@
   "languages": ["English"],
   "categories": [],
   "keywords": ["reorderingplugin"],
-  "targets": [{
-    "id": "org.ekstep.questionset",
-    "ver": 1
-  }],
+  "targets": [
+    {
+      "id": "org.ekstep.questionset",
+      "ver": 1
+    }
+  ],
   "editor": {
     "main": "editor/plugin.js",
-    "dependencies": [{
+    "dependencies": [
+      {
         "type": "plugin",
         "plugin": "org.ekstep.questionunit",
         "ver": "1.1"
@@ -25,23 +28,26 @@
       }
     ]
   },
-  "templates": [{
-    "id": "reorderingtemplate",
-    "thumbnail": "editor/assets/reorder-preview.png",
-    "title": "Reordering words",
-    "disc": "Arranging the words to form a sentence.",
-    "category": "mcq",
-    "editor": {
-      "templateURL": "editor/templates/reordering-template.html",
-      "controllerURL": "editor/controllers/reordering-controller.js",
-      "template": "reorderingtemplate",
-      "controller": "QuestionFormController"
-    },
-    "renderer": {}
-  }],
+  "templates": [
+    {
+      "id": "reorderingtemplate",
+      "thumbnail": "editor/assets/reorder-preview.png",
+      "title": "Reordering words",
+      "disc": "Arranging the words to form a sentence.",
+      "category": "mcq",
+      "editor": {
+        "templateURL": "editor/templates/reordering-template.html",
+        "controllerURL": "editor/controllers/reordering-controller.js",
+        "template": "reorderingtemplate",
+        "controller": "QuestionFormController"
+      },
+      "renderer": {}
+    }
+  ],
   "renderer": {
     "main": "renderer/plugin.js",
-    "dependencies": [{
+    "dependencies": [
+      {
         "type": "css",
         "src": "renderer/styles/style.css"
       },
@@ -57,10 +63,12 @@
       }
     ]
   },
-  "dependencies": [{
-    "plugin": "org.ekstep.questionunit",
-    "ver": "1.1",
-    "type": "plugin",
-    "scope": "all"
-  }]
+  "dependencies": [
+    {
+      "plugin": "org.ekstep.questionunit",
+      "ver": "1.1",
+      "type": "plugin",
+      "scope": "all"
+    }
+  ]
 }

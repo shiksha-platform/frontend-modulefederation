@@ -11,9 +11,13 @@ org.ekstep.contenteditor.basePlugin.extend({
    * @memberOf org.ekstep.libs.ckeditor.EditorPlugin#
    */
   initialize: function () {
-    CKEDITOR.basePath = ecEditor.resolvePluginResource(this.manifest.id, this.manifest.ver, "editor/ckeditor/");
+    CKEDITOR.basePath = ecEditor.resolvePluginResource(
+      this.manifest.id,
+      this.manifest.ver,
+      "editor/ckeditor/"
+    );
   },
-  newInstance: function () {}
+  newInstance: function () {},
 });
 
 //# sourceURL=ckeditorPlugin.js

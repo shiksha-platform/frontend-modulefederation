@@ -6,16 +6,26 @@ MCQController.loadTemplateContent = function () {
   return "<div id='qs-mcq-template'><div id='qc-mcqlayout'></div></div>";
 };
 MCQController.isMediaAsset = function (question) {
-  MCQController.isAudioIcon = !_.isUndefined(_.find(question.data.options, "audio")) ? true : false;
-  MCQController.isImageIcon = !_.isUndefined(_.find(question.data.options, "image")) ? true : false;
+  MCQController.isAudioIcon = !_.isUndefined(
+    _.find(question.data.options, "audio")
+  )
+    ? true
+    : false;
+  MCQController.isImageIcon = !_.isUndefined(
+    _.find(question.data.options, "image")
+  )
+    ? true
+    : false;
 };
 // MCQController.audioIcon = MCQController.pluginInstance.getAssetUrl('audio-icon.png');
 // MCQController.expandIcon = MCQController.pluginInstance.getAssetUrl('expand-icon.png');
 MCQController.renderQuestion = function () {
   var template = _.template(MCQController.getQuesLayout());
-  $("#qc-mcqlayout").html(template({
-    question: MCQController.pluginInstance._question
-  }));
+  $("#qc-mcqlayout").html(
+    template({
+      question: MCQController.pluginInstance._question,
+    })
+  );
   MCQController.renderTemplateLayout(MCQController.pluginInstance._question);
 };
 /**
@@ -40,9 +50,11 @@ MCQController.renderTemplateLayout = function (question) {
     default:
       template = _.template(MCQController.getHorizontalTemplate(question));
   }
-  $("#qc-mcqlayout").append(template({
-    question: question
-  }));
+  $("#qc-mcqlayout").append(
+    template({
+      question: question,
+    })
+  );
 };
 /**
  * This question layout is common for all the template
@@ -82,7 +94,8 @@ MCQController.getQuesLayout = function () {
  */
 MCQController.showImageModel = function () {
   var eventData = event.target.src;
-  var modelTemplate = "<div class='popup image-model-popup' id='image-model-popup' onclick='MCQController.hideImageModel()'><div class='popup-overlay' onclick='MCQController.hideImageModel()'></div> \
+  var modelTemplate =
+    "<div class='popup image-model-popup' id='image-model-popup' onclick='MCQController.hideImageModel()'><div class='popup-overlay' onclick='MCQController.hideImageModel()'></div> \
     <div class='popup-full-body'> \
       <div class='font-lato assess-popup assess-goodjob-popup'> \
         <img class='qc-question-fullimage' src=<%= src %> /> \
@@ -91,8 +104,8 @@ MCQController.showImageModel = function () {
     </div>";
   var template = _.template(modelTemplate);
   var templateData = template({
-    src: eventData
-  })
+    src: eventData,
+  });
   $("#qs-mcq-template").append(templateData);
 };
 /**
@@ -108,26 +121,27 @@ MCQController.hideImageModel = function () {
  * @param {Object} event from question set.
  */
 MCQController.expandQuestion = function (event) {
-  if ($(event.target.parentElement).hasClass('collapse-ques-text')) {
+  if ($(event.target.parentElement).hasClass("collapse-ques-text")) {
     $(event.target.parentElement).removeClass("collapse-ques-text");
     $(event.target.parentElement).addClass("qc-expand-ques-text");
-    $("#mcq-question").css('height', '65vh');
+    $("#mcq-question").css("height", "65vh");
   } else {
     $(event.target.parentElement).addClass("collapse-ques-text");
     $(event.target.parentElement).removeClass("qc-expand-ques-text");
-    $("#mcq-question").css('height', '17.7vh');
+    $("#mcq-question").css("height", "17.7vh");
   }
 };
 
 MCQController.openPopup = function (id) {
   var data = undefined;
   MCQController.currentPopUp = id;
-  if (id == 'question') {
+  if (id == "question") {
     data = MCQController.pluginInstance._question.data.question;
   } else {
     data = MCQController.pluginInstance._question.data.options[id];
   }
-  var mcqpopupTemplate = " <div class='mcq-expand-popup'>\
+  var mcqpopupTemplate =
+    " <div class='mcq-expand-popup'>\
   <div class='popup' style='z-index: 9999999'>\
    <div class='popup-overlay'></div>\
    <div class='mcq-popup-full-body'>\
@@ -154,19 +168,17 @@ MCQController.openPopup = function (id) {
      </div>\
        </div>\
   </div>";
-    var template = _.template(mcqpopupTemplate);
-    
-    var templateData = template({
-      data: data
-    })
-    $("#questionset").append(templateData);
-    EkstepRendererAPI.dispatchEvent('org.ekstep.questionunit:rendermath');
+  var template = _.template(mcqpopupTemplate);
+
+  var templateData = template({
+    data: data,
+  });
+  $("#questionset").append(templateData);
+  EkstepRendererAPI.dispatchEvent("org.ekstep.questionunit:rendermath");
 };
 
 MCQController.closePopup = function () {
   $(".mcq-expand-popup").remove();
 };
-
-
 
 //# sourceURL=MCQController.js

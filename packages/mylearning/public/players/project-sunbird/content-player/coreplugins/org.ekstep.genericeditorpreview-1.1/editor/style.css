@@ -1,37 +1,37 @@
 .preview-window .ngdialog-content {
-    background: none !important;
+  background: none !important;
 }
 
 .ngdialog.ngdialog-theme-plain .ngdialog-content {
-    background: none!important;
+  background: none !important;
 }
 
 .main {
-    position: relative;
-    height: auto;
+  position: relative;
+  height: auto;
 }
 
 #previewContentIframeWrapper {
-    position: relative;
-    width: 900px;
-    height: calc( 900px / (16/9));
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 0;
+  position: relative;
+  width: 900px;
+  height: calc(900px / (16 / 9));
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0;
 }
 
 #previewContentIframe {
-    height: 100%;
-    width: 100%;
-    border: none;
+  height: 100%;
+  width: 100%;
+  border: none;
 }
 
-.field.pdf-warning-message{
-    position: absolute;
-    width: 100%;
-    padding: 11px;
+.field.pdf-warning-message {
+  position: absolute;
+  width: 100%;
+  padding: 11px;
 }
 
-.pdf-warning-message .ui.message .header{
-    font-size: 1em!important;
+.pdf-warning-message .ui.message .header {
+  font-size: 1em !important;
 }

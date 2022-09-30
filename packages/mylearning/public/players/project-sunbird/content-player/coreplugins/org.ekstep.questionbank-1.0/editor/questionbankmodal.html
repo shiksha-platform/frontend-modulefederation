@@ -1,4 +1,8 @@
-<script type="text/ng-template" id="QuestionFormTemplate" ng-controller="QuestionFormController">
+<script
+  type="text/ng-template"
+  id="QuestionFormTemplate"
+  ng-controller="QuestionFormController"
+>
   <link rel="stylesheet" type="text/css" href="{{csspath}}" />
   <div class="ui modal qb-question-bank fullscreen active" id="qc-question-bank-model" ng-init="init()">
     <div class="header" style="padding-right:1em;">
@@ -76,7 +80,7 @@
               <span class="ui label qc-selected-quescount">Selected Question : {{selectedQuestions.length}}</span>
             <div class="row qb-question-list-container qs-scrollbar">
               <div class="ui large divided items">
-                 
+
                 <div class="item select list-items ui grid" ng-repeat="question in questions" ng-class="{quesSelector: $index === selectedQueIndex}">
                   <div class="middle aligned content nine wide column" ng-click="previewItem(question, true); showSelectedQue($index);">
                     <div class="header" style="display: -webkit-box;">{{ question.title}}</div>

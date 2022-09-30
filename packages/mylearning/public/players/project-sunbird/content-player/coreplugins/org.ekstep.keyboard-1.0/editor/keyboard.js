@@ -3,38 +3,44 @@
  * @class keyboardCtrl
  * Jagadish Pujari <jagadish.pujari@tarento.com>
  */
-'use strict';
-angular.module('keyBoardApp', [])
-.directive('keyboardConfig', function() {
+"use strict";
+angular.module("keyBoardApp", []).directive("keyboardConfig", function () {
   return {
-    restrict: 'AE',
+    restrict: "AE",
     scope: {
-      data: '='
+      data: "=",
     },
-    templateUrl: ecEditor.resolvePluginResource('org.ekstep.keyboard', '1.0', 'editor/keyboard.directive.html'),
-    link: function(scope) {
-      scope.keyboardTypes = ['Device', 'English', 'Custom'];
+    templateUrl: ecEditor.resolvePluginResource(
+      "org.ekstep.keyboard",
+      "1.0",
+      "editor/keyboard.directive.html"
+    ),
+    link: function (scope) {
+      scope.keyboardTypes = ["Device", "English", "Custom"];
       if (!_.isUndefined(scope.data) && !_.isUndefined(scope.data.keyboardType))
         scope.keyboardType = scope.data.keyboardType;
-      if (!_.isUndefined(scope.data) && !_.isUndefined(scope.data.keyboardType) && scope.data.keyboardType == 'Custom'){
+      if (
+        !_.isUndefined(scope.data) &&
+        !_.isUndefined(scope.data.keyboardType) &&
+        scope.data.keyboardType == "Custom"
+      ) {
         scope.customTag = true;
         scope.keys = scope.data.customKeys;
-      }
-      else{
+      } else {
         scope.customTag = false;
       }
-      scope.selectKeyboardType = function() {
+      scope.selectKeyboardType = function () {
         scope.data.keyboardType = scope.keyboardType;
-        if (scope.keyboardType == 'Custom') {
+        if (scope.keyboardType == "Custom") {
           scope.customTag = true;
         } else {
           scope.customTag = false;
         }
       };
-      scope.tokenizeTags = function(event) {
+      scope.tokenizeTags = function (event) {
         scope.data.customKeys = event.target.value;
       };
-    }
+    },
   };
 });
 

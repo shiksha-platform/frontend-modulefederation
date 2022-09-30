@@ -1,46 +1,43 @@
+![](https://travis-ci.org/manjudr/telemetry-lib.svg?branch=master)
+[![codecov](https://codecov.io/gh/manjudr/telemetry-lib/branch/master/graph/badge.svg)](https://codecov.io/gh/manjudr/telemetry-lib)
 
- ![](https://travis-ci.org/manjudr/telemetry-lib.svg?branch=master)
- [![codecov](https://codecov.io/gh/manjudr/telemetry-lib/branch/master/graph/badge.svg)](https://codecov.io/gh/manjudr/telemetry-lib)
+## Need
 
-
-
-## Need 
-
-The purpose of a standalone JS library for telemetry is to facilitate capture and distribution of telemetry data by users who would like to use their own apps, content players or portals.  
+The purpose of a standalone JS library for telemetry is to facilitate capture and distribution of telemetry data by users who would like to use their own apps, content players or portals.
 
 We chose to use a JS library for the following reasons:
 
-* All the telemetry events that are generated and synced to the server have the same format (field data types and time zone value)
+- All the telemetry events that are generated and synced to the server have the same format (field data types and time zone value)
 
-* It is easy to upgrade to new versions, in case of major changes in telemetry
+- It is easy to upgrade to new versions, in case of major changes in telemetry
 
-* There is effortless backward compatibility, as changes are handled within the telemetry library. Any upgrade of the telemetry library does not require code changes in the content
+- There is effortless backward compatibility, as changes are handled within the telemetry library. Any upgrade of the telemetry library does not require code changes in the content
 
-* There are reduced number of API calls
+- There are reduced number of API calls
 
-* There are simple API methods to generate the complete telemetry event as only the required fields are passed
+- There are simple API methods to generate the complete telemetry event as only the required fields are passed
 
-## Prerequisites 
+## Prerequisites
 
 The following are prerequisites to use or integrate the JS library:
 
-* JQuery library should be available 
+- JQuery library should be available
 
-* Valid Authtoken and Key to make API calls
+- Valid Authtoken and Key to make API calls
 
-* The [telemetry.min.js](https://github.com/project-sunbird/project-sunbird.github.io/blob/dev/pages/developer-docs/telemetry/other_files/telemetry.min.js){:target="_blank"} file
+- The [telemetry.min.js](https://github.com/project-sunbird/project-sunbird.github.io/blob/dev/pages/developer-docs/telemetry/other_files/telemetry.min.js){:target="\_blank"} file
 
-**Note:** For details on generating and using the Authtoken and Key, refer to the section 
+**Note:** For details on generating and using the Authtoken and Key, refer to the section
 
-* Device ID value
+- Device ID value
 
-**Note:** For details on how to get the device ID value, refer to [website](https://android-developers.googleblog.com/2011/03/identifying-app-installations.html){:target="_blank"}
+**Note:** For details on how to get the device ID value, refer to [website](https://android-developers.googleblog.com/2011/03/identifying-app-installations.html){:target="\_blank"}
 
 ## Configure
 
 This JS library helps to generate telemetry events. These events sync to the server or data-pipeline in a batch as defined in the configuration. To log telemetry events, the user has to call the start method by passing the configuration along with other parameters.
 
-**Note:** All telemetry events sync only to the server or data-pipeline, when connected to the Internet.  
+**Note:** All telemetry events sync only to the server or data-pipeline, when connected to the Internet.
 
 Telemetry events are generated based on the configuration of the telemetry library.
 
@@ -205,7 +202,7 @@ Send this object as dispatcher in the above sample configuration ("dispatcher":c
 
 ## How to use telemetry JS library
 
-Download the telemetry-sdk npm module from [here](https://www.npmjs.com/package/@project-sunbird/telemetry-sdk) 
+Download the telemetry-sdk npm module from [here](https://www.npmjs.com/package/@project-sunbird/telemetry-sdk)
 
 <pre>
 npm i @project-sunbird/telemetry-sdk
@@ -217,7 +214,6 @@ npm i @project-sunbird/telemetry-sdk
 $t = require('@project-sunbird/telemetry-sdk');   
 $t.start(config, contentId, contentVer,data, options);
 </pre>
-   
 
 To use the telemetry JS libraries, add the following to your HTML/application. The file path is a relative path, for example; assets/js to the associated files within the html content.
 
@@ -243,53 +239,47 @@ To use the telemetry JS libraries, add the following to your HTML/application. T
   &#x3C;/script&#x3E;
 </pre>
 
-
-
-
 ## Telemetry API methods
 
-Every API method has an associated event. The following API methods log details of the associated telemetry event. 
+Every API method has an associated event. The following API methods log details of the associated telemetry event.
 
-* [Start](developer-docs/telemetry/jslibrary/#start) - This method initializes capture of telemetric data associated to the start of user action 
+- [Start](developer-docs/telemetry/jslibrary/#start) - This method initializes capture of telemetric data associated to the start of user action
 
-* [Impression](developer-docs/telemetry/jslibrary/#impression) - This method is used to capture telemetry for user visits to  a specific page. 
+- [Impression](developer-docs/telemetry/jslibrary/#impression) - This method is used to capture telemetry for user visits to a specific page.
 
-* [Interact](developer-docs/telemetry/jslibrary/#interact) - This method is used to capture user interactions on a page. For example, search, click, preview, move, resize, configure
+- [Interact](developer-docs/telemetry/jslibrary/#interact) - This method is used to capture user interactions on a page. For example, search, click, preview, move, resize, configure
 
-* [Assess ](developer-docs/telemetry/jslibrary/#access)- This method is used to capture user assessments that happen while playing content.
+- [Assess ](developer-docs/telemetry/jslibrary/#access)- This method is used to capture user assessments that happen while playing content.
 
-* [Response](developer-docs/telemetry/jslibrary/#response) - This method is used to capture user responses. For example; response to a poll, calendar event or a question.
+- [Response](developer-docs/telemetry/jslibrary/#response) - This method is used to capture user responses. For example; response to a poll, calendar event or a question.
 
-* [Interrupt](developer-docs/telemetry/jslibrary/#interrupt) - This method is used to capture  interrupts triggered during user activity. For example;  mobile app sent to background, call on the mobile, etc.
+- [Interrupt](developer-docs/telemetry/jslibrary/#interrupt) - This method is used to capture  interrupts triggered during user activity. For example;  mobile app sent to background, call on the mobile, etc.
 
-* [End](developer-docs/telemetry/jslibrary/#end) - This method is used to capture closure after all the activities are completed
+- [End](developer-docs/telemetry/jslibrary/#end) - This method is used to capture closure after all the activities are completed
 
-* [Feedback](developer-docs/telemetry/jslibrary/#feedback) - This method is used to capture user feedback
+- [Feedback](developer-docs/telemetry/jslibrary/#feedback) - This method is used to capture user feedback
 
-* [Share](developer-docs/telemetry/jslibrary/#share) - This method is used to capture everything associated with sharing. For example; Share content, telemetry data, link, file etc.
+- [Share](developer-docs/telemetry/jslibrary/#share) - This method is used to capture everything associated with sharing. For example; Share content, telemetry data, link, file etc.
 
-* [Audit](developer-docs/telemetry//jslibrary/#audit) - This method is used when an object is changed to know previous and current state. This includes lifecycle changes as well.
+- [Audit](developer-docs/telemetry//jslibrary/#audit) - This method is used when an object is changed to know previous and current state. This includes lifecycle changes as well.
 
-* [Error](developer-docs/telemetry/jslibrary/#error) - This method is used to capture when users face an error
+- [Error](developer-docs/telemetry/jslibrary/#error) - This method is used to capture when users face an error
 
-* [Heartbeat](developer-docs/telemetry/jslibrary/#heartbeat) - This method is used to know is process is running or not.
+- [Heartbeat](developer-docs/telemetry/jslibrary/#heartbeat) - This method is used to know is process is running or not.
 
-* [Log](developer-docs/telemetry/jslibrary/#log) - This method is used to capture generic logging of events.  For example; capturing logs for API calls, service calls, app updates etc.
+- [Log](developer-docs/telemetry/jslibrary/#log) - This method is used to capture generic logging of events. For example; capturing logs for API calls, service calls, app updates etc.
 
-* [Search](developer-docs/telemetry/jslibrary/#search) - This method is used to capture the search state i.e. when search is triggered for content, item, assets etc.
+- [Search](developer-docs/telemetry/jslibrary/#search) - This method is used to capture the search state i.e. when search is triggered for content, item, assets etc.
 
-* [Metrics](developer-docs/telemetry/jslibrary/#metrics) - Service business metrics (also accessible via health API)
+- [Metrics](developer-docs/telemetry/jslibrary/#metrics) - Service business metrics (also accessible via health API)
 
-* [Summary](developer-docs/telemetry/jslibrary/#summary) - Summary event
+- [Summary](developer-docs/telemetry/jslibrary/#summary) - Summary event
 
-* [Exdata](developer-docs/telemetry/jslibrary/#exdata) - This method is used as a generic wrapper event to capture encrypted or serialized data
-
- 
- 
+- [Exdata](developer-docs/telemetry/jslibrary/#exdata) - This method is used as a generic wrapper event to capture encrypted or serialized data
 
 ### Start
 
-This API is used to log telemetry when users view content or initiate game play 
+This API is used to log telemetry when users view content or initiate game play
 
 <pre>
 start: function(config, contentId, contentVer, data, options) { }
@@ -345,8 +335,7 @@ let options = { // Optional
     tags: {}, // To override the existing tags
     runningEnv: "server" // It can be either client or server
 };
-</pre>  
-
+</pre>
 
 ### Interact
 
@@ -381,7 +370,7 @@ let options = { // Optional
     tags: {}, // To override the existing tags
     runningEnv: "server" // It can be either client or server
 }; 
-</pre>  
+</pre>
 
 ### Assess
 
@@ -481,7 +470,7 @@ let data = { //Required
     "eventid": "" // Optional. unique event ID
 };
 </pre>
-  
+
 <pre>
  let options = { // Optional
     context: {}, // To override the existing context
@@ -491,8 +480,6 @@ let data = { //Required
     runningEnv: "server" // It can be either client or server
 };
 </pre>
-
-
 
 ### Feedback
 
@@ -600,7 +587,7 @@ let data = { // Required
 
 ### Error
 
-This API is used to log telemetry of any error that has occurred when a user is viewing content or playing games. 
+This API is used to log telemetry of any error that has occurred when a user is viewing content or playing games.
 
 <pre>
 error: function(error, options) { }
@@ -684,7 +671,7 @@ let options = { // Optional
 
 ### Search
 
-This API is used to log telemetry when a user triggers a search for any content, item or asset 
+This API is used to log telemetry when a user triggers a search for any content, item or asset
 
 <pre>
 search: function(data, options) { }
@@ -851,9 +838,9 @@ let data = { // Required
 };
 </pre>
 
-
 ### ResetContext
-  This is used to reset the current context value with new context object.
+
+This is used to reset the current context value with new context object.
 
 <pre>
  @param {context} Object    - If context is undefined then library is reset to previous event context value.
@@ -861,7 +848,8 @@ let data = { // Required
 </pre>
 
 ### ResetObject
- Which is used reset the current object value with new obj
+
+Which is used reset the current object value with new obj
 
 <pre>
  @param {obj} Object      - If the Object is undefined then library is reset to previous event object value.
@@ -869,7 +857,8 @@ let data = { // Required
 </pre>
 
 ### ResetActor
-  Which is used reset the current actor value with new actor   
+
+Which is used reset the current actor value with new actor
 
 <pre>
  @param {actor} Object    - If the actor is undefined then library is reset to previous event actor value.
@@ -877,39 +866,33 @@ let data = { // Required
 </pre>
 
 ### ResetTags
-  Which is used to reset the current tag's value with new tag's
+
+Which is used to reset the current tag's value with new tag's
 
 <pre>
  @param {tags} Array      - If tags are undefined then library is reset to previous event tags value.
  $t.resetTags(tags) 
 </pre>
 
-
-
-
 ## ChangeLogs
 
-  ******  ******
+---
+
 **[0.0.1](https://github.com/manjudr/telemetry-lib/releases/tag/v1.0.0)**
- 
-  * Initial version of the telemetry-sdk [npm](https://www.npmjs.com/package/@project-sunbird/telemetry-sdk)
+
+- Initial version of the telemetry-sdk [npm](https://www.npmjs.com/package/@project-sunbird/telemetry-sdk)
 
 **[0.0.2](https://github.com/manjudr/telemetry-lib/releases/tag/v1.0.0)**
- 
-  * Bug fixes
+
+- Bug fixes
 
 **[0.0.3](https://github.com/manjudr/telemetry-lib/releases/tag/v1.0.1)**
 
-  * Name space changes in the code 
-  * Removed `EkTelemetry` keyword in the code and provided a backward compatibility
+- Name space changes in the code
+- Removed `EkTelemetry` keyword in the code and provided a backward compatibility
 
 **[0.0.4](https://github.com/manjudr/telemetry-lib/releases/tag/v1.0.2)**
 
-  * Bug fixes - Duration issue fix in both START and END Event (Converting millisecond to seconds)
-  * Test case setup and improved code coverage
-  * Travis integration     
-
-
-  
-
-    
+- Bug fixes - Duration issue fix in both START and END Event (Converting millisecond to seconds)
+- Test case setup and improved code coverage
+- Travis integration

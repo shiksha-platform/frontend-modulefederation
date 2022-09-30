@@ -1,5 +1,3 @@
-
-
 #keyboardDiv {
   position: absolute;
   left: 0;
@@ -58,7 +56,8 @@
   margin: 2px;
   vertical-align: middle;
   text-align: center;
-  min-width: 5.5%;    background: rgb(255, 255, 255);
+  min-width: 5.5%;
+  background: rgb(255, 255, 255);
   border-radius: 6px;
   padding: 5px 6px;
 }
@@ -69,7 +68,7 @@
   vertical-align: middle;
   text-align: center;
   flex-grow: inherit;
-  min-width: 6%; 
+  min-width: 6%;
   background: #ffffff;
   border-radius: 6px;
   margin-bottom: 2%;
@@ -125,11 +124,10 @@
   margin: 0 auto;
   align-items: center;
   background: rgb(101, 160, 230);
-
 }
 
 #firstRowNum {
-    width: 100%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   overflow-y: hidden;
@@ -150,7 +148,7 @@
   cursor: pointer;
 }
 
-.erasedDivParent{
+.erasedDivParent {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -189,7 +187,7 @@
   cursor: pointer;
 }
 
-.special_keys>span {
+.special_keys > span {
   vertical-align: middle;
 }
 
@@ -218,7 +216,7 @@ img.qc-language-icon {
   background: rgb(101, 160, 230);
 }
 
-.erase-icon{
+.erase-icon {
   text-align: center;
   flex-grow: inherit;
   min-width: 6%;

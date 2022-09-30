@@ -1,4 +1,9 @@
-<script type="text/ng-template" ng-app="assetbrowserapp" ng-controller="browsercontroller as $ctrl" id="partials/assetbrowser.html">
+<script
+  type="text/ng-template"
+  ng-app="assetbrowserapp"
+  ng-controller="browsercontroller as $ctrl"
+  id="partials/assetbrowser.html"
+>
    <style>
    audio::-internal-media-controls-download-button {
       display:none !important;
@@ -275,18 +280,18 @@
    						<div class="twelve wide column" ng-show="$ctrl.imageList.length == 0">
    							<span>No result found. <a href="#" onclick="$('#allImagesTab').trigger('click'); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'noResultFoundSwitchToAllAssetTab'})">Click here</a> to search in All images</span>
    						</div>
-						<div class="twelve wide column">
-							<div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
-							  <div class="bounce1"></div>
-							  <div class="bounce2"></div>
-							  <div class="bounce3"></div>
-							</div>
-							<div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
-							  <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
-							  <p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
-							  </p>
-							</div>
-						</div>
+  				<div class="twelve wide column">
+  					<div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
+  					  <div class="bounce1"></div>
+  					  <div class="bounce2"></div>
+  					  <div class="bounce3"></div>
+  					</div>
+  					<div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
+  					  <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
+  					  <p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
+  					  </p>
+  					</div>
+  				</div>
    					</div>
    				</div>
    			</div>
@@ -335,18 +340,18 @@
    						<div class="twelve wide column" ng-show="$ctrl.audioList.length == 0">
    							<span>No result found. <a href="#" onclick="$('#allAudioTab').trigger('click'); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'noResultFoundSwitchToAllAudioTab'});">Click here</a> to search in All audios</span>
    						</div>
-						<div class="twelve wide column">
-							<div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
-							  <div class="bounce1"></div>
-							  <div class="bounce2"></div>
-							  <div class="bounce3"></div>
-							</div>
-							<div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
-							  <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
-							  <p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
-							  </p>
-							</div>
-						</div>
+  				<div class="twelve wide column">
+  					<div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
+  					  <div class="bounce1"></div>
+  					  <div class="bounce2"></div>
+  					  <div class="bounce3"></div>
+  					</div>
+  					<div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
+  					  <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
+  					  <p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
+  					  </p>
+  					</div>
+  				</div>
    					</div>
    				</div>
    			</div>
@@ -382,18 +387,18 @@
    					<div class="twelve wide column" ng-show="$ctrl.imageList.length ==0">
    						<span>No result found. </span>
    					</div>
-					<div class="twelve wide column">
-					  <div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
-						<div class="bounce1"></div>
-						<div class="bounce2"></div>
-						<div class="bounce3"></div>
-					  </div>
-					  <div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
-						<img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
-						<p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
-						</p>
-					  </div>
-					</div>
+  			<div class="twelve wide column">
+  			  <div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
+  				<div class="bounce1"></div>
+  				<div class="bounce2"></div>
+  				<div class="bounce3"></div>
+  			  </div>
+  			  <div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
+  				<img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
+  				<p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
+  				</p>
+  			  </div>
+  			</div>
    				</div>
    			</div>
    			<div class="content" ng-if="$ctrl.plugin =='audio'">
@@ -423,18 +428,18 @@
    						<div class="twelve wide column" ng-show="$ctrl.audioList.length == 0">
    							<span>No result found. </span>
    						</div>
-						<div class="twelve wide column">
-							<div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
-							  <div class="bounce1"></div>
-							  <div class="bounce2"></div>
-							  <div class="bounce3"></div>
-							</div>
-							<div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
-							  <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
-							  <p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
-							  </p>
-							</div>
-						</div>
+  				<div class="twelve wide column">
+  					<div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
+  					  <div class="bounce1"></div>
+  					  <div class="bounce2"></div>
+  					  <div class="bounce3"></div>
+  					</div>
+  					<div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
+  					  <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
+  					  <p>Didn’t find what you were looking for? Try <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
+  					  </p>
+  					</div>
+  				</div>
    					</div>
    				</div>
    			</div>

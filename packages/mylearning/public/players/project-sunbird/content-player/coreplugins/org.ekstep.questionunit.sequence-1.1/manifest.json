@@ -6,14 +6,9 @@
   "description": "",
   "publishedDate": "",
   "icon": "assets/sequencial-preview.png",
-  "languages": [
-    "English"
-  ],
+  "languages": ["English"],
   "categories": [],
-  "keywords": [
-    "sequencial plugin",
-    "reordering sentences"
-  ],
+  "keywords": ["sequencial plugin", "reordering sentences"],
   "targets": [
     {
       "id": "org.ekstep.questionset",
@@ -42,9 +37,7 @@
       "h": 80,
       "fill": "#DCDCDC"
     },
-    "configManifest": [
-      {}
-    ],
+    "configManifest": [{}],
     "help": {
       "src": "editor/help.md",
       "dataType": "text"

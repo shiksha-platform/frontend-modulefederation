@@ -3,52 +3,55 @@
  * @class org.ekstep.mathtext.mathTextController
  * @author Swati Singh <swati.singh@tarento.com>
  */
-angular.module('org.ekstep.mathtext', [])
-  .controller('mathTextController', ['$scope', 'instance', '$timeout', function ($scope, instance, $timeout) {
-
+angular.module("org.ekstep.mathtext", []).controller("mathTextController", [
+  "$scope",
+  "instance",
+  "$timeout",
+  function ($scope, instance, $timeout) {
     var mathField, latex, latexSpan, hiddenSpanArea;
     $scope.isMathWysiwyg = true;
-    $scope.latexValue = ''; 
+    $scope.latexValue = "";
     $scope.cursorPosition = undefined;
     $scope.text_hint = true;
     $scope.pluginLoadStartTime = new Date();
     $scope.libraryEquations = [
       {
-        "title": "Area of circle",
-        "latex": "A = \\pi r^2"
+        title: "Area of circle",
+        latex: "A = \\pi r^2",
       },
       {
-        "title": "Quadratic equation",
-        "latex": "x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}"
+        title: "Quadratic equation",
+        latex: "x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}",
       },
       {
-        "title": "Binomial theorem",
-        "latex": "(x+a)^n = \\sum _{k=0}^n(\\frac{n_{ }}{k})x^ka^{n-k}"
+        title: "Binomial theorem",
+        latex: "(x+a)^n = \\sum _{k=0}^n(\\frac{n_{ }}{k})x^ka^{n-k}",
       },
       {
-        "title": "Expansion of a sum",
-        "latex": "(1+x)^n=1+\\frac{nx}{1!}+\\frac{n(n-1)x^2}{2!}+......."
+        title: "Expansion of a sum",
+        latex: "(1+x)^n=1+\\frac{nx}{1!}+\\frac{n(n-1)x^2}{2!}+.......",
       },
       {
-        "title": "Fourier series",
-        "latex": "f(x)=a_0+\\sum _{n=1}^{\\infty }(a_n\\cos \\frac{n\\Pi x}{L}+b_n\\sin \\frac{n\\Pi x}{L})"
+        title: "Fourier series",
+        latex:
+          "f(x)=a_0+\\sum _{n=1}^{\\infty }(a_n\\cos \\frac{n\\Pi x}{L}+b_n\\sin \\frac{n\\Pi x}{L})",
       },
       {
-        "title": "Slope of a line",
-        "latex": "m=\\frac{y_2-y_1}{x_2-x_1}"
+        title: "Slope of a line",
+        latex: "m=\\frac{y_2-y_1}{x_2-x_1}",
       },
       {
-        "title": "Distance between two points",
-        "latex": "d=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}"
+        title: "Distance between two points",
+        latex: "d=\\sqrt{(x_2-x_1)^2+(y_2-y_1)^2}",
       },
       {
-        "title": "Volume of a sphere",
-        "latex": "\\frac{4}{3}\\pi r^3"
+        title: "Volume of a sphere",
+        latex: "\\frac{4}{3}\\pi r^3",
       },
       {
-        "title": "Product rule",
-        "latex": "a^n\\times a^m=a^{n+m}"
-      }
+        title: "Product rule",
+        latex: "a^n\\times a^m=a^{n+m}",
+      },
     ];
     $scope.activeTab = "library";
     // Each object definition is:
@@ -62,235 +65,236 @@ angular.module('org.ekstep.mathtext', [])
     $scope.symbols = {
       greek: [
         {
-          latex: "\\alpha"
+          latex: "\\alpha",
         },
         {
-          latex: "\\beta"
+          latex: "\\beta",
         },
         {
-          latex: "\\delta"
+          latex: "\\delta",
         },
         {
-          latex: "\\epsilon"
+          latex: "\\epsilon",
         },
         {
-          latex: "\\eta"
+          latex: "\\eta",
         },
         {
-          latex: "\\gamma"
+          latex: "\\gamma",
         },
         {
-          latex: "\\iota"
+          latex: "\\iota",
         },
         {
-          latex: "\\kappa"
+          latex: "\\kappa",
         },
         {
-          latex: "\\lambda"
+          latex: "\\lambda",
         },
         {
-          latex: "\\mu"
+          latex: "\\mu",
         },
         {
-          latex: "\\nu"
+          latex: "\\nu",
         },
         {
-          latex: "o"
+          latex: "o",
         },
         {
-          latex: "\\omega"
+          latex: "\\omega",
         },
         {
-          latex: "\\phi"
+          latex: "\\phi",
         },
         {
-          latex: "\\pi"
+          latex: "\\pi",
         },
         {
-          latex: "\\psi"
+          latex: "\\psi",
         },
         {
-          latex: "\\rho"
+          latex: "\\rho",
         },
         {
-          latex: "\\sigma"
+          latex: "\\sigma",
         },
         {
-          latex: "\\tau"
+          latex: "\\tau",
         },
         {
-          latex: "\\theta"
+          latex: "\\theta",
         },
         {
-          latex: "\\upsilon"
+          latex: "\\upsilon",
         },
         {
-          latex: "\\xi"
+          latex: "\\xi",
         },
         {
-          latex: "\\zeta"
+          latex: "\\zeta",
         },
         {
-          latex: "\\Delta"
+          latex: "\\Delta",
         },
         {
-          latex: "\\Gamma"
+          latex: "\\Gamma",
         },
         {
-          latex: "\\Lambda"
+          latex: "\\Lambda",
         },
         {
-          latex: "\\Omega"
+          latex: "\\Omega",
         },
         {
-          latex: "\\Phi"
+          latex: "\\Phi",
         },
         {
-          latex: "\\Pi"
+          latex: "\\Pi",
         },
         {
-          latex: "\\Psi"
+          latex: "\\Psi",
         },
         {
-          latex: "\\Sigma"
+          latex: "\\Sigma",
         },
         {
-          latex: "\\Theta"
+          latex: "\\Theta",
         },
         {
-          latex: "\\Upsilon"
-        }],
+          latex: "\\Upsilon",
+        },
+      ],
       binary: [
         {
-          latex: "\\ast"
+          latex: "\\ast",
         },
         {
-          latex: "\\times"
+          latex: "\\times",
         },
         {
-          latex: "\\div"
+          latex: "\\div",
         },
         {
-          latex: "\\cdot"
+          latex: "\\cdot",
         },
         {
-          latex: "\\equiv"
+          latex: "\\equiv",
         },
         {
-          latex: "\\cong"
+          latex: "\\cong",
         },
         {
-          latex: "\\ne"
+          latex: "\\ne",
         },
         {
-          latex: "\\sim"
+          latex: "\\sim",
         },
         {
-          latex: "\\simeq"
+          latex: "\\simeq",
         },
         {
-          latex: "\\approx"
+          latex: "\\approx",
         },
         {
-          latex: "\\propto"
+          latex: "\\propto",
         },
         {
-          latex: "\\models"
+          latex: "\\models",
         },
         // {
         //   latex: "\\approxeq"
         // },
         {
-          latex: "\\pm"
+          latex: "\\pm",
         },
         {
-          latex: "\\mp"
+          latex: "\\mp",
         },
         {
-          latex: "\\leq"
+          latex: "\\leq",
         },
         {
-          latex: "\\ll"
+          latex: "\\ll",
         },
         {
-          latex: "\\subset"
+          latex: "\\subset",
         },
         {
-          latex: "\\subseteq"
+          latex: "\\subseteq",
         },
         {
-          latex: "\\in"
+          latex: "\\in",
         },
         {
-          latex: "\\perp"
+          latex: "\\perp",
         },
         {
-          latex: "\\mid"
+          latex: "\\mid",
         },
         {
-          latex: "\\parallel"
+          latex: "\\parallel",
         },
         {
-          latex: "\\notin"
+          latex: "\\notin",
         },
         {
-          latex: "\\cap"
+          latex: "\\cap",
         },
         {
-          latex: "\\cup"
+          latex: "\\cup",
         },
         {
-          latex: "\\geq"
+          latex: "\\geq",
         },
         {
-          latex: "\\wedge"
+          latex: "\\wedge",
         },
         {
-          latex: "\\vee"
+          latex: "\\vee",
         },
         {
-          latex: "\\gg"
+          latex: "\\gg",
         },
         {
-          latex: "\\supset"
+          latex: "\\supset",
         },
         {
-          latex: "\\supseteq"
+          latex: "\\supseteq",
         },
         {
-          latex: "a^b"
+          latex: "a^b",
         },
         {
-          latex: "\\lt"
+          latex: "\\lt",
         },
         {
-          latex: "\\gt"
+          latex: "\\gt",
         },
         {
-          latex: "\\+"
+          latex: "\\+",
         },
         {
-          latex: "\\-"
-        }
+          latex: "\\-",
+        },
       ],
       arrow: [
         {
-          latex: "\\leftarrow"
+          latex: "\\leftarrow",
         },
         {
-          latex: "\\Leftarrow"
+          latex: "\\Leftarrow",
         },
         {
-          latex: "\\rightarrow"
+          latex: "\\rightarrow",
         },
         {
-          latex: "\\Rightarrow"
+          latex: "\\Rightarrow",
         },
         {
-          latex: "\\leftrightarrow"
+          latex: "\\leftrightarrow",
         },
         {
-          latex: "\\Leftrightarrow"
+          latex: "\\Leftrightarrow",
         },
         // {
         //   latex: "\\dashrightarrow"
@@ -302,10 +306,10 @@ angular.module('org.ekstep.mathtext', [])
         //   latex: "\\rightleftharpoons"
         // },
         {
-          latex: "\\rightharpoonup"
+          latex: "\\rightharpoonup",
         },
         {
-          latex: "\\rightharpoondown"
+          latex: "\\rightharpoondown",
         },
         // {
         //   latex: "\\dashleftarrow"
@@ -316,218 +320,219 @@ angular.module('org.ekstep.mathtext', [])
       ],
       misc: [
         {
-          latex: "\\infty"
+          latex: "\\infty",
         },
         {
-          latex: "\\nabla"
+          latex: "\\nabla",
         },
         {
-          latex: "\\partial"
+          latex: "\\partial",
         },
         {
-          latex: "\\angle"
+          latex: "\\angle",
         },
         {
-          latex: "\\measuredangle"
+          latex: "\\measuredangle",
         },
         {
-          latex: "\\triangle"
+          latex: "\\triangle",
         },
         {
-          latex: "\\square"
+          latex: "\\square",
         },
         {
-          latex: "\\overrightarrow{AB}"
+          latex: "\\overrightarrow{AB}",
         },
         {
-          latex: "A^T"
+          latex: "A^T",
         },
         {
-          latex: "A^{-1}"
+          latex: "A^{-1}",
         },
         {
-          latex: "^c"
+          latex: "^c",
         },
         {
-          latex: "^g"
+          latex: "^g",
         },
         {
-          latex: "\\overline{x}"
+          latex: "\\overline{x}",
         },
         {
-          latex: "\\vec{x}"
+          latex: "\\vec{x}",
         },
         {
-          latex: "\\hat{x}"
-        }
-      ]
+          latex: "\\hat{x}",
+        },
+      ],
     };
-    $scope.symbolGroup = 'all';
+    $scope.symbolGroup = "all";
     $scope.equations = {
       trig: [
         {
-          latex: "\\sin\\theta"
+          latex: "\\sin\\theta",
         },
         {
-          latex: "\\cos\\theta"
+          latex: "\\cos\\theta",
         },
         {
-          latex: "\\sec\\theta"
+          latex: "\\sec\\theta",
         },
         {
-          latex: "\\csc\\theta"
+          latex: "\\csc\\theta",
         },
         {
-          latex: "\\tan\\theta"
+          latex: "\\tan\\theta",
         },
         {
-          latex: "\\cot\\theta"
+          latex: "\\cot\\theta",
         },
         {
           latex: "\\log_{}\\left(\\right)",
-          latexDisplay: "\\log_{b}a"
+          latexDisplay: "\\log_{b}a",
         },
         {
-          latex: "\\lg"
+          latex: "\\lg",
         },
         {
-          latex: "\\ln"
+          latex: "\\ln",
         },
         {
           latex: "\\lim_{x\\to\\infty}\\left(\\right)",
-          latexDisplay: "lim"
+          latexDisplay: "lim",
         },
         {
-          latex: "\\dim"
+          latex: "\\dim",
         },
         {
-          latex: "y^{(n)}"
+          latex: "y^{(n)}",
         },
         {
-          latex: "\\frac{dy}{dx}"
+          latex: "\\frac{dy}{dx}",
         },
         {
-          latex: "\\frac{d^2y}{dx^2}"
+          latex: "\\frac{d^2y}{dx^2}",
         },
         {
-          latex: "\\frac{d^ny}{dx^n}"
+          latex: "\\frac{d^ny}{dx^n}",
         },
         {
-          latex: "\\frac{\\partial f(x,y)}{\\partial x}"
+          latex: "\\frac{\\partial f(x,y)}{\\partial x}",
         },
         {
-          latex: "\\int "
+          latex: "\\int ",
         },
         {
-          latex: "\\int _{ }^{ }"
+          latex: "\\int _{ }^{ }",
         },
         {
-          latex: "\\oint"
-        }
+          latex: "\\oint",
+        },
       ],
       supsub: [
         {
           latex: "x^2",
-          latexDisplay: "x^2"
+          latexDisplay: "x^2",
         },
         {
           latex: "e^{ }",
-          latexDisplay: "e^{\\square}"
+          latexDisplay: "e^{\\square}",
         },
         {
           latex: "{ }^{ }",
-          latexDisplay: "\\square^\\square"
+          latexDisplay: "\\square^\\square",
         },
         {
           latex: "x_2",
-          latexDisplay: "x_2"
+          latexDisplay: "x_2",
         },
         {
           latex: "{ }_{ }",
-          latexDisplay: "\\square_\\square"
-        }
+          latexDisplay: "\\square_\\square",
+        },
       ],
       root: [
         {
           latexCmd: "\\sqrt",
-          latexDisplay: "\\sqrt{\\square}"
+          latexDisplay: "\\sqrt{\\square}",
         },
         {
           latexCmd: "\\nthroot",
-          latexDisplay: "\\sqrt[\\square]{\\square}"
+          latexDisplay: "\\sqrt[\\square]{\\square}",
         },
         {
           latex: "\\sqrt[3]{}",
-          latexDisplay: "\\sqrt[3]{a}"
+          latexDisplay: "\\sqrt[3]{a}",
         },
         {
           latex: "\\sqrt[4]{}",
-          latexDisplay: "\\sqrt[4]{a}"
-        }
+          latexDisplay: "\\sqrt[4]{a}",
+        },
       ],
       frac: [
         {
           latex: "\\frac{ }{ }",
-          latexDisplay: "\\frac{\\square}{\\square}"
-        }
+          latexDisplay: "\\frac{\\square}{\\square}",
+        },
       ],
       misc: [
         {
           latex: "\\sigma^2",
-          latexDisplay: "\\sigma^2"
+          latexDisplay: "\\sigma^2",
         },
         {
           latex: "\\sigma_X",
-          latexDisplay: "\\sigma_X"
+          latexDisplay: "\\sigma_X",
         },
         {
           latex: "\\rho_{X,Y}",
-          latexDisplay: "\\rho_{X,Y}"
+          latexDisplay: "\\rho_{X,Y}",
         },
         {
           latex: "_n P^k",
-          latexDisplay: "_n P^k"
+          latexDisplay: "_n P^k",
         },
         {
           latex: "_n C^k",
-          latexDisplay: "_n C^k"
+          latexDisplay: "_n C^k",
         },
         {
-          latex: "\\binom{n}{k}"
-        }
-      ]
+          latex: "\\binom{n}{k}",
+        },
+      ],
     };
     $scope.advancedSymbols = [
       {
-        latexText: "\\begin{vmatrix} a&b\\\\ c&d\\\\ \\end{vmatrix}"
+        latexText: "\\begin{vmatrix} a&b\\\\ c&d\\\\ \\end{vmatrix}",
       },
       {
-        latexText: "\\begin{matrix} a&b\\\\ c&d\\\\ \\end{matrix}"
+        latexText: "\\begin{matrix} a&b\\\\ c&d\\\\ \\end{matrix}",
       },
       {
-        latexText: "\\begin{bmatrix} a&b\\\\ c&d\\\\ \\end{bmatrix}"
+        latexText: "\\begin{bmatrix} a&b\\\\ c&d\\\\ \\end{bmatrix}",
       },
       {
-        latexText: "\\xrightarrow{\\Delta}"
+        latexText: "\\xrightarrow{\\Delta}",
       },
       {
-        latexText: "\\sphericalangle"
+        latexText: "\\sphericalangle",
       },
       {
         latexText: "\\xleftrightharpoons{abc}",
-        customImage: 'assets/equilibrium.png'
+        customImage: "assets/equilibrium.png",
       },
       {
-        latexText: "\\leftrightarrows"
+        latexText: "\\leftrightarrows",
       },
       {
-        latexText: "\\widetilde{a}"
+        latexText: "\\widetilde{a}",
       },
       {
         latexText: "\\overgroup{AB}",
-        customImage: 'assets/arc.png'
-      }];
-    $scope.equationGroup = 'all';
+        customImage: "assets/arc.png",
+      },
+    ];
+    $scope.equationGroup = "all";
     $scope.advanceField = false;
     $scope.advancedImageArray = [];
     var MQ = MathQuill.getInterface(2); // eslint-disable-line no-undef
@@ -560,31 +565,42 @@ angular.module('org.ekstep.mathtext', [])
       });
     });
 
-    _.each($scope.advancedSymbols, function(value,key){
+    _.each($scope.advancedSymbols, function (value, key) {
       var url;
-      if(value.customImage){
-        url = ecEditor.resolvePluginResource(instance.manifest.id, instance.manifest.ver, value.customImage);
-      }else{
-        url = "https://latex.codecogs.com/gif.latex?" + encodeURIComponent(value.latexText);
-      } 
+      if (value.customImage) {
+        url = ecEditor.resolvePluginResource(
+          instance.manifest.id,
+          instance.manifest.ver,
+          value.customImage
+        );
+      } else {
+        url =
+          "https://latex.codecogs.com/gif.latex?" +
+          encodeURIComponent(value.latexText);
+      }
       $scope.advancedImageArray.push(url);
-    })
+    });
 
-    $scope.generateImpression = function(data) {
-      if (data){
-        ecEditor.getService('telemetry').impression({
-          "type": data.type,
-          "subtype": data.subtype || "",
-          "pageid": data.pageid || "",
-          "uri": window.location.href,
-          "visits": [],
-          "duration": (new Date()) - $scope.pluginLoadStartTime
+    $scope.generateImpression = function (data) {
+      if (data) {
+        ecEditor.getService("telemetry").impression({
+          type: data.type,
+          subtype: data.subtype || "",
+          pageid: data.pageid || "",
+          uri: window.location.href,
+          visits: [],
+          duration: new Date() - $scope.pluginLoadStartTime,
         });
       }
-    }
+    };
 
     $scope.mergeAllSymbols = function () {
-      return _.union($scope.symbols.greek, $scope.symbols.binary, $scope.symbols.arrow, $scope.symbols.misc);
+      return _.union(
+        $scope.symbols.greek,
+        $scope.symbols.binary,
+        $scope.symbols.arrow,
+        $scope.symbols.misc
+      );
     };
 
     $scope.symbolsDropDown = $scope.mergeAllSymbols();
@@ -593,78 +609,93 @@ angular.module('org.ekstep.mathtext', [])
 
     $scope.instance = instance;
 
-    $scope.$on('ngDialog.opened', function (e, $dialog) {
+    $scope.$on("ngDialog.opened", function (e, $dialog) {
       var currentScope = e.currentScope;
-      if (currentScope.instance.mode === currentScope.instance.modes.integration) {
+      if (
+        currentScope.instance.mode === currentScope.instance.modes.integration
+      ) {
         if (currentScope.instance.textSelected) {
           $timeout(function () {
             $scope.advanceField = currentScope.instance.advance;
             $scope.selectedText = currentScope.instance.textSelected;
-            $scope.latexToEquations({latex: currentScope.instance.latex,advance:currentScope.instance.advance});
+            $scope.latexToEquations({
+              latex: currentScope.instance.latex,
+              advance: currentScope.instance.advance,
+            });
           }, 500);
         }
       } else {
         $scope.selectedText = false;
         var textObj = ecEditor.getCurrentObject();
-        if (currentScope.ngDialogData && currentScope.ngDialogData.textSelected && textObj) {
+        if (
+          currentScope.ngDialogData &&
+          currentScope.ngDialogData.textSelected &&
+          textObj
+        ) {
           $scope.selectedText = true;
           $timeout(function () {
             $scope.advanceField = textObj.config.advance;
-            $scope.latexToEquations({latex: textObj.config.latex,advance:textObj.config.advance});
+            $scope.latexToEquations({
+              latex: textObj.config.latex,
+              advance: textObj.config.advance,
+            });
           }, 500);
         }
       }
       $scope.instanceId = currentScope.ngDialogData.instanceId;
       $timeout(function () {
-        $('.mq-render').each(function (index, element) {
+        $(".mq-render").each(function (index, element) {
           MQ.StaticMath(element);
         });
-      /**
-       * @description 
-       * - Responsible for returning the range of Cursor from selection Start
-       *   to End through MOUSE EVENT.
-       * - Click event has more priority than select event.
-       */
-      ecEditor.jQuery( '#advInput' ).select(function(selectTextEvent) {
-          $scope.selectionEnd= selectTextEvent.target.selectionEnd
-          $scope.selectionStart= selectTextEvent.target.selectionStart
-       });
-       ecEditor.jQuery( '#advInput' ).on('click',function() {
-         $scope.selectionStart = $scope.selectionEnd = undefined;
-       }); 
+        /**
+         * @description
+         * - Responsible for returning the range of Cursor from selection Start
+         *   to End through MOUSE EVENT.
+         * - Click event has more priority than select event.
+         */
+        ecEditor.jQuery("#advInput").select(function (selectTextEvent) {
+          $scope.selectionEnd = selectTextEvent.target.selectionEnd;
+          $scope.selectionStart = selectTextEvent.target.selectionStart;
+        });
+        ecEditor.jQuery("#advInput").on("click", function () {
+          $scope.selectionStart = $scope.selectionEnd = undefined;
+        });
       }, 1000);
-      $scope.generateImpression({ type: 'view', subtype: 'popup-open', pageid: 'MathText' });
+      $scope.generateImpression({
+        type: "view",
+        subtype: "popup-open",
+        pageid: "MathText",
+      });
     });
 
     $timeout(function () {
-      $('.menu .item').tab({
+      $(".menu .item").tab({
         onVisible: function (e) {
-          if(e == 'advanced'){
+          if (e == "advanced") {
             $scope.advanceField = true;
             $scope.text_hint = false;
-          }else{
+          } else {
             $scope.text_hint = true;
           }
           // before tab swiched
-          if(e != 'advanced' && $scope.activeTab == 'advanced'){
+          if (e != "advanced" && $scope.activeTab == "advanced") {
             $scope.advanceField = false;
             $scope.$safeApply();
             var latexVal = $scope.latexValue;
-            mathField.latex('');
+            mathField.latex("");
             mathField.write(latexVal);
-            if(_.isEmpty(mathField.latex())){
-              $scope.latexValue = latexVal;              
+            if (_.isEmpty(mathField.latex())) {
+              $scope.latexValue = latexVal;
               $scope.advanceField = true;
-            }
-            else{
+            } else {
               $scope.advanceField = false;
             }
           }
           $scope.activeTab = e;
           $scope.$safeApply();
-         }
+        },
       });
-      $('.ui.dropdown.latex-dropdown').dropdown({
+      $(".ui.dropdown.latex-dropdown").dropdown({
         onChange: function (val, text, $choice) {
           $scope.latexDropDown = $scope.latexDivision;
           if (val != "all") {
@@ -672,9 +703,9 @@ angular.module('org.ekstep.mathtext', [])
             $scope.latexDropDown[text] = $scope.latexDivision[text];
           }
           $scope.$safeApply();
-        }
+        },
       });
-      $('.ui.dropdown.equations-dropdown').dropdown({
+      $(".ui.dropdown.equations-dropdown").dropdown({
         onChange: function (val, text, $choice) {
           $scope.equationsDropDown = $scope.equationsDivision;
           if (val != "all") {
@@ -682,9 +713,9 @@ angular.module('org.ekstep.mathtext', [])
             $scope.equationsDropDown[text] = $scope.equationsDivision[text];
           }
           $scope.$safeApply();
-        }
+        },
       });
-      $('.ui.dropdown.symbols-dropdown').dropdown({
+      $(".ui.dropdown.symbols-dropdown").dropdown({
         onChange: function (val, text, $choice) {
           $scope.symbolsDropDown = $scope.mergeAllSymbols();
           if (val != "all") {
@@ -692,14 +723,14 @@ angular.module('org.ekstep.mathtext', [])
             $scope.symbolsDropDown[text] = $scope.symbolsDivision[text];
           }
           $scope.$safeApply();
-        }
+        },
       });
     }, 1000);
 
     $timeout(function () {
-      var mathFieldSpan = document.getElementById('math-field');
-      latexSpan = document.getElementById('latex');
-      hiddenSpanArea = document.getElementById('hiddenSpan');
+      var mathFieldSpan = document.getElementById("math-field");
+      latexSpan = document.getElementById("latex");
+      hiddenSpanArea = document.getElementById("hiddenSpan");
       mathField = MQ.MathField(mathFieldSpan, {
         spaceBehavesLikeTab: true,
         handlers: {
@@ -707,17 +738,19 @@ angular.module('org.ekstep.mathtext', [])
             latexSpan.textContent = mathField.latex();
             $scope.latexValue = latexSpan.textContent;
             $scope.valid = true;
-          }
-        }
+          },
+        },
       });
       window.mathField = mathField;
       $(mathFieldSpan).keydown(function (e) {
-        if (e.keyCode == 86 || e.keycode == 13) { //keycode value for "v"
+        if (e.keyCode == 86 || e.keycode == 13) {
+          //keycode value for "v"
           $timeout(function () {
-            if (!$scope.valid) { // checks if the pasted value is not valid
+            if (!$scope.valid) {
+              // checks if the pasted value is not valid
               ecEditor.dispatchEvent("org.ekstep.toaster:error", {
-                title: 'Incorrect formula entered.',
-                position: 'topCenter',
+                title: "Incorrect formula entered.",
+                position: "topCenter",
               });
             }
             $scope.valid = false;
@@ -727,105 +760,118 @@ angular.module('org.ekstep.mathtext', [])
     }, 300);
 
     $scope.latexToEquations = function (object, callbackFn) {
-      var cursorPosition = !_.isUndefined($scope.cursorPosition) ? $scope.cursorPosition : $scope.latexValue.length;
-      if($scope.advanceField){
-        if(object.latexCmd) {
-          $scope.latexValue = $scope.latexValue.substr(0, cursorPosition) + object.latexValue + $scope.latexValue.substr(cursorPosition);
-        } else if(object.latex){
-          $scope.latexValue = $scope.latexValue.substr(0, cursorPosition) + object.latex + $scope.latexValue.substr(cursorPosition);
-        } else{
-          $scope.latexValue = $scope.latexValue.substr(0, cursorPosition) + object.latexText + $scope.latexValue.substr(cursorPosition);
+      var cursorPosition = !_.isUndefined($scope.cursorPosition)
+        ? $scope.cursorPosition
+        : $scope.latexValue.length;
+      if ($scope.advanceField) {
+        if (object.latexCmd) {
+          $scope.latexValue =
+            $scope.latexValue.substr(0, cursorPosition) +
+            object.latexValue +
+            $scope.latexValue.substr(cursorPosition);
+        } else if (object.latex) {
+          $scope.latexValue =
+            $scope.latexValue.substr(0, cursorPosition) +
+            object.latex +
+            $scope.latexValue.substr(cursorPosition);
+        } else {
+          $scope.latexValue =
+            $scope.latexValue.substr(0, cursorPosition) +
+            object.latexText +
+            $scope.latexValue.substr(cursorPosition);
         }
-      }
-      else{
-        if(object.latexCmd) {
+      } else {
+        if (object.latexCmd) {
           mathField.cmd(object.latexCmd);
-        } else if(object.latex){
+        } else if (object.latex) {
           mathField.write(object.latex);
-        } else{
-          $scope.latexValue = $scope.latexValue.substr(0, cursorPosition)  + object.latexText + $scope.latexValue.substr(cursorPosition);
+        } else {
+          $scope.latexValue =
+            $scope.latexValue.substr(0, cursorPosition) +
+            object.latexText +
+            $scope.latexValue.substr(cursorPosition);
         }
       }
     };
 
     $scope.latexToFormula = function (id, latex) {
       var mathDiv = document.getElementById(id);
-      katex.render(latex, mathDiv, {displayMode: true}); // eslint-disable-line no-undef
+      katex.render(latex, mathDiv, { displayMode: true }); // eslint-disable-line no-undef
     };
 
     // Some latex are not rendered correctly by katex. Use mathquill in those cases.
-    $scope.latexToFormulaMQ = function(id) {
+    $scope.latexToFormulaMQ = function (id) {
       var field = document.getElementById(id);
       MQ.StaticMath(field);
     };
 
-    $scope.extractHTML = function(htmlElement) {
-      var divElement= document.createElement('div');
-      divElement.innerHTML= htmlElement;
+    $scope.extractHTML = function (htmlElement) {
+      var divElement = document.createElement("div");
+      divElement.innerHTML = htmlElement;
       return divElement.textContent || divElement.innerText;
-    }
+    };
 
-    $scope.getCursorPosition = function(e){
+    $scope.getCursorPosition = function (e) {
       var currentPosition = e.target.selectionEnd;
-      if(!_.isUndefined($scope.selectionStart)){
-        $scope.cursorPosition = $scope.selectionStart ;
-      }else{
-        if(e.which == 8 && currentPosition > 0 ){
-          $scope.cursorPosition = currentPosition -1;
-        }else{
+      if (!_.isUndefined($scope.selectionStart)) {
+        $scope.cursorPosition = $scope.selectionStart;
+      } else {
+        if (e.which == 8 && currentPosition > 0) {
+          $scope.cursorPosition = currentPosition - 1;
+        } else {
           $scope.cursorPosition = currentPosition;
-        } 
+        }
       }
     };
 
     $scope.addToStage = function (activeTab) {
-      var equation,advance;
-      if(!$scope.advanceField){
-        var htmlElement = document.getElementById('latex').innerHTML;
+      var equation, advance;
+      if (!$scope.advanceField) {
+        var htmlElement = document.getElementById("latex").innerHTML;
         equation = $scope.extractHTML(htmlElement);
         advance = false;
-
-      }
-      else {
+      } else {
         equation = $scope.latexValue;
         advance = true;
       }
       if (instance.mode === instance.modes.integration) {
-        var mathtextObj = {"latex": equation,
-                           "editMode": instance.textSelected,
-                           "advance" : advance
-                          };
+        var mathtextObj = {
+          latex: equation,
+          editMode: instance.textSelected,
+          advance: advance,
+        };
         instance.callbackFn(mathtextObj);
       } else {
         // Convert the latex or mathquill to equation
         // add it to the stage
         if ($scope.selectedText && $scope.instanceId) {
-          ecEditor.dispatchEvent('org.ekstep.mathtext:edit', {
+          ecEditor.dispatchEvent("org.ekstep.mathtext:edit", {
             instanceId: $scope.instanceId,
             latex: equation,
-            advance: advance
+            advance: advance,
           });
         } else {
-          ecEditor.dispatchEvent('org.ekstep.mathtext:create', {
-            "latex": equation,
-            "advance": advance,
-            "type": "rect",
-            "x": 10,
-            "y": 20,
-            "fill": "rgba(0, 0, 0, 0)",
-            "opacity": 1,
-            "fontFamily": 'NotoSans',
-            "fontSize": 18,
-            "backgroundcolor": "#fff"
+          ecEditor.dispatchEvent("org.ekstep.mathtext:create", {
+            latex: equation,
+            advance: advance,
+            type: "rect",
+            x: 10,
+            y: 20,
+            fill: "rgba(0, 0, 0, 0)",
+            opacity: 1,
+            fontFamily: "NotoSans",
+            fontSize: 18,
+            backgroundcolor: "#fff",
           });
         }
       }
-      ecEditor.dispatchEvent('org.ekstep.mathtext:addEquation', {
+      ecEditor.dispatchEvent("org.ekstep.mathtext:addEquation", {
         latex: equation,
-        advance: advance
+        advance: advance,
       });
       $scope.closeThisDialog();
-    }
-  }]);
+    };
+  },
+]);
 
 //# sourceURL=mathText.js

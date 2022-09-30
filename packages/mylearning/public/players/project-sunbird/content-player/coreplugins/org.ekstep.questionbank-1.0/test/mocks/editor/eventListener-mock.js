@@ -1,13 +1,14 @@
-windowmock.open = function(url, target, settings) { // eslint-disable-line no-undef
+windowmock.open = function (url, target, settings) {
+  // eslint-disable-line no-undef
   return {
-    addEventListener: function(event, callback) {
-      if (event == 'loadstart') {
+    addEventListener: function (event, callback) {
+      if (event == "loadstart") {
         callback({
-          url: 'URL',
+          url: "URL",
           originalEvent: {},
         });
       }
     },
-    close: function() {}
-  }
-}
+    close: function () {},
+  };
+};

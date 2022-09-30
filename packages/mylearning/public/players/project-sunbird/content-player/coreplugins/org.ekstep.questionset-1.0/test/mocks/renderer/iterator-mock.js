@@ -1,19 +1,21 @@
 var IteratorPlugin = Plugin.extend({
-  _type: 'org.ekstep.iterator',
+  _type: "org.ekstep.iterator",
   _isContainer: false,
   _render: true,
   _itemIndex: -1,
-  initialize: function() {
+  initialize: function () {},
+  registerNavigation: function (PluginInstance) {
+    EkstepRendererAPI.dispatchEvent(
+      "renderer:navigation:register",
+      PluginInstance
+    );
   },
-  registerNavigation: function(PluginInstance) {
-    EkstepRendererAPI.dispatchEvent('renderer:navigation:register', PluginInstance);
+  deregisterNavigation: function (PluginInstance) {
+    EkstepRendererAPI.dispatchEvent(
+      "renderer:navigation:deregister",
+      PluginInstance
+    );
   },
-  deregisterNavigation: function(PluginInstance) {
-    EkstepRendererAPI.dispatchEvent('renderer:navigation:deregister', PluginInstance);
-  },
-  handleNext: function() {
-
-  },
-  handlePrevious: function() {
-  }
+  handleNext: function () {},
+  handlePrevious: function () {},
 });

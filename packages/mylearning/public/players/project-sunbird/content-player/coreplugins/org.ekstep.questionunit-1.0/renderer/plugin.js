@@ -1,11 +1,11 @@
 org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
-  _type: 'org.ekstep.questionUnitPlugin',
+  _type: "org.ekstep.questionUnitPlugin",
   _render: true,
   _question: {
     template: undefined,
     data: {},
     config: {},
-    state: undefined
+    state: undefined,
   },
   /**
    * Initialize the plugin
@@ -14,17 +14,46 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * @listens module:org.ekstep.contentrenderer.questionUnitPlugin~org.ekstep.questionunit:evaluate
    * @param {object} data Plugin data
    */
-  initialize: function (data) { // eslint-disable-line no-unused-vars
-    EkstepRendererAPI.addEventListener(this._manifest.id + ":show", this.showQuestion, this);
-    EkstepRendererAPI.addEventListener(this._manifest.id + ":hide", this.hideQuestion, this);
-    EkstepRendererAPI.addEventListener(this._manifest.id + ":evaluate", this.evaluateQuestion, this);
-    EkstepRendererAPI.addEventListener(this._manifest.id + ":rendermath", this.renderMath, this);
+  initialize: function (data) {
+    // eslint-disable-line no-unused-vars
+    EkstepRendererAPI.addEventListener(
+      this._manifest.id + ":show",
+      this.showQuestion,
+      this
+    );
+    EkstepRendererAPI.addEventListener(
+      this._manifest.id + ":hide",
+      this.hideQuestion,
+      this
+    );
+    EkstepRendererAPI.addEventListener(
+      this._manifest.id + ":evaluate",
+      this.evaluateQuestion,
+      this
+    );
+    EkstepRendererAPI.addEventListener(
+      this._manifest.id + ":rendermath",
+      this.renderMath,
+      this
+    );
     //Currently this plugin is regiesters twice upon rendering, Yet to find what's the issue, registering two event listerns with same function creating problems <Sivashanmugam kannan>
     if (!EventBus.listeners["org.ekstep.questionunit:playaudio"]) {
-      EkstepRendererAPI.addEventListener('org.ekstep.questionunit' + ":playaudio", this.handlePlayAudio, this);
+      EkstepRendererAPI.addEventListener(
+        "org.ekstep.questionunit" + ":playaudio",
+        this.handlePlayAudio,
+        this
+      );
     }
-    EkstepRendererAPI.addEventListener('org.ekstep.questionunit' + ":loadimagefromurl", this.handleLoadImageFromUrl, this);
-    EkstepRendererAPI.addEventListener('org.ekstep.questionunit' + ":loadAssetUrl", this.handleGetAssetUrl, this);
+    EkstepRendererAPI.addEventListener(
+      "org.ekstep.questionunit" + ":loadimagefromurl",
+      this.handleLoadImageFromUrl,
+      this
+    );
+    EkstepRendererAPI.addEventListener(
+      "org.ekstep.questionunit" + ":loadAssetUrl",
+      this.handleGetAssetUrl,
+      this
+    );
   },
   /**
    * Listener for ':show' event.
@@ -35,9 +64,11 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
 
     var template = _.template(this._question.template);
     var questionsetInstance = event.target;
-    $(questionsetInstance._constants.qsElement).html(template({
-      question: this._question
-    }));
+    $(questionsetInstance._constants.qsElement).html(
+      template({
+        question: this._question,
+      })
+    );
 
     this.postQuestionShow(event);
 
@@ -52,10 +83,14 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
     this.setQuestionTemplate();
 
     var questionsetInstance = event.target;
-    var qData = questionsetInstance._currentQuestion.data.__cdata || questionsetInstance._currentQuestion.data;
+    var qData =
+      questionsetInstance._currentQuestion.data.__cdata ||
+      questionsetInstance._currentQuestion.data;
     this.setQuestionData(JSON.parse(qData));
 
-    var qConfig = questionsetInstance._currentQuestion.config.__cdata || questionsetInstance._currentQuestion.config;
+    var qConfig =
+      questionsetInstance._currentQuestion.config.__cdata ||
+      questionsetInstance._currentQuestion.config;
     this.setQuestionConfig(JSON.parse(qConfig));
 
     var qState = questionsetInstance._currentQuestionState;
@@ -66,7 +101,8 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * This method may be overridden if HTML actions needs to be binded or for state management
    * @param {object} event
    */
-  postQuestionShow: function (currentquesObj) { // eslint-disable-line no-unused-vars
+  postQuestionShow: function (currentquesObj) {
+    // eslint-disable-line no-unused-vars
     // overridden by MCQ or FTB or MTF if additional actions have to be handled.
   },
   hideQuestion: function (event) {
@@ -83,7 +119,8 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
   postHideQuestion: function () {
     // overridden by MCQ or FTB or MTF if additional events has to be removed.
   },
-  evaluateQuestion: function (event) { // eslint-disable-line no-unused-vars
+  evaluateQuestion: function (event) {
+    // eslint-disable-line no-unused-vars
     // overridden by MCQ or FTB or MTF for the evaluation of question.
   },
   /**
@@ -93,7 +130,10 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    */
   saveQuestionState: function (state) {
     this.setQuestionState(state);
-    EkstepRendererAPI.dispatchEvent('org.ekstep.questionset:saveQuestionState', state);
+    EkstepRendererAPI.dispatchEvent(
+      "org.ekstep.questionset:saveQuestionState",
+      state
+    );
   },
   /**
    * Set the HTML template needed for rendering the question.
@@ -102,7 +142,7 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
   setQuestionTemplate: function () {
     // Override Usage:
     // this._question.template = "<html string>";
-    console.error('Template not set for question.');
+    console.error("Template not set for question.");
   },
   /**
    * Get the HTML Template for the question
@@ -157,14 +197,15 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * @returns {String} url.
    */
   getAssetUrl: function (url) {
-    if (isbrowserpreview) { // eslint-disable-line no-undef
+    if (isbrowserpreview) {
+      // eslint-disable-line no-undef
       return url;
     } else {
-      return 'file:///' + EkstepRendererAPI.getBaseURL() + url;
+      return "file:///" + EkstepRendererAPI.getBaseURL() + url;
     }
   },
   handlePlayAudio: function (eventData) {
-    this.playAudio(eventData.target)
+    this.playAudio(eventData.target);
   },
   /**
    * play audio based on the assetObj Options
@@ -173,10 +214,8 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * @example playAudio(src: "/assets/public/content/rani1_1466755651199.mp3", loop: true)
    */
   playAudio: function (assetObj) {
-    if (assetObj.loop)
-      HTMLAudioPlayer.loop(this.getAssetUrl(assetObj.src));
-    else
-      HTMLAudioPlayer.togglePlay(this.getAssetUrl(assetObj.src));
+    if (assetObj.loop) HTMLAudioPlayer.loop(this.getAssetUrl(assetObj.src));
+    else HTMLAudioPlayer.togglePlay(this.getAssetUrl(assetObj.src));
   },
   /**
    * pauses audio
@@ -211,12 +250,20 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * @param {target:String} eventData
    */
   handleLoadImageFromUrl: function (eventData) {
-    var src = this.getIcon(eventData.target.path, eventData.target.pluginId, eventData.target.pluginVer);
-    eventData.target.element.attr('src', src);
+    var src = this.getIcon(
+      eventData.target.path,
+      eventData.target.pluginId,
+      eventData.target.pluginVer
+    );
+    eventData.target.element.attr("src", src);
   },
   handleGetAssetUrl: function (eventData) {
-    var src = this.getAssetUrl(eventData.target.path, eventData.target.pluginId, eventData.target.pluginVer);
-    eventData.target.element.attr('src', src);
+    var src = this.getAssetUrl(
+      eventData.target.path,
+      eventData.target.pluginId,
+      eventData.target.pluginVer
+    );
+    eventData.target.element.attr("src", src);
   },
   /**
    * returns icon url
@@ -225,10 +272,26 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * getIcon('renderer/assets/icon.png')
    */
   getIcon: function (path, pluginId, pluginVer) {
-    if (isbrowserpreview) { // eslint-disable-line no-undef
-      return this.getAssetUrl(org.ekstep.pluginframework.pluginManager.resolvePluginResource(pluginId, pluginVer, path));
+    if (isbrowserpreview) {
+      // eslint-disable-line no-undef
+      return this.getAssetUrl(
+        org.ekstep.pluginframework.pluginManager.resolvePluginResource(
+          pluginId,
+          pluginVer,
+          path
+        )
+      );
     } else {
-      return 'file:///' + EkstepRendererAPI.getBaseURL() + 'content-plugins/' + pluginId + '-' + pluginVer + '/' + path;
+      return (
+        "file:///" +
+        EkstepRendererAPI.getBaseURL() +
+        "content-plugins/" +
+        pluginId +
+        "-" +
+        pluginVer +
+        "/" +
+        path
+      );
     }
   },
   /**
@@ -236,19 +299,35 @@ org.ekstep.contentrenderer.questionUnitPlugin = Plugin.extend({
    * getAudioIcon('renderer/assets/icon.png')
    */
   getAudioIcon: function (path) {
-    if (isbrowserpreview) { // eslint-disable-line no-undef
-      return this.getAssetUrl(org.ekstep.pluginframework.pluginManager.resolvePluginResource(this._manifest.id, this._manifest.ver, path));
+    if (isbrowserpreview) {
+      // eslint-disable-line no-undef
+      return this.getAssetUrl(
+        org.ekstep.pluginframework.pluginManager.resolvePluginResource(
+          this._manifest.id,
+          this._manifest.ver,
+          path
+        )
+      );
     } else {
-      return 'file:///' + EkstepRendererAPI.getBaseURL() + 'content-plugins/' + this._manifest.id + '-' + this._manifest.ver + '/' + path;
+      return (
+        "file:///" +
+        EkstepRendererAPI.getBaseURL() +
+        "content-plugins/" +
+        this._manifest.id +
+        "-" +
+        this._manifest.ver +
+        "/" +
+        path
+      );
     }
   },
   renderMath: function (event) {
-    jQuery('.math-text').each(function (index, element) {
-      var mathText = element.getAttribute('data-math');
+    jQuery(".math-text").each(function (index, element) {
+      var mathText = element.getAttribute("data-math");
       katex.render(mathText, jQuery(element)[0], {
-        displayMode: true
+        displayMode: true,
       });
     });
-  }
+  },
 });
 //# sourceURL=questionUnitRenderer.js

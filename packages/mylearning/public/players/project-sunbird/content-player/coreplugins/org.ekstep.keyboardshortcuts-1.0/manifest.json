@@ -1,12 +1,11 @@
 {
-    "id": "org.ekstep.keyboardshortcuts",
-    "ver": "1.0",
-    "author": "Akash Gupta",
-    "editor": {
-        "main": "editor/plugin.js",
-        "views":[
-            {"template":"./templates/shortcutspopup.html", "controller":""}
-        ]
-
-    }
+  "id": "org.ekstep.keyboardshortcuts",
+  "ver": "1.0",
+  "author": "Akash Gupta",
+  "editor": {
+    "main": "editor/plugin.js",
+    "views": [
+      { "template": "./templates/shortcutspopup.html", "controller": "" }
+    ]
+  }
 }

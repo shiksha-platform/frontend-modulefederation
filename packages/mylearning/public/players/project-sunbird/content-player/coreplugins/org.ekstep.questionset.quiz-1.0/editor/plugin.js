@@ -6,11 +6,11 @@
  * @author Jagadish Pujari <jagadish.pujari@tarento.com>
  */
 org.ekstep.questionsetQuiz = {};
-org.ekstep.questionsetQuiz.EditorPlugin = org.ekstep.contenteditor.basePlugin.extend({
-
-  /**
-   * @memberOf org.ekstep.questionsetQuiz.EditorPlugin#
-   */
-  initialize: function () {}
-});
+org.ekstep.questionsetQuiz.EditorPlugin =
+  org.ekstep.contenteditor.basePlugin.extend({
+    /**
+     * @memberOf org.ekstep.questionsetQuiz.EditorPlugin#
+     */
+    initialize: function () {},
+  });
 //# sourceURL=questionsetQuizEditorPlugin.js

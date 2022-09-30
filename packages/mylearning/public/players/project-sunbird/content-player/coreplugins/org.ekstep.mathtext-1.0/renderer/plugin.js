@@ -4,10 +4,10 @@
 org.ekstep.mathtext = {};
 
 org.ekstep.mathtext.RendererPlugin = Plugin.extend({
-  _type: 'org.ekstep.mathtext',
+  _type: "org.ekstep.mathtext",
   _isContainer: false,
   _render: true,
-  initPlugin: function(data) {
+  initPlugin: function (data) {
     var pluginData;
 
     if (!_.isUndefined(data.config))
@@ -18,21 +18,23 @@ org.ekstep.mathtext.RendererPlugin = Plugin.extend({
     var mathData = _.clone(this._data);
     mathData.id = pid;
 
-    mathData.__text = (_.isUndefined(pluginData) || _.isUndefined(pluginData.latex)) ? mathData.latex : pluginData.latex;
+    mathData.__text =
+      _.isUndefined(pluginData) || _.isUndefined(pluginData.latex)
+        ? mathData.latex
+        : pluginData.latex;
     var dims = this.relativeDims();
     var div = document.getElementById(data.id);
     if (div) {
       jQuery("#" + data.id).remove();
     }
-    div = document.createElement('div');
-    if (mathData.style)
-      div.setAttribute("style", mathData.style);
+    div = document.createElement("div");
+    if (mathData.style) div.setAttribute("style", mathData.style);
     div.id = mathData.id;
-    div.classList.add('math-text');
-    div.style.width = dims.w + 'px';
-    div.style.height = dims.h + 'px';
-    div.style.position = 'absolute';
-    div.style.fontSize = pluginData.fontSize + 'px';
+    div.classList.add("math-text");
+    div.style.width = dims.w + "px";
+    div.style.height = dims.h + "px";
+    div.style.position = "absolute";
+    div.style.fontSize = pluginData.fontSize + "px";
     div.style.color = mathData.color;
     div.style.backgroundColor = mathData.backgroundcolor;
     div.style.textAlign = mathData.align;
@@ -47,10 +49,10 @@ org.ekstep.mathtext.RendererPlugin = Plugin.extend({
     this._self.x = dims.x;
     this._self.y = dims.y;
   },
-  latexToEquation: function(mathText, id) {
+  latexToEquation: function (mathText, id) {
     var mathDiv = document.getElementById(id);
     katex.render(mathText, mathDiv, { displayMode: true }); // eslint-disable-line no-undef
-  }
+  },
 });
 
 //# sourceURL=mathtextrenderer.js

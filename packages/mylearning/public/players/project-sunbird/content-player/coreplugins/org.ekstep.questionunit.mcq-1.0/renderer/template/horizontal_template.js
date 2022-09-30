@@ -1,6 +1,6 @@
 var MCQController = MCQController || {};
 MCQController.getHorizontalTemplate = function () {
-return "<div class='mcq-horizontal-container'><div class='q-container'>\
+  return "<div class='mcq-horizontal-container'><div class='q-container'>\
   <div class='question'>\
     <% if ( question.data.question.image){ %> \
       <div class='q-media'>\

@@ -1,23 +1,24 @@
 .mediumBorder {
-	border-width: 2px;
+  border-width: 2px;
 }
 .thickBorder {
-	border-width: 5px;
+  border-width: 5px;
 }
-img.thickBorder, img.mediumBorder {
-	border-style: solid;
-	border-color: #CCC;
+img.thickBorder,
+img.mediumBorder {
+  border-style: solid;
+  border-color: #ccc;
 }
 .important.soMuch {
-	margin: 25px;
-	padding: 25px;
-	background: red;
-	border: none;
+  margin: 25px;
+  padding: 25px;
+  background: red;
+  border: none;
 }
 
 span.redMarker {
-	background-color: red;
+  background-color: red;
 }
 .invisible {
-	opacity: 0.1;
+  opacity: 0.1;
 }

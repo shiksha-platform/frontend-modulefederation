@@ -4,7 +4,8 @@ ReorderingController.initTemplate = function (pluginInstance) {
 };
 
 ReorderingController.getQuestionTemplate = function () {
-  return '\
+  return (
+    '\
   <div class="reorder-screen reorder-table plugin-content-container" onselectstart="return false">\
     <div class="reorder-question">' +
     org.ekstep.questionunit.questionComponent.generateQuestionComponent() +
@@ -23,8 +24,9 @@ ReorderingController.getQuestionTemplate = function () {
         </div>\
       </div>\
     </div>\
-  </div>';
-}
+  </div>'
+  );
+};
 
 /**
  * renderer:questionunit.reorder:handle click event on words.
@@ -32,12 +34,12 @@ ReorderingController.getQuestionTemplate = function () {
  * @memberof org.ekstep.questionunit.reorder
  */
 ReorderingController.wordClick = function (id, event) {
-  if (!$("#" + id).hasClass('reorder-active')) {
-    $("#" + id).addClass('reorder-active reorder-remove-shadow');
-    ReorderingController.pluginInstance.onWordSelect($("#" + id).attr('id'));
+  if (!$("#" + id).hasClass("reorder-active")) {
+    $("#" + id).addClass("reorder-active reorder-remove-shadow");
+    ReorderingController.pluginInstance.onWordSelect($("#" + id).attr("id"));
   }
   if (event) {
-    ReorderingController.logTelemetryInteract(event)
+    ReorderingController.logTelemetryInteract(event);
   }
 };
 
@@ -48,18 +50,18 @@ ReorderingController.wordClick = function (id, event) {
  */
 ReorderingController.backspaceClick = function (event) {
   ReorderingController.pluginInstance.onBackspaceClick();
-  ReorderingController.logTelemetryInteract(event)
+  ReorderingController.logTelemetryInteract(event);
 };
 
 /**
- * logs telemetry 
+ * logs telemetry
  * @memberof org.ekstep.questionunit.reorder.ReorderingController
  * @param {Object} event js event object
  */
 ReorderingController.logTelemetryInteract = function (event) {
   QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.TOUCH, {
     type: QSTelemetryLogger.EVENT_TYPES.TOUCH,
-    id: event.target.id
+    id: event.target.id,
   }); // eslint-disable-line no-undef
 };
 

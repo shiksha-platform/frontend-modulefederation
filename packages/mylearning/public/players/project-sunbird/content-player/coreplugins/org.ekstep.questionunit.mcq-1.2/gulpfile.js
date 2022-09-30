@@ -1,1 +1,1 @@
-require('ekstep-content-plugin-dev-common/lib/gulp-tasks')();
+require("ekstep-content-plugin-dev-common/lib/gulp-tasks")();

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /*
 describe('Assessment-browser plugin', function() {
     var $scope,

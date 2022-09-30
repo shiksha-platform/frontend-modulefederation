@@ -1,3 +1,3 @@
 **Content Editor Help**
 
-***Activity Browser plugin***
+**_Activity Browser plugin_**

@@ -2,14 +2,13 @@
  * @class  org.ekstep.navigation.EditorPlugin
  */
 org.ekstep.contenteditor.basePlugin.extend({
-
-    /**
-     * @memberOf org.ekstep.navigation.EditorPlugin#
-     */
-    initialize:function() {
-        var instance = this;
-        ecEditor.addEventListener('content:load:complete', function(event) {
-            /*console.log('adding nav media');
+  /**
+   * @memberOf org.ekstep.navigation.EditorPlugin#
+   */
+  initialize: function () {
+    var instance = this;
+    ecEditor.addEventListener("content:load:complete", function (event) {
+      /*console.log('adding nav media');
             var stage = ecEditor.getCurrentStage();
             var nextImage = {
                 id: "nextImage",
@@ -29,10 +28,10 @@ org.ekstep.contenteditor.basePlugin.extend({
             };
             stage.addMedia(prevImage);
             console.log(prevImage);*/
-            ecEditor.instantiatePlugin(instance.manifest.id, {}, undefined);
-        });
+      ecEditor.instantiatePlugin(instance.manifest.id, {}, undefined);
+    });
 
-        /*// For every new stage create navigation plugin instance.
+    /*// For every new stage create navigation plugin instance.
         ecEditor.addEventListener('stage:add', function(event) {
             ecEditor.instantiatePlugin(instance.manifest.id, {}, ecEditor.getCurrentStage());
         });
@@ -53,10 +52,10 @@ org.ekstep.contenteditor.basePlugin.extend({
                 }
             });
         });*/
-    },
+  },
 
-    newInstance: function() {
-        /*console.log('this', this);
+  newInstance: function () {
+    /*console.log('this', this);
         var nextImage = ecEditor.resolvePluginResource(this.manifest.id, '1.0', 'renderer/assets/next.png');
         this.addMedia({
             id: "nextImage",
@@ -73,7 +72,6 @@ org.ekstep.contenteditor.basePlugin.extend({
             type: "image",
             preload: true
         });*/
-    }
+  },
 });
 //# sourceURL=navigationEditorPlugin.js
-

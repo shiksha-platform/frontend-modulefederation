@@ -1,2 +1,2 @@
-var Converter = require('./src/converter');
+var Converter = require("./src/converter");
 module.exports = Converter;

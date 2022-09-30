@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /*
 describe('org.ekstep.scribblepad', function() {
     var $scope,

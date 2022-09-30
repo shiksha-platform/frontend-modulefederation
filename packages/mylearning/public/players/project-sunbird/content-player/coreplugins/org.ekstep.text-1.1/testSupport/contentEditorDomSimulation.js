@@ -1,3 +1,3 @@
-(function() {
-    $(document.body).append('<canvas id="canvas"></canvas>');
+(function () {
+  $(document.body).append('<canvas id="canvas"></canvas>');
 })();

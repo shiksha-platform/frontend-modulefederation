@@ -1,10 +1,10 @@
 var Keyboard = {
   keyboardVisible: false,
-  targetInput: '',
+  targetInput: "",
   buttons: {},
   keyWidth: 0,
   keyboardCallback: undefined,
-  inputValue: '',
+  inputValue: "",
   inputArray: [],
 };
 Keyboard.constant = {
@@ -14,7 +14,8 @@ Keyboard.constant = {
 Keyboard.initTemplate = function (pluginInstance) {
   Keyboard.pluginInstance = pluginInstance;
 };
-Keyboard.htmlLayout = '<div id = "keyboardDiv">\
+Keyboard.htmlLayout =
+  '<div id = "keyboardDiv">\
     <div class="textBoxArea">\
       <input type="text" id="keyboardInput" class="ansField" placeholder="Enter answer"  onclick="Keyboard.logTelemetryInteract(event);" disabled autofocus />\
     </div>\
@@ -24,14 +25,14 @@ Keyboard.htmlLayout = '<div id = "keyboardDiv">\
             <div id="firstRowAlpha">\
               <% _.each(Keyboard.buttons.firstRow, function(but) { %> \
                 <div onclick="Keyboard.addLetter(event);" class="key_barakhadi" style="width:<%= Keyboard.keyWidth %>%">\
-                  <span><%= but %>\</span>\
+                  <span><%= but %></span>\
                 </div>\
               <% }); %>\
             </div>\
             <div id="secondRowAlpha">\
               <% _.each(Keyboard.buttons.secondRow, function(but) { %> \
                 <div onclick="Keyboard.addLetter(event);" class="key_barakhadi" style="width:<%= Keyboard.keyWidth %>%">\
-                  <span><%= but %>\</span>\
+                  <span><%= but %></span>\
                 </div>\
               <% }); %>\
             </div>\
@@ -99,31 +100,34 @@ Keyboard.htmlLayout = '<div id = "keyboardDiv">\
     </div>\
   </div>';
 
-Keyboard.createKeyboard = function(customButtons) {
-  customButtons = customButtons.replace(/ /g, '');
-  customButtons = customButtons.split(',');
+Keyboard.createKeyboard = function (customButtons) {
+  customButtons = customButtons.replace(/ /g, "");
+  customButtons = customButtons.split(",");
   customButtons = _.uniq(customButtons);
   Keyboard.buttons = customButtons.splice(0, customButtons.length);
   var splitButtonto = parseInt(Keyboard.buttons.length / 2);
   Keyboard.buttons.firstRow = Keyboard.buttons.slice(0, splitButtonto);
-  Keyboard.buttons.secondRow = Keyboard.buttons.slice(splitButtonto, Keyboard.buttons.length);
+  Keyboard.buttons.secondRow = Keyboard.buttons.slice(
+    splitButtonto,
+    Keyboard.buttons.length
+  );
   Keyboard.keyWidth = parseInt(100 / Keyboard.buttons.secondRow.length);
 };
 
-Keyboard.changeToNumeric = function() {
+Keyboard.changeToNumeric = function () {
   $(".parentDivMainKeyboard").hide();
   $("#parentDivNumericKeyboard").show();
 };
 
-Keyboard.changeToAlphabet = function() {
+Keyboard.changeToAlphabet = function () {
   $(".parentDivMainKeyboard").show();
   $("#parentDivNumericKeyboard").hide();
 };
 
-Keyboard.addLetter = function(event) {
+Keyboard.addLetter = function (event) {
   var keyValue = event.target;
   if (!_.isUndefined(Keyboard.inputValue)) {
-    if (keyValue.innerText != '123') {
+    if (keyValue.innerText != "123") {
       Keyboard.inputArray.push(keyValue.innerText);
       Keyboard.inputValue = Keyboard.inputArray.join("");
     }
@@ -132,32 +136,38 @@ Keyboard.addLetter = function(event) {
       Keyboard.inputValue = Keyboard.inputArray.join("");
     }
   } else {
-    if (keyValue.innerText != '123') Keyboard.inputValue = event.target.innerText; // eslint-disable-line no-undef
+    if (keyValue.innerText != "123")
+      Keyboard.inputValue = event.target.innerText; // eslint-disable-line no-undef
   }
   $(Keyboard.constant.keyboardInput).val(Keyboard.inputValue); // eslint-disable-line no-undef
   $(Keyboard.targetInput).val(Keyboard.inputValue); // eslint-disable-line no-undef
 };
 
-Keyboard.deleteText = function() {
+Keyboard.deleteText = function () {
   Keyboard.inputArray.pop(); // eslint-disable-line no-undef
   Keyboard.inputValue = Keyboard.inputArray.join(""); // eslint-disable-line no-undef
   $(Keyboard.constant.keyboardInput).val(Keyboard.inputValue); // eslint-disable-line no-undef
   $(Keyboard.targetInput).val(Keyboard.inputValue); // eslint-disable-line no-undef
 };
-Keyboard.hideKeyboard = function() {
+Keyboard.hideKeyboard = function () {
   $(Keyboard.constant.keyboardElement).hide();
   Keyboard.keyboardCallback(Keyboard.inputValue); // eslint-disable-line no-undef
 };
 
-Keyboard.keyboardShow = function(config) {
+Keyboard.keyboardShow = function (config) {
   $(Keyboard.constant.keyboardElement).show();
-  Keyboard.inputValue = _.isUndefined(config.targetInput.value) ? '' : config.targetInput.value.trim();
+  Keyboard.inputValue = _.isUndefined(config.targetInput.value)
+    ? ""
+    : config.targetInput.value.trim();
   $(Keyboard.constant.keyboardInput).val(Keyboard.inputValue);
   Keyboard.inputArray = Keyboard.inputValue.split("");
   Keyboard.targetInput = config.targetInput; // eslint-disable-line no-undef
 };
 
-Keyboard.logTelemetryInteract = function(event) {
-  QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.TOUCH, { type: QSTelemetryLogger.EVENT_TYPES.TOUCH, id: event.target.id }); // eslint-disable-line no-undef
+Keyboard.logTelemetryInteract = function (event) {
+  QSTelemetryLogger.logEvent(QSTelemetryLogger.EVENT_TYPES.TOUCH, {
+    type: QSTelemetryLogger.EVENT_TYPES.TOUCH,
+    id: event.target.id,
+  }); // eslint-disable-line no-undef
 };
 //# sourceURL=keyboard.js

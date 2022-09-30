@@ -8,30 +8,31 @@
 }
 
 .qs-ftb-container {
-  margin-top:10vh;
+  margin-top: 10vh;
   height: 80vh;
   overflow-y: auto;
 }
 
 .qs-ftb-container::-webkit-scrollbar {
-    width: 0.5em;
+  width: 0.5em;
 }
- 
+
 .qs-ftb-container::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
- 
+
 .qs-ftb-container::-webkit-scrollbar-thumb {
-  background-color: #65A0E6;
+  background-color: #65a0e6;
   outline: 1px solid slategrey;
 }
 
 .qs-ftb-content {
   line-height: 3;
-  margin:5px;
+  margin: 5px;
 }
 
-.qs-ftb-content .urdu-text{ /*overrides default line-height of urdu-text */
+.qs-ftb-content .urdu-text {
+  /*overrides default line-height of urdu-text */
   line-height: 3;
 }
 
@@ -40,26 +41,26 @@
   width: 100%;
 }
 
-.qs-ftb-question .ftb-question-image img{
-  height:100%;
+.qs-ftb-question .ftb-question-image img {
+  height: 100%;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
-#image-model-popup .popup-overlay{
-  opacity:0.8;
+#image-model-popup .popup-overlay {
+  opacity: 0.8;
 }
 /*Pop up */
-#image-model-popup .popup-full-body{
-  width:auto;
-  margin:auto;
+#image-model-popup .popup-full-body {
+  width: auto;
+  margin: auto;
 }
 
 #image-model-popup .assess-popup {
   position: relative;
-  width:fit-content;
-  top:0;
-  left:0; 
-  margin:auto;
+  width: fit-content;
+  top: 0;
+  left: 0;
+  margin: auto;
 }
 
 #image-model-popup img.qc-question-fullimage {
@@ -72,26 +73,26 @@
   right: -15px;
   top: -20px;
   color: white;
-  font-size:20px;
+  font-size: 20px;
 }
 
 .ftb-question-image {
-  float:left;
-  height:17vw;
-  margin-right:10px;
+  float: left;
+  height: 17vw;
+  margin-right: 10px;
 }
 
 .ftb-question-audio {
-  width:5vw;
+  width: 5vw;
   height: 5vw;
-  float:left;
+  float: left;
   margin-right: 10px;
   line-height: 4;
 }
 
-.ftb-question-audio img{
+.ftb-question-audio img {
   max-width: 100%;
-  width:100%;
+  width: 100%;
 }
 
 .ftb-question-text {
@@ -115,7 +116,7 @@ input.ans-field {
   background-color: #f1f1f1;
   display: inline;
   text-align: center;
-  margin:0px 4px;
+  margin: 0px 4px;
   border-radius: 4px;
 }
 
@@ -123,13 +124,13 @@ input.ans-field.highlightInput {
   border: 1px solid blue;
 }
 
-@media (min-width:801px) {
+@media (min-width: 801px) {
   .qs-ftb-container {
     margin-top: 20%;
   }
 }
 
-.image-model-popup{
+.image-model-popup {
   position: fixed;
   left: 0;
   top: 0;

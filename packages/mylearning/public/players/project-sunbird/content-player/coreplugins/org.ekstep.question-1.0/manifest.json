@@ -4,8 +4,7 @@
   "author": "Jagadish",
   "title": "Question Plugin",
   "description": "Plugin to create questions",
-  "editor":
-  {
+  "editor": {
     "main": "editor/plugin.js",
     "dependencies": [
       {
@@ -22,29 +21,28 @@
         "ver": "1.0"
       },
       {
-         "type": "plugin",
+        "type": "plugin",
         "plugin": "org.ekstep.sunbirdmetadata",
         "ver": "1.1"
       }
     ],
     "menu": [],
-    "init-data":{},
-    "configManifest": [
-      {}],
-    "help":
-    {
+    "init-data": {},
+    "configManifest": [{}],
+    "help": {
       "src": "editor/help.md",
       "dataType": "text"
     }
   },
-  "renderer":
-  {
+  "renderer": {
     "main": "renderer/plugin.js",
-    "dependencies": [{
-      "type": "plugin",
-      "plugin": "org.ekstep.questionset.preview",
-      "ver": "1.0"
-    }]
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.questionset.preview",
+        "ver": "1.0"
+      }
+    ]
   },
   "icon": "assets/icon.png",
   "languages": ["English"],

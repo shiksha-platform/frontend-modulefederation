@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 /*
 describe('Config plugin', function() {
     var configPlugin;

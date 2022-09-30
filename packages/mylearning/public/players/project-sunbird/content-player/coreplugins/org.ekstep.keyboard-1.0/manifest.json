@@ -23,14 +23,14 @@
     "main": "renderer/plugin.js",
     "dependencies": [
       {
-            "type": "js",
-            "src": "renderer/keyboard.js",
-            "scope": "renderer"
+        "type": "js",
+        "src": "renderer/keyboard.js",
+        "scope": "renderer"
       },
       {
-            "type": "css",
-            "src": "renderer/style/style.css",
-            "scope": "renderer"
+        "type": "css",
+        "src": "renderer/style/style.css",
+        "scope": "renderer"
       }
     ]
   },

@@ -1,32 +1,33 @@
 var checkListConfigurations = {
-    "reject": {
-        "title": "Request Changes",
-        "subtitle": "Please detail the required changes in the comments' with the comment box below.",
-        "contents": [],
-        "comments": {
-            "required": true,
-            "label": "Comments"
-        },
-        "buttons": {
-            "cancel": "Cancel",
-            "proceed": "Request changes"
-        }
+  reject: {
+    title: "Request Changes",
+    subtitle:
+      "Please detail the required changes in the comments' with the comment box below.",
+    contents: [],
+    comments: {
+      required: true,
+      label: "Comments",
     },
-    "publish": {
-        "title": "Publish",
-        "subtitle": "Are you sure you want to publish?",
-        "contents": [],
-        "comments": {
-            "required": false,
-            "label": "Comments"
-        },
-        "buttons": {
-            "cancel": "Cancel",
-            "proceed": "Publish"
-        }
+    buttons: {
+      cancel: "Cancel",
+      proceed: "Request changes",
     },
-    "read": {
-        "title": "Reviewer Suggestions",
-        "subtitle": ""
-    }
-}
+  },
+  publish: {
+    title: "Publish",
+    subtitle: "Are you sure you want to publish?",
+    contents: [],
+    comments: {
+      required: false,
+      label: "Comments",
+    },
+    buttons: {
+      cancel: "Cancel",
+      proceed: "Publish",
+    },
+  },
+  read: {
+    title: "Reviewer Suggestions",
+    subtitle: "",
+  },
+};

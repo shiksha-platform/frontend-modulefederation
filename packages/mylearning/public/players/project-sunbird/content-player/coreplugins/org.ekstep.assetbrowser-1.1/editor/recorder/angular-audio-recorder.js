@@ -1,631 +1,758 @@
-(function() {
-  'use strict';
-window.cancelAnimationFrame = window.cancelAnimationFrame ||
-  window.webkitCancelAnimationFrame ||
-  window.mozCancelAnimationFrame;
-
-window.requestAnimationFrame = window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.mozRequestAnimationFrame;
-
-angular.module('angularAudioRecorder', [
-  'angularAudioRecorder.config',
-  'angularAudioRecorder.services',
-  'angularAudioRecorder.controllers',
-  'angularAudioRecorder.directives'
-]);
-angular.module('angularAudioRecorder.config', [])
-  .constant('recorderScriptUrl', (function () {
-    var scripts = document.getElementsByTagName('script');
-    var myUrl = scripts[scripts.length - 1].getAttribute('src');
-    var path = myUrl.substr(0, myUrl.lastIndexOf('/') + 1);
-    var a = document.createElement('a');
-    a.href = path;
-    return a.href;
-  }()))
-  .constant('recorderPlaybackStatus', {
-    STOPPED: 0,
-    PLAYING: 1,
-    PAUSED: 2
-  })
-;
-angular.module('angularAudioRecorder.controllers', [
-  'angularAudioRecorder.config',
-  'angularAudioRecorder.services'
-]);
-var createReadOnlyVersion = function (object) {
-  var obj = {};
-  for (var property in object) {
-    if (object.hasOwnProperty(property)) {
-      Object.defineProperty(obj, property, {
-        get: (function (a) {
-          var p = a;
-          return function () {
-            return object[p];
-          }
-        })(property),
-        enumerable: true,
-        configurable: true
-      });
-    }
-  }
-  return obj;
-};
-
-
-var blobToDataURL = function (blob, callback) {
-  var a = new FileReader();
-  a.onload = function (e) {
-    callback(e.target.result);
-  };
-  a.readAsDataURL(blob);
-};
-
-var RecorderController = function (element, service, recorderUtils, $scope, $timeout, $interval, PLAYBACK) {
-  //used in NON-Angular Async process
-  var scopeApply = function (fn) {
-    var phase = $scope.$root.$$phase;
-    if (phase !== '$apply' && phase !== '$digest') {
-      return $scope.$apply(fn);
-    }
-  };
-
-  var control = this,
-    cordovaMedia = {
-      recorder: null,
-      url: null,
-      player: null
-    }, timing = null,
-    audioObjId = 'recorded-audio-' + control.id,
-    status = {
-      isRecording: false,
-      playback: PLAYBACK.STOPPED,
-      isDenied: null,
-      isSwfLoaded: null,
-      isConverting: false,
-      get isPlaying() {
-        return status.playback === PLAYBACK.PLAYING;
-      },
-      get isStopped() {
-        return status.playback === PLAYBACK.STOPPED;
-      },
-      get isPaused() {
-        return status.playback === PLAYBACK.PAUSED;
-      }
-    },
-    shouldConvertToMp3 = angular.isDefined(control.convertMp3) ? !!control.convertMp3 : service.shouldConvertToMp3(),
-    mp3Converter = shouldConvertToMp3 ? new MP3Converter(service.getMp3Config()) : null;
-  ;
-
-
-  control.timeLimit = control.timeLimit || 0;
-  control.status = createReadOnlyVersion(status);
-  control.isAvailable = service.isAvailable();
-  control.elapsedTime = 0;
-  //Sets ID for the element if ID doesn't exists
-  if (!control.id) {
-    control.id = recorderUtils.generateUuid();
-    element.attr("id", control.id);
-  }
-
-
-  if (!service.isHtml5 && !service.isCordova) {
-    status.isSwfLoaded = service.swfIsLoaded();
-    $scope.$watch(function () {
-      return service.swfIsLoaded();
-    }, function (n) {
-      status.isSwfLoaded = n;
-    });
-  }
-
-
-  //register controller with service
-  service.setController(control.id, this);
-
-  var playbackOnEnded = function () {
-    status.playback = PLAYBACK.STOPPED;
-    control.onPlaybackComplete();
-    scopeApply();
-  };
-
-  var playbackOnPause = function () {
-    status.playback = PLAYBACK.PAUSED;
-    control.onPlaybackPause();
-  };
-
-  var playbackOnStart = function () {
-    status.playback = PLAYBACK.PLAYING;
-    control.onPlaybackStart();
-  };
-
-  var playbackOnResume = function () {
-    status.playback = PLAYBACK.PLAYING;
-    control.onPlaybackResume();
-  };
-
-  var embedPlayer = function (blob) {
-    if (document.getElementById(audioObjId) == null) {
-      element.append('<audio type="audio/mp3" id="' + audioObjId + '"></audio>');
-
-      var audioPlayer = document.getElementById(audioObjId);
-      if (control.showPlayer) {
-        audioPlayer.setAttribute('controls', '');
-      }
-
-      audioPlayer.addEventListener("ended", playbackOnEnded);
-      audioPlayer.addEventListener("pause", function (e) {
-        if (this.duration !== this.currentTime) {
-          playbackOnPause();
-          scopeApply();
-        }
-      });
-
-
-      audioPlayer.addEventListener("playing", function (e) {
-        if (status.isPaused) {
-          playbackOnResume();
-        } else {
-          playbackOnStart();
-        }
-        scopeApply();
-      });
-
-    }
-
-    if (blob) {
-      blobToDataURL(blob, function (url) {
-        document.getElementById(audioObjId).src = url;
-      });
-    } else {
-      document.getElementById(audioObjId).removeAttribute('src');
-    }
-  };
-
-  var doMp3Conversion = function (blobInput, successCallback) {
-    if (mp3Converter) {
-      status.isConverting = true;
-      mp3Converter.convert(blobInput, function (mp3Blob) {
-        status.isConverting = false;
-        if (successCallback) {
-          successCallback(mp3Blob);
-        }
-        scopeApply(control.onConversionComplete);
-      }, function () {
-        status.isConverting = false;
-      });
-      //call conversion started
-      control.onConversionStart();
-    }
-  };
-
-  control.getAudioPlayer = function () {
-    return service.isCordova ? cordovaMedia.player : document.getElementById(audioObjId);
-  };
-
-
-  control.startRecord = function () {
-    if (!service.isAvailable()) {
-      return;
-    }
-
-    if (status.isPlaying) {
-      control.playbackPause();
-      //indicate that this is not paused.
-      status.playback = PLAYBACK.STOPPED;
-    }
-
-    //clear audio previously recorded
-    control.audioModel = null;
-
-    var id = control.id, recordHandler = service.getHandler();
-    //Record initiation based on browser type
-    var start = function () {
-      if (service.isCordova) {
-        cordovaMedia.url = recorderUtils.cordovaAudioUrl(control.id);
-        //mobile app needs wav extension to save recording
-        cordovaMedia.recorder = new Media(cordovaMedia.url, function () {
-          console.log('Media successfully played');
-        }, function (err) {
-          console.log('Media could not be launched' + err.code, err);
-        });
-        console.log('CordovaRecording');
-        cordovaMedia.recorder.startRecord();
-      }
-      else if (service.isHtml5) {
-        //HTML5 recording
-        if (!recordHandler) {
-          return;
-        }
-        console.log('HTML5Recording');
-        recordHandler.clear();
-        recordHandler.record();
-      }
-      else {
-        //Flash recording
-        if (!service.isReady) {
-          //Stop recording if the flash object is not ready
-          return;
-        }
-        console.log('FlashRecording');
-        recordHandler.record(id, 'audio.wav');
-      }
-
-      status.isRecording = true;
-      control.onRecordStart();
-      control.elapsedTime = 0;
-      timing = $interval(function () {
-        ++control.elapsedTime;
-        if (control.timeLimit && control.timeLimit > 0 && control.elapsedTime >= control.timeLimit) {
-          control.stopRecord();
-        }
-      }, 1000);
-    };
-
-    if (service.isCordova || recordHandler) {
-      start();
-    } else if (!status.isDenied) {
-      //probably permission was never asked
-      service.showPermission({
-        onDenied: function () {
-          status.isDenied = true;
-          $scope.$apply();
-        },
-        onAllowed: function () {
-          status.isDenied = false;
-          recordHandler = service.getHandler();
-          start();
-          scopeApply();
-        }
-      });
-    }
-  };
-
-  control.stopRecord = function () {
-    var id = control.id;
-    if (!service.isAvailable() || !status.isRecording) {
-      return false;
-    }
-
-    var recordHandler = service.getHandler();
-    var completed = function (blob) {
-      $interval.cancel(timing);
-      status.isRecording = false;
-      var finalize = function (inputBlob) {
-        control.audioModel = inputBlob;
-        embedPlayer(inputBlob);
-      };
-
-      if (shouldConvertToMp3) {
-        doMp3Conversion(blob, finalize);
-      } else {
-        finalize(blob)
-      }
-
-      embedPlayer(null);
-      control.onRecordComplete();
-    };
-
-    //To stop recording
-    if (service.isCordova) {
-      cordovaMedia.recorder.stopRecord();
-      window.resolveLocalFileSystemURL(cordovaMedia.url, function (entry) {
-        entry.file(function (blob) {
-          completed(blob);
-        });
-      }, function (err) {
-        console.log('Could not retrieve file, error code:', err.code);
-      });
-    } else if (service.isHtml5) {
-      recordHandler.stop();
-      recordHandler.getBuffer(function () {
-        recordHandler.exportWAV(function (blob) {
-          completed(blob);
-          scopeApply();
-        });
-      });
-    } else {
-      recordHandler.stopRecording(id);
-      completed(recordHandler.getBlob(id));
-    }
-  };
-
-  control.playbackRecording = function () {
-    if (status.isPlaying || !service.isAvailable() || status.isRecording || !control.audioModel) {
-      return false;
-    }
-
-    if (service.isCordova) {
-      cordovaMedia.player = new Media(cordovaMedia.url, playbackOnEnded, function () {
-        console.log('Playback failed');
-      });
-      cordovaMedia.player.play();
-      playbackOnStart();
-    } else {
-      control.getAudioPlayer().play();
-    }
-
-  };
-
-  control.playbackPause = function () {
-    if (!status.isPlaying || !service.isAvailable() || status.isRecording || !control.audioModel) {
-      return false;
-    }
-
-    control.getAudioPlayer().pause();
-    if (service.isCordova) {
-      playbackOnPause();
-    }
-  };
-
-  control.playbackResume = function () {
-    if (status.isPlaying || !service.isAvailable() || status.isRecording || !control.audioModel) {
-      return false;
-    }
-
-    if (status.isPaused) {
-      //previously paused, just resume
-      control.getAudioPlayer().play();
-      if (service.isCordova) {
-        playbackOnResume();
-      }
-    } else {
-      control.playbackRecording();
-    }
-
-  };
-
-
-  control.save = function (fileName) {
-    if (!service.isAvailable() || status.isRecording || !control.audioModel) {
-      return false;
-    }
-
-    if (!fileName) {
-      fileName = 'audio_recording_' + control.id + (control.audioModel.type.indexOf('mp3') > -1 ? 'mp3' : 'wav');
-    }
-
-    var blobUrl = window.URL.createObjectURL(control.audioModel);
-    var a = document.createElement('a');
-    a.href = blobUrl;
-    a.target = '_blank';
-    a.download = fileName;
-    var click = document.createEvent("Event");
-    click.initEvent("click", true, true);
-    a.dispatchEvent(click);
-  };
-
-  control.isHtml5 = function () {
-    return service.isHtml5;
-  };
-
-  if (control.autoStart) {
-    $timeout(function () {
-      control.startRecord();
-    }, 1000);
-  }
-
-  element.on('$destroy', function () {
-    $interval.cancel(timing);
-  });
-
-};
-
-RecorderController.$inject = ['$element', 'recorderService', 'recorderUtils', '$scope', '$timeout', '$interval', 'recorderPlaybackStatus'];
-
-angular.module('angularAudioRecorder.controllers')
-  .controller('recorderController', RecorderController)
-;
-angular.module('angularAudioRecorder.directives', [
-  'angularAudioRecorder.config',
-  'angularAudioRecorder.services',
-  'angularAudioRecorder.controllers'
-]);
-angular.module('angularAudioRecorder.directives')
-  .directive('ngAudioRecorderAnalyzer', ['recorderService', 'recorderUtils',
-    function (service, utils) {
-
-      var link = function (scope, element, attrs, recorder) {
-        if (!service.isHtml5) {
-          scope.hide = true;
-          return;
-        }
-
-        var canvasWidth, canvasHeight, rafID, analyserContext, props = service.$html5AudioProps;
-
-        function updateAnalysers(time) {
-
-          if (!analyserContext) {
-            var canvas = element.find("canvas")[0];
-
-            if (attrs.width && !isNaN(attrs.width)) {
-              canvas.width = attrs.width;
-            }
-
-            if (attrs.height && !isNaN(attrs.height)) {
-              canvas.height = parseInt(attrs.height);
-            }
-
-            canvasWidth = canvas.width;
-            canvasHeight = canvas.height;
-            analyserContext = canvas.getContext('2d');
-          }
-
-          // analyzer draw code here
-          {
-            var SPACING = 3;
-            var BAR_WIDTH = 1;
-            var numBars = Math.round(canvasWidth / SPACING);
-            var freqByteData = new Uint8Array(props.analyserNode.frequencyBinCount);
-
-            props.analyserNode.getByteFrequencyData(freqByteData);
-
-            analyserContext.clearRect(0, 0, canvasWidth, canvasHeight);
-            //analyserContext.fillStyle = '#F6D565';
-            analyserContext.lineCap = 'round';
-            var multiplier = props.analyserNode.frequencyBinCount / numBars;
-
-            // Draw rectangle for each frequency bin.
-            for (var i = 0; i < numBars; ++i) {
-              var magnitude = 0;
-              var offset = Math.floor(i * multiplier);
-              // gotta sum/average the block, or we miss narrow-bandwidth spikes
-              for (var j = 0; j < multiplier; j++)
-                magnitude += freqByteData[offset + j];
-              magnitude = magnitude / multiplier;
-              var magnitude2 = freqByteData[i * multiplier];
-              if (attrs.waveColor)
-                analyserContext.fillStyle = attrs.waveColor;
-              else
-                analyserContext.fillStyle = "hsl( " + Math.round((i * 360) / numBars) + ", 100%, 50%)";
-              analyserContext.fillRect(i * SPACING, canvasHeight, BAR_WIDTH, -magnitude);
-            }
-          }
-
-          rafID = window.requestAnimationFrame(updateAnalysers);
-        }
-
-        function cancelAnalyserUpdates() {
-          window.cancelAnimationFrame(rafID);
-          rafID = null;
-        }
-
-        element.on('$destroy', function () {
-          cancelAnalyserUpdates();
-        });
-
-        recorder.onRecordStart = (function (original) {
-          return function () {
-            original.apply();
-            updateAnalysers();
-          };
-        })(recorder.onRecordStart);
-
-        utils.appendActionToCallback(recorder, 'onRecordStart', updateAnalysers, 'analyzer');
-        utils.appendActionToCallback(recorder, 'onRecordComplete', cancelAnalyserUpdates, 'analyzer');
-      };
-
-      return {
-        restrict: 'E',
-        require: '^ngAudioRecorder',
-        template: '<div ng-if="!hide" class="audioRecorder-analyzer">' +
-        '<canvas class="analyzer" width="1200" height="400" style="max-width: 100%;"></canvas>' +
-        '</div>',
-        link: link
-      };
-
-    }
+(function () {
+  "use strict";
+  window.cancelAnimationFrame =
+    window.cancelAnimationFrame ||
+    window.webkitCancelAnimationFrame ||
+    window.mozCancelAnimationFrame;
+
+  window.requestAnimationFrame =
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame;
+
+  angular.module("angularAudioRecorder", [
+    "angularAudioRecorder.config",
+    "angularAudioRecorder.services",
+    "angularAudioRecorder.controllers",
+    "angularAudioRecorder.directives",
   ]);
-angular.module('angularAudioRecorder.directives')
-  .directive('ngAudioRecorderWaveView', ['recorderService', 'recorderUtils', '$log',
-    function (service, utils, $log) {
+  angular
+    .module("angularAudioRecorder.config", [])
+    .constant(
+      "recorderScriptUrl",
+      (function () {
+        var scripts = document.getElementsByTagName("script");
+        var myUrl = scripts[scripts.length - 1].getAttribute("src");
+        var path = myUrl.substr(0, myUrl.lastIndexOf("/") + 1);
+        var a = document.createElement("a");
+        a.href = path;
+        return a.href;
+      })()
+    )
+    .constant("recorderPlaybackStatus", {
+      STOPPED: 0,
+      PLAYING: 1,
+      PAUSED: 2,
+    });
+  angular.module("angularAudioRecorder.controllers", [
+    "angularAudioRecorder.config",
+    "angularAudioRecorder.services",
+  ]);
+  var createReadOnlyVersion = function (object) {
+    var obj = {};
+    for (var property in object) {
+      if (object.hasOwnProperty(property)) {
+        Object.defineProperty(obj, property, {
+          get: (function (a) {
+            var p = a;
+            return function () {
+              return object[p];
+            };
+          })(property),
+          enumerable: true,
+          configurable: true,
+        });
+      }
+    }
+    return obj;
+  };
 
-      return {
-        restrict: 'E',
-        require: '^ngAudioRecorder',
-        link: function (scope, $element, attrs, recorder) {
-          if (!window.WaveSurfer) {
-            $log.warn('WaveSurfer was found.');
+  var blobToDataURL = function (blob, callback) {
+    var a = new FileReader();
+    a.onload = function (e) {
+      callback(e.target.result);
+    };
+    a.readAsDataURL(blob);
+  };
+
+  var RecorderController = function (
+    element,
+    service,
+    recorderUtils,
+    $scope,
+    $timeout,
+    $interval,
+    PLAYBACK
+  ) {
+    //used in NON-Angular Async process
+    var scopeApply = function (fn) {
+      var phase = $scope.$root.$$phase;
+      if (phase !== "$apply" && phase !== "$digest") {
+        return $scope.$apply(fn);
+      }
+    };
+
+    var control = this,
+      cordovaMedia = {
+        recorder: null,
+        url: null,
+        player: null,
+      },
+      timing = null,
+      audioObjId = "recorded-audio-" + control.id,
+      status = {
+        isRecording: false,
+        playback: PLAYBACK.STOPPED,
+        isDenied: null,
+        isSwfLoaded: null,
+        isConverting: false,
+        get isPlaying() {
+          return status.playback === PLAYBACK.PLAYING;
+        },
+        get isStopped() {
+          return status.playback === PLAYBACK.STOPPED;
+        },
+        get isPaused() {
+          return status.playback === PLAYBACK.PAUSED;
+        },
+      },
+      shouldConvertToMp3 = angular.isDefined(control.convertMp3)
+        ? !!control.convertMp3
+        : service.shouldConvertToMp3(),
+      mp3Converter = shouldConvertToMp3
+        ? new MP3Converter(service.getMp3Config())
+        : null;
+    control.timeLimit = control.timeLimit || 0;
+    control.status = createReadOnlyVersion(status);
+    control.isAvailable = service.isAvailable();
+    control.elapsedTime = 0;
+    //Sets ID for the element if ID doesn't exists
+    if (!control.id) {
+      control.id = recorderUtils.generateUuid();
+      element.attr("id", control.id);
+    }
+
+    if (!service.isHtml5 && !service.isCordova) {
+      status.isSwfLoaded = service.swfIsLoaded();
+      $scope.$watch(
+        function () {
+          return service.swfIsLoaded();
+        },
+        function (n) {
+          status.isSwfLoaded = n;
+        }
+      );
+    }
+
+    //register controller with service
+    service.setController(control.id, this);
+
+    var playbackOnEnded = function () {
+      status.playback = PLAYBACK.STOPPED;
+      control.onPlaybackComplete();
+      scopeApply();
+    };
+
+    var playbackOnPause = function () {
+      status.playback = PLAYBACK.PAUSED;
+      control.onPlaybackPause();
+    };
+
+    var playbackOnStart = function () {
+      status.playback = PLAYBACK.PLAYING;
+      control.onPlaybackStart();
+    };
+
+    var playbackOnResume = function () {
+      status.playback = PLAYBACK.PLAYING;
+      control.onPlaybackResume();
+    };
+
+    var embedPlayer = function (blob) {
+      if (document.getElementById(audioObjId) == null) {
+        element.append(
+          '<audio type="audio/mp3" id="' + audioObjId + '"></audio>'
+        );
+
+        var audioPlayer = document.getElementById(audioObjId);
+        if (control.showPlayer) {
+          audioPlayer.setAttribute("controls", "");
+        }
+
+        audioPlayer.addEventListener("ended", playbackOnEnded);
+        audioPlayer.addEventListener("pause", function (e) {
+          if (this.duration !== this.currentTime) {
+            playbackOnPause();
+            scopeApply();
+          }
+        });
+
+        audioPlayer.addEventListener("playing", function (e) {
+          if (status.isPaused) {
+            playbackOnResume();
+          } else {
+            playbackOnStart();
+          }
+          scopeApply();
+        });
+      }
+
+      if (blob) {
+        blobToDataURL(blob, function (url) {
+          document.getElementById(audioObjId).src = url;
+        });
+      } else {
+        document.getElementById(audioObjId).removeAttribute("src");
+      }
+    };
+
+    var doMp3Conversion = function (blobInput, successCallback) {
+      if (mp3Converter) {
+        status.isConverting = true;
+        mp3Converter.convert(
+          blobInput,
+          function (mp3Blob) {
+            status.isConverting = false;
+            if (successCallback) {
+              successCallback(mp3Blob);
+            }
+            scopeApply(control.onConversionComplete);
+          },
+          function () {
+            status.isConverting = false;
+          }
+        );
+        //call conversion started
+        control.onConversionStart();
+      }
+    };
+
+    control.getAudioPlayer = function () {
+      return service.isCordova
+        ? cordovaMedia.player
+        : document.getElementById(audioObjId);
+    };
+
+    control.startRecord = function () {
+      if (!service.isAvailable()) {
+        return;
+      }
+
+      if (status.isPlaying) {
+        control.playbackPause();
+        //indicate that this is not paused.
+        status.playback = PLAYBACK.STOPPED;
+      }
+
+      //clear audio previously recorded
+      control.audioModel = null;
+
+      var id = control.id,
+        recordHandler = service.getHandler();
+      //Record initiation based on browser type
+      var start = function () {
+        if (service.isCordova) {
+          cordovaMedia.url = recorderUtils.cordovaAudioUrl(control.id);
+          //mobile app needs wav extension to save recording
+          cordovaMedia.recorder = new Media(
+            cordovaMedia.url,
+            function () {
+              console.log("Media successfully played");
+            },
+            function (err) {
+              console.log("Media could not be launched" + err.code, err);
+            }
+          );
+          console.log("CordovaRecording");
+          cordovaMedia.recorder.startRecord();
+        } else if (service.isHtml5) {
+          //HTML5 recording
+          if (!recordHandler) {
+            return;
+          }
+          console.log("HTML5Recording");
+          recordHandler.clear();
+          recordHandler.record();
+        } else {
+          //Flash recording
+          if (!service.isReady) {
+            //Stop recording if the flash object is not ready
+            return;
+          }
+          console.log("FlashRecording");
+          recordHandler.record(id, "audio.wav");
+        }
+
+        status.isRecording = true;
+        control.onRecordStart();
+        control.elapsedTime = 0;
+        timing = $interval(function () {
+          ++control.elapsedTime;
+          if (
+            control.timeLimit &&
+            control.timeLimit > 0 &&
+            control.elapsedTime >= control.timeLimit
+          ) {
+            control.stopRecord();
+          }
+        }, 1000);
+      };
+
+      if (service.isCordova || recordHandler) {
+        start();
+      } else if (!status.isDenied) {
+        //probably permission was never asked
+        service.showPermission({
+          onDenied: function () {
+            status.isDenied = true;
+            $scope.$apply();
+          },
+          onAllowed: function () {
+            status.isDenied = false;
+            recordHandler = service.getHandler();
+            start();
+            scopeApply();
+          },
+        });
+      }
+    };
+
+    control.stopRecord = function () {
+      var id = control.id;
+      if (!service.isAvailable() || !status.isRecording) {
+        return false;
+      }
+
+      var recordHandler = service.getHandler();
+      var completed = function (blob) {
+        $interval.cancel(timing);
+        status.isRecording = false;
+        var finalize = function (inputBlob) {
+          control.audioModel = inputBlob;
+          embedPlayer(inputBlob);
+        };
+
+        if (shouldConvertToMp3) {
+          doMp3Conversion(blob, finalize);
+        } else {
+          finalize(blob);
+        }
+
+        embedPlayer(null);
+        control.onRecordComplete();
+      };
+
+      //To stop recording
+      if (service.isCordova) {
+        cordovaMedia.recorder.stopRecord();
+        window.resolveLocalFileSystemURL(
+          cordovaMedia.url,
+          function (entry) {
+            entry.file(function (blob) {
+              completed(blob);
+            });
+          },
+          function (err) {
+            console.log("Could not retrieve file, error code:", err.code);
+          }
+        );
+      } else if (service.isHtml5) {
+        recordHandler.stop();
+        recordHandler.getBuffer(function () {
+          recordHandler.exportWAV(function (blob) {
+            completed(blob);
+            scopeApply();
+          });
+        });
+      } else {
+        recordHandler.stopRecording(id);
+        completed(recordHandler.getBlob(id));
+      }
+    };
+
+    control.playbackRecording = function () {
+      if (
+        status.isPlaying ||
+        !service.isAvailable() ||
+        status.isRecording ||
+        !control.audioModel
+      ) {
+        return false;
+      }
+
+      if (service.isCordova) {
+        cordovaMedia.player = new Media(
+          cordovaMedia.url,
+          playbackOnEnded,
+          function () {
+            console.log("Playback failed");
+          }
+        );
+        cordovaMedia.player.play();
+        playbackOnStart();
+      } else {
+        control.getAudioPlayer().play();
+      }
+    };
+
+    control.playbackPause = function () {
+      if (
+        !status.isPlaying ||
+        !service.isAvailable() ||
+        status.isRecording ||
+        !control.audioModel
+      ) {
+        return false;
+      }
+
+      control.getAudioPlayer().pause();
+      if (service.isCordova) {
+        playbackOnPause();
+      }
+    };
+
+    control.playbackResume = function () {
+      if (
+        status.isPlaying ||
+        !service.isAvailable() ||
+        status.isRecording ||
+        !control.audioModel
+      ) {
+        return false;
+      }
+
+      if (status.isPaused) {
+        //previously paused, just resume
+        control.getAudioPlayer().play();
+        if (service.isCordova) {
+          playbackOnResume();
+        }
+      } else {
+        control.playbackRecording();
+      }
+    };
+
+    control.save = function (fileName) {
+      if (!service.isAvailable() || status.isRecording || !control.audioModel) {
+        return false;
+      }
+
+      if (!fileName) {
+        fileName =
+          "audio_recording_" +
+          control.id +
+          (control.audioModel.type.indexOf("mp3") > -1 ? "mp3" : "wav");
+      }
+
+      var blobUrl = window.URL.createObjectURL(control.audioModel);
+      var a = document.createElement("a");
+      a.href = blobUrl;
+      a.target = "_blank";
+      a.download = fileName;
+      var click = document.createEvent("Event");
+      click.initEvent("click", true, true);
+      a.dispatchEvent(click);
+    };
+
+    control.isHtml5 = function () {
+      return service.isHtml5;
+    };
+
+    if (control.autoStart) {
+      $timeout(function () {
+        control.startRecord();
+      }, 1000);
+    }
+
+    element.on("$destroy", function () {
+      $interval.cancel(timing);
+    });
+  };
+
+  RecorderController.$inject = [
+    "$element",
+    "recorderService",
+    "recorderUtils",
+    "$scope",
+    "$timeout",
+    "$interval",
+    "recorderPlaybackStatus",
+  ];
+
+  angular
+    .module("angularAudioRecorder.controllers")
+    .controller("recorderController", RecorderController);
+  angular.module("angularAudioRecorder.directives", [
+    "angularAudioRecorder.config",
+    "angularAudioRecorder.services",
+    "angularAudioRecorder.controllers",
+  ]);
+  angular
+    .module("angularAudioRecorder.directives")
+    .directive("ngAudioRecorderAnalyzer", [
+      "recorderService",
+      "recorderUtils",
+      function (service, utils) {
+        var link = function (scope, element, attrs, recorder) {
+          if (!service.isHtml5) {
+            scope.hide = true;
             return;
           }
 
-          var audioPlayer;
-          $element.html('<div class="waveSurfer"></div>');
-          var options = angular.extend({container: $element.find('div')[0]}, attrs);
-          var waveSurfer = WaveSurfer.create(options);
-          waveSurfer.setVolume(0);
-          utils.appendActionToCallback(recorder, 'onPlaybackStart|onPlaybackResume', function () {
-            waveSurfer.play();
-          }, 'waveView');
-          utils.appendActionToCallback(recorder, 'onPlaybackComplete|onPlaybackPause', function () {
-            waveSurfer.pause();
-          }, 'waveView');
+          var canvasWidth,
+            canvasHeight,
+            rafID,
+            analyserContext,
+            props = service.$html5AudioProps;
 
-          utils.appendActionToCallback(recorder, 'onRecordComplete', function () {
-            if (!audioPlayer) {
-              audioPlayer = recorder.getAudioPlayer();
-              audioPlayer.addEventListener('seeking', function (e) {
-                var progress = audioPlayer.currentTime / audioPlayer.duration;
-                waveSurfer.seekTo(progress);
-              });
+          function updateAnalysers(time) {
+            if (!analyserContext) {
+              var canvas = element.find("canvas")[0];
+
+              if (attrs.width && !isNaN(attrs.width)) {
+                canvas.width = attrs.width;
+              }
+
+              if (attrs.height && !isNaN(attrs.height)) {
+                canvas.height = parseInt(attrs.height);
+              }
+
+              canvasWidth = canvas.width;
+              canvasHeight = canvas.height;
+              analyserContext = canvas.getContext("2d");
             }
-          }, 'waveView');
 
+            // analyzer draw code here
+            {
+              var SPACING = 3;
+              var BAR_WIDTH = 1;
+              var numBars = Math.round(canvasWidth / SPACING);
+              var freqByteData = new Uint8Array(
+                props.analyserNode.frequencyBinCount
+              );
 
-          scope.$watch(function () {
-            return recorder.audioModel;
-          }, function (newBlob) {
-            if (newBlob instanceof Blob) {
-              waveSurfer.loadBlob(newBlob);
+              props.analyserNode.getByteFrequencyData(freqByteData);
+
+              analyserContext.clearRect(0, 0, canvasWidth, canvasHeight);
+              //analyserContext.fillStyle = '#F6D565';
+              analyserContext.lineCap = "round";
+              var multiplier = props.analyserNode.frequencyBinCount / numBars;
+
+              // Draw rectangle for each frequency bin.
+              for (var i = 0; i < numBars; ++i) {
+                var magnitude = 0;
+                var offset = Math.floor(i * multiplier);
+                // gotta sum/average the block, or we miss narrow-bandwidth spikes
+                for (var j = 0; j < multiplier; j++)
+                  magnitude += freqByteData[offset + j];
+                magnitude = magnitude / multiplier;
+                var magnitude2 = freqByteData[i * multiplier];
+                if (attrs.waveColor)
+                  analyserContext.fillStyle = attrs.waveColor;
+                else
+                  analyserContext.fillStyle =
+                    "hsl( " + Math.round((i * 360) / numBars) + ", 100%, 50%)";
+                analyserContext.fillRect(
+                  i * SPACING,
+                  canvasHeight,
+                  BAR_WIDTH,
+                  -magnitude
+                );
+              }
             }
+
+            rafID = window.requestAnimationFrame(updateAnalysers);
+          }
+
+          function cancelAnalyserUpdates() {
+            window.cancelAnimationFrame(rafID);
+            rafID = null;
+          }
+
+          element.on("$destroy", function () {
+            cancelAnalyserUpdates();
           });
-        }
-      };
-    }]);
-angular.module('angularAudioRecorder.directives')
-  .directive('ngAudioRecorder', ['recorderService', '$timeout',
-    function (recorderService, $timeout) {
-      return {
-        restrict: 'EA',
-        scope: {
-          audioModel: '=',
-          id: '@',
-          onRecordStart: '&',
-          onRecordComplete: '&',
-          onPlaybackComplete: '&',
-          onPlaybackStart: '&',
-          onPlaybackPause: '&',
-          onPlaybackResume: '&',
-          onConversionStart: '&',
-          onConversionComplete: '&',
-          showPlayer: '=?',
-          autoStart: '=?',
-          convertMp3: '=?',
-          timeLimit: '=?'
-        },
-        controllerAs: 'recorder',
-        bindToController: true,
-        template: function (element, attrs) {
-          return '<div class="audioRecorder">' +
-            '<div style="width: 250px; margin: 0 auto;"><div id="audioRecorder-fwrecorder"></div></div>' +
-            element.html() +
-            '</div>';
-        },
-        controller: 'recorderController',
-        link: function (scope, element, attrs) {
-          $timeout(function () {
-            if (recorderService.isAvailable && !(recorderService.isHtml5 || recorderService.isCordova)) {
-              var params = {
-                'allowscriptaccess': 'always'
-              }, attrs = {
-                'id': 'recorder-app',
-                'name': 'recorder-app'
-              }, flashVars = {
-                'save_text': ''
-              };
-              swfobject.embedSWF(recorderService.getSwfUrl(), "audioRecorder-fwrecorder", "0", "0", "11.0.0", "", flashVars, params, attrs);
+
+          recorder.onRecordStart = (function (original) {
+            return function () {
+              original.apply();
+              updateAnalysers();
+            };
+          })(recorder.onRecordStart);
+
+          utils.appendActionToCallback(
+            recorder,
+            "onRecordStart",
+            updateAnalysers,
+            "analyzer"
+          );
+          utils.appendActionToCallback(
+            recorder,
+            "onRecordComplete",
+            cancelAnalyserUpdates,
+            "analyzer"
+          );
+        };
+
+        return {
+          restrict: "E",
+          require: "^ngAudioRecorder",
+          template:
+            '<div ng-if="!hide" class="audioRecorder-analyzer">' +
+            '<canvas class="analyzer" width="1200" height="400" style="max-width: 100%;"></canvas>' +
+            "</div>",
+          link: link,
+        };
+      },
+    ]);
+  angular
+    .module("angularAudioRecorder.directives")
+    .directive("ngAudioRecorderWaveView", [
+      "recorderService",
+      "recorderUtils",
+      "$log",
+      function (service, utils, $log) {
+        return {
+          restrict: "E",
+          require: "^ngAudioRecorder",
+          link: function (scope, $element, attrs, recorder) {
+            if (!window.WaveSurfer) {
+              $log.warn("WaveSurfer was found.");
+              return;
             }
-          }, 100);
 
-        }
-      };
-    }
+            var audioPlayer;
+            $element.html('<div class="waveSurfer"></div>');
+            var options = angular.extend(
+              { container: $element.find("div")[0] },
+              attrs
+            );
+            var waveSurfer = WaveSurfer.create(options);
+            waveSurfer.setVolume(0);
+            utils.appendActionToCallback(
+              recorder,
+              "onPlaybackStart|onPlaybackResume",
+              function () {
+                waveSurfer.play();
+              },
+              "waveView"
+            );
+            utils.appendActionToCallback(
+              recorder,
+              "onPlaybackComplete|onPlaybackPause",
+              function () {
+                waveSurfer.pause();
+              },
+              "waveView"
+            );
+
+            utils.appendActionToCallback(
+              recorder,
+              "onRecordComplete",
+              function () {
+                if (!audioPlayer) {
+                  audioPlayer = recorder.getAudioPlayer();
+                  audioPlayer.addEventListener("seeking", function (e) {
+                    var progress =
+                      audioPlayer.currentTime / audioPlayer.duration;
+                    waveSurfer.seekTo(progress);
+                  });
+                }
+              },
+              "waveView"
+            );
+
+            scope.$watch(
+              function () {
+                return recorder.audioModel;
+              },
+              function (newBlob) {
+                if (newBlob instanceof Blob) {
+                  waveSurfer.loadBlob(newBlob);
+                }
+              }
+            );
+          },
+        };
+      },
+    ]);
+  angular
+    .module("angularAudioRecorder.directives")
+    .directive("ngAudioRecorder", [
+      "recorderService",
+      "$timeout",
+      function (recorderService, $timeout) {
+        return {
+          restrict: "EA",
+          scope: {
+            audioModel: "=",
+            id: "@",
+            onRecordStart: "&",
+            onRecordComplete: "&",
+            onPlaybackComplete: "&",
+            onPlaybackStart: "&",
+            onPlaybackPause: "&",
+            onPlaybackResume: "&",
+            onConversionStart: "&",
+            onConversionComplete: "&",
+            showPlayer: "=?",
+            autoStart: "=?",
+            convertMp3: "=?",
+            timeLimit: "=?",
+          },
+          controllerAs: "recorder",
+          bindToController: true,
+          template: function (element, attrs) {
+            return (
+              '<div class="audioRecorder">' +
+              '<div style="width: 250px; margin: 0 auto;"><div id="audioRecorder-fwrecorder"></div></div>' +
+              element.html() +
+              "</div>"
+            );
+          },
+          controller: "recorderController",
+          link: function (scope, element, attrs) {
+            $timeout(function () {
+              if (
+                recorderService.isAvailable &&
+                !(recorderService.isHtml5 || recorderService.isCordova)
+              ) {
+                var params = {
+                    allowscriptaccess: "always",
+                  },
+                  attrs = {
+                    id: "recorder-app",
+                    name: "recorder-app",
+                  },
+                  flashVars = {
+                    save_text: "",
+                  };
+                swfobject.embedSWF(
+                  recorderService.getSwfUrl(),
+                  "audioRecorder-fwrecorder",
+                  "0",
+                  "0",
+                  "11.0.0",
+                  "",
+                  flashVars,
+                  params,
+                  attrs
+                );
+              }
+            }, 100);
+          },
+        };
+      },
+    ]);
+
+  angular.module("angularAudioRecorder.services", [
+    "angularAudioRecorder.config",
   ]);
-
-angular.module('angularAudioRecorder.services', ['angularAudioRecorder.config']);
-angular.module('angularAudioRecorder.services')
-  .provider('recorderService', ['recorderScriptUrl',
+  angular.module("angularAudioRecorder.services").provider("recorderService", [
+    "recorderScriptUrl",
     function (scriptPath) {
       var handler = null,
-        service = {isHtml5: false, isReady: false},
-        permissionHandlers = {onDenied: null, onClosed: null, onAllow: null},
+        service = { isHtml5: false, isReady: false },
+        permissionHandlers = { onDenied: null, onClosed: null, onAllow: null },
         forceSwf = false,
         /*this path is relative to the dist path:*/
-        swfUrl = scriptPath + '../lib/recorder.swf',
+        swfUrl = scriptPath + "../lib/recorder.swf",
         utils,
         mp3Covert = false,
-        mp3Config = {bitRate: 92, lameJsUrl: scriptPath + '../lib/lame.min.js'}
-        ;
-
+        mp3Config = {
+          bitRate: 92,
+          lameJsUrl: scriptPath + "../lib/lame.min.js",
+        };
       var swfHandlerConfig = {
         isAvailable: false,
         loaded: false,
@@ -645,23 +772,23 @@ angular.module('angularAudioRecorder.services')
             case "ready":
               var width = parseInt(arguments[1]);
               var height = parseInt(arguments[2]);
-              FWRecorder.connect('recorder-app', 0);
+              FWRecorder.connect("recorder-app", 0);
               FWRecorder.recorderOriginalWidth = 1;
               FWRecorder.recorderOriginalHeight = 1;
               swfHandlerConfig.loaded = true;
               break;
 
             case "microphone_user_request":
-              FWRecorder.showPermissionWindow({permanent: true});
+              FWRecorder.showPermissionWindow({ permanent: true });
               break;
 
             case "microphone_connected":
-              console.log('Permission to use MIC granted');
+              console.log("Permission to use MIC granted");
               swfHandlerConfig.allowed = true;
               break;
 
             case "microphone_not_connected":
-              console.log('Permission to use MIC denied');
+              console.log("Permission to use MIC denied");
               swfHandlerConfig.allowed = false;
               break;
 
@@ -686,11 +813,9 @@ angular.module('angularAudioRecorder.services')
               break;
 
             case "playing":
-
               break;
 
             case "playback_started":
-
               var latency = arguments[2];
               break;
 
@@ -704,9 +829,7 @@ angular.module('angularAudioRecorder.services')
             case "saved":
               var data = $.parseJSON(arguments[2]);
               if (data.saved) {
-
               } else {
-
               }
               break;
 
@@ -730,7 +853,6 @@ angular.module('angularAudioRecorder.services')
               //console.log('Event Received: ', arguments);
               break;
           }
-
         },
         isInstalled: function () {
           return swfobject.getFlashPlayerVersion().major > 0;
@@ -739,7 +861,9 @@ angular.module('angularAudioRecorder.services')
           //Flash recorder external events
           service.isHtml5 = false;
           if (!swfHandlerConfig.isInstalled()) {
-            console.log('Flash is not installed, application cannot be initialized');
+            console.log(
+              "Flash is not installed, application cannot be initialized"
+            );
             return;
           }
           swfHandlerConfig.isAvailable = true;
@@ -764,39 +888,42 @@ angular.module('angularAudioRecorder.services')
         getPermission: function () {
           if (swfHandlerConfig.isAvailable) {
             if (!FWRecorder.isMicrophoneAccessible()) {
-              FWRecorder.showPermissionWindow({permanent: true});
+              FWRecorder.showPermissionWindow({ permanent: true });
             } else {
               swfHandlerConfig.allowed = true;
               setTimeout(function () {
                 swfHandlerConfig.setAllowed();
               }, 100);
             }
-
           }
-        }
+        },
       };
-
 
       var html5AudioProps = {
         audioContext: null,
         inputPoint: null,
         audioInput: null,
         audioRecorder: null,
-        analyserNode: null
+        analyserNode: null,
       };
 
       var html5HandlerConfig = {
         gotStream: function (stream) {
           var audioContext = html5AudioProps.audioContext;
           // Create an AudioNode from the stream.
-          html5AudioProps.audioInput = audioContext.createMediaStreamSource(stream);
-          html5AudioProps.audioInput.connect((html5AudioProps.inputPoint = audioContext.createGain()));
+          html5AudioProps.audioInput =
+            audioContext.createMediaStreamSource(stream);
+          html5AudioProps.audioInput.connect(
+            (html5AudioProps.inputPoint = audioContext.createGain())
+          );
 
           //analyser
           html5AudioProps.analyserNode = audioContext.createAnalyser();
           html5AudioProps.analyserNode.fftSize = 2048;
           html5AudioProps.inputPoint.connect(html5AudioProps.analyserNode);
-          html5AudioProps.audioRecorder = new Recorder(html5AudioProps.audioInput);
+          html5AudioProps.audioRecorder = new Recorder(
+            html5AudioProps.audioInput
+          );
 
           //create Gain
           var zeroGain = audioContext.createGain();
@@ -809,13 +936,12 @@ angular.module('angularAudioRecorder.services')
           handler = html5AudioProps.audioRecorder;
 
           if (angular.isFunction(permissionHandlers.onAllowed)) {
-            if (window.location.protocol == 'https:') {
+            if (window.location.protocol == "https:") {
               //to store permission for https websites
               localStorage.setItem("permission", "given");
             }
             permissionHandlers.onAllowed();
           }
-
         },
         failStream: function (data) {
           if (angular.isDefined(permissionHandlers.onDenied)) {
@@ -823,9 +949,13 @@ angular.module('angularAudioRecorder.services')
           }
         },
         getPermission: function () {
-          navigator.getUserMedia({
-            "audio": true
-          }, html5HandlerConfig.gotStream, html5HandlerConfig.failStream);
+          navigator.getUserMedia(
+            {
+              audio: true,
+            },
+            html5HandlerConfig.gotStream,
+            html5HandlerConfig.failStream
+          );
         },
         init: function () {
           service.isHtml5 = true;
@@ -838,18 +968,18 @@ angular.module('angularAudioRecorder.services')
             //to get permission from browser cache for returning user
             html5HandlerConfig.getPermission();
           }
-        }
+        },
       };
 
-      navigator.getUserMedia = navigator.getUserMedia
-        || navigator.webkitGetUserMedia
-        || navigator.mozGetUserMedia;
-
+      navigator.getUserMedia =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia;
 
       service.isCordova = false;
 
       var init = function () {
-        if ('cordova' in window) {
+        if ("cordova" in window) {
           service.isCordova = true;
         } else if (!forceSwf && navigator.getUserMedia) {
           html5HandlerConfig.init();
@@ -874,14 +1004,15 @@ angular.module('angularAudioRecorder.services')
 
       service.isAvailable = function () {
         if (service.isCordova) {
-          if (!('Media' in window)) {
-            throw new Error('The Media plugin for cordova is required for this library, add plugin using "cordova plugin add cordova-plugin-media"');
+          if (!("Media" in window)) {
+            throw new Error(
+              'The Media plugin for cordova is required for this library, add plugin using "cordova plugin add cordova-plugin-media"'
+            );
           }
           return true;
         }
 
-        return service.isHtml5
-          || swfHandlerConfig.isInstalled();
+        return service.isHtml5 || swfHandlerConfig.isInstalled();
       };
 
       service.getHandler = function () {
@@ -920,12 +1051,13 @@ angular.module('angularAudioRecorder.services')
       service.$html5AudioProps = html5AudioProps;
 
       var provider = {
-        $get: ['recorderUtils',
+        $get: [
+          "recorderUtils",
           function (recorderUtils) {
             utils = recorderUtils;
             init();
             return service;
-          }
+          },
         ],
         forceSwf: function (value) {
           forceSwf = value;
@@ -939,21 +1071,19 @@ angular.module('angularAudioRecorder.services')
           mp3Covert = !!bool;
           mp3Config = angular.extend(mp3Config, config || {});
           return provider;
-        }
+        },
       };
 
       return provider;
-    }])
-;
-angular.module('angularAudioRecorder.services')
-  .factory('recorderUtils', [
+    },
+  ]);
+  angular.module("angularAudioRecorder.services").factory("recorderUtils", [
     /**
      * @ngdoc service
      * @name recorderUtils
      *
      */
-      function () {
-
+    function () {
       // Generates UUID
       var factory = {
         generateUuid: function () {
@@ -966,50 +1096,61 @@ angular.module('angularAudioRecorder.services')
         },
         cordovaAudioUrl: function (id) {
           if (!window.cordova) {
-            return 'record-audio' + id + '.wav';
+            return "record-audio" + id + ".wav";
           }
 
-          var url = cordova.file.tempDirectory
-            || cordova.file.externalApplicationStorageDirectory
-            || cordova.file.sharedDirectory;
+          var url =
+            cordova.file.tempDirectory ||
+            cordova.file.externalApplicationStorageDirectory ||
+            cordova.file.sharedDirectory;
 
-          url += Date.now() + '_recordedAudio_' + id.replace('/[^A-Za-z0-9_-]+/gi', '-');
+          url +=
+            Date.now() +
+            "_recordedAudio_" +
+            id.replace("/[^A-Za-z0-9_-]+/gi", "-");
           switch (window.cordova.platformId) {
-            case 'ios':
-              url += '.wav';
+            case "ios":
+              url += ".wav";
               break;
 
-            case 'android':
-              url += '.amr';
+            case "android":
+              url += ".amr";
               break;
 
-            case 'wp':
-              url += '.wma';
+            case "wp":
+              url += ".wma";
               break;
 
-            default :
-              url += '.mp3';
+            default:
+              url += ".mp3";
           }
 
           return url;
-        }
+        },
       };
 
-      factory.appendActionToCallback = function (object, callbacks, action, track) {
-
+      factory.appendActionToCallback = function (
+        object,
+        callbacks,
+        action,
+        track
+      ) {
         callbacks.split(/\|/).forEach(function (callback) {
-          if (!angular.isObject(object) || !angular.isFunction(action) || !(callback in object) || !angular.isFunction(object[callback])) {
-            throw new Error('One or more parameter supplied is not valid');
+          if (
+            !angular.isObject(object) ||
+            !angular.isFunction(action) ||
+            !(callback in object) ||
+            !angular.isFunction(object[callback])
+          ) {
+            throw new Error("One or more parameter supplied is not valid");
           }
-          ;
-
-          if (!('$$appendTrackers' in object)) {
+          if (!("$$appendTrackers" in object)) {
             object.$$appendTrackers = [];
           }
 
-          var tracker = callback + '|' + track;
+          var tracker = callback + "|" + track;
           if (object.$$appendTrackers.indexOf(tracker) > -1) {
-            console.log('Already appended: ', tracker);
+            console.log("Already appended: ", tracker);
             return;
           }
 
@@ -1026,12 +1167,14 @@ angular.module('angularAudioRecorder.services')
       };
 
       return factory;
-    }
-  ]);})();
+    },
+  ]);
+})();
 (function (global) {
-  'use strict';
+  "use strict";
 
-  var Recorder, RECORDED_AUDIO_TYPE = "audio/wav";
+  var Recorder,
+    RECORDED_AUDIO_TYPE = "audio/wav";
 
   Recorder = {
     recorder: null,
@@ -1058,7 +1201,11 @@ angular.module('angularAudioRecorder.services')
         Recorder.recorderOriginalHeight = Recorder.recorder.height;
         if (Recorder.uploadFormId && $) {
           var frm = $(Recorder.uploadFormId);
-          Recorder.recorder.init(frm.attr('action').toString(), Recorder.uploadFieldName, frm.serializeArray());
+          Recorder.recorder.init(
+            frm.attr("action").toString(),
+            Recorder.uploadFieldName,
+            frm.serializeArray()
+          );
         }
         return;
       }
@@ -1118,7 +1265,10 @@ angular.module('angularAudioRecorder.services')
     },
 
     defaultSize: function () {
-      Recorder.resize(Recorder.recorderOriginalWidth, Recorder.recorderOriginalHeight);
+      Recorder.resize(
+        Recorder.recorderOriginalWidth,
+        Recorder.recorderOriginalHeight
+      );
     },
 
     show: function () {
@@ -1136,11 +1286,11 @@ angular.module('angularAudioRecorder.services')
 
     getBase64: function (name) {
       var data = Recorder.recorder.getBase64(name);
-      return 'data:' + RECORDED_AUDIO_TYPE + ';base64,' + data;
+      return "data:" + RECORDED_AUDIO_TYPE + ";base64," + data;
     },
 
     getBlob: function (name) {
-      var base64Data = Recorder.getBase64(name).split(',')[1];
+      var base64Data = Recorder.getBase64(name).split(",")[1];
       return base64toBlob(base64Data, RECORDED_AUDIO_TYPE);
     },
 
@@ -1183,43 +1333,43 @@ angular.module('angularAudioRecorder.services')
         case 5:
           break;
         default:
-          throw("invalid rate " + rate);
+          throw "invalid rate " + rate;
       }
 
       if (gain < 0 || gain > 100) {
-        throw("invalid gain " + gain);
+        throw "invalid gain " + gain;
       }
 
       if (silenceLevel < 0 || silenceLevel > 100) {
-        throw("invalid silenceLevel " + silenceLevel);
+        throw "invalid silenceLevel " + silenceLevel;
       }
 
       if (silenceTimeout < -1) {
-        throw("invalid silenceTimeout " + silenceTimeout);
+        throw "invalid silenceTimeout " + silenceTimeout;
       }
 
       Recorder.recorder.configure(rate, gain, silenceLevel, silenceTimeout);
     },
 
     setUseEchoSuppression: function (val) {
-      if (typeof(val) != 'boolean') {
-        throw("invalid value for setting echo suppression, val: " + val);
+      if (typeof val != "boolean") {
+        throw "invalid value for setting echo suppression, val: " + val;
       }
 
       Recorder.recorder.setUseEchoSuppression(val);
     },
 
     setLoopBack: function (val) {
-      if (typeof(val) != 'boolean') {
-        throw("invalid value for setting loop back, val: " + val);
+      if (typeof val != "boolean") {
+        throw "invalid value for setting loop back, val: " + val;
       }
 
       Recorder.recorder.setLoopBack(val);
-    }
+    },
   };
 
   function base64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || '';
+    contentType = contentType || "";
     sliceSize = sliceSize || 512;
 
     var byteCharacters = atob(b64Data);
@@ -1237,13 +1387,10 @@ angular.module('angularAudioRecorder.services')
       byteArrays.push(byteArray);
     }
 
-    return new Blob(byteArrays, {type: contentType});
+    return new Blob(byteArrays, { type: contentType });
   }
 
-
   global.FWRecorder = Recorder;
-
-
 })(window);
 /**
  * This script adds a new function to a function prototype,
@@ -1261,25 +1408,29 @@ angular.module('angularAudioRecorder.services')
  *
  */
 (function () {
-  'use strict';
-
+  "use strict";
 
   var workerToBlobUrl = function (fn, params) {
-    if (typeof fn !== 'function') {
-      throw("The specified parameter must be a valid function");
+    if (typeof fn !== "function") {
+      throw "The specified parameter must be a valid function";
     }
     var fnString = fn.toString();
     if (fnString.match(/\[native\s*code\]/i)) {
-      throw("You cannot bind a native function to a worker");
+      throw "You cannot bind a native function to a worker";
     }
-    ;
-
     params = params || {};
-    if (typeof params !== 'object') {
-      console.warn('Params must be an object that is serializable with JSON.stringify, specified is: ' + (typeof params));
+    if (typeof params !== "object") {
+      console.warn(
+        "Params must be an object that is serializable with JSON.stringify, specified is: " +
+          typeof params
+      );
     }
 
-    var blobURL = window.URL.createObjectURL(new Blob(['(', fnString, ')(this,', JSON.stringify(params), ')'], {type: 'application/javascript'}));
+    var blobURL = window.URL.createObjectURL(
+      new Blob(["(", fnString, ")(this,", JSON.stringify(params), ")"], {
+        type: "application/javascript",
+      })
+    );
 
     return blobURL;
   };
@@ -1309,7 +1460,7 @@ angular.module('angularAudioRecorder.services')
  */
 
 (function (win) {
-  'use strict';
+  "use strict";
 
   var RecorderWorker = function (me) {
     var recLength = 0,
@@ -1320,19 +1471,19 @@ angular.module('angularAudioRecorder.services')
 
     me.onmessage = function (e) {
       switch (e.data.command) {
-        case 'init':
+        case "init":
           init(e.data.config);
           break;
-        case 'record':
+        case "record":
           record(e.data.buffer);
           break;
-        case 'exportWAV':
+        case "exportWAV":
           exportWAV(e.data.type);
           break;
-        case 'getBuffer':
+        case "getBuffer":
           getBuffer();
           break;
-        case 'clear':
+        case "clear":
           clear();
           break;
       }
@@ -1351,7 +1502,7 @@ angular.module('angularAudioRecorder.services')
     function exportWAV(type) {
       var bufferL = mergeBuffers(recBuffersL, recLength);
       var dataview = encodeWAV(bufferL);
-      var audioBlob = new Blob([dataview], {type: type});
+      var audioBlob = new Blob([dataview], { type: type });
 
       me.postMessage(audioBlob);
     }
@@ -1397,7 +1548,7 @@ angular.module('angularAudioRecorder.services')
     function floatTo16BitPCM(output, offset, input) {
       for (var i = 0; i < input.length; i++, offset += 2) {
         var s = Math.max(-1, Math.min(1, input[i]));
-        output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+        output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
       }
     }
 
@@ -1407,19 +1558,18 @@ angular.module('angularAudioRecorder.services')
       }
     }
 
-
     function encodeWAV(samples) {
       var buffer = new ArrayBuffer(44 + samples.length * 2);
       var view = new DataView(buffer);
 
       /* RIFF identifier */
-      writeString(view, 0, 'RIFF');
+      writeString(view, 0, "RIFF");
       /* file length */
       view.setUint32(4, 32 + samples.length * 2, true);
       /* RIFF type */
-      writeString(view, 8, 'WAVE');
+      writeString(view, 8, "WAVE");
       /* format chunk identifier */
-      writeString(view, 12, 'fmt ');
+      writeString(view, 12, "fmt ");
       /* format chunk length */
       view.setUint32(16, 16, true);
       /* sample format (raw) */
@@ -1441,7 +1591,7 @@ angular.module('angularAudioRecorder.services')
       /* bits per sample */
       view.setUint16(34, 16, true);
       /* data chunk identifier */
-      writeString(view, 36, 'data');
+      writeString(view, 36, "data");
       /* data chunk length */
       view.setUint32(40, samples.length * 2, true);
 
@@ -1455,15 +1605,15 @@ angular.module('angularAudioRecorder.services')
     var config = cfg || {};
     var bufferLen = config.bufferLen || 4096;
     this.context = source.context;
-    this.node = (this.context.createScriptProcessor ||
-    this.context.createJavaScriptNode).call(this.context,
-      bufferLen, 2, 2);
+    this.node = (
+      this.context.createScriptProcessor || this.context.createJavaScriptNode
+    ).call(this.context, bufferLen, 2, 2);
     var worker = RecorderWorker.toWorker();
     worker.postMessage({
-      command: 'init',
+      command: "init",
       config: {
-        sampleRate: this.context.sampleRate
-      }
+        sampleRate: this.context.sampleRate,
+      },
     });
     var recording = false,
       currCallback;
@@ -1471,10 +1621,8 @@ angular.module('angularAudioRecorder.services')
     this.node.onaudioprocess = function (e) {
       if (!recording) return;
       worker.postMessage({
-        command: 'record',
-        buffer: [
-          e.inputBuffer.getChannelData(0),
-        ]
+        command: "record",
+        buffer: [e.inputBuffer.getChannelData(0)],
       });
     };
 
@@ -1495,21 +1643,21 @@ angular.module('angularAudioRecorder.services')
     };
 
     this.clear = function () {
-      worker.postMessage({command: 'clear'});
+      worker.postMessage({ command: "clear" });
     };
 
     this.getBuffer = function (cb) {
       currCallback = cb || config.callback;
-      worker.postMessage({command: 'getBuffer'})
+      worker.postMessage({ command: "getBuffer" });
     };
 
     this.exportWAV = function (cb, type) {
       currCallback = cb || config.callback;
-      type = type || config.type || 'audio/wav';
-      if (!currCallback) throw new Error('Callback not set');
+      type = type || config.type || "audio/wav";
+      if (!currCallback) throw new Error("Callback not set");
       worker.postMessage({
-        command: 'exportWAV',
-        type: type
+        command: "exportWAV",
+        type: type,
       });
     };
 
@@ -1519,27 +1667,31 @@ angular.module('angularAudioRecorder.services')
       currCallback(blob);
     };
 
-
     source.connect(this.node);
-    this.node.connect(this.context.destination);    //this should not be necessary
+    this.node.connect(this.context.destination); //this should not be necessary
   };
 
   win.Recorder = Recorder;
 })(window);
 
 (function (win) {
-  'use strict';
+  "use strict";
 
   var MP3ConversionWorker = function (me, params) {
     //should not reference any variable in parent scope as it will executed in its
     //on isolated scope
-    console.log('MP3 conversion worker started.');
-    if (typeof lamejs === 'undefined') {
+    console.log("MP3 conversion worker started.");
+    if (typeof lamejs === "undefined") {
       importScripts(params.lameJsUrl);
     }
 
-    var mp3Encoder, maxSamples = 1152, wav, samples, lame, config, dataBuffer;
-
+    var mp3Encoder,
+      maxSamples = 1152,
+      wav,
+      samples,
+      lame,
+      config,
+      dataBuffer;
 
     var clearBuffer = function () {
       dataBuffer = [];
@@ -1549,7 +1701,6 @@ angular.module('angularAudioRecorder.services')
       dataBuffer.push(new Int8Array(mp3Buf));
     };
 
-
     var init = function (prefConfig) {
       config = prefConfig || {};
       lame = new lamejs();
@@ -1558,9 +1709,13 @@ angular.module('angularAudioRecorder.services')
 
     var encode = function (arrayBuffer) {
       wav = lame.WavHeader.readHeader(new DataView(arrayBuffer));
-      console.log('wave:', wav);
+      console.log("wave:", wav);
       samples = new Int16Array(arrayBuffer, wav.dataOffset, wav.dataLen / 2);
-      mp3Encoder = new lame.Mp3Encoder(wav.channels, wav.sampleRate, config.bitRate || 128);
+      mp3Encoder = new lame.Mp3Encoder(
+        wav.channels,
+        wav.sampleRate,
+        config.bitRate || 128
+      );
 
       var remaining = samples.length;
       for (var i = 0; remaining >= maxSamples; i += maxSamples) {
@@ -1574,22 +1729,22 @@ angular.module('angularAudioRecorder.services')
     var finish = function () {
       var mp3buf = mp3Encoder.flush();
       appendToBuffer(mp3buf);
-      self.postMessage({cmd: 'end', buf: dataBuffer});
-      console.log('done encoding');
-      clearBuffer();//free up memory
+      self.postMessage({ cmd: "end", buf: dataBuffer });
+      console.log("done encoding");
+      clearBuffer(); //free up memory
     };
 
     me.onmessage = function (e) {
       switch (e.data.cmd) {
-        case 'init':
+        case "init":
           init(e.data.config);
           break;
 
-        case 'encode':
+        case "encode":
           encode(e.data.rawInput);
           break;
 
-        case 'finish':
+        case "finish":
           finish();
           break;
       }
@@ -1597,46 +1752,46 @@ angular.module('angularAudioRecorder.services')
   };
 
   var SCRIPT_BASE = (function () {
-    var scripts = document.getElementsByTagName('script');
-    var myUrl = scripts[scripts.length - 1].getAttribute('src');
-    var path = myUrl.substr(0, myUrl.lastIndexOf('/') + 1);
+    var scripts = document.getElementsByTagName("script");
+    var myUrl = scripts[scripts.length - 1].getAttribute("src");
+    var path = myUrl.substr(0, myUrl.lastIndexOf("/") + 1);
     if (path && !path.match(/:\/\//)) {
-      var a = document.createElement('a');
+      var a = document.createElement("a");
       a.href = path;
       return a.href;
     }
     return path;
-  }());
+  })();
 
   var MP3Converter = function (config) {
-
     config = config || {};
-    config.lameJsUrl = config.lameJsUrl || (SCRIPT_BASE + '/lame.min.js');
+    config.lameJsUrl = config.lameJsUrl || SCRIPT_BASE + "/lame.min.js";
     var busy = false;
     var mp3Worker = MP3ConversionWorker.toWorker(config);
 
     this.isBusy = function () {
-      return busy
+      return busy;
     };
 
     this.convert = function (blob) {
-      var conversionId = 'conversion_' + Date.now(),
-        tag = conversionId + ":"
-        ;
-      console.log(tag, 'Starting conversion');
-      var preferredConfig = {}, onSuccess, onError;
+      var conversionId = "conversion_" + Date.now(),
+        tag = conversionId + ":";
+      console.log(tag, "Starting conversion");
+      var preferredConfig = {},
+        onSuccess,
+        onError;
       switch (typeof arguments[1]) {
-        case 'object':
+        case "object":
           preferredConfig = arguments[1];
           break;
-        case 'function':
+        case "function":
           onSuccess = arguments[1];
           break;
         default:
-          throw "parameter 2 is expected to be an object (config) or function (success callback)"
+          throw "parameter 2 is expected to be an object (config) or function (success callback)";
       }
 
-      if (typeof arguments[2] === 'function') {
+      if (typeof arguments[2] === "function") {
         if (onSuccess) {
           onError = arguments[2];
         } else {
@@ -1644,12 +1799,12 @@ angular.module('angularAudioRecorder.services')
         }
       }
 
-      if (typeof arguments[3] === 'function' && !onError) {
+      if (typeof arguments[3] === "function" && !onError) {
         onError = arguments[3];
       }
 
       if (busy) {
-        throw ("Another conversion is in progress");
+        throw "Another conversion is in progress";
       }
 
       var initialSize = blob.size,
@@ -1659,27 +1814,41 @@ angular.module('angularAudioRecorder.services')
       fileReader.onload = function (e) {
         console.log(tag, "Passed to BG process");
         mp3Worker.postMessage({
-          cmd: 'init',
-          config: preferredConfig
+          cmd: "init",
+          config: preferredConfig,
         });
 
-        mp3Worker.postMessage({cmd: 'encode', rawInput: e.target.result});
-        mp3Worker.postMessage({cmd: 'finish'});
+        mp3Worker.postMessage({ cmd: "encode", rawInput: e.target.result });
+        mp3Worker.postMessage({ cmd: "finish" });
 
         mp3Worker.onmessage = function (e) {
-          if (e.data.cmd == 'end') {
+          if (e.data.cmd == "end") {
             console.log(tag, "Done converting to Mp3");
-            var mp3Blob = new Blob(e.data.buf, {type: 'audio/mp3'});
+            var mp3Blob = new Blob(e.data.buf, { type: "audio/mp3" });
             window.mp3Blob = mp3Blob;
-            console.log(tag, "Conversion completed in: " + ((Date.now() - startTime) / 1000) + 's');
+            console.log(
+              tag,
+              "Conversion completed in: " +
+                (Date.now() - startTime) / 1000 +
+                "s"
+            );
             var finalSize = mp3Blob.size;
-            console.log(tag +
-              "Initial size: = " + initialSize + ", " +
-              "Final size = " + finalSize
-              + ", Reduction: " + Number((100 * (initialSize - finalSize) / initialSize)).toPrecision(4) + "%");
+            console.log(
+              tag +
+                "Initial size: = " +
+                initialSize +
+                ", " +
+                "Final size = " +
+                finalSize +
+                ", Reduction: " +
+                Number(
+                  (100 * (initialSize - finalSize)) / initialSize
+                ).toPrecision(4) +
+                "%"
+            );
 
             busy = false;
-            if (onSuccess && typeof onSuccess === 'function') {
+            if (onSuccess && typeof onSuccess === "function") {
               onSuccess(mp3Blob);
             }
           }
@@ -1687,31 +1856,28 @@ angular.module('angularAudioRecorder.services')
       };
       busy = true;
       fileReader.readAsArrayBuffer(blob);
-    }
+    };
   };
 
   win.MP3Converter = MP3Converter;
 })(window);
 (function (win) {
-  'use strict';
+  "use strict";
 
   /*!SWFObject v2.1 <http://code.google.com/p/swfobject/>
    Copyright (c) 2007-2008 Geoff Stearns, Michael Williams, and Bobby van der Sluis
    This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
    */
-  win.swfobject = function () {
-
+  win.swfobject = (function () {
     var UNDEF = "undefined",
       OBJECT = "object",
       SHOCKWAVE_FLASH = "Shockwave Flash",
       SHOCKWAVE_FLASH_AX = "ShockwaveFlash.ShockwaveFlash",
       FLASH_MIME_TYPE = "application/x-shockwave-flash",
       EXPRESS_INSTALL_ID = "SWFObjectExprInst",
-
       win = window,
       doc = document,
       nav = navigator,
-
       domLoadFnArr = [],
       regObjArr = [],
       objIdArr = [],
@@ -1728,31 +1894,45 @@ angular.module('angularAudioRecorder.services')
      - User agent string detection is only used when no alternative is possible
      - Is executed directly for optimal performance
      */
-    var ua = function () {
-      var w3cdom = typeof doc.getElementById != UNDEF && typeof doc.getElementsByTagName != UNDEF && typeof doc.createElement != UNDEF,
+    var ua = (function () {
+      var w3cdom =
+          typeof doc.getElementById != UNDEF &&
+          typeof doc.getElementsByTagName != UNDEF &&
+          typeof doc.createElement != UNDEF,
         playerVersion = [0, 0, 0],
         d = null;
-      if (typeof nav.plugins != UNDEF && typeof nav.plugins[SHOCKWAVE_FLASH] == OBJECT) {
+      if (
+        typeof nav.plugins != UNDEF &&
+        typeof nav.plugins[SHOCKWAVE_FLASH] == OBJECT
+      ) {
         d = nav.plugins[SHOCKWAVE_FLASH].description;
-        if (d && !(typeof nav.mimeTypes != UNDEF && nav.mimeTypes[FLASH_MIME_TYPE] && !nav.mimeTypes[FLASH_MIME_TYPE].enabledPlugin)) { // navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin indicates whether plug-ins are enabled or disabled in Safari 3+
+        if (
+          d &&
+          !(
+            typeof nav.mimeTypes != UNDEF &&
+            nav.mimeTypes[FLASH_MIME_TYPE] &&
+            !nav.mimeTypes[FLASH_MIME_TYPE].enabledPlugin
+          )
+        ) {
+          // navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin indicates whether plug-ins are enabled or disabled in Safari 3+
           d = d.replace(/^.*\s+(\S+\s+\S+$)/, "$1");
           playerVersion[0] = parseInt(d.replace(/^(.*)\..*$/, "$1"), 10);
           playerVersion[1] = parseInt(d.replace(/^.*\.(.*)\s.*$/, "$1"), 10);
-          playerVersion[2] = /r/.test(d) ? parseInt(d.replace(/^.*r(.*)$/, "$1"), 10) : 0;
+          playerVersion[2] = /r/.test(d)
+            ? parseInt(d.replace(/^.*r(.*)$/, "$1"), 10)
+            : 0;
         }
-      }
-      else if (typeof win.ActiveXObject != UNDEF) {
-        var a = null, fp6Crash = false;
+      } else if (typeof win.ActiveXObject != UNDEF) {
+        var a = null,
+          fp6Crash = false;
         try {
           a = new ActiveXObject(SHOCKWAVE_FLASH_AX + ".7");
-        }
-        catch (e) {
+        } catch (e) {
           try {
             a = new ActiveXObject(SHOCKWAVE_FLASH_AX + ".6");
             playerVersion = [6, 0, 21];
-            a.AllowScriptAccess = "always";	 // Introduced in fp6.0.47
-          }
-          catch (e) {
+            a.AllowScriptAccess = "always"; // Introduced in fp6.0.47
+          } catch (e) {
             if (playerVersion[0] == 6) {
               fp6Crash = true;
             }
@@ -1760,26 +1940,29 @@ angular.module('angularAudioRecorder.services')
           if (!fp6Crash) {
             try {
               a = new ActiveXObject(SHOCKWAVE_FLASH_AX);
-            }
-            catch (e) {
-            }
+            } catch (e) {}
           }
         }
-        if (!fp6Crash && a) { // a will return null when ActiveX is disabled
+        if (!fp6Crash && a) {
+          // a will return null when ActiveX is disabled
           try {
-            d = a.GetVariable("$version");	// Will crash fp6.0.21/23/29
+            d = a.GetVariable("$version"); // Will crash fp6.0.21/23/29
             if (d) {
               d = d.split(" ")[1].split(",");
-              playerVersion = [parseInt(d[0], 10), parseInt(d[1], 10), parseInt(d[2], 10)];
+              playerVersion = [
+                parseInt(d[0], 10),
+                parseInt(d[1], 10),
+                parseInt(d[2], 10),
+              ];
             }
-          }
-          catch (e) {
-          }
+          } catch (e) {}
         }
       }
       var u = nav.userAgent.toLowerCase(),
         p = nav.platform.toLowerCase(),
-        webkit = /webkit/.test(u) ? parseFloat(u.replace(/^.*webkit\/(\d+(\.\d+)?).*$/, "$1")) : false, // returns either the webkit version or false if not webkit
+        webkit = /webkit/.test(u)
+          ? parseFloat(u.replace(/^.*webkit\/(\d+(\.\d+)?).*$/, "$1"))
+          : false, // returns either the webkit version or false if not webkit
         ie = false,
         windows = p ? /win/.test(p) : /win/.test(u),
         mac = p ? /mac/.test(p) : /mac/.test(u);
@@ -1791,28 +1974,36 @@ angular.module('angularAudioRecorder.services')
        mac = true;
        @end
        @*/
-      return {w3cdom: w3cdom, pv: playerVersion, webkit: webkit, ie: ie, win: windows, mac: mac};
-    }();
+      return {
+        w3cdom: w3cdom,
+        pv: playerVersion,
+        webkit: webkit,
+        ie: ie,
+        win: windows,
+        mac: mac,
+      };
+    })();
 
     /* Cross-browser onDomLoad
      - Based on Dean Edwards' solution: http://dean.edwards.name/weblog/2006/06/again/
      - Will fire an event as soon as the DOM of a page is loaded (supported by Gecko based browsers - like Firefox -, IE, Opera9+, Safari)
      */
-    var onDomLoad = function () {
+    var onDomLoad = (function () {
       if (!ua.w3cdom) {
         return;
       }
       addDomLoadEvent(main);
       if (ua.ie && ua.win) {
-        try {	 // Avoid a possible Operation Aborted error
-          doc.write("<scr" + "ipt id=__ie_ondomload defer=true src=//:></scr" + "ipt>"); // String is split into pieces to avoid Norton AV to add code that can cause errors
+        try {
+          // Avoid a possible Operation Aborted error
+          doc.write(
+            "<scr" + "ipt id=__ie_ondomload defer=true src=//:></scr" + "ipt>"
+          ); // String is split into pieces to avoid Norton AV to add code that can cause errors
           script = getElementById("__ie_ondomload");
           if (script) {
             addListener(script, "onreadystatechange", checkReadyState);
           }
-        }
-        catch (e) {
-        }
+        } catch (e) {}
       }
       if (ua.webkit && typeof doc.readyState != UNDEF) {
         timer = setInterval(function () {
@@ -1825,7 +2016,7 @@ angular.module('angularAudioRecorder.services')
         doc.addEventListener("DOMContentLoaded", callDomLoadFunctions, null);
       }
       addLoadEvent(callDomLoadFunctions);
-    }();
+    })();
 
     function checkReadyState() {
       if (script.readyState == "complete") {
@@ -1838,13 +2029,14 @@ angular.module('angularAudioRecorder.services')
       if (isDomLoaded) {
         return;
       }
-      if (ua.ie && ua.win) { // Test if we can really add elements to the DOM; we don't want to fire it too early
+      if (ua.ie && ua.win) {
+        // Test if we can really add elements to the DOM; we don't want to fire it too early
         var s = createElement("span");
-        try { // Avoid a possible Operation Aborted error
+        try {
+          // Avoid a possible Operation Aborted error
           var t = doc.getElementsByTagName("body")[0].appendChild(s);
           t.parentNode.removeChild(t);
-        }
-        catch (e) {
+        } catch (e) {
           return;
         }
       }
@@ -1862,8 +2054,7 @@ angular.module('angularAudioRecorder.services')
     function addDomLoadEvent(fn) {
       if (isDomLoaded) {
         fn();
-      }
-      else {
+      } else {
         domLoadFnArr[domLoadFnArr.length] = fn; // Array.push() is only available in IE5.5+
       }
     }
@@ -1875,21 +2066,17 @@ angular.module('angularAudioRecorder.services')
     function addLoadEvent(fn) {
       if (typeof win.addEventListener != UNDEF) {
         win.addEventListener("load", fn, false);
-      }
-      else if (typeof doc.addEventListener != UNDEF) {
+      } else if (typeof doc.addEventListener != UNDEF) {
         doc.addEventListener("load", fn, false);
-      }
-      else if (typeof win.attachEvent != UNDEF) {
+      } else if (typeof win.attachEvent != UNDEF) {
         addListener(win, "onload", fn);
-      }
-      else if (typeof win.onload == "function") {
+      } else if (typeof win.onload == "function") {
         var fnOld = win.onload;
         win.onload = function () {
           fnOld();
           fn();
         };
-      }
-      else {
+      } else {
         win.onload = fn;
       }
     }
@@ -1897,30 +2084,43 @@ angular.module('angularAudioRecorder.services')
     /* Main function
      - Will preferably execute onDomLoad, otherwise onload (as a fallback)
      */
-    function main() { // Static publishing only
+    function main() {
+      // Static publishing only
       var rl = regObjArr.length;
-      for (var i = 0; i < rl; i++) { // For each registered object element
+      for (var i = 0; i < rl; i++) {
+        // For each registered object element
         var id = regObjArr[i].id;
         if (ua.pv[0] > 0) {
           var obj = getElementById(id);
           if (obj) {
-            regObjArr[i].width = obj.getAttribute("width") ? obj.getAttribute("width") : "0";
-            regObjArr[i].height = obj.getAttribute("height") ? obj.getAttribute("height") : "0";
-            if (hasPlayerVersion(regObjArr[i].swfVersion)) { // Flash plug-in version >= Flash content version: Houston, we have a match!
-              if (ua.webkit && ua.webkit < 312) { // Older webkit engines ignore the object element's nested param elements
+            regObjArr[i].width = obj.getAttribute("width")
+              ? obj.getAttribute("width")
+              : "0";
+            regObjArr[i].height = obj.getAttribute("height")
+              ? obj.getAttribute("height")
+              : "0";
+            if (hasPlayerVersion(regObjArr[i].swfVersion)) {
+              // Flash plug-in version >= Flash content version: Houston, we have a match!
+              if (ua.webkit && ua.webkit < 312) {
+                // Older webkit engines ignore the object element's nested param elements
                 fixParams(obj);
               }
               setVisibility(id, true);
-            }
-            else if (regObjArr[i].expressInstall && !isExpressInstallActive && hasPlayerVersion("6.0.65") && (ua.win || ua.mac)) { // Show the Adobe Express Install dialog if set by the web page author and if supported (fp6.0.65+ on Win/Mac OS only)
+            } else if (
+              regObjArr[i].expressInstall &&
+              !isExpressInstallActive &&
+              hasPlayerVersion("6.0.65") &&
+              (ua.win || ua.mac)
+            ) {
+              // Show the Adobe Express Install dialog if set by the web page author and if supported (fp6.0.65+ on Win/Mac OS only)
               showExpressInstall(regObjArr[i]);
-            }
-            else { // Flash plug-in and Flash content version mismatch: display alternative content instead of Flash content
+            } else {
+              // Flash plug-in and Flash content version mismatch: display alternative content instead of Flash content
               displayAltContent(obj);
             }
           }
-        }
-        else {	// If no fp is installed, we let the object element do its job (show alternative content)
+        } else {
+          // If no fp is installed, we let the object element do its job (show alternative content)
           setVisibility(id, true);
         }
       }
@@ -1933,14 +2133,14 @@ angular.module('angularAudioRecorder.services')
     function fixParams(obj) {
       var nestedObj = obj.getElementsByTagName(OBJECT)[0];
       if (nestedObj) {
-        var e = createElement("embed"), a = nestedObj.attributes;
+        var e = createElement("embed"),
+          a = nestedObj.attributes;
         if (a) {
           var al = a.length;
           for (var i = 0; i < al; i++) {
             if (a[i].nodeName == "DATA") {
               e.setAttribute("src", a[i].nodeValue);
-            }
-            else {
+            } else {
               e.setAttribute(a[i].nodeName, a[i].nodeValue);
             }
           }
@@ -1950,7 +2150,10 @@ angular.module('angularAudioRecorder.services')
           var cl = c.length;
           for (var j = 0; j < cl; j++) {
             if (c[j].nodeType == 1 && c[j].nodeName == "PARAM") {
-              e.setAttribute(c[j].getAttribute("name"), c[j].getAttribute("value"));
+              e.setAttribute(
+                c[j].getAttribute("name"),
+                c[j].getAttribute("value")
+              );
             }
           }
         }
@@ -1971,20 +2174,25 @@ angular.module('angularAudioRecorder.services')
             storedAltContent = ac;
             storedAltContentId = regObj.altContentId;
           }
-        }
-        else {
+        } else {
           storedAltContent = abstractAltContent(obj);
         }
-        if (!(/%$/.test(regObj.width)) && parseInt(regObj.width, 10) < 310) {
+        if (!/%$/.test(regObj.width) && parseInt(regObj.width, 10) < 310) {
           regObj.width = "310";
         }
-        if (!(/%$/.test(regObj.height)) && parseInt(regObj.height, 10) < 137) {
+        if (!/%$/.test(regObj.height) && parseInt(regObj.height, 10) < 137) {
           regObj.height = "137";
         }
         doc.title = doc.title.slice(0, 47) + " - Flash Player Installation";
         var pt = ua.ie && ua.win ? "ActiveX" : "PlugIn",
           dt = doc.title,
-          fv = "MMredirectURL=" + win.location + "&MMplayerType=" + pt + "&MMdoctitle=" + dt,
+          fv =
+            "MMredirectURL=" +
+            win.location +
+            "&MMplayerType=" +
+            pt +
+            "&MMdoctitle=" +
+            dt,
           replaceId = regObj.id;
         // For IE when a SWF is loading (AND: not available in cache) wait for the onload event to fire to remove the original object element
         // In IE you cannot properly cancel a loading SWF file without breaking browser load references, also obj.onreadystatechange doesn't work
@@ -1999,12 +2207,16 @@ angular.module('angularAudioRecorder.services')
           };
           addListener(win, "onload", fn);
         }
-        createSWF({
-          data: regObj.expressInstall,
-          id: EXPRESS_INSTALL_ID,
-          width: regObj.width,
-          height: regObj.height
-        }, {flashvars: fv}, replaceId);
+        createSWF(
+          {
+            data: regObj.expressInstall,
+            id: EXPRESS_INSTALL_ID,
+            width: regObj.width,
+            height: regObj.height,
+          },
+          { flashvars: fv },
+          replaceId
+        );
       }
     }
 
@@ -2022,8 +2234,7 @@ angular.module('angularAudioRecorder.services')
           obj.parentNode.removeChild(obj);
         };
         addListener(win, "onload", fn);
-      }
-      else {
+      } else {
         obj.parentNode.replaceChild(abstractAltContent(obj), obj);
       }
     }
@@ -2032,15 +2243,17 @@ angular.module('angularAudioRecorder.services')
       var ac = createElement("div");
       if (ua.win && ua.ie) {
         ac.innerHTML = obj.innerHTML;
-      }
-      else {
+      } else {
         var nestedObj = obj.getElementsByTagName(OBJECT)[0];
         if (nestedObj) {
           var c = nestedObj.childNodes;
           if (c) {
             var cl = c.length;
             for (var i = 0; i < cl; i++) {
-              if (!(c[i].nodeType == 1 && c[i].nodeName == "PARAM") && !(c[i].nodeType == 8)) {
+              if (
+                !(c[i].nodeType == 1 && c[i].nodeName == "PARAM") &&
+                !(c[i].nodeType == 8)
+              ) {
                 ac.appendChild(c[i].cloneNode(true));
               }
             }
@@ -2053,77 +2266,95 @@ angular.module('angularAudioRecorder.services')
     /* Cross-browser dynamic SWF creation
      */
     function createSWF(attObj, parObj, id) {
-      var r, el = getElementById(id);
+      var r,
+        el = getElementById(id);
       if (el) {
-        if (typeof attObj.id == UNDEF) { // if no 'id' is defined for the object element, it will inherit the 'id' from the alternative content
+        if (typeof attObj.id == UNDEF) {
+          // if no 'id' is defined for the object element, it will inherit the 'id' from the alternative content
           attObj.id = id;
         }
-        if (ua.ie && ua.win) { // IE, the object element and W3C DOM methods do not combine: fall back to outerHTML
+        if (ua.ie && ua.win) {
+          // IE, the object element and W3C DOM methods do not combine: fall back to outerHTML
           var att = "";
           for (var i in attObj) {
-            if (attObj[i] != Object.prototype[i]) { // Filter out prototype additions from other potential libraries, like Object.prototype.toJSONString = function() {}
+            if (attObj[i] != Object.prototype[i]) {
+              // Filter out prototype additions from other potential libraries, like Object.prototype.toJSONString = function() {}
               if (i.toLowerCase() == "data") {
                 parObj.movie = attObj[i];
-              }
-              else if (i.toLowerCase() == "styleclass") { // 'class' is an ECMA4 reserved keyword
+              } else if (i.toLowerCase() == "styleclass") {
+                // 'class' is an ECMA4 reserved keyword
                 att += ' class="' + attObj[i] + '"';
-              }
-              else if (i.toLowerCase() != "classid") {
-                att += ' ' + i + '="' + attObj[i] + '"';
+              } else if (i.toLowerCase() != "classid") {
+                att += " " + i + '="' + attObj[i] + '"';
               }
             }
           }
           var par = "";
           for (var j in parObj) {
-            if (parObj[j] != Object.prototype[j]) { // Filter out prototype additions from other potential libraries
+            if (parObj[j] != Object.prototype[j]) {
+              // Filter out prototype additions from other potential libraries
               par += '<param name="' + j + '" value="' + parObj[j] + '" />';
             }
           }
-          el.outerHTML = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' + att + '>' + par + '</object>';
+          el.outerHTML =
+            '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' +
+            att +
+            ">" +
+            par +
+            "</object>";
           objIdArr[objIdArr.length] = attObj.id; // Stored to fix object 'leaks' on unload (dynamic publishing only)
           r = getElementById(attObj.id);
-        }
-        else if (ua.webkit && ua.webkit < 312) { // Older webkit engines ignore the object element's nested param elements: fall back to the proprietary embed element
+        } else if (ua.webkit && ua.webkit < 312) {
+          // Older webkit engines ignore the object element's nested param elements: fall back to the proprietary embed element
           var e = createElement("embed");
           e.setAttribute("type", FLASH_MIME_TYPE);
           for (var k in attObj) {
-            if (attObj[k] != Object.prototype[k]) { // Filter out prototype additions from other potential libraries
+            if (attObj[k] != Object.prototype[k]) {
+              // Filter out prototype additions from other potential libraries
               if (k.toLowerCase() == "data") {
                 e.setAttribute("src", attObj[k]);
-              }
-              else if (k.toLowerCase() == "styleclass") { // 'class' is an ECMA4 reserved keyword
+              } else if (k.toLowerCase() == "styleclass") {
+                // 'class' is an ECMA4 reserved keyword
                 e.setAttribute("class", attObj[k]);
-              }
-              else if (k.toLowerCase() != "classid") { // Filter out IE specific attribute
+              } else if (k.toLowerCase() != "classid") {
+                // Filter out IE specific attribute
                 e.setAttribute(k, attObj[k]);
               }
             }
           }
           for (var l in parObj) {
-            if (parObj[l] != Object.prototype[l]) { // Filter out prototype additions from other potential libraries
-              if (l.toLowerCase() != "movie") { // Filter out IE specific param element
+            if (parObj[l] != Object.prototype[l]) {
+              // Filter out prototype additions from other potential libraries
+              if (l.toLowerCase() != "movie") {
+                // Filter out IE specific param element
                 e.setAttribute(l, parObj[l]);
               }
             }
           }
           el.parentNode.replaceChild(e, el);
           r = e;
-        }
-        else { // Well-behaving browsers
+        } else {
+          // Well-behaving browsers
           var o = createElement(OBJECT);
           o.setAttribute("type", FLASH_MIME_TYPE);
           for (var m in attObj) {
-            if (attObj[m] != Object.prototype[m]) { // Filter out prototype additions from other potential libraries
-              if (m.toLowerCase() == "styleclass") { // 'class' is an ECMA4 reserved keyword
+            if (attObj[m] != Object.prototype[m]) {
+              // Filter out prototype additions from other potential libraries
+              if (m.toLowerCase() == "styleclass") {
+                // 'class' is an ECMA4 reserved keyword
                 o.setAttribute("class", attObj[m]);
-              }
-              else if (m.toLowerCase() != "classid") { // Filter out IE specific attribute
+              } else if (m.toLowerCase() != "classid") {
+                // Filter out IE specific attribute
                 o.setAttribute(m, attObj[m]);
               }
             }
           }
           for (var n in parObj) {
-            if (parObj[n] != Object.prototype[n] && n.toLowerCase() != "movie") { // Filter out prototype additions from other potential libraries and IE specific param element
+            if (
+              parObj[n] != Object.prototype[n] &&
+              n.toLowerCase() != "movie"
+            ) {
+              // Filter out prototype additions from other potential libraries and IE specific param element
               createObjParam(o, n, parObj[n]);
             }
           }
@@ -2150,14 +2381,12 @@ angular.module('angularAudioRecorder.services')
         if (ua.ie && ua.win) {
           if (obj.readyState == 4) {
             removeObjectInIE(id);
-          }
-          else {
+          } else {
             win.attachEvent("onload", function () {
               removeObjectInIE(id);
             });
           }
-        }
-        else {
+        } else {
           obj.parentNode.removeChild(obj);
         }
       }
@@ -2181,9 +2410,7 @@ angular.module('angularAudioRecorder.services')
       var el = null;
       try {
         el = doc.getElementById(id);
-      }
-      catch (e) {
-      }
+      } catch (e) {}
       return el;
     }
 
@@ -2202,11 +2429,16 @@ angular.module('angularAudioRecorder.services')
     /* Flash Player and SWF content version matching
      */
     function hasPlayerVersion(rv) {
-      var pv = ua.pv, v = rv.split(".");
+      var pv = ua.pv,
+        v = rv.split(".");
       v[0] = parseInt(v[0], 10);
       v[1] = parseInt(v[1], 10) || 0; // supports short notation, e.g. "9" instead of "9.0.0"
       v[2] = parseInt(v[2], 10) || 0;
-      return (pv[0] > v[0] || (pv[0] == v[0] && pv[1] > v[1]) || (pv[0] == v[0] && pv[1] == v[1] && pv[2] >= v[2])) ? true : false;
+      return pv[0] > v[0] ||
+        (pv[0] == v[0] && pv[1] > v[1]) ||
+        (pv[0] == v[0] && pv[1] == v[1] && pv[2] >= v[2])
+        ? true
+        : false;
     }
 
     /* Cross-browser dynamic CSS creation
@@ -2216,14 +2448,20 @@ angular.module('angularAudioRecorder.services')
       if (ua.ie && ua.mac) {
         return;
       }
-      var h = doc.getElementsByTagName("head")[0], s = createElement("style");
+      var h = doc.getElementsByTagName("head")[0],
+        s = createElement("style");
       s.setAttribute("type", "text/css");
       s.setAttribute("media", "screen");
       if (!(ua.ie && ua.win) && typeof doc.createTextNode != UNDEF) {
         s.appendChild(doc.createTextNode(sel + " {" + decl + "}"));
       }
       h.appendChild(s);
-      if (ua.ie && ua.win && typeof doc.styleSheets != UNDEF && doc.styleSheets.length > 0) {
+      if (
+        ua.ie &&
+        ua.win &&
+        typeof doc.styleSheets != UNDEF &&
+        doc.styleSheets.length > 0
+      ) {
         var ls = doc.styleSheets[doc.styleSheets.length - 1];
         if (typeof ls.addRule == OBJECT) {
           ls.addRule(sel, decl);
@@ -2235,8 +2473,7 @@ angular.module('angularAudioRecorder.services')
       var v = isVisible ? "visible" : "hidden";
       if (isDomLoaded && getElementById(id)) {
         getElementById(id).style.visibility = v;
-      }
-      else {
+      } else {
         createCSS("#" + id, "visibility:" + v);
       }
     }
@@ -2251,13 +2488,16 @@ angular.module('angularAudioRecorder.services')
 
     /* Release memory to avoid memory leaks caused by closures, fix hanging audio/video threads and force open sockets/NetConnections to disconnect (Internet Explorer only)
      */
-    var cleanup = function () {
+    var cleanup = (function () {
       if (ua.ie && ua.win) {
         window.attachEvent("onunload", function () {
           // remove listeners to avoid memory leaks
           var ll = listenersArr.length;
           for (var i = 0; i < ll; i++) {
-            listenersArr[i][0].detachEvent(listenersArr[i][1], listenersArr[i][2]);
+            listenersArr[i][0].detachEvent(
+              listenersArr[i][1],
+              listenersArr[i][2]
+            );
           }
           // cleanup dynamically embedded objects to fix audio/video threads and force open sockets and NetConnections to disconnect
           var il = objIdArr.length;
@@ -2275,8 +2515,7 @@ angular.module('angularAudioRecorder.services')
           swfobject = null;
         });
       }
-    }();
-
+    })();
 
     return {
       /* Public API
@@ -2302,8 +2541,7 @@ angular.module('angularAudioRecorder.services')
             var n = o.getElementsByTagName(OBJECT)[0];
             if (!n || (n && typeof o.SetVariable != UNDEF)) {
               r = o;
-            }
-            else if (typeof n.SetVariable != UNDEF) {
+            } else if (typeof n.SetVariable != UNDEF) {
               r = n;
             }
           }
@@ -2311,8 +2549,25 @@ angular.module('angularAudioRecorder.services')
         return r;
       },
 
-      embedSWF: function (swfUrlStr, replaceElemIdStr, widthStr, heightStr, swfVersionStr, xiSwfUrlStr, flashvarsObj, parObj, attObj) {
-        if (!ua.w3cdom || !swfUrlStr || !replaceElemIdStr || !widthStr || !heightStr || !swfVersionStr) {
+      embedSWF: function (
+        swfUrlStr,
+        replaceElemIdStr,
+        widthStr,
+        heightStr,
+        swfVersionStr,
+        xiSwfUrlStr,
+        flashvarsObj,
+        parObj,
+        attObj
+      ) {
+        if (
+          !ua.w3cdom ||
+          !swfUrlStr ||
+          !replaceElemIdStr ||
+          !widthStr ||
+          !heightStr ||
+          !swfVersionStr
+        ) {
           return;
         }
         widthStr += ""; // Auto-convert to string
@@ -2322,7 +2577,8 @@ angular.module('angularAudioRecorder.services')
           var att = {};
           if (attObj && typeof attObj === OBJECT) {
             for (var i in attObj) {
-              if (attObj[i] != Object.prototype[i]) { // Filter out prototype additions from other potential libraries
+              if (attObj[i] != Object.prototype[i]) {
+                // Filter out prototype additions from other potential libraries
                 att[i] = attObj[i];
               }
             }
@@ -2333,18 +2589,19 @@ angular.module('angularAudioRecorder.services')
           var par = {};
           if (parObj && typeof parObj === OBJECT) {
             for (var j in parObj) {
-              if (parObj[j] != Object.prototype[j]) { // Filter out prototype additions from other potential libraries
+              if (parObj[j] != Object.prototype[j]) {
+                // Filter out prototype additions from other potential libraries
                 par[j] = parObj[j];
               }
             }
           }
           if (flashvarsObj && typeof flashvarsObj === OBJECT) {
             for (var k in flashvarsObj) {
-              if (flashvarsObj[k] != Object.prototype[k]) { // Filter out prototype additions from other potential libraries
+              if (flashvarsObj[k] != Object.prototype[k]) {
+                // Filter out prototype additions from other potential libraries
                 if (typeof par.flashvars != UNDEF) {
                   par.flashvars += "&" + k + "=" + flashvarsObj[k];
-                }
-                else {
+                } else {
                   par.flashvars = k + "=" + flashvarsObj[k];
                 }
               }
@@ -2356,8 +2613,12 @@ angular.module('angularAudioRecorder.services')
               setVisibility(replaceElemIdStr, true);
             }
           });
-        }
-        else if (xiSwfUrlStr && !isExpressInstallActive && hasPlayerVersion("6.0.65") && (ua.win || ua.mac)) {
+        } else if (
+          xiSwfUrlStr &&
+          !isExpressInstallActive &&
+          hasPlayerVersion("6.0.65") &&
+          (ua.win || ua.mac)
+        ) {
           isExpressInstallActive = true; // deferred execution
           setVisibility(replaceElemIdStr, false);
           addDomLoadEvent(function () {
@@ -2372,7 +2633,7 @@ angular.module('angularAudioRecorder.services')
       },
 
       getFlashPlayerVersion: function () {
-        return {major: ua.pv[0], minor: ua.pv[1], release: ua.pv[2]};
+        return { major: ua.pv[0], minor: ua.pv[1], release: ua.pv[2] };
       },
 
       hasFlashPlayerVersion: hasPlayerVersion,
@@ -2380,8 +2641,7 @@ angular.module('angularAudioRecorder.services')
       createSWF: function (attObj, parObj, replaceElemIdStr) {
         if (ua.w3cdom) {
           return createSWF(attObj, parObj, replaceElemIdStr);
-        }
-        else {
+        } else {
           return undefined;
         }
       },
@@ -2411,7 +2671,9 @@ angular.module('angularAudioRecorder.services')
           var pairs = q.substring(1).split("&");
           for (var i = 0; i < pairs.length; i++) {
             if (pairs[i].substring(0, pairs[i].indexOf("=")) == param) {
-              return urlEncodeIfNecessary(pairs[i].substring((pairs[i].indexOf("=") + 1)));
+              return urlEncodeIfNecessary(
+                pairs[i].substring(pairs[i].indexOf("=") + 1)
+              );
             }
           }
         }
@@ -2435,7 +2697,7 @@ angular.module('angularAudioRecorder.services')
             isExpressInstallActive = false;
           }
         }
-      }
+      },
     };
-  }();
+  })();
 })(window);

@@ -14,10 +14,24 @@ org.ekstep.question.EditorPlugin = org.ekstep.contenteditor.basePlugin.extend({
    */
   initialize: function () {
     var instance = this;
-    ecEditor.addEventListener("org.ekstep.question:showpopup", this.loadHtml, this);
-    var templatePath = ecEditor.resolvePluginResource(instance.manifest.id, instance.manifest.ver, 'editor/question.html');
-    var controllerPath = ecEditor.resolvePluginResource(instance.manifest.id, instance.manifest.ver, 'editor/question-ctrl.js');
-    ecEditor.getService(ServiceConstants.POPUP_SERVICE).loadNgModules(templatePath, controllerPath);
+    ecEditor.addEventListener(
+      "org.ekstep.question:showpopup",
+      this.loadHtml,
+      this
+    );
+    var templatePath = ecEditor.resolvePluginResource(
+      instance.manifest.id,
+      instance.manifest.ver,
+      "editor/question.html"
+    );
+    var controllerPath = ecEditor.resolvePluginResource(
+      instance.manifest.id,
+      instance.manifest.ver,
+      "editor/question-ctrl.js"
+    );
+    ecEditor
+      .getService(ServiceConstants.POPUP_SERVICE)
+      .loadNgModules(templatePath, controllerPath);
   },
   /**
    *  Open window to add question and options
@@ -28,24 +42,24 @@ org.ekstep.question.EditorPlugin = org.ekstep.contenteditor.basePlugin.extend({
   loadHtml: function (event, data) {
     var currentInstance = this;
     ecEditor.getService(ServiceConstants.POPUP_SERVICE).open({
-      template: 'QuestionUnitBrowser',
-      controller: 'QuestionCreationFormController',
-      controllerAs: '$ctrl',
+      template: "QuestionUnitBrowser",
+      controller: "QuestionCreationFormController",
+      controllerAs: "$ctrl",
       resolve: {
-        'instance': function () {
+        instance: function () {
           return currentInstance;
         },
-        'questionData': function () {
+        questionData: function () {
           return data;
-        }
+        },
       },
       width: 900,
       showClose: false,
       closeByEscape: false,
       closeByDocument: false,
-      className: 'qc-ngdialog-custome'
+      className: "qc-ngdialog-custome",
     });
-  }
+  },
 });
 
 //# sourceURL=questionEditorPlugin.js

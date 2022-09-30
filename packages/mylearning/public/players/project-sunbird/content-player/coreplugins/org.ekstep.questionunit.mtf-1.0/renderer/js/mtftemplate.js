@@ -21,7 +21,7 @@ MTFController.getQuestionContent = function () {
   <div class='<%= MTFController.questionTextImageWidth %>' > \
   <% if(question.data.question.image){ %> \
     <div class='question-image'>\
-      <img onclick='MTFController.showImageModel(event, \"<%= MTFController.pluginInstance.getAssetUrl(question.data.question.image) %>\")' src='<%= MTFController.pluginInstance.getAssetUrl(question.data.question.image) %>' \> \
+      <img onclick='MTFController.showImageModel(event, \"<%= MTFController.pluginInstance.getAssetUrl(question.data.question.image) %>\")' src='<%= MTFController.pluginInstance.getAssetUrl(question.data.question.image) %>' > \
     </div> \
     <% } %> \
     <% if(question.data.question.text.length<85){ %>\
@@ -35,8 +35,9 @@ MTFController.getQuestionContent = function () {
         <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>'  onclick=MTFController.pluginInstance.playAudio({src:'<%= question.data.question.audio %>'}) > \
       </div>\
     <% } %> \
-  </header>";``
-}
+  </header>";
+  ``;
+};
 
 /**
  * returns horizontal LHS RHS layout for mtf
@@ -60,7 +61,7 @@ MTFController.getHorizontalLayout = function () {
               <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %> ><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
-                  <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
+                  <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) >\
                 </span>\
               <% } %>\
             </p>\
@@ -98,7 +99,7 @@ MTFController.getHorizontalLayout = function () {
               <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %> ><%= val.text %></span>\
               <% if(val.audio){ %> \
                 <span class='mtf-hori-opt-audio-image' >\
-                  <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
+                  <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) >\
                 </span>\
                 <% } %>\
               </p> \
@@ -109,7 +110,7 @@ MTFController.getHorizontalLayout = function () {
       </div>\
     <% });%>\
   </div>";
-}
+};
 
 /**
  * returns vertical LHS RHS layout for mtf
@@ -133,7 +134,7 @@ MTFController.getVerticalLayout = function () {
                 <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %>><%= val.text %></span>\
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
-                    <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
+                    <img src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) >\
                   </span>\
                 <% } %>\
               </p>\
@@ -170,7 +171,7 @@ MTFController.getVerticalLayout = function () {
                 <% } %> \
                 <% if(val.audio){ %> \
                   <span class='mtf-vert-opt-audio-image' >\
-                    <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) \>\
+                    <img  src='<%=MTFController.pluginInstance.getAudioIcon('renderer/assets/audio.png') %>' onclick=MTFController.pluginInstance.playAudio({src:'<%= val.audio %>'}) >\
                   </span>\
                 <% } %>\
                 <span <% if(val.image) { %>  class='text-highlight-lhs-rhs' <% } %> ><%= val.text %></span>\
@@ -182,15 +183,16 @@ MTFController.getVerticalLayout = function () {
       </div>\
     <% });%>\
   </div>";
-}
+};
 
 /**
  * image will be shown in popup
  * @memberof org.ekstep.questionunit.mtf.mtftemplate
  */
-MTFController.showImageModel = function (event, imageSrc) {
+(MTFController.showImageModel = function (event, imageSrc) {
   if (imageSrc) {
-    var modelTemplate = "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
+    var modelTemplate =
+      "<div class='popup' id='image-model-popup' onclick='MTFController.hideImageModel()'><div class='popup-overlay' onclick='MTFController.hideImageModel()'></div> \
   <div class='popup-full-body'> \
   <div class='font-lato assess-popup assess-goodjob-popup'> \
     <img class='qc-question-fullimage' src=<%= src %> /> \
@@ -198,35 +200,33 @@ MTFController.showImageModel = function (event, imageSrc) {
   </div></div>";
     var template = _.template(modelTemplate);
     var templateData = template({
-      src: imageSrc
-    })
+      src: imageSrc,
+    });
     $(MTFController.constant.qsMTFElement).append(templateData);
   }
-},
-
+}),
   /**
    * onclick overlay or X button the popup will be hide
    * @memberof org.ekstep.questionunit.mtf.mtftemplate
    */
-  MTFController.hideImageModel = function () {
+  (MTFController.hideImageModel = function () {
     $("#image-model-popup").remove();
-  },
-
+  }),
   /**
    * question text if long then handle using ellipse
    * @memberof org.ekstep.questionunit.mtf.mtftemplate
    * @param {Object} event from question set.
    */
-  MTFController.expandQuestion = function (event) {
-    if ($(event.target.parentElement).hasClass('collapse-ques-text')) {
+  (MTFController.expandQuestion = function (event) {
+    if ($(event.target.parentElement).hasClass("collapse-ques-text")) {
       $(event.target.parentElement).removeClass("collapse-ques-text");
       $(event.target.parentElement).addClass("qc-expand-ques-text");
-      $(".mtf-header").css('height', '65vh');
+      $(".mtf-header").css("height", "65vh");
     } else {
       $(event.target.parentElement).addClass("collapse-ques-text");
       $(event.target.parentElement).removeClass("qc-expand-ques-text");
-      $(".mtf-header").css('height', '17.7vh');
+      $(".mtf-header").css("height", "17.7vh");
     }
-  };
+  });
 
 //# sourceURL=MTFController.js

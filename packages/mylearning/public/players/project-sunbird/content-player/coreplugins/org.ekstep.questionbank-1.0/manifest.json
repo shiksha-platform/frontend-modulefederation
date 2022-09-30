@@ -13,11 +13,13 @@
         "type": "plugin",
         "plugin": "org.ekstep.question",
         "ver": "1.0"
-      }, {
+      },
+      {
         "type": "plugin",
         "plugin": "org.ekstep.questionset.preview",
         "ver": "1.0"
-      },{
+      },
+      {
         "type": "plugin",
         "plugin": "org.ekstep.toaster",
         "ver": "1.0"
@@ -35,11 +37,12 @@
   },
   "renderer": {
     "main": "renderer/plugin.js",
-    "dependencies": [{
-      "type": "plugin",
-      "plugin": "org.ekstep.questionset.preview",
-      "ver": "1.0"
-    }
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.questionset.preview",
+        "ver": "1.0"
+      }
     ]
   }
 }

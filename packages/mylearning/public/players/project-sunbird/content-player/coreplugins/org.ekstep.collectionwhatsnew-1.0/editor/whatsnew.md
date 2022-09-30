@@ -1,4 +1,4 @@
-## Welcome! 
+## Welcome!
 
 ---
 
@@ -23,27 +23,28 @@
 
 ### <b>Save easily</b>
 
-<p> ☼ <b>NEW</b> - We have now provided single click Save for any changes in the <!-- dynamicWord -->
----
+## <p> ☼ <b>NEW</b> - We have now provided single click Save for any changes in the <!-- dynamicWord -->
+
 ### <b>Create more..</b>
 
-<p> ☼ <b>NEW</b> - Now you can create more levels of unit in a <!-- dynamicWord --> to organise resources
----
+## <p> ☼ <b>NEW</b> - Now you can create more levels of unit in a <!-- dynamicWord --> to organise resources
+
 ### <b>Do more with new design</b>
 
-<p> ☼ <b>NEW</b> 
+<p> ☼ <b>NEW</b>
 
 - Quickly create New Units at sibling or child level
 
 - Drag to reorder units in a <!-- dynamicWord -->
 
-- ```What's New!``` to keep you surprised with new things we are building for you!
+- `What's New!` to keep you surprised with new things we are building for you!
 
 - Edit name of a unit in-line in <!-- dynamicWord --> structure tree located in left pane
 
 - Preview Units and Resources directly inside a <!-- dynamicWord -->
 
-- New look for ```Resource Library```
+- New look for `Resource Library`
+
 ---
 
 ### <b>We love to make things better!</b>

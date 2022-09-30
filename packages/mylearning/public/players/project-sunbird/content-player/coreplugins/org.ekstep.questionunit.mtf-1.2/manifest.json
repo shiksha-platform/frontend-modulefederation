@@ -6,13 +6,9 @@
   "description": "",
   "publishedDate": "",
   "icon": "assets/createquestion.png",
-  "languages": [
-    "English"
-  ],
+  "languages": ["English"],
   "categories": [],
-  "keywords": [
-    "mtfplugin"
-  ],
+  "keywords": ["mtfplugin"],
   "targets": [
     {
       "id": "org.ekstep.questionset",
@@ -41,9 +37,7 @@
       "h": 80,
       "fill": "#DCDCDC"
     },
-    "configManifest": [
-      {}
-    ],
+    "configManifest": [{}],
     "help": {
       "src": "editor/help.md",
       "dataType": "text"
@@ -88,45 +82,45 @@
         "src": "renderer/js/mtftemplate.js"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.shape1.png",
-        "type":"image",
-        "src":"renderer/assets/shape1.png",
+        "id": "org.ekstep.questionunit.mtf.shape1.png",
+        "type": "image",
+        "src": "renderer/assets/shape1.png",
         "assetId": "org.ekstep.questionunit.mtf.shape1.png"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.shape2.png",
-        "type":"image",
-        "src":"renderer/assets/shape2.png",
+        "id": "org.ekstep.questionunit.mtf.shape2.png",
+        "type": "image",
+        "src": "renderer/assets/shape2.png",
         "assetId": "org.ekstep.questionunit.mtf.shape2.png"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.shape3.png",
-        "type":"image",
-        "src":"renderer/assets/shape3.png",
+        "id": "org.ekstep.questionunit.mtf.shape3.png",
+        "type": "image",
+        "src": "renderer/assets/shape3.png",
         "assetId": "org.ekstep.questionunit.mtf.shape3.png"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.shape4.png",
-        "type":"image",
-        "src":"renderer/assets/shape4.png",
+        "id": "org.ekstep.questionunit.mtf.shape4.png",
+        "type": "image",
+        "src": "renderer/assets/shape4.png",
         "assetId": "org.ekstep.questionunit.mtf.shape4.png"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.audio1.png",
-        "type":"image",
-        "src":"renderer/assets/audio1.png",
+        "id": "org.ekstep.questionunit.mtf.audio1.png",
+        "type": "image",
+        "src": "renderer/assets/audio1.png",
         "assetId": "org.ekstep.questionunit.mtf.audio1.png"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.audio2.png",
-        "type":"image",
-        "src":"renderer/assets/audio2.png",
+        "id": "org.ekstep.questionunit.mtf.audio2.png",
+        "type": "image",
+        "src": "renderer/assets/audio2.png",
         "assetId": "org.ekstep.questionunit.mtf.audio2.png"
       },
       {
-        "id":"org.ekstep.questionunit.mtf.audio3.png",
-        "type":"image",
-        "src":"renderer/assets/audio3.png",
+        "id": "org.ekstep.questionunit.mtf.audio3.png",
+        "type": "image",
+        "src": "renderer/assets/audio3.png",
         "assetId": "org.ekstep.questionunit.mtf.audio3.png"
       }
     ]

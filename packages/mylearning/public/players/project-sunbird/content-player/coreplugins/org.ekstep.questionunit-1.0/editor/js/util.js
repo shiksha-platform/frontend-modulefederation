@@ -1,45 +1,52 @@
 /**
- * Angular Service to help reuse code across MTF, FTB and MCQ templates for logging 
+ * Angular Service to help reuse code across MTF, FTB and MCQ templates for logging
  * telemetry events and also to invoke the asset browser. This is a place holder for
  * any functionality that needs to be reused across these templates.
- * 
- * @author: Siva K (sivashanmugam.kannan@funtoot.com), Ram J (ram.j@funtoot.com)
- */
-angular.module('org.ekstep.question').service('questionServices', ['$http', function ($http) {
-    this.invokeAssetBrowser = function (callbackObj) {
-        ecEditor.dispatchEvent('org.ekstep.assetbrowser:show', callbackObj);
-    }
-
-    this.generateTelemetry = function (data) {
-        if (data) ecEditor.getService('telemetry').interact({
-            "type": data.type,
-            "id": data.id,
-            "pageid": data.form,
-            "target": {
-                "id": data.target.id,
-                "ver": data.target.ver,
-                "type": data.target.type
-            },
-            "plugin": data.plugin
-        })
-    }
-}]);
-
-/**
- * Angular directive for uniform handling of media (image and audio) selected into 
- * question elements (Question or Options). 
  *
  * @author: Siva K (sivashanmugam.kannan@funtoot.com), Ram J (ram.j@funtoot.com)
  */
-angular.module('org.ekstep.question').directive('selectedMediaContainer', function () {
+angular.module("org.ekstep.question").service("questionServices", [
+  "$http",
+  function ($http) {
+    this.invokeAssetBrowser = function (callbackObj) {
+      ecEditor.dispatchEvent("org.ekstep.assetbrowser:show", callbackObj);
+    };
+
+    this.generateTelemetry = function (data) {
+      if (data)
+        ecEditor.getService("telemetry").interact({
+          type: data.type,
+          id: data.id,
+          pageid: data.form,
+          target: {
+            id: data.target.id,
+            ver: data.target.ver,
+            type: data.target.type,
+          },
+          plugin: data.plugin,
+        });
+    };
+  },
+]);
+
+/**
+ * Angular directive for uniform handling of media (image and audio) selected into
+ * question elements (Question or Options).
+ *
+ * @author: Siva K (sivashanmugam.kannan@funtoot.com), Ram J (ram.j@funtoot.com)
+ */
+angular
+  .module("org.ekstep.question")
+  .directive("selectedMediaContainer", function () {
     return {
-        scope: {
-            formdata: '=',
-            callbacks: '=mediaCallbacks',
-            qEleType: '@mediaType',
-            mediaIndex: '@mediaIndex'
-        },
-        template: '<div ng-if="(formdata.image.length > 0) || (formdata.audio.length > 0)">\
+      scope: {
+        formdata: "=",
+        callbacks: "=mediaCallbacks",
+        qEleType: "@mediaType",
+        mediaIndex: "@mediaIndex",
+      },
+      template:
+        '<div ng-if="(formdata.image.length > 0) || (formdata.audio.length > 0)">\
       <div class="question-selected-media-container">\
         <div class="selected-image-container" ng-if="formdata.image.length > 0">\
             <div class="image-container">\
@@ -68,8 +75,8 @@ angular.module('org.ekstep.question').directive('selectedMediaContainer', functi
         </div>\
       </div>\
     </div>\
-  '
+  ',
     };
-});
+  });
 
 //# sourceURL=questionunit-util.js

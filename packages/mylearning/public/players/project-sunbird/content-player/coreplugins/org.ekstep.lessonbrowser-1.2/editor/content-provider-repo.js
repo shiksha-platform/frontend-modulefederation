@@ -5,14 +5,14 @@
  * @author G S Bajaj <gourishanker.bajaj@tarento.com>
  */
 org.ekstep.collectioneditor.contentProviderRepo = Class.extend({
-	id: undefined,
-	label: undefined,
+  id: undefined,
+  label: undefined,
 
-	init: function() {},
+  init: function () {},
 
-	getFilters: function(){},
+  getFilters: function () {},
 
-	getTemplate: function() {
-		throw "cannot invoke abstract method"
-	}
+  getTemplate: function () {
+    throw "cannot invoke abstract method";
+  },
 });

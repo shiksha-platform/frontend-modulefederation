@@ -6,17 +6,25 @@
  */
 
 org.ekstep.contenteditor.basePlugin.extend({
-    /**
-     * registers events
-     * @memberof breadcrumb
-     */
-    initialize: function() {
-        var instance = this;
-        var templatePath = ecEditor.resolvePluginResource(instance.manifest.id, instance.manifest.ver, "editor/template.html");
-        var controllerPath = ecEditor.resolvePluginResource(instance.manifest.id, instance.manifest.ver, "editor/breadcrumbApp.js");
-        org.ekstep.collectioneditor.api.registerBreadcrumb({
-            templateURL: templatePath,
-            controllerURL: controllerPath
-        });
-    }
-})
+  /**
+   * registers events
+   * @memberof breadcrumb
+   */
+  initialize: function () {
+    var instance = this;
+    var templatePath = ecEditor.resolvePluginResource(
+      instance.manifest.id,
+      instance.manifest.ver,
+      "editor/template.html"
+    );
+    var controllerPath = ecEditor.resolvePluginResource(
+      instance.manifest.id,
+      instance.manifest.ver,
+      "editor/breadcrumbApp.js"
+    );
+    org.ekstep.collectioneditor.api.registerBreadcrumb({
+      templateURL: templatePath,
+      controllerURL: controllerPath,
+    });
+  },
+});
