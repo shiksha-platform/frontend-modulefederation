@@ -1,0 +1,21 @@
+{
+    "id": "org.ekstep.viewecml",
+    "ver": "1.0",
+    "author": "Anshu Narayan",
+    "title": "viewecml Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "js", "src": "editor/libs/dist/E2EConverter.js" },
+            { "type": "css", "src": "editor/libs/prism/prism.css" },
+            { "type": "js", "src": "editor/libs/prism/prism.js" }
+        ],
+        "views":[
+            {"template":"./ECMLbrowser.html", "controller":""}
+        ],
+        "menu": [{
+        }]
+    }
+}

@@ -1,0 +1,71 @@
+<div ng-app="contentmetaApp" class="metacontent-wrapper" ng-controller="contentmetaController">
+    <div class="ui segment header-segment" id="headerSegment">
+        <div class="ui breadcrumb">
+            <a class="section" ng-repeat="value in path" ng-click="setActiveNode(value.nodeId)">
+                {{value.title}} 
+                <div class="divider"> / </div>
+            </a>
+        </div>
+        <h3 class="header-bottom-segment inline-block">{{content.name | limitTo:70}}<span ng-if="content.name.length > 70"> ...</span></h3>
+        <div class="header-buttons-container header-bottom-segment inline-block">
+            <div class="ui primary submit button inline-block right-float button-overrides" id="preview-button" ng-click="previewContent(); generateTelemetry({type: 'click', subtype: 'preview', target: 'preview'})" ng-show="!editMode && nodeType != 'Collection'">
+                Preview
+            </div>
+            <div ng-show="mode == 'Edit' && editable == true">
+                <div class="ui primary button right-float button-overrides" id="update-button" ng-click="updateNode(); generateTelemetry({type: 'click', subtype: 'update', target: 'updatemeta'})" ng-show="editMode">
+                    Update
+                </div>
+            </div>
+        </div>
+    </div>
+    <form class="ui form segment" id="contents-data-form" novalidate ng-submit="updateNode()" name="contentMetaForm">
+        <div class="fields">
+            <div class="field book-image-field" ng-class="editMode ? '' : 'disabled'">
+                <label ng-show="editMode" for="bookImage">Add Icon</label>
+                <div class="book-image-container popup-item" data-content="{{editMode ? 'Add or change image': ''}}" data-variation="tiny inverted" data-position="right center" ng-click="!editMode || showAssestBrowser()">
+                    <i class="camera icon"></i>
+                    <img ng-if="showImageIcon" ng-src="{{content.appIcon || defaultImage }}" ng-click="generateTelemetry({type: 'click', subtype: 'addicon', target: 'appIcon'})" />
+                </div>
+            </div>
+            <div class="field form-fields-except-image">
+                <div class="field" ng-class="editMode ? 'required' : ''">
+                    <label>Content Title</label>
+                    <div class="ui input" ng-class="editMode ? '' : 'disabled'">
+                        <input placeholder="Enter title for Book" ng-model="content.name" ng-class=" {error: submitted && contentMetaForm.name.$error.required}" name="name" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" required maxlength="100">
+                    </div>
+                </div>
+                <div class="field" ng-class="editMode ? 'required' : ''">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="brief description about the content" ng-model="content.description" ng-class=" {error: submitted && contentMetaForm.description.$error.required}" name="description" rows="2" ng-click="editmode ? generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'}) : ''" ng-readonly="!editMode" required></textarea>
+                    </div>
+                </div>
+                <div class="field" ng-class="editMode ? '' : 'disabled'">
+                        <label>Keywords</label>
+                        <ng-token-field ng-model="content.keywords" id="contentmeta-keywords" placeholder="{{editMode ? 'Enter comma separated keywords': ''}}" mode="{{tokenMode}}" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'keywords'})"></ng-token-field>
+                </div>
+                <div class="field" ng-show="!editMode">
+                    <div class="metacontent-fields-container">
+                        <div class="ui fluid grid container" style="height:100%">
+                            <div ng-show="nodeType == 'Collection' && showSubCollection" class="seven wide column">
+                                <!-- <h4 class="ui header">Course structure</h4> -->
+                                <div class="ui styled accordion collection-metadata-accordion" id="collectionMetadataAccordion">
+                                    <div class="active title" ng-click="toggleCollectionAccodrion()">
+                                        <i ng-show="!(toggleCollectionAccodrionState)" class="fa fa-folder-o" aria-hidden="true"></i>
+                                        <i ng-show="toggleCollectionAccodrionState" aria-hidden="true" class="fa fa-folder-open-o"></i> &nbsp; Contents
+                                        <span class="expand-collection" ng-show="!(toggleCollectionAccodrionState)"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        <span class="collapse-collection" ng-show="toggleCollectionAccodrionState"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                    </div>
+                                    <div class="active content">
+                                        <div id="collection-meta-tree"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>

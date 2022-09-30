@@ -1,0 +1,11 @@
+{
+    "id": "org.ekstep.stageconfig",
+    "ver": "1.0",
+    "author": "Sunil",
+    "title": "Stage Config",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js"
+    }
+}

@@ -1,0 +1,39 @@
+<script type="text/ng-template" ng-app="org.ekstep.lessonbrowserapp" ng-controller="lessonController as $ctrl" id="partials/lessonbrowser.html">
+    <div class="ui active modal lessonbrowser">
+        <div class="header bottomBorder">
+            <div class="ui fluid equal width container grid">
+                <div class="row three column">
+                    <div class="column add-resource">
+                        <span>Add Resource</span>
+                    </div>
+                    <div class="column search-reset-keyword-field-wrapper" ng-if="!$ctrl.err">
+                            <div class="column">
+                                <div class="ui fluid action input search-reset-keyword-field">
+                                    <input type="text" id="resourceSearch" placeholder="Search for keyword" autocomplete="off" spellcheck="false" ng-model="searchKeyword" ng-keyup="$event.keyCode == 13 ? searchByKeyword() : null">
+                                    <div id="reset-button" class="searcherElement" ng-click="resetSearchByKeyword()" title="Reset"><i class="undo icon"></i></div>
+                                    <div id="search-button" class="searcherElement" ng-click="searchByKeyword() " title="Start search"><i class="search icon"></i></div>&nbsp;        
+                                </div>
+                            </div>
+                        </div>
+                    <div class="right aligned" style="padding-top: 10px;margin-right: 2px;margin-left: 10%;">
+                        <i class="close link icon" id="resourceCloseBtn" ng-click="closeThisDialog(); $ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeLessonBrowser'})"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui padded grid content">
+            <div class="ui tab no-padding" ng-class='{active:$first}' ng-repeat="(rid, repo) in $ctrl.lessonbrowser.repos" ng-include="repo.templateUrl" data-tab="{{repo.id}}{{rid}}"></div>
+        </div>
+        <div class="actions">
+            <div class="ui grid">
+                <div class="twelve wide column right aligned">
+                    <div class="ui buttons">
+                        <button id="closePopUp" class="ui orange tiny button" ng-click="closePopup()" type="button">Cancel</button>
+                        <div class="or"></div>
+                        <button class="ui blue button submit tiny button" ng-click="returnSelectedLessons(selectedLessons.list)" ng-disabled="!selectedLessons.list.length" type="button">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

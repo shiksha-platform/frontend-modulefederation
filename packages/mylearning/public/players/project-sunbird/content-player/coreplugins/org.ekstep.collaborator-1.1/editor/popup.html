@@ -1,0 +1,87 @@
+<script type="text/ng-template" id="partials_org.ekstep.collaborator.html">
+	<div class="ui form" id="colInviteForm">
+		<div class="ui {{loading}} inverted dimmer">
+			<div class="ui large text loader" ng-show="isLoading==true && isError==false">Sending invitation...</div>
+			<div class="content" ng-show="isLoading==false && isError==false">
+			  <div class="center">
+				<h2 class="ui icon header" style="color: green!important;">
+				  <i class="collaborator_msg checkmark icon"></i>
+				 Invitation sent Successfully!
+				</h2>
+				<div class="ui grid">
+					<div class="six wide right floated column">
+						<div class="ui green ok button"  ng-click="this.closeThisDialog(); generateTelemetry({type: 'click', subtype: 'close', target: 'closeAddCollaboratorPopUp', targetid:contentId})">
+						  <i class="checkmark icon"></i>
+						  Ok
+						</div>
+					</div>
+				</div>
+			  </div>
+			</div>
+			<div class="content" ng-show="isError==true">
+			  <div class="center">
+				<h2 class="ui icon header" style="color: red!important;">
+				  <i class="collaborator_msg warning sign icon"></i>
+					Something went wrong please try again later
+				</h2>
+				<div class="ui grid">
+					<div class="six wide right floated column">
+						<div class="ui red ok button"  ng-click="loading = ''">
+						  <i class="checkmark icon"></i>
+						  Ok
+						</div>
+					</div>
+				</div>
+			  </div>
+			</div>
+		</div>
+		<div class="field">
+			<label>URL</label>
+			<div class="ui action input">
+			  <input readonly="" type="text" value="{{viewContentLink}}" id="copyTarget">
+			  <div class="ui right labeled icon button" id="copyButton"  ng-click="getUrlLink(); generateTelemetry({type: 'click', subtype: 'copy', target: 'copyMetaFormUrl', targetid:contentId})"><i class="copy icon"></i>{{copyAnswer}}</div>
+			</div>
+		</div>
+
+		<div class="field">
+			<label for="colUsersDropdown">Type usernames</label>
+			<div class="ui fluid multiple search selection dropdown" id="colUsersDropdown" name="colUsersDropdown" data-validate="colUsersDropdown" >
+			 <input type="hidden" name="inviteUsers" id="inviteUsers">
+			 <i class="search icon"></i>
+				<input class="search">
+					<div class="default text">Type usernames to invite to collaborate</div>
+			</div>
+		</div>
+		<div class="field" ng-show="collaborators!=null">
+			<div class="ui small message">
+				<div class="header">You have already invited these users to collaborate</div>
+				<div class="ui mini horizontal divided list">
+					<div class="item" ng-repeat="collaborator in collaborators">
+						<img class="ui avatar image" src="{{collaborator.avatar}}">
+						<div class="content" title="{{collaborator.email}}">
+							{{collaborator.name}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="field">
+		<label for="invite_msg">Invitation message</label>
+		<textarea type="textarea" name="invite_msg" id="invite_msg">Hi, &#13;&#10; &#13;&#10;I need you to contribute to this lesson that I am creating on EkStep Community portal. I am adding you as a collaborator, looking forward to your inputs!</textarea>
+		</div>
+
+		<div class="actions">
+			<div class="ui grid">
+				<div class="wide column right aligned">
+					<div class="ui buttons">
+						<button class="ui orange button" ng-click="closeThisDialog(); generateTelemetry({type: 'click', subtype: 'close', target: 'closeAddCollaboratorPopUp', targetid:contentId})" type="button">Cancel</button>
+						<div class="or"></div>
+						<button class="ui blue button submit button" ng-click="sendInvites(); generateTelemetry({type: 'click', subtype: 'send', target: 'sendInvitesToCollaborator', targetid:contentId})" type="button">Send Invites</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<input type="hidden" name="id" value="{{contentId}}">
+	</div>
+</script>

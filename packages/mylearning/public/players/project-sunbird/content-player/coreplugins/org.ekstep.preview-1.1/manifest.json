@@ -1,0 +1,16 @@
+{
+    "id": "org.ekstep.preview",
+    "ver": "1.1",
+    "author": "Sunil A S",
+    "title": "preview",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": [],
+        "views":[
+            {"template":"./popup.html", "controller":""}
+        ]
+
+    }
+}

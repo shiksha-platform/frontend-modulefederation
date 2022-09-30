@@ -1,0 +1,12 @@
+<div class="field app-icon-area" ng-hide="!appIconConfig.visible" ng-class=" {'error': isSubmit && !(contentMeta.appIcon) && appIconConfig.required, 'required': appIconConfig.required}" name="{{appIconConfig.code}}" ng-required="{{appIconConfig.required}}">
+    <label>{{appIconConfig.label}}</label>
+    <div id="field-app-icon " class="form-icon" ng-disabled="appIconConfig.editable" ng-click="!appIconConfig.editable || invokeAssetBrowser() ">
+        <img ng-src="{{contentMeta.appIcon}} " />
+        <div ng-show="!contentMeta.appIcon" class="ui appIconSelector" ng-class=" {'error': isSubmit && appIconConfig.required && !(contentMeta.appIcon) }">
+            <div>
+                <i id="icon_appIcon" name="icon_appIcon" class="fa fa-camera"></i>
+                <div class="addImageText">Add an image</div>
+            </div>
+        </div>
+    </div>
+</div>

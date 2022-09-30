@@ -1,0 +1,133 @@
+.reorder-table {
+  display: table;
+  text-align: center;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  margin: auto;
+}
+
+.reorder-table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.reorder-screen {
+  margin: auto;
+  text-align: center;
+  line-height: 2em;
+  width: 100%;
+  height: 100%;
+  background-color: #52BC95;
+}
+
+.reorder-question {
+  width: 100%;
+  color: #393C41;
+  background-color: #FFFFFF;
+  height: 23.33333vh;
+  font-size: 3.9vh;
+  line-height: 6.7vh;
+  text-align: left;
+  /* padding: 3%; */
+  /* font-size: 14px; */
+}
+
+.reorder-gutter1 {
+  height: 7%;
+}
+
+.reorder-gutter2 {
+  height: 12%;
+}
+
+#reorder-editor {
+  position: relative;
+  width: 77%;
+  height: 31%;
+}
+
+#reorder-backspace {
+  top: 3%;
+  right: 1%;
+  width: 5%;
+  position: absolute;
+  opacity: 0.5;
+}
+
+#reorder-backspace:hover {
+  cursor: pointer;
+}
+
+#reorder-tarea {
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 100%;
+  padding: 2% 6% 2% 2%;
+  color: #393C41;
+  text-align: left;
+  font-size: 5vh;
+  line-height: 5vh;
+  letter-spacing: 0.25vh;
+  cursor: auto;
+  resize: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.reorder-keyboard {
+  width: 100%;
+  height: 39%;
+  padding: 1% 0px 1% 0px;
+}
+
+/* .reorder-tabscontainer-wrapper {
+  width: 77%;
+  height: 64%;
+} */
+.reorder-tabContainer {
+  overflow: auto;
+  height: max-content;
+  max-height: 100%;
+  margin: auto;
+  width: 77%;
+  display: -webkit-flex;
+  /* Safari */
+  -webkit-flex-wrap: wrap;
+  /* Safari 6.1+ */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+.reorder-words-tabs {
+  padding: 2.2vh 4.1vh 2.2vh 4.1vh;
+  margin: 3vh 1.3vh 1.1vh 1.3vh;
+  height: max-content;
+  width: auto;
+  font-weight: 500;
+  font-size: 4vh;
+  border-radius: 5vh;
+  letter-spacing: 0.25vh;
+  line-height: 4.5vh;
+  background-color: #FFFFFF;
+  color: #393C41;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+.reorder-remove-shadow {
+  box-shadow: none;
+}
+
+.reorder-active {
+  background-color: #7B868B;
+  color: white;
+}
+
+.reorder-words-tabs:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,30 @@
+<script type="text/ng-template" id="textEditorDialog">
+    <div class="ui modal small active" style="top: 10% !important;">
+        <div class="header">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span><i class="icon-text icon"></i> Add Text</span>
+                    </div>
+                    <div class="column" style="text-align: right; cursor: pointer;">
+                        <i class="cursor-pointer close icon" ng-click="closeThisDialog();"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <textarea placeholder="Add text here" ng-model="text"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui buttons">
+                <button class="ui orange button" type="button" ng-click="closeThisDialog()">Cancel</button>
+                <div class="or"></div>
+                <button class="ui blue button" type="button" ng-click="addToStage()">Add</button>
+            </div>
+        </div>
+    </div>
+</script>

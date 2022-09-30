@@ -1,0 +1,26 @@
+{
+    "id": "org.ekstep.activitybrowser",
+    "ver": "1.0",
+    "author": "Harish Kumar Gangula",
+    "title": "Activity Browser Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {"type": "css", "src": "editor/plugin.css"}
+        ],
+        "menu": [{
+            "id": "activitybrowser",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Activity",
+            "title": "Activity Browser",
+            "iconClass": "fa fa-magic",
+            "onclick": {
+                "id": "org.ekstep.activitybrowser:showpopup"
+            }
+        }],
+        "configManifest": []
+    }
+}

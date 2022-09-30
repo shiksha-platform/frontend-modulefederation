@@ -1,0 +1,15 @@
+<div class="ui grid">
+    <div class="two column wide">
+        <div class="header">
+            <center>
+                <h4><i class="warning sign icon outline big yellow icon"></i>{{header}} </h4>
+                <h5 style="text-align: center;font-size: 17px;color: #5f5c5c; display: inline;" class="meta">{{errorMessage}}</h5>
+                <p>{{invalidQuestioncount}}</p>
+            </center>
+        </div>
+        <div style="margin-left: 120px; margin-top : 17px">
+            <button class="ui  primary button" ng-click=callClear()>Yes</button>
+            <button class="ui  secondary orange button" ng-click=dontClear()>Cancel</button>
+        </div>
+    </div>
+</div>

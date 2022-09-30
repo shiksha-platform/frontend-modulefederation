@@ -1,0 +1,64 @@
+ .ui.middle .item .textWraper {
+     overflow-x: auto;
+     white-space: nowrap;
+     background-color: #f5f5f5;
+     height: 40px;
+     display: flex;
+     align-items: center;
+     padding: 10px;
+     border: 1px dashed #e0e0e0;
+     border-radius: 5px;
+     cursor: pointer;
+ }
+ 
+ .slectedText {
+     /*border: 1px solid #8ac3a9 !important;*/
+     background: #e0e0e0 !important;
+     color: #4A88CB !important;
+ }
+ .wordinfo-content {
+    /*height: 300px !important;*/
+ }
+ .wordinfo-loading{
+     height: 270px !important;
+ }
+ 
+ .textHeight {
+     font-weight: bold;
+     background-color: #efefef;
+     height: auto;
+     display: flex;
+     align-items: center;
+     cursor: pointer;
+     padding: 5px !important;
+ }
+ 
+ .ui.grid .row .column.wordinfo-leftContent {
+     width: 70% !important;
+     height: 240px;
+     overflow-y: auto;
+     overflow-x: hidden;
+ }
+ 
+ .ui.grid .row .column.wordinfo-rightContent {
+     color: #aaa;
+     font-size: 13px;
+     width: 30% !important;
+     font-style: italic;
+ }
+ 
+ .wordinfo-modal {
+     top: 4% !important;
+ }
+ 
+ .wordinfo-modal-close {
+     text-align: right;
+     cursor: pointer;
+ }
+ 
+ .helptext {
+     color: #aaa;
+     font-size: 13px;
+     font-style: italic;
+     margin-bottom: 10px;
+ }

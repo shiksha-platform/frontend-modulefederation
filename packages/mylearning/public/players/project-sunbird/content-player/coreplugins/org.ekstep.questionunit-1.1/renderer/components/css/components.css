@@ -1,0 +1,409 @@
+body {
+    font-family: NotoSans, NotoSansOriya, NotoSansGujarati, NotoSansMalayalam;
+    line-height: normal;
+}
+
+/* overiding katex css */
+.math-text .katex-display {
+    margin: 0.2em 0 !important;
+}
+
+/*end */
+
+/* From here image model popup style */
+
+.qc-popup-close-button {
+    cursor: pointer;
+    position: absolute;
+    right: -35px;
+    color: white;
+    bottom: 87%;
+}
+
+#image-model-popup {
+    z-index: 100001;
+    /* Z index 100001 to hide the menu and refresh icon which has 100000 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+#image-model-popup .popup-overlay {
+    opacity: 0.8;
+}
+
+#image-model-popup .popup-full-body {
+    width: auto;
+    margin: auto;
+}
+
+#image-model-popup .assess-popup {
+    position: relative;
+    width: fit-content;
+    top: 0;
+    left: 0;
+    margin: auto;
+}
+
+#image-model-popup img.qc-question-fullimage {
+    max-width: 60vw;
+    max-height: 100%;
+}
+
+#image-model-popup .qc-popup-close-button {
+    position: absolute;
+    right: -15px;
+    top: -20px;
+    color: white;
+    font-size: 20px;
+}
+
+/* question component css */
+
+.absolute-center {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.question-container .image-container img.audio,
+.question-container .image-container img.q-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+
+.question-container {
+    height: 100%;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 3;
+}
+
+.question-container .image-container {
+    width: 14%;
+    float: left;
+    top: 0;
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+    margin-left: 9%;
+}
+
+.question-container .image-container img.q-image {
+    max-width: 100%;
+    max-height: 100%;
+    float: left;
+    right: 0;
+}
+
+.question-container img.audio {
+    position: absolute;
+    right: 1.5%;
+    top: 10%;
+    height: 50%;
+    z-index: 9;
+    cursor: pointer;
+}
+
+.question-container img.audio.no-q-image {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 50%;
+    z-index: 9;
+    cursor: pointer;
+}
+
+.question-container .hiding-container {
+    width: 100%;
+    height: 100%;
+    padding-left: 25%;
+    padding-right: 10%;
+    overflow: hidden;
+    background: white;
+    position: absolute;
+    z-index: 1;
+}
+
+.question-container .hiding-container .expand-container {
+    max-height: 70vh;
+    width: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.question-container .hiding-container .expand-container::-webkit-scrollbar {
+    width: 0px;
+    /* remove scrollbar space */
+    background: transparent;
+    /* optional: just make scrollbar invisible */
+}
+
+/* optional: show position indicator in red */
+
+.question-container .hiding-container .expand-container::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+.question-container .hiding-container .expand-container.with-media {
+    /* padding-left: 18%; */
+}
+
+.question-container .hiding-container .expand-container p {
+    margin-top: 0;
+}
+
+.question-container .expand-button {
+    position: absolute;
+    width: 9%;
+    border-radius: 9px;
+    height: 21.8%;
+    bottom: 5%;
+    right: 0;
+    z-index: 2;
+    cursor: pointer;
+    display: none;
+}
+
+.question-container .expand-button img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 70%;
+}
+
+.question-container .expand-button img.flip {
+    transform: rotate(180deg);
+}
+
+.question-zoom-img {
+    width: 50%;
+    max-width: 35px;
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    cursor: pointer;
+}
+
+.bg-graphics {
+   position: absolute;
+   left:0;
+   top:0;
+   width: 100%;
+   height: 100%;
+}
+
+.left2{
+    left: 2%;
+}
+
+.bg-graphics .bg-circle {
+    position: fixed;
+    width: 60vw;
+    height: 106.6662vh;
+    border-radius: 50%;
+    opacity: 0.15;
+    background-color: #ffffff;
+}
+
+.bg-graphics .bg-circle.circle-left {
+    left: -20vw;
+    top: 0vh;
+}
+
+.bg-graphics .bg-circle.circle-right {
+    right: -20vw;
+    top: 30vh;
+}
+
+.bg-graphics-2 {
+    position: relative;
+    overflow: auto;
+    height: 100%;
+}
+.bg-graphics-2 .bg-circle.circle-left {
+    left: -20vw;
+    top: 0vh;
+}
+
+.bg-graphics-2 .bg-circle.circle-right {
+    right: -20vw;
+    top: 30vh;
+}
+
+.bg-graphics-2 .bg-circle {
+    position: fixed;
+    width: 60vw;
+    height: 106.6662vh;
+    border-radius: 50%;
+    opacity: 0.15;
+    background-color: #ffffff;
+}
+
+.plugin-content-container em {
+    font-style: italic;
+}
+
+.urdu-text{
+    font-family: NotoNastaliqUrdu;
+    font-size: 12px;
+    padding: 3px;
+    line-height: 1.95em
+}
+
+/* QUESTION COMPONENT BIG START */
+.question-container-big .text-image-container .image-container .qimage, .question-container-big .text-image-container .expand-button img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.question-container-big {
+    height: 50%;
+    background: white;
+}
+.imagegrid-mcq-question-head{
+    height: 100%;
+}
+.imagegrid-mcq-question-head .question-container-big {
+    height: 100%;
+}
+
+.question-container-big .expand-button img.flip {
+    transform: rotate(180deg);
+}
+
+.question-container-big .text-image-container {
+    width: 80%;
+    margin-left: 10%;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+
+.question-container-big .text-image-container .hiding-container {
+    line-height: 1.4em;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding-bottom: 30px;
+    /* width */
+    /* Track */
+    /* Handle */
+    background:white;
+    padding: 1.5% 5% 0% 5%;
+    height: 35.7%;
+    position: absolute;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.question-container-big .text-image-container .hiding-container ::-webkit-scrollbar {
+    width: 5px;
+}
+
+.question-container-big .text-image-container .hiding-container ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #80808052;
+    border-radius: 10px;
+    background: #f1f1f100;
+}
+
+.question-container-big .text-image-container .hiding-container ::-webkit-scrollbar-thumb {
+    background: #8080804a;
+    border-radius: 10px;
+    max-height: 30px;
+}
+
+.question-container-big .text-image-container .hiding-container .expand-container {
+    text-align: left;
+    max-height: 41vh;
+    z-index: 2;
+    background: white;
+    margin-bottom: 8vh;
+}
+
+.question-container-big.no-qimage .text-image-container .hiding-container .expand-container {
+    max-height:56vh;
+    z-index: 2;
+    background: white;
+    margin-bottom: 8vh;
+}
+
+.question-container-big .text-image-container .expand-button {
+    position: absolute;
+    bottom: 10%;
+    right: 7%;
+    z-index: 2;
+    cursor: pointer;
+    display:none;
+}
+
+.question-container-big .text-image-container .expand-button img {
+    height: 4vh;
+}
+
+.question-container-big .text-image-container .image-container {
+    height: 58%;
+    background: #EEEEEE;
+    position: relative;
+    margin-top: 13.3%;
+    border-radius: 10px;
+}
+
+.question-container-big .text-image-container .hiding-container {
+    background:white;
+}
+
+.question-container-big .text-image-container .image-container .qimage {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.question-container-big .text-image-container .image-container .zoom-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    max-width: 32px;
+}
+
+.question-container-big .text-image-container .image-container.no-text {
+    height: 85%;
+    margin-top: 3vh;
+    z-index: 3;
+}
+
+.question-container-big .audio-container {
+    width: 10%;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+
+.question-container-big .audio-container img {
+    position: absolute;
+    width: 60%;
+    float: left;
+    left: 20%;
+    top: 7%;
+}
+
+.no-qimage .text-image-container .hiding-container {
+    height: 89%;
+}

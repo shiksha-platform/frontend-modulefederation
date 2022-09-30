@@ -1,0 +1,192 @@
+<script type="text/ng-template" ng-app="activityBrowserApp" ng-controller="activityBrowserCtrl as $ctrl" id="activityBrowser">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css" />
+    <div class="ui modal large active activity-browser-modal">
+        <div class="header">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span><i class="fa fa-magic"></i> Activity Browser</span>
+                    </div>
+                    <div class="column right aligned">
+                        <i class="cursor-pointer close link icon" ng-click="closeThisDialog();$ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeButton'})"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-class="$ctrl.showPluginDetails ? 'content' : 'content round-borders'">
+            <div class="ui padded grid">
+                <div class="row" id="activity_browser_searchbar" ng-show="!$ctrl.showPluginDetails">
+                    <div class="ui nine wide column">
+                        <label>
+                            Category
+                        </label>
+                        <div class="ui input" ng-init="$ctrl.activityOptions.categories = []">
+                            <select multiple="" class="ui dropdown search lableCls" ng-model="$ctrl.activityOptions.categories" ng-options="type for type in $ctrl.categories" ng-change="$ctrl.getActivities();$ctrl.generateTelemetry({type: 'click', subtype: 'advanceSearch', target: 'searchActivityCard'})">
+                                <option value="">
+                                    Type
+                                </option>
+                            </select>
+                        </div>&nbsp;&nbsp;
+                        <label>
+                            Concepts
+                        </label>
+                        <div class="ui input">
+                            <input type="text" placeholder="Concepts" ng-model="$ctrl.activityOptions.conceptsPlaceHolder" id="activityConceptSelector" selectable="false" readonly>
+                        </div>
+                    </div>
+                    <div class="right floated three wide right aligned column">
+                        <div class="ui icon input">
+                            <input ng-model="$ctrl.activityOptions.searchQuery" placeholder="Search for activities" ng-keypress="$event.keyCode === 13 ? $ctrl.getActivities() : null" type="text"></input>
+                            <i class="inverted circular search link icon" ng-click="$ctrl.getActivities();$ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'searchActivityCard'})"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider" style="margin: 0;" ng-if="!$ctrl.showPluginDetails"></div>
+                <div ng-if="$ctrl.showPluginDetails" class="row">
+                    <div class="six wide center aligned column">
+                        <h3 class="ui header">                        
+                                <div style="text-transform: capitalize; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-puzzle-piece fa-2x" aria-hidden="true"></i>&nbsp;
+                                    {{$ctrl.pluginDetails.name | limitTo: 30}}                            
+                                </div>
+                        </h3>
+                        <div ng-if="$ctrl.imageAvailable">
+                            <slider images="$ctrl.images"></slider>
+                        </div>
+                    </div>
+                    <div class="six wide column">
+                        <h4>Plugin Details:</h4>
+                        <div style="overflow-y: auto; height: 370px;">
+                            <table class="ui striped table">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Description: </strong></td>
+                                        <td>{{$ctrl.pluginDetails.description}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Created By:</strong></td>
+                                        <td>{{$ctrl.pluginDetails.creator}}
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Version: </strong></td>
+                                        <td>{{$ctrl.pluginDetails.semanticVersion}}
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Category: </strong></td>
+                                        <td>
+                                            <div ng-repeat="category in $ctrl.pluginDetails.category">
+                                                {{category}}
+                                            </div>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Subject: </strong></td>
+                                        <td>{{$ctrl.pluginDetails.subject}}
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Grade: </strong></td>
+                                        <td>
+                                            <div ng-repeat="grade in $ctrl.pluginDetails.gradeLevel">
+                                                {{grade}}
+                                            </div>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Age Group: </strong></td>
+                                        <td>
+                                            <div ng-repeat="ageGroup in $ctrl.pluginDetails.ageGroup">
+                                                {{ageGroup}}
+                                            </div>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Domain: </strong></td>
+                                        <td>
+                                            <div ng-repeat="domain in $ctrl.pluginDetails.domain">
+                                                {{domain}}
+                                            </div>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Language: </strong></td>
+                                        <td>
+                                            <div ng-repeat="language in $ctrl.pluginDetails.language">
+                                                {{language}}
+                                            </div>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Last pusblished: </strong></td>
+                                        <td>
+                                            {{$ctrl.pluginDetails.lastPublishedOn | date:'mediumDate'}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="!$ctrl.showPluginDetails" class="row">
+                    <div class="column activity-browser-content">
+                        <div class="ui segment activity-browser-content-loader" ng-if="$ctrl.loading">
+                            <div class="ui active inverted dimmer">
+                                <div class="ui text loader">Just one second, We're fetching activities for you.</div>
+                            </div>
+                        </div>
+                        <div class="ui four stackable special cards" ng-show="$ctrl.activitiesList.length > 0 && !$ctrl.hideMainPage" id="activity-cards">
+                            <div class="ui link card" ng-repeat="activity in $ctrl.activitiesList track by $index" ng-click="$ctrl.viewPluginDetails(activity); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'activityCard'});">
+                                <div class="blurring dimmable image">
+                                    <div class="ui dimmer">
+                                        <div class="content">
+                                            <div class="center">
+                                                <div class="ui tiny inverted header" title="{{activity.name}}">{{activity.name| limitTo:80}}<span ng-if="activity.name.length > 80">...</span></div>
+                                                <p title="{{activity.description}}">{{activity.description | limitTo:100}}<span ng-if="activity.description.length > 100">...</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <img ng-src="{{activity.appIcon || $ctrl.defaultActivityImage}}">
+                                </div>
+                                <div class="content activity-title-content">
+                                    <b class="sub-header" title="{{activity.name}}" style="display: inline;">{{activity.name | limitTo:22}}<span ng-if="activity.name.length > 22">...</span></b>
+                                    <span class="right floated">
+                                <a class="sub-header" ng-click="$ctrl.addPlugin(activity);$ctrl.generateTelemetry({type: 'click', subtype: 'add', target: 'addActivityCard'})">ADD<i class="plus icon"></i></a>    
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui huge info message activity-browser-center" ng-show="$ctrl.noActivities">
+                            <p>No activities found.</p>
+                        </div>
+                        <div ng-if="$ctrl.errorLoadingActivities" class="ui negative message activity-browser-center">
+                            <div class="header">
+                                We're sorry!
+                            </div>
+                            <p>There's an error while fetching activities, <a href ng-click="$ctrl.getActivities();$ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'searchActivityCard'})">Click here</a> to try again.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions" ng-show="$ctrl.showPluginDetails">
+            <div class="ui grid">
+                <div class="ui two wide column left aligned">
+                    <div class="ui primary button" ng-click="$ctrl.closePluginDetails();$ctrl.generateTelemetry({type: 'click', subtype: 'back', target: 'backButton'})">Back</div>
+                </div>
+                <div class="ui ten wide column right aligned">
+                    <div class="ui buttons">
+                        <div class="ui orange button" ng-click="closeThisDialog();$ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeButton'})">Cancel</div>
+                        <div class="or"></div>
+                        <div class="ui primary button" ng-click="$ctrl.addPlugin($ctrl.selectedPlugin);$ctrl.generateTelemetry({type: 'click', subtype: 'add', target: 'addActivityCard'})">Add</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

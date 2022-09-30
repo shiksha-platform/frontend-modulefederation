@@ -1,0 +1,57 @@
+<ng-template>
+
+<div ng-app="contentmetaApp" class="metacontent-wrapper" ng-controller="contentmetaController">
+    <form class="ui form segment" id="contents-data-form" novalidate name="contentMetaForm" ng-if="mode === 'Edit'">
+        <div class="fields">
+            <div class="field form-fields-except-image">
+                <div class="field" ng-class="editMode ? 'required' : ''">
+                    <label>Name</label>
+                    <div class="ui input" ng-class="editMode ? '' : 'disabled'">
+                        <input placeholder="Enter title for Book" ng-model="content.name" ng-class=" {error: submitted && contentMetaForm.name.$error.required}" name="name" ng-change='changeTitle()' type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" required maxlength="100">
+                    </div>
+                </div>
+                <div class="field" ng-class="editMode ? '' : ''">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="Brief description about the content" ng-model="content.description" ng-class=" {error: submitted && contentMetaForm.description.$error.required}" name="description" rows="2" ng-click="editmode ? generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'}) : ''" ng-readonly="!editMode"></textarea>
+                    </div>
+                </div>
+                <div class="field" ng-class="editMode ? '' : 'disabled'">
+                    <label>Keywords</label>
+                    <tags-input ng-model="content.keywords" ng-class="editMode ? '' : 'remove-delete'" display-property="lemma" placeholder="Enter Keywords" replace-spaces-with-dashes="false">
+                        <auto-complete source="loadKeywords($query)" min-length="0" load-on-focus="true" load-on-empty="true" template="my-content-custom-template"></auto-complete>
+                    </tags-input>
+                    <script type="text/ng-template" id="my-content-custom-template">
+                        <div class="right-panel">
+                            <span ng-bind-html="$highlight($getDisplayText())"></span>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </form>
+     <!-- view template -->
+     <div class="ui basic segment" ng-if="mode !== 'Edit'">     
+        <table class="ui very basic table contentDetails">
+            <tbody>
+                <tr class="top aligned">       
+                    <td class="one wide column"><b>Name</b></td>
+                    <td>:</td>
+                    <td class="eleven wide column">{{content.name || "--"}}</td>
+                </tr>    
+                <tr class="top aligned">
+                    <td class="one wide column"><b>Description</b></td>
+                    <td>:</td>
+                    <td class="eleven wide column">{{content.description || "--"}}</td>
+                </tr>
+                <tr class="top aligned">
+                    <td class="one wide column"><b>Keywords</b></td>
+                    <td>:</td>
+                    <td class="eleven wide column">{{content.keywords.join(', ') || '--'}}</td>
+                </tr>     
+            </tbody>
+        </table>
+    </div>  
+    <!-- view template -->        
+</div>
+</ng-template>

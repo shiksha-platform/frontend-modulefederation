@@ -1,0 +1,168 @@
+/*This file is for styles used in the activity browser*/
+
+.activity-browser-modal {
+    top: 4% !important;
+}
+
+.ui.modal.activity-browser-modal .content .activity-browser-content {
+    height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 0;
+}
+
+.activity-browser-content-loader {
+    width: 100%;
+    height: 300px;
+}
+
+.activity-browser-center {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.activity-search-input {
+    margin-right: 22px;
+    width: 50%;
+    font-size: 0.6em !important;
+}
+
+.activity-filters-container {
+    padding: 8px 10px 4px 18px;
+    background: #f1f1f1;
+}
+
+.activity-title-content {
+    padding-left: 10px !important;
+    padding-right: 5px !important;
+}
+
+#activity_browser_searchbar {
+    margin: 0px 2px 0px 2px;
+    background: rgba(128, 128, 128, 0.26);
+    /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(white, rgba(128, 128, 128, 0.26));
+    /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(white, rgba(128, 128, 128, 0.26));
+    /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(white, rgba(128, 128, 128, 0.26));
+    /* For Firefox 3.6 to 15 */
+    background: linear-gradient(white, rgba(128, 128, 128, 0.26));
+    /* Standard syntax */
+    padding-bottom: 10px;
+}
+
+
+/*image slider*/
+
+.slides {
+    width: 370px;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.slide {
+    width: 100%;
+    position: absolute;
+}
+
+.slide .image {
+    display: inline-block;
+}
+
+.slides.group-1 {
+    height: 290px;
+}
+
+.slides.group-2 {
+    height: 330px;
+}
+
+.slides.group-3 {
+    height: 200px;
+}
+
+.group-1 .image {
+    width: 100%;
+}
+
+.group-2 .image {
+    width: 50%;
+}
+
+.group-3 .image {
+    width: 33%;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+.controls {
+    color: #fff;
+    clear: both;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.navigation a {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5em;
+    display: inline-block;
+    padding: 0.5em;
+    background: #fff;
+    background: rgba(255, 255, 255, .6);
+    cursor: pointer;
+}
+
+.navigation .prev {
+    left: 0;
+}
+
+.navigation .next {
+    right: 0;
+}
+
+.pagination {
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.pagination li {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 2em;
+    width: 1em;
+    height: 1em;
+    padding: 0.5em;
+    background: #ccc;
+    margin: 0.25em;
+}
+
+
+/* image slider */
+
+.round-borders{
+    border-bottom-left-radius: .28571429rem;
+    border-bottom-right-radius: .28571429rem;
+}
+
+.special.cards{
+    margin-top: 0;
+}

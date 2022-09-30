@@ -1,0 +1,6 @@
+{
+    "name": "org.ekstep.mathtext",
+    "dependencies": {
+        "ekstep-content-plugin-dev-common": "ekstep/ekstep-content-plugin-dev-common"
+    }
+}

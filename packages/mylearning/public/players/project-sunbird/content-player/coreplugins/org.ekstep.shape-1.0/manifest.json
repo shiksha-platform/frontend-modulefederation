@@ -1,0 +1,239 @@
+{
+    "id": "org.ekstep.shape",
+    "ver": "1.0",
+    "shortId": "shape",
+    "displayName": "Shape",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Shape Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [],
+        "menu": [{
+            "id": "shape",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Shapes",
+            "title": "Shapes",
+            "iconClass": "icon-shape icon",
+            "submenu": [{
+                "id": "triangle",
+                "type": "icon",
+                "toolTip": "Add Triangle",
+                "title": "Triangle",
+                "iconClass": "icon-triangle icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "triangle",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#00FF00",
+                        "w": 14,
+                        "h": 25,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "rectangle",
+                "type": "icon",
+                "toolTip": "Add Rectangle",
+                "title": "Rectangle",
+                "iconClass": "icon-rectangle icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "rect",
+                        "x": 10,
+                        "y": 20,
+                        "fill": "#FFFF00",
+                        "w": 14,
+                        "h": 25,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "circle",
+                "type": "icon",
+                "toolTip": "Add Circle",
+                "title": "Circle",
+                "iconClass": "icon-circle icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "ellipse",
+                        "x": 15,
+                        "y": 15,
+                        "fill": "#00FF00",
+                        "w": 18,
+                        "h": 32,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "rounded-rectangle",
+                "type": "icon",
+                "toolTip": "Add Rounded Rectangle",
+                "title": "Rounded Rectangle",
+                "iconClass": "icon-roundedrect icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "roundrect",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#FF0000",
+                        "w": 14,
+                        "h": 25,
+                        "radius": 10,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "star",
+                "type": "icon",
+                "toolTip": "Add Star",
+                "title": "Star",
+                "iconClass": "star icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "star",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#FF0000",
+                        "w": 14,
+                        "h": 25,
+                        "corners": 5,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "polygon",
+                "type": "icon",
+                "toolTip": "Add Polygon",
+                "title": "Polygon",
+                "iconClass": "first order icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "polygon",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#FF0000",
+                        "w": 14,
+                        "h": 25,
+                        "sides": 5,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "trapezium",
+                "type": "icon",
+                "toolTip": "Add Trapezium",
+                "title": "Trapezium",
+                "iconClass": "road icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "trapezium",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#FF0000",
+                        "w": 14,
+                        "h": 25,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "rarrow",
+                "type": "icon",
+                "toolTip": "Add Arrow",
+                "title": "Arrow",
+                "iconClass": "long right arrow icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "rarrow",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#000000",
+                        "w": 30,
+                        "h": 25,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }, {
+                "id": "harrow",
+                "type": "icon",
+                "toolTip": "Add double arrow",
+                "title": "Double Arrow",
+                "iconClass": "resize horizontal icon",
+                "onclick": {
+                    "id": "org.ekstep.shape:create",
+                    "data": {
+                        "type": "harrow",
+                        "x": 20,
+                        "y": 20,
+                        "fill": "#000000",
+                        "w": 30,
+                        "h": 25,
+                        "stroke": "rgba(255, 255, 255, 0)",
+                        "strokeWidth": 1,
+                        "opacity": 1
+                    }
+                }
+            }]
+        }],
+        "behaviour": {
+            "rotatable": true
+        },
+        "configManifest": [{
+            "propertyName": "color",
+            "title": "Fill Color",
+            "description": "Choose a color from the color picker",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "#000000"
+        }, {
+            "propertyName": "opacity",
+            "title": "Transparency",
+            "description": "Set the transparency for element",
+            "dataType": "rangeslider",
+            "labelSuffix": "%",
+            "required": true,
+            "defaultValue": 100,
+            "minimumValue": 0,
+            "maximumValue": 100
+        }],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "init-data": {
+            "type": "rect",
+            "x": 10,
+            "y": 20,
+            "fill": "#FFFF00",
+            "w": 14,
+            "h": 25
+        }
+    }
+}

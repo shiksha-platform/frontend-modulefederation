@@ -1,0 +1,27 @@
+{
+    "id": "org.ekstep.collectioneditor",
+    "ver": "1.1",
+    "author": "Sunil A S",
+    "title": "collection tree Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [            
+            { "type": "js", "src": "editor/libs/jQuery-ui.js" },
+            { "type": "js", "src": "editor/libs/jquery.fancytree.min.js" },
+            { "type": "js", "src": "editor/libs/jquery.fancytree.dnd.js" },
+            { "type": "js", "src": "editor/libs/jquery.fancytree.wide.js" },
+            { "type": "js", "src": "editor/libs/jquery.fancytree.edit.js" },
+            { "type": "js", "src": "editor/libs/jquery.fancytree.filter.js" },            
+            { "type": "css", "src": "editor/libs/skin-lion/ui.fancytree.min.css" },
+            { "type": "css", "src": "editor/collectioneditor.css" },
+            { "type": "css", "src": "editor/commonStyles.css" }
+        ],
+        "container": [{
+            "id": "tree",
+            "templateURL": "editor/collectiontree.html",
+            "controllerURL": "editor/collectionEditorApp.js"
+        }]
+    }
+}

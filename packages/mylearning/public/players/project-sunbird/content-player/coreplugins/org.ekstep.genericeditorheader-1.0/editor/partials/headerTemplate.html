@@ -1,0 +1,46 @@
+<div ng-app="org.ekstep.genericeditorheader:app" ng-controller="headerController" class="ui vertical segment content-masterhead" id="genericEditorHeader">
+    <div class="ui grid fluid container custom-container">
+        <div class="one wide centered column custom-1-wide">
+            <img class="ui tiny centered image" ng-src="{{ekstepLogo}}" />
+        </div>
+        <div class="six wide column custom-6-wide">
+            <div class="row custom-row-1">
+                <label class="content-title" ng-bind="name | limitTo:30">
+                    <span ng-if="name.length > 30">...</span>
+                </label>
+            </div>
+            <div class="row custom-row-2">
+                <a class="btn at-btn at-btn-ok" ng-click="editDetails(); generateTelemetry({'type': 'click', 'subtype': '', 'target': 'editmeta' });">
+                    <i class="edit icon link"></i>&nbsp;Edit Details
+                </a>
+            </div>
+        </div>
+        <div class="five wide column custom-5-wide" style="padding-top:1rem!important;">
+            <div class="row header-icon-container">
+                <div class="custom-row-2">
+                    <div class="icon-group-2">
+                        <div class="icon-box popup-item" data-content="Upload Content" data-variation="tiny inverted" data-position="bottom center" ng-click="upload();">
+                            <i class="upload icon custom-icon"></i>
+                        </div>
+                        <div class="icon-box popup-item" data-content="Download to try it out on a mobile device" data-variation="tiny inverted" data-position="bottom center" ng-click="download();">
+                            <i class="download icon custom-icon"></i>
+                        </div>
+                        <div id="closeButton" class="close icon-box popup-item" data-content="Close" data-variation="tiny inverted" data-position="bottom center">
+                            <a ng-click="closeGenericEdtr(); generateTelemetry({ subtype: 'close', target: 'closeButton'})">
+                                <i class="remove icon custom-cursor"></i>
+                            </a>
+                        </div>
+                        <div class="icon-box popup-item label-icon-box" data-content="Save content" data-variation="tiny inverted" data-position="bottom center" ng-click="saveContent(); generateTelemetry({ subtype: 'save', target: 'savebutton'});">
+                            <i class="icon-save"></i>
+                            <span class="label-icon-box-text save-button-text">Save</span>
+                        </div>
+                        <div class="icon-box label-icon-box popup-item" data-content="Send for review" data-variation="tiny inverted" data-position="bottom center" ng-click="sendForReview(); generateTelemetry({'type': 'click', 'subtype': '', 'target': 'reviewbutton' });">
+                            <i class="send icon"></i>
+                            <span class="label-icon-box-text">Send for review</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

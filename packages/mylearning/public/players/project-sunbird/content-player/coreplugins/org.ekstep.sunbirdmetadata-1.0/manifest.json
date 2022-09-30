@@ -1,0 +1,15 @@
+{
+    "id": "org.ekstep.sunbirdmetadata",
+    "ver": "1.0",
+    "author": "Manjunath Davanam",
+    "title": "Sunbird metadata plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "plugin": "org.ekstep.metadata", "ver": "1.0", "type": "plugin" },
+            { "type": "js", "src": "editor/services/service.js" }
+        ]
+    }
+}

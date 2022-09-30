@@ -1,0 +1,29 @@
+<div class="ui mini compact menu item sidebarConfig sidebarHeadTab two" id="todo-sidebar-tab">
+    <a class="item active" id="reviewerTab" data-tab="reviewerTab">Reviewer </a>
+    <a class="item" id="collaboratorTab" data-tab="collaboratorTab">Collaborator </a>
+</div>
+<div class="ui active tab segment sidebarContent" data-tab="reviewerTab">
+    <div class="row">
+        <div class="todoHolder ui message" style="overflow:auto;max-height:500px;">
+            <div class="pageLevelTodos">
+                <div class="content {{showTodo ? 'active': ''}}">
+                    <div class="description">
+                        <div id="pageLevelTodos"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui hidden divider"></div>
+            <div class="pageLevelResolvedTodos">
+                <div class="content {{showTodo ? 'active': ''}}">
+                    <div class="description">
+                        <div id="pageLevelResolvedTodos"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ui tab segment sidebarContent" data-tab="collaboratorTab">
+    <div id="collaboratorsCommentsDiv" data-jlike-url="" data-jlike-type="annotations" data-jlike-subtype="" data-jlike-client="content.jlike_ekcontent" data-jlike-cont-id="" data-jlike-title="" data-jlike-limitstart="0" data-jlike-limit="10" data-jlike-ordering="annotation_date" data-jlike-direction="asc">
+    </div>
+</div>

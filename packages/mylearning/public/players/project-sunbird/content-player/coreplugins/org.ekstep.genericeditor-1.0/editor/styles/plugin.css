@@ -1,0 +1,27 @@
+@media all{
+	#genericEditorBody{
+		width: 100%!important;
+	}
+}
+
+#genericEditorContainer{
+	height: 100vh;
+	width: 100vw;
+	padding: 0;
+}
+
+#genericEditorBody{
+	margin: 0;
+	padding: 0;
+	height: calc( 100% - 55px );
+	background: #f9f9f9;
+	border-top: 1px solid #d8d8d8;
+}
+
+#genericEditorPreviewContainer{
+	border-right: 1px solid #d8d8d8;
+}
+
+// #genericEditorSideBar{
+// 	padding: 0;
+// }

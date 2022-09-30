@@ -1,0 +1,95 @@
+<script type="text/ng-template" ng-app="org.ekstep.uploadfile-1.0" ng-controller="uploadfileController as $ctrl" id="partials_org.ekstep.uploadfile.html">
+<div type="text/template" id="qq-template-validation" style="display: none">
+    <div class="qq-uploader-selector qq-uploader custom-qq-uploader" style="min-height:250px;">
+
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+            <span class="qq-upload-drop-area-text-selector"></span>
+        </div>
+        
+        <span class="qq-drop-processing-selector qq-drop-processing">
+            <span>Processing dropped files...</span>
+            <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list custom-qq-upload-list" aria-live="polite" aria-relevant="additions removals">
+            <li>
+                <div class="qq-progress-bar-container-selector">
+                    <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+                <span class="qq-upload-file-selector qq-upload-file custom-qq-upload-file"></span>
+                <span class="qq-upload-size-selector qq-upload-size"></span>
+                <!--<button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel custom-qq-upload-cancel">Cancel</button>-->
+                <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+                <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+                <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </li>
+        </ul>
+        <div id="qq-upload-actions">
+            <div style="position: absolute;bottom: 46%;left: 43.8%;text-align: center; color: #9b9b9b; user-select: none; cursor: default;">
+                <i class="upload huge icon" style="font-size: 3em"></i><br>
+                <strong>Drag &amp; Drop</strong><br>
+                <span>your files here, or</span>
+            </div>
+            <div class="qq-upload-button-selector qq-upload-button custom-qq-upload-button" style="bottom: 20%;" ng-click="generateTelemetry({id: 'button', subtype:'browse',target:'browseCsvFile'},{context:{cdata:[{id:'toc:csvUpload', type:'Feature'},{id:'SB-9511', type:'Task'}]}})">
+                <div>Browse</div>
+            </div>
+        </div>
+        <dialog class="qq-confirm-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">No</button>
+                <button type="button" class="qq-ok-button-selector">Yes</button>
+            </div>
+        </dialog>
+
+        <dialog class="qq-prompt-dialog-selector">
+            <div class="qq-dialog-message-selector"></div>
+            <input type="text">
+            <div class="qq-dialog-buttons">
+                <button type="button" class="qq-cancel-button-selector">Cancel</button>
+                <button type="button" class="qq-ok-button-selector">Ok</button>
+            </div>
+        </dialog>
+    </div>
+</div>
+<div class="ui modal active upload-csv-modal">
+    <div class="header">
+        <div class="ui grid">
+            <div class="fourteen column row">
+                <div class="left floated twelve wide column">
+                    <i class="upload icon"></i>
+                    <label>{{configData.headerTitle}}</label>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div ng-if="configData.sampleUploadCsvFileLink">
+            <div class="csvdescription">{{configData.description}}</div>
+            <div class="sampleuploadcsv"><a href={{configData.sampleUploadCsvFileLink}} ng-click="generateTelemetry({id: 'button', subtype:'sampleuploadcsv',target:'samplecsvfile'},{context:{cdata:[{id:'toc:csvUpload', type:'Feature'},{id:'SB-9511', type:'Task'}]}})">{{configData.sampleUploadCsvFile}}</a></div>
+        </div>
+        <div ng-if="configData.sampleUpdateCsvFileLink">
+            <div>{{configData.description}}</div>
+            <div class="sampleupdatecsv"><a href={{configData.sampleUpdateCsvFileLink}} ng-click="generateTelemetry({id: 'button', subtype:'sampleupdatecsv',target:'samplecsvfile'},{context:{cdata:[{id:'toc:csvUpload', type:'Feature'},{id:'SB-9511', type:'Task'}]}})">{{configData.sampleUpdateCsvFile}}</a></div>
+        </div>
+    <div class="content padding-top-0">
+        <div id="upload-csv-div"></div>
+        <div id="upload-content-loader-area" ng-if='showLoaderIcon' style="width:69px;height:89px; top:38%;left: 46%;
+         position:absolute; padding:2px;"><img ng-src = "{{loaderIcon}}" width="64" height="64" /><br>Uploading..</div>
+         <div class="ui message">
+                <ul class="list">
+                    <li>File accepted - csv</li>
+                </ul>
+            </div>
+    </div>
+    </div>
+    <div class="actions">
+        <div class="ui buttons">
+            <button class="ui orange button" ng-click="uploadFormClose();generateTelemetry({id: 'button', subtype:'close',target:'closeupload',})" ng-disabled="showLoaderIcon" ng-bind="configData.buttonText.exitBtn"></button>
+            <div class="or"></div>
+            <button class="ui blue button" id="uploadTocFile" ng-click="generateTelemetry({id: 'button', subtype:'upload',target:'uploadButton'},{context:{cdata:[{id:'toc:csvUpload', type:'Feature'},{id:'SB-9511', type:'Task'}]}})" ng-disabled="showLoaderIcon">{{configData.buttonText.primaryBtn}}</button>
+        </div>
+    </div>
+</div>
+</script>

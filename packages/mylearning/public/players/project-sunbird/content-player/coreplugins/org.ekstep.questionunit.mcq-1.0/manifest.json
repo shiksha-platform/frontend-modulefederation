@@ -1,0 +1,93 @@
+{
+    "id": "org.ekstep.questionunit.mcq",
+    "ver": "1.0",
+    "author": "Jagadish",
+    "title": "Multiple Choice Question Unit Plugin",
+    "description": "Question Unit Plugin that enables creation of multiple choice questions.",
+    "publishedDate": "",
+    "languages": ["English"],
+    "categories": [],
+    "keywords": ["mcqplugin"],
+    "targets":[{
+       "id": "org.ekstep.questionset",
+        "ver": 1.0
+      }],
+    "editor":
+    {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        {
+            "type": "plugin",
+            "plugin": "org.ekstep.questionunit",
+            "ver": "1.0"
+        },
+        {
+            "type": "js",
+            "src": "editor/controllers/mcq-controller.js"
+        },
+        {
+            "type": "css",
+            "src": "editor/styles/style.css"
+        }]
+    },
+    "templates": [
+    {
+      "id": "horizontalMCQ",
+      "thumbnail": "editor/assets/mcq-horizontal.png",
+      "title": "Multiple Choice Question",
+      "disc": "Multiple choice items consist of a stem, the correct answer, keyed alternative, and distractors. The stem is the beginning part of the item that presents the item as a problem to be solved, a question asked of the respondent, or an incomplete statement to be completed, as well as any other relevant information.",
+      "category": "MCQ",
+      "editor":
+      {
+        "templateURL": "editor/templates/horizontal_template.html",
+        "controllerURL": "editor/controllers/horizontal_controller.js",
+        "template": "horizontalMCQ",
+        "controller": "QuestionFormController"
+      }
+    }],
+    "renderer":
+    {
+        "main": "renderer/plugin.js",
+        "dependencies": [
+            {
+                "type": "css",
+                "src": "renderer/styles/style.css"
+            },
+            {
+                "type": "js",
+                "src": "renderer/template/grid_template.js"
+            },
+            {
+                "type": "js",
+                "src": "renderer/template/horizontal_template.js"
+            },
+            {
+                "type": "js",
+                "src": "renderer/template/vertical_template.js"
+            },
+            {
+                "type": "js",
+                "src": "renderer/template/template_controller.js"
+            },
+            {
+                "type": "image",
+                "src":"renderer/assets/expand-icon.png",
+                "assetId":"org.ekstep.questionunit.mcq.expand-icon.png"
+            },
+            {
+                "type": "image",
+                "src":"renderer/assets/audio-icon.png",
+                "assetId":"org.ekstep.questionunit.mcq.audio-icon.png"
+            }
+        ]
+    },
+    "dependencies": [
+        {
+            "plugin": "org.ekstep.questionunit",
+            "ver": "1.0",
+            "type": "plugin",
+            "scope": "all"
+        }
+
+    ]
+}

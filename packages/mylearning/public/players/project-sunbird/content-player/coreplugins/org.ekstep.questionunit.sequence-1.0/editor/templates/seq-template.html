@@ -1,0 +1,94 @@
+<div ng-controller="seqQuestionFormController" ng-init="init()">
+    <div class="ui grid seqFullGrid">
+        <div class="one column row">
+            <div class="column innerScroll qs-scrollbar">
+                <div>
+                    <form name="seqForm">
+                        <div class="one column row qHeader">
+                            <span>Enter the question</span>
+                        </div>
+                        <div class="outer-segment">
+                            <div class="ui segments inner-segment">
+                                <div class="ui segment" ng-class="{cardBorder: $ctrl.focused, 'has-errorCard': submitted && seqForm.question.$error.required}">
+                                    <div class="ui grid">
+                                        <div class="twelve wide column">
+                                            <div class="form-group segment textBoxDiv questionTextBox">
+                                                <textarea class="form-control textboxQ" placeholder="Enter the question" name="seqQuestion" ng-model="seqFormData.question.text"
+                                                    ng-class="{'has-success':seqForm.question.$valid, 'has-error': submitted && seqForm.question.$error.required}"
+                                                    ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false"
+                                                    ng-required="!(seqFormData.question.text.length)"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="twelve wide column">
+                                            <selected-media-container media-callbacks="callbacks" class="row" formdata="seqFormData.question" media-type='q' media-index=''></selected-media-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui secondary right aligned segment custom-sec-segment">
+                                    <div class="ui grid">
+                                        <div class="one column row segment-column">
+                                            <div class="column right floated">
+                                                <span class="custom-bottom-label">Add: </span>
+
+                                                <span ng-click="addMedia('q','','image')" class="custom-bottom-segment ui icon" data-tooltip="{{!seqFormData.question.image ? 'Add Image' : 'Edit Image' }}"
+                                                    data-inverted="">
+                                                    <i class="image large icon"></i>
+                                                </span>
+                                                <span ng-click="addMedia('q','','audio')" class="custom-bottom-segment ui icon" data-tooltip="{{!seqFormData.question.audio ? 'Add Audio' : 'Edit Audio' }}"
+                                                    data-inverted="">
+                                                    <i class="music large icon"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="one column row qHeader">
+                            <span>Add Sequences</span>
+                        </div>
+                        <div class="outer-segment" ng-repeat="(key, value) in seqFormData.options">
+                            <div class="ui segments inner-segment" ng-class="{cardBorder: focused, 'has-errorCard': submitted && seqForm['options_' + $index].$error.required}">
+                                <div class="ui segment">
+                                    <div class="ui grid">
+                                        <div class="ten wide column">
+                                            <div class="form-group segment textBoxDiv">
+                                                <input type="text" class="form-control textbox" placeholder="Enter Sequence {{key + 1}}" ng-model="seqFormData.options[key].text"
+                                                    maxlength="120" ng-class="{'has-success':seqForm['options_' + $index].$valid, 'has-error': submitted && seqForm['options_' + $index].$error.required}"
+                                                    ng-init="focused = false" ng-focus="focused = true;generateTelemetry({type: 'TOUCH', id: 'input', target: {id: 'questionunit-sequence-option', ver: '', type: 'input'}})"
+                                                    ng-blur="focused = false" ng-required="!(seqFormData.options[$index].text.length)" name="options_{{$index}}"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="two wide column text-len">
+                                            <span class="maxLengthText">{{value.text.length}}
+                                                <span class="length-divider">/</span>
+                                                120
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui secondary segment custom-sec-segment">
+                                    <div class="ui grid">
+                                        <div class="two column row segment-column">
+                                            <div class="column left-segment">
+                                                <a ng-hide="seqFormData.options.length == 2" href="" ng-click="deleteOption(key)" class="deleteText" data-tooltip="Delete Sequence" data-inverted="">
+                                                    <i class="trash large icon delete-icon"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="one column row">
+                        <div class="column addAns">
+                            <button ng-hide="seqFormData.options.length == 4" class="ui primary basic button large" ng-click="addOption()">Add Sequence</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+{
+  "id": "org.ekstep.mathtext",
+  "ver": "1.0",
+  "author": "ekstep",
+  "type": "plugin",
+  "title": "mathtext",
+  "description": "Math text standalone plugin",
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "js",
+        "src": "libs/mathquill/mathquill.min.js"
+      },
+      {
+        "type": "css",
+        "src": "libs/mathquill/mathquill.css"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/katex.min.js"
+      },
+      {
+        "type": "js",
+        "src": "editor/mathtext.js"
+      },
+      {
+        "type": "css",
+        "src": "libs/katex/katex.min.css"
+      },
+      {
+        "type": "css",
+        "src": "editor/style.css"
+      }
+    ],
+    "menu": [
+      {
+        "id": "math-text",
+        "category": "main",
+        "type": "image",
+        "toolTip": "Add Math text",
+        "title": "Question Set",
+        "iconImage": "assets/sigma.png",
+        "onclick": {
+          "id": "org.ekstep.mathtext:showpopup"
+        }
+      }
+    ],
+    "init-data": {},
+    "configManifest": [
+      {
+        "type": "custom_template",
+        "controllerURL": "editor/config-controller.js",
+        "templateURL": "editor/config-template.html"
+      }
+    ],
+    "help": {
+      "src": "editor/help.md",
+      "dataType": "text"
+    }
+  },
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [
+      {
+        "type": "js",
+        "src": "libs/katex/katex.min.js"
+      },
+      {
+        "type": "css",
+        "src": "libs/katex/katex.min.css"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_main-bold.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_main-bolditalic.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_main-italic.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_main-regular.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_math-bolditalic.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_math-italic.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_math-regular.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_size1-regular.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_size2-regular.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_size3-regular.ttf"
+      },
+      {
+        "type": "js",
+        "src": "libs/katex/fonts/katex_size4-regular.ttf"
+      }
+    ]
+  },
+  "icon": "assets/icon.png",
+  "languages": [
+    "English"
+  ],
+  "categories": [
+    ""
+  ],
+  "keywords": [
+    ""
+  ]
+}

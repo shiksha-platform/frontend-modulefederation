@@ -1,0 +1,50 @@
+<div ng-app="unitmetaApp" class="metacontent-wrapper" ng-controller="unitmetaController">
+    <div class="ui segment header-segment" id="headerSegment">
+        <div class="ui breadcrumb">
+            <a class="section" ng-repeat="value in path" ng-click="setActiveNode(value.nodeId)">
+                <span data-inverted="" ng-mouseover="showTooltip($event, value.title)">{{value.title | limitTo:25}}</span>
+                <span ng-if="value.title.length > 25">...</span>
+                <div ng-if="!$last" class="divider"> > </div>
+            </a>
+        </div>
+    </div>
+    <form class="ui form segment" id="contents-data-form" novalidate ng-show="editMode" name="unitMetaForm">
+        <div class="fields">
+            <div class="field book-image-field margin-left-20 ">
+                <label for="bookImage">Add icon</label>
+                <div class="book-image-container popup-item" data-content="Add or change image" data-variation="tiny inverted" data-position="right center" ng-click="showAssestBrowser()">
+                    <i class="camera icon"></i>
+                    <img ng-if="showImageIcon" ng-src="{{unit.appIcon || defaultImage }}" ng-click="generateTelemetry({type: 'click', subtype: 'addicon', target: 'appIcon'})" />
+                </div>
+            </div>
+            <div class="field form-fields-except-image">
+                <div class="field required">
+                    <label>Unit Title</label>
+                    <div class="ui input">
+                        <input placeholder="Enter title for Book" ng-model="unit.name" ng-change='changeTitle()' ng-class=" {error: submitted && unitMetaForm.name.$error.required}" name="name" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" required maxlength="100">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="Brief description about the unit" ng-model="unit.description" name="description" rows="2" ng-click="generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'})"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Keywords</label>
+                    <tags-input ng-model="unit.keywords" display-property="lemma" placeholder="Enter Keywords" replace-spaces-with-dashes="false">
+                        <auto-complete source="loadKeywords($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="100" template="my-custom-template"></auto-complete>
+                    </tags-input>
+                    <script type="text/ng-template" id="my-custom-template">
+                        <div class="right-panel">
+                            <span ng-bind-html="$highlight($getDisplayText())"></span>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+$(".ui.selection.dropdown").dropdown();
+</script>

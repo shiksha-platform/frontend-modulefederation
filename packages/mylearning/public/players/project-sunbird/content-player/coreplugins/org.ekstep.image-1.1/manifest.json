@@ -1,0 +1,45 @@
+{
+    "id": "org.ekstep.image",
+    "ver": "1.1",
+    "shortId": "image",
+    "displayName": "Image",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Image Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "dependencies": [
+            { "type": "plugin", "plugin": "org.ekstep.assetbrowser", "ver": "1.3" }
+        ],
+        "menu": [{
+            "id": "image",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Image",
+            "title": "Image",
+            "iconClass": "fa fa-picture-o",
+            "onclick": {
+                "id": "org.ekstep.image:assetbrowser:open"
+            }
+        }],
+        "behaviour": {
+            "rotatable": true
+        },
+        "configManifest": [{
+            "propertyName": "imagebrowser",
+            "title": "Image Browser",
+            "description": "Choose a  from the browser",
+            "dataType": "browser",
+            "required": true,
+            "onclick": {
+                "id": "org.ekstep.assetbrowser:show",
+                "type": "image"
+            }
+        }]
+    }
+}

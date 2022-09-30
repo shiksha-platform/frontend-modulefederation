@@ -1,0 +1,207 @@
+.mtf-container{
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    font-weight: 500;
+}
+.mtf-container .mtf-content-container{
+    padding:0 10%;
+    width:100%;
+    height:100%;
+    position: relative;    
+    background-size: 100% 100%;
+}
+
+
+.mtf-container .mtf-content-container .mtf-header{
+    width:100%;
+    height:23.33333vh;
+    font-size:14px;
+    line-height:6.7vh;
+    top:0;
+    left:0;
+    position: absolute;
+    z-index: 1;
+    color:#283644;
+}
+
+
+/* MTF LHS and RHS container styles */
+
+.mtf-container .mtf-content-container .mtf-options-container-margin{
+    height:24%;
+    width:100%;
+    opacity:0;
+    display:hidden;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container{
+    height:76%;
+    width:100%;
+    padding:2.7% 0%;
+    font-size:4vh;
+    display:table;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container{
+    vertical-align: middle;
+    display: table-cell;
+    width:100%;
+    height:100%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container{
+    width:50%;
+    float:left;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block {
+    height:14vh;
+    width:100%;
+    margin-bottom:0%;
+    position: relative;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .rhs-block:hover {
+    cursor: move;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-container{
+    margin-right:-2.77%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block img.background-image{
+    width:100%;
+}
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block img.audio-image{
+    top:35%;
+    z-index: 0;
+    cursor: pointer;
+    position: absolute;
+    height: 25%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-block img.audio-image{
+    left:2.5%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .rhs-block img.audio-image{
+    right:2.5%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-rhs-block span.option-text{
+    position: absolute;
+    width:83%;
+    padding:1%;
+    top:0;
+    bottom:0;
+    margin:auto;
+    display:inline-table;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .lhs-block span.option-text{
+    right:6.5%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-horizontal-container .lhs-rhs-container .rhs-block span.option-text{
+    left:6.5%;
+}
+
+/* top to bottom layout implementation */
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container {
+    width:100%;
+    margin:auto;
+    height:100%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container.options-4{
+    margin:0% 10%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container.options-3{
+    margin:0% 20%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container{
+    height:50%;
+    width:100%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block{
+    height:100%;
+    float:left;
+    position: relative;
+    width:19.5%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.background-image{
+    width:100%;
+    height:92%;
+    position: absolute;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.option-image{
+    max-width: 90%;
+    max-height: 75%;
+    border-radius: 4px;
+    /* applies v-align middle and margin:auto */
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    margin:auto;
+    position: absolute;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block span{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    right:0;
+    left:0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-size: 3.64vh;
+    height:83%;
+    padding:2px 5px;
+    word-break: break-word;
+    hyphens: manual;
+  }
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-rhs-block img.audio-image{
+    width:22%;
+    height: auto;
+    position: absolute;
+    opacity: 0.7;
+    left:39%;
+    cursor: pointer;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .rhs-block{
+    cursor: move;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-block img.background-image{
+    top:12%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-block img.audio-image{
+    top:5%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .rhs-block img.background-image{
+    bottom:12%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .rhs-block img.audio-image{
+    bottom:8%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .lhs-block img.option-image{
+    top:6.78%;
+}
+
+.mtf-container .mtf-content-container .mtf-options-container .mtf-options-vertical-container .lhs-rhs-container .rhs-block img.option-image{
+    bottom:6%;
+}

@@ -1,0 +1,11 @@
+<div ng-app="org.ekstep.genericeditor" ng-controller="mainController" id="genericEditorContainer" class="ui vertical segment">
+    <div ng-repeat="header in headers" ng-include="header.templateURL"></div>
+    <div class="ui fluid grid container" id="genericEditorBody">
+        <div class="ui nine wide column" id="genericEditorPreviewContainer">
+            <div ng-repeat="canvas in canvaslist" ng-include="canvas.templateURL"></div>
+        </div>
+        <div class="ui three wide column" id="genericEditorSideBar">
+            <div ng-repeat="sidebarmenu in registeredCategories" ng-if="sidebarmenu.state == 'SHOW'" ng-include="sidebarmenu.templateURL"></div>
+        </div>
+    </div>
+</div>

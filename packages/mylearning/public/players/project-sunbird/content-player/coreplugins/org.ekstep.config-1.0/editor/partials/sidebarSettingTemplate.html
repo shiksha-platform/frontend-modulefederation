@@ -1,0 +1,243 @@
+<style>
+.ui.segment.tab.sidebarContent {
+    background: #f9f9f9;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 0;
+    height: 80vh;
+    overflow: hidden;
+    overflow-y: auto;
+    padding: 1em 0;
+}
+
+.sidebarContent div label {
+    text-transform: capitalize !important;
+}
+
+.sidebarContent .ui.form .field>label,
+.sidebarContent .ui.header,
+.sidebarContent .ui.table{
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.active.sidebarContent .ui.form{
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.active.sidebarContent div[class*='custom-template'].ui.form{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.sidebarHeadTab {
+    box-shadow: none !important;
+    border: 0px !important;
+    border-bottom: 1px solid #ccc !important;
+    border-radius: 0px !important;
+}
+
+.sidebarHeadTab .item {
+    padding: 0px !important;
+}
+
+.sidebarHeadTab .item.active {
+    background-color: #D7D7D7 !important;
+    border-radius: 0px !important;
+}
+
+.disabled-link {
+    pointer-events: none;
+}
+
+a.item.at-menu-item.popup-item.active {
+    background-color: #D7D7D7 !important;
+}
+
+.show-action-form-btn {
+    float: left;
+    margin-left: 1em;
+}
+
+.ui.segment.sidebarContent .ui.header.actions-header{
+    float: left;
+    padding-right: 0.6em;
+    padding-top: 0.6em;
+}
+</style>
+<div ng-controller="org.ekstep.config:configController">
+    <div class="ui mini compact menu item sidebarConfig sidebarHeadTab three">
+        <a title="Customise" id="customizeOptionSideBar" class="item active" id="settingsTab" data-tab="settings" ng-click="showConfig(); fireSidebarTelemetry({id: 'customise'}, 'config')"><i class="setting icon"></i> <span class="large-screen-only">Customise</span> </a>
+        <a title="Actions" id="actionsOptionSideBar" class="item {{selectedObject.stage ? 'disabled disabled-link' : ''}}" data-tab="actions" ng-click="showActions(); fireSidebarTelemetry({id: 'actions'}, 'config')"><i class="tasks icon"></i> 
+        <span class="large-screen-only">Actions</span> </a>
+        <a title="Properties" id="propertiesOptionSideBar" class="item" data-tab="info" ng-click="showProperties(); fireSidebarTelemetry({id: 'properties'}, 'config')"><i class="info icon"></i> <span class="large-screen-only">Properties</span> </a>
+    </div>
+    <div class="ui active tab segment sidebarContent" data-tab="settings">
+        <div ng-repeat="config in pluginConfig">
+            <div ng-switch on="config.dataType">
+                <div class="ui divider" ng-show="$index != 0" style="border-top: 1px solid transparent; border-bottom: 1px solid transparent;"></div>
+                <div class="ui form" ng-switch-when="colorpicker">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <ui-colorpicker id="{{config.propertyName}}"></ui-colorpicker>
+                    </div>
+                </div>
+                <div class="ui form custom-template" ng-if='config.type == "custom_template"' compilehtml="config.template"></div>
+                <div class="ui form" ng-switch-when="input">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <input type="{{config.valueType || text}}" placeholder="{{config.placeholder}}" ng-model="configData[config.propertyName]" min="{{config.minimumValue}}" max="{{config.maximumValue}}" id="{{config.propertyName}}" ng-show="config.valueType == 'number'" onkeypress="return event.charCode>= 48" ng-click="fireSidebarTelemetry({id: config.propertyName}, config.dataType)" />
+                        <input type="{{config.valueType || text}}" placeholder="{{config.placeholder}}" ng-model="configData[config.propertyName]" id="{{config.propertyName}}" ng-show="config.valueType != 'number'" ng-click="fireSidebarTelemetry({id: config.propertyName}, config.dataType)" />
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="textarea">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <textarea rows="6" ng-maxlength="1000" ng-model="configData[config.propertyName]" id="{{config.propertyName}}" ng-click="fireSidebarTelemetry({id: config.propertyName}, config.dataType)"></textarea>
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="select">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <select class="ui dropdown" id="__config_select" ng-model="configData[config.propertyName]" ng-options="val for val in config.range" ng-change="fireSidebarTelemetry({id: config.propertyName}, config.dataType)">
+                        </select>
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="inputSelect">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <select ng-model="configData[config.propertyName]" ng-options="val for val in config.range" id="{{config.propertyName}}" ng-change="fireSidebarTelemetry({id: config.propertyName}, config.dataType)">
+                        </select>
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="browser">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <i class="browser icon link" ng-click="fireEvent({'id':'org.ekstep.config:invoke', 'data': {'type': config.dataType, 'event': config.onclick}}); fireSidebarTelemetry({id: config.propertyName}, config.dataType)"></i>
+                    </div>
+                </div>
+                <div class="ui icon buttons" ng-switch-when="group">
+                    <label ng-show="config.title">{{config.title}}</label>
+                    <button class="ui button {{configData[dd.propertyName] ? 'primary': ''}}" ng-repeat="dd in config.config" ng-click="configData[dd.propertyName] = !configData[dd.propertyName]; fireSidebarTelemetry({id: config.propertyName}, config.dataType)" data-tooltip="{{dd.toolTip}}">
+                        <div ng-switch on="dd.dataType">
+                            <span ng-show="dd.text" ng-switch-when="text" class="{{dd.textClass}}" style="{{dd.textStyle}}">{{dd.text}}</span>
+                            <i class="{{dd.iconClass}} " ng-show="dd.iconClass" style="{{dd.iconStyle}}" ng-switch-when="icon"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="ui icon buttons" ng-switch-when="buttonToggle">
+                    <label ng-show="config.title">{{config.title}}</label>
+                    <button class="ui button {{configData[config.propertyName] === option.value ? 'primary': ''}}" ng-repeat="option in config.options" ng-click="configData[config.propertyName] = option.value; fireSidebarTelemetry({id: config.propertyName}, config.dataType)" data-tooltip="{{option.toolTip}}">
+                        <div ng-switch on="option.dataType">
+                            <i class="{{option.iconClass}} " ng-show="option.iconClass" style="{{option.iconStyle}}" ng-switch-when="icon"></i>
+                        </div>
+                    </button>
+                </div>
+                <div class="ui form" ng-switch-when="rangeslider">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <div>
+                            <input type="range" id="{{config.propertyName}}" min="{{config.minimumValue}}" max="{{config.maximumValue}}" value="{{config.defaultValue}}" class="config-slider" ng-model="configData[config.propertyName]" ng-init="configData[config.propertyName] = configData[config.propertyName]" ng-click="fireSidebarTelemetry({id: config.propertyName}, config.dataType)">
+                            <div class="ui label" style="background:transparent;">
+                                {{configData[config.propertyName]}}{{config.labelSuffix}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="boolean">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <div class="ui toggle checkbox">
+                            <input name="{{config.propertyName}}" type="checkbox" ng-model="configData[config.propertyName]" ng-click="fireSidebarTelemetry({id: config.propertyName}, config.dataType);">
+                            <label></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="button">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <button class="ui button" ng-click="fireEvent({'id':'org.ekstep.config:invoke', 'data': {'type': config.dataType, 'event': config.onclick}}); fireSidebarTelemetry({id: config.propertyName}, config.dataType)">{{configData[config.PropertyName]}}</button>
+                    </div>
+                </div>
+                <div class="ui form" ng-switch-when="featureButtonToggle">
+                    <div class="field">
+                        <label ng-show="config.title">{{config.title}}</label>
+                        <span ng-repeat="option in config.options" ng-show="option.state">
+                            <button class="ui icon button" ng-show="option.status === 'SHOW'" ng-repeat="suboption in option.suboptions" ng-click="fireEvent(suboption.onclick)" data-tooltip="{{suboption.toolTip}}">
+                                <i class="{{suboption.iconClass}} "></i>
+                            </button>
+                            <div class="ui grey button {{option.status === 'SHOW' ? 'primary': ''}}" ng-click="fireEvent(option.onclick)" style="padding: 0.8em 0.8em;" data-tooltip="{{option.toolTip}}"><i class="{{option.iconClass}}"></i>{{option.title}}</div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui tab segment sidebarContent" data-tab="actions">
+        <div class="ui form" style="height:40px; display:flex; align-items:center;">
+            <div class="field">
+                <h5 class="ui header actions-header" style="margin:0;">On click</h5>
+                <button class="ui tiny circular twitter icon button show-action-form-btn" id="showActionFormBtn" ng-click="showActionForm = !showActionForm" ng-init="showActionForm = false;">
+                    <i class="plus icon"></i>
+                </button>
+            </div>
+        </div>
+        <div class="ui divider" style="border-top: 1px solid transparent; border-bottom: 1px solid transparent;"></div>
+        <div class="ui segment" ng-show="showActionForm">
+            <div id="addActionForm">
+                <form class="ui form">
+                    <div class="field">
+                        <select class="ui  dropdown" ng-model="selectedActionType" id="actionTypeDropdown" ng-options="key as value for (key , value) in allActionsList">
+                            <option value="">select action</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <select class="ui  dropdown" ng-model="selectedActionTarget" ng-options="key as value for (key , value) in actionTargetObject" id="actionTargetDropdown">
+                            <option value="">select target</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <button class="ui primary tiny button" ng-disabled="selectedObject.stage || !selectedActionTarget" ng-click="addAction({'command': selectedActionType, 'asset': selectedActionTarget}); showActionForm = false;" id="addActionBtn">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <table class="ui selectable small table" ng-show="currentObject.actions">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Target</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="action in currentObjectActions track by $index">
+                    <td>{{action.command}}</td>
+                    <td>
+                        <span ng-if="action.name">{{action.name  | limitTo: 15}}</span>
+                        <span ng-if="!action.name">{{action.asset  | limitTo: 15}}</span>
+                    </td>
+                    <td><i class="delete icon link" ng-click="removeAction({index : $index})"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="ui tab segment sidebarContent" data-tab="info" style="padding: 10px !important">
+        <table class="ui table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(propKey, propValue) in pluginProperties">
+                    <td>{{propKey}}</td>
+                    <td>{{propValue}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

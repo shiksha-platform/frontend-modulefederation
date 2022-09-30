@@ -1,0 +1,111 @@
+{
+    "id": "org.ekstep.text",
+    "ver": "1.2",
+    "shortId": "org.ekstep.text",
+    "displayName": "Text",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Text Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor":
+    {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        {
+            "type": "js",
+            "src": "editor/texteditor.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/multilineTransliterator.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/textWYSIWYG.js"
+        },
+        {
+            "type": "css",
+            "src": "editor/style/plugin.css"
+        }],
+        "views":[
+            {"template":"./delete_confirmation_dialog.html", "controller":""},
+            {"template": "./transliterationconfig.html", "controller": "./transliterationapp.js"}
+        ],
+        "menu": [
+        {
+            "id": "org.ekstep.text",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Text",
+            "title": "Text",
+            "iconClass": "fa fa-font",
+            "onclick":
+            {
+                "id": "org.ekstep.text:create",
+                "data":
+                {
+                    "__text": "",
+                    "x": 10,
+                    "y": 20,
+                    "fontFamily": "'Noto Sans', 'Noto Sans Bengali', 'Noto Sans Malayalam', 'Noto Sans Gurmukhi', 'Noto Sans Devanagari', 'Noto Sans Gujarati', 'Noto Sans Telugu', 'Noto Sans Tamil', 'Noto Sans Kannada', 'Noto Sans Oriya', 'Noto Nastaliq Urdu', -apple-system, BlinkMacSystemFont, Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue'",
+                    "fontSize": 18,
+                    "minWidth": 20,
+                    "w": 35,
+                    "maxWidth": 500,
+                    "fill": "#000000",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "stroke": "rgba(255, 255, 255, 0)",
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "editable": false,
+                    "lineHeight": 1,
+                    "version": "V2",
+                    "offsetY": 0.2
+                }
+            },
+            "submenu": [{
+                "id": "beginning",
+                "type": "icon",
+                "title": "Add Richtext",
+                "iconClass": "",
+                "onclick": {
+                    "id": "org.ekstep.richtext:showpopup"
+                }
+            }] 
+        }],
+        "behaviour":
+        {
+            "rotatable": true
+        },
+        "configManifest": [
+        {
+            "type": "custom_template",
+            "controllerURL": "editor/config-controller.js",
+            "templateURL": "editor/configTemplate.html"
+        }],
+        "help":
+        {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "init-data":
+        {
+            "__text": "",
+            "x": 10,
+            "y": 20,
+            "font-family": "'Noto Sans', 'Noto Sans Bengali', 'Noto Sans Malayalam', 'Noto Sans Gurmukhi', 'Noto Sans Devanagari', 'Noto Sans Gujarati', 'Noto Sans Telugu', 'Noto Sans Tamil', 'Noto Sans Kannada', 'Noto Sans Oriya', 'Noto Nastaliq Urdu', -apple-system, BlinkMacSystemFont, Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue'",
+            "fontSize": 18,
+            "minWidth": 20,
+            "w": 35,
+            "maxWidth": 500,
+            "fill": "#000000",
+            "fontStyle": "normal",
+            "fontWeight": "normal"
+        }
+    },
+    "renderer":
+    {
+        "main": "renderer/supertextplugin.js"
+    }
+}

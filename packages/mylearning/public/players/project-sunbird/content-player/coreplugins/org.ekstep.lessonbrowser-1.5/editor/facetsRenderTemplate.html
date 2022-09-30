@@ -1,0 +1,74 @@
+<div class="source-result-container">
+    <div class="facetList" ng-if="section.contents.length" ng-repeat="section in $ctrl.facetsResponse.result.response.sections" ng-init="sectionIndex = $index">
+        <div class="facets-headtext">{{$ctrl.facetsResponse.result.response.sections[sectionIndex].name }}
+            <span class="facets-viewall blueColor" ng-click="viewAll($ctrl.facetsResponse.result.response.sections[sectionIndex].searchQuery,sectionIndex)">View All</span>
+        </div>
+        </br>
+        <div class="ui special five cards">
+            <div class="card" style="cursor:pointer" ng-repeat="lesson in $ctrl.facetsResponse.result.response.sections[sectionIndex].contents | limitTo:5  track by $index" in-view="lineInView($index, $inview, lesson, 'FacetList', $index)" in-view-options="{ throttle: 1000 }"
+                ng-click="toggleSelectionLesson(lesson)">
+                <div class="image">
+                    <img ng-src="{{lesson.appIcon || $ctrl.defaultImage}}" class="resourceMetaImage ">
+                    <div class="ui checkbox blue-checkbox checkBoxOverImage-top-right-corner" id='checkBox_{{lesson.identifier}}' style="z-index:12">
+                        <input class="checkBox" type="checkbox" name="lessons[]">
+                        <label></label>
+                    </div>
+                    <div class="ui inverted dimmer">
+                        <div class="content">
+                            <div class="ui list cardDetails-list">
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">{{lesson.board}}</div>
+                                    <div class="content contentTitle">Board</div>
+                                </div>
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">{{lesson.gradeLevel.toString()}}
+                                    </div>
+                                    <div class="content contentTitle">Class</div>
+                                </div>
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">{{(lesson.subject)}}
+                                    </div>
+                                    <div class="content contentTitle">Subject</div>
+                                </div>
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">
+                                        <span ng-repeat="concept in lesson.concepts">{{ conceptsNames[concept]}}{{$last ? '' : ', '}}</span>
+                                    </div>
+                                    <div class="content contentTitle">Concept</div>
+                                </div>
+                                <div class="item overlapAll">
+                                    <div class="content bottomList" ng-click="showCardDetails(lesson)">VIEW DETAILS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="header contentMetaTitle">
+                        {{lesson.name}}
+                        </span>
+                    </div>
+                    <div class="description resourceDescription">
+                        {{lesson.description}}
+                        <span ng-if="lesson.description.length > 80">
+                            <span class="ui compact icon desc_ellipsis" data-tooltip="{{lesson.description}}" data-position="bottom center">
+                                <a class="moreLink">&nbsp;&nbsp;more...</a>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="meta">
+                        <span class="date">Created by {{lesson.owner || lesson.creator}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider section_divider"></div>
+    </div>
+    <div class="ui negative message errorMessage" ng-if="$ctrl.err">
+        <div class="header">{{$ctrl.err}}</div>
+    </div>
+    <div id="noLessonMsg" class="ui negative message errorMessage">
+        <div class="header">{{messages.no_lesson_found_msg}}</div>
+        <p>{{messages.try_again_msg}}</p>
+    </div>
+</div>

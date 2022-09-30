@@ -1,0 +1,23 @@
+{
+    "id": "org.ekstep.reviewercomments",
+    "ver": "1.0",
+    "author": "Revathi P",
+    "title": "Reviewer Comments",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "css", "src": "editor/comments.css" }
+           ],
+        "menu": [],
+        "sidebarMenu": [{
+            "id": "comments",
+            "type": "icon",
+            "toolTip": "comments",
+            "title": "comments",
+            "iconClass": "comment icon",
+            "templateURL": "editor/partials/sidebarCommentsTemplate.html"
+        }]
+    }
+}

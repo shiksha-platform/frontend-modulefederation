@@ -1,0 +1,13 @@
+{
+    "id": "org.ekstep.contenteditorfunctions",
+    "ver": "1.0",    
+    "author": "Sunil A S",    
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+    	"main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "plugin", "plugin": "org.ekstep.toaster", "ver": "1.0" }
+        ]
+    }
+}

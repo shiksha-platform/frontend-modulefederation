@@ -1,0 +1,16 @@
+{
+    "id": "org.ekstep.assetbrowser",
+    "ver": "1.1",
+    "shortId": "assetbrowser",
+    "author": "Sunil A S",
+    "title": "Asset Browser",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {"type": "js", "src": "editor/recorder/wave/wavesurfer.min.js"},
+            {"type": "js", "src": "editor/recorder/angular-audio-recorder.js"}
+        ]
+    }
+}

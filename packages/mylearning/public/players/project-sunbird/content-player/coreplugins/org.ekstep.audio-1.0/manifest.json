@@ -1,0 +1,36 @@
+{
+    "id": "org.ekstep.audio",
+    "ver": "1.0",
+    "shortId": "audio",
+    "displayName": "Audio",
+    "author": "Amol Ghatol",
+    "title": "Audio Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "js", "src": "editor/libs/jquery.jplayer.min.js" },
+            { "type": "plugin", "plugin": "org.ekstep.assetbrowser", "ver": "1.0" }
+        ],
+        "menu": [{
+            "id": "audio",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Audio",
+            "title": "Audio",
+            "iconClass": "icon-audio icon",
+            "onclick": {
+                "id": "org.ekstep.audio:assetbrowser:open"
+            }
+        }],
+        "config": [{
+            "propertyName": "aduioBrowser",
+            "title": "Audio Browser",
+            "description": "Choose a  from the browser",
+            "dataType": "audiobrowser",
+            "required": true
+        }],
+        "playable": true
+    }
+}

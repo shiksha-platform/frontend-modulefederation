@@ -1,0 +1,34 @@
+{
+    "id": "org.ekstep.richtext",
+    "ver": "1.0",
+    "shortId": "org.ekstep.richtext",
+    "displayName": "Rich Text",
+    "author": "Kartheek Palla",
+    "title": "Text Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "js", "src": "editor/libs/ckeditor.js" },
+            { "type": "css", "src": "editor/style.css" }
+        ],
+        "views":[
+            {"template":"./richtexteditor.html", "controller":"./richtexteditorapp.js"}
+        ],
+        "behaviour": {
+            "rotatable": false
+        },
+        "configManifest": [{
+            "type": "custom_template",
+            "templateURL": "editor/configTemplate.html"
+        }],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        }
+    },
+    "renderer": {
+        "main": "renderer/richtextrendererplugin.js"
+    }
+}

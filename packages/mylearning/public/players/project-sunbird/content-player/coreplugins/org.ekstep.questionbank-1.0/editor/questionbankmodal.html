@@ -1,0 +1,178 @@
+<script type="text/ng-template" id="QuestionFormTemplate" ng-controller="QuestionFormController">
+  <link rel="stylesheet" type="text/css" href="{{csspath}}" />
+  <div class="ui modal qb-question-bank fullscreen active" id="qc-question-bank-model" ng-init="init()">
+    <div class="header" style="padding-right:1em;">
+      <div class="ui three column grid">
+        <div class="column">
+          <span>Question Set</span>
+        </div>
+        <div class="column center aligned">
+          <div class="ui huge breadcrumb breadcrumbTitle qb-breadcrumb">
+            <div class="section" ng-class="{activeBreadcumb: isQuestionSetConfig == false}">Pick Questions
+            </div>
+            <i class="right chevron icon divider"></i>
+            <div class="section" ng-class="{activeBreadcumb: isQuestionSetConfig == true}">Configurations
+            </div>
+          </div>
+        </div>
+        <div class="column right aligned">
+          <i class="cursor-pointer close link icon" ng-click="closeThisDialog();$ctrl.generateTelemetry({id: 'button', type: 'click', subtype: 'close', target: 'closeButton'})"></i>
+        </div>
+      </div>
+    </div>
+    <div class="content wizard qs-scrollbar">
+      <div class="qb-filters-container" ng-show="!isQuestionSetConfig">
+        <div ng-include="filterForm"></div>
+      </div>
+      <div class="qb-filters-container" ng-show="isQuestionSetConfig">
+        <div class="ui form">
+          <div class="five fields">
+            <div ng-class="questionSetConfigObj.title ? 'field' :'field error'">
+              <div class="ui corner labeled input">
+                <input name="title" ng-model="questionSetConfigObj.title" type="text" placeholder="Question Set Title" maxlength="100" autocomplete="off">
+                <div class="ui corner label">
+                  <i class="asterisk icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui fluid labeled input">
+                <div class="ui label">Max score</div>
+                <input class="total-marks ui dropdown" id="max_score" name="max_score" ng-model="questionSetConfigObj.max_score" min='0' required="" type="number" ng-disabled="true" />
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui fluid labeled input displayCount">
+                <div class="ui label">Display</div>
+                <select class="ui fluid dropdown" id="total_items" ng-model="questionSetConfigObj.total_items" ng-options="option as option for option in itemRange" ng-click="generateTelemetry({type: 'select', subtype: 'dropDown', id: 'dropDown'},$event)">
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui toggle checkbox filterField toggle-feedback">
+                <input type="checkbox" ng-model="questionSetConfigObj.show_feedback" id="show-feedback" ng-click="generateTelemetry({type: 'click', subtype: 'toggle', id: 'checkbox'},$event)" />
+                <label>Show Immediate Feedback</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui toggle checkbox filterField">
+                <input type="checkbox" ng-model="questionSetConfigObj.shuffle_questions" id="shuffle0questions" ng-click="shuffleWarnPopUp();generateTelemetry({type: 'click', subtype: 'toggle', id: 'checkbox'},$event)" />
+                <label>Shuffle Questions</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui divider"></div>
+      <div class="qb-questions-list">
+       <div class="ui segments" ng-show="itemsLoading">
+        <div class="ui active inverted dimmer">
+          <div class="ui text loader" id="qc-loader-msg">Please wait, We are fetching that content for you.</div>
+        </div>
+      </div>
+        <div class="ui two column horizontally padded grid" ng-show="!itemsLoading">
+          <div class="seven wide column qb-question-container" ng-show="!isQuestionSetConfig">
+              <span class="ui label">Total Question : {{questions.length}}</span>
+              <span class="ui label qc-selected-quescount">Selected Question : {{selectedQuestions.length}}</span>
+            <div class="row qb-question-list-container qs-scrollbar">
+              <div class="ui large divided items">
+                 
+                <div class="item select list-items ui grid" ng-repeat="question in questions" ng-class="{quesSelector: $index === selectedQueIndex}">
+                  <div class="middle aligned content nine wide column" ng-click="previewItem(question, true); showSelectedQue($index);">
+                    <div class="header" style="display: -webkit-box;">{{ question.title}}</div>
+                    <div class="meta">{{question.medium}} | {{ question.type}} | {{ question.qlevel }}
+                    </div>
+                    <div class="description">{{ question.description }}</div>
+                  </div>
+                  <div class="qb-question-action three wide column">
+                    <div class="ui checkbox action-btn-checkbox" ng-class="question.isSelected ? 'checked' : '' " data-tooltip="select question" data-inverted="">
+                      <input type="checkbox" ng-checked="question.isSelected ? 'checked' : ''" name="check" ng-click="selectQuestion(question);generateTelemetry({type: 'click', subtype: 'toggle', id: 'checkbox'},$event)">
+                      <label></label>
+                    </div>
+                    <span class="action-btn" ng-if="(currentUserId == question.createdBy) && (question.version != '1')" data-tooltip="delete question" data-inverted="">
+                      <i class="trash alternate outline icon cursor-icon" id="delete-question-config"                                            ng-click="deleteQuestionHandler(question);generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)"></i>
+                    </span>
+                    <span class="ui icon action-btn" data-tooltip="copy question" data-inverted="" ng-if="question.version != '1'">
+                      <i class="copy icon" ng-click="copyQuestion(question);generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)"></i>
+                    </span>
+                    <span class="action-btn" ng-if="(currentUserId == question.createdBy) && (question.version != '1')" data-tooltip="edit question" data-inverted="">
+                      <i class="edit icon cursor-icon" id="edit-question-config" ng-click="editQuestion(question);generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="load-more-assets-warning-msg endpage" ng-show="questions.length == 200 || resultNotFound == 0">
+                  <img class="ui centered tiny image" src="{{noQuestionFound}}">
+                  <p>Didn’t find what you were looking for? Try <a href="#">search</a> for something more specific
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="seven wide column qb-question-container" ng-show="isQuestionSetConfig">
+              <span class="ui label">Total Question in Question Set : {{selectedQuestions.length}}</span>
+            <div class="column qb-selected-question-list-container qs-scrollbar" ng-show="isQuestionSetConfig">
+              <div class="ui large divided items">
+                <div class="item select list-items ui grid" ng-repeat="selQuestion in selectedQuestions" ng-class="{quesSelector: $index === selectedIndex}">
+                  <div class="middle aligned content nine wide column" ng-click="previewItem(selQuestion, true);editConfig(selQuestion, $index);generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)">
+                    <div class="header" style="display: -webkit-box;">{{selQuestion.title }}</div>
+                    <div class="meta">{{selQuestion.medium}} | {{ selQuestion.type}} | {{ selQuestion.qlevel }}
+                    </div>
+                    <div class="description">{{ selQuestion.description }}</div>
+                  </div>
+                  <div class="qb-question-action three wide column">
+                    <span class="action-btn" data-tooltip="remove question" data-inverted="">
+                      <i class="remove icon" id="remove-question-button" ng-click="removeQuestion(selQuestion);generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)"></i>
+                    </span>
+                    <span class="action-btn" ng-show="(currentUserId == selQuestion.createdBy)  && (selQuestion.version != '1')" data-tooltip="edit question" data-inverted="">
+                      <i class="edit icon" id="edit-question-config" ng-click="editQuestion(selQuestion);generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)"></i>
+                    </span>
+                  </div>
+                </div>
+                <div ng-show="selectedQuestions.length == 0">
+                  <p>No questions selected</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="five wide column">
+            <div class="preview-and-config">
+              <div class="qb-config-form" ng-show="showConfigForm && isQuestionSetConfig">
+                <div class="ui form">
+                  <div class="field">
+                    <div class="ui fluid labeled input">
+                      <div class="ui label">Configure Score</div>
+                      <input id="max_score" name="max_score" ng-model="selQuestionObj.max_score" type="number" min="1" ng-click="generateTelemetry({type: 'select', subtype: 'dropDown', id: 'dropDown'},$event)" ng-change="saveConfig();setDisplayandScore();" ng-disabled="configScore || questionSetConfigObj.shuffle_questions" onkeypress="return (event.charCode == 8 || event.charCode == 0) ? null : event.charCode >= 48 && event.charCode <= 57"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="preview-container">
+                <div class="preview-body">
+                  <iframe id="itemIframe" class="preview-iframe"></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui center aligned segment" ng-show="(items && !items.length) && isAdvanceOptionOpen">
+        No Data Found
+        <br> Redefine your search filters!
+      </div>
+    </div>
+    <div class="actions button-actions qs-footer-action">
+      <button class="ui blue left floated button" ng-show="!isQuestionSetConfig" id="create-question-button" ng-click="createQuestion();generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)">
+        Create question
+      </button>
+      <div class="ui buttons">
+        <button class="ui orange button" id="add-more-ques-button" ng-click="showSelectedQue(0);searchQuestions();isQuestionSetConfig = false;generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event);closeConfigForm();previewItem(questions[0], true);" ng-show="isQuestionSetConfig" type="button">Add More Questions
+        </button>
+        <div class="or" ng-show="isQuestionSetConfig"></div>
+        <button class="ui blue button next-button" ng-show="!isQuestionSetConfig" ng-disabled="selectedQuestions.length==0" ng-click="createQuestionSet();generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)" type="button">Next
+        </button>
+        <button class="ui blue button" ng-disabled="(questionSetConfigObj.title == '') || (selectedQuestions.length==0)" ng-show="isQuestionSetConfig" id="add-to-stage" ng-click="addQuestionSet();generateTelemetry({type: 'click', subtype: 'select', id: 'button'},$event)" type="button">Add
+        </button>
+      </div>
+    </div>
+  </div>
+</script>

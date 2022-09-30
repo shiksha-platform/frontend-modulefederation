@@ -1,0 +1,101 @@
+{
+    "id": "org.ekstep.text",
+    "ver": "1.1",
+    "shortId": "org.ekstep.text",
+    "displayName": "Text",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Text Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor":
+    {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        {
+            "type": "js",
+            "src": "editor/texteditor.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/multilineTransliterator.js"
+        },
+                {
+            "type": "css",
+            "src": "editor/style/plugin.css"
+        }],
+        "menu": [
+        {
+            "id": "org.ekstep.text",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Text",
+            "title": "Text",
+            "iconClass": "fa fa-font",
+            "onclick":
+            {
+                "id": "org.ekstep.text:create",
+                "data":
+                {
+                    "__text": "",
+                    "x": 10,
+                    "y": 20,
+                    "fontFamily": "NotoSans",
+                    "fontSize": 18,
+                    "minWidth": 20,
+                    "w": 35,
+                    "maxWidth": 500,
+                    "fill": "#000000",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                    "stroke": "rgba(255, 255, 255, 0)",
+                    "strokeWidth": 1,
+                    "opacity": 1,
+                    "editable": false,
+                    "lineHeight": 1.3
+                }
+            },
+            "submenu": [{
+                "id": "beginning",
+                "type": "icon",
+                "title": "Add Richtext",
+                "iconClass": "",
+                "onclick": {
+                    "id": "org.ekstep.richtext:showpopup"
+                }
+            }] 
+        }],
+        "behaviour":
+        {
+            "rotatable": true
+        },
+        "configManifest": [
+        {
+            "type": "custom_template",
+            "controllerURL": "editor/config-controller.js",
+            "templateURL": "editor/configTemplate.html"
+        }],
+        "help":
+        {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "init-data":
+        {
+            "__text": "",
+            "x": 10,
+            "y": 20,
+            "fontFamily": "NotoSans",
+            "fontSize": 18,
+            "minWidth": 20,
+            "w": 35,
+            "maxWidth": 500,
+            "fill": "#000000",
+            "fontStyle": "normal",
+            "fontWeight": "normal"
+        }
+    },
+    "renderer":
+    {
+        "main": "renderer/supertextplugin.js"
+    }
+}

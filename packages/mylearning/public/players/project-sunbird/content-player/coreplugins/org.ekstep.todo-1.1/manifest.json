@@ -1,0 +1,28 @@
+{
+    "id": "org.ekstep.todo",
+    "ver": "1.1",
+    "author": "Gourav More",
+    "title": "Page level todo Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "css", "src": "editor/todo.css" },
+            { "type": "js", "src": "editor/moment.js" },
+            { "type": "js", "src": "editor/hybridtodo.jQuery.js" },
+            { "type": "js", "src": "editor/jquery-comments.js" },
+            { "type": "css", "src": "editor/jquery-comments.css" },
+            { "type": "js", "src": "editor/annotations.jQuery.js" }
+        ],
+        "menu": [],
+        "sidebarMenu": [{
+            "id": "comments",
+            "type": "icon",
+            "toolTip": "comments",
+            "title": "comments",
+            "iconClass": "comments icon",
+            "templateURL": "editor/partials/sidebarCommentsTemplate.html"
+        }]
+    }
+}

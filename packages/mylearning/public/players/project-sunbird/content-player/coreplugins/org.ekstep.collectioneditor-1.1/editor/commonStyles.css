@@ -1,0 +1,43 @@
+body {
+  min-width: 525px !important; 
+}
+
+.no-margin-no-padding {
+  margin: 0 !important;
+  padding: 0 !important; 
+}
+
+.no-margin {
+  margin: 0 !important; 
+}
+
+.no-padding {
+  padding: 0 !important; 
+}
+
+.xy-mid-align {
+  position: absolute !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: auto !important; 
+}
+
+.padding-top-none {
+  padding-top:0 !important;
+}
+
+.text-transform-none {
+   text-transform: none !important;
+}
+
+.margin-bottom-none {
+    margin-bottom: 0 !important;
+}
+
+.margin-left-20 {
+    margin-left: 20px !important;
+}
+
+

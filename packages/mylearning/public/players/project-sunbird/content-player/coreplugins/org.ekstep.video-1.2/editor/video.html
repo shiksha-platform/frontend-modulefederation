@@ -1,0 +1,225 @@
+<script type="text/ng-template" ng-app="videoApp" ng-controller="videoCtrl as $ctrl" id="videoPreviewDialog">
+
+    <style type="text/css">
+        .video-modal {
+            top: 4% !important;
+        }
+        .ui.grid .column.video-leftContent {
+            height: 200px;
+            padding-top: 10px !important;
+        }
+
+        .ui.grid .column.video-rightContent {
+            color: #aaa;
+            font-size: 13px;
+            font-style: italic;
+            padding-top: 35px !important;
+        }
+
+        #previewMessage,
+        #errorMessage {
+            height: 200px !important;
+            text-align: center;
+            padding-top: 70px;
+        }
+        .video-library-tab{
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-height: 300px !important;
+            max-height: 300px !important;
+            padding:5px;
+        }
+        .load-more-assets-spinner {
+    margin: 100px auto 0;
+    width: 70px;
+    text-align: center;
+  }
+
+  .load-more-assets-spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #333;
+
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+
+  .load-more-assets-spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+
+  .load-more-assets-spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+
+  @-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+  }
+
+  @keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+  }
+  .load-more-assets-warning-msg img{
+    padding:0px!important;
+  }
+  .load-more-assets-warning-msg p{
+    text-align:center;
+  }
+  
+    </style>
+
+    <div class="ui modal active video-modal">
+        <div class="header" ng-switch="$ctrl.plugin">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span>
+                            <i class="video play outline large icon"></i> Add Video</span>
+                    </div>
+                    <div class="right aligned column">
+                        <i class="close link icon" ng-click="closeThisDialog(); $ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeButton'})"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="ui pointing secondary menu">
+                <a id="googleDriveTab" class="active item" data-tab="first" ng-click="$ctrl.driveTab();">URL</a>
+                <a id="youtubeTab" class="item" data-tab="second" ng-click="$ctrl.videoLibraryTab();">Library</a>
+            </div>
+        <div class="video__itemContainer">
+            <div class="ui fluid grid container tab active" data-tab="first">
+                <div class="row">
+                    <div class="column" style="padding:0;">
+                        <div class="ui fluid action input">
+                            <input type="text" ng-keyup="$event.keyCode == 13 && $ctrl.videoUrl !== '' && $ctrl.previewVideo(); $ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'videoUrl'})"
+                                placeholder="Paste video URL here" ng-model="$ctrl.videoUrl" ng-change="$ctrl.hasInputChanged();">
+                            <div class="ui blue button" ng-click="$ctrl.previewVideo(); $ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'videoUrl'})">Go</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="six wide left aligned column" style="padding-left:0;">
+                        <div ng-show="$ctrl.messageDiv">
+                            <div class="ui segment" class="ui" id="previewMessage" ng-if="$ctrl.show == 'message'" style="height: 200px !important">
+                                <div class="ui text">{{$ctrl.previewMessages.emptyState}}</div>
+                            </div>
+                            <div class="ui segment" id="errorMessage" ng-if="$ctrl.show == 'error'" style="height: 200px !important">
+                                <i class="warning sign large red icon"></i>
+                                <div class="ui text">{{ $ctrl.errorMessage  || 'Sorry could not load preview of the video link. Please check the link and try again.'}}</div>
+                            </div>
+                            <div class="ui segment" ng-if="$ctrl.show == 'loader'" style="height: 200px !important">
+                                <div class="ui active inverted dimmer">
+                                    <div class="ui text loader">{{$ctrl.previewMessages.loadingState}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="!$ctrl.messageDiv" id="previewVideo"></div>
+                    </div>
+                    <div class="six wide column" style="padding-right:0;">
+                        <p>
+                            <b>YouTube</b>: </br>
+                            <ul>
+                                <li>Only creative commons YouTube links are supported. </li>
+                            </ul>
+                            <b>Google Drive</b>:
+                            <ul>
+                                <li>Supported File Type: WebM, MP4.</li>
+                                <li>Recommended File Size: Less than 20MB</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui fluid  container tab" data-tab="second">
+                <div class="row">
+                    <div class="column">
+                            <div class="ui  fluid icon input assetbrowser_searchBox">
+                                <input id="searchMyImageAssets" ng-model="$ctrl.query" placeholder="Search the library for YouTube videos published under 'CC-BY 4.0'..." ng-keypress="$event.keyCode === 13 ? $ctrl.search() : null" type="text" />
+                                <i class="circular search link icon inverted" ng-click="$ctrl.search(); $ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'searchAsset'})"></i>
+                            </div>
+                    </div>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="ui special three cards video-library-tab" id="video-library-tab">
+                    <div ng-show="$ctrl.youtubeList.length > 0" ng-click="$ctrl.VideoSource(videoItem)" class="card" style="cursor:pointer" ng-repeat="videoItem in $ctrl.youtubeList  track by $index">
+                        <div class="video image infopopover">
+                            <img ng-src="{{videoItem.appIcon || $ctrl.defaultImage}}" class="resourceMetaImage ">
+                            <div class="ui checkbox blue-checkbox checkBoxOverImage-top-right-corner" id='checkBox_{{videoItem.identifier}}' style="z-index:12">
+                                <input class="radioBox" type="radio" name="youtubeVideo">
+                                <label></label>
+                            </div>
+                            <div class="ui inverted dimmer">
+                                <div class="content">
+                                    <div class="ui list cardDetails-list">
+                                        <div class="item">
+                                            <div class="right floated content contentMetaDetail">{{videoItem.board}}</div>
+                                            <div class="content contentTitle">Board</div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="right floated content contentMetaDetail">{{(videoItem.gradeLevel.toString())}}
+                                            </div>
+                                            <div class="content contentTitle">Class</div>
+                                        </div>
+                                        <div class="item">
+                                            <div class="right floated content contentMetaDetail">{{(videoItem.subject)}}
+                                            </div>
+                                            <div class="content contentTitle">Subject</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="header contentMetaTitle">
+                                 {{videoItem.name}}
+                            </div>
+                            <div class="meta" ng-if="videoItem.creator">
+                                <span class="date">Created by {{videoItem.creator}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="twelve wide column" ng-show="$ctrl.youtubeList.length ==0">
+                        <span>No result found. </span>
+                    </div>
+                    <div class="twelve wide column">
+                        <div class="load-more-assets-spinner" ng-show="$ctrl.loadMoreAssetSpinner">
+                            <div class="bounce1"></div>
+                            <div class="bounce2"></div>
+                            <div class="bounce3"></div>
+                        </div>
+                        <div class="load-more-assets-warning-msg" ng-show="$ctrl.showLoadMoreWarningMsg">
+                            <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
+                            <p>Didn’t find what you were looking for? Try
+                                <a href="#" ng-click="$ctrl.searchTextClicked();">search</a> for something more specific
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="actions">
+            <div class="ui buttons">
+                <!-- <button class="ui orange button" ng-click="closeThisDialog();$ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'cancelButton'})"
+                    type="button">Cancel</button> -->
+                <!-- <div class="or"></div> -->
+                <button id="addToLesson" class="ui blue button" type="button" ng-disabled="!$ctrl.showAddLessonBtn" ng-click="$ctrl.addVideo();$ctrl.generateTelemetry({type: 'click', subtype: 'addToLesson', target: 'addVideo'})">Add</button>
+            </div>
+        </div>
+    </div>
+</script>

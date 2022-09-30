@@ -1,0 +1,98 @@
+<div ng-controller="org.ekstep.text:config-controller">
+    <div class="ui accordion sidebar-accordion">
+        <div class="active title" id="textFormatting" ng-click="toggleActiveAcordionTitle($event);">Text Formatting</div>
+        <div class="active content text-formatting-section">
+            <div class="ui form text-formatting-options" id="textFormattingContents">
+                <div class="inline fields">
+                    <label>Font</label>
+                    <select class="ui dropdown font-face-dropdown custom-dropdown" ng-model="configData['fontfamily']" ng-options="val for val in fontFamily" ng-change="fireSidebarTelemetry({id: 'fontfamily'}, 'select')">
+                    </select>
+                </div>
+                <div class="inline fields">
+                    <label>Size</label>
+                    <select class="ui dropdown font-size-dropdown custom-dropdown" ng-model="configData['fontsize']" ng-options="val for val in fontSize" ng-change="fireSidebarTelemetry({id: 'fontSize'}, 'inputSelect')">
+                    </select>
+                    <div class="ui mini icon buttons bold-italic-buttons-group">
+                        <button class="ui button {{configData[dd.propertyName] ? 'active-button': ''}}" ng-repeat="dd in fontGroupConfig.config" ng-click="configData[dd.propertyName] = !configData[dd.propertyName]; fireSidebarTelemetry({id: config.propertyName}, config.dataType)" data-tooltip="{{dd.toolTip}}">
+                            <div ng-switch on="dd.dataType">
+                                <span ng-show="dd.text" ng-switch-when="text" class="{{dd.textClass}}" style="{{dd.textStyle}}">{{dd.text}}</span>
+                                <i class="{{dd.iconClass}} " ng-show="dd.iconClass" style="{{dd.iconStyle}}" ng-switch-when="icon"></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="inline fields">
+                    <label>Alignment</label>
+                    <div class="ui mini icon buttons">
+                        <button class="ui button {{configData[textAlignmentConfig.propertyName] === option.value ? 'active-button': ''}}" ng-repeat="option in textAlignmentConfig.options" ng-click="configData[textAlignmentConfig.propertyName] = option.value; fireSidebarTelemetry({id: textAlignmentConfig.propertyName}, textAlignmentConfig.dataType)" data-tooltip="{{option.toolTip}}">
+                            <div ng-switch on="option.dataType">
+                                <i class="{{option.iconClass}} " ng-show="option.iconClass" style="{{option.iconStyle}}" ng-switch-when="icon"></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="inline fields">
+                    <label>Color</label>
+                    <ui-colorpicker id="textcolor"></ui-colorpicker>
+                </div>
+                <div class="inline fields transparency-field">
+                    <label>Transparency</label>
+                    <div class="ui transparent input transparency-input">
+                        <input type="range" id="{{textOpacityConfig.propertyName}}" min="{{textOpacityConfig.minimumValue}}" max="{{textOpacityConfig.maximumValue}}" value="{{textOpacityConfig.defaultValue}}" class="config-slider" ng-model="configData[textOpacityConfig.propertyName]" ng-init="configData[textOpacityConfig.propertyName] = configData[textOpacityConfig.propertyName] || textOpacityConfig.defaultValue" ng-click="fireSidebarTelemetry({id: textOpacityConfig.propertyName}, textOpacityConfig.dataType)">
+                        <label class="opacity-percent" ng-bind="configData[textOpacityConfig.propertyName] + '%'"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="title {{hasReadAlong && !hasWordInfo ? 'read-along-enabled' : ''}} {{hasWordInfo && !hasReadAlong ? 'disabled' : ''}}" id="readAlong" ng-click="toggleActiveAcordionTitle($event);">
+            <span ng-if="hasReadAlong && !hasWordInfo"><i class="blue check icon"></i>&nbsp;</span>Read-along
+            <span id="disabledReadAlongIndicator" ng-if="hasWordInfo && !hasReadAlong" ng-init="disabledIndicator();" style="margin-left:1.5em; pointer-events:all !important;" data-tooltip="Disable word info to use &#xa; read along on same text"><i class="fa fa-exclamation-triangle"></i></span>
+            <span ng-if="hasReadAlong && !hasWordInfo && activeTextPluginControlItem=='readAlong'" style="float:right; color:#9a9a9a !important;">
+                <i class="fa fa-pencil" ng-click="fireEvent({id:'org.ekstep.text:readalong:show'}); $event.stopPropagation();" style="margin-right:10px;"></i>
+                <i class="fa fa-trash-o" ng-click="fireEvent({id:'org.ekstep.text:delete:enhancement'}); collapseAllAccordionItems(); $event.stopPropagation();"></i>
+            </span>
+        </div>
+        <div class="content">
+            <div ng-if="refreshTab">
+                <div style="display: inline-block;">
+                    <div class="ui form" id="readAlongContents">
+                        <div class="inline fields" ng-show="hasReadAlong && !hasWordInfo" ng-repeat="colorpicker in readAlongColorpicker">
+                            <label>{{colorpicker.title}}</label>
+                            <ui-colorpicker id={{colorpicker.id}}></ui-colorpicker>
+                        </div>
+                        <div class="inline fields" ng-show="hasReadAlong && !hasWordInfo">
+                            <br>
+                            <label>Autoplay</label>
+                            <br>
+                            <div class="ui toggle checkbox" id="readalongautoplay">
+                                <input name="autoplay" type="checkbox" ng-click="fireSidebarTelemetry({id: 'autoplay'}, 'boolean');">
+                                <label></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="title {{hasWordInfo && !hasReadAlong ? 'word-info-enabled' : ''}} {{hasReadAlong && !hasWordInfo ? 'disabled' : ''}}" id="WordInfo" ng-click="toggleActiveAcordionTitle($event);">
+            <span ng-if="hasWordInfo && !hasReadAlong"><i class="blue check icon"></i>&nbsp;</span>Word Info
+            <span id="disabledWordInfoIndicator" ng-if="hasReadAlong && !hasWordInfo" ng-init="disabledIndicator();" style="margin-left:1.5em; pointer-events:all !important;" data-tooltip="Disable read along to use &#xa; word info on same text"><i class="fa fa-exclamation-triangle"></i></span>
+            <span ng-if="hasWordInfo && !hasReadAlong && activeTextPluginControlItem=='WordInfo'" style="float:right; color:#9a9a9a !important;">
+                <i class="fa fa-pencil" ng-click="fireEvent({id:'org.ekstep.text:wordinfo:show'}); $event.stopPropagation();" style="margin-right:10px;"></i>
+                <i class="fa fa-trash-o" ng-click="fireEvent({id:'org.ekstep.text:delete:enhancement'}); collapseAllAccordionItems(); $event.stopPropagation();"></i>
+            </span>
+        </div>
+        <div class="content">
+            <div ng-if="refreshTab">
+                <div style="display: inline-block;">
+                    <div class="ui form" id="wordInfoContents">
+                        <div class="inline fields" ng-show="hasWordInfo && !hasReadAlong" ng-repeat="colorpicker in wordInfoColorpicker">
+                            <label>{{colorpicker.title}}</label>
+                            <ui-colorpicker id={{colorpicker.id}}></ui-colorpicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="title" id="transliterate" ng-click="toggleActiveAcordionTitle($event);">Transliterate</div>
+    </div>
+</div>

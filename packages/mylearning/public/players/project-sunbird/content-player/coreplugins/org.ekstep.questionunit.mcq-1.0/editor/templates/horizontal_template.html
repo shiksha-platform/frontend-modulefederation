@@ -1,0 +1,107 @@
+<div ng-controller="mcqQuestionFormController" ng-init="init()">
+  <div class="ui grid mcqFullGrid">
+    <div class="one column row">
+      <div class="column innerScroll">
+        <div>
+          <form name="mcqForm">
+            <div class="one column row qHeader">
+              <span>Enter the question</span>
+            </div>
+            <div class="outer-segment">
+              <div class="ui segments inner-segment" ng-class="{cardBorder: $ctrl.focused, 'has-errorCard': submitted && mcqForm.question.$error.required}">
+                <div class="ui segment">
+                  <div class="ui grid">
+                    <div class="twelve wide column">
+                      <div class="form-group segment textBoxDiv questionTextBox">
+                        <textarea class="form-control textboxQ" ng-class="{'has-success':mcqForm.question.$valid, 'has-error': submitted && mcqForm.question.$error.required}"
+                          placeholder="Enter the question" name="ckedit" ng-model="mcqFormData.question.text" ng-init="$ctrl.focused = false"
+                          ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" ng-required="!(mcqFormData.question.text.length || mcqFormData.question.image.length || mcqFormData.question.audio.length)"></textarea>
+                      </div>
+                    </div>
+                    <div class="twelve wide column">
+                      <selected-media-container media-callbacks="callbacks" class="row" formdata="mcqFormData.question" media-type='q' media-index=''></selected-media-container>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui secondary right aligned segment custom-sec-segment">
+                  <div class="ui grid">
+                    <div class="one column row segment-column">
+                      <div class="column right floated">
+                        <span class="custom-bottom-label">Add: </span>
+                        <span class="custom-bottom-segment ui icon"  data-tooltip="{{!mcqFormData.question.image ? 'Add Image' : 'Edit Image'}}" data-inverted=""
+                          ng-click="addMedia('q','', 'image')">
+                          <i class="image large icon"></i>
+                        </span>
+                        <span class="custom-bottom-segment ui icon" data-tooltip="{{!mcqFormData.question.audio ? 'Add Audio' : 'Edit Audio'}}" data-tooltip="Add audio" data-inverted=""
+                          ng-click="addMedia('q','', 'audio')">
+                          <i class="music large icon"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="one column row qHeader" ng-if="mcqFormData.options.length > 0">
+              <span>Set answer</span>
+            </div>
+            <div ng-repeat="(key, value) in mcqFormData.options" class="outer-segment">
+              <div class="ui segments inner-segment option-box" ng-class="{cardBorder: focused, 'has-errorCard': submitted && mcqForm['mcqoptions_' + $index].$error.required}" id="option-box-{{$index}}">
+                <div class="ui segment">
+                  <div class="ui grid">
+                    <div class="one column row">
+                      <div class="form-group one column row">
+                        <div class="form-control contenteditable mcqoption-text-ck" ng-class="{'has-success':mcqForm['mcqoptions_' + $index].$valid, 'has-error': submitted && mcqForm['mcqoptions_' + $index].$error.required,'option-placeholder':mcqFormData.options[$index].text.length==0}" ng-required="!(mcqFormData.options[key].text.length || mcqFormData.options[key].image.length || mcqFormData.options[key].audio.length)" name="mcqoptions_{{$index}}" id="mcqoptions_{{$index}}" ng-model="mcqFormData.options[key].text"  contenteditable="true"></div>
+                      </div>
+                       </div>
+                       <div class="qc-media-section">
+                      <selected-media-container media-callbacks="callbacks" class="row" formdata="mcqFormData.options[key]" media-type='op' media-index='{{key}}'></selected-media-container>
+                    </div>
+                   
+
+                </div>
+                <div class="ui secondary segment custom-sec-segment">
+                  <div class="ui grid">
+                    <div class="two column row segment-column">
+                      <div class="column left-segment">
+                        <a href="" ng-click="deleteAnswer(key);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mcq-delete-answer', ver: '', type: 'button'}});"
+                          class="deleteText" data-tooltip="Delete answer" data-inverted="">
+                          <i class="trash large icon delete-icon"></i>
+                        </a>
+                        <div class="ui radio correct-answer">
+                          <input type="radio" id="{{$index}}" class="right-ans-radio" name="correctans_{{$index}}" ng-checked="value.isCorrect" ng-model="$parent.selectedOption"
+                            value="{{$index}}" ng-click="generateTelemetry({type: 'TOUCH', id: 'toggle', target: {id: 'questionunit-mcq-correct-ans', ver: '', type: 'toggle'}});"
+                          />
+                          <label for="{{$index}}" ng-class="{'has-success-text':selLbl == 'error' , 'has-error-text':selLbl == 'success' }">Mark as right answer</label>
+                        </div>
+                      </div>
+                      <div class="column right aligned">
+                        <span class="custom-bottom-label">Add: </span>
+                        <span class="custom-bottom-segment ui icon" data-tooltip="{{!mcqFormData.options[key].image ? 'Add Image' : 'Edit Image'}}" data-inverted=""
+                          ng-click="addMedia('op', key, 'image')">
+                          <i class="image large icon"></i>
+                        </span>
+                        <span class="custom-bottom-segment ui icon" data-tooltip="{{!mcqFormData.options[key].audio ? 'Add Audio' : 'Edit Audio'}}" data-inverted=""
+                          ng-click="addMedia('op', key, 'audio')">
+                          <i class="music large icon"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          </form>
+          <span class="has-success-text" ng-show="mcqFormData.options.length<2">Minimum two answer will be required</span>
+          <div class="one column row">
+            <div class="column addAns">
+              <button class="ui primary basic button large" id="mcq-add-ans-button" ng-click="addAnswerField();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mcq-add-answer', ver: '', type: 'button'}});">Add answer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

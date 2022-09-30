@@ -1,0 +1,17 @@
+{
+    "id": "org.ekstep.uploadcontent",
+    "ver": "1.1",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Upload Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "css", "src": "editor/libs/fine-uploader-new.min.css" },
+            { "type": "css", "src": "editor/styles/uploadcontent.css" },
+            { "type": "js", "src": "editor/libs/jquery.fine-uploader.min.js" },
+            { "type": "plugin", "plugin": "org.ekstep.toaster", "ver":"1.0"}
+        ]
+    }
+}

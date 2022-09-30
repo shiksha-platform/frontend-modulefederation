@@ -1,0 +1,20 @@
+{
+    "id": "org.ekstep.collectioneditor",
+    "ver": "1.5",
+    "author": "Sunil A S",
+    "title": "collection tree Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [            
+            { "type": "js", "src": "dist/script.min.js" },
+            { "type": "css", "src": "dist/styles.min.css" }
+        ],
+        "container": [{
+            "id": "tree",
+            "templateURL": "editor/collectiontree.html",
+            "controllerURL": "editor/collectionEditorApp.js"
+        }]
+    }
+}

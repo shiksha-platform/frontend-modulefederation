@@ -1,0 +1,36 @@
+<div ng-controller="org.ekstep.mathtext:config-controller">
+  <div class="ui accordion sidebar-accordion">
+    <div class="active title" id="textFormatting" ng-click="toggleActiveAcordionTitle($event);">Text Formatting</div>
+    <div class="text-formatting-section">
+      <div class="ui form text-formatting-options" id="textFormattingContents">
+        <!-- <div class="inline fields">
+          <label>Font</label>
+          <select class="ui dropdown font-face-dropdown custom-dropdown" ng-model="configData['fontfamily']" ng-options="val for val in fontFamily" ng-change="fireSidebarTelemetry({id: 'fontfamily'}, 'select');changeConfig();">
+          </select>
+      </div> -->
+        <div class="inline fields">
+          <label>Font Size</label>
+          <select class="ui dropdown font-size-dropdown custom-dropdown" ng-model="configData['fontSize']" ng-options="val for val in fontSize" ng-change="fireSidebarTelemetry({id: 'fontSize'}, 'inputSelect');changeConfig();  ">
+          </select>
+          <!--  <div class="ui mini icon buttons bold-italic-buttons-group">
+            <button class="ui button {{configData[dd.propertyName] ? 'active-button': ''}}" ng-repeat="dd in fontGroupConfig.config" ng-click=" configData[dd.propertyName] = !configData[dd.propertyName]; fireSidebarTelemetry({id: config.propertyName}, config.dataType);changeConfig()" data-tooltip="{{dd.toolTip}}">
+              <div ng-switch on="dd.dataType">
+                <span ng-show="dd.text" ng-switch-when="text" class="{{dd.textClass}}" style="{{dd.textStyle}}">{{dd.text}}</span>
+                <i class="{{dd.iconClass}} " ng-show="dd.iconClass" style="{{dd.iconStyle}}" ng-switch-when="icon"></i>
+              </div>
+            </button>
+          </div> -->
+        </div>
+        <div class="inline fields">
+          <label>Color</label>
+          <ui-colorpicker id="textcolor"></ui-colorpicker>
+        </div>
+
+        <div class="inline fields">
+          <label>Background Color</label>
+          <ui-colorpicker id="backgroundcolor"></ui-colorpicker>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

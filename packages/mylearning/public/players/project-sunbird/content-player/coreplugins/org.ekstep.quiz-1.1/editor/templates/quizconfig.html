@@ -1,0 +1,111 @@
+<script type="text/ng-template" ng-app="quizconfigapp" ng-controller="quizconfigcontroller as $ctrl" id="quizconfig">
+    <style type="text/css">
+    .itemIframeMessages {
+        border: 2px solid #E4E4E4;
+        padding: 110px 20px;
+        background: #FFFFFF;
+        text-align: center;
+        font-weight: bold;
+        height: 270px;
+        width: 480px;
+    }
+    
+    .grid .items .item:hover {
+        background: #f1f1f1;
+    }
+    
+    .assessmentbrowser.ui.modal {
+        position: inherit !important;
+        top: 0 !important;
+    }
+    
+    .assessment-browser-error {
+        height: 350px;
+    }
+    
+    .item.select:hover {
+        background: #F3F3F3;
+        box-shadow: 4px 4px 4px #888888;
+    }
+    
+    td {
+        width: 43%;
+    }
+    </style>
+    <div class="quizConfig ui modal large active" style="top: 5%;">
+        <div class="ui header">
+            <i class="settings icon"></i>
+            <div class="content">
+                <b>Question Settings</b>
+                <div class="sub header">Manage your selected questions</div>
+            </div>
+        </div>
+        <div class="content">
+            <div ng-show="$ctrl.cart.items.length">
+                <div class="ui two column horizontally padded grid">
+                    <div class="column" style="width: 480px;height: 337px; overflow-y: scroll;">
+                        <div class="ui large divided items" ui-sortable="sortableOptions" ng-model="$ctrl.cart.items" style="cursor:move;">
+                            <div class="item select" ng-repeat="cartItem in $ctrl.cart.items">
+                                <div class="description" style="margin-top: 3%">
+                                    <i class="content icon" style="cursor:move;"></i>
+                                </div>
+                                <div class="middle aligned content" style="padding:3%">
+                                    <div class="header">{{ cartItem.question }}</div>
+                                </div>
+                                <div ng-click="$ctrl.removeItem(cartItem); $ctrl.generateTelemetry({type: 'click', subtype: 'delete', target: 'question',targetid:cartItem.identifier})" style="cursor:pointer; margin-top: 3%"><i class="trash icon"></i>
+                                    <label></label>
+                                </div>
+                                <div class="description" ng-click="$ctrl.handleQuestionScoreConfig($index,$ctrl.cart.items); $ctrl.generateTelemetry({type: 'click', subtype: 'edit', target: 'question',targetid:cartItem.identifier})" " style="margin-top: 3% ">
+                                    <i class="configure icon " style="cursor:pointer; "></i>
+                                </div>
+                                <div class="description " ng-click="$ctrl.previewItem(cartItem);$ctrl.generateTelemetry({type: 'click', subtype: 'preview', target: 'question',targetid:cartItem.identifier}) "" style="margin-top: 3%">
+                                    <i class="icon-preview icon" style="cursor:pointer;margin-top: 3%"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column right floated">
+                        <table class="ui blue celled table" ng-show="$ctrl.enableQuestionConfig">
+                            <tbody>
+                                <tr class="active">
+                                    <td><b>Title</b></td>
+                                    <td>{{$ctrl.currentQuestion.title | uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Marks</b></td>
+                                    <td>
+                                        <div class="ui fluid labeled input" ng-show="$ctrl.enableQuestionConfig" style="width: 64%">
+                                            <input class="total-marks ui dropdown" id="max_score" name="max_score" ng-model="$ctrl.currentQuestion.max_score" required="" ng-change="$ctrl.updateScoreToquestion()" min="0" type="number" ng-click="$ctrl.generateTelemetry({type: 'click', subtype: 'edit', target: 'question',targetid:$ctrl.currentQuestion.identifier})" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr ng-if="$ctrl.currentQuestion.description" class="active">
+                                    <td><b>Description</b></td>
+                                    <td>{{$ctrl.currentQuestion.description | uppercase}}</td>
+                                </tr>
+                                <tr class="active">
+                                    <td><b>Question Type</b></td>
+                                    <td>{{$ctrl.currentQuestion.type | uppercase}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Difficult Level</b></td>
+                                    <td>{{$ctrl.currentQuestion.qlevel | uppercase}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <iframe id="itemIframe" ng-hide="$ctrl.enableQuestionConfig || $ctrl.itemPreviewContent.error" style="width: 490px;height: 310px; border: 2px solid #E4E4E4;"></iframe>
+                        <div class="itemIframeMessages" ng-hide="$ctrl.enableQuestionConfig || !$ctrl.itemPreviewContent.error" style="width: 490px;height: 310px">{{$ctrl.itemPreviewDisplay}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui center aligned segment" ng-show="($ctrl.cart.items && !$ctrl.cart.items.length)">
+                Questions are empty
+                <br> Please select some questions
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui buttons">
+                <button id="selectanduse" class="ui blue button" ng-click=" $ctrl.doneConfig();$ctrl.generateTelemetry({type: 'click', subtype: 'submit', target: 'question'})" type="button">Done</button>
+            </div>
+        </div>
+    </div>

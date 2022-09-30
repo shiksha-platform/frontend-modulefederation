@@ -1,0 +1,33 @@
+<script type="text/ng-template" ng-app="org.ekstep.lessonbrowserapp" ng-controller="lessonController as $ctrl" id="partials/lessonbrowser.html">
+    <div class="ui active modal lessonbrowser">
+        <div class="header">
+            <div class="ui fluid equal width container grid">
+                <div class="row">
+                    <div class="column" style="padding-left:0;">
+                        <span><i class="grid layout icon"></i> Add Resource</span>
+                    </div>
+                    <div class="right aligned column" style="padding-right:0;">
+                        <i class="close link icon" ng-click="closeThisDialog(); $ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeLessonBrowser'})"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui fluid container padded grid content">
+            <div class="ui pointing secondary menu no-padding">
+                <a class="item" ng-class='{active:$first}' ng-repeat="(rid, repo) in $ctrl.lessonbrowser.repos" data-repo-id="{{repo.id}}" data-tab="{{repo.id}}{{rid}}">{{repo.label}}</a>
+            </div>
+            <div class="ui tab no-padding" ng-class='{active:$first}' ng-repeat="(rid, repo) in $ctrl.lessonbrowser.repos" ng-include="repo.templateUrl" data-tab="{{repo.id}}{{rid}}"></div>
+        </div>
+        <div class="actions">
+            <div class="ui grid">
+                <div class="twelve wide column right aligned">
+                    <div class="ui buttons">
+                        <button id="closePopUp" class="ui orange tiny button" ng-click="closePopup()" type="button">Cancel</button>
+                        <div class="or"></div>
+                        <button class="ui blue button submit tiny button" ng-click="returnSelectedLessons(selectedLessons.list)" ng-disabled="!selectedLessons.list.length" type="button">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

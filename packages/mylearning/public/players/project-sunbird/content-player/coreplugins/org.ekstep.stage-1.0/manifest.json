@@ -1,0 +1,97 @@
+{
+	"id": "org.ekstep.stage",
+	"ver": "1.0",
+	"author": "Santhosh Vasabhaktula",
+    "title": "Stage Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "js", "src": "editor/libs/html2canvas.js" }
+        ],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "menu": [{
+            "id": "stage",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Slide",
+            "title": "Stage",
+            "iconClass": "icon-newstage icon",
+            "onclick": {
+                "id": "stage:create",
+                "data": { "position": "afterCurrent" }
+            },
+            "submenu": [{
+                "id": "beginning",
+                "type": "icon",
+                "title": "Beginning",
+                "iconClass": "fast backward icon",
+                "onclick": {
+                    "id": "stage:create",
+                    "data": { "position": "beginning" }
+                }
+            }, {
+                "id": "end",
+                "type": "icon",
+                "title": "End",
+                "iconClass": "fast forward icon",
+                "onclick": {
+                    "id": "stage:create",
+                    "data": { "position": "end" }
+                }
+            }, {
+                "id": "front",
+                "type": "icon",
+                "title": "After current",
+                "iconClass": "forward icon",
+                "onclick": {
+                    "id": "stage:create",
+                    "data": { "position": "afterCurrent" }
+                }
+            }, {
+                "id": "back",
+                "type": "icon",
+                "title": "Before current",
+                "iconClass": "backward icon",
+                "onclick": {
+                    "id": "stage:create",
+                    "data": { "position": "beforeCurrent" }
+                }
+            }]
+        }],
+        "configManifest": [{
+            "propertyName": "genieControls",
+            "title": "Show Player Control",
+            "description": "Toggle genie controls",
+            "dataType": "boolean",
+            "required": true,
+            "defaultValue": true
+        }, {
+            "propertyName": "instructions",
+            "title": "Teacher Instructions",
+            "description": "Teacher Instructions",
+            "dataType": "textarea",
+            "required": true,
+            "defaultValue": ""
+        }, {
+            "propertyName":"color",
+            "title":"Background color",
+            "description":"Slide Background color",
+            "dataType":"colorpicker",
+            "required":true,
+            "defaultValue":"#FFFFFF"
+        }]
+    },
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.navigation",
+        "ver": "1.0",
+        "scope": "renderer"
+      }
+    ]
+}

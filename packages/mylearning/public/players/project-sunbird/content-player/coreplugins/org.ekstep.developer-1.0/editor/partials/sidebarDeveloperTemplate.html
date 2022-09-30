@@ -1,0 +1,44 @@
+<div style="padding: 10px !important">
+    <form class="ui  form">
+        <div class="inline field">
+            <input type="text" placeholder="Eg: https://localhost:8080/" ng-model="localServerPath" ng-show="localServerPathEdit" />
+            <a class="ui big label" ng-show="!localServerPathEdit">
+                      {{localServerPath}}
+                    </a>
+            <buttton class="ui  right floated icon button" " ng-click="localServerPathEdit=true; " ng-show="!localServerPathEdit ">
+                        <i class="write icon "></i>
+                    </buttton>
+                    <buttton class="ui right floated icon button " ng-click="fireEvent({ 'id': 'org.ekstep.developer:updateLocalServerPath', 'data':{ 'path': localServerPath}});localServerPathEdit=false; " ng-show="localServerPathEdit ">
+                        <i class="checkmark icon "></i>
+                    </buttton>
+                </div>
+            </form>
+            <div class="contributed-plugins-list {{(localPlugins.length===0 || contributedPluginMessageClass==='error' )? 'no-plugins': ''}} ">
+                <table class="ui very basic padded table ">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="plugin in localPlugins ">
+                            <td>
+                                <i class="icon-widget icon "></i>
+                            </td>
+                            <td>
+                                <p class="local-plugin-label " title="{{plugin}} ">{{plugin}}</p>
+                            </td>
+                            <td>
+                                <div class="ui primary icon mini button " ng-click="fireEvent({ 'id': 'org.ekstep.developer:loadplugin', 'data': { 'plugin': plugin}}) ">
+                                    <i class="repeat icon "></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="ui {{contributedPluginMessageClass}} mini message " ng-if="contributedPluginMessage ">{{contributedPluginMessage}}
+            </div>
+    </div>

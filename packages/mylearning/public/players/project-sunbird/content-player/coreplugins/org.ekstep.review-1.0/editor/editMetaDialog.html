@@ -1,0 +1,52 @@
+<script type="text/ng-template" id="org.ekstep.review.editMetaDialog.html">
+    <style>
+    .meta-dialog .display-inline {
+        display: inline;
+    }
+    
+    .meta-dialog .text-container {
+        text-align: center;
+        margin: 2px;
+        font-size: 17px;
+        color: #5f5c5c;
+        display: inline;
+    }
+    
+    .meta-dialog .subtext-container {
+        margin-left: 2px;
+    }
+    
+    .meta-dialog .margin-left {
+        margin-left: 79px;
+        margin-top: 15px;
+    }
+    </style>
+    <div class="meta-dialog ui dialog-outer-container">
+        <div class="dialog-inner-container">
+            <div class="ui grid">
+                <div class="two wide column">
+                    <i class="huge remove circle outline big red icon" ng-show="{{isError}}"></i>
+                    <i class="huge warning sign yellow icon" ng-show="{{!isError && isRedirect}}"></i>
+                    <i class="huge check circle outline big green icon" ng-show="{{!isError && !isRedirect}}"></i>
+                </div>
+                <div class="ten wide column">
+                    <div class="meta text-container">{{dialogMainText}}</div>
+                    <div class="meta subtext-container" ng-show="{{!isError}}">{{dialogSubtext}}</div>
+                    <div class="meta subtext-container" ng-show="{{isError}}">
+                        <ul class="list" ng-repeat="item in dialogSubtext">
+                            <li>{{item}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="margin-left" ng-show="{{isRedirect}}">
+            <button class="ui compact primary button" ng-click="closeThisDialog()">Cancel</button>
+            <button class="ui compact secondary button" ng-click="closeThisDialog(); editContentMeta()">Edit details</button>
+        </div>
+        <div class="margin-left" ng-show="{{!isRedirect}}">
+            <button class="ui compact primary button" ng-show="{{isError}}" ng-click="closeThisDialog()">ok</button>
+            <button class="ui compact primary button" ng-show="{{!isError}}" ng-click="redirectToHome()">Home</button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,164 @@
+.textbox:focus {
+  border-width: 0px 0px 1px 0px solid #aeabab;
+  outline: 0;
+  /*box-shadow: 0 4px 6px -6px #000000;*/
+  border-color: #9090e4;
+}
+.textboxQ-ftb:focus {
+  border-width: 0px 0px 1px 0px solid #aeabab;
+  outline: 0;
+  /*box-shadow: 0 4px 6px -6px #000000;*/
+  border-color: #9090e4;
+}
+
+.textbox {
+  width: 75%;
+  border-width: 0px 0px 1px 0px;
+  height: 33px;
+  color: inherit;
+  text-align: center;
+}
+.textboxQ-ftb {
+  width: 93%;
+  border-width: 0px 0px 1px 0px;
+  height: 33px;
+  color: inherit;
+  text-align: left;
+}
+.cardBorder{
+  box-shadow: 0px 1px 5px 1px #aeabab !important;
+}
+
+.maxLengthText {
+  float: right;
+  padding-top: 2%;
+  position: relative;
+    left: -10%;
+}
+
+.optionError {
+  color: red;
+}
+
+.optionTab {
+  text-align: center;
+}
+
+.has-error {
+  border-bottom-color: #ea7575;
+  /*border-bottom-width: 1.5px;*/
+  transition:all linear 0.5s;
+}
+
+.has-success {
+  border-bottom-color: #dfcfcf;
+  transition:all linear 0.5s;
+}
+
+.has-error-text {
+  color: inherit;
+  transition:all linear 0.5s;
+}
+
+.has-success-text {
+  color: red;
+  transition:all linear 0.5s;
+}
+.ui.segments.custom-segments{
+  margin-top: 1px;
+  margin-bottom: 2%;
+}
+
+.ftbFullGrid {
+  max-height: 80vh;
+  width: 100%;
+  margin-left: 0%;
+  margin-top: 0%
+}
+
+.innerScroll.ftb-layout {
+  padding-left: 4%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: 5%;
+  padding-bottom: 20%;
+}
+
+/*#eachCard {
+  box-shadow: 1px 1px 1px #9da1a5;
+  margin-bottom: 2%
+}*/
+
+.ui.segments .segment.textBoxDiv {
+  text-align: center;
+  font-size: 1.42rem;
+}
+
+.deleteText {
+  color: #9E9E9E;
+  vertical-align: baseline;
+}
+
+.addAns {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+/*.headQA {
+  margin-top: 3%;
+}*/
+.qHeader{
+  font-size: 1.42rem;
+  padding: 0;
+  margin-top: 3%;
+}
+.has-errorCard{
+  border: 1px solid red !important;
+}
+.ui.grid .column.text-len{
+  padding-top: 2rem;
+  font-size: 1.3rem;
+  color: #9E9E9E;
+}
+.ui.segments .segment.custom-sec-segment{
+  border-top: none;
+  color: #9E9E9E;
+  font-size: 1.3rem;
+}
+.custom-bottom-segment{
+  padding-left: 10px;
+  /*opacity: 0.5;*/
+  color: #9E9E9E;  
+  vertical-align: bottom;
+}
+.ui.segments.inner-segment{
+  margin: 0;
+  padding: 1px;
+}
+.outer-segment{
+  padding: 20px 0;
+}
+.length-divider{
+  padding: 0 4px;
+}
+.ui.grid .column.segment-column{
+  padding: 0.7rem;
+}
+.custom-bottom-label{
+  color: #9E9E9E;
+  vertical-align: bottom;
+  padding-right: 10px; 
+}
+.has-success-card{
+  border: 1px solid #dfcfcf !important;
+}
+.instructions{
+  font-size: 1.1rem;
+}
+.instructions p{
+  margin-bottom: 10px;
+}
+.ck-error{
+  border: 1px solid red;
+}

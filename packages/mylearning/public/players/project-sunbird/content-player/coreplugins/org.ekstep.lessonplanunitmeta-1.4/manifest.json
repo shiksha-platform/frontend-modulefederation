@@ -1,0 +1,15 @@
+{
+    "id": "org.ekstep.lessonplanunitmeta",
+    "ver": "1.4",
+    "author": "Sunil A S",
+    "title": "Collectioneditor lesson unit meta plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+    
+        "views":[
+            {"template":"./lessonplanunitmeta.html", "controller": "./lessonplanunitmetaApp.js"}
+        ]
+    }
+}

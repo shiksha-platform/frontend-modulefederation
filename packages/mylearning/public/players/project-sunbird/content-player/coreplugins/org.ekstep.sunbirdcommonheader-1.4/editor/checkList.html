@@ -1,0 +1,53 @@
+<!-- checklist template -->
+<script type="text/ng-template" ng-app="org.ekstep.sunbirdcommonheader:app" ng-controller="headerController as $ctrl" id="org.ekstep.checklist.html">
+    <div id="checklistModal" class="ui active modal reviewer-popup-top-align" ng-init="initPopup()">
+        <div class="header">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span>{{checklistItems.title}}</span>
+                    </div>
+                    <div class="right aligned column">
+                        <i class="close link icon" ng-click="closeThisDialog()"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content reviewer-popup-height">
+            <div class="ui tiny header">
+                <h4>{{checklistItems.subtitle}}</h4>
+            </div>
+            <div class="ui three column grid">
+                <div class="column" ng-repeat="list in checklistItems.contents | orderBy: 'index'">
+                    <h5 class="ui tiny header">{{list.name}}</h5>
+                    <div class="column reviewer-content" ng-repeat="item in list.checkList">
+                        <div class="ui checkbox checklist">
+                            <input type="checkbox" class="listItem" ng-checked="rejectedReasons.indexOf(item)!== -1" ng-click="onCheckboxSelect(item)">
+                            <label>{{item}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 ng-show="checklistMode == 'reject' || checklistMode === 'read' ">
+                <div class="ui checkbox checklist">
+                    <input type="checkbox" class="otherItem" ng-checked="rejectedReasons.indexOf('Others')!== -1" ng-click="onCheckboxSelect( 'Others') ">
+                    <label>Other Issue(s) (if there are any other issues, tick this and provide details in the comments box)
+                        </label>
+                </div>
+            </h5>
+            <h5 class="ui tiny header " ng-show="checklistItems.comments.required ">{{checklistItems.comments.label}}</h5>
+            <div class="ui row ">
+                <textarea id="review-comments" rows="3 " class="reviewer-comment-box" ng-show="checklistItems.comments.required " ng-model="reviewComments " ng-change="onCheckboxSelect() "></textarea>
+            </div>
+        </div>
+        <div class="actions footer" id="review-footer">
+            <div class="ui buttons ">
+                <button id="closePopUp " class="ui orange button " type="button " ng-click="closeThisDialog() ">{{checklistItems.buttons.cancel}}</button>
+                <div class="or "></div>
+                <button ng-show="checklistItems.buttons.proceed=='Publish' " class="ui blue button " type="button " ng-disabled="enableBtn !='Publish' " ng-click="publishContent() ">{{checklistItems.buttons.proceed}}</button>
+                <button ng-show="checklistItems.buttons.proceed=='Request changes' " class="ui blue button " type="button " ng-disabled="enableBtn !='Reject' " ng-click="requestChanges() ">{{checklistItems.buttons.proceed}}</button>
+            </div>
+        </div>
+    </div>
+</script>

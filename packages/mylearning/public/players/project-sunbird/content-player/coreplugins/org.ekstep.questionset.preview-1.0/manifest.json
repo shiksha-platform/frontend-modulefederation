@@ -1,0 +1,12 @@
+{
+    "id": "org.ekstep.questionset.preview",
+    "ver": "1.0",
+    "shortId": "qs",
+    "author": "Rajeev Sathish",
+    "title": "Question Set Preview Plugin",
+    "description": "Plugin to create the preview content for question set",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js"
+    }
+}

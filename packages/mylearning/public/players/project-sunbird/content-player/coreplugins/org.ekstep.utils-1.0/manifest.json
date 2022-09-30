@@ -1,0 +1,101 @@
+{
+    "id": "org.ekstep.utils",
+    "ver": "1.0",
+    "author": "HarishKumar Gangula",
+    "title": "Utils Plugin",
+    "description": "This plugin is used to add utilitites",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": [{
+            "id": "copy",
+            "category": "context",
+            "type": "icon",
+            "toolTip": "copy",
+            "title": "copy",
+            "iconClass": "copy icon",
+            "state": "HIDE",
+            "onclick": {
+                "id": "copy:copyItem",
+                "data": {}
+            }
+        }, {
+            "id": "paste",
+            "category": "context",
+            "type": "icon",
+            "toolTip": "paste",
+            "title": "paste",
+            "iconClass": "paste icon",
+            "state": "HIDE",
+            "onclick": {
+                "id": "paste:pasteItem",
+                "data": {}
+            }
+        }, {
+            "id": "delete",
+            "category": "context",
+            "type": "icon",
+            "toolTip": "Delete",
+            "title": "Delete",
+            "iconClass": "trash outline icon",
+            "state": "HIDE",
+            "onclick": {
+                "id": "delete:invoke",
+                "data": {}
+            }
+        }, {
+            "id": "reorder",
+            "category": "context",
+            "type": "icon",
+            "toolTip": "Arrange",
+            "title": "Arrange",
+            "iconClass": "icon-arrange icon",
+            "state": "HIDE",
+            "submenu": [{
+                "id": "bringforward",
+                "category": "context",
+                "type": "icon",
+                "toolTip": "Bring forward",
+                "title": "Bring forward",
+                "iconClass": "icon-bringforward icon",
+                "onclick": {
+                    "id": "reorder:bringforward",
+                    "data": {}
+                }
+            }, {
+                "id": "bringfront",
+                "category": "context",
+                "type": "icon",
+                "toolTip": "Bring to front",
+                "title": "Bring to front",
+                "iconClass": "icon-bringfront icon",
+                "onclick": {
+                    "id": "reorder:bringfront",
+                    "data": {}
+                }
+            },{
+                "id": "sendbackward",
+                "category": "context",
+                "type": "icon",
+                "toolTip": "Send backward",
+                "title": "Send backward",
+                "iconClass": "icon-sendbackward icon",
+                "onclick": {
+                    "id": "reorder:sendbackward",
+                    "data": {}
+                }
+            },{
+                "id": "sendback",
+                "category": "context",
+                "type": "icon",
+                "toolTip": "Send to back",
+                "title": "Send to back",
+                "iconClass": "icon-sendback icon",
+                "onclick": {
+                    "id": "reorder:sendback",
+                    "data": {}
+                }
+            }]
+        }]
+    }
+}

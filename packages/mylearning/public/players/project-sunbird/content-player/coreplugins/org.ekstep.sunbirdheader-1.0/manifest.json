@@ -1,0 +1,18 @@
+{
+    "id": "org.ekstep.sunbirdheader",
+    "ver": "1.0",    
+    "author": "Santhosh Vasabhaktula",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+    	"main": "editor/plugin.js",
+    	"header": [{
+    		"templateURL": "editor/partials/headerTemplate.html",
+    		"controllerURL": "editor/headerApp.js"
+    	}],
+        "dependencies": [
+            { "type": "css", "src": "editor/styles/header.css"},
+            { "type": "js", "src": "lib/angular-timeago.min.js"}
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "id": "org.ekstep.suggestcontent",
+    "ver": "1.0",
+    "author": "Vivek Kasture",
+    "title": "Suggest Content Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "css", "src": "editor/suggestContentStyles.css" }
+        ]
+    }
+}

@@ -1,0 +1,103 @@
+<div ng-app="lessonplanmetaApp" class="metacontent-wrapper" ng-controller="lessonplanmetaController">
+    <div class="ui segment header-segment" id="headerSegment">
+        <div class="ui breadcrumb">
+            <a class="section" ng-repeat="value in path" ng-click="setActiveNode(value.nodeId)">
+                {{value.title}} 
+                <div class="divider"> / </div>
+            </a>
+        </div>
+        <h3 class="header-bottom-segment inline-block">{{lesson.name | limitTo:70}}<span ng-if="lesson.name.length > 70"> ...</span></h3>
+        <div class="header-buttons-container header-bottom-segment inline-block" ng-show="mode == 'Edit' && editable == true">
+            <div class="ui primary button right-float button-overrides" id="update-button" ng-click="updateNode(); generateTelemetry({type: 'click', subtype: 'update', target: 'updatemeta'})" ng-show="editMode">
+                Update
+            </div>
+        </div>
+    </div>
+    <form class="ui form segment" id="contents-data-form" novalidate ng-submit="updateNode()" ng-show="editMode" name="lessonMetaForm">
+        <div class="fields">
+            <div class="field book-image-field">
+                <label for="bookImage">Add icon</label>
+                <div class="book-image-container popup-item" data-content="Add or change image" data-variation="tiny inverted" data-position="right center" ng-click="showAssestBrowser()">
+                    <i class="camera icon"></i>
+                    <img ng-if="showImageIcon" ng-src="{{lesson.appIcon || defaultImage }}" ng-click="generateTelemetry({type: 'click', subtype: 'addicon', target: 'appIcon'})" />
+                </div>
+            </div>
+            <div class="field form-fields-except-image">
+                <div class="field required">
+                    <label>Title</label>
+                    <div class="ui input">
+                        <input placeholder="Enter title for lesson" ng-model="lesson.name" ng-class=" {error: submitted && lessonMetaForm.name.$error.required}" name="name" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" required maxlength="100">
+                    </div>
+                </div>
+                <div class="field required">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="brief description about the lesson" ng-model="lesson.description" ng-class="{error: submitted && lessonMetaForm.description.$error.required}" name="description" rows="2" ng-click="generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'})" required></textarea>
+                    </div>
+                </div>
+                <div class="three fields">
+                    <div class="field">
+                        <label for="board">Curriculum</label>
+                        <select id="lessonplan-board" class="ui selection dropdown" ng-model="lesson.board" ng-change="generateTelemetry({type: 'change', subtype: 'select', target: 'board'})">
+                            <option value="">Select</option>
+                            <option value="{{board}}" ng-repeat="board in boardList track by $index">{{board}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="subject">Subject</label>
+                        <select id="lessonplan-subject" class="ui selection dropdown" ng-model="lesson.subject" ng-change="generateTelemetry({type: 'change', subtype: 'select', target: 'subject'})">
+                            <option value="">Select</option>
+                            <option value="{{subject}}" ng-repeat="subject in subjectList track by $index">{{subject}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="grade">Grade</label>
+                        <select id="lessonplan-gradeLevel" class="ui fluid dropdown" ng-model="lesson.gradeLevel" multiple="" ng-change="generateTelemetry({type: 'change', subtype: 'select', target: 'gradeLevel'})">
+                            <option value="">Select</option>
+                            <option value="{{gradeLevel}}" ng-repeat="gradeLevel in gradeList track by $index">{{gradeLevel}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="three fields">
+                    <div class="field">
+                        <label for="medium">Medium</label>
+                        <select id="lessonplan-medium" class="ui selection dropdown" ng-model="lesson.medium" ng-change="generateTelemetry({type: 'change', subtype: 'select', target: 'medium'})">
+                            <option value="">Select</option>
+                            <option value="{{medium}}" ng-repeat="medium in languageList track by $index">{{medium}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="language">Language</label>
+                        <select id="lessonplan-language" class="ui selection dropdown" ng-model="lesson.language" ng-change="generateTelemetry({type: 'change', subtype: 'select', target: 'language'})">
+                            <option value="">Select</option>
+                            <option value="{{language}}" ng-repeat="language in languageList track by $index">{{language}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Concepts</label>
+                        <input name="concepts" id="lessonConceptSelector" ng-model="lesson.conceptData" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'concepts'})">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Notes to Teacher</label>
+                        <input placeholder="Add Notes" ng-model="lesson.notes" name="notes" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'notes'})">
+                    </div>
+                    <div class="field">
+                        <label>Duration</label>
+                        <input name="duration" placeholder="in minutes" id="lessonDuration" ng-model="duration" type="number" min="0" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'duration'})">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="learningObjective">Learning Objective</label>
+                    <div class="ui input">
+                        <textarea placeholder="brief description about learning objective" rows="2" ng-model="learningObjective" ng-click="generateTelemetry({type: 'click', subtype: 'textarea', target: 'learningObjective'})"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+$(".ui.selection.dropdown").dropdown();
+</script>

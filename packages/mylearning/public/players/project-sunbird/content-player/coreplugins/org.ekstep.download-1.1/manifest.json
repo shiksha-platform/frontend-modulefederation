@@ -1,0 +1,12 @@
+{
+    "id": "org.ekstep.download",
+    "ver": "1.0",
+    "author": "Gourav More",
+    "title": "download",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": []
+    }
+}

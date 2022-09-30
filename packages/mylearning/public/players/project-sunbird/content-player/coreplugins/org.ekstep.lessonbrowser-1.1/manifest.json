@@ -1,0 +1,16 @@
+{
+    "id": "org.ekstep.lessonbrowser",
+    "ver": "1.1",
+    "shortId": "lessonbrowser",
+    "author": "G S Bajaj",
+    "title": "Lesson Browser",
+    "description": "This plugin is used to browse through lessons.",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "js", "src": "editor/content-provider-repo.js" },
+            { "type": "css", "src": "editor/lessonbrowser.css" }
+        ]
+    }
+}

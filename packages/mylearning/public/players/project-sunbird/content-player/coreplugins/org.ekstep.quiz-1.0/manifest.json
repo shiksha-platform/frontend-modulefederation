@@ -1,0 +1,107 @@
+{
+    "id": "org.ekstep.quiz",
+    "ver": "1.0",
+    "author": "Manju dr",
+    "title": "Question Set Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "dependencies": [
+            {"type": "plugin", "plugin": "org.ekstep.assessmentbrowser", "ver": "1.0"},
+            { "type": "js", "src": "libs/sortable.js" },
+            { "type": "js", "src": "editor/js/quizUtil.js" }
+        ],
+        "menu": [{
+            "id": "assessment",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Question Set",
+            "title": "Question Set",
+            "iconClass": "icon-questions icon",
+            "onclick": {
+                "id": "org.ekstep.quiz:showPopup"
+            }
+        }],
+         "configManifest": [{
+            "propertyName": "assessmentbrowser",
+            "title": "assessment Browser",
+            "description": "Choose a  from the browser",
+            "dataType": "browser",
+            "required": true,
+            "onclick":{
+                "id": "org.ekstep.quiz:showPopup",
+                "type": "quiz"
+            }
+        },
+        {
+            "propertyName": "quizConfig",
+            "title": "question config",
+            "dataType": "browser",
+            "description": "quizConfig",
+            "iconClass":"settings icon",
+            "required": true,
+            "onclick":{
+                "id": "org.ekstep.quiz:showQuizConfig",
+                "type": "quiz"
+            }
+        },
+
+        {
+            "propertyName": "title",
+            "title": "Assessment Title",
+            "description": "Assessment Title",
+            "dataType": "input",
+            "valueType":"text",
+            "required": true
+        },
+        {
+            "propertyName": "shuffle",
+            "title": "Shuffle Questions",
+            "description": "Shuffle of the Questions",
+            "dataType": "boolean",
+            "required": true
+        },
+        {
+            "propertyName": "optionShuffle",
+            "title": "Shuffle Options",
+            "description": "Shuffle the options",
+            "dataType": "boolean",            
+            "required": true 
+        },
+        {
+            "propertyName": "showImmediateFeedback",
+            "title": "Show Immediate Feedback",
+            "description": "Show the feedback popup",
+            "dataType": "boolean",
+            "required": true
+        },
+        {
+            "propertyName": "total_items",
+            "title": "Display",
+            "description": "Toal marks to display",
+            "dataType": "input",
+            "valueType":"number",
+            "required": true,
+            "minimumValue":"0"
+        },
+        {
+            "propertyName": "max_score",
+            "title": "Total Marks",
+            "description": "Toal marks to display",
+            "dataType": "input",
+            "valueType":"number",
+            "required": true,
+            "minimumValue":"1",
+            "maximumValue":"99"
+            
+        }]
+    },
+    "renderer": {
+        "main": "renderer/plugin.js"
+    }
+}

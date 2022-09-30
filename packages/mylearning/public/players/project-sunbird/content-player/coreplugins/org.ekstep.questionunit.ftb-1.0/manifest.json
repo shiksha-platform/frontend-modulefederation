@@ -1,0 +1,80 @@
+{
+  "id": "org.ekstep.questionunit.ftb",
+  "ver": "1.0",
+  "author": "Gourav More",
+  "title": "FTB question",
+  "description": "",
+  "publishedDate": "",
+  "languages": ["English"],
+  "categories": [],
+  "keywords": ["ftbplugin"],
+  "targets": [
+    {
+      "id": "org.ekstep.questionset",
+      "ver": 1
+    }
+  ],
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.questionunit",
+        "ver": "1.0"
+      },
+      {
+        "type": "css",
+        "src": "editor/styles/style.css"
+      }
+    ]
+  },
+  "templates": [
+    {
+      "id": "ftbtemplate",
+      "thumbnail": "editor/assets/ftb-horizontal.png",
+      "title": "Fill in the Blanks",
+      "disc": "A type of question or phrase with one or more words replaced with a blank line, giving the reader the chance to add the missing word(s).",
+      "category": "FTB",
+      "editor": {
+        "templateURL": "editor/templates/ftb-template.html",
+        "controllerURL": "editor/controllers/ftb-controller.js",
+        "template": "ftbtemplate",
+        "controller": "QuestionFormController"
+      },
+      "renderer": {}
+    }
+  ],
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [
+      {
+        "type": "css",
+        "src": "renderer/styles/style.css"
+      },
+      {
+        "type": "js",
+        "src": "renderer/ftbcontroller.js"
+      },
+      {
+        "id":"org.ekstep.questionunit.ftb.audioblue",
+        "type":"image",
+        "src":"/renderer/assets/audio-blue.png",
+        "assetId": "org.ekstep.questionunit.ftb.audioblue"
+      }
+    ]
+  },
+  "dependencies": [
+    {
+      "plugin": "org.ekstep.questionunit",
+      "ver": "1.0",
+      "type": "plugin",
+      "scope": "all"
+    },
+    {
+      "plugin": "org.ekstep.keyboard",
+      "ver": "1.1",
+      "type": "plugin",
+      "scope": "renderer"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "org.ekstep.questionbank",
+  "ver": "1.0",
+  "shortId": "questionbank",
+  "author": "Swati Singh",
+  "type": "plugin",
+  "title": "Question Bank Plugin",
+  "description": "Plugin to browse existing questions and add them to question set",
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.question",
+        "ver": "1.0"
+      }, {
+        "type": "plugin",
+        "plugin": "org.ekstep.questionset.preview",
+        "ver": "1.0"
+      },{
+        "type": "plugin",
+        "plugin": "org.ekstep.toaster",
+        "ver": "1.0"
+      },
+      {
+        "type": "js",
+        "src": "editor/questionbankcontroller.js"
+      }
+    ],
+    "menu": [],
+    "help": {
+      "src": "editor/help.md",
+      "dataType": "text"
+    }
+  },
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [{
+      "type": "plugin",
+      "plugin": "org.ekstep.questionset.preview",
+      "ver": "1.0"
+    }
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+/**
+Todo: Need to remove the "ui form classes"
+currently editor semantic ui is using 12 gird layout
+and collectio is using 16 grid layout so
+**/
+
+#metadataForm .ui.form .ten.wide.field {
+    width: 82.5%!important;
+}
+
+#metadataForm .ui.form .six.wide.field {
+    width: 50%!important;
+}
+
+#metadataForm .ui.form .twelve.wide.field {
+    width: 100%!important
+}
+
+#metadataForm .lef.ui.form .two.wide.field {
+    width: 16.66666667%!important;
+}
+
+#meta-modal {
+    top: 4% !important;
+}
+
+#meta-modal>.close {
+    top: 1rem;
+    right: 1rem;
+    color: #000;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    -webkit-animation: fadeIn 0.5s;
+    animation: fadeIn 0.5s;
+}
+
+.ngdialog.ngdialog-theme-default.ngdialog-closing .ngdialog-content {
+    -webkit-animation: fadeOut 0.5s;
+    animation: fadeOut 0.5s;
+}
+
+#content-meta {
+    overflow-y: auto;
+    max-height: 70vh;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.form-icon {
+    position: relative;
+    height: 7vw;
+    width: 7vw;
+    cursor: pointer;
+}
+
+.app-icon-overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background-color: rgba(200, 200, 200, 0.5);
+}
+
+.form-icon img {
+    position: absolute;
+    max-height: 100%;
+    max-width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+#content-meta-form input,
+#content-meta-form input:focus,
+#content-meta-form textarea,
+#content-meta-form textarea:focus {
+    border: none;
+    box-shadow: none;
+    background: none;
+    border-bottom: 1px solid #d8d8d8;
+    padding-left: 0;
+    border-radius: 0;
+}
+
+#content-meta-form .content-icon {
+    border: 1px solid #d8d8d8;
+}
+
+#content-meta-form .fields,
+#content-meta-form .field {
+    margin-bottom: 1em;
+}
+
+#content-meta-form>div.fields,
+#content-meta-form>div.field,
+#content-meta-form>.fields>.field,
+#content-meta-form>.fields>.field>div:last-child,
+#content-meta-form>.fields>.field>div:last-child>div.field {
+    margin-bottom: 0;
+}
+
+#content-meta-form label {
+    color: rgba(27, 28, 29, 0.75);
+}
+
+#content-meta-form input::placeholder,
+#content-meta-form .ui.dropdown .default.text {
+    color: #4a4a4a;
+}
+
+@media all {
+    #content-meta-form .ui.dropdown.short-dropdown .menu {
+        max-height: 17vh;
+    }
+}
+
+@media all {
+    #content-meta-form .ui.dropdown.long-dropdown .menu {
+        max-height: 24vh;
+    }
+}
+
+#content-meta-form .error label {
+    color: #8c0615;
+}
+
+.form-popup-modal {
+    max-height: calc(70vh);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.app-icon-area {
+    box-sizing: border-box;
+    margin-left: 11% !important;
+}
+
+.marginClass {
+    margin-left: 2%
+}
+
+.form-icon .appIconSelector{
+    border: 1px solid #E6E7E8;
+    color: #888;
+    text-align: center;
+    height: 100%;
+    width:100%;
+    padding-top: 25%;
+    align-items: center;
+}

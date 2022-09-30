@@ -1,0 +1,79 @@
+<div>
+    <div class="ui active inverted dimmer" ng-if="isCardSearching">
+        <div class="ui large text loader">Loading</div>
+    </div>
+</div>
+<div ng-if="!isCardSearching">
+    <div class="row ui" id="resourceHeading">
+        <p ng-if="mainTemplate == 'selectedResult'">
+            <span>Showing {{$ctrl.res.content.length}} out of {{$ctrl.res.total_items}} matching results</span>
+        </p>
+    </div>
+    <div class="source-result-container">
+        <div class="ui special link cards cardsWrapper" ng-class="{four: mainTemplate == 'selectedResult',five: mainTemplate == 'addedItemsView'}">
+            <div class="card" ng-repeat="lesson in $ctrl.res.content | orderBy:sortOption track by $index" in-view="lineInView($index, $inview, lesson, 'LessonBrowser', $index)" in-view-options="{ throttle: 1000 }" ng-click="toggleSelectionLesson(lesson)">
+                <div class="image">
+                    <img src="{{lesson.appIcon || $ctrl.defaultImage}}" class="resourceMetaImage ">
+                    <div class="ui checkbox blue-checkbox checkBoxOverImage-top-right-corner" id='checkBox_{{lesson.identifier}}' style="z-index:12">
+                        <input class="checkBox" type="checkbox" name="lessons[]">
+                        <label></label>
+                    </div>
+                    <div class="ui inverted dimmer">
+                        <div class="content">
+
+                            <div class="ui list">
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">{{lesson.board}}</div>
+                                    <div class="content contentTitle">Board</div>
+                                </div>
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">{{lesson.gradeLevel.toString()}}
+                                    </div>
+                                    <div class="content contentTitle">Class</div>
+                                </div>
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">{{(lesson.subject)}}
+                                    </div>
+                                    <div class="content contentTitle">Subject</div>
+                                </div>
+                                <div class="item">
+                                    <div class="right floated content contentMetaDetail">
+                                        <span ng-repeat="concept in lesson.concepts">{{ conceptsNames[concept]}}{{$last ? '' : ', '}}</span>
+                                    </div>
+                                    <div class="content contentTitle">Concept</div>
+                                </div>
+                                <div class="item overlapAll" ng-click="showCardDetails(lesson)">
+                                    <div class="content bottomList blueColor">VIEW DETAILS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="header contentMetaTitle">
+                        {{lesson.name}}
+                        </span>
+                    </div>
+                    <div class="description resourceDescription">
+                        {{lesson.description}}
+                    </div>
+                    <div class="meta">
+                        <span class="creator">Created by {{lesson.creator}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="load-more-lesson-warning-msg" ng-hide="mainTemplate == 'addedItemsView' || $ctrl.err || !$ctrl.res.content.length">
+            <img class="ui centered tiny image" ng-src="{{$ctrl.contentNotFoundImage}}">
+            <p>{{messages.content_not_found_message}}
+            </p>
+        </div>
+        <div class="ui negative message errorMessage" ng-if="$ctrl.err">
+            <div class="header">{{$ctrl.err}}</div>
+        </div>
+        <div id="noLessonMsg" ng-show="!$ctrl.res.content.length" class="ui negative message errorMessage">
+            <div class="header">{{messages.no_lesson_found_msg}}</div>
+            <p>{{messages.try_again_msg}}</p>
+        </div>
+    </div>
+</div>

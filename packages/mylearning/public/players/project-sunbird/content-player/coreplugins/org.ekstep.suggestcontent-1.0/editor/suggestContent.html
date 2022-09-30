@@ -1,0 +1,47 @@
+<div ng-app="suggestcontentApp" ng-controller="suggestcontentController">
+    <div class="suggest-content-header">
+        <div class="suggest-content-header-content suggest-content-header-text">
+            <a><i class="angle right icon color-blue"></i></a>
+            <span class="suggest-content-header-title">Explore Suggestions</span>
+            <span ng-class="suggestedContentList.content.length ? 'color-blue' : 'disabled'" class="float-right">
+                <i ng-click="searchLessons(); generateTelemetry({type: 'click', subtype: 'RefreshContentButton', target: 'Refresh Content'})"
+                    ng-class="suggestedContentList.content.length ? 'color-blue' : 'disabled'" class="undo icon refresh-btn"></i>
+                <span ng-click="openResourceBrowser();generateTelemetry({type: 'click', subtype: 'ViewAllButton', target: 'View All'})" class="padding-right-20 padding-left-8">View All</span>
+            </span>
+        </div>
+    </div>
+    <div class="padding-top-15 padding-left-15" ng-if="suggestedContentList.content.length === 0">
+        <div class="ui negative message">
+            <div class="header">
+                No records found.
+            </div>
+        </div>
+    </div>
+    <div class="card-list">
+        <div class="ui active inverted dimmer" id="suggestions-loader">
+            <div class="ui large text loader">Loading</div>
+        </div>
+        <div class="ui card" ng-if="suggestedContentList.content.length" ng-repeat="lesson in suggestedContentList.content | limitTo:20">
+            <div class="ui items card-padding"> 
+                <div class="item margin-bottom-0">
+                    <div class="ui mini image">
+                        <img class="left floated mini ui image" ng-src="{{lesson.appIcon || defaultImage}}">
+                    </div>
+                    <div class="middle aligned content">
+                        <span class="header text-block-ellipsis suggestedheader">{{ lesson.name }}</span>
+                    </div>
+                </div>
+            <div class="item margin-bottom-5 margin-top-0">
+                <div class="content">
+                    <p class="description text-block-ellipsis" ng-if="lesson.description">{{ lesson.description }}</p>
+                        <div class="ui right floated content" ng-click="addContent(lesson, $index);generateTelemetry({type: 'click', subtype: 'AddButton', target: 'Add'})" ng-if="mode.toLowerCase() === 'edit'">
+                            <a class="addResource">Add</a> 
+                        </div>
+                        <div class="middle aligned content" ng-if="lesson.creator">
+                                <span class="suggestedbottom">By {{ lesson.creator }}</span>
+                        </div>
+                </div>
+            </div>
+        <div>
+    </div>
+</div>

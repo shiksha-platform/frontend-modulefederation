@@ -1,0 +1,95 @@
+<!-- filter template -->
+<div class="ui vertical segment sortResource">
+    <p class="padding-top-3px sidebarSectionHeader">
+        SORT BY</p>
+    <div class="ui grid sortButtonsWrapper">
+        <div class="six wide column" style="padding:0%">
+            <button ng-click="Sort('alphabetical')" ng-class="{'primary':sortOption == 'name'}" class="ui tiny basic left floated button SortBtns">
+                A - Z
+            </button>
+        </div>
+        <div class="six wide column" style="padding:0%">
+            <button ng-click="Sort('timestamp')" ng-class="{'primary':sortOption == 'lastPublishedOn'}" class="ui tiny basic right floated button SortBtns">
+                PUBLISHED ON
+            </button>
+        </div>
+    </div>
+</div>
+<div class="ui vertical segment" style="padding:0%">
+    <div scroll-glue-bottom = 'glued' class="ui form list filterOverflow">
+        <div class="item">
+            <p class="padding-top-3px sidebarSectionHeader">
+                FILTERS</p>
+            <a class="ui right floated blueColor" ng-style="((filterSelection.language.length || filterSelection.grade.length || filterSelection.subject.length || filterSelection.concept.length) && {'cursor':'pointer'})  || ((!filterSelection.lessonType.length && !filterSelection.language.length && !filterSelection.grade.length && !filterSelection.subject.length && !filterSelection.concept.length) && {'cursor':'not-allowed'})" ng-click="(filterSelection.lessonType.length || filterSelection.language.length || filterSelection.grade.length || filterSelection.subject.length || filterSelection.concept.length) ? resetFilters() : 'null'">Clear All</a>
+        </div>
+        <div class="filterMetaDetails">
+            <div class="ui sub header paraHeading">
+                <p class="padding-top-3px">CATEGORY ({{filterSelection.lessonType.length}})</p>
+            </div>
+            <div id="lessonBrowser_lessonType" ng-click="moveDown()" class="ui multiple mini search selection dropdown padding-top-3px textbox" data-tooltip="{{filterSelection.lessonType.toString() || 
+                                            'Choose Lesson Type'}}" data-position="top center">
+                <input name="lessonType" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">Choose Lesson Type</div>
+                <div class="menu tooltipElement">
+                    <div class="item" ng-repeat="lessonType in $ctrl.meta.lessonTypes" data-value="{{lessonType}}">{{lessonType}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="filterMetaDetails" ng-if="$ctrl.meta.languages.length > 0">
+            <div class="ui sub header paraHeading">
+                <p class="padding-top-3px">LANGUAGE ({{filterSelection.language.length}})</p>
+            </div>
+            <div id="lessonBrowser_language" ng-click="moveDown()" class="ui multiple mini search selection dropdown padding-top-3px textbox" data-tooltip="{{filterSelection.language.toString() || 
+                                            'Choose Language' }}" data-position="top center">
+                <input name="Language" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">Choose Language</div>
+                <div class="menu tooltipElement">
+                    <div class="item" ng-repeat="language in $ctrl.meta.languages" data-value="{{language.code}}">{{language.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="filterMetaDetails" ng-if="$ctrl.meta.grades.length > 0">
+            <div class="ui sub header paraHeading">
+                <p class="padding-top-3px">CLASS ({{filterSelection.grade.length}})</p>
+            </div>
+            <div id="lessonBrowser_grade" ng-click="moveDown()" class="ui multiple mini search selection dropdown padding-top-3px textbox" data-tooltip="{{filterSelection.grade.toString() || 'Choose Class'}}" data-position="top center">
+                <input name="Grade" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">Choose Class</div>
+                <div class="menu tooltipElement">
+                    <div class="item" ng-repeat="grade in $ctrl.meta.grades" data-value="{{grade.name}}">{{grade.name}}
+                    </div>
+                </div>
+            </div>
+        </div> 
+        <div class="filterMetaDetails" ng-if="$ctrl.meta.subjects.length > 0">
+            <div class="ui sub header paraHeading">
+                <p class="padding-top-3px">SUBJECT ({{filterSelection.subject.length}})</p>
+            </div>
+            <div id="lessonBrowser_subject" ng-click="moveDown()" class="ui multiple mini search selection dropdown padding-top-3px textbox" data-tooltip="{{filterSelection.subject.toString()|| 'Choose Subject'}}" data-position="top center">
+                <input name="Subject" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text">Choose Subject</div>
+                <div class="menu tooltipElement">
+                    <div class="item" ng-repeat="subject in $ctrl.meta.subjects" data-value="{{subject.code}}">{{subject.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="filterMetaDetails">
+            <div class="ui sub header paraHeading">
+                <p class="padding-top-3px">Concepts ({{filterSelection.concept.length}})</p>
+            </div>
+            <div class="ui mini input width-100">
+            <input id="lessonBrowser_concepts" placeholder="Choose Concepts" ng-model="$ctrl.concepts" class="conceptSelector padding-top-3px textbox" data-tooltip="{{filterSelection.concept.toString()||'Choose Concepts'}}" data-position="top center" readonly>
+        </div>
+        </div>
+    </div>
+    <div class="filterApplyBtn">
+        <button id="apply-lesson-filter-button" class="ui small right floated button whiteColor blueBackGround" ng-disabled="!filterSelection.lessonType.length && !filterSelection.language.length && !filterSelection.grade.length && !filterSelection.subject.length && !filterSelection.concept.length" ng-click="applyFilters()">Apply</button>
+    </div>
+</div>

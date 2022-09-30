@@ -1,0 +1,427 @@
+body {
+    min-width: 525px !important;
+}
+
+.no-margin-no-padding,
+.custom-1-wide {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.no-margin,
+.custom-6-wide,
+.custom-5-wide {
+    margin: 0 !important;
+}
+
+.no-padding,
+#userDetailsWrapper {
+    padding: 0 !important;
+}
+
+.xy-mid-align,
+.custom-icon,
+.custom-1-wide .ui.tiny.image {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+}
+
+.icon-box {
+    height: 30px;
+    width: 31.67px;
+    border-radius: 4px;
+    background-color: transparent;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+}
+
+.icon-box:hover,
+.preview-icon-group:hover #previewDropdown{
+    background-color: #E0E1E2;
+}
+
+#previewDropdown:hover{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.custom-icon {
+    line-height: normal;
+    height: 14px;
+    width: 15px;
+}
+
+.custom-container {
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+}
+
+.custom-container .one.wide.column,
+.custom-container .six.wide.column,
+.custom-container .five.wide.column {
+    height: 55px !important;
+}
+
+.custom-container .one.wide.column {
+    width: 60px !important;
+}
+
+.custom-container .five.wide.column {
+    width: -webkit-calc(100% - (50% + 60px)) !important;
+    width: -moz-calc(100% - (50% + 60px)) !important;
+    width: calc(100% - (50% + 60px)) !important;
+    padding-right: 0.3rem;
+}
+
+.ui.grid.custom-container>.column:not(.row) {
+    padding-top: 0.3rem;
+}
+
+.content-masterhead {
+    padding: 0 !important;
+}
+
+.custom-1-wide {
+    background-color: #2e9fd9;
+    -webkit-background-blend-mode: multiply;
+    -moz-background-blend-mode: multiply;
+    -ms-background-blend-mode: multiply;
+    -o-background-blend-mode: multiply;
+    background-blend-mode: multiply;
+}
+
+.custom-1-wide .ui.tiny.image {
+    width: 32.94px;
+    height: 33.9px;
+    display: block;
+}
+
+.custom-6-wide .custom-row-1 {
+    position: relative;
+    top: 4px;
+}
+
+.custom-6-wide .custom-row-1 .content-title {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    height: 19px;
+    line-height: 19px;
+}
+
+.custom-6-wide .custom-row-2 {
+    position: relative;
+    font-size: 12px !important;
+    height: 25px;
+    line-height: 25px;
+}
+
+.custom-6-wide .custom-row-2 a {
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    bottom: -4px;
+}
+
+.custom-5-wide .custom-row-1 {
+    position: relative;
+    top: -1px;
+}
+
+#userDetailsWrapper:before {
+    all: initial;
+}
+
+#userDetailsWrapper {
+    height: auto;
+    width: 123px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    display: inline-block;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    margin-top: 0;
+}
+
+#userDetailsWrapper img {
+    height: 35px;
+    width: 35px;
+    position: relative;
+    display: block;
+    margin: auto;
+    border-radius: 50%;
+}
+
+#userDetailsWrapper .user-name {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#userDetailsWrapper .user-email{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#userDetailsWrapper .user-name,
+#userDetailsWrapper .user-email,
+#userDetailsWrapper .user-details-edit {
+    color: #4A4A4A;
+    font-size: 12px;
+    line-height: 11px;
+    padding: 2px 10px;
+    text-align: center;
+}
+
+#userDetailsWrapper .user-email,
+#userDetailsWrapper .user-details-edit,
+#userDetailsWrapper .user-profile-menu>.option {
+    color: #4A4A4A;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#userDetailsWrapper .user-details-edit {
+    color: #2e9fd9;
+    line-height: 9px;
+}
+
+#userDetailsWrapper .user-details {
+    padding: 5px 0;
+    box-sizing: border-box;
+    margin-top: 5px;
+    border-bottom: 0.02px solid #F3F3F3;
+}
+
+#userDetailsWrapper .user-profile-menu .option {
+    position: relative;
+    color: #9b9b9b;
+    padding: 1px 10px;
+    cursor: default;
+    user-select: none;
+}
+
+#userDetailsWrapper .user-profile-menu a {
+    width: 100%;
+    height: 35px;
+    color: #9b9b9b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#userDetailsWrapper .user-profile-menu a:hover {
+    color: #4a4a4a;
+}
+
+#userDetailsWrapper .user-profile-menu .option:hover {
+    background-color: #F3F3F3;
+}
+
+.custom-5-wide .user-context {
+    position: relative;
+    z-index: 1;
+    color: #9b9b9b;
+    margin-right: 2px;
+}
+
+.custom-5-wide .user-context .username {
+    width: 100%;
+    text-align: right;
+    cursor: default;
+    padding-right: 31px;
+}
+
+.custom-5-wide .user-context .username .name {
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.custom-5-wide .user-context .username .caret.down.icon {
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.custom-5-wide .user-context .username .custom-cursor {
+    cursor: pointer;
+}
+
+.custom-5-wide .close {
+    position: relative;
+    float: right;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.custom-5-wide .close a {
+    color: #9B9B9B;
+}
+
+.custom-5-wide .close a .remove.icon:hover {
+    color: #D92B2F;
+}
+
+.custom-5-wide .header-icon-container {
+    position: relative;
+    height: 30px;
+    border: 1px solid transparent;
+    cursor: default;
+}
+
+.custom-5-wide .custom-row-2 {
+    position: relative;
+    height: 30px;
+    float: right;
+    font-size: 12px !important;
+    top: 0;
+    padding-right: 5px;
+}
+
+.custom-5-wide .custom-row-2 .icon,
+.custom-5-wide .custom-row-2 .fa.fa-eye,
+.custom-5-wide .custom-row-2 .icon-save,
+.custom-5-wide .custom-row-2 .icon-whatsnew {
+    font-size: 14px !important;
+    color: #9B9B9B;
+    height: 14px;
+    width: 16px;
+    margin-right: 10px;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-1,
+.custom-5-wide .custom-row-2 .icon-group-2 {
+    position: relative;
+    height: 100%;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-1 {
+    float: left;
+    padding-right: 5px;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-1:after{
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    height: 20px;
+    border-right: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+
+.custom-5-wide .custom-row-2 .icon-group-1 .comments-icon-group {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 {
+    float: right;
+    padding-left: 5px;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .icon-save,
+.custom-5-wide .custom-row-2 .icon-group-2 .fa.fa-eye,
+.save-button-text {
+    color: #2e9fd9;
+}
+
+.icon-save.disabled,
+.save-button-text.disabled {
+    color: #D7D7D7 !important;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .ui.dropdown {
+    box-shadow: none;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .ui.dropdown:hover .custom-icon {
+    color: #4a4a4a !important;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .ui.dropdown .menu {
+    left: inherit !important;
+    right: -16px !important;
+    top: 70% !important;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .ui.dropdown .menu:after {
+    left: inherit !important;
+    right: 14%!important;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .ui.dropdown .menu .item {
+    font-size: 11px !important;
+    line-height: 11px;
+    padding: 9px 10px !important;
+    font-family: Helvetica;
+    color: #9b9b9b!important;
+    font-weight: normal!important;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .ui.dropdown .menu .item:hover {
+    background-color: #F3F3F3;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .preview-icon-group {
+    display: inline-block;
+    position: relative;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .preview-icon-group .ui.pointing.dropdown.icon-box {
+    width: 15px;
+    margin-left: -10px;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .preview-icon-group .ui.pointing.dropdown.icon-box .icon {
+    font-size: 12px !important;
+}
+
+
+
+
+
+/* for labelled icons in header */
+
+.label-icon-box {
+    width: auto!important;
+    padding: 0 0em 0 0.5em!important;
+    line-height: 2;
+    float: right;
+    margin-left: 5px;
+    color: #9b9b9b!important
+}
+
+.label-icon-box-text {
+    position: relative;
+    left: -10px;
+    font-family: HelveticaNeueLTStd-Lt, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    cursor: default;
+    font-size: 12px;
+}
+
+.label-icon-box .icon-save,
+.fa.fa-eye {
+    position: relative;
+    top: 1px;
+    line-height: inherit!important;
+}
+
+.save-button-text {
+    top: -1px;
+}
+
+/* for labelled icons in header */
+
+#whatsnew-badge{
+    background: #D92B2F;
+    border: 1px solid #D92B2F;
+    border-radius: 1em;
+    font-size: 2px;
+    padding: 0px 1.1px;
+}

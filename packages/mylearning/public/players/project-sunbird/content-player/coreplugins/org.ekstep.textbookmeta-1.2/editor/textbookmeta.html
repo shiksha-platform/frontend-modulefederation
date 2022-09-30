@@ -1,0 +1,102 @@
+<div ng-app="textbookmetaApp" class="metacontent-wrapper" ng-controller="textbookmetaController">
+    <div class="ui segment header-segment" id="headerSegment">
+        <div class="ui breadcrumb">
+            <a class="section" ng-repeat="value in path" ng-click="setActiveNode(value.nodeId)">
+                <span data-inverted="" ng-mouseover="showTooltip($event, value.title)">{{value.title | limitTo:25}}</span>
+                <span ng-if="value.title.length > 25">...</span>
+                <div ng-if="!$last" class="divider"> > </div>
+            </a>
+        </div>
+    </div>
+    <form class="ui form segment" id="contents-data-form" novalidate ng-show="editMode" name="textbookMetaForm">
+        <div class="fields form-fields-overflow">
+            <div class="field book-image-field margin-left-20">
+                <label for="bookImage">Add icon</label>
+                <div class="book-image-container popup-item" data-content="Add or change image" data-variation="tiny inverted" data-position="right center" ng-click="showAssestBrowser()">
+                    <i class="camera icon"></i>
+                    <img ng-if="showImageIcon" ng-src="{{textbook.appIcon || defaultImage }}" ng-click="generateTelemetry({type: 'click', subtype: 'addicon', target: 'appIcon'})" />
+                </div>
+            </div>
+            <div class="field form-fields-except-image">
+                <div class="field required">
+                    <label>Title</label>
+                    <div class="ui input">
+                        <input placeholder="Enter title for Book" ng-model="textbook.name" ng-class=" {error: submitted && textbookMetaForm.name.$error.required}" ng-change = 'changeTitle()' name="name" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" required maxlength="100">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label for="category_1">{{category_1.name}}</label>
+                        <select id="textbookmeta-category-1" class="ui search dropdown placeholder-padding textbookmeta-category-1" ng-model="textbook[category_1.code]" ng-change="updatedDependentCategory('1', textbook[category_1.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_1.name})">
+                            <option value="">Select</option>
+                            <option data-value="{{category.name}}" ng-repeat="category in category_1.terms">{{category.name}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="category_2">{{category_2.name}}</label>
+                        <div id="textbookmeta-category-2" class="ui multiple search selection dropdown textbox textbookmeta-category-2" data-tooltip="{{categoryValues || 'Select Option'}}" data-position="top center" ng-model="textbook[category_2.code]" multiple="" ng-click="updatedDependentCategory('2', textbook[category_2.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_2.name})">
+                            <div class="default text" value="">Select</div>
+                            <div class="menu">
+                                <div class="item" data-value="{{category.name}}" ng-repeat="category in category_2.terms">{{category.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label for="category_3">{{category_3.name}}</label>
+                        <select id="textbookmeta-category-3" class="ui search dropdown placeholder-padding textbookmeta-category-3" ng-model="textbook[category_3.code]" ng-change="updatedDependentCategory('3', textbook[category_3.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_3.name})">
+                            <option value="">Select</option>
+                            <option data-value="{{category.name}}" ng-repeat="category in category_3.terms">{{category.name}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="category_4">{{category_4.name}}</label>
+                        <select id="textbookmeta-category-4" class="ui search dropdown placeholder-padding textbookmeta-category-4" ng-model="textbook[category_4.code]" ng-change="updatedDependentCategory('4', textbook[category_4.code]); generateTelemetry({type: 'change', subtype: 'select', target: category_4.name})">
+                            <option value="">Select</option>
+                            <option data-value="{{category.name}}" ng-repeat="category in category_4.terms">{{category.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="Brief description about the unit" ng-model="textbook.description" name="description" rows="2" ng-click="generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'})"></textarea>
+                    </div>
+                </div>
+                <div class="one field">
+                    <div class="field">
+                        <label>Keywords</label>
+                        <tags-input ng-model="textbook.keywords" display-property="lemma" placeholder="Enter Keywords" replace-spaces-with-dashes="false">
+                            <auto-complete source="loadKeywords($query)" min-length="0" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="my-custom-template">
+                            <div class="right-panel">
+                                <span ng-bind-html="$highlight($getDisplayText())"></span>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+                <div class="onefield">
+                    <div class="field">
+                        <label for="publication">Publisher</label>
+                        <input type="text" placeholder="Publication (optional)" ng-model="textbook.publication" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'publication'})" />
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label for="audience">Year</label>
+                        <select id="textbookmeta-year" class="ui search dropdown placeholder-padding" ng-model="textbook.year" ng-change="generateTelemetry({type: 'change', subtype: 'select', target: 'year'})">
+                            <option value="">Year</option>
+                            <option data-value="{{year}}" ng-repeat="year in years">{{year}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+$(".ui.selection.dropdown").dropdown();
+</script>

@@ -1,0 +1,12 @@
+{
+    "id": "org.ekstep.editorstate",
+    "ver": "1.0",
+    "shortId": "editorstate",
+    "author": "Sunil A S",
+    "title": "Editor State",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js"
+    }
+}

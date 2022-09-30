@@ -1,0 +1,40 @@
+<!-- header template -->
+<div ng-app="org.ekstep.lessonbrowser" class="header">
+    <div class="ui clearing segment overLapAll">
+        <h5 class="ui right floated header searcher">
+            <div class="ui action input search-reset-keyword-field" ng-show="mainTemplate == 'selectedResult' || 'facetsItemView'">
+                <input type="text" id="resourceSearch" placeholder="Search..." autocomplete="off" spellcheck="false" ng-model="searchKeyword" ng-keyup="($event.keyCode == 13 && searchKeyword.length >= 3 ) ? lessonBrowserSearch() : ( searchKeyword.length >= 3 ? searchByKeyword() : resetSearch() )">
+                <div class="ui tiny inline loader searchLoader"></div>
+                <div class="searchElement" id="refresh-button" ng-show="(searchStatus == 'end' && searchKeyword.length >= 3 )" ng-click="refreshSearch() " title="refresh">
+                    <i class="close link icon"></i>
+                </div>
+                <div class="searchElement" ng-show="( (searchKeyword.length < 3 || searchKeyword == (null || undefined)))" id="search-button" ng-click="lessonBrowserSearch()" title="Start search">
+                    <i class="search icon"></i>
+                </div>
+            </div>
+            <span>
+                <i class="close link icon" id="resourceCloseBtn" ng-click="closePopup(mainTemplate)"></i>
+            </span>
+            <ul class="searchList" ng-show="searchKeyword.length >= 3 && !noResultFound && $ctrl.searchRes.content.length">
+                <li class="searchResult" ng-click="showCardDetails(lesson)" ng-repeat="lesson in $ctrl.searchRes.content | limitTo:5">
+                    <p>{{lesson.name}}</p>
+                </li>
+                <li ng-if="$ctrl.searchRes.content.length > 5" ng-click="lessonBrowserSearch()" style="padding:2%;color:#007aff;font-size: 14px;cursor:pointer;font-weight:600"><span>View All Results</span></li>
+            </ul>
+            <ul class="searchList" ng-show="$ctrl.searchRes.content.length && (searchKeyword.length >= 3) && noResultFound">
+                <li class="searchResultMsg"><strong>No Results</strong>
+                    <p>Your search returned no results</p>
+                </li>
+            </ul>
+            <ul class="searchList" ng-show="$ctrl.searchErr  && (searchKeyword.length >= 3)">
+                <strong class="searchResultMsg">{{$ctrl.searchErr}}</strong>
+            </ul>
+        </h5>
+        <strong ng-show="mainTemplate == 'selectedResult' || mainTemplate == 'cardDetailsView' || mainTemplate == 'facetsItemView'" class="ui left floated header contentDetailsTitle">
+            Find & Select Resources
+        </strong>
+        <strong ng-show="mainTemplate == 'addedItemsView'" class="ui left floated header contentDetailsTitle">
+            Selected Resources
+        </strong>
+    </div>
+</div>

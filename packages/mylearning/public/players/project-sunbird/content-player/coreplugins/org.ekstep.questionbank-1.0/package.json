@@ -1,0 +1,9 @@
+{
+    "name": "org.ekstep.questionset",
+    "scripts": {
+        "build": "npm install && node bin/updateFrameworkDependencies.js && gulp"
+    },
+    "devDependencies": {
+        "ekstep-content-plugin-dev-common": "ekstep/ekstep-content-plugin-dev-common"
+    }
+}

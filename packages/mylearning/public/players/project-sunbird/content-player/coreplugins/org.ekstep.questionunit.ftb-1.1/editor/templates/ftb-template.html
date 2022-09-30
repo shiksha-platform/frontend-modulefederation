@@ -1,0 +1,52 @@
+<div ng-controller="ftbQuestionFormController" ng-init="init()">
+    <div class="ui grid ftbFullGrid">
+        <div class="one column row">
+            <div class="column innerScroll ftb-layout qs-scrollbar">
+                <form name="ftbForm">
+                    <div class="one column row qHeader">
+                        <span>Enter the question</span>
+                    </div>
+                    <div class="outer-segment">
+                        <div class="ui segments inner-segment" ng-class="{'cardBorder': $ctrl.focused, 'has-success-card':ftbForm.ftbQuestion.$valid, 'has-errorCard': submitted && (ftbForm.ftbQuestion.question.text.length == 0 || ftbForm.ftbQuestion.$error.pattern)}">
+                            <div class="ui segment">
+                                <div class="ui grid">
+                                    <div class="twelve wide column">
+                                        <div class="form-group segment textBoxDiv questionTextBox">
+                                            <textarea class="form-control textboxQ-ftb" ng-class="{'has-success':ftbForm.ftbQuestion.$valid, 'has-error': submitted && (ftbForm.ftbQuestion.$error.required != true || ftbForm.ftbQuestion.$error.pattern !=true)}" placeholder="Enter the question" name="ftbQuestion" id="ftbQuestion" ng-model="ftbFormData.question.text" ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" required>
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="twelve wide column">
+                                        <selected-media-container media-callbacks="callbacks" formdata="ftbFormData.question" media-type=''  media-index=''></selected-media-container>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui secondary right aligned segment custom-sec-segment" ng-if="configuration.questionConfig.isImage || configuration.questionConfig.isAudio">
+                                <div class="ui grid">
+                                    <div class="one column row segment-column">
+                                        <div class="column right floated">
+                                            <span class="custom-bottom-label">Add: </span>
+                                            <span class="custom-bottom-segment ui icon" data-tooltip="{{!ftbFormData.question.image ? 'Add Image' : 'Edit Image' }}" data-inverted="" ng-click="addMedia('q', '', 'image')"><i class="image large icon"></i></span>
+                                            <span class="custom-bottom-segment ui icon" data-tooltip="{{!ftbFormData.question.audio ? 'Add Audio' : 'Edit Audio' }}" data-tooltip="Add audio" data-inverted="" ng-click="addMedia('q', '', 'audio')"><i class="music large icon"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui segment instructions">
+                        <ul>
+                            <li>Use square brackets [[ ]] to indicate blanks in the sentence. The words between [[ ]] will appear
+                                as blanks to student.
+                            </li>
+                            <li>Example: 'The tree is [[tall]] and [[strong]].' The question will be created as: 'The tree is
+                                _______ and _______.' The correct answers will be 'tall' and 'strong'.
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+                <keyboard-config data="keyboardConfig"></keyboard-config>
+                </div>
+            </div>
+        </div>
+    </div>

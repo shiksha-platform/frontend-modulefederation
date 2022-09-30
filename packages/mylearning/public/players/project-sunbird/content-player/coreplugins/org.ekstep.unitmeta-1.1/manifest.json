@@ -1,0 +1,18 @@
+{
+    "id": "org.ekstep.unitmeta",
+    "ver": "1.1",
+    "author": "Kartheek Palla",
+    "title": "Collectioneditor Unit Meta plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        	{ "plugin": "org.ekstep.assetbrowser", "ver": "1.1", "type": "plugin" },
+        	{ "plugin": "org.ekstep.conceptselector", "ver": "1.0", "type": "plugin" },
+            { "type": "css", "src": "editor/unitmeta.css" },
+            { "type": "css", "src": "editor/libs/tokens.css" },
+            { "type": "js", "src": "editor/libs/tokens.js" }      
+        ]
+    }
+}

@@ -1,0 +1,21 @@
+<div class="main" ng-app='org.ekstep.genericeditorpreview' ng-controller='previewController' ng-init="init()">
+    <div class="ui raised card child preview-iframe-wrapper" id="previewContentIframeWrapper" ng-show='showPreview'>
+        <div class="field pdf-warning-message {{showPdfWarningMsg ? 'visible' : 'transition hidden';}}">
+            <div class="ui icon warning message">
+                <i class="close icon" ng-click="hidePdfWarningMsg();"></i>
+                <div class="content">
+                    <div class="header">
+                        Please review all the pages in this PDF. If the PDF isn't displaying correctly, it may be related to one of the following issues:
+                    </div>
+                    <ul class="list">
+                        <li>Using fonts that are not packaged along with the PDF</li>
+                        <li>Corrupted file has been uploaded</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <iframe id="previewContentIframe"></iframe>
+    </div>
+    <div class="ui raised card child preview-iframe-wrapper" id="previewContentIframeWrapper" ng-show='!showPreview'>        
+    </div>
+</div>

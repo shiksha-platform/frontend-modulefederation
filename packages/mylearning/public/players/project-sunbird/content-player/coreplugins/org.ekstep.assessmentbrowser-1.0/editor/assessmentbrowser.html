@@ -1,0 +1,251 @@
+<script type="text/ng-template" ng-app="assessmentbrowserapp" ng-controller="assessmentbrowsercontroller as $ctrl" id="assessmentbrowser">
+<style type="text/css">
+.filters-container {
+    padding: 8px 10px 4px 18px;
+    background: #f1f1f1;
+}
+.itemIframeMessages {
+    border: 2px solid #E4E4E4;
+    padding: 110px 20px;
+    background: #FFFFFF;
+    text-align: center;
+    font-weight: bold;
+    height: 270px;
+    width: 480px;
+}
+.grid .items .item:hover{
+    background: #f1f1f1;
+}
+.verticalcenter{
+    display: flex;
+    align-items: center;
+}
+
+.assessmentbrowser.ui.modal{
+    position: inherit !important;
+    top: 0 !important;
+}
+
+.ngdialog-content {
+    top: 3% !important;
+    width: 100% !important;
+    position: absolute !important;
+    background: none !important;
+}
+.assessment-browser-error{
+    height: 350px;
+}
+</style>
+<div class="assessmentbrowser ui modal large active" style="top: 5%;">
+    <div class="content">
+        <div class="ui mini three steps">
+            <div class="{{$ctrl.isAdvanceOptionOpen ? 'active': ''}} step">
+                <i class="checkmark box icon"></i>
+                <div class="content">
+                    <div class="title">Pick Questions</div>
+                    <div class="description">Search and select questions</div>
+                </div>
+            </div>
+            <div class="{{!$ctrl.isAdvanceOptionOpen ? 'active': ''}} step">
+                <i class="setting icon"></i>
+                <div class="content">
+                    <div class="title">Configure Question Set</div>
+                    <div class="description">Enter question set title and configure defaults</div>
+                </div>
+            </div>
+            <div class="step">
+                <i class="browser icon"></i>
+                <div class="content">
+                    <div class="title">Add Question Set</div>
+                    <div class="description">Add question set to the content</div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="$ctrl.isAdvanceOptionOpen" class="filters-container" ng-if="!$ctrl.errorMessage">
+            <div class="ui form">
+                <div class="field">
+                    <div class="ui fluid icon input">
+                        <input ng-disabled="isFilterAdded()" ng-model="$ctrl.activity.question_title" placeholder="Search by question, or question title" ng-keypress="$event.keyCode === 13 ? $ctrl.searchQuestions() : null" ng-click="$ctrl.generateTelemetry({type: 'select', subtype: 'keyPress', target: 'searchBox'})"  type="text"></input>
+                        <i class="inverted circular search link icon" ng-click="$ctrl.searchQuestions(); $ctrl.generateTelemetry({type: 'select', subtype: 'keyPress', target: 'searchIcon'})" ></i>
+                    </div>
+                </div>
+                <div class="ui accordion field" id="assessmentAdvancedFields">
+                    <div class="title" ng-click="$ctrl.showAdvancedFilter = !$ctrl.showAdvancedFilter">
+                        <i class="dropdown icon" ng-if="!$ctrl.showAdvancedFilter"></i>
+                        <i class="dropdown icon" ng-if="$ctrl.showAdvancedFilter" style="transform: rotate(90deg);"></i> Advanced Filters
+                    </div>
+                    <div class="content transition {{$ctrl.showAdvancedFilter ? 'visible': 'hidden'}}">
+                        
+                        <div class="three fields">
+                            <div class="field">
+                                <div class="ui fluid labeled input">
+                                    <div class="ui label">Medium</div>
+                                    <select class="ui fluid dropdown search lableCls" ng-model="$ctrl.activity.medium" ng-options="medium.name as medium.name for medium in $ctrl.assessment.medium" ng-change="$ctrl.searchQuestions(); $ctrl.generateTelemetry({type: 'select', subtype: 'dropDown', target: 'mediumDropDown'})">
+                                        <option value="">
+                                            Medium
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui fluid labeled input">
+                                    <div class="ui label">Difficulty</div>
+                                    <select class="ui fluid dropdown search lableCls" ng-model="$ctrl.activity.qlevel" ng-options="level for level in $ctrl.assessment.qlevel" ng-change="$ctrl.searchQuestions(); $ctrl.generateTelemetry({type: 'select', subtype: 'dropDown', target: 'difficultyDropDown'})">
+                                        <option value="">
+                                            Difficulty
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui fluid labeled input">
+                                    <div class="ui label">Question Type</div>
+                                    <select multiple="" class="ui fluid dropdown search lableCls" ng-model="$ctrl.activity.type" ng-options="type for type in $ctrl.assessment.type" ng-change="$ctrl.searchQuestions(); $ctrl.generateTelemetry({type: 'select', subtype: 'dropDown', target: 'questionTypeDropDown'})">
+                                        <option value="">
+                                            Type
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="three fields">
+                            <div class="field">
+                                <div class="ui fluid labeled input">
+                                    <div class="ui label">&emsp;Class&nbsp;&nbsp;</div>
+                                    <select multiple="" class="ui fluid dropdown search lableCls" ng-model="$ctrl.activity.gradeLevel" ng-options="grade.name as grade.name for grade in $ctrl.assessment.gradeLevel" data-bind="options:assessment.gradeLevel" ng-change="$ctrl.searchQuestions(); $ctrl.generateTelemetry({type: 'select', subtype: 'dropDown', target: 'gradeDropDown'})">
+                                        <option value="">
+                                            Class
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui fluid labeled input">
+                                    <div class="ui label">Concepts</div>
+                                    <input type="text" placeholder="Concepts" ng-model="$ctrl.activityOptions.concepts" class="fluid" id="assessmentConceptSelector" ng-click="$ctrl.showConceptSelector(); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'conceptSelector'})" selectable="false" readonly>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui toggle checkbox verticalcenter">
+                                    <input type="checkbox" ng-model="$ctrl.activityOptions.myQuestions" ng-change="$ctrl.searchQuestions(); $ctrl.generateTelemetry({type: 'select', subtype: 'toggle', target: 'myQuestionsToggle'})">
+                                    <label>My Questions</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.isAdvanceOptionOpen" class="filters-container">
+            <div class="ui form">
+                <div class="five fields">
+                    <div  ng-class="$ctrl.activityOptions.title ? 'field' :'field error'">
+                        <div class="ui corner labeled input">
+                            <input name="title" ng-model="$ctrl.activityOptions.title"  type="text" placeholder="Question Set Title"  maxlength="100"  autocomplete="off" ng-click="$ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'questionTitleInput'})">
+                            <div class="ui corner label">
+                                <i class="asterisk icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui fluid labeled input">
+                            <div class="ui label">Total Marks</div>
+                            <input class="total-marks ui dropdown" id="max_score" name="max_score" ng-model="$ctrl.activityOptions.max_score" min='0' required="" type="number" ng-click="$ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'totalMarksInput'})"/>
+                        </div>
+                    </div>
+                    <div ng-class="$ctrl.activityOptions.total_items ? 'field' : 'field error' ">
+                        <div class="ui fluid labeled input displayCount">
+                            <div class="ui label">Display</div>
+                            <select class="ui fluid dropdown" id="total_items" ng-model="$ctrl.activityOptions.total_items" ng-options="option as option for option in $ctrl.activityOptions.range" ng-change="$ctrl.generateTelemetry({type: 'select', subtype: 'dropDown', target: 'noOfQuestionsdisplay'})">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox verticalcenter">
+                            <input type="checkbox" ng-model="$ctrl.activityOptions.showImmediateFeedback" ng-click="$ctrl.generateTelemetry({type: 'click', subtype: 'toggle', target: 'showFeedbackToggle'})">
+                            <label>Show Immediate Feedback</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox verticalcenter">
+                            <input type="checkbox" ng-model="$ctrl.activityOptions.shuffle" ng-click="$ctrl.generateTelemetry({type: 'click', subtype: 'toggle', target: 'shuffleQuestionsToggle'})">
+                            <label>Shuffle Questions</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui segment" style="width: 100%;height: 270px;" ng-show="$ctrl.itemsLoading">
+            <div class="ui active inverted dimmer">
+                <div class="ui text loader">Just one second, We're fetching that content for you.</div>
+            </div>
+        </div>
+        <div ng-if="$ctrl.errorMessage" class=" assessment-browser-error">
+            <div class="ui negative message">
+                <div class="header">
+                    We're sorry!
+                </div>
+                <p>Unable to fetch the Questions! Please try again later!</p>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.errorMessage && (($ctrl.isAdvanceOptionOpen && $ctrl.items.length > 0) || (!$ctrl.isAdvanceOptionOpen && $ctrl.cart.items.length > 0))">
+            <div class="ui two column horizontally padded grid" ng-show="!$ctrl.itemsLoading">
+                <div class="column" id="scrolQuestion" style="width: 480px;height: 284px; overflow-y: scroll;">
+                    <div class="ui large divided items" ng-show="$ctrl.isAdvanceOptionOpen">
+                        <div class="item select" ng-repeat="item in $ctrl.items" ng-click=" item.isSelected ? $ctrl.cart.remove(item) : $ctrl.cart.add(item); $event.stopPropagation(); $ctrl.generateTelemetry({type: 'select', subtype: 'checkbox', target: 'selectQuestion'})">
+                            <div class="middle aligned content">
+                                <div class="header">{{ item.question }}</div>
+                                <div class="meta">{{item.type}} | {{ item.qlevel}} | {{ item.title }}</div>
+                                <div class="description">{{ item.description }}</div>
+                            </div>
+                            <div class="ui checkbox" ng-class="item.isSelected ? 'checked' : '' ">
+                                <input type="checkbox" ng-checked="item.isSelected ? 'checked' : ''" name="check">
+                                <label></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui large divided items" ng-show="!$ctrl.isAdvanceOptionOpen">
+                            <div class="item select" ng-repeat="cartItem in $ctrl.cart.items">
+                                <div class="middle aligned content" ng-click="$ctrl.previewItem(cartItem, true);">
+                                <div class="header">{{ cartItem.question }}</div>
+                                <div class="meta">{{cartItem.type}} | {{ cartItem.qlevel}} | {{ cartItem.title }}</div>
+                                <div class="description">{{ cartItem.description }}</div>
+                            </div>
+                            <div class="ui checkbox" ng-class="item.isSelected ? 'checked' : '' " ng-click="$ctrl.cart.remove(cartItem); $ctrl.generateTelemetry({type: 'select', subtype: 'checkbox', target: 'selectQuestion'})">
+                                <input type="checkbox" checked="" name="check">
+                                <label></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column right floated">
+                    <iframe id="itemIframe" ng-hide="!$ctrl.itemPreviewLoading && ($ctrl.itemPreviewContent.error || ($ctrl.itemPreviewDisplay == $ctrl.itemPreviewDefaultMessage))" style="width: 480px;height: 270px; border: 2px solid #E4E4E4;"></iframe>
+                    <div class="itemIframeMessages" ng-show="!$ctrl.itemPreviewLoading && ($ctrl.itemPreviewContent.error || ($ctrl.itemPreviewDisplay == $ctrl.itemPreviewDefaultMessage))">{{$ctrl.itemPreviewDisplay}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="ui center aligned segment" ng-show="($ctrl.items && !$ctrl.items.length) && $ctrl.isAdvanceOptionOpen">
+            No Data Found
+            <br> Redefine your search filters!
+        </div>
+    </div>
+    <div class="actions">
+        <a ng-href="{{$ctrl.context.createItemLink}}" target="_blank" ng-show="{{$ctrl.context.createItemLink}}">
+            <button class="ui blue left floated button" ng-click="$ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'createAQuestionButton'})">Create a question</button>
+        </a>
+        <div class="ui label" ng-show="$ctrl.cart.items.length">
+            <a class="ui grey circular label">{{$ctrl.cart.items.length}}</a> Questions added
+        </div>
+        <div class="ui buttons" ng-if="$ctrl.isAdvanceOptionOpen">
+            <button class="ui orange button" ng-click="$ctrl.cancel(); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'cancelButton'})" type="button">Cancel</button>
+            <div class="or"></div>
+            <button class="ui blue button" ng-click="$ctrl.addActivityOptions(); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'nextButton'})" ng-disabled="!$ctrl.cart.items.length" type="button">Next</button>
+        </div>
+        <div class="ui buttons" ng-if="!$ctrl.isAdvanceOptionOpen">
+            <button id="closePopUp" class="ui orange button" ng-click="$ctrl.isAdvanceOptionOpen = !$ctrl.isAdvanceOptionOpen; $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'addMoreQuestions'})" type="button">Add More Questions</button>
+            <div class="or"></div>
+            <button id="selectanduse" class="ui blue button" ng-click="$ctrl.addItemActivity(); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'addQuestionSet'})" type="button">Add Question Set</button>
+        </div>
+    </div>
+</div>

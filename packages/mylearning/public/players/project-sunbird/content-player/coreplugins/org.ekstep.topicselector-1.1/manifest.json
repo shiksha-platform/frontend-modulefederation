@@ -1,0 +1,15 @@
+{
+    "id": "org.ekstep.topicselector",
+    "ver": "1.1",
+    "author": "Gourav More",
+    "title": "Topic Selector Plugin",
+    "description": "Topic and subtopic selector plugin",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {"type": "js", "src": "editor/topic-semantic-ui-tree-picker.js"},
+            {"type": "css", "src": "editor/topic-semantic-ui-tree-picker.css"}
+        ]
+    }
+}

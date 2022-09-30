@@ -1,0 +1,18 @@
+<script type="text/ng-template" ng-controller="mainCtrl as $ctrl" id="sendForReviewWarning">
+  <div class="ui small modal visible active" style="top: 12%">
+    <div class="header">
+      QR Code missing
+    </div>
+    <div class="content">
+        <h4  style="font-weight: bold;font-size: 18px;">Are you sure you want to submit for review without QR code?</h4>
+        <p>You haven't added any Textbook level QR code.</p>
+    </div>
+    <div class="actions footer">
+      <div class="ui buttons ">
+          <button id="closePopUp " class="ui orange button " type="button " ng-click="addQRCode()">Add QR Code</button>
+          <div class="or "></div>
+          <button class="ui blue button " type="button" ng-click="validateUnitsDialcodes()">Continue anyway</button>
+      </div>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,18 @@
+{
+    "id": "org.ekstep.textbookmeta",
+    "ver": "1.0",
+    "author": "Kartheek Palla",
+    "title": "Textbook Meta plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        	{ "plugin": "org.ekstep.assetbrowser", "ver": "1.0", "type": "plugin" },
+        	{ "plugin": "org.ekstep.conceptselector", "ver": "1.0", "type": "plugin" },
+            { "type": "css", "src": "editor/textbookmeta.css" },
+            { "type": "css", "src": "editor/libs/tokens.css" },
+            { "type": "js", "src": "editor/libs/tokens.js" } 
+        ]
+    }
+}

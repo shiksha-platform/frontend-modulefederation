@@ -1,0 +1,71 @@
+<div class="ui grid fullHeight">
+    <div class="ui segment horizontal two wide column">
+        <div class="cardMetaDetails">
+            <p class="cardDetailsSectionTitle">{{lessonView.name}}</p>
+            <div class="image">
+                <img ng-src="{{lessonView.appIcon || $ctrl.defaultImage}}" class="width-100 resourceMetaImage">
+            </div>
+            <div class="meta">
+                <div class="ui list cardDetails-list">
+                    <div class="item">
+                        <div class="right floated content breakWord cardSidePanel">{{lessonView.board}}</div>
+                        <div class="content cardSidePanel">Board</div>
+                    </div>
+                    <div class="item">
+                        <div class="right floated content breakWord cardSidePanel">{{lessonView.gradeLevel.toString()}}
+                        </div>
+                        <div class="content cardSidePanel">Class</div>
+                    </div>
+                    <div class="item">
+                        <div class="right floated content breakWord cardSidePanel">{{lessonView.subject}}
+                        </div>
+                        <div class="content cardSidePanel">Subject</div>
+                    </div>
+                    <div class="item">
+                        <div class="right floated content breakWord cardSidePanel">
+                            <span ng-repeat="concept in lessonView.concepts">{{ conceptsNames[concept]}}{{$last ? '' : ', '}}</span>
+                        </div>
+                        <div class="content cardSidePanel">Concept</div>
+                    </div>
+                    <div class="ui row" style="height: 85px;align-items: center;display: flex;">
+                        <span class="creator breakWord">
+                            Created by<a class="creatorname">{{lessonView.owner || lessonView.creator}}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="bottomFixed">
+                    <button class="ui small button blueBackGround whiteColor" ng-show="selectedResources.indexOf(lessonView.identifier) == -1" ng-click="toggleSelectionLesson(lessonView)">ADD</button>
+                    <button class="ui small button blueBackGround whiteColor" ng-show="selectedResources.indexOf(lessonView.identifier) != -1" ng-click="toggleSelectionLesson(lessonView)">REMOVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ten wide column">
+        <div class="ui grid fullHeight">
+            <div class="ui segment horizontal six wide column removeBorder">
+                <p class="cardDetailsSectionTitle">Description</p>
+                <div class="content breakWord cardView-description">
+                    {{lessonView.description}}
+                </div>
+            </div>
+            <div class="ui segment horizontal six wide column removeBorder centered">
+                <div class="flexslider" flexslider>
+                    <ul class="slides screenShotSlider">
+                        <li>
+                            <img ng-src="{{$ctrl.defaultImage}}" style="height: 280px;">
+                        </li>
+                        <li>
+                            <img ng-src="{{$ctrl.defaultImage}}" style="height: 280px;">
+                        </li>
+                        <li>
+                            <img ng-src="{{$ctrl.defaultImage}}" style="height: 280px;">
+                        </li>
+                        <li>
+                            <img ng-src="{{$ctrl.defaultImage}}" style="height: 280px;">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

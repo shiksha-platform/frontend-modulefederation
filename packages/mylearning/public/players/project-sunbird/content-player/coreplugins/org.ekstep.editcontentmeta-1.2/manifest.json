@@ -1,0 +1,20 @@
+{
+    "id": "org.ekstep.editcontentmeta",
+    "ver": "1.2",
+    "displayName": "Edit Lesson Details",
+    "author": "Manoj Chandrashekar",
+    "title": "Edit Lesson Details",
+    "description": "Edit Lesson Details in Content Editor",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",        
+        "dependencies": [
+            { "type": "js", "src": "editor/editcontentmeta.controller.js" },
+            { "type": "css", "src": "editor/editcontentmeta.css" },
+            { "type": "css", "src": "editor/libs/tokens.css" },
+            { "type": "js", "src": "editor/libs/tokens.js" },
+            { "plugin": "org.ekstep.assetbrowser", "ver": "1.2", "type": "plugin" },
+            { "plugin": "org.ekstep.conceptselector", "ver": "1.1", "type": "plugin" }
+        ]
+    }
+}

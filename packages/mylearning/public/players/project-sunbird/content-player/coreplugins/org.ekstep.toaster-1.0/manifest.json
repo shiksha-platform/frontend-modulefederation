@@ -1,0 +1,15 @@
+{
+    "id": "org.ekstep.toaster",
+    "ver": "1.0",
+    "author": "Sunil A S",
+    "title": "Toaster plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [            
+            { "type": "js", "src": "editor/libs/iziToast.min.js" },
+            { "type": "css", "src": "editor/libs/iziToast.min.css" }
+        ]
+    }
+}

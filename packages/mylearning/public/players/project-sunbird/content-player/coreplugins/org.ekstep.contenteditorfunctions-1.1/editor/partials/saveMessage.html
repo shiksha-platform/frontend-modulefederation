@@ -1,0 +1,10 @@
+<div class="ui grid save-response" style="margin:0px">
+    <div class="two column wide">
+        <div class="header">
+            <h2><i class="outline big icon" ng-class="popUpValues.popUpIcon"></i>{{popUpValues.headerMsg}}</h2>
+        </div>
+        <div class="ui buttons right floated">
+            <button class="ui orange button" ng-click="closeThisDialog();fireTelemetry({id: popUpValues.saveNotificationCloseButton}, popUpValues.saveNotificationCloseButton)" ng-show="popUpValues.showCloseButton">Close</button>
+        </div>
+    </div>
+</div>

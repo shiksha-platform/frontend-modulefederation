@@ -1,0 +1,75 @@
+{
+    "id": "org.ekstep.video",
+    "ver": "1.1",
+    "author": "",
+    "title": "Video Plugin",
+    "description": "",
+    "publishedDate": "",
+    "type": "widget",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": [{
+            "id": "videoPlugin",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Video",
+            "title": "Add Video",
+            "iconClass": "fa fa-play-circle-o",
+            "iconStyle": "",
+            "onclick": {
+                "id": "org.ekstep.video:showpopup"
+            }
+        }],
+        "dependencies" : [{
+            "type": "css", "src": "editor/videobrowser.css"
+        }],
+        "views":[
+            {"template":"./video.html", "controller":"./videoapp.js"}
+        ],
+        "configManifest": [{
+            "propertyName": "autoplay",
+            "title": "Auto Play",
+            "description": "Auto play the video?",
+            "dataType": "boolean",
+            "defaultValue": true
+        }, {
+            "propertyName": "controls",
+            "title": "Show Controls",
+            "description": "Show the play/pause controls on video?",
+            "dataType": "boolean",
+            "defaultValue": false
+        }, {
+            "propertyName": "muted",
+            "title": "Mute Audio",
+            "description": "Mute the audio?",
+            "dataType": "boolean",
+            "required": false
+        }],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "playable": true,
+        "init-data": {
+            "y": 7.9,
+            "x": 10.97,
+            "w": 78.4,
+            "h": 79.51,
+            "config": {
+                "autoplay": true,
+                "controls": false,
+                "muted": false,
+                "visible": true
+            }
+        }
+    },
+    "renderer": {
+        "main": "renderer/videoplugin.js",
+        "dependencies": [
+            {"type": "js", "src": "renderer/libs/video.js"},
+            {"type": "js", "src": "renderer/libs/videoyoutube.js"},
+            {"type": "css", "src": "renderer/libs/videojs.css"}
+        ],
+        "compatibilityVersion": 4
+    }
+}

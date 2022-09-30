@@ -1,0 +1,20 @@
+<script type="text/ng-template" ng-controller="headerController as $ctrl" id="updateTocError">
+    <div class="ui tiny modal active browseFileForUpdate">
+        <div class="header bottomBorder">
+            <h5 class="ui header errMessage">
+                <i class="window close icon"></i>
+                <div class="content">
+                {{errTitle}}
+                </div>
+            </h5>
+        </div>
+        <div class="content">
+                <p >{{errMessage}}</p>
+        </div>
+        <div class="actions">
+            <div class="ui buttons ">
+                <button id="closePopUp " class="ui blue button" type="button " ng-click="closeThisDialog();">Close</button>
+            </div>
+        </div>
+    </div>
+</script>

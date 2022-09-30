@@ -1,0 +1,240 @@
+<script type="text/ng-template" ng-app="activityBrowserApp" ng-controller="activityBrowserCtrl as $ctrl" id="activityBrowser">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick-theme.css" />
+    <div class="ui modal fullscreen active activity-browser-modal">
+        <div class="header" style="padding-right:1em;">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span>Add activity</span>
+                    </div>
+                    <div class="column right aligned">
+                        <i class="cursor-pointer close link icon" ng-click="closeThisDialog();$ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeButton'})"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-class="$ctrl.showPluginDetails ? 'content' : 'content full-screen'">
+            <div class="ui divided grid activity-browser-controls">
+                <div class="row" style="background-color: #F9F9F9;" ng-show="!$ctrl.showPluginDetails">
+                    <div class="six wide column" style="display:flex; flex-flow:row; align-items:center;">
+                        <span class="height-100-percent" style="margin-right:10px;"><i class="search icon" style="margin-top:10px;"></i></span>
+                        <div class="ui transparent input custom-input height-100-percent" style='flex-grow:1; margin-right:5px;'>
+                            <input class="height-100-percent" type="text" placeholder="Search activity" ng-model="$ctrl.activityOptions.searchQuery" ng-keypress="$event.keyCode === 13 ? $ctrl.getActivities() : null" />
+                        </div>
+                        <button class="ui primary button height-100-percent" ng-click="$ctrl.getActivities();$ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'searchActivityCard'})">Search</button>
+                    </div>
+                    <div class="ui vertical divider"></div>
+                    <div class="three wide right aligned column" style="display:flex; flex-flow:row; align-items:center;">
+                        <label style="margin-right:10px;">
+                            Category
+                        </label>
+                        <div style="flex-grow:1;" class="ui input" ng-init="$ctrl.activityOptions.categories = []">
+                            <select multiple="" class="ui dropdown search lableCls custom-dropdown" ng-model="$ctrl.activityOptions.categories" ng-options="type for type in $ctrl.categories" ng-change="$ctrl.getActivities();$ctrl.generateTelemetry({type: 'click', subtype:    'advanceSearch', target: 'searchActivityCard'})">
+                                <option value="">
+                                    Type
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="three wide right aligned column" style="box-shadow:none; display:flex; flex-flow:row; align-items:center;">
+                        <label style="margin-right:10px;">
+                            Concepts
+                        </label>
+                        <div class="ui fluid transparent input custom-input" style="flex-grow:1;">
+                            <input type="text" placeholder="Concepts" ng-model="$ctrl.activityOptions.conceptsPlaceHolder" id="activityConceptSelector" selectable="false" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui grid activity-browser-body">
+                <div ng-if="$ctrl.showPluginDetails" class="row activity-information-row">
+                    <div class="twelve wide column height-100-percent" style="padding-left:114px; padding-right:115px; padding-top: 1.5em;">
+                        <div class="ui items height-100-percent">
+                            <div class="item" style="width:50%;">
+                                <div class="ui small image">
+                                    <img ng-src="{{$ctrl.pluginDetails.appIcon || $ctrl.defaultActivityImage}}" />
+                                </div>
+                                <div class="content">
+                                    <div class="header">
+                                        <a style="color:#4a4a4a;">{{$ctrl.pluginDetails.name | limitTo: 30}}</a>
+                                        <span style="margin-left:23px; color:#9b9b9b; font-size:12px;" data-tooltip="Version : {{$ctrl.pluginDetails.semanticVersion}}"><i class="info circle link icon"></i></span>
+                                    </div>
+                                    <div class="meta" style="margin-top:5px; color: #9b9b9b;">
+                                        by&nbsp;:&nbsp;<span>{{$ctrl.pluginDetails.creator}}</span>
+                                    </div>
+                                    <div class="description" style="display:flex; justify-content:space-between; margin-top:20px; color:#4a4a4a;">
+                                        <p>
+                                            Grade&nbsp;:&nbsp;<span ng-repeat="grade in $ctrl.pluginDetails.gradeLevel">
+                                                <span ng-if="$last">&nbsp;and&nbsp;</span> {{grade.replace('Grade ','')}}
+                                            <span ng-if="!$last && ($index < $ctrl.pluginDetails.gradeLevel.length-2)">,</span>
+                                            </span>
+                                        </p>
+                                        <p>
+                                            Category&nbsp;:&nbsp;<span ng-repeat="category in $ctrl.pluginDetails.category">
+                                                {{category}}</span>
+                                        </p>
+                                    </div>
+                                    <div class="description" style="display:flex; justify-content:space-between; margin-top:0; color:#4a4a4a;">
+                                        <p>
+                                            Subject&nbsp;:&nbsp;<span>{{$ctrl.pluginDetails.subject}}</span>
+                                        </p>
+                                        <p>
+                                            Language&nbsp;:&nbsp;<span ng-repeat="language in $ctrl.pluginDetails.language">
+                                                {{language}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item" style="margin-top:2em;">
+                                <div class="content">
+                                    <div class="header" style="color:#4a4a4a;">Description</div>
+                                    <div class="description" style="color:#9b9b9b; max-height:100px; overflow-y:auto; overflow-x:hidden;">
+                                        {{$ctrl.pluginDetails.description | limitTo : 350}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item" style="margin-top:2em;">
+                                <div class="content">
+                                    <div ng-if="$ctrl.imageAvailable">
+                                        <slider images="$ctrl.images"></slider>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="!$ctrl.showPluginDetails" class="row height-100-percent">
+                    <div class="column height-100-percent">
+                        <div class="ui segment height-100-percent activity-segment" style="overflow-y:auto; border:none; box-shadow:none; padding:0; padding-bottom:1em;">
+                            <div class="ui vertical segment activity-browser-content-loader" ng-if="$ctrl.loading">
+                                <div class="ui active inverted dimmer">
+                                    <div class="ui text loader">Just one second, We're fetching activities for you.</div>
+                                </div>
+                            </div>
+                            <div ng-if="$ctrl.activityPageApiResponse" ng-class=" $ctrl.expandedGroupId !='' && $ctrl.expandedGroupId != '{{activityGroup.name | camelize}}' ? 'ui vertical segment     hide-segment' : 'ui vertical segment show-segment'" ng-show="$ctrl.activityGroupsList.length > 0 && !$ctrl.hideMainPage" id="{{activityGroup.name | camelize}}" ng-repeat="activityGroup in $ctrl.activityGroupsList">
+                                <p>{{activityGroup.name}} ({{activityGroup.contents.length}})<a ng-show="($ctrl.clickedViewMoreLinkId != '{{activityGroup.name | camelize}}ViewMore')" id="{{activityGroup.name | camelize}}ViewMore" style="float:right; cursor:pointer;" ng-click="$ctrl.viewMorePlugins($event)">View More&nbsp;<i class="angle right icon"></i></a></p>
+                                <div ng-class="$ctrl.expandedGroupId == '{{activityGroup.name | camelize}}' ? 'ui five stackable cards activity-cards expanded-segment' : 'ui five stackable cards activity-cards collapsed-segment'">
+                                    <div class="ui link card activity-card" ng-click="$ctrl.viewPluginDetails(activity); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'activityCard'});" ng-repeat="activity in activityGroup.contents track by $index">
+                                        <div class="blurring dimmable image">
+                                            <div class="ui dimmer">
+                                                <div class="content">
+                                                    <div class="center">
+                                                        <p title="{{activity.description}}">{{activity.description | limitTo:100}}<span ng-if="activity.description.length > 100">...</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <img class="activity-appicon" ng-src="{{activity.appIcon || $ctrl.defaultActivityImage}}">
+                                        </div>
+                                        <div class="content activity-meta">
+                                            <div class="ui tiny header" style="margin-bottom:0.5em">
+                                                {{activity.name | limitTo:23}}<span ng-if="activity.name.length > 23">...</span>
+                                            </div>
+                                            <div class="meta">
+                                                <div ng-if="activity.gradeLevel">
+                                                    Grade :
+                                                    <span ng-repeat="grade in activity.gradeLevel"><span ng-if="$index < 2">{{grade.replace('Grade ','')}}</span><span ng-if="$index == 2"> and {{activity.gradeLevel.length - 2}} more..</span><span ng-if="($index < 1) && !$last">,</span>
+                                                    </span>
+                                                </div>
+                                                <div ng-if="activity.subject">
+                                                    Subject :
+                                                    <span>{{activity.subject}}</span>
+                                                </div>
+                                                <div ng-if="activity.language">
+                                                    Language :
+                                                    <span ng-repeat="lang in activity.language"><span ng-if="$index < 2">{{lang}}</span><span ng-if="$index == 2"> and {{activity.language.length - 2}} more..</span><span ng-if="($index < 1) && !$last">,</span>
+                                                    </span>
+                                                </div>
+                                                <div ng-if="activity.category">
+                                                    Category :
+                                                    <span ng-repeat="cat in activity.category"><span ng-if="$index < 2">{{cat}}</span><span ng-if="$index == 2"> and {{activity.category.length - 2}} more..</span><span ng-if="($index < 1) && !$last">,</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content" style="padding:5px 10px;">
+                                            <div class="right floated">
+                                                <button class="ui mini primary button" ng-click="$ctrl.addPlugin(activity);$ctrl.generateTelemetry({type: 'click', subtype: 'add', target: 'addActivityCard'})">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="!$ctrl.activityPageApiResponse" class="ui vertical segment" ng-show="$ctrl.activitiesList.length > 0 && !$ctrl.hideMainPage" style="border-bottom:transparent;">
+                                <div class="ui five stackable cards activity-cards" ng-show="$ctrl.activitiesList.length > 0 && !$ctrl.hideMainPage">
+                                    <div class="ui link card activity-card" ng-repeat="activity in $ctrl.activitiesList track by $index" ng-click="$ctrl.viewPluginDetails(activity); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'activityCard'});">
+                                        <div class="blurring dimmable image">
+                                            <div class="ui dimmer">
+                                                <div class="content">
+                                                    <div class="center">
+                                                        <p title="{{activity.description}}">{{activity.description | limitTo:100}}<span ng-if="activity.description.length > 100">...</span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <img class="activity-appicon" ng-src="{{activity.appIcon || $ctrl.defaultActivityImage}}">
+                                        </div>
+                                        <div class="content activity-meta">
+                                            <div class="ui tiny header" style="margin-bottom:0.5em">
+                                                {{activity.name | limitTo:23}}<span ng-if="activity.name.length > 23">...</span>
+                                            </div>
+                                            <div class="meta">
+                                                <div ng-if="activity.gradeLevel">
+                                                    Grade :
+                                                    <span ng-repeat="grade in activity.gradeLevel"><span ng-if="$index < 2">{{grade.replace('Grade ','')}}</span><span ng-if="$index == 2"> and {{activity.gradeLevel.length - 2}} more..</span><span ng-if="($index < 1) && !$last">,</span>
+                                                    </span>
+                                                </div>
+                                                <div ng-if="activity.subject">
+                                                    Subject :
+                                                    <span>{{activity.subject}}</span>
+                                                </div>
+                                                <div ng-if="activity.language">
+                                                    Language :
+                                                    <span ng-repeat="lang in activity.language"><span ng-if="$index < 2">{{lang}}</span><span ng-if="$index == 2"> and {{activity.language.length - 2}} more..</span><span ng-if="($index < 1) && !$last">,</span>
+                                                    </span>
+                                                </div>
+                                                <div ng-if="activity.category">
+                                                    Category :
+                                                    <span ng-repeat="cat in activity.category"><span ng-if="$index < 2">{{cat}}</span><span ng-if="$index == 2"> and {{activity.category.length - 2}} more..</span><span ng-if="($index < 1) && !$last">,</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="content" style="padding:5px 10px;">
+                                            <div class="right floated">
+                                                <button class="ui mini primary button" ng-click="$ctrl.addPlugin(activity);$ctrl.generateTelemetry({type: 'click', subtype: 'add', target: 'addActivityCard'})">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-class="ui vertical segment" ng-show="$ctrl.noActivities">
+                                <div class="ui huge info message activity-browser-center">
+                                    <p>No activities found.</p>
+                                </div>
+                            </div>
+                            <div class="ui vertical segment" ng-if="$ctrl.errorLoadingActivities">
+                                <div class="ui negative message activity-browser-center">
+                                    <div class="header">
+                                        We're sorry!
+                                    </div>
+                                    <p>There's an error while fetching activities, <a href ng-click="$ctrl.getActivities();$ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'searchActivityCard'})">Click here</a> to try again.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions" ng-show="$ctrl.showPluginDetails || $ctrl.viewMorePluginsFlag">
+            <div class="ui grid">
+                <div class="ui two wide column left aligned">
+                    <div class="ui basic primary button" ng-click="$ctrl.closePluginDetails();$ctrl.generateTelemetry({type: 'click', subtype: 'back', target: 'backButton'})">Back</div>
+                </div>
+                <div class="ui ten wide column right aligned">
+                    <button class="ui primary button" ng-click="$ctrl.addPlugin($ctrl.selectedPlugin);$ctrl.generateTelemetry({type: 'click', subtype: 'add', target: 'addActivityCard'})">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

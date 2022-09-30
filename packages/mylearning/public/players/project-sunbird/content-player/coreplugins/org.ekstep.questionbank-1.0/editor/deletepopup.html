@@ -1,0 +1,12 @@
+<div class="ui container delete-popup-container">
+    <div class="delete-popup-div">
+        <div class="warning-symbol"><i class="huge warning sign yellow icon"></i></div>
+        <div class="meta delete-confirm-message">
+            Do you want to delete the question?
+        </div>
+    </div>
+    <div class="delete-actions-div">
+        <button class="ui  compact primary button" ng-click="delete();fireTelemetry({subtype: 'delete', target: 'deleteQuestionButton' }, $event);" id="deleteQuestionButton">Delete</button>
+        <button class="ui compact secondary button" ng-click="cancel();fireTelemetry({subtype: 'cancel', target: 'cancelDeleteButton' }, $event);" id="cancelDeleteButton">Cancel</button>
+    </div>
+</div>

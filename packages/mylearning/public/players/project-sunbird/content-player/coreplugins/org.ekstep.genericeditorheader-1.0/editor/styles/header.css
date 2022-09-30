@@ -1,0 +1,228 @@
+@media all{
+    #genericEditorHeader  > .custom-container{
+        width: 100%!important;
+    }
+}
+
+body {
+    min-width: 525px !important;
+}
+
+.no-margin-no-padding,
+.custom-1-wide {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.no-margin,
+.custom-6-wide,
+.custom-5-wide {
+    margin: 0 !important;
+}
+
+.no-padding,
+#userDetailsWrapper {
+    padding: 0 !important;
+}
+
+.xy-mid-align,
+.custom-icon,
+.custom-1-wide .ui.tiny.image {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+}
+
+.icon-box {
+    height: 30px;
+    width: 31.67px;
+    border-radius: 4px;
+    background-color: transparent;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.icon-box:hover {
+    background-color: #E0E1E2;
+}
+
+.custom-icon {
+    line-height: normal;
+    height: 14px;
+    width: 15px;
+}
+
+.custom-container {
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+}
+
+.custom-container .one.wide.column,
+.custom-container .six.wide.column,
+.custom-container .five.wide.column,
+#genericEditorHeader {
+    height: 55px !important;
+}
+
+.custom-container .one.wide.column {
+    width: 60px !important;
+}
+
+.custom-container .five.wide.column {
+    width: -webkit-calc(100% - (50% + 60px)) !important;
+    width: -moz-calc(100% - (50% + 60px)) !important;
+    width: calc(100% - (50% + 60px)) !important;
+    padding-right: 0.3rem;
+}
+
+.ui.grid.custom-container>.column:not(.row) {
+    padding-top: 0.3rem;
+}
+
+.content-masterhead {
+    padding: 0 !important;
+}
+
+.custom-1-wide {
+    background-color: #2e9fd9;
+}
+
+.custom-1-wide .ui.tiny.image {
+    width: 32.94px;
+    height: 33.9px;
+    display: block;
+}
+
+.custom-6-wide .custom-row-1 {
+    position: relative;
+    top: 4px;
+}
+
+.custom-6-wide .custom-row-1 .content-title {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    height: 19px;
+    line-height: 19px;
+}
+
+.custom-6-wide .custom-row-2 {
+    position: relative;
+    font-size: 12px !important;
+    height: 25px;
+    line-height: 25px;
+}
+
+.custom-6-wide .custom-row-2 a {
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    bottom: -4px;
+}
+.custom-5-wide .close {
+    position: relative;
+    float: right;
+    right: -0.3vw;
+    z-index: 10001;
+    cursor: pointer;
+    line-height: 2;
+
+}
+
+.custom-5-wide .close:hover{
+    background: transparent;
+}
+
+.custom-5-wide .close a {
+    color: #9B9B9B;
+}
+
+.custom-5-wide .close a .remove.icon:hover {
+    color: #D92B2F;
+}
+
+.custom-5-wide .header-icon-container {
+    position: relative;
+    height: 30px;
+}
+
+.custom-5-wide .custom-row-2 {
+    position: relative;
+    height: 30px;
+    float: right;
+    font-size: 12px !important;
+    top: 0;
+}
+
+.custom-5-wide .custom-row-2 .icon,
+.custom-5-wide .custom-row-2 .icon-save{
+    font-size: 14px !important;
+    color: #9B9B9B;
+    height: 14px;
+    width: 16px;
+    margin-right: 10px;
+}
+
+
+.custom-5-wide .custom-row-2 .icon-group-2 {
+    position: relative;
+    height: 100%;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 {
+    float: right;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 .icon-save,
+.save-button-text {
+    color: #2e9fd9;
+}
+
+.icon-save.disabled,
+.save-button-text.disabled {
+    color: #D7D7D7 !important;
+}
+
+/* for labelled icons in header */
+
+.label-icon-box {
+    width: auto!important;
+    padding: 0 0em 0 0.5em!important;
+    line-height: 2;
+    float: right;
+    margin-left: 5px;
+    color: #9b9b9b!important
+}
+
+.label-icon-box-text {
+    position: relative;
+    left: -10px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.label-icon-box .icon-save{
+    position: relative;
+    top: 1px;
+    line-height: inherit!important;
+}
+
+.save-button-text {
+    top: -1px;
+}
+
+/* for labelled icons in header */
+
+/* generic editor style */
+
+.content-masterhead > .custom-container{
+    background: #fff;
+}
+/* generic editor style */

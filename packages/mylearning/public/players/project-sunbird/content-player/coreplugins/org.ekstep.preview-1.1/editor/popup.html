@@ -1,0 +1,78 @@
+<script type="text/ng-template" id="partials_org.ekstep.preview.html">
+    <style>
+    
+    .preview-window .ngdialog-content {
+        background: none !important;
+    }
+    
+    .ngdialog.ngdialog-theme-plain .ngdialog-content{
+      background: none!important;
+    }
+
+    #previewContentIframe {
+        border: 0px;
+    }
+
+    .main {
+      position: relative;
+      /*background: white;*/
+      height: 351px;
+      width: 688px;
+      margin: 0 auto;
+      /*padding: 20px;
+      resize: both;*/
+      /*overflow: auto;*/
+    }
+
+    .child {
+      background: black;
+      color: white;
+      width: 100%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      padding: 20px;
+      /*resize: both;*/
+      overflow: auto;
+    }
+
+    .preview-bgimage {
+        height: 355px;
+        width: 706px;
+        background-size: 726px 375px;
+        padding: 0;
+    }
+
+    .preview-iframe {
+        height: 324px;
+        width: 583px;
+        padding:0;
+        border: none !important;
+        overflow: hidden;
+    }
+    .ngdialog-theme-plain.preview-window .ngdialog-content{
+      padding:0px;
+    } 
+
+    </style>
+    
+    <!-- <div style="display: flex; align-items: center; justify-content: center;">
+        <div class="preview-bgimage"></div>
+        <div class="preview-iframe">
+            <iframe id="previewContentIframe" width=100% height=100%></iframe>
+        </div>
+    </div> -->
+    <div class="main">
+        <div class="child preview-bgimage"></div>
+        <div class="child preview-iframe">
+            <iframe id="previewContentIframe" width=100% height=100%></iframe>
+        </div>
+        <!-- div class="preview-iframe">
+<iframe id="previewContentIframe" width=100% height=100%></iframe>
+</div>
+
+ -->
+    </div>
+</script>
+

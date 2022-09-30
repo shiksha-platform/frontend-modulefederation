@@ -1,0 +1,17 @@
+<style>
+    #breadcrumb {
+        height: 42px !important;
+    }
+</style>
+<div ng-app="org.ekstep.breadcrumb" ng-controller="breadcrumbController" id="breadcrumb">
+    <div class="ui segment header-segment" id="headerSegment">
+        <div class="ui breadcrumb">
+            <i class="folder outline icon pointer" ng-click="goToRootParent()" ng-show="path.length > 0"></i>
+            <a class="section" ng-repeat="value in path" ng-click="setActiveNode(value)" ng-if="value.show">
+                <span data-inverted="" ng-mouseover="showTooltip($event, value.title)">{{value.title | limitTo:25}}</span>
+                <span ng-if="value.title.length > 25">...</span>
+                <div ng-if="!$last" class="divider"> > </div>
+            </a>
+        </div>
+    </div>
+</div>

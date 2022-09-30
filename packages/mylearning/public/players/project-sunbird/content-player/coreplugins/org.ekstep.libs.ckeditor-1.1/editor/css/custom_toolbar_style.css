@@ -1,0 +1,14 @@
+
+/* To Reduce the size (font) select box  */
+
+.cke_combo__fontsize .cke_combo_text{
+    width: 26px; /* Default 60px */
+    padding-left:0px;
+}
+.cke_combo__fontsize .cke_combo_open{
+    margin:1px 5px 1px; /* Default margin: 1px 10px 1px */
+}
+
+.cke_float {
+    margin-top:-10px !important;
+}

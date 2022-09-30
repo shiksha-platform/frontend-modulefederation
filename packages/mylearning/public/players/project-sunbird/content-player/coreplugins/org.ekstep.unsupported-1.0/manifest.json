@@ -1,0 +1,16 @@
+{
+    "id": "org.ekstep.unsupported",
+    "ver": "1.0",
+    "author": "Harish Kumar Gangula",
+    "title": "Unsupported Plugin",
+    "description": "This plugin is fallback to the other plugins",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": [],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        }
+    }
+}

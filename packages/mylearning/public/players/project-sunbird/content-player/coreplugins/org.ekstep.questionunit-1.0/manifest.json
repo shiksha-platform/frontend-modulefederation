@@ -1,0 +1,113 @@
+{
+    "id": "org.ekstep.questionunit",
+    "ver": "1.0",
+    "author": "Manoj Chandrashekar",
+    "type": "plugin",
+    "title": "Question Unit Base Plugin",
+    "description": "Question Unit Base Plugin that declares the interfaces that Question Unit Plugins must define.",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {
+                "type": "css",
+                "src": "editor/styles/styles.css"
+            },
+            {
+                "type": "js",
+                "src": "editor/js/util.js"
+            },
+            {
+                "type": "plugin",
+                "plugin": "org.ekstep.mathtext",
+                "ver": "1.0"
+            },
+            {
+                "type": "plugin",
+                "plugin": "org.ekstep.libs.ckeditor",
+                "ver": "1.1"
+            }
+        ],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        }
+    },
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "dependencies": [
+            {
+                "type": "image",
+                "src": "renderer/assets/audio-icon.png",
+                "id": "org.ekstep.questionunit.renderer.audioicon",
+                "assetId": "org.ekstep.questionunit.renderer.audioicon"
+            },
+            {
+                "type": "image",
+                "src": "renderer/assets/down_arrow.png",
+                "id": "org.ekstep.questionunit.renderer.downarrow",
+                "assetId": "org.ekstep.questionunit.renderer.downarrow"
+            },
+            {
+                "type": "js",
+                "src": "renderer/components/js/components.js"
+            },
+            {
+                "type": "css",
+                "src": "renderer/components/css/components.css"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/katex.min.js"
+            },
+            {
+                "type": "css",
+                "src": "renderer/libs/katex/katex.min.css"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_main-bold.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_main-bolditalic.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_main-italic.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_main-regular.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_math-bolditalic.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_math-italic.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_math-regular.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_size1-regular.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_size2-regular.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_size3-regular.ttf"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/katex/fonts/katex_size4-regular.ttf"
+            }	            
+        ]
+    }
+}

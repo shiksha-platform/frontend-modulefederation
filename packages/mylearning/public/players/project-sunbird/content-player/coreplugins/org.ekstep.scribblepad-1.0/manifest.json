@@ -1,0 +1,65 @@
+{
+    "id": "org.ekstep.scribblepad",
+    "ver": "1.0",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Scribblepad Plugin",
+    "description": "",
+    "displayName": "Scribble",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        ],
+        "menu": [{
+            "id": "scribblepad",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Scribblepad",
+            "title": "scribblepad",
+            "iconClass": "icon-scribble icon",
+            "onclick": {
+                "id": "org.ekstep.scribblepad:create",
+                "data": {
+                    "type": "roundrect",
+                    "y": 20,
+                    "x": 25,
+                    "fill": "#3399FF",
+                    "w": 27,
+                    "h": 60,
+                    "stroke": "rgba(255, 255, 255, 0)",
+                    "strokeWidth": 2,
+                    "opacity": 0.3
+                }
+            },
+            "media": [{
+                "id": "eraserImage",
+                "src": "assets/EraserImage.png",
+                "type": "image"
+            }]
+        }],
+        "configManifest": [{
+            "propertyName": "color",
+            "title": "Fill color",
+            "description": "Choose a color from the color picker",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "#3399FF"
+        },{
+            "propertyName": "opacity",
+            "title": "Transparency",
+            "description": "Set the transparency for element",
+            "dataType": "rangeslider",
+            "labelSuffix": "%",
+            "required": true,
+            "minimumValue": 0,
+            "maximumValue": 100
+        }],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        }
+    },
+    "renderer": {
+        "main": "renderer/scribblepadplugin.js"
+    }
+}

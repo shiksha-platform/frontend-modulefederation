@@ -1,0 +1,21 @@
+{
+    "id": "org.ekstep.sunbirdcommonheader",
+    "ver": "1.8",
+    "author": "Gourav More",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "header": [{
+            "templateURL": "editor/headerTemplate.html",
+            "controllerURL": "editor/headerApp.js"
+        }],
+        "dependencies": [
+            { "type": "css", "src": "editor/header.css" },
+            { "type": "js", "src": "editor/lib/angular-timeago.min.js" },
+            { "type": "js", "src": "editor/config.js" },
+            { "type": "plugin", "plugin": "org.ekstep.toaster", "ver": "1.0" },
+            { "type": "plugin", "plugin": "org.ekstep.contenteditorfunctions", "ver": "1.2" }
+        ]
+    }
+}

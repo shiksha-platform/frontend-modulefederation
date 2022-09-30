@@ -1,0 +1,28 @@
+.has-error {
+    border-bottom-color: #ea7575;
+    /*border-bottom-width: 1.5px;*/
+    transition:all linear 0.5s;
+  }
+  
+  .has-success {
+    border-bottom-color: #dfcfcf;
+    transition:all linear 0.5s;
+  }
+
+  .editorKeys {
+    width: 100%;
+    display: -webkit-flex;
+    -webkit-flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .editorKeywords {
+    padding: 0.25% 1.5% 0.25% 1.5%;
+    margin: 0.6%;
+    border: solid;
+    border-radius: 13px;
+    border-width: 1px;
+    border-color: #9b9b9b;
+  }

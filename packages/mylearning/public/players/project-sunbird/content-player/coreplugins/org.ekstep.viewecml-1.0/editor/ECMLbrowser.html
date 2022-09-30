@@ -1,0 +1,31 @@
+<script type="text/ng-template" ng-app="org.ekstep.viewECML-1.0" ng-controller="ECMLbrowser as $ctrl" id="partials_org.ekstep.ECMLbrowser.html">
+<style>
+.ECMLbrowser_content {
+    margin-top: 20px;    
+    height: 420px;
+}
+</style>
+<div class="ui large modal active" style="top: 10% !important">
+    <div class="header">
+        <div class="ui grid">
+            <div class="fourteen column row">
+                <div class="left floated three wide column">
+                    <i class="file code outline icon"></i>
+                    <label>ECML</label>
+                </div>
+                <div>
+                    <span class="right floated column"><i class="copy link icon" ng-click="$ctrl.copyToClipboard('hiddenXmlBody')"></i></span>
+                    <span class="right floated column"><i class="remove link icon" ng-click="$ctrl.closeWindow()"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="ui grid ECMLbrowser_content">
+            <pre class="line-numbers language-markup" style="width:100%;"><code class="language-markup" id="xmlBody">{{$ctrl.contentBody}}</code></pre>
+        </div>
+        <div id="hiddenXmlBody" style="display: none;">{{$ctrl.contentBody}}</div>
+    </div>
+</div>
+</script>
+

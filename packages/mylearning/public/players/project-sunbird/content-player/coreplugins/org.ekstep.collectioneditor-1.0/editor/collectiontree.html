@@ -1,0 +1,21 @@
+<div ng-app="org.ekstep.collectioneditor" ng-controller="mainController" class="ui masthead vertical segment collection-masterhead" id="collectionMasterhead">
+    <div ng-repeat="header in headers" ng-include="header.templateURL"></div>
+    <div class="ui padded grid main-body" id="mainBody">
+        <div class="ui column" id="table-of-contents">
+            <div class="ui segments">
+                <div class="ui segment" id="treeAccessToolsSegment">
+                    <div id="treeExpandCollapseButtonsContainer">
+                        <button ng-if="expandNodeFlag==false" ng-click="expandNode(); telemetry({ subtype: 'collapse', target: 'collapseNodeBtn'});" class="ui button popup-item" data-content="Collapse all" data-variation="tiny inverted" data-position="right center"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+                        <button ng-if="expandNodeFlag==true" ng-click="expandNode(); telemetry({ subtype: 'expand', target: 'expandNodeBtn'});" class="ui button popup-item" data-content="Expand all" data-variation="tiny inverted" data-position="right center"><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="ui segment" id="treeWrapper">
+                    <div id="collection-tree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ui column" id="contents-pane">
+            <div class="metacontent-holder metadata-form-container" ng-repeat="page in metaPages" ng-show="getObjectType(page.objectType) === selectedObjectType" ng-include="page.templateURL"></div>
+        </div>
+    </div>
+</div>

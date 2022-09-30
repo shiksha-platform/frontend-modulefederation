@@ -41,5 +41,7 @@
   "TEACHERS_LIKE_THIS": "Teachers like this",
   "COMMENTS": "comments",
   "ENTER_TITLE_HINT": "Enter title hint",
-  "TYPE_TO_START_SEARCHING_LEARNING": "Type to start searching learning"
+  "TYPE_TO_START_SEARCHING_LEARNING": "Type to start searching learning",
+  "ENTER_COMMENT": "Enter comment",
+  "WRITE_COMMENT": "Write a comment"
 }

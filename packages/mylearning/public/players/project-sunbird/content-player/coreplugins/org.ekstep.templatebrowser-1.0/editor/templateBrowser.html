@@ -1,0 +1,103 @@
+<script type="text/ng-template" ng-app="org.ekstep.templatebroser-1.0" ng-controller="templatebrowser as $ctrl" id="partials_org.ekstep.templatebrowser.html">
+<style>
+.templatebrowser_footer {
+    margin: 8px;
+}
+
+.templatebrowser_searchBox {
+    width: 100%;
+    margin: 8px;
+}
+
+.templatebrowser_main {
+    margin-top: 20px;
+    overflow: scroll;
+    height: 320px;
+}
+
+.templatebrowser_thumbnail {
+    margin-top: 20px;
+    cursor: pointer;
+    position: relative;
+    max-width: 150px;
+}
+
+.templatebrowser_overlay {
+    background-color: hsl(200, 100%, 43%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+}
+
+.faTempCheck {
+    margin-top: 40px;
+}
+
+.templatecard {
+    height: 220px;
+}
+
+.carddesc {
+    overflow: hidden;
+}
+</style>
+<div class="ui modal active" style="top: 10% !important">
+    <div class="header">
+        <div class="ui grid">
+            <div class="fourteen column row">
+                <div class="left floated three wide column">
+                    <i class="icon-activity icon"></i>
+                    <label>Templates</label>
+                </div>
+                <div class="right floated column">
+                    <i class="remove icon" ng-click="$ctrl.closeWindow()"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div id="searchbox" class="ui transparent left icon input templatebrowser_searchBox">
+            <input id="templateSearch" type="text" placeholder="Search template..." ng-keypress="$event.keyCode === 13 ? $ctrl.search() : null" ng-disabled="$ctrl.error">
+            <i class="search icon"></i>
+        </div>
+        <div class="ui clearing divider"></div>
+        <div class="ui grid templatebrowser_main">
+            <div ng-if="$ctrl.error" class="ui wide column">
+                <div class="ui negative message">                    
+                    <div class="header">
+                        We're sorry!
+                    </div>
+                    <p>There's an error while fetching contents
+                    </p>
+                </div>
+            </div>
+            <div ng-repeat="template in $ctrl.templates track by $index">
+                <div class="four column row templatebrowser_thumbnail">
+                    <div class="ui card templatecard" id="templatebrowser-{{$index}}" ng-click="$ctrl.template[$index] = !$ctrl.template[$index]; $ctrl.templateSelected(template.identifier, $index);" data-html="<div class='header'>Details</div><div class='content'><div class='ui bulleted list'> <div class='item'>Name: {{template.name}}</div><div class='item'>Owner: {{template.owner}}</div><div class='item'>Type: {{template.type}}</div><div class='item'>Language: {{template.language[0]}}</div><div class='item'>Grade: {{template.gradeLevel[0]}}</div><div class='item'>template: {{template.template}}</div><div class='item'>level: {{template.qlevel}}</div></div></div>">
+                        <a class="item" ng-show="$ctrl.template[$index]">
+                            <div class="floating ui blue label"><i class="fa fa-check" aria-hidden="true"></i></div>
+                        </a>
+                        <div class="image">
+                            <img src="/plugins/org.ekstep.templatebrowser-1.0/asset/image.png">
+                        </div>
+                        <div class="content carddesc">
+                            <div class="header">{{template.name}}</div>
+                            <div class="description">{{template.question}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui buttons">
+            <button class="ui orange button" ng-click="$ctrl.closeWindow()">Cancel</button>
+            <div class="or"></div>
+            <button ng-class="($ctrl.lastSelected || $ctrl.lastSelected === 0) ? 'ui blue button' : 'ui button'" ng-click="$ctrl.save()">Select</button>
+        </div>
+    </div>
+</div>
+</script>

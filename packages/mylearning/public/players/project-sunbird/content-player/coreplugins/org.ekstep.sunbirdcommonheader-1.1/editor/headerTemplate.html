@@ -1,0 +1,94 @@
+<div ng-app="org.ekstep.genericeditorheader:app" ng-controller="headerController" class="ui vertical segment content-masterhead" id="commonHeader">
+    <div class="ui grid fluid container custom-container">
+        <div class="one wide centered column custom-1-wide">
+            <img class="ui tiny centered image" ng-show="contentDetails.contentImage != ''" ng-src="{{contentDetails.contentImage}}" />
+        </div>
+        <div class="four wide column custom-6-wide">
+            <div class="content-title-container" ng-class="(headerSettings.showEditMeta) ? 'row custom-row-1' : 'content-title-align'">
+                <label ng-if="contentDetails.contentTitle.length < 52" class="content-title popup-item">{{contentDetails.contentTitle}}</label>
+                <label ng-if="contentDetails.contentTitle.length >= 52" class="content-title popup-item" data-content="{{contentDetails.contentTitle}}" data-variation="wide" data-position="bottom left">{{contentDetails.contentTitle}}</label>
+            </div>
+            <div class="row custom-row-2" ng-show="headerSettings.showEditMeta">
+                <a class="btn at-btn at-btn-ok" ng-click="editContentMeta();generateTelemetry({subtype:'',target:'editmeta'})">
+                    <i class="edit icon link"></i>&nbsp;Edit Details
+                </a>
+            </div>
+        </div>
+        <div class="two wide column">
+            <div ng-if="lastSaved" class="last-saved-label">
+                <label class="">Last saved {{lastSaved | timeAgo }}</label>
+            </div>
+        </div>
+        <div class="five wide column custom-5-wide" style="padding-top:1rem!important;">
+            <div class="row header-icon-container">
+                <div class="custom-row-2">
+                    <div class="icon-group-2">
+                        <div ng-if="showWhatsNew" class="icon-box popup-item" data-content="Whats's New" data-variation="tiny inverted" data-position="bottom center" ng-click="displayWhatsNew()">
+                            <i class="gift icon custom-icon" ng-class="{red: whatsNewBadge}"></i>
+                        </div>
+                        <div ng-show="editorEnv == 'NON-ECML'" class="icon-box popup-item" data-content="Upload Content" data-variation="tiny inverted" data-position="bottom center" ng-click="upload(); generateTelemetry({subtype:'upload',target:'uploadButton'})">
+                            <i class="upload icon custom-icon"></i>
+                        </div>
+                        <div ng-show="editorEnv == 'NON-ECML'" class="icon-box popup-item" data-content="Download to try it out on a mobile device" data-variation="tiny inverted" data-position="bottom center" ng-click="download(); generateTelemetry({ subtype: 'download', target: 'downloadButton'})">
+                            <i class="download icon custom-icon"></i>
+                        </div>
+                        <div id="closeButton" class="close icon-box popup-item" data-content="Close" data-variation="tiny inverted" data-position="bottom center">
+                            <a ng-click="closeEditor(); generateTelemetry({ subtype: 'close', target: 'closeButton'})">
+                                <i class="remove icon custom-cursor"></i>
+                            </a>
+                        </div>
+                        <div ng-show="!publishMode && !isFalgReviewer" id="saveButton" ng-class="disableSaveBtn ? 'icon-box popup-item label-icon-box disabled' : 'icon-box popup-item label-icon-box'" data-content="Save content" data-variation="tiny inverted" data-position="bottom center" ng-click="saveContent(); generateTelemetry({ subtype: 'save', target: 'savebutton'});">
+                            <i class="icon-save"></i>
+                            <span class="label-icon-box-text save-button-text">Save</span>
+                        </div>
+                        <div ng-show="!publishMode && !isFalgReviewer && !hideReviewBtn" id="reviewButton" class="ui buttons preview-dropdown" ng-class="{ 'preview-dropdown-nonecml': editorEnv != 'ECML','popup-item disabled': disableReviewBtn }">
+                            <div class="ui button text-part popup-item" data-content="Send for review" data-variation="tiny inverted" data-position="bottom center" ng-click="sendForReview(); generateTelemetry({ subtype: 'review', target: 'reviewbutton'});">
+                                <i class="send icon"></i>
+                            </div>
+                            <div class="ui pointing dropdown icon button">
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item" ng-click="limitedSharing();"> Limited sharing</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="publishMode && !isFalgReviewer" class="icon-box popup-item label-icon-box" data-content="Reject content" data-variation="tiny inverted" data-position="bottom center" ng-click="rejectContent();">
+                            <i class="fa fa-trash"></i>
+                            <span class="label-icon-box-text">Reject</span>
+                        </div>
+                        <div ng-show="publishMode && !isFalgReviewer" class="icon-box popup-item label-icon-box" data-content="Publish content" data-variation="tiny inverted" data-position="bottom center" ng-click="publishContent()">
+                            <i class="fa fa-cloud-upload"></i>
+                            <span class="label-icon-box-text">Publish</span>
+                        </div>
+                        <div ng-show="isFalgReviewer" id="retireButton" class="icon-box popup-item label-icon-box" data-content="Retire content" data-variation="tiny inverted" data-position="bottom center" ng-click="retireContent(); generateTelemetry({ subtype: 'retire', target: 'retireButton'});">
+                            <i class="fa fa-trash"></i>  
+                            <span class="label-icon-box-text">Publish</span>
+                        </div>
+                        <div ng-show="isFalgReviewer" id="discardButton" class="icon-box popup-item label-icon-box" data-content="Discard content" data-variation="tiny inverted" data-position="bottom center" ng-click="discardContentFlag(); generateTelemetry({ subtype: 'retire', target: 'discardButton'});">
+                            <i class="fa fa-trash"></i>
+                            <span class="label-icon-box-text">Discard</span>
+                        </div>
+                        <div ng-show="isFalgReviewer" id="acceptButton" class="icon-box popup-item label-icon-box" data-content="Retire content" data-variation="tiny inverted" data-position="bottom center" ng-click="acceptContentFlag(); generateTelemetry({ subtype: 'accept', target: 'acceptContentFlag'});">
+                            <i class="fa fa-check"></i>
+                            <span class="label-icon-box-text">Accept</span>
+                        </div>
+                        <div ng-if="editorEnv == 'ECML'" class="ui buttons preview-dropdown">
+                            <div class="ui button text-part popup-item" data-content="Preview" data-variation="tiny inverted" data-position="bottom center" ng-click="previewContent();">
+                                <i class="fa fa-eye"></i>
+                            </div>
+                            <div class="ui pointing dropdown icon button">
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <div class="item" ng-click="previewContent('start');"> Preview from start</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".ui.dropdown").dropdown();
+</script>

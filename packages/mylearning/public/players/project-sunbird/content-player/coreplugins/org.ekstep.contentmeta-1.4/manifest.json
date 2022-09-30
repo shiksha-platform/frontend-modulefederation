@@ -1,0 +1,22 @@
+{
+    "id": "org.ekstep.contentmeta",
+    "ver": "1.4",
+    "author": "Kartheek Palla",
+    "title": "Content Meta plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        	{ "plugin": "org.ekstep.assetbrowser", "ver": "1.2", "type": "plugin" },
+        	{ "plugin": "org.ekstep.conceptselector", "ver": "1.1", "type": "plugin" },
+            { "type": "css", "src": "editor/contentmeta.css" },
+            { "type": "css", "src": "editor/libs/tokens.css" },
+            { "type": "js", "src": "editor/libs/tokens.js" } 
+        ],
+        "views":[
+            {"template":"./contentmeta.html", "controller":"./contentmetaApp.js"}
+        ]
+
+    }
+}

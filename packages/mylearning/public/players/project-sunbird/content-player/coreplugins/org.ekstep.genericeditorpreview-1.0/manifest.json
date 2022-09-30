@@ -1,0 +1,18 @@
+{
+    "id": "org.ekstep.genericeditorpreview",
+    "ver": "1.0",
+    "author": "Manjunath Davanam",
+    "title": "preview",
+    "description": "content preview",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "css", "src": "editor/style.css" }
+        ],
+        "canvasarea": [{
+            "templateURL": "editor/contentPreview.html",
+            "controllerURL": "editor/previewApp.js"
+        }]
+    }
+}

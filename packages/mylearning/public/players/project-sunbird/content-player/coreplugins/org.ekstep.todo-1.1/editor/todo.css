@@ -1,0 +1,13 @@
+
+/* Remove margins and padding from the list */
+#pageLevelTodos {
+  list-style-type: none;
+}
+
+.todo-header{
+    font-size: 13px!important;
+}
+
+#todo-sidebar-tab.ui.menu .item.disabled, .ui.menu .item.disabled:hover{
+	cursor: not-allowed!important;
+}

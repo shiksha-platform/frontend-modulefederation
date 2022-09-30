@@ -1,0 +1,89 @@
+<script type="text/ng-template" ng-app="videoApp" ng-controller="videoCtrl as $ctrl" id="videoPreviewDialog">
+    <style type="text/css">
+    .video-modal {
+        top: 10% !important
+    }
+
+    .container {
+        margin: 10px !important:
+    }
+
+    .ui.grid .column.video-leftContent {
+        height: 200px;
+        padding-top: 10px !important;
+    }
+
+    .ui.grid .column.video-rightContent {
+        color: #aaa;
+        font-size: 13px;
+        font-style: italic;
+        padding-top: 35px !important;
+    }
+
+    #previewMessage,
+    #errorMessage {
+        height: 200px !important;
+        text-align: center;
+        padding-top: 70px;
+    }
+    </style>
+    <div class="ui modal small active video-modal">
+        <div class="header">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span><i class="video play outline large icon"></i> Add Video</span>
+                    </div>
+                    <div class="right aligned column">
+                        <i class="close link icon" ng-click="closeThisDialog(); $ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeButton'})"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui fluid grid container">
+                <div class="row">
+                    <div class="column" style="padding:0;">
+                        <div class="ui fluid action input">
+                            <input type="text" ng-keyup="$event.keyCode == 13 && $ctrl.videoUrl !== '' && $ctrl.previewVideo(); $ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'videoUrl'})" placeholder="Paste video url here..." ng-model="$ctrl.videoUrl" ng-change="$ctrl.showAddLessonBtn = false">
+                            <div class="ui blue button" ng-click="$ctrl.previewVideo(); $ctrl.generateTelemetry({type: 'click', subtype: 'search', target: 'videoUrl'})">Go</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="seven wide left aligned column" style="padding-left:0;">  
+                        <div ng-show="$ctrl.messageDiv">
+                            <div class="ui segment" class="ui" id="previewMessage" ng-if="$ctrl.show == 'message'" style="height: 200px !important">
+                                <div class="ui text">Preview will come here</div>
+                            </div>
+                            <div class="ui segment" id="errorMessage" ng-if="$ctrl.show == 'error'" style="height: 200px !important">
+                                <i class="warning sign large red icon"></i>
+                                <div class="ui text">Sorry could not load preview of the video link. Please check the link and try again.</div>
+                            </div>
+                            <div class="ui segment" ng-if="$ctrl.show == 'loader'" style="height: 200px !important">
+                                <div class="ui active inverted dimmer">
+                                    <div class="ui text loader">Just one second, We're loading the video for you.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="!$ctrl.messageDiv" id="previewVideo"></div>   
+                    </div>
+                    <div class="five wide column" style="padding-right:0;">
+                        <p>
+                            1. Currently only direct link to video file and Google Drive public shared links are supported.
+                            <br/> 2. It is recommended to keep the video file size less than 20 MB.
+                            <br/> 3. Currently only WebM & MP4 formats are supported.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui buttons">
+                <button class="ui orange button" ng-click="closeThisDialog();$ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'cancelButton'})" type="button">Cancel</button>
+                <div class="or"></div>
+                <button id="addToLesson" class="ui blue button" type="button" ng-disabled="!$ctrl.showAddLessonBtn" ng-click="$ctrl.addVideo();$ctrl.generateTelemetry({type: 'click', subtype: 'addToLesson', target: 'addVideo'})" ">Add To Lesson</button>
+            </div>
+        </div>
+    </div>
+</script>

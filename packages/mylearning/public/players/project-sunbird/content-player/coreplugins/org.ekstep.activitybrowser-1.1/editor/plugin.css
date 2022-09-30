@@ -1,0 +1,325 @@
+/*This file is for styles used in the activity browser*/
+
+.ui.modal.activity-browser-modal {
+    top: 0 !important;
+    left: 0 !important;
+    height: 100%;
+    width: 100% !important;
+    margin: 0 auto;
+    border-radius: 0;
+    display: flex;
+    -webkit-flex-flow: column;
+    -moz-flex-flow: column;
+    -ms-flex-flow: column;
+    -o-flex-flow: column;
+    flex-flow: column;
+}
+
+.ui.modal.activity-browser-modal > .content.full-screen{
+    height: 90%;
+    flex-grow: 1;
+}
+
+.ui.modal.activity-browser-modal > .content{
+    height: 80%;
+    flex-grow: 1;
+    display: flex;
+    -webkit-flex-flow: column;
+    -moz-flex-flow: column;
+    -ms-flex-flow: column;
+    -o-flex-flow: column;
+    flex-flow: column;
+}
+
+.ui.modal.activity-browser-modal > .content > .ui.grid.activity-browser-body{
+    height: 100%;
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.activity-browser-modal .activity-browser-body > .row.activity-cards-row,
+.activity-browser-modal .activity-browser-body > .row.activity-information-row{
+    height: 100%;
+    overflow: hidden;
+    flex-grow: 1;
+    padding-bottom: 0;
+}
+
+.activity-browser-content {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.activity-browser-content-loader {
+    width: 100%;
+    height: 100%;
+}
+
+.activity-browser-center {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/*image slider*/
+
+
+.slide {
+    width: 100%;
+}
+
+.slide .image {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* .slides.group-1 {
+    height: 290px;
+}
+
+.slides.group-2 {
+    height: 330px;
+}
+
+.slides.group-3 {
+    height: 200px;
+}
+
+.group-1 .image {
+    width: 100%;
+}
+
+.group-2 .image {
+    width: 50%;
+}
+
+.group-3 .image {
+    width: 33%;
+}
+ */
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+.controls {
+    color: #fff;
+    clear: both;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.navigation a {
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5em;
+    display: inline-block;
+    padding: 0.5em;
+    background: #fff;
+    background: rgba(255, 255, 255, .6);
+    cursor: pointer;
+}
+
+.navigation .prev {
+    left: 0;
+}
+
+.navigation .next {
+    right: 0;
+}
+
+.pagination {
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-size: 0.8em;
+}
+
+.pagination li {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 2em;
+    width: 1em;
+    height: 1em;
+    padding: 0.5em;
+    background: #ccc;
+    margin: 0.25em;
+}
+
+
+/* image slider */
+
+.round-borders{
+    border-bottom-left-radius: .28571429rem;
+    border-bottom-right-radius: .28571429rem;
+}
+
+.special.cards{
+    margin-top: 0;
+}
+
+/* for transparent input */
+
+    .activity-browser-modal .ui.input.custom-input > input{
+        padding: .65em 1em !important;
+        border-bottom: 1px solid rgba(34,36,38,.15) !important;
+        border-radius: 0;
+        padding-left: 0 !important;
+    }
+
+
+    .activity-browser-modal input::-webkit-input-placeholder,
+    .activity-browser-modal input::-moz-placeholder,
+    .activity-browser-modal input::-ms-input-placeholder{
+        color: #4a4a4a;
+    }
+
+    .height-100-percent{
+        height: 100%;
+    }
+/* for transparent input */
+
+.activity-browser-modal .ui.grid.activity-browser-controls{
+    margin-left: -1.5em;
+    margin-right: -1.5em;
+    margin-top: -1.5em;
+    padding-right: .5em;
+    padding-left: .5em;
+    background: #f9f9f9;
+    border-bottom: 1px solid #dedede;
+}
+
+.lableCls{
+    width: 100%;
+}
+
+/* for custom dropdown */
+.activity-browser-modal .ui.dropdown.custom-dropdown{
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #d8d8d8;
+    padding-left: 0;
+    padding-right: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.activity-browser-modal .ui.selection.active.dropdown:hover{
+    box-shadow: none;
+}
+
+.activity-browser-modal .ui.dropdown.custom-dropdown .dropdown.icon{
+    width: 0;
+}
+.activity-browser-modal .ui.selection.active.dropdown:hover{
+    box-shadow: none;
+}
+/* for custom dropdown */
+
+
+.ui.cards.activity-cards{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.ui.segment.activity-segment::-webkit-scrollbar{
+    width: 0;
+}
+
+
+/* for activity-card */
+
+.activity-cards .ui.card.activity-card {
+    box-sizing: border-box;
+    min-height: 261px;
+    min-width: 226px;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    margin: .875em 0.65em;
+    box-shadow: none;
+    border: 1px solid #E6E6E7;
+}
+
+.activity-cards .ui.card.activity-card:hover{
+     box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+     border: none;
+}
+
+.activity-cards .activity-card>.blurring.dimmable.image{
+    height: 120px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.activity-cards .activity-card>.blurring.dimmable.image>.activity-appicon{
+    flex: none;
+}
+
+.activity-cards .ui.card.activity-card .activity-meta.content{
+    height: 103px;
+    flex-grow: 0;
+    padding: 10px !important;
+    font-size: 12px !important;
+}
+
+.ui.card.activity-card .meta *, .ui.cards>.card .meta *{
+    margin-right: 0;
+}
+
+.activity-cards::-webkit-scrollbar-thumb,
+.activity-cards::-webkit-scrollbar-track,
+.activity-cards::-webkit-scrollbar{
+    height: 0;
+    width: 0;
+}
+
+/* expanded activity-cards section */
+.expanded-segment{
+    justify-content: center;
+}
+/* expanded activity-cards section */
+
+/* collapsed activity-cards section */
+.collapsed-segment{
+    flex-wrap: nowrap !important;
+    width:100%;
+    overflow-x:hidden;
+}
+/* collapsed activity-cards section */
+
+/* to show card-segment */
+.show-segment{
+    display: block;
+}
+/* to show card-segment */
+
+/* to hide card-segment */
+.hide-segment{
+    display: none;
+}
+/* to hide card-segment */
+
+.activity-browser-modal > .header .close.icon:hover{
+    color: #D92B2F;
+}
+
+/* for activity-card */
+
+.activity-browser-controls .ui.selection.dropdown.custom-dropdown{
+    min-width: unset;
+}

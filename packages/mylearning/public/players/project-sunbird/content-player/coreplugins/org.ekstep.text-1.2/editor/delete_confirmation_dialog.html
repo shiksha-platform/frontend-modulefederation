@@ -1,0 +1,14 @@
+<script type="text/ng-template" id="deleteConfirmationDialog">
+    <div class="ui container" style="margin: 0px;">
+        <div style="margin: 30px 10px 25px 0px;">
+            <div style=" display: inline;"><i class="huge warning sign yellow icon"></i></div>
+            <div style="text-align: center;margin: 10px;font-size: 17px;color: #5f5c5c; display: inline;" class="meta">
+                Are you sure you want to remove {{warningMessage}}?
+            </div>
+        </div>
+        <div style="margin-left: 139px;">
+            <button class="ui  primary button" ng-click="delete()">Okay</button>
+            <button class="ui  secondary orange button" ng-click="closeThisDialog()">Cancel</button>
+        </div>
+    </div>
+</script>

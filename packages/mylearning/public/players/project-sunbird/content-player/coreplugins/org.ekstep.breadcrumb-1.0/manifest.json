@@ -1,0 +1,14 @@
+{
+    "id": "org.ekstep.breadcrumb",
+    "ver": "1.0",    
+    "author": "Akash Gupta",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+    	"main": "editor/plugin.js",
+        "dependencies": [],
+        "views":[
+            {"template":"./template.html", "controller":"./breadcrumbApp.js"}
+        ]
+    }
+}

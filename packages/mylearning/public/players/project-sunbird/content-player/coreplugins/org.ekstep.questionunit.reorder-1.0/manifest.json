@@ -1,0 +1,66 @@
+{
+  "id": "org.ekstep.questionunit.reorder",
+  "ver": "1.0",
+  "author": "Amit Dawar (amit.dawar@funtoot.com)",
+  "title": "Reordering question",
+  "description": "",
+  "publishedDate": "",
+  "languages": ["English"],
+  "categories": [],
+  "keywords": ["reorderingplugin"],
+  "targets": [{
+    "id": "org.ekstep.questionset",
+    "ver": 1
+  }],
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [{
+        "type": "plugin",
+        "plugin": "org.ekstep.questionunit",
+        "ver": "1.0"
+      },
+      {
+        "type": "css",
+        "src": "editor/styles/style.css"
+      }
+    ]
+  },
+  "templates": [{
+    "id": "reorderingtemplate",
+    "thumbnail": "editor/assets/reorder-preview.png",
+    "title": "Reordering words",
+    "disc": "Arranging the words to form a sentence.",
+    "category": "mcq",
+    "editor": {
+      "templateURL": "editor/templates/reordering-template.html",
+      "controllerURL": "editor/controllers/reordering-controller.js",
+      "template": "reorderingtemplate",
+      "controller": "QuestionFormController"
+    },
+    "renderer": {}
+  }],
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [{
+        "type": "css",
+        "src": "renderer/styles/style.css"
+      },
+      {
+        "type": "js",
+        "src": "renderer/reorderingcontroller.js"
+      },
+      {
+        "id": "org.ekstep.questionunit.reorder.backspace.png",
+        "type": "image",
+        "src": "renderer/assets/backspace.png",
+        "assetId": "org.ekstep.questionunit.reorder.backspace.png"
+      }
+    ]
+  },
+  "dependencies": [{
+    "plugin": "org.ekstep.questionunit",
+    "ver": "1.0",
+    "type": "plugin",
+    "scope": "all"
+  }]
+}

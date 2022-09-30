@@ -1,0 +1,16 @@
+{
+    "id": "org.ekstep.collaborator",
+    "ver": "1.1",
+    "author": "Gourav More",
+    "title": "collaborator",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": [],
+        "views":[
+            {"template":"./popup.html", "controller":""}
+        ]
+
+    }
+}

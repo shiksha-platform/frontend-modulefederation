@@ -1,0 +1,23 @@
+{
+    "id": "org.ekstep.templatebrowser",
+    "ver": "1.0",
+    "shortId": "templatebrowser",
+    "author": "Sunil A S",
+    "title": "Activity Browser",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "menu": [{
+            "id": "templatebrowser",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Activity",
+            "title": "Activity",
+            "iconClass": "icon-activity icon",
+            "onclick": {
+                "id": "org.ekstep.templatebrowser:show"
+            }
+        }]
+    }
+}

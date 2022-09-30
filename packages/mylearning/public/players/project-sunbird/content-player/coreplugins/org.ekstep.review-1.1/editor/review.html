@@ -1,0 +1,220 @@
+<script type="text/ng-template" ng-app="org.ekstep.review" ng-controller="reviewcontroller as $ctrl" id="org.ekstep.review.html">
+    <style>
+    .ngdialog.ngdialog-theme-plain {
+        padding-top: 50px !important;
+    }
+    
+    .reviewForm {
+        position: inherit !important;
+        margin: -1em !important;
+        top: 0 !important;
+        border: none;
+        box-shadow: 1px 3px 3px 0 rgba(0, 0, 0, .2), 1px 3px 15px 2px rgba(0, 0, 0, .2);
+        border-radius: .28571429rem;
+    }
+    
+    .reviewForm>.actions {
+        padding: 1rem;
+        border-top: 1px solid rgba(34, 36, 38, .15);
+        text-align: right !important;
+    }
+    
+    .reviewForm>.header {
+        display: block;
+        margin: 0;
+        padding: 1.25rem 1.5rem;
+        box-shadow: none;
+        color: rgba(0, 0, 0, .85);
+        border-bottom: 1px solid rgba(34, 36, 38, .15);
+    }
+    
+    .reviewForm>.header:not(.ui) {
+        font-size: 1.42857143rem;
+        line-height: 1.2857em;
+        font-weight: 700;
+    }
+    
+    .reviewForm .actions>.button {
+        margin-left: .75em;
+    }
+    
+    .reviewForm .content {
+        display: block;
+        width: 100%;
+        font-size: 1em;
+        line-height: 1.4;
+        padding: 1.5rem;
+    }
+    
+    .reviewForm .discription {
+        max-height: 91px !important;
+        overflow: auto;
+    }
+    
+    .reviewForm .border-right {
+        border-right: 1px solid #c2c2c2;
+    }
+    
+    .reviewForm .border-top {
+        border-top: 1px solid #c2c2c2;
+    }
+    
+    .reviewForm .border-bottom {
+        border-bottom: 1px solid #c2c2c2;
+    }
+    
+    .reviewForm .fieldscontainer {
+        padding-top: 35px !important;
+    }
+    
+    .reviewForm .field {
+        padding-top: 5px;
+    }
+    
+    .reviewForm .success-msg {
+        color: #212121 !important;
+    }
+    
+    .reviewForm .error-msg {
+        color: #212121 !important;
+    }
+    </style>
+    <div class="reviewForm ui active">
+        <div class="header">
+            Review Content Details
+        </div>
+        <div class="content">
+            <div class="ui {{$ctrl.active}} inverted dimmer">
+                <div class="ui large text loader" ng-show="$ctrl.isLoading == true">{{$ctrl.message}}</div>
+            </div>
+            <div class="ui grid">
+                <div class="row">
+                    <div class="three wide column">
+                        <div class="review-details-lesson-icon">
+                            <img class="display-image" ng-src="{{$ctrl.contentMeta.appIcon}}" width="100%" />
+                        </div>
+                    </div>
+                    <div class="nine wide column">
+                        <div class="twelve-wide-column contentNameTitle border-bottom">
+                            <span class="contentName"><h3><b>Title:</b> {{$ctrl.contentMeta.name}}</h3></span>
+                        </div>
+                        <div class="twelve wide column">
+                            <div class="ui grid">
+                                <div class="seven wide column">
+                                    <span>
+                                        <h5>Description</h5>
+                                        <div class="discription">{{$ctrl.contentMeta.description}}</div>
+                                    </span>
+                                </div>
+                                <div class="five wide column fieldscontainer">
+                                    <div class="field">
+                                        <b>Language</b>
+                                        <br/>
+                                        <ng-repeat ng-repeat="item in $ctrl.contentMeta.language">
+                                            {{item}}{{$last ? '' : ', '}}
+                                        </ng-repeat>
+                                    </div>
+                                    <div class="field">
+                                        <b>Grade</b>
+                                        <br/>
+                                        <ng-repeat ng-repeat="item in $ctrl.contentMeta.gradeLevel">
+                                            {{item}}{{$last ? '' : ', '}}
+                                        </ng-repeat>
+                                    </div class="field">
+                                    <div class="field">
+                                        <b>Age Group</b>
+                                        <br/>
+                                        <ng-repeat ng-repeat="item in $ctrl.contentMeta.ageGroup">
+                                            {{item}}{{$last ? '' : ', '}}
+                                        </ng-repeat>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row border-top">
+                    <div class="eight wide column border-right">
+                        <div class="field">
+                            <b>Domain:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.domain">
+                                    {{item}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                        <div class="field">
+                            <b>Concepts:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.concepts">
+                                    {{item.name}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                        <div class="field">
+                            <b>Keywords:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.tags">
+                                    {{item}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                        <div class="field">
+                            <b>Genre:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.genre">
+                                    {{item}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                        <div class="field">
+                            <b>Theme:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.theme">
+                                    {{item}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                        <div class="field">
+                            <b>Attributions:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.attributions">
+                                    {{item}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="four wide column">
+                        <div class="field">
+                            <b>Lesson Type:</b> {{$ctrl.contentMeta.contentType}}
+                        </div>
+                        <div class="field">
+                            <b>Author:</b> {{$ctrl.contentMeta.owner}}
+                        </div>
+                        <div class="field">
+                            <b>Attributions:</b>
+                            <span>
+                                <ng-repeat ng-repeat="item in $ctrl.contentMeta.audience">
+                                    {{item}}{{$last ? '' : ', '}}
+                                </ng-repeat>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="actions">
+            <div class="ui grid">
+                <div class="three wide column left aligned">
+                    <div class="ui button" ng-click="$ctrl.editContentMeta(); $ctrl.generateTelemetry({type: 'click', subtype: 'open', target: 'openEditMetaForm', targetid:$ctrl.contentMeta.identifier})">EDIT DETAILS</div>
+                </div>
+                <div class="nine wide column right aligned">
+                    <div class="ui buttons">
+                        <button id="closePopUp" class="ui orange button" ng-click="$ctrl.closeThisDialog(true); $ctrl.generateTelemetry({type: 'click', subtype: 'close', target: 'closeSendForReviewPopUp', targetid:$ctrl.contentMeta.identifier})" type="button">Cancel</button>
+                        <div class="or"></div>
+                        <button class="ui blue button submit button" ng-click="$ctrl.saveBeforeReview(); $ctrl.generateTelemetry({type: 'click', subtype: 'send', target: 'SubmitSendForReviewForm', targetid:$ctrl.contentMeta.identifier})">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</script>

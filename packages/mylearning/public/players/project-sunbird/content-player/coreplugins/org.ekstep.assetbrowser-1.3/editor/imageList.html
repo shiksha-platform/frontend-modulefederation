@@ -1,0 +1,20 @@
+`<div class="ui grid templatebrowser_main">
+	<i class="fa fa-spinner fa-pulse fa-5x fa-fw faloading" ng-show="$ctrl.loadingImage" aria-hidden="true"></i>
+	<div id="assetArea1" ng-show="$ctrl.imageList.length > 0" ng-repeat="image in $ctrl.imageList track by $index">
+		<div class="four column row templatebrowser_thumbnail">
+			<div class="ui card templatecard" id="assetbrowser-{{$index}}" ng-click="$ctrl.ImageSource($event, $index); $ctrl.selected_images[$index]={selected: !$ctrl.selected_images[$index].selected}" data-html="<div class='header'>Details</div><div class='content'><div class='ui bulleted list'><div class='item'>Name:{{image.name}}</div><div class='item'>Size:{{image.sizeinbytes}}</div><div class='item'>Type:{{image.mimeType}}</div><div class='item'>License:{{image.license}}</div>">
+				<a class="item" ng-show="$ctrl.selected_images[$index].selected">
+					<div class="floating ui blue label">
+						<span><i class="fa fa-check" aria-hidden="true"></i></span>
+					</div>
+				</a>
+				<div class="ui small image">
+					<img class="asset_thumbnail" data_id="{{image.identifier}}" ng-src="{{image.downloadUrl}}">
+				</div>
+				<div class="content cardcontent">
+					<div class="header">{{image.name}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

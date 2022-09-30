@@ -1,0 +1,326 @@
+<div ng-controller="reorderingQuestionFormController" ng-init="init()">
+    <div class="ui grid reorderingFullGrid">
+        <div class="one column row">
+            <div class="column innerScroll reordering-layout qs-scrollbar">
+                <form name="reorderingForm">
+                    <div class="one column row qHeader">
+                        <span>Enter the question</span>
+                    </div>
+                    <div class="outer-segment">
+                        <div class="ui segments inner-segment" id="eachCard">
+                            <div class="ui segment">
+                                <div class="ui grid">
+                                    <div class="twelve wide column">
+                                        <div class="form-group segment textBoxDiv reorderingQuestionBox">
+                                            <textarea name="reorderingQuestionBox" type="text" class="form-control textboxQ-reordering"
+                                                ng-model="reorderingFormData.question.text" placeholder="Enter question"
+                                                >
+
+
+
+
+
+
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="two wide column text-len">
+                                        <span class="maxLengthText">{{reorderingFormData.question.text.length}}
+                                            <span class="length-divider">/</span>200
+                                        </span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="one column row qHeader">
+                        <span>Answers</span>
+                    </div>
+                    <div class="one column row questionDesc">
+                        <span>Add your words in correct sequence. Words will be shuffled automatically.</span>
+                    </div>
+                    <div class="outer-segment">
+                        <div class="ui segments inner-segment" id="eachCard">
+                            <div class="ui segment">
+                                <div class="ui grid">
+                                    <div class="ten wide column">
+                                        <div class="form-group segment textBoxDiv">
+                                            <textarea type="text" class="form-control sentenceBox textboxQ-reordering"
+                                                ng-model="reorderingFormData.sentence.text" ng-change='updateSentence()'
+                                                placeholder="Enter sentence(s)" maxlength="120">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="two wide column text-len">
+                                        <span class="maxLengthText">{{reorderingFormData.sentence.text.length}}
+                                            <span class="length-divider">/</span>120
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outer-segment editorTabsContainer">
+                        <span class="editorWordTabs" ng-repeat="tab in reorderingFormData.sentence.tabs">{{tab.text}}</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

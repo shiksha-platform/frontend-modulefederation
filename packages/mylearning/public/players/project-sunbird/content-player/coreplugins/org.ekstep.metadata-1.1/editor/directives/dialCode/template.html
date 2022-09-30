@@ -1,0 +1,28 @@
+<div class="field">
+    <label>Dial code
+        <span class="ui icon" data-tooltip="Digital Infrastructure for Augmented Learning" data-position="top left">
+            <i style="cursor: pointer;color: #007aff;" class="large question circle icon link"></i>
+        </span>
+        <a ng-show="editFlag && mode == 'Edit'" ng-click="editDialCode()" style="cursor:pointer;color: #007aff !important;">Edit</a>
+        <span ng-show="!editFlag" style="float: right">{{dialcodes.length || minChar}}/{{ maxChar }}</span>
+    </label>
+    <div class="ui action right icon input" ng-class="mode == 'Edit' ? '' : 'disabled'" style="align-items: center;">
+        <input ng-show="!editFlag" class="dialCode" type="text" placeholder="Enter code here" ng-model="dialcodes" maxlength="6" ng-disabled="false" ng-change="changeDialCode()">
+        <div ng-show="editFlag" class="ui action right icon input">
+            <div class="ui action right icon">
+                {{dialcodes}}
+                <i ng-show="status" style="font-size:17px" class="small green check icon"></i>
+                <i ng-show="!status" style="font-size:17px" class="small red remove icon"></i><span style="color: #d61011;" ng-show="!status">Invalid DIAL code</span>
+            </div>
+        </div>
+        <div ng-show="dialcodes.length == maxChar && !editFlag" ng-click="clearDialCode()" style="cursor:pointer">
+            <i class="large red remove circle icon"></i>
+        </div>
+        <div ng-show="dialcodes.length == maxChar && !editFlag" ng-click="validateDialCode()" style="cursor:pointer">
+            <i class="large check circle icon" style="color: #007aff"></i>
+        </div>
+    </div>
+    <div class="ui pointing red basic label" ng-show="errorMessage">
+        {{errorMessage}}
+    </div>
+</div>

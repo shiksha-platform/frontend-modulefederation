@@ -1,0 +1,39 @@
+<script type="text/ng-template" ng-app="org.ekstep.review" ng-controller="reviewcontroller as $ctrl" id="org.ekstep.review.reviewConflictDialog.html">
+    <style>
+    .reviewConflict .conflictdialog.ui.modal {
+        position: inherit !important;
+        top: 0 !important;
+    }
+    
+    .reviewConflict .ngdialog-content {
+        top: 30% !important;
+        width: 100% !important;
+        position: absolute !important;
+        background: none !important;
+    }
+    </style>
+    <div class="conflictdialog ui modal small active">
+        <div class="content">
+            <div class="ui icon negative message">
+                <i class="warning icon"></i>
+                <div class="content">
+                    <div class="header">
+                        Unable to send for review
+                    </div>
+                    <p>Someone else has modified the content. You can overwrite with your copy, or discard your changes and load the latest content.</p>
+                </div>
+                <!-- close content -->
+            </div>
+        </div>
+        <!-- content -->
+        <div class="actions" style="height: 66px; ">
+            <div class="ui right floated buttons">
+                <div class="ui orange button" ng-click="closeThisDialog(); $ctrl.forceUpdate();"><i class="cloud upload icon"></i> Force update</div>
+                <div class="or"></div>
+                <div class="ui blue button" ng-click="$ctrl.refreshContent();"><i class="refresh icon"></i> Discard</div>
+            </div>
+        </div>
+        <!-- close actions -->
+    </div>
+    <!-- ui page -->
+</script>

@@ -1,0 +1,184 @@
+.symbols-div span {
+  margin: 1%;
+  width: 10%;
+}
+
+.ui.segment.math-tab {
+  border: none;
+  box-shadow: none;
+}
+
+.math-close-tab {
+  position: absolute;
+  right: 15px;
+  top: 17px;
+}
+
+.ui.modal>.actions.math-footer {
+  text-align: left;
+  background: #fff;
+}
+
+.ui.modal.math-modal {
+  top: 15%;
+  width: 450px;
+  margin: 0 0 0 -14%;
+}
+
+.math-content {
+  min-height: 300px;
+  height: 300px;
+  overflow-y: scroll;
+  font-family: noto;
+}
+
+#latex {
+  display: none;
+}
+
+#math-field {
+  max-width: 100%;
+  min-width: 100%;
+  padding: 2px 10px;
+  border-radius: 3px;
+  min-height: 35px;
+}
+
+.ui.secondary.menu.math-tab-head {
+  background: rgba(0, 0, 0, .05);
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+.ui.secondary.menu.math-tab-head .active.item {
+  color: #1c94d1!important;
+  background: initial;
+  font-weight: 800;
+}
+
+.ui.secondary.menu.math-tab-head .item:hover,
+.ui.secondary.menu.math-tab-head .active.item:hover {
+  color: initial;
+  background: initial;
+}
+
+.meta .katex-display {
+  margin: 0;
+}
+
+.math-symbols {
+  text-align: center;
+}
+
+.math-symbol {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.ui.items>.item.math-lib,
+.math-symbol,
+.math-latex-div {
+  border: 1px solid transparent;
+}
+
+.ui.items>.item.math-lib:hover,
+.math-symbol:hover,
+.math-latex-div:hover {
+  border: 1px solid rgba(0, 0, 0, .57);
+  border-radius: 3px;
+}
+
+.ui.items>.item.math-lib:active,
+.math-symbol:active,
+.math-latex-div:active {
+  color: #1c94d1;
+  background: rgba(0, 0, 0, .05);
+  border: 1px solid #fff;
+  border-radius: 3px;
+}
+
+.math-latex-symbols {
+  padding: 0 10px 0 0;
+  font-weight: 800;
+}
+
+.ui.grid.math-latex {
+  margin-left: 0;
+  margin-top: 0;
+  padding: 10px;
+}
+
+.math-lib-header {
+  color: rgba(0, 0, 0, .6);
+  font-size: 1.2em;
+  padding: 5px 10px;
+}
+
+.ui.items>.item .meta.math-lib-meta {
+  margin: 10px 20px 0;
+  font-weight: 800;
+  font-size: 0.65em;
+}
+
+.meta .katex-html {
+  text-align: left;
+  font-weight: 600;
+  color: rgba(0, 0, 0, .87);
+}
+
+.ui.items>.item.math-lib {
+  margin: 0;
+  padding: 7px 0;
+}
+
+.math-lib,
+.math-latex-div {
+  cursor: pointer;
+}
+
+.ui.grid>.column:not(.row).math-add-button-div {
+  padding: 14px 14px 14px 0;
+}
+
+.ui.basic.primary.button.math-add-button {
+  width: 100%;
+  margin: auto;
+}
+
+.ui.dropdown.symbols-dropdown .menu,
+.ui.dropdown.equations-dropdown .menu,
+.ui.dropdown.latex-dropdown .menu {
+  left: auto;
+  right: 0;
+}
+
+.symbol-latex{
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  display: none;
+  min-width: 130px;
+}
+
+.symbol-div:hover .symbol-latex{
+  display: block;
+}
+
+.symbol-div:active .symbol-latex{
+  display: block;
+  color: #1c94d1;
+}
+
+#math-field .mq-root-block{
+  padding: 0;
+  font-size: 1.8em;
+}
+
+.latex-field{
+  max-width: 100%;
+  min-width: 100%;
+  padding: 2px 10px;
+  border-radius: 3px;
+  min-height: 35px;
+  border: 1px solid rgb(128, 128, 128);
+}

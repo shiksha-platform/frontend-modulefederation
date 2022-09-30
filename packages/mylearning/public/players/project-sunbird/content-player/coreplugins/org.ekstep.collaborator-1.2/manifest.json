@@ -1,0 +1,25 @@
+{
+    "id": "org.ekstep.collaborator",
+    "ver": "1.2",
+    "author": "Vivek Kasture",
+    "title": "Collaborator plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {
+                "type": "css",
+                "src": "editor/collaborator.css"
+            },
+            {
+                "type": "js",
+                "src": "editor/libs/initial.min.js"
+            },
+            {
+                "type": "js",
+                "src": "editor/libs/angular-inview.js"
+            }
+        ]
+    }
+}

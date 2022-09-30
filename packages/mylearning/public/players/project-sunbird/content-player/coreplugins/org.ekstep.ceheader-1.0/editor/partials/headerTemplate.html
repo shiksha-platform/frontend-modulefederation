@@ -1,0 +1,159 @@
+<style>
+.spinner {
+    width: 18px;
+    height: 18px;
+    background-color: #ff0c00;
+    border-radius: 100%;
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    margin-right: 3px;
+    -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+    animation: sk-scaleout 1.0s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-scaleout {
+    0% {
+        -webkit-transform: scale(0)
+    }
+    100% {
+        -webkit-transform: scale(1.0);
+        opacity: 0;
+    }
+}
+
+@keyframes sk-scaleout {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    100% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+        opacity: 0;
+    }
+}
+
+.internet-status-label {
+    visibility: hidden;
+}
+
+.internet-status {
+    position: relative;
+    margin: 0;
+    bottom: -4px;
+    color: #9b9b9b;
+}
+
+.last-saved-label {
+    display: inline-block;
+    float: right;
+    position: relative;
+    bottom: -7px;
+    font-size: 13px;
+    color: #9b9b9b;
+}
+</style>
+<div ng-app="org.ekstep.ceheader:headerApp" ng-controller="headerController" class="ui masthead vertical segment content-masterhead">
+    <div class="ui grid fluid container custom-container">
+        <div class="one wide centered column custom-1-wide">
+            <img class="ui tiny centered image" ng-src="{{ekstepLogo}}" />
+        </div>
+        <div class="six wide column custom-6-wide">
+            <div class="row custom-row-1">
+                <label class="content-title" ng-bind="contentDetails.contentTitle | limitTo:30">
+                    <span ng-if="contentDetails.contentTitle.length > 30">...</span></label>
+            </div>
+            <div class="row custom-row-2">
+                <a class="btn at-btn at-btn-ok" ng-click="editContentMeta(); fireTelemetry({id: 'editMeta'}, 'editMetaButton')">
+                    <i class="edit icon link"></i>&nbsp;Edit Lesson Details
+                </a>
+                <label class="internet-status" ng-class="{'internet-status-label':internetStatusObj.status}"><span class="spinner"></span>{{internetStatusObj.text}}</label>
+                <div class="last-saved-label">
+                    <label class="" ng-if="lastSaved"><strong>Last saved <time-ago from-time='{{ lastSaved }}'></time-ago></strong></label>
+                </div>
+            </div>
+        </div>
+        <div class="five wide column custom-5-wide">
+            <div class="row custom-row-1">
+                <div class="close" ng-init="disableRedirectBtn = false">
+                    <a ng-class="disableRedirectBtn ? 'disabled': ''" ng-href="{{cancelLink}}" ng-click="disableRedirectBtn = true; fireTelemetry({id: 'close'}, 'closeButton')" target="_self">
+                        <i class="remove icon custom-cursor"></i>
+                    </a>
+                </div>
+                <div id="userprofile" ng-show="userDetails.id" class="user-context">
+                    <div class="username">
+                        <span class="browse item at custom-cursor name">{{userDetails.name}} <i class="caret down icon custom-cursor"></i></span>
+                        <div class="ui fluid popup transition hidden user-details-wrapper" id="userDetailsWrapper">
+                            <div class="user-details">
+                                <div class="row user avtar">
+                                    <img ng-src="{{userDetails.avtar}}" />
+                                </div>
+                                <div class="row user-name">
+                                    <span ng-bind="userDetails.name"></span>
+                                </div>
+                                <div class="row meta user-email">
+                                    <span ng-bind="userDetails.email"></span>
+                                </div>
+                            </div>
+                            <div class="user-profile-menu">
+                                <div class="row option">
+                                    <a ng-click="displayWhatsNew()">
+                                    <span><i class="gift icon"></i>&nbsp;What's new</span>
+                                <span class="icon-badge" id="whatsnew-badge" ng-show="whatsNewBadge">&nbsp;</span>
+                                </a>
+                                </div>
+                                <div class="row option">
+                                    <a ng-click="fireTelemetry({id: 'reportIssue'}, 'reportIssueButton') " ng-href="{{reportIssueLink}} " target="_blank "><span><i class="help icon"></i>&nbsp;Help</span></a>
+                                </div>
+                                <div id="logout" class="row option" ng-init="disableRedirectBtn = false">
+                                    <a ng-class="disableRedirectBtn ? 'disabled': ''" ng-href="{{userDetails.logout}}" ng-click="disableRedirectBtn = true; fireTelemetry({id: 'logout'}, 'logoutButton')" target="_self"><span><i class="sign out icon"></i>&nbsp;Logout</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row header-icon-container">
+                <div class="custom-row-2">
+                    <div class="icon-group-1">
+                        <div ng-show="whatsNewBadge" class="icon-box popup-item" data-content="What's New" data-variation="tiny inverted" data-position="bottom center" ng-click="displayWhatsNew()">
+                            <i class="gift red icon custom-icon"></i>
+                        </div>
+                        <div class="icon-box popup-item" data-content="Download to try it out on a mobile device" data-variation="tiny inverted" data-position="bottom center" ng-click="fireEvent({id: 'download:content'});fireTelemetry({id: 'download'}, 'donwloadButton')">
+                            <i class="download icon custom-icon"></i>
+                        </div>
+                        <div class="icon-box popup-item" data-content="Add Collaborator" data-variation="tiny inverted" data-position="bottom center" ng-click="fireEvent({id: 'collaborator:add'}); fireTelemetry({id: 'collaborator'}, 'collaboratorButton')">
+                            <i class="add user icon custom-icon"></i>
+                        </div>
+                    </div>
+                    <div class="icon-group-2">
+                        <div class="preview-icon-group">
+                            <div class="icon-box popup-item" data-content="Preview" data-variation="tiny inverted" data-position="bottom center" ng-click="previewContent(); fireTelemetry({id: 'preview'}, 'previewButton');">
+                                <i class="fa fa-eye custom-icon"></i>
+                            </div>
+                            <div class="ui dropdown pointing icon-box" id="previewDropdown">
+                                <i class="caret down icon custom-icon"></i>
+                                <div class="menu">
+                                    <div class="item" ng-click="previewContent('start'); fireTelemetry({id: 'previewFromBeginning'}, 'previewButton')">
+                                        Preview from beginning
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-box popup-item label-icon-box" data-content="Save Content" data-variation="tiny inverted" data-position="bottom center" ng-click="!saveBtnEnabled||saveContent(); fireTelemetry({id: 'save'}, 'saveButton')">
+                            <i class="ui icon-save disabled" ng-if="!saveBtnEnabled"></i>
+                            <i class="ui primary icon-save" ng-if="saveBtnEnabled"></i>
+                            <span class="label-icon-box-text save-button-text disabled" ng-if="!saveBtnEnabled">Save</span>
+                            <span class="label-icon-box-text save-button-text" ng-if="saveBtnEnabled">Save</span>
+                        </div>
+                        <div class="icon-box label-icon-box popup-item" data-content="Send for review" data-variation="tiny inverted" data-position="bottom center" ng-click="fireEvent({id: 'org.ekstep.review:review'});fireTelemetry({id: 'review'}, 'reviewButton')">
+                            <i class="send icon"></i>
+                            <span class="label-icon-box-text">Send for review</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

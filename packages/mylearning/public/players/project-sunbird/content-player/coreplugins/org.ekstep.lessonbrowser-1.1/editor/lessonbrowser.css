@@ -1,0 +1,213 @@
+.add-lessons-popup-wrapper {
+    position: relative;
+    height: 590px;
+    width: 851px;
+    border-radius: 1em!important;
+    font-family: Helvetica!important;
+    padding: 1em 2em;
+    color: #888!important;
+}
+
+.ngdialog.ngdialog-theme-plain >.ngdialog-content {
+    padding: 0!important;
+    border-radius: 1em!important;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    padding: 0!important;
+}
+
+.lesson-filters {
+    padding-left: 0!important;
+}
+
+#search-button:hover,
+#reset-lesson-filter-button:hover,
+#cancel-lesson-browser-popup:hover {
+    color: #fff!important;
+    background: #317bca!important;
+}
+
+/* from repoEkstep.html */
+
+.lessonbrowser-dialog {
+    top: 5% !important;
+    width: 100% !important;
+    position: absolute !important;
+    background: none !important;
+}
+
+.source-result-container {
+    max-height: 360px;
+    overflow-y: scroll;
+    padding: 0 1em!important;
+    margin: 0!important;
+}
+
+.source-filter-container {
+    height: 304px!important;
+    overflow-y: scroll;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+}
+
+.filters-and-lessons-wrapper .ui.styled.accordion .title {
+    outline: none;
+}
+
+.source-filter-container .active.title,
+.source-filter-container .active.title {
+    border: none!important;
+    box-shadow: none!important;
+}
+
+.source-filter-container .title,
+.source-filter-container .content .list label {
+    box-shadow: none!important;
+    color: inherit!important;
+    
+}
+
+.source-filter-container .title {
+    padding-left: 0!important;
+    border: none!important;
+    padding-bottom: 0!important;
+}
+
+.source-filter-container .title:hover {
+    color: inherit!important;
+}
+
+.source-filter-container .content,
+#search-reset-keyword-field-wrapper,
+#search-reset-keyword-field,
+#filters-and-lessons-wrapper {
+    
+}
+
+.lesson-lang-separator {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.search-reset-keyword-field-wrapper .ui.action.input:not([class*="left action"])>input {
+    border-radius: 0!important;
+    border: none!important;
+    border-bottom: 0.2px solid #E6E7E8 !important;
+    background: transparent!important;
+}
+
+.search-reset-keyword-field-wrapper {
+    padding: 0!important;
+}
+
+.search-reset-keyword-field .button-overrides {
+    padding: 0.35em 0.3em 0.35em 0.8em!important;
+}
+
+#reset-button:hover {
+    color: #fff!important;
+    background: #000!important;
+}
+
+.search-reset-keyword-field .ui.basic.button {
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+}
+
+.filters-and-lessons-wrapper {
+    max-height: 410px!important;
+}
+
+.lesson-row {
+    padding: 1em!important;
+    height: 100px;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.lesson-row:hover {
+    background: #fff;
+    -webkit-box-shadow: 0 0 15px 5px rgba(193, 193, 193, 0.49);
+    box-shadow: 0 0 15px 5px rgba(193, 193, 193, 0.49);
+}
+
+.source-result-container .lesson-row>.two.wide.column {
+    padding: 0!important;
+}
+
+.lesson-name {
+    color: #000!important;
+}
+
+.lesson-row .ui.checkbox .box:before,
+.lesson-row .ui.checkbox label:before,
+.lesson-row .ui.checkbox label:after,
+.lesson-row .ui.checkbox input[type=checkbox],
+.lesson-row .ui.checkbox input[type=radio] {
+    top: 15px!important;
+    
+}
+
+.source-filter-container .ui.checkbox .box:before,
+.source-filter-container .ui.checkbox label:before {
+    
+}
+
+.source-result-container::-webkit-scrollbar-thumb,
+.source-filter-container::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.29)!important;
+}
+
+
+/* from repoEkstep.html */
+
+
+/* from lessonBrowser.html */
+
+.ui.modal.lessonbrowser{
+    top: 1%;
+}
+
+.popup-heading {
+    padding: 1em 0.5em!important;
+}
+
+.popup-heading h5 {
+    font-weight: bold!important;
+}
+
+.add-lessons-popup-wrapper .ui.segment[class*="bottom attached"] {
+    margin-bottom: 0;
+    border: none;
+}
+
+.repo-names-menu-bar{
+    margin-top: 0!important;
+    min-height: 2em!important;
+}
+
+.full-height{
+    height: 100%!important;
+}
+.repo-names-menu-bar >.item{
+    padding: 0.5em 1em!important;
+    letter-spacing: 1px;
+}
+
+.padding-top-3px{
+    padding: 12px;
+}
+
+.filters-wrapper{
+    height: 88%;
+    overflow-y: scroll;
+    border-right: 1px solid #d8d8d8;
+}
+
+.width-100{
+    width: 100%;
+}
+
+/* from lessonBrowser.html */

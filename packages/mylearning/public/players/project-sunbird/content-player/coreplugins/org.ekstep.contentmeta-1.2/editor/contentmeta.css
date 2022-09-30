@@ -1,0 +1,118 @@
+.header-bottom-segment {
+    position: absolute!important;
+    bottom: 0!important;
+    margin: 0!important;
+}
+
+.inline-block {
+    display: inline-block!important;
+}
+
+.header-buttons-container {
+    float: right;
+    width: 50%;
+    height: 35px !important;
+    padding-right: 0;
+    right: 20px;
+    top: 50px !important
+}
+
+.header-buttons-container .ui.button {
+    min-height: initial!important;
+    height: 100%!important;
+}
+
+.metacontent-fields-container {
+    height: 70%;
+    box-sizing: border-box;
+    padding: 1em!important;
+    position: relative;
+   padding-left: 0!important;
+    position: relative;
+    left: -27px;
+}
+
+#collectionMetadataAccordion {
+    border: none;
+    box-shadow: none;
+   font-family: inherit;
+}
+
+#collectionMetadataAccordion .content {
+    padding: 0;
+}
+
+#collectionMetadataAccordion .active.title,
+#collectionMetadataAccordion .title {
+    outline: none;
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif!important;
+}
+
+#collectionMetadataAccordion .title.ui-state-active {
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#collection-meta-tree .ui-fancytree .fancytree-node {
+    padding: 1em;
+    font-size: 1.05em;
+    cursor: pointer;
+}
+
+#collection-meta-tree span.fancytree-node:hover {
+    background: #f5f5f5;
+}
+
+#collection-meta-tree span.fancytree-node:hover .collection-preview-icon {
+    visibility: visible;
+}
+
+
+#collection-meta-tree .fancytree-focused .fancytree-title {
+    outline: none;
+}
+
+.metadata-fields-table tr td {
+    color: #4a4a4a;
+    font-family: Helvetica;
+    text-transform: capitalize;
+}
+
+.metadata-fields-table tr>td:first-child {
+    color: grey;
+}
+
+.expand-collection,
+.collapse-collection {
+    float: right;
+}
+
+.collection-preview-icon {
+    margin-left: 1vw;
+    visibility: hidden;
+}
+
+.collection-preview-icon:hover {
+    color: #2e9fd9;
+}
+
+#contents-data-form.ui.form .disabled.field, #contents-data-form.ui.form .disabled.fields .field, #contents-data-form.ui.form .field :disabled{
+    opacity:1 !important;
+}
+
+#contents-data-form.ui.form .field.disabled>label, #contents-data-form.ui.form .fields.disabled>label{
+    opacity:1 !important;
+}
+
+.ui.styled.accordion .accordion .active.title, .ui.styled.accordion .active.title{
+    background-color: #efefef;
+}
+
+#contents-data-form .form-fields-except-image .field textarea:read-only {
+    opacity: 0.45;
+}
+
+.collection-childs{
+    position: absolute;
+} 

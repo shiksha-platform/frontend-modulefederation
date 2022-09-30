@@ -1,0 +1,169 @@
+<script type="text/ng-template" id="mathTextBrowser" ng-controller="mathTextController">
+  <div class="ui modal math-modal active">
+    <div id="context1">
+      <div class="ui secondary menu math-tab-head">
+        <a class="item active" data-tab="library">Library</a>
+        <a class="item" data-tab="symbols">Symbols</a>
+        <a class="item" data-tab="equations">Equations</a>
+        <a class="item" data-tab="advanced">Advanced</a>
+        <i class="cursor-pointer close link icon math-close-tab" ng-click="closeThisDialog();"></i>
+      </div>
+      <div class="math-content qs-scrollbar">
+        <div class="ui tab segment active math-tab" data-tab="library">
+          <div class="ui large items">
+            <div class="item select list-items math-lib" ng-repeat="lib in libraryEquations" ng-click="latexToEquations(lib)">
+              <div class="middle aligned content">
+                <div class="math-lib-header">{{lib.title}}</div>
+                <div class="meta math-lib-meta" id="libFormula{{$index}}" ng-bind="latexToFormula('libFormula{{$index}}',lib.latex)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui tab segment math-tab" data-tab="symbols">
+          <div class="ui right aligned grid">
+            <div class="right floated right aligned six wide column">
+              <select class="ui dropdown symbols-dropdown" ng-model="symbolGroup">
+                <option value="">All Symbols</option>
+                <option value="all" selected="selected">All Symbols</option>
+                <option value="greek">Greek and Hebrew letters</option>
+                <option value="binary">Binary Operation/Relation Symbols</option>
+                <option value="arrow">Arrows</option>
+                <option value="misc">Miscellaneous</option>
+              </select>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="symbolGroup == 'all' || symbolGroup == 'greek'">
+            <div class="sixteen wide column">Greek and Hebrew letters</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in symbols.greek">
+              <span class="symbol-div">
+                <div class="math-symbol" id="greek{{$index}}" ng-click="latexToEquations(symbol);" ng-bind="latexToFormula('greek{{$index}}',symbol.latexDisplay ? symbol.latexDisplay : symbol.latex)"></div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="symbolGroup == 'all' || symbolGroup == 'binary'">
+            <div class="sixteen wide column">Binary Operation/Relation Symbols</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in symbols.binary">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="binary{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="symbolGroup == 'all' || symbolGroup == 'arrow'">
+            <div class="sixteen wide column">Arrows</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in symbols.arrow">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="arrow{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="symbolGroup == 'all' || symbolGroup == 'misc'">
+            <div class="sixteen wide column">Miscellaneous</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in symbols.misc">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="misc{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="ui tab segment math-tab" data-tab="equations">
+          <div class="ui right aligned grid">
+            <div class="right floated right aligned six wide column">
+              <select class="ui dropdown symbols-dropdown" ng-model="equationGroup">
+                <option value="">All Equestions</option>
+                <option value="all" selected="selected">All Equations</option>
+                <option value="trig">Trigonometric functions</option>
+                <option value="supsub">Superscripts and subscripts</option>
+                <option value="frac">Fractions</option>
+                <option value="misc">Miscellaneous</option>
+              </select>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="equationGroup == 'all' || equationGroup == 'trig'">
+            <div class="sixteen wide column">Trigonometric functions</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in equations.trig">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="trig{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latexText}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="equationGroup == 'all' || equationGroup == 'supsub'">
+            <div class="sixteen wide column">Superscripts and subscripts</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in equations.supsub">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="supsub{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="equationGroup == 'all' || equationGroup == 'root'">
+            <div class="sixteen wide column">Roots</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in equations.root">
+              <span class="symbol-div">
+                <div class="math-symbol" id="root{{$index}}" ng-click="latexToEquations(symbol);" ng-bind="latexToFormula('root{{$index}}',symbol.latexDisplay ? symbol.latexDisplay : symbol.latex)"></div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="equationGroup == 'all' || equationGroup == 'frac'">
+            <div class="sixteen wide column">Fractions</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in equations.frac">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="frac{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ui grid" ng-show="equationGroup == 'all' || equationGroup == 'misc'">
+            <div class="sixteen wide column">Miscellaneous</div>
+            <div class="two wide column math-symbols" ng-repeat="symbol in equations.misc">
+              <span class="symbol-div">
+                <div class="math-symbol mq-render" id="misc{{$index}}" ng-click="latexToEquations(symbol);">{{symbol.latexDisplay ? symbol.latexDisplay : symbol.latex}}</div>
+                <span class="symbol-latex">{{symbol.latex}}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="ui tab segment math-tab" data-tab="advanced">
+          <div class="ui grid">
+            <div class="sixteen wide column">Advanced symbols and equations 
+              <a href="https://katex.org/docs/supported.html" target="_blank"><i class="info circle icon"></i>
+              </a>
+            </div>
+            <div class="four wide column math-symbols" ng-repeat="symbol in advancedSymbols">
+              <span class="advanc-symbol-div">
+                <div class="math-symbol" id="advan{{$index}}" ng-click="latexToEquations(symbol);">
+                  <img ng-src="{{advancedImageArray[$index]}}">
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions math-footer">
+      <small ng-if="text_hint">Please switch to advanced tab to copy paste LaTeX</small>
+      <div class="ui two column grid">
+        <div class="ui nine wide column math-formula"  ng-show="!advanceField">
+          <span id="math-field"></span>
+          <span id="latex"></span>
+        </div>
+
+        <div class="ui nine wide column math-formula" ng-show="advanceField">
+          <input id="advInput" type="textarea" class="latex-field" ng-model="latexValue" ng-keydown="getCursorPosition($event)">
+        </div>
+
+        <div class="ui three wide column right aligned math-add-button-div">
+          <button class="ui basic primary button math-add-button" ng-click="addToStage(activeTab)" type="button">Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <mathquill ng-model="mlatex" /> -->
+  </div>
+</script>

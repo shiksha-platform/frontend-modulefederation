@@ -1,0 +1,152 @@
+.ng-token-field * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+
+    -webkit-box-sizing: padding-box;
+    -moz-box-sizing: padding-box;
+    -ms-box-sizing: padding-box;
+    box-sizing: padding-box;
+
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.ng-token-field {
+    display: block;
+    /* border: 1px #aab5c2 solid; */
+    width: 100%;
+    min-height: 0em;
+    /* border-radius: 0px; */
+    text-align: left;
+    padding: 3px;
+    background-color: #FFFFFF;
+    -webkit-transition: .1s ease-in-out;
+    -moz-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+    /* outline: none; */
+}
+
+.ng-token-field:hover {
+    cursor: text;
+}
+
+.ng-token-field.focus {
+    /*border: 1px #424958 solid;*/
+}
+
+.ng-token-field input[type=text] {
+    display: inline-block;
+    border: none;
+    background-color: #FFFFFF;
+    width: 100%;
+    margin: 0;
+    transition: none;
+    border-radius: 3px;
+    height: 2em;
+    vertical-align: top;
+    font-size: 1em;
+}
+
+.ng-token-field input[type=text]:focus {
+    outline: none;
+    border: none;
+}
+
+.ng-token-field .token-wrapper {
+    padding-right: 3px;
+    display: inline-block;
+    margin: 0;
+}
+
+i.remove.icon.custom-cursor{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+i.remove.icon.custom-cursor:hover{
+    opacity: 1;
+}
+
+.ng-token-field .token {
+    position: relative;
+    display: table-cell;
+    height: auto;
+    word-break: break-all;
+    line-height: 1;
+    margin: 0 .14285714em;
+    background-color: #E8E8E8;
+    padding: .4em .33em .4833em .833em;
+    color: rgba(0,0,0,.6);
+    text-transform: none;
+    font-weight: 700;
+    border: 0 solid transparent;
+    border-radius: .28571429rem;
+    cursor: pointer;
+}
+
+.ng-token-field .token.valid {
+    background-color: #E8E8E8;
+}
+
+.ng-token-field .token.valid:hover {
+    background-color: #E0E0E0;
+    border-color: #E0E0E0;
+}
+
+.ng-token-field .token.invalid {
+    background-color: #ff9a9a;
+}
+
+.ng-token-field .token.invalid:hover {
+    background-color: #ff6060;
+}
+
+.ng-token-field .close {
+    -webkit-transition: .1s ease-in-out;
+    -moz-transition: .1s ease-in-out;
+    transition: .1s ease-in-out;
+    display: inline-block;
+    margin-left: 0.5em;
+    height: 15px;
+    width: 15px;
+    line-height: 15px;
+    font-size: 0.8em;
+    top: calc(50% - 8px);
+    right: 3px;
+    position: absolute;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.ng-token-field .token.valid .close {
+    color: #000000;
+    cursor: pointer;
+    background-color: rgba(0, 3, 19, 0.18);
+}
+
+.ng-token-field .token.valid .close:hover {
+    cursor: pointer;
+}
+
+.ng-token-field .token.valid .close:active {
+    background-color: #7eb14a;
+}
+
+.ng-token-field .token.invalid .close {
+    color: #ffd7d7;
+    cursor: pointer;
+    background-color: #ff7c7c;
+}
+
+.ng-token-field .token.invalid .close:hover {
+    cursor: pointer;
+}
+
+.ng-token-field .token.invalid .close:active {
+    background-color: #b71313;
+}
+
+.ng-token-field .ng-token-field-placeholder {
+    color: #E3E3E3;
+}

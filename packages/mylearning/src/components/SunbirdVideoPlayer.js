@@ -40,24 +40,3 @@ const SunbirdVideoPlayer = (props) => {
 };
 
 export default React.memo(SunbirdVideoPlayer);
-
-const appendScript = (scriptToAppend, removeScript = []) => {
-  const removeScriptData = [...removeScript, scriptToAppend];
-  removeScriptData.map((e) => removeScriptTag(e));
-
-  const script = document.createElement("script");
-  script.src = scriptToAppend;
-  script.async = true;
-  document.body.appendChild(script);
-};
-
-const removeScriptTag = (scriptToAppend) => {
-  const scriptTag = document.querySelectorAll(
-    "script[src='" + scriptToAppend + "']"
-  );
-  if (scriptTag && scriptTag?.length > 0) {
-    scriptTag.forEach((e) => {
-      if (e) e.remove();
-    });
-  }
-};

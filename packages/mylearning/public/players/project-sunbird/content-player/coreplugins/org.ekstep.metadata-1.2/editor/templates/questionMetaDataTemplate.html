@@ -1,0 +1,95 @@
+<div ng-app="org.ekstep.metadataform" ng-controller="metadataForm as $ctrl" id="questionMetaDataTemplate" ng-init="init()">
+    <div class="ui active" id="meta-modal">
+        <div class="">
+            <form class="ui form" id="content-meta-form" ng-init="initDropdown({target: '#questionMetaDataTemplate'})" name="metaForm" novalidate ng-class="!appIconConfig.visible ? 'marginClass' : ''">
+                <div class="ui grid">
+                    <div class="row ">
+                        <!--DYNAMIC SECTION LAYOUT-->
+                        <div class="twelve wide column">
+                            <div class="ui grid ">
+                                <div ng-class="(dynamicField.inputType == 'textarea')? 'ten wide column': 'six wide column'  " ng-repeat="dynamicField in dynamicLayoutConfigurations ">
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error':(!contentMeta[dynamicField.code] && dynamicField.required && isSubmit), 'required': dynamicField.required} " name="{{dynamicField.code}} " ng-if="(dynamicField.inputType=='textarea'
+                                                && dynamicField.visible) ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <div class=" ui input " ng-class="{ 'disabled':!dynamicField.editable } ">
+                                            <textarea id="{{dynamicField.code}} " placeholder={{field.placeholde}} ng-model="contentMeta.description " rows="{{dynamicField.renderingHints.rows}} " name="{{dynamicField.code}} " ng-required="{{dynamicField.required}}" ng-pattern="dynamicField.validation.regex['value']" ng-maxlength="{{dynamicField.validation.max['value']}}" ng-keyup="onConfigChange({target: '#questionMetaDataTemplate', form:metaForm})" ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField,form:metaForm})"></textarea>
+                                        </div>
+                                        <div ng-show="!metaForm[dynamicField.code].$valid && isSubmit" class="ui pointing red basic label ">
+                                            {{validation[dynamicField.code].errorMessage || DEFAULT_ERROR_MESSAGE}}
+                                        </div>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{'error': (!metaForm[dynamicField.code].$valid && isSubmit), 'required': dynamicField.required}" name="{{dynamicField.code}}
+                                                " ng-if="(dynamicField.inputType=='text') ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <div>
+                                            <div class="ui input " ng-class="{ 'disabled':!dynamicField.editable} ">
+                                                <input id="{{dynamicField.code}} " placeholder={{dynamicField.placeholder}} name="{{dynamicField.code}} " ng-model="contentMeta[dynamicField.code] " type="text " ng-required="{{dynamicField.required}} " ng-pattern="dynamicField.validation.regex['value']" ng-maxlength="{{dynamicField.validation.max[ 'value']}}" ng-keyup="onConfigChange({target: '#questionMetaDataTemplate', form:metaForm})" ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField, form:metaForm})">
+                                            </div>
+                                            <div ng-show="!metaForm[dynamicField.code].$valid && isSubmit" class="ui pointing red basic label ">
+                                                {{validation[dynamicField.code].errorMessage || DEFAULT_ERROR_MESSAGE}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!metaForm[dynamicField.code].$valid && isSubmit), 'required': dynamicField.required} " name="{{dynamicField.code}}" ng-if="(dynamicField.inputType=='number') ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <div>
+                                            <div class="ui input " ng-class="{ 'disabled':!dynamicField.editable} ">
+                                                <input id="{{dynamicField.code}} " placeholder={{dynamicField.placeholder}} name="{{dynamicField.code}} " ng-model="contentMeta[dynamicField.code] " type="number" ng-pattern="dynamicField.validation.regex['value']" ng-maxlength="{{dynamicField.validation.max[ 'value']}}" min="{{dynamicField.validation.min[ 'value']}}" ng-required="{{dynamicField.required}} " ng-keyup="onConfigChange({target: '#questionMetaDataTemplate', form:metaForm})" ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField, form:metaForm})">
+                                            </div>
+                                            <div ng-show="!metaForm[dynamicField.code].$valid && isSubmit" class="ui pointing red basic label ">
+                                                {{validation[dynamicField.code].errorMessage || DEFAULT_ERROR_MESSAGE}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!contentMeta[dynamicField.code] && dynamicField.required && isSubmit), 'required': dynamicField.required} " name="{{dynamicField.code}}
+                                                " ng-if="dynamicField.inputType=='multiselect' ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <select id="_select{{dynamicField.code}} " name="{{dynamicField.code}} " class="ui search dropdown placeholder-padding " ng-class="!dynamicField.editable ? ' disabled ': ' ' " ng-model="contentMeta[dynamicField.code]" ng-change="onConfigChange({target: '#questionMetaDataTemplate', index:$index, field:dynamicField, value:contentMeta[dynamicField.code], form:metaForm}) " multiple=" " ng-required="{{dynamicField.required}} ">
+                                            <option value="">{{dynamicField.placeholder}}</option>
+                                            <option data-value="{{category.name || category}} " ng-repeat="category in categoryList[dynamicField.code]" ng-selected="category.name && (contentMeta[dynamicField.code] == category.name) || (contentMeta[dynamicField.code] == category)">{{category.name || category}}</option>
+                                        </select>
+                                        <div ng-show="!metaForm[dynamicField.code].$valid && isSubmit" class="ui pointing red basic label ">
+                                            Please Select
+                                        </div>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!contentMeta[dynamicField.code] && dynamicField.required  && isSubmit), 'required': dynamicField.required} " name="{{dynamicField.code}}
+                                                " ng-if="dynamicField.inputType=='select' ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <select id="_select{{dynamicField.code}} " name="{{dynamicField.code}} " class="ui search dropdown placeholder-padding " ng-class="!dynamicField.editable ? ' disabled ': ' ' " ng-model="contentMeta[dynamicField.code]" ng-change="onConfigChange({target: '#questionMetaDataTemplate', index:$index, field:dynamicField, value:contentMeta[dynamicField.code], form:metaForm}) " ng-required="{{dynamicField.required}} ">
+                                            <option value="">{{dynamicField.placeholder}}</option>
+                                            <option data-value="{{category.name || category}} " ng-repeat="category in categoryList[dynamicField.code]" ng-selected="category.name && (contentMeta[dynamicField.code] == category.name) || (contentMeta[dynamicField.code] == category)">{{category.name || category}}</option>
+                                        </select>
+                                        <div ng-show="!metaForm[dynamicField.code].$valid  && isSubmit" class="ui pointing red basic label ">
+                                            Please Select
+                                        </div>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!contentMeta[dynamicField.code] && dynamicField.required && isSubmit), 'required': dynamicField.required} " name="{{dynamicField.code}}
+                                                " ng-if="dynamicField.code=='year' " ng-required=" {{dynamicField.required}} ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <year config=dynamicField ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField, form:metaForm})"></year>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!contentMeta[dynamicField.code] && dynamicField.required && isSubmit) , 'required': dynamicField.required} " name="{{dynamicField.code}}
+                                    " ng-if="dynamicField.inputType==='conceptselector'">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <conceptselector config=dynamicField ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField, form:metaForm})"></conceptselector>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!contentMeta[dynamicField.code].length && dynamicField.required  && isSubmit) , 'required': dynamicField.required} " name="{{dynamicField.code}}
+                                       " ng-if="dynamicField.inputType==='topicselector'">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <topic-selector config=dynamicField ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField, form:metaForm})"></topic-selector>
+                                    </div>
+                                    <div id="{{dynamicField.code}} " class="field " ng-class="{ 'error': (!contentMeta[dynamicField.code].length && fixedField.required && isSubmit), 'required': dynamicField.required} " name="{{dynamicField.code}} " ng-if="(dynamicField.inputType=='keywordsuggestion'
+                                    && dynamicField.visible) " ng-required="{{dynamicField.required}} ">
+                                        <label>{{dynamicField.label | uppercase}}</label>
+                                        <keywords config=dynamicField ng-click="onConfigChange({target: '#questionMetaDataTemplate', field:dynamicField, form:metaForm})"></keywords>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ACTION SECTION LAYOUT -->
+            </form>
+        </div>
+    </div>
+</div>

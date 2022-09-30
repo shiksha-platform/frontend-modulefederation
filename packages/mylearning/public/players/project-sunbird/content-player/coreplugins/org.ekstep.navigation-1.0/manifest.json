@@ -1,0 +1,31 @@
+{
+  "id": "org.ekstep.navigation",
+  "ver": "1.0",
+  "author": "Jagadish",
+  "type": "plugin",
+  "title": "Navigation",
+  "description": "",
+  "editor": {
+    "main": "editor/plugin.js",
+    "menu": []
+  },
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [
+      {
+        "type": "js",
+        "src": "renderer/controller/navigation_ctrl.js",
+        "scope": "all"
+      },
+      {
+        "type": "js",
+        "src": "renderer/templates/navigation.html",
+        "scope": "all"
+      }
+    ]
+  },
+  "icon": "assets/icon.png",
+  "languages": ["English"],
+  "categories": [""],
+  "keywords": [""]
+}

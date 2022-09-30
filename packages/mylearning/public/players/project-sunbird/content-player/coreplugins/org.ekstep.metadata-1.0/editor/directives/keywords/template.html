@@ -1,0 +1,7 @@
+<tags-input ng-model="contentMeta[fieldConfig.code]" display-property="lemma " use-strings="true" replace-spaces-with-dashes="false " name="{{fieldConfig.code}}" ng-disabled="{{!fieldConfig.editable}}" ng-class="{'remove-delete':!fieldConfig.editable}"
+    min-tags="{{fieldConfig.required ? 1:0}}">
+    <auto-complete source="loadKeywords($query) " min-length="0 " load-on-focus="true " load-on-empty="true "></auto-complete>
+</tags-input>
+<div class="right-panel ">
+    <span ng-bind-html="$highlight($getDisplayText()) "></span>
+</div>

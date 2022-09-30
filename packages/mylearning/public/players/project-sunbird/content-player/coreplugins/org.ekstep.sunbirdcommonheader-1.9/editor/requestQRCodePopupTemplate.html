@@ -1,0 +1,26 @@
+<script type="text/ng-template" ng-controller="mainCtrlScope as $ctrl" id="requestQRCode">
+    <div class="ui mini modal active top-25">
+        <div class="header">Request for QR Codes
+            <i class="close icon float-right margin-right-0 cursor-pointer" ng-click="closeThisDialog();"></i>
+        </div>
+        <div class="content">
+            <div class="ui relaxed grid">
+                <div class="two column row">
+                    <div class="column">  
+                        <div class="ui input"><input type="number" onkeypress="return event.charCode >= 48 && event.charCode != 69 && event.charCode != 101" ng-style="(requestNumber > 250 || requestNumber < 2 || (qrCodeCount.reserve > 0 && requestNumber <= qrCodeCount.reserve)) && {'color':'red'}" placeholder="e.g. 45" ng-model="requestNumber" autocomplete="off" required></div>
+                    </div>
+                    <div class="column">
+                        <button class="ui small button right floated" value="Request" ng-disabled="!requestNumber || requestNumber < 2 || requestNumber > 250 || (qrCodeCount.reserve > 0 && requestNumber <= qrCodeCount.reserve)" ng-class="requestNumber && (requestNumber >= 2 && requestNumber <= 250) && !(qrCodeCount.reserve > 0 && requestNumber <= qrCodeCount.reserve)? 'primary': ''" ng-click="reserveDialCode(requestNumber, true)">Request</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <p class="color-red" ng-if="requestNumber > 250">This number is too large for the request</p>
+                        <p class="color-red" ng-if="qrCodeCount.reserve === 0 && (requestNumber === 0 || ( requestNumber && requestNumber < 2))">The number should be at least 2</p>
+                        <p class="color-red" ng-if="qrCodeCount.reserve > 0 && requestNumber <= qrCodeCount.reserve">The number should be greater than {{qrCodeCount.reserve}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,14 @@
+.contributed-plugins-list{
+    height: 350px;
+    width: 100%;
+    margin-top: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.contributed-plugins-list.no-plugins{
+    height: 0px !important;
+}
+.local-plugin-label{
+    width: 14em;
+    word-wrap: break-word;
+}

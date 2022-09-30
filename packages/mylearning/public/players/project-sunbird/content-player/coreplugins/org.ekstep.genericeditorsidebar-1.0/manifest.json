@@ -1,0 +1,20 @@
+{
+    "id": "org.ekstep.genericeditorsidebar",
+    "ver": "1.0",    
+    "author": "Sunil A S",
+    "title": "sidebar Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",        
+        "dependencies": [
+        { "type": "css", "src": "editor/styles/plugin.css"}
+        ],        
+        "sidebarMenu": [{
+            "id": "sidebar",                                 
+            "templateURL": "editor/partials/sidebarTemplate.html",
+            "controllerURL":"editor/sideBarApp.js"
+
+        }]
+    }
+}

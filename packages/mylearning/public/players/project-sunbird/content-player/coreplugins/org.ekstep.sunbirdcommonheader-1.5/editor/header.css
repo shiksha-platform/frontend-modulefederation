@@ -1,0 +1,332 @@
+@media all{
+    #commonHeader  > .custom-container{
+        width: 100%!important;
+    }
+}
+.custom-container .one.wide.column,
+.custom-container .four.wide.column,
+.custom-container .two.wide.column,
+.custom-container .five.wide.column,
+#commonHeader {
+    height: 55px !important;
+}
+
+body {
+    min-width: 525px !important;
+}
+
+.no-margin-no-padding,
+.custom-1-wide {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.no-margin,
+.custom-6-wide,
+.custom-5-wide {
+    margin: 0 !important;
+}
+
+.no-padding,
+#userDetailsWrapper {
+    padding: 0 !important;
+}
+
+.xy-mid-align,
+.custom-icon,
+.custom-1-wide .ui.tiny.image {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: auto !important;
+}
+
+.icon-box {
+    height: 30px;
+    width: 31.67px;
+    border-radius: 4px;
+    background-color: transparent;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.icon-box:hover {
+    background-color: #E0E1E2;
+}
+
+.custom-icon {
+    line-height: normal;
+    height: 14px;
+    width: 15px;
+}
+
+.custom-container {
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid #d8d8d8;
+}
+
+.custom-container .one.wide.column {
+    width: 60px !important;
+    border: 1px solid transparent!important;
+}
+
+.custom-container .five.wide.column {
+    width: -webkit-calc(100% - (50% + 60px)) !important;
+    width: -moz-calc(100% - (50% + 60px)) !important;
+    width: calc(100% - (50% + 60px)) !important;
+    padding-right: 0.3rem;
+}
+
+.ui.grid.custom-container>.column:not(.row) {
+    padding-top: 0.3rem;
+}
+
+.content-masterhead {
+    padding: 0 !important;
+}
+
+
+.custom-1-wide .ui.tiny.image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+.custom-6-wide .custom-row-1 {
+    position: relative;
+    top: 4px;
+}
+
+.custom-6-wide .custom-row-1 .content-title {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    height: 19px;
+    line-height: 19px;
+}
+
+.custom-6-wide .custom-row-2 {
+    position: relative;
+    font-size: 12px !important;
+    height: 25px;
+    line-height: 25px;
+}
+
+.custom-6-wide .custom-row-2 a {
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    bottom: -4px;
+    color: #007aff;
+}
+.custom-5-wide .close {
+    position: relative;
+    float: right;
+    right: -0.3vw;
+    cursor: pointer;
+    line-height: 2;
+
+}
+
+.custom-5-wide .close:hover{
+    background: transparent;
+}
+
+.custom-5-wide .close a {
+    color: #9B9B9B;
+}
+
+.custom-5-wide .close a .remove.icon:hover {
+    color: #D92B2F;
+}
+
+.custom-5-wide .header-icon-container {
+    position: relative;
+    height: 30px;
+}
+
+.custom-5-wide .custom-row-2 {
+    position: relative;
+    height: 30px;
+    float: right;
+    font-size: 12px !important;
+    top: 0;
+}
+
+.custom-5-wide .custom-row-2 .icon,
+.custom-5-wide .custom-row-2 .fa,
+.custom-5-wide .custom-row-2 .icon-save{
+    font-size: 14px !important;
+    color: #9B9B9B;
+    height: 14px;
+    width: 16px;
+    margin-right: 10px;
+}
+
+
+.custom-5-wide .custom-row-2 .icon-group-2 {
+    position: relative;
+    height: 100%;
+}
+
+.custom-5-wide .custom-row-2 .icon-group-2 {
+    float: right;
+}
+
+
+/* for labelled icons in header */
+
+.label-icon-box {
+    width: auto!important;
+    padding: 0 0em 0 0.5em!important;
+    line-height: 2;
+    float: right;
+    margin-left: 5px;
+    color: #9B9B9B!important;
+}
+
+.label-icon-box-text {
+    position: relative;
+    left: -10px;
+    font-family: HelveticaNeueLTStd-Lt, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    font-size: 11px;
+    color: #9B9B9B!important;
+    font-weight: bold !important;
+}
+
+.label-icon-box .icon-save{
+    position: relative;
+    top: 1px;
+    line-height: inherit!important;
+}
+
+.save-button-text {
+    top: -1px;
+}
+
+/* for labelled icons in header */
+
+/* generic editor style */
+
+.content-masterhead > .custom-container{
+    background: #fff;
+}
+/* generic editor style */
+.preview-dropdown{
+    width: auto; 
+    position: relative;
+    color: #9b9b9b!important;
+    height: 30px!important;
+    right: -11px !important;
+}
+.preview-dropdown-nonecml{
+    display: inline-block !important;
+}
+
+.preview-dropdown .ui.button.text-part{
+    padding-top:7px; background: transparent; padding-left: 1em; padding-right: 1em; height:30px;
+    width: 31.2px;
+    color: #9b9b9b!important;
+    border: 1px solid transparent!important;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid;
+    padding-left: 8px!important;
+}
+
+.preview-dropdown .ui.dropdown{
+    padding-top: 9px;
+    background: transparent;
+    height: 30px;
+    border-left: 1px solid transparent;
+    padding-left: 3px!important;
+    padding-right: 0!important;
+    line-height: 0.8;
+    padding-left: 11px;
+}
+
+.preview-dropdown .ui.dropdown .menu{
+    width: auto!important;
+    right: -16px!important;
+    top: 80%;
+
+}
+
+.preview-dropdown .ui.dropdown .menu:after {
+    left: inherit !important;
+    right: 17%!important;
+}
+
+.preview-dropdown .ui.dropdown .menu .item{
+    font-size: 11px !important;
+    line-height: 11px;
+    padding: 9px 10px !important;
+    font-family: Helvetica;
+    color: #9b9b9b!important;
+    font-weight: normal!important;
+}
+
+.preview-dropdown:hover >.ui.button.text-part,
+.preview-dropdown:hover >.ui.button.dropdown{
+    background-color: #E0E1E2;
+}
+
+.ui.grid.toolbar{
+    margin-top: 0 !important;
+}
+
+#commonHeader .icon-box.popup-item.disabled, 
+#commonHeader .ui.buttons.preview-dropdown.disabled{
+    pointer-events: none!important;
+}
+#commonHeader .icon-box.popup-item.disabled .icon,
+#commonHeader .icon-box.popup-item.disabled .icon-save,
+#commonHeader .icon-box.popup-item.disabled .label-icon-box-text,
+#commonHeader .preview-dropdown.popup-item.disabled .ui.button .icon{
+    color: #D7D7D7 !important;
+}
+.last-saved-label{
+    display: inline-block;
+    float: right;
+    position: relative;
+    bottom: -7px;
+    font-size: 13px;
+    color: #9b9b9b;
+}
+
+.content-title-container {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.content-title-align {
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.ui.active.modal.reviewer-popup-top-align{
+    top:5%;
+}
+
+.reviewer-popup-height{
+    max-height: 480px;
+    overflow-y: scroll;
+}
+
+.reviewer-comment-box{
+    width:100%;
+    border-radius:2px 
+}
+
+.reviewer-content{
+    padding:2%;
+}

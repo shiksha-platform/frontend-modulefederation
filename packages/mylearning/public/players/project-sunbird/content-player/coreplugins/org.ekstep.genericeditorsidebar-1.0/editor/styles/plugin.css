@@ -1,0 +1,23 @@
+#sideBarTitle {
+    border-bottom: 0.1px solid #d4d4d4;
+    margin-top: -1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    /* this is the min-height for ui menu*/
+    height: 30px;
+}
+
+#sideBarTitle .title-item{
+    color: #4a4a4a;
+    background: #d7d7d7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+}
+
+#sideBarTitle .title-item i.icon{
+    line-height: normal;
+}

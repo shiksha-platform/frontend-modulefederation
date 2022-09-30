@@ -1,0 +1,295 @@
+.mcq-content-container {
+    height: 100%;
+    width: 100%;
+    line-height: 19px;
+    font-size: 14px;
+    letter-spacing: 0.7px;
+}
+
+.mcq-content-container .question-content-container {
+    height: 23.33333vh;
+    font-size: 14px;
+    line-height: 6.7vh;
+}
+
+.mcq-content-container .option-container.vertical {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: table;
+}
+.mcq-content-container .outer-option-container.vertical {
+    height: 77.5%;
+    width: 78.2%;
+    position: relative;
+    margin-right: 10.40%;
+    margin-left: 10.40%;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block {
+    cursor: pointer;
+    width: 24.93%;
+    height: 65.5161290323%;
+    margin-right: 0.9%;
+    position: relative;
+    float: left;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block.selected {
+    background-color: #7AB4EE;
+    border: solid 2px #024F9D;
+}
+
+#mcq-question-container .mcq-qLeft-content-container .opt-selected {
+    background-color: #7AB4EE;
+    border: solid 2px #024F9D;
+}
+
+#mcq-question-container .mcq-question-container-grid .mcq-grid-option-container .mcq-grid-options-row .mcq-grid-option-wrapper .mcq-grid-option-outer .selected {
+    background-color: #7AB4EE;
+    border: solid 2px #024F9D; 
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block img.audio {
+    cursor: pointer;
+    position: absolute;
+    top: -6%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 20%;
+    border-radius: 50%;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block .option-image-container {
+    height: 75%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block .option-image-container img {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    cursor: pointer;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block img.tick {
+    display: none;
+    position: absolute;
+    bottom: -10%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 30%;
+    z-index: 0;
+    border-radius: 50%;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block.selected img.tick {
+    display: block;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block .option-text-container {
+    overflow:hidden;
+    height: 25%;
+    width: 100%;
+    position: relative;
+}
+
+.mcq-content-container .option-container.vertical .option-block-container .option-block .option-text-container>span {
+    font-size: 6vh;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 3%;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mcq-content-container .option-container.vertical .option-block:last-child {
+    margin-right: 0%;
+}
+
+/* Horizontal layout starts */
+
+.mcq-content-container .option-container.horizontal {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: table;
+}
+.mcq-content-container .outer-option-container.horizontal {
+    padding-top: 2.5%;
+    margin-right: 10.40%;
+    margin-left: 10.40%;
+    height: 76.5%;
+    position: relative;
+    overflow: auto;
+    padding-bottom: 2.5%;
+}
+
+.mcq-content-container .outer-option-container.horizontal::-webkit-scrollbar {
+    width: 0.5em;
+}
+.mcq-content-container .outer-option-container.horizontal::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.mcq-content-container .outer-option-container.horizontal::-webkit-scrollbar-thumb {
+    background-color: #65A0E6;
+    outline: 1px solid slategrey;
+    border: 0.3em;
+    height: 75%;
+    width: 75%;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container {
+    justify-content: center;
+    display: table-cell;
+    align-items: center;
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block {
+    cursor: pointer;
+    width: 100%;
+    height: 15vh;
+    margin-bottom: 1.5625%;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: table;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block.selected {
+    background-color: #7AB4EE;
+    border: solid 2px #024F9D;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block img.audio {
+    cursor: pointer;
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    left: 1%;
+    margin: auto;
+    width: 6%;
+    z-index: 1;
+}
+.mcq-content-container .option-container.horizontal .option-block-container .option-block img.audio.with-image {
+    cursor: pointer;
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    left: 14%;
+    margin: auto;
+    width: 6%;
+    z-index: 1;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-image-container {
+    height: 100%;
+    width: 10vw;
+    float: left;
+    position: relative;
+    display: table-cell;    
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-image-container.no-image {
+    display: none;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-image-container img {
+    cursor: pointer;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block img.tick {
+    display: none;
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    right: 1%;
+    margin: auto;
+    width: 6%;
+    z-index: 1;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block.selected img.tick {
+    display: block;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-text-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 5%;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-text-container.with-image {
+    margin-left: 10%;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-text-container.with-audio {
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-text-container.with-audio .urdu-text{
+    margin-right:-9%; /* to override padding-right of the parent element*/
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-text-container.with-audio.with-image {
+    margin-left: 15%;
+}
+
+.mcq-content-container .option-container.horizontal .option-block-container .option-block .option-text-container>span {
+    width:92%;
+    height: auto;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    display: block;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.mcq-content-container .option-container.horizontal .option-block:last-child {
+    margin-bottom: 0%;
+}

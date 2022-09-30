@@ -1,0 +1,28 @@
+{
+    "id": "org.ekstep.iframeevent",
+    "ver": "1.0",
+    "author": "Vinu Kumar",
+    "type": "widget",
+    "title": "iframeEvent",
+    "description": "To dispatch GenieCanvas events to iframe when preview is embedded in iframe. ",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [ ],
+        "menu": [],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        }
+    },
+    "configManifest": [{
+        "propertyName": "color",
+        "title": "Fill color",
+        "description": "Choose a color from the color picker",
+        "dataType": "colorpicker",
+        "required": true,
+        "defaultValue": "rgb(255,0,0)"
+    }],
+    "renderer": {
+        "main": "renderer/plugin.js"
+    }
+}

@@ -1,0 +1,90 @@
+{
+    "id": "org.ekstep.wordinfobrowser",
+    "ver": "1.1",
+    "shortId": "wordinfobrowser",
+    "author": "Kartheek Palla",
+    "title": "Add Word Info Popup",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "dependencies": [
+            {"type": "css", "src": "editor/plugin.css"}
+        ],
+        "views":[
+            {"template":"./wordinfobrowser.html", "controller":"./wordinfobrowserapp.js"}
+        ],
+        "configManifest": [{
+            "propertyName": "color",
+            "title": "Font color",
+            "description": "Choose a color from the color picker",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "rgb(255,0,0)"
+        },{
+            "propertyName": "font",
+            "dataType": "group",
+            "description": "Choose fontweight and fontstyle",
+            "config": [{
+                "propertyName": "fontweight",
+                "title": "Font Weight",
+                "toolTip": "Bold",
+                "description": "Select font size for the text",
+                "dataType": "icon",
+                "iconClass": "bold icon",
+                "required": true,
+                "defaultValue": false
+            }, {
+                "propertyName": "fontstyle",
+                "title": "Font Style",
+                "toolTip": "Italic",
+                "description": "Select font style for the text",
+                "dataType": "icon",
+                "iconClass": "italic icon",
+                "required": true,
+                "defaultValue": false
+            }]
+        }, {
+            "propertyName": "fontfamily",
+            "title": "Font Family",
+            "description": "Select font family for the text",
+            "dataType": "select",
+            "range": ["Arial", "Courier", "Georgia", "Helvetica", "Monospace", "Sans-serif", "Serif", "Tahoma", "Times", "Trebuchet MS", "Verdana", "NotoSansKannada", "NotoSansGujarati", "NotoSansBengali", "NotoSansGurmukhi", "NotoSansOriya", "NotoSansDevanagari", "NotoSansTamil", "NotoSansTelugu", "NotoNastaliqUrdu", "NotoSansMalayalam"],
+            "required": true,
+            "defaultValue": "Sans-serif"
+        }, {
+            "propertyName": "fontsize",
+            "title": "Font Size",
+            "description": "Select font size for the text",
+            "dataType": "select",
+            "range": [18, 20, 22, 24, 26, 28, 32, 36, 40, 44, 48, 54, 60, 66, 72, 80, 88, 96],
+            "required": true,
+            "defaultValue": 18
+        },{
+            "propertyName": "wordfontcolor",
+            "title": "Word Font Color",
+            "description": "Choose a color from the color picker to highlight the font color of selected word",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "#0000FF"
+        },{
+            "propertyName": "wordhighlightcolor",
+            "title": "Word Highlight Color",
+            "description": "Choose a color from the color picker to highlight the selected word",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "#FFFF00"
+        },{
+            "propertyName": "wordunderlinecolor",
+            "title": "Word underline Color",
+            "description": "Choose a color from the color picker to underline the selected word",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "#0000FF"
+        }]
+    }
+}

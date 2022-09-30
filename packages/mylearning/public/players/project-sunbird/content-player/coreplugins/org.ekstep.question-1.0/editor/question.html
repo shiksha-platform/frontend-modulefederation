@@ -1,0 +1,178 @@
+<script type="text/ng-template" id="QuestionUnitBrowser" ng-controller="QuestionCreationFormController">
+    <div class="ui modal questioncreation fullscreen active">
+        <div class="header" style="padding-right:1em;">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="two wide column">
+                        <span ng-if="!editMode">Create Question</span>
+                        <span ng-if="editMode">Edit Question</span>
+                    </div>
+                    <div class="eight wide column center aligned">
+                        <div class="ui huge breadcrumb breadcrumbTitle">
+                            <div ng-class="{activeBreadcumb: templatesScreen == true}" class="section">Choose
+                                Template
+                            </div>
+                            <i class="right chevron icon divider"></i>
+                            <div class="section"
+                                 ng-class="{activeBreadcumb: !questionMetadataScreen == true && templatesScreen != true}">
+                                Question Configuration
+                            </div>
+                            <i class="right chevron icon divider"></i>
+                            <div class="section" ng-class="{activeBreadcumb: questionMetadataScreen == true}">
+                                Question Details
+                            </div>
+                        </div>
+                    </div>
+                    <div class="two wide column right aligned">
+                        <i class="cursor-pointer close link icon"
+                           ng-click="closeThisDialog();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-close', ver: '', type: 'button'}});"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui grid custom-grid">
+            <div class="two column row" ng-show="templatesScreen">
+                <div class="twelve wide column" id="templatsCards">
+                    <div class="ui five stackable cards">
+                        <div class="card card-hover-effect" ng-repeat="(key, value) in questionTemplates">
+                            <div class="image">
+                                <img src="{{value.thumbnail1}}"/>
+                            </div>
+                            <div class="content">
+                                <a class="header card-header">{{value.title}}</a>
+                            </div>
+                            <div class="extra content">
+                                <div class="right floated">
+                                    <div class="ui small primary button" ng-click="showQuestionUnitForm(value);genImpressionTelemetry({type: 'edit', subtype: 'Paginate', pageid: 'question-creation-form', visits: {objid: value.title, objtype: 'form'}});generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-select-template', ver: '', type: 'button'}});">
+                                        Select
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="two column row">
+                <div class="seven wide column formDiv qs-scrollbar">                       
+                    <div class="templateHead">
+                        <div class="template-warning-Message" >
+                            <div class="ui yellow message">
+                                <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{editorToastMessage}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="templateHead"><span ng-show="!questionMetadataScreen && !templatesScreen">{{templateName}}</span>
+                    </div>
+                    <div ng-if="questionUnitTemplateURL"
+                         ng-show="!questionMetadataScreen && !templatesScreen">
+                        <ng-include src="questionUnitTemplateURL"></ng-include>
+                    </div>
+                    <div class="QuestionMetaForm" ng-show="metadataform && questionMetadataScreen">
+                        <div ng-include="metadataform" id="question-meta-form"></div>
+                    </div>
+                </div>
+                <div class="five wide column previewArea" ng-show="!templatesScreen">
+                    
+                    <div class="previewAreaHead">
+                    
+                        <div class="preview-heading">
+                            <h3 class="ui left floated previewHeading">Preview</h3>
+                            <button class="ui right floated blue button" ng-click="showPreview();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-preview', ver: '', type: 'button'}})">Refresh</button>
+                            <div class="ui small blue message">
+                                {{messages.previewMessage}}
+                            </div>
+                        </div>
+                        
+                        <div class="qc-show-preview">
+                            <div class="ui raised child preview-iframe-wrapper">
+                                <iframe id="iframeArea" class="iframe-preview"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="previewAreaHead" ng-init="loadDropdown()"
+                         ng-show="selectedTemplatePluginData.plugin.id == 'org.ekstep.questionunit.mcq'">
+                        <div class="preview-heading">
+                            <h3 class="ui left floated previewHeading">Configuration</h3>
+                        </div>
+                        <div class="ui twelve column preview-heading">
+                            <div class="qcMetadateFormLbl">
+                                Select layout
+                            </div>
+                            <div class="ui five column grid template-layout">
+                                <div class="row">
+                                    <div class="column" ng-class="{'activetemplate': questionData.templateType == templateIcon.name}" ng-repeat="templateIcon in templateIcons">
+                                        <img class="ui centered tiny image select-template" src="{{templateIcon.icon}}" ng-click="changeLayout(templateIcon.name);"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview-heading text-left">
+                            <div class="ui label qb-toggle-label">Shuffle Option</div>
+                            <div class="ui fluid toggle checkbox verticalcenter">
+                                <input type="checkbox" ng-model="questionData.isShuffleOption"
+                                       ng-change="updatePreview();" ng-click="generateTelemetry({type: 'TOUCH', id: 'toggle', target: {id: 'question-shuffle-option', ver: '', type: 'toggle'}})">
+                                <label>&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="previewAreaHead"
+                         ng-show="selectedTemplatePluginData.plugin.id != 'org.ekstep.questionunit.mcq' && selectedTemplatePluginData.plugin.id != 'org.ekstep.questionunit.reorder'">
+                        <div class="preview-heading">
+                            <h3 class="ui center floated previewHeading">Configuration</h3>
+                        </div>
+                        <div ng-show="selectedTemplatePluginData.plugin.id == 'org.ekstep.questionunit.sequence'">
+                            <label class="qcMetadateFormLbl">
+                                Select layout
+                            </label>
+                            <div class="ui two column grid template-layout">
+                                <div class="row">
+                                    <div class="column" ng-class="{'activetemplate': questionData.templateType == templateIcon.name}" ng-repeat="templateIcon in templateIcons | limitTo : 2">
+                                        <img class="ui centered tiny image select-template" src="{{templateIcon.icon}}" ng-click="changeLayout(templateIcon.name);"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui label qb-toggle-label">Partial Scoring</div>
+                        <div class="ui fluid toggle checkbox verticalcenter">
+                            <input type="checkbox" ng-model="questionData.isPartialScore">
+                            <label>&nbsp;</label>
+                        </div>
+                        <div ng-if="selectedTemplatePluginData.plugin.id == 'org.ekstep.questionunit.ftb'">
+                            <div class="ui label qb-toggle-label">Unordered Evaluation</div>
+                            <div class="ui fluid toggle checkbox verticalcenter">
+                                <input type="checkbox" ng-model="questionData.evalUnordered">
+                                <label>&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions bottomActionButtons">
+            <div class="ui buttons">
+                <button class="ui orange button" id="cancel-button" ng-show="templatesScreen"
+                        ng-click="cancel();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-cancel', ver: '', type: 'button'}})">
+                    Cancel
+                </button>
+                <button class="ui basic primary button" id="back-button" ng-show="!templatesScreen" ng-disabled="editMode && !questionMetadataScreen"
+                        ng-click="back();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-back', ver: '', type: 'button'}})">
+                    Back
+                </button>
+                <div class="or" ng-show="!templatesScreen && questionMetadataScreen"></div>
+                <button class="ui large blue button" ng-if="questionMetadataScreen" id="save-question-button"
+                        ng-click="sendMetaData(true);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-submit', ver: '', type: 'button'}})" ng-disabled="savingQuestion">
+                    Save and Create
+                </button>
+                <div class="or" ng-show="!templatesScreen"></div>
+                <button class="ui large blue button" ng-show="!questionMetadataScreen && !templatesScreen" id="next-button"
+                        ng-click="showMetaform();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-next', ver: '', type: 'button'}});genImpressionTelemetry({type: 'edit', subtype: 'Paginate', pageid: 'question-creation-form', visits: {objid: 'meta-data-form', objtype: 'form'}});">
+                    Next
+                </button>
+                <button class="ui large blue button" ng-if="questionMetadataScreen" id="save-question-button"
+                        ng-click="sendMetaData(false);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'question-submit', ver: '', type: 'button'}})" ng-disabled="savingQuestion">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</script>

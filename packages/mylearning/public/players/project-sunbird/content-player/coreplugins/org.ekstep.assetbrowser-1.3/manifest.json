@@ -1,0 +1,25 @@
+{
+    "id": "org.ekstep.assetbrowser",
+    "ver": "1.3",
+    "shortId": "assetbrowser",
+    "author": "Sunil A S",
+    "title": "Asset Browser",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {"type": "js", "src": "editor/recorder/wave/wavesurfer.min.js"},
+            {"type": "js", "src": "editor/recorder/angular-audio-recorder.js"},
+            { "type": "js", "src": "editor/libs/ng-tags-input.js" },
+            { "type": "css", "src": "editor/libs/ng-tags-input.css" },
+            {"type": "js","src": "editor/libs/angular-inview.js"},
+            { "type": "js", "src": "editor/libs/video.js" },
+            { "type": "js", "src": "editor/libs/videoyoutube.js" },
+            {"type": "css", "src": "editor/libs/videojs.css"}
+        ],
+        "views":[
+            {"template":"./assetBrowser.html", "controller":"./assetbrowserapp.js"}
+        ]
+    }
+}

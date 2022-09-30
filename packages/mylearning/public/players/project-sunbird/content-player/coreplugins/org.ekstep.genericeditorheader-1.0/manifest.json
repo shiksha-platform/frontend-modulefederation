@@ -1,0 +1,19 @@
+{
+    "id": "org.ekstep.genericeditorheader",
+    "ver": "1.0",    
+    "author": "Sunil A S",    
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+    	"main": "editor/plugin.js",
+    	"header": [{
+    		"templateURL": "editor/partials/headerTemplate.html",
+    		"controllerURL": "editor/headerApp.js"
+    	}],
+        "dependencies": [            
+            { "type": "js", "src": "lib/angular-timeago.min.js"},
+            { "type": "css", "src": "editor/styles/header.css"},
+            { "type": "plugin", "plugin": "org.ekstep.toaster", "ver":"1.0"}
+        ]
+    }
+}

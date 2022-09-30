@@ -1,0 +1,30 @@
+<script type="text/ng-template" ng-app="org.ekstep.lessonbrowserapp" ng-controller="lessonController as $ctrl" id="partials/lessonbrowser.html">
+    <style type="text/css">
+    /* .ui.attached.tabular.menu,
+    .ui.tabular.menu+.attached:not(.top).segment {
+        margin: 0 10px;
+    }
+     */
+    </style>
+    <div class="ui modal active add-lessons-popup-wrapper f6f7f8-background" style="top: 12px">
+        <div class="ui grid f6f7f8-background">
+            <div class="row popup-heading">
+                <div class="column">
+                    <h5>Add Resource</h5>
+                </div>
+            </div>
+            <div class="ui top attached tabular menu repo-names-menu-bar">
+                <div class="item f6f7f8-background" ng-class='{active:$first}' ng-repeat="(rid, repo) in $ctrl.lessonbrowser.repos" data-repo-id="{{repo.id}}" data-tab="{{repo.id}}{{rid}}">{{repo.label}}</div>
+            </div>
+            <div class="ui bottom attached tab segment f6f7f8-background" ng-class='{active:$first}' ng-repeat="(rid, repo) in $ctrl.lessonbrowser.repos" ng-include="repo.templateUrl" data-tab="{{repo.id}}{{rid}}" style="max-height:450px;">
+            </div>
+            <div class="row">
+                <div class="column">
+                    <!-- <button class="ui right floated button primary" ng-click="returnSelectedLessons()" ng-disabled="!lessonSelection.length">Add</button> -->
+                    <button class="ui right floated button primary button-overrides" ng-click="returnSelectedLessons(selectedLessons.list)" ng-disabled="!selectedLessons.list.length">Add</button>
+                    <button id="cancel-lesson-browser-popup" class="ui right floated basic primary button button-overrides" ng-click="closePopup()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

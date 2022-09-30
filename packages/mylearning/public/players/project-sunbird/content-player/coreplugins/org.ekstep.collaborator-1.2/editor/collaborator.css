@@ -1,0 +1,242 @@
+.ui.modal.fullscreen-modal {
+    top: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0 !important;
+    right: 0;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+.ui.left.header.header-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header-height {
+    height: 82px;
+}
+
+.overlap-all {
+    z-index: 9999;
+}
+
+/* SearchBar */
+.view-all {
+    padding-left:5px;
+    font-size: 14px;
+    font-weight:600
+}
+
+.searcher .search-reset-keyword-field .search-loader {
+    height: 100%;
+    margin: 3%;
+}
+
+.ui.right.floated.header.searcher {
+    margin-bottom: 0;
+    height: 40px;
+}
+
+.searcher .search-reset-keyword-field .search-element {
+    font-size: 60%;
+    cursor: pointer;
+}
+
+.ui.searcher:hover .searchList {
+    display: block;
+}
+
+.searchList {
+    display: none;
+    border: 1px solid #D8DEE2;
+    list-style: none;
+    padding-left: 0%;
+    border-radius: 5px;
+    margin-top: 2px;
+    width: 300px;
+    margin-left: -24px;
+    position: fixed;
+    background: white;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.searchResult {
+    padding: 2%;
+    font-size: 14px;
+    border-bottom: 1px solid #D8DEE2;
+    word-break: break-word;
+}
+
+.searchResult:hover {
+    background: #D8DEE2;
+}
+
+.search-reset-keyword-field {
+    margin-left: -7%;
+    margin-right: 7%;
+    border: 1px solid #e0e0e0;
+    border-radius: 30px;
+    width: 300px;
+    height: 36px;
+}
+
+.search-reset-keyword-field .ui.basic.button {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#user-search {
+    font-size: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: none;
+    border-radius: 30px;
+    background: transparent;
+}
+
+/* Card Grid */
+.height-100 {
+    height: 100%;
+}
+
+.margin-left-right-10 {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.div-scroll {
+    height: calc(100vh - 250px)!important;
+    overflow-y: scroll;
+}
+
+.tab-bar {
+    margin-bottom: 2px !important;
+    border-bottom-width: 0 !important;
+    margin-top: 0 !important;
+}
+
+.dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+}
+
+.card-height {
+    height:80px;
+}
+
+.profile-avatar {
+    margin-bottom: 0;
+    height: 50px;
+    width: 50px;
+}
+
+.ui.cards>.card .content img {
+    border-radius: 50%;
+}
+
+.ellipsis {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.clear-btn {
+    background: transparent;
+    border: none;
+}
+
+button.clear-btn:active {
+    outline: none;
+    border: none;
+}
+
+button.clear-btn:focus {
+    outline: 0;
+}
+
+.color-danger {
+    color: red;
+}
+
+.body-content {
+    background: #F5F7F9 !important;
+    margin-top: 0 !important;
+    border-top-width: 0 !important;
+    height:100% !important;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+.content-search-img {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+/* Footer */
+.footer-element {
+    bottom: 0%;
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
+.footer-element button.next-btn {
+    font-weight: 600;
+    font-size: 17px !important;
+    padding: 8px 25px;
+    border-radius: 5px;
+}
+
+.color-white {
+    color: white !important;
+}
+
+.background-blue{
+    background-color: #007aff !important;
+}
+
+.color-blue {
+    color: #007aff !important;
+}
+
+.background-white {
+    background-color: white;
+}
+
+/* Common CSS */
+.padding-bottom-5 {
+    padding-bottom: 5px !important;
+}
+
+.color-black {
+    color: #000000;
+}
+
+.margin-bottom-0 {
+    margin-bottom: 0;
+}
+
+.float-right {
+    float: right;
+}
+
+.margin-top-5 {
+    margin-top: 5px;
+}
+.font-size-1 {
+    font-size: 1rem !important;
+}
+.searchResultMsg {
+    font-size: 14px;
+    padding: 2%;
+}

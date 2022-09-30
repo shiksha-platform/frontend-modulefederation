@@ -1,0 +1,85 @@
+<i class="close icon"></i>
+<div class="header" ng-show="$ctrl.uploadView == true"><i class="{{ ($ctrl.plugin =='image') ? 'image':'music'}} icon"></i>Upload {{ ($ctrl.plugin =='image') ? 'Image':'Audio'}}</div>
+<div class="content" ng-show="$ctrl.uploadView == true">
+   <div class="ui two column divided grid">
+      <div class="row ui form">
+         <div class="column">
+            <div class="ui two column divided grid" ng-if="$ctrl.plugin =='audio'" ng-hide="$ctrl.upload || $ctrl.record">
+               <div class="row center aligned">
+                  <div class="column" ng-click="$ctrl.upload = true; $ctrl.record=false;">
+                     <p><i class="huge upload icon"></i></p>
+                     UPLOAD
+                  </div>
+                  <div class="ui vertical divider">or</div>
+                  <div class="column" ng-click="$ctrl.upload = false; $ctrl.record=true;">
+                     <p><i class="huge record icon"></i></p>
+                     RECORD
+                  </div>
+               </div>
+            </div>
+            <div ng-show="$ctrl.record">
+               Record
+            </div>
+            <div class="required field" ng-if="$ctrl.upload" ng-hide="$ctrl.editMetaFlag">
+               <label for="assetfile" title="Enter asset caption">Select file</label>
+               <input class="cropit-image-input is-dragover" id="assetfile" type="file" name="assetfile" accept="{{$ctrl.allowedMimeTypes.join(', ')}}" data-validate="assetfile" />
+            </div>
+            <div class="ui info message" ng-if="$ctrl.upload" ng-hide="$ctrl.editMetaFlag">
+               <ul class="list">
+                  <li>Allowed file types are: {{$ctrl.fileTypes}}</li>
+                  <li>Maximum allowed file size: {{$ctrl.fileSize}}</li>
+               </ul>
+            </div>
+            <div ng-show="$ctrl.editMetaFlag" class="field">
+               <img ng-src="{{$ctrl.selectedImgSrc}}" height="140px">
+            </div>
+            <div class="grouped required fields">
+               <label for="ccByContribution" >Copyright & License:</label>
+               <p>
+                  I understand and confirm that all resources and assets created through the content editor or uploaded on the platform shall be available for free and public use without limitations on the platform (web portal, applications and any other end user interface that the platform would enable) and will be licensed under terms & conditions and policy guidelines of the platform.</a>
+               </p>
+               <div class="field">
+                  <div class="ui radio checkbox">
+                     <input id="ccByContribution1" name="ccByContribution" type="radio" ng-click="$ctrl.setPublic()" value="Creative Commons Attribution (CC BY)">
+                     <label for="ccByContribution1" ng-click="$ctrl.setPublic()">Yes, make it available to everyone</label>
+                  </div>
+               </div>
+               <div class="field">
+                  <div class="ui radio checkbox">
+                     <input id="ccByContribution2" name="ccByContribution" type="radio" ng-click="$ctrl.setPrivate()" value="">
+                     <label for="ccByContribution2"  ng-click="$ctrl.setPrivate()">No, don't share with anyone</label>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="column">
+            <div class="required field">
+               <label for="assetName" title="Enter asset caption">Asset Caption</label>
+               <input id="assetName" type="text" name="assetName" ng-model="$ctrl.assetMeta.name" placeholder="Enter asset caption" data-validate="assetName" />
+            </div>
+            <div class="field">
+               <label for="keywords" title="Tags">Tags</label>
+               <input id="keywords" type="text"  name="keywords" ng-model="$ctrl.keywordsText" data-validate="keywords">
+            </div>
+            <div class="field" ng-hide="$ctrl.hideField">
+               <label for="language" title="Choose Language">Language</label>
+               <select id="language" class="ui dropdown" ng-model="$ctrl.languageText" {{$ctrl.asset.requiredField}} name="language" ng-options="lang for lang in $ctrl.asset.language" data-validate="language" >
+               <option value="">All</option>
+               </select>
+            </div>
+            <div class="{{$ctrl.asset.requiredField}} field removeError" ng-hide="$ctrl.hideField">
+               <label for="creator" title="Creator">Creator</label>
+               <input id="creator" type="text" ng-model="$ctrl.assetMeta.creator" {{$ctrl.asset.requiredField}} name="creator" placeholder="Enter Name" data-validate="creator" >
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="actions" ng-show="$ctrl.uploadView == true">
+   <i ng-show="$ctrl.uploadingAsset" class="big spinner loading icon"></i>
+   <div class="ui buttons">
+      <button id="closePopUp" class="ui orange button" ng-click="$ctrl.cancel()" type="button">Cancel</button>
+      <div class="or"></div>
+      <button class="ui blue button submit button" ng-click="$ctrl.doUpload('image'); $ctrl.generateTelemetry({type: 'click', subtype: 'select', target: 'uploadAssetButton'})" type="button" ng-disabled="$ctrl.uploadingAsset">Upload and Use</button>
+   </div>
+</div>

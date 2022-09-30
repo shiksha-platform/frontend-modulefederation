@@ -1,0 +1,52 @@
+<ng-template>
+<div ng-app="lessonplanunitmetaApp" class="metacontent-wrapper" ng-controller="lessonplanunitmetaController">
+    <form class="ui form segment" id="contents-data-form" novalidate name="unitMetaForm" ng-if="mode === 'Edit'">
+        <div class="fields">
+            <div class="field form-fields-except-image">
+                <div ng-class="mode == 'Edit' ? 'field required' : 'field'">
+                    <label>Unit Title</label>
+                    <div class="ui input" ng-class="mode == 'Edit' ? '' : 'disabled'">
+                        <input placeholder="Enter title for unit" ng-model="unit.name" ng-class=" {error: submitted && unitMetaForm.name.$error.required}" ng-change = 'changeTitle()' name="name" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" maxlength="100" required>
+                    </div>
+                </div>
+                <div class="field" ng-class="mode == 'Edit' ? '' : 'disabled'">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="Brief description about the unit" ng-model="unit.description" ng-class=" {error: submitted && unitMetaForm.description.$error.required}" name="description" rows="2" ng-click="generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'})" ></textarea>
+                    </div>
+                </div>                
+                <div class="field" ng-class="mode == 'Edit' ? '' : 'disabled'">
+                    <label>Notes to Teacher</label>
+                    <input placeholder="Add Notes" ng-model="unit.notes" name="notes" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'notes'})">
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- View template -->
+    <div class="ui basic segment" ng-if="mode !== 'Edit'">
+        <table class="ui very basic table contentDetails">
+            <tbody>
+                <tr class="top aligned">       
+                    <td class="two wide column"><b>Name</b></td>
+                    <td>:</td>
+                    <td class="ten wide column">{{unit.name || "--"}}</td>
+                </tr>    
+                <tr class="top aligned">
+                    <td class="two wide column"><b>Description</b></td>
+                    <td>:</td>
+                    <td class="ten wide column">{{unit.description || "--"}}</td>
+                </tr>
+                <tr class="top aligned">
+                    <td class="two wide column"><b>Notes to Teacher</b></td>
+                    <td>:</td>
+                    <td class="ten wide column">{{unit.notes || "--"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>  
+    <!-- View template -->    
+</div>
+<script>
+$(".ui.selection.dropdown").dropdown();
+</script>
+</ng-template>

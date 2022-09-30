@@ -1,0 +1,226 @@
+body>.inner {
+    display: none;
+}
+
+body.pg-loaded>.inner {
+    display: block;
+}
+
+body {
+    min-width: 800px;
+    color: #9b9b9b!important;
+}
+
+#collectionMasterhead {
+    padding: 0 1em;
+    height: 100vh;
+    background: #fff;
+}
+
+#mainBody {
+    height: calc(100vh - 60px);
+    margin-bottom: 0;
+    margin-top: 0em;
+}
+
+.ui-fancytree:focus {
+    outline: none;
+}
+
+#table-of-contents {
+    padding: 0;
+    height: 100%;
+    position: relative;
+    width: 320px;
+    min-width: 320px;
+    box-shadow: none;
+    border: none;
+    border-right: 0.2px solid rgba(128, 128, 128, 0.43);
+}
+
+#table-of-contents .ui.dropdown .menu>.item {
+    padding: 0.5em 0.5em!important;
+}
+
+
+#table-of-contents .ui.dropdown .menu {
+    padding: 0;
+}
+
+#table-of-contents .ui.segments,
+#contents-data-form .ui.form.segment {
+    border-radius: 0;
+    box-shadow: none;
+    height: 100%;
+}
+
+#table-of-contents .ui.segments {
+    border: none;
+}
+
+#contents-pane {
+    width: calc(100% - 320px);
+    height: 100%;
+    padding: 0;
+    padding-left: 1em;
+}
+
+#collection-tree {
+    height: 100%;
+    overflow: auto;
+}
+
+#collection-tree span {
+    color: #4a4a4a;
+    outline: none;
+}
+
+#collection-tree i {
+    color: #4a4a4a;
+}
+
+#collection-tree span.fancytree-active span.fancytree-title,
+#collection-tree span.fancytree-selected span.fancytree-title {
+    color: #fff;
+    background: #2E9FD9;
+}
+
+#collection-tree span.fancytree-node {
+    min-height: 24px;
+    font-size: 1.1em;
+    width: 310px
+}
+
+.primary.button-overrides {
+    background: #2E9FD9;
+}
+
+.tree-access-tools .ui.search,
+.icon-container {
+    display: inline-block;
+    position: relative;
+}
+
+#treeWrapper {
+    height: 100%;
+    border: none;
+    padding: 0;
+}
+
+.book-image-container i.icon {
+    color: #9b9b9b;
+}
+
+.icon-container {
+    margin-left: 18px;
+    color: #9b9b9b;
+}
+
+.icon-container i:hover,
+.book-image-container i.icon:hover {
+    color: black;
+    cursor: pointer;
+}
+
+.tree-access-tools .ui.search {
+    height: 23px;
+}
+
+.tree-access-tools .ui.search .ui.icon.input {
+    height: 100%;
+}
+
+.tree-access-tools .ui.search .ui.icon.input input {
+    border-radius: 0;
+}
+
+#treeAccessToolsSegment {
+    position: absolute;
+    right: 0;
+    top: -0.8vh;
+    padding: 0.3em 0em 0.3em 0;
+    height: 8%;
+    z-index: 10;
+    background: transparent;
+}
+
+#treeExpandCollapseButtonsContainer{
+    display: inline-block;
+    position: relative;
+    background: transparent;
+}
+
+#treeExpandCollapseButtonsContainer .ui.button{
+    margin-right: auto;
+    min-width: 0;
+    width: 1vw;
+    display: block;
+    padding: 1em;
+    padding-right: 2em;
+    border-radius: 0;
+    background: none;
+}
+
+#treeExpandCollapseButtonsContainer .ui.button:hover{
+    background: #ddd;
+}
+.icon-container {
+    color: #9b9b9b;
+    float: right;
+}
+
+#collection-tree .ui.dropdown .menu {
+    left: initial;
+    right: 0;
+}
+
+#collection-tree span.fancytree-node:hover {
+    background: #f5f5f5;
+}
+
+#collection-tree span i:hover {
+    cursor: pointer;
+}
+
+.ui.dropdown .menu .selected.item,
+.ui.dropdown.selected,
+.ui.dropdown .menu .active.item {
+    font-weight: normal;
+    color: rgba(0, 0, 0, .95);
+    background: none;
+}
+
+
+
+/* for not able to fetch content */
+
+.no-content-dialog {
+    font-weight: bold;
+}
+
+.no-content-dialog>div {
+    margin: 1em 0;
+}
+
+.no-content-dialog .checkmark.box.icon {
+    font-size: 2em!important;
+}
+
+#content-not-fetch-message {
+    font-size: 1.2em;
+}
+
+.loading-message {
+    font-size: 30px;
+    margin-bottom: 10px;
+    font-color: grey;
+    color: black;
+    font-weight: 300;
+}
+
+.search-menu-cursor {
+    cursor: pointer;
+}
+
+
+/* for not able to fetch content */

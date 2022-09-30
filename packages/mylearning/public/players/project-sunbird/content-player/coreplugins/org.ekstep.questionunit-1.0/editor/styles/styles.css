@@ -1,0 +1,84 @@
+/* Editor Selected Media Container  */
+
+.question-selected-media-container {
+  height: 80px;
+  margin-bottom: 15px;
+}
+
+.selected-image-container {
+  height: 100%;
+  border: 1px solid #9E9E9E;
+  border-radius: 6px;
+  float: left;
+  width: 30%;
+  margin-right: 15px;
+}
+
+.image-container {
+  height: 100%;
+  float: left;
+  overflow: hidden;
+  width: 80%;
+  border-radius: 6px;
+}
+
+.selected-image {
+  cursor: pointer;
+  max-width: 100%;
+  height: 100%;
+}
+
+.selected-audio-container {
+  height: 100%;
+  border: 1px solid #9E9E9E;
+  border-radius: 6px;
+  float: left;
+  width: 30%;
+  margin-right: 15px;
+}
+
+.audio-name-delete-container {
+  height: 50%;
+}
+
+.auto-play-container {
+  margin: 10px;
+}
+
+.audio-container {
+  cursor: pointer;
+  height: 100%;
+  float: left;
+  overflow: hidden;
+  width: 80%;
+}
+
+.selected-audio {
+  max-width: 100%;
+  display: none;
+}
+
+.audio-container .music {
+  float: left;
+  padding: 4px;
+}
+
+.audio-container p {
+  white-space: nowrap;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px;
+}
+
+.audio-container audio {
+  display: none;
+}
+
+.delete-media-container {
+  margin-top: 10px;
+  float: left;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+}

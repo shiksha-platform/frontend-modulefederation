@@ -1,0 +1,200 @@
+.title {
+    font-size: 0.92307692em;
+}
+
+.ui.grey.button.transliterate {
+    font-size: 0.92307692em;
+    padding: 1em;
+    margin-top: 0.5em;
+}
+
+.text-formatting-options .inline.fields>label {
+    width: 5em!important;
+    color: grey!important;
+    font-size: 12px!important;
+    font-weight: normal!important;
+    margin-right: 2em!important;
+}
+
+#readAlongContents .inline.fields>label,
+#wordInfoContents .inline.fields>label {
+    width: 10vw;
+    color: grey;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#textFormattingContents .inline.fields,
+#readAlongContents .inline.fields,
+#wordInfoContents .inline.fields{
+    margin: 0 0 10px;
+    display: flex;
+    flex-flow: row;
+}
+
+#readAlongContents,
+#wordInfoContents {
+    margin-top: 1vh;
+}
+
+.text-formatting-options input,
+.text-formatting-options .ui.dropdown,
+.text-formatting-options .ui.selection.dropdown .menu>.item,
+.buttons {
+    color: #9b9b9b!important;
+    font-size: 12px!important;
+    font-weight: normal!important;
+}
+
+.text-formatting-options i.icon{
+    font-size: 12px;
+}
+
+.text-formatting-options .ui.dropdown.custom-dropdown{
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #d8d8d8;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.text-formatting-options .ui.dropdown.custom-dropdown .menu{
+    border: 1px solid #DEDEDF;
+    border-top-color: #96c8da !important;
+    border-top-width: 1px !important;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);
+}
+
+
+.text-formatting-options .ui.dropdown.custom-dropdown .dropdown.icon{
+    width: 0;
+}
+.text-formatting-options .ui.selection.active.dropdown:hover{
+    box-shadow: none;
+}
+
+.text-formatting-options .font-face-dropdown {
+    flex-grow: 1;
+}
+
+.text-formatting-options .font-size-dropdown {
+    min-width: 0!important;
+    width: 4em!important;
+}
+
+.text-formatting-options .ui.dropdown.font-size-dropdown .menu {
+    max-height: 110px;
+}
+
+.text-formatting-options .ui.dropdown.font-face-dropdown .menu{
+    max-height: 150px;
+}
+
+.bold-italic-buttons-group {
+    left: 1em!important;
+    position: relative;
+}
+
+#textFormattingContents .inline.fields.transparency-field{
+    margin-top: 0.8em;
+}
+
+.text-formatting-options .fields .ui.input.transparency-input{
+    flex-grow: 1;
+}
+
+.config-slider {
+    min-width: 10em;
+    max-width: 80% !important;
+}
+
+.opacity-percent {
+    position: absolute;
+    right: 0;
+}
+
+
+.ui.accordion.sidebar-accordion{
+    font-size: 12px!important;
+    margin-top: -1em;
+}
+
+.sidebar-accordion .title,
+.sidebar-accordion .content {
+    background: none!important;
+    border: none!important;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+    outline: none!important;
+    border-radius: 0!important;
+}
+
+.sidebar-accordion .active.title,
+.sidebar-accordion .active.title i.icon {
+    color: #4a4a4a!important;
+}
+
+.sidebar-accordion .disabled.title{
+    color: #d2d3d5 !important;
+    pointer-events: none;
+}
+
+.sidebar-accordion .title {
+    padding-left: 1em!important;
+    padding-right: 1em!important;
+    color: #2e9fd9!important;
+    height: 3em;
+    line-height: 2em;
+    border-top: 0.1px solid #d2d3d5 !important;
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    user-select: none;
+}
+
+#textFormatting{
+    border-top: none !important;
+
+}
+
+.sidebar-accordion .ui-icon {
+    width: 0!important;
+}
+
+.ui.accordion.sidebar-accordion .content {
+    color: #9b9b9b!important;
+    overflow: hidden!important;
+    padding-top: 0 !important   
+}
+
+/* for active buttons */
+    
+    .ui.button.active-button{
+        background: #C0C1C2;
+    }
+
+    .ui.button.active-button,
+    .ui.button.active-button i.icon{
+        color: #ffffff;
+    }
+
+    .ui.button.active-button:hover{
+        background: #cacbcd;
+    }
+
+/* for active buttons */
+
+.display-none{
+    display: none !important;
+}
+
+#readAlong .controls i.fa,
+#WordInfo .controls i.fa{
+    color: #9a9a9a;
+}
+
+#disabledWordInfoIndicator:hover,
+#disabledReadAlongIndicator:hover{
+    color: #4a4a4a;
+}

@@ -1,0 +1,191 @@
+<script type="text/ng-template" ng-app="transliterationapp" ng-controller="transliterationController as $ctrl" id="transliteration">
+    <style type="text/css">
+    .filters-container {
+        padding: 8px 10px 4px 18px;
+        background: #f1f1f1;
+    }
+
+    .textWrapper {
+        font-size: 26px;
+        overflow-x: auto;
+        white-space: nowrap;
+        background-color: #efefef;
+        height: 75px;
+        display: flex;
+        align-items: center;
+    }
+
+    .helptext {
+        color: #ccc;
+    }
+
+    .words-div: {
+        width: 100%;
+    }
+
+    .words-list {
+        width: 22%;
+        float: left;
+        margin: 4px;
+    }
+
+    .panel {
+        margin-bottom: 20px;
+        background-color: #fff;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    }
+
+    .panel-heading {
+        border: 0px;
+        color: #000;
+        background: #BAD9D4;
+        padding: 20px 15px;
+    }
+
+    .panel-body {
+        padding: 15px;
+    }
+
+    #div1 {
+        float: left;
+        margin: 10px;
+        padding: 10px;
+        border: solid 2px;
+        border-color: #C0C0C0;
+    }
+
+    .dragDiv {
+        margin: 20px;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .error-msg {
+        color: red;
+    }
+
+    .ui.modal {
+        top: 10%;
+    }
+
+    .bottom-margin {
+        margin-bottom: 4%;
+    }
+
+    .top-margin {
+        margin-top: 6.4%;
+    }
+    .bottom-margin-leftText{
+        margin-bottom: 1.6%;
+    }
+    .ui.form textarea.no-resize {
+        resize: none;
+    }
+
+    .lang-dropdown {
+        width: 15vw;
+        margin-left:21%;
+    }
+
+    .textloader {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 50;
+        left: 0;
+    }
+
+    .centerSpinner {
+        margin-top: 25%;
+    }
+
+    .warningText {
+        float: left;
+        padding-top: 1.5%;
+        padding-left:0.5%;
+        color: red;
+    }
+
+    .warningIcon {
+        padding-top: 1.5%;
+    }
+    .dropdownPos{
+        margin-left:21%;
+    }
+    .snapLeft{
+        padding-left:0% !important;
+    }
+    .snapRight{
+        padding-right:0% !important;
+    }
+
+    .ui.steps .step .title {
+        font-size: 1.5em;
+    }
+    .ui.steps .step .description{
+        font-size: 1.1em;
+    }
+    </style>
+    <div class="ui modal large active">
+        <h4 class="ui header">
+          <i class="browser icon"></i>
+          <div class="content">
+            Transliterator
+            <div class="sub header">Select an Indian language</div>
+          </div>
+        </h4>
+        <div class="content">
+            <div>
+                <div class="ui two column horizontally padded grid">
+                    <div class="six wide column snapLeft">
+                        <div class="row top-margin bottom-margin-leftText">
+                            <div call="field label">Original text:</div>
+                        </div>
+                        <div class="row bottom-margin">
+                            <div class="column">
+                                <div class="field ui fluid labeled input form">
+                                    <textarea class="no-resize" ng-model="$ctrl.originalText" cols="5" rows="16"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snapRight six wide column">
+                        <div class="row bottom-margin">
+                            <select class="ui dropdown lang-dropdown" ng-model="$ctrl.selectedLanguage" ng-options="lang as lang.name for lang in $ctrl.languages">
+                                <option value="">Select language</option>
+                            </select>
+                            <div class="ui buttons pull-right">
+                                <button class="ui blue button" ng-click="$ctrl.transliterate()" ng-disabled="$ctrl.originalText == '' || $ctrl.selectedLanguage == null" type="button"> Transliterate </button>
+                            </div>
+                        </div>
+                        <div class="row bottom-margin">
+                            <div class="column">
+                                <div class="field ui fluid labeled input form">
+                                    <div class="textloader centerSpinner" ng-show="$ctrl.isLoading">
+                                        <div class="ui active centered inline loader"></div>
+                                    </div>
+                                    <div class="textloader">
+                                        <textarea class="no-resize" ng-model="$ctrl.transliteratedText" cols="5" rows="16"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="warningText" ng-show="$ctrl.showError" ng-model="$ctrl.errorMsg">
+                <i class="warning sign icon warningIcon label"></i> {{$ctrl.errorMsg}}
+            </div>
+            <div class="ui buttons">
+                <button class="ui orange button" ng-click="$ctrl.cancel()" type="button">Cancel</button>
+                <div class="or"></div>
+                <button class="ui blue button" type="button" ng-disabled="$ctrl.transliteratedText == undefined || $ctrl.transliteratedText == ''" ng-click="$ctrl.addToStage()">Add to Stage</button>
+            </div>
+        </div>
+    </div>

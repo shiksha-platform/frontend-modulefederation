@@ -1,0 +1,102 @@
+{
+  "id": "org.ekstep.questionunit.mtf",
+  "ver": "1.0",
+  "author": "Jagadish",
+  "title": "Add question",
+  "description": "",
+  "publishedDate": "",
+  "icon": "assets/createquestion.png",
+  "languages": [
+    "English"
+  ],
+  "categories": [],
+  "keywords": [
+    "mtfplugin"
+  ],
+  "targets": [
+    {
+      "id": "org.ekstep.questionset",
+      "ver": 1
+    }
+  ],
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.questionunit",
+        "ver": "1.0"
+      },
+      {
+        "type": "css",
+        "src": "editor/styles/style.css"
+      }
+    ],
+    "menu": [],
+    "init-data": {
+      "type": "rect",
+      "x": 10,
+      "y": 2,
+      "w": 80,
+      "h": 80,
+      "fill": "#DCDCDC"
+    },
+    "configManifest": [
+      {}
+    ],
+    "help": {
+      "src": "editor/help.md",
+      "dataType": "text"
+    }
+  },
+  "templates": [
+    {
+      "id": "horizontalMTF",
+      "thumbnail": "editor/assets/mtf-horizontal.png",
+      "title": "Match The Following",
+      "disc": "",
+      "category": "MTF",
+      "editor": {
+        "templateURL": "editor/templates/mtf-template.html",
+        "controllerURL": "editor/controllers/mtf-controller.js",
+        "template": "horizontalMTF",
+        "controller": "QuestionFormController"
+      }
+    }
+  ],
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [
+      {
+        "type": "css",
+        "src": "renderer/styles/style.css"
+      },
+      {
+        "type": "js",
+        "src": "renderer/util/evaluator.js"
+      },
+      {
+        "type": "js",
+        "src": "renderer/js/dragula.min.js"
+      },
+      {
+        "type": "js",
+        "src": "renderer/js/mtftemplate.js"
+      },
+      {
+        "id":"org.ekstep.questionunit.mtf-1.0-audio.png",
+        "type":"image",
+        "src":"renderer/assets/audio.png",
+        "assetId": "org.ekstep.questionunit.mtf-1.0-audio.png"
+      }
+    ]
+  },
+  "dependencies": [
+    {
+      "plugin": "org.ekstep.questionunit",
+      "ver": "1.0",
+      "type": "plugin",
+      "scope": "all"
+    }
+  ]
+}

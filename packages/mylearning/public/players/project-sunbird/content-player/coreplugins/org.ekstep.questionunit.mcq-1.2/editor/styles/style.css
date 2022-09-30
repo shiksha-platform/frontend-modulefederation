@@ -1,0 +1,231 @@
+.textbox:focus {
+  border-width: 0px 0px 1px 0px solid #aeabab;
+  outline: 0;
+  /*box-shadow: 0 4px 6px -6px #000000;*/
+  border-color: #9090e4;
+}
+.textboxQ:focus {
+  border-width: 0px 0px 1px 0px solid #aeabab;
+  outline: 0;
+  /*box-shadow: 0 4px 6px -6px #000000;*/
+  border-color: #9090e4;
+}
+
+.textbox {
+  width: 75%;
+  border-width: 0px 0px 1px 0px;
+  height: 33px;
+  color: inherit;
+  text-align: center;
+}
+.textboxQ {
+  width: 99%;
+  border-width: 0px 0px 1px 0px;
+  height: 33px;
+  color: inherit;
+  text-align: left;
+}
+.cardBorder{
+  box-shadow: 0px 1px 5px 1px #aeabab !important;
+}
+
+.maxLengthText {
+  float: right;
+  padding-top: 2%;
+}
+
+.optionError {
+  color: red;
+}
+
+.has-error {
+  border-bottom-color: #ea7575;
+  /*border-bottom-width: 1.5px;*/
+  transition:all linear 0.5s;
+}
+
+.has-success {
+  border-bottom-color: #dfcfcf;
+  transition:all linear 0.5s;
+}
+
+.has-error-text {
+  color: inherit;
+  transition:all linear 0.5s;
+}
+
+.has-success-text {
+  color: red;
+  transition:all linear 0.5s;
+}
+.ui.segments.custom-segments{
+  margin-top: 1px;
+  margin-bottom: 2%;
+}
+
+.mcqFullGrid {
+  max-height: 80vh;
+  width: 100%;
+  margin-left: 0%;
+  margin-top: 0%
+}
+
+.innerScroll {
+  padding-left: 4%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: 5%;
+}
+
+/*#eachCard {
+  box-shadow: 1px 1px 1px #9da1a5;
+  margin-bottom: 2%
+}*/
+
+.ui.segments .segment.textBoxDiv {
+  text-align: center;
+  font-size: 1.42rem;
+}
+
+.deleteMedia {
+  padding-right: 20px;
+  color: #9E9E9E;
+}
+
+.deleteText {
+  padding-right: 20px;
+  color: #9E9E9E;
+}
+
+.addAns {
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+/*.headQA {
+  margin-top: 3%;
+}*/
+.qHeader{
+  font-size: 1.42rem;
+  padding: 0;
+  margin-top: 3%;
+}
+.has-errorCard{
+  border: 1px solid red !important;
+}
+.ui.grid .column.text-len{
+  padding-top: 2rem;
+  font-size: 1.3rem;
+  color: #9E9E9E;
+}
+.ui.segments .segment.custom-sec-segment{
+  border-top: none;
+  color: #9E9E9E;
+  font-size: 1.3rem;
+}
+.custom-bottom-segment{
+  padding-left: 10px;
+  /*opacity: 0.5;*/
+  color: #9E9E9E; 
+  vertical-align: bottom;
+}
+.ui.segments.inner-segment{
+  margin: 0;
+  padding: 1px;
+}
+.outer-segment{
+  padding: 20px 0;
+}
+.left-segment{
+  color: #9E9E9E; 
+}
+.correct-answer{
+  display: inline-block;
+}
+i.large.icon.delete-icon{
+  vertical-align: baseline;
+}
+.length-divider{
+  padding: 0 4px;
+}
+.ui.grid .column.segment-column{
+  padding: 0.7rem;
+}
+.custom-bottom-label{
+  color: #9E9E9E;
+  vertical-align: bottom;
+  padding-right: 10px; 
+}
+.right-ans-radio{
+  width: 15px;
+  height: 15px;
+  padding-right: 10px;
+}
+
+.myAudio::-webkit-media-controls-panel {
+  display: block;
+}
+.myAudio::-webkit-media-controls-panel{
+  background-color: transparent;
+}
+
+.imgWidth{
+  display: block;
+  width: 70%;
+}
+
+#image-model-popup .popup-overlay{
+  opacity:0.8;
+}
+#image-model-popup .popup-full-body{
+  width:auto;
+  margin:auto;
+}
+
+#image-model-popup .assess-popup {
+  position: relative;
+  width:fit-content;
+  top:0;
+  left:0; 
+  margin:auto;
+}
+
+#image-model-popup img.qc-question-fullimage {
+  max-width: 60vw;
+  max-height: 100%;
+}
+
+#image-model-popup .qc-popup-close-button {
+  position: absolute;
+  right: -15px;
+  top: -20px;
+  color: white;
+  font-size:20px;
+}
+
+.ck-error{
+  border: 1px solid red;
+}
+/*this class generate dynamic onfocus ckeditor show z-index required beacuse some element overlapping*/
+.cke_float {
+  z-index: 9999999 !important;
+}
+.mcqoption-text-ck {
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #d8d8d8;
+}
+/*Its adding placeholder in text box option*/
+.option-placeholder::before{
+ content: 'Enter answer';
+ color: #aaa;
+ display: block;
+ position: absolute;
+ left: 45%;
+}
+.qc-media-section{
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+  width: 100%!important;
+}

@@ -1,0 +1,20 @@
+{
+    "id": "org.ekstep.ceheader",
+    "ver": "1.0",    
+    "author": "Sunil A S",    
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+    	"main": "editor/plugin.js",
+    	"header": [{
+    		"templateURL": "editor/partials/headerTemplate.html",
+    		"controllerURL": "editor/headerApp.js"
+    	}],
+        "dependencies": [
+            { "type": "css", "src": "editor/styles/header.css"},
+            { "type": "js", "src": "lib/angular-timeago.min.js"},
+            { "type": "js", "src": "lib/store2.min.js"},            
+            {"type": "plugin", "plugin": "org.ekstep.whatsnew", "ver": "1.0"}
+        ]
+    }
+}

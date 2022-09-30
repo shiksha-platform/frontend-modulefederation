@@ -1,0 +1,41 @@
+{
+  "id": "org.ekstep.keyboard",
+  "ver": "1.0",
+  "author": "Jagadish",
+  "type": "plugin",
+  "title": "Keyboard",
+  "description": "",
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "css",
+        "src": "editor/style.css"
+      },
+      {
+        "type": "js",
+        "src": "editor/keyboard.js"
+      }
+    ],
+    "menu": []
+  },
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [
+      {
+            "type": "js",
+            "src": "renderer/keyboard.js",
+            "scope": "renderer"
+      },
+      {
+            "type": "css",
+            "src": "renderer/style/style.css",
+            "scope": "renderer"
+      }
+    ]
+  },
+  "icon": "assets/icon.png",
+  "languages": ["English"],
+  "categories": [""],
+  "keywords": [""]
+}

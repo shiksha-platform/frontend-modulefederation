@@ -1,0 +1,25 @@
+{
+    "id": "org.ekstep.config",
+    "ver": "1.0",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Config Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            {"type": "js", "src": "editor/libs/jquery-ui.min.js"},            
+            {"type": "css", "src": "editor/config.css"},
+            {"type": "plugin", "plugin": "org.ekstep.colorpicker", "ver": "1.0"}
+		],        
+        "sidebarMenu": [{
+            "id": "settings",
+            "type": "icon",
+            "toolTip": "Settings",
+            "title": "Settings",
+            "iconClass": "settings icon",            
+            "templateURL": "editor/partials/sidebarSettingTemplate.html",
+            "controllerURL": "editor/sidebar-settings-controller.js"
+        }]
+    }
+}

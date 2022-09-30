@@ -1,0 +1,17 @@
+{
+    "id": "org.ekstep.assessmentbrowser",
+    "ver": "1.1",
+    "shortId": "assessmentbrowser",
+    "author": "Santhosh Vasabhaktula",
+    "title": "AssessmentBrowser Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "type": "plugin", "plugin": "org.ekstep.conceptselector", "ver": "1.1" },
+            { "type": "js", "src": "editor/assessmentbrowser_util.js" },
+            { "type": "js", "src": "editor/libs/xml2json.js" }
+        ]
+    }
+}

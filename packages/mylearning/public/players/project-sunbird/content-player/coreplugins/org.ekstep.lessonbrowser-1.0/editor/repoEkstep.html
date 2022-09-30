@@ -1,0 +1,139 @@
+<div ng-app="org.ekstep.contentprovider" ng-controller="contentproviderekstepController as $ctrl" id="partials/repoEkstep.html" style="padding-top:0; background:#f6f7f8; height: 100%; padding-bottom: 0;">
+    <div class="ui grid full-height">
+        <div class="row" ng-if="$ctrl.err">
+            <div class="column">
+                {{ $ctrl.err }}
+            </div>
+        </div>
+        <div class="row search-reset-keyword-field-wrapper f6f7f8-background" ng-if="!$ctrl.err">
+            <div class="column">
+                <div class="ui fluid action input search-reset-keyword-field">
+                    <input type="text" placeholder="Search for keyword" autocomplete="off" spellcheck="false" ng-model="searchKeyword" ng-keypress="searchOnKeypress()">
+                    <button id="search-button" class="ui primary basic button button-overrides" ng-click="searchByKeyword()" title="Start search"><i class="search icon"></i></button>&nbsp;
+                    <button id="reset-button" class="ui black basic button button-overrides" ng-click="resetSearchByKeyword()" title="Reset"><i class="undo icon"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row filters-and-lessons-wrapper" ng-if="!$ctrl.err">
+            <!-- Filters start -->
+            <div class="four wide column">
+                <div class="row">
+                <h5>Filters</h5>
+            </div>
+                <div id="applyAccordion" class="ui styled accordion source-filter-container f6f7f8-background" style="margin-top: 5px; margin-bottom: 20px;">
+                    <div class="title">
+                        Language ({{filterSelection.lang.length}})
+                    </div>
+                    <div class="content">
+                        <div class="ui list">
+                            <div class="item ui checkbox">
+                                <input type="checkbox" ng-click="toggleAllFilter('lang', 'languages', 'value')" ng-checked="isAllSelected.lang">
+                                <label><strong>Select all</strong></label>
+                            </div>
+                            <div class="item ui checkbox" ng-repeat="lang in $ctrl.meta.languages">
+                                <input type="checkbox" value="{{lang.value}}" name="selectedLangs[]" ng-checked="filterSelection.lang.indexOf(lang.value) > -1" ng-click="toggleSelectionFilter('lang', lang.value, 'languages', 'value')">
+                                <label>{{lang.label}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">
+                        Grade ({{filterSelection.grade.length}})
+                    </div>
+                    <div class="content">
+                        <div class="ui list">
+                            <div class="item ui checkbox">
+                                <input type="checkbox" ng-click="toggleAllFilter('grade', 'grades', 'label')" ng-checked="isAllSelected.grade">
+                                <label><strong>Select all</strong></label>
+                            </div>
+                            <div class="item ui checkbox" ng-repeat="grade in $ctrl.meta.grades">
+                                <input type="checkbox" value="{{grade.label}}" name="selectedGrades[]" ng-checked="filterSelection.grade.indexOf(grade.label) > -1" ng-click="toggleSelectionFilter('grade', grade.label, 'grades', 'label')">
+                                <label>{{grade.label}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="title">
+                        Content type ({{filterSelection.lessonType.length}})
+                    </div>
+                    <div class="content">
+                        <div class="ui list">
+                            <div class="item ui checkbox">
+                                <input type="checkbox" ng-click="toggleAllFilter('lessonType', 'lessonTypes', false)" ng-checked="isAllSelected.lessonType">
+                                <label><strong>Select all</strong></label>
+                            </div>
+                            <div class="item ui checkbox" ng-repeat="lessonType in $ctrl.meta.lessonTypes">
+                                <input type="checkbox" value="{{lessonType}}" name="selectedLessonTypes[]" ng-checked="filterSelection.lessonType.indexOf(lessonType) > -1" ng-click="toggleSelectionFilter('lessonType', lessonType, 'lessonTypes', false)">
+                                <label>{{lessonType}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="title">
+                        Domain ({{filterSelection.domain.length}})
+                    </div>
+                    <div class="content">
+                        <div class="ui list">
+                            <div class="item ui checkbox">
+                                <input type="checkbox" ng-click="toggleAllFilter('domain', 'domains', false)" ng-checked="isAllSelected.domain">
+                                <label><strong>Select all</strong></label>
+                            </div>
+                            <div class="item ui checkbox" ng-repeat="domain in $ctrl.meta.domains">
+                                <input type="checkbox" value="{{domain}}" name="selectedDomains[]" ng-checked="filterSelection.domain.indexOf(domain) > -1" ng-click="toggleSelectionFilter('domain', domain, 'domains', false)">
+                                <label style="text-transform: capitalize;">{{domain}}</label>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="title">
+                        Concept ({{filterSelection.concept.length}})
+                    </div>
+                    <div class="content">
+                        <input type="button" class="ui button button-overrides" name="" id="lessonBrowserConceptSelector" value="Select concepts" ng-click="telemetryConceptSelector()">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="lesson-filter-buttons">
+                        <button class="ui right floated button primary button-overrides" ng-click="applyFilters()">Apply</button>
+                        <button id="reset-lesson-filter-button" class="ui left floated basic primary button button-overrides" ng-click="resetFilters()">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Filters end -->
+            <!-- Result start -->
+            <div class="eight wide column" style="padding-left:0; padding-right:0;">
+                <div class="row">
+                <h5>Resources
+                <span style="font-size: 0.8em">({{ $ctrl.res.count }})</span>
+                </h5>
+            </div>
+                <div class="ui grid source-result-container">
+                    <div class="row lesson-row" ng-repeat="lesson in $ctrl.res.content">
+                        <div class="two wide column lesson-image-box" style="padding-top: 3px;">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="lessons[]" ng-click="toggleSelectionLesson(lesson)">
+                                <label>
+                                    <img class="ui middle aligned tiny right floated image" src="{{lesson.appIcon}}" ng-if="lesson.appIcon">
+                                    <img class="ui middle aligned tiny right floated image" src="http://via.placeholder.com/80x80" ng-if="!lesson.appIcon">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ten wide column">
+                            <div>
+                                <h5 class="lesson-name">{{lesson.name}}</h5></div>
+                            <div class="lesson-type inline-block">{{ lesson.contentType }}</div>
+                            &nbsp;&verbar;&nbsp;
+                            <div class="lesson-languages inline-block">
+                                <span ng-repeat="lang in lesson.language"><span ng-if="!$first" class="lesson-lang-separator">|</span>{{lang}}</span>
+                            </div>
+                            <div>{{lesson.description | removeHTMLTags | cut:true:120:' ...'}}</div>
+                        </div>
+                    </div>
+                    <div class="row lesson-row" ng-if="!$ctrl.res.content.length">
+                        No lessons found. Please try changing the filters.
+                    </div>
+                    <div>
+                        <button class="ui button primary button-overrides" ng-click="loadmore()" style="margin-top:25px;" ng-disabled="!loadmoreEnabledFlag" ng-show="loadmoreVisibleFlag">Load more</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Result end -->
+        </div>
+    </div>
+</div>

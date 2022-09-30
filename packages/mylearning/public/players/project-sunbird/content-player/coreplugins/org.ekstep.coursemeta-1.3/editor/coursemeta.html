@@ -1,0 +1,66 @@
+<div ng-app="coursemetaApp" class="metacontent-wrapper" ng-controller="coursemetaController">
+    <form class="ui form segment" id="contents-data-form" novalidate ng-show="editMode" name="courseMetaForm">
+        <div class="fields">
+            <div class="field form-fields-except-image">
+                <div class="field required">
+                    <label>Title</label>
+                    <div class="ui input">
+                        <input placeholder="Enter title for Book" ng-model="course.name" ng-class=" {error: submitted && courseMetaForm.name.$error.required}" name="name" ng-change = 'changeTitle()' type="text" ng-click="generateTelemetry({id='title-name', type: 'click', subtype: 'input', target: 'name'})" required maxlength="100">
+                    </div>
+                </div>
+                <div class="field ">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="Brief description about the unit" ng-model="course.description" ng-class="{error: submitted && courseMetaForm.description.$error.required}" name="description" rows="2" ng-click="generateTelemetry({id='description', type: 'click', subtype: 'textarea', target: 'description'})"></textarea>
+                    </div>
+                </div>
+                <div class="three fields">
+                    <div class="field">
+                        <label for="course-audience">Audience</label>
+                        <select id="course-audience" class="ui selection dropdown placeholder-padding" ng-model="course.audience" ng-change="generateTelemetry({id='course-audience', type: 'change', subtype: 'select', target: 'audience'})">
+                            <option value="">Audience</option>
+                            <option data-value="{{audience}}" ng-repeat="audience in audienceList">{{audience}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="course-language">Language</label>
+                        <select id="course-language" class="ui selection dropdown placeholder-padding" ng-model="course.language" ng-change="generateTelemetry({id='course-language', type: 'change', subtype: 'select', target: 'language'})">
+                            <option value="">Language</option>
+                            <option data-value="{{language}}" ng-repeat="language in languageList">{{language}}</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Concepts</label>
+                        <input name="concepts" id="courseConceptSelector" ng-model="course.conceptData" type="text" ng-click="generateTelemetry({id='course-selector', type: 'click', subtype: 'input', target: 'concepts'})">
+                    </div>
+                </div>
+                <div class="three fields">
+                    <div class="six wide field">
+                        <label for="faculty">Faculty</label>
+                        <ng-token-field ng-model="course.faculty" id="coursemeta-faculty" placeholder="Enter comma separated faculty" ng-click="generateTelemetry({id='coursemeta-faculty', type: 'click', subtype: 'input', target: 'faculty'})"></ng-token-field>
+                    </div>
+                    <div class="twelve wide field">
+                        <label for="tutor">Tutor</label>
+                        <ng-token-field ng-model="course.tutor" id="coursemeta-tutor" placeholder="Enter comma separated tutor" ng-click="generateTelemetry({id='coursemeta-tutor', type: 'click', subtype: 'input', target: 'tutor'})"></ng-token-field>
+                    </div>
+                </div>
+                <div class="one fields">
+                    <div class="twelve wide field">
+                        <label>Keywords</label>
+                        <tags-input ng-model="course.keywords" id="coursemeta-keywords" display-property="lemma" placeholder="Enter Keywords" replace-spaces-with-dashes="false">
+                            <auto-complete source="loadKeywords($query)" min-length="0" load-on-focus="true" load-on-empty="true" template="my-course-custom-template"></auto-complete>
+                        </tags-input>
+                        <script type="text/ng-template" id="my-course-custom-template">
+                            <div class="right-panel">
+                                <span ng-bind-html="$highlight($getDisplayText())"></span>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+$(".ui.selection.dropdown").dropdown();
+</script>

@@ -1,0 +1,58 @@
+{
+    "id": "org.ekstep.hotspot",
+    "ver": "1.0",
+    "shortId": "hotspot",
+    "displayName": "Hotspot",
+    "author": "Santhosh Vasabhaktula",
+    "title": "Hotspot Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        ],
+        "menu": [{
+            "id": "hotspot",
+            "category": "main",
+            "type": "icon",
+            "toolTip": "Add Hotspot",
+            "title": "Hotspot",
+            "iconClass": "icon-hotspot icon",
+            "onclick": {
+                "id": "org.ekstep.hotspot:create",
+                "data": {
+                    "type": "roundrect",
+                    "y": 20,
+                    "x": 20,
+                    "fill": "rgb(255,0,0)",
+                    "w": 15,
+                    "h": 25,
+                    "opacity": 0.3,
+                    "stroke": "rgba(255, 255, 255, 0)",
+                    "strokeWidth": 1
+                }
+            }
+        }],
+        "behaviour": {
+            "rotatable": true
+        },
+        "configManifest": [{
+            "propertyName": "color",
+            "title": "Fill color",
+            "description": "Choose a color from the color picker",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "rgb(255,0,0)"
+        }],
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        }
+    },
+    "initdata": {
+        "props": {
+            "y": 20,
+            "x": 20
+        }
+    }
+}

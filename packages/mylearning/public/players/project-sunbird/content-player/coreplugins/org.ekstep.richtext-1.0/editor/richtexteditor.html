@@ -1,0 +1,35 @@
+<script type="text/ng-template" ng-app="richtexteditorapp" ng-controller="richtexteditorcontroller as $ctrl" id="richtexteditor">
+    <div class="ui modal small active" style="top: 10% !important; width:730px!important;">
+        <div class="header">
+            <div class="ui two column grid">
+                <div class="row">
+                    <div class="column">
+                        <span><i class="fa fa-file-text-o"></i> Text Editor</span>
+                    </div>
+                    <div class="column" style="text-align: right; cursor: pointer;">
+                        <i class="cursor-pointer close icon" ng-click="closeThisDialog()"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <textarea name="editor1" id="editor1" rows="10" cols="80" ng-model="$ctrl.text"></textarea>
+        </div>
+        <div class="actions">
+            <div class="ui buttons">
+                <div class="ui grid">
+                    <div class="eight wide column left aligned richtext-message">
+                        <p>Please select appropriate font name (typeface) as per the language of your text.</p>
+                    </div>
+                    <div class="four wide column right aligned">
+                        <div class="ui buttons" style="margin:0;">
+                            <button class="ui orange button" ng-click="closeThisDialog()" type="button">Cancel</button>
+                            <div class="or"></div>
+                            <button class="ui blue button" id="addLesson" type="button" ng-click="$ctrl.addText()">Add To Lesson</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,34 @@
+{
+    "id": "org.sunbird.questionunit.quml",
+    "ver": "1.0",
+    "author": "Kartheek Palla & Bhabaranjan Panigrahi",
+    "title": "QuML Question Unit Plugin",
+    "description": "Question Unit Plugin that enables rendering of QuML questions.",
+    "publishedDate": "",
+    "languages": [
+        "English"
+    ],
+    "categories": [],
+    "keywords": [
+        "QuML"
+    ],
+    "targets": [{
+        "id": "org.ekstep.questionset",
+        "ver": 1.0
+    }],
+    "editor": {},
+    "templates": [],
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "dependencies": [{
+            "type": "css",
+            "src": "renderer/styles/style.css"
+        }]
+    },
+    "dependencies": [{
+        "plugin": "org.ekstep.questionunit",
+        "ver": "1.1",
+        "type": "plugin",
+        "scope": "all"
+    }]
+}

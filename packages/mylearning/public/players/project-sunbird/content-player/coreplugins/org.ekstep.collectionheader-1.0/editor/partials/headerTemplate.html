@@ -1,0 +1,37 @@
+<div ng-app="org.ekstep.collectionheader:app" ng-controller="headerController" class="ui masthead vertical segment content-masterhead">
+    <div class="ui grid fluid container custom-container header-wrapper" id="headerWrapper">
+        <div class="one wide column custom-1-wide" id="headerLogo">
+            <img class="ui tiny centered image" src="{{contentDetails.contentImage}}" />
+        </div>
+        <div class="four wide column custom-6-wide">
+            <div class="row custom-row-1 content-title-container">
+                <label ng-if="contentDetails.contentTitle.length < 52" class="content-title popup-item">{{contentDetails.contentTitle}}</label>
+                <label ng-if="contentDetails.contentTitle.length >= 52" class="content-title popup-item" data-content="{{contentDetails.contentTitle}}" data-variation="wide" data-position="bottom left">{{contentDetails.contentTitle}}</label>
+            </div>
+        </div>
+        <div class="two wide column">
+            <div ng-if="lastSaved" class="last-saved-label">
+                <label class="">Last saved {{lastSaved | timeAgo }}</label>
+            </div>
+        </div>
+        <div class="header-icon-container five wide right floated column right aligned">
+            <div class="custom-row-2">
+                <div class="icon-box popup-item" data-content="What's New" data-variation="tiny inverted" data-position="bottom center" ng-click="displayWhatsNew()">
+                    <i class="gift icon custom-icon" ng-class="{red: whatsNewBadge}"></i>
+                </div>
+                <div id="downloadButton" class="ui primary icon button button-overrides popup-item" data-content="Download content" data-variation="tiny inverted" data-position="bottom center" ng-click="downloadContent(); telemetry({ subtype: 'download', target: 'downloadBtn'});">
+                    <i class="download icon"></i>&nbsp;Download
+                </div>
+                <div id="saveButton" ng-class="disableSaveBtn ? 'ui primary icon button button-overrides popup-item disabled' : 'ui primary icon button button-overrides popup-item'" data-content="Save content" data-variation="tiny inverted" data-position="bottom center" ng-click="saveContent(); telemetry({ subtype: 'save', target: 'saveBtn'});">
+                    <i class="icon-save"></i>&nbsp;Save
+                </div>
+                <div id="closeButton" class="ui red icon button button-overrides popup-item" data-content="Close" data-variation="tiny inverted" data-position="bottom center" ng-click="closeCollectionEdtr(); telemetry({ subtype: 'close', target: 'closeBtn'});">
+                    <i class="window close icon"></i>
+                </div>
+                <div ng-hide="{{!showHelp}}">
+                    <a class="ui compact icon basic big button popup-item collection-header-help-button" ng-click="telemetry({ subtype: 'reportIssue', target: 'reportIssueButton'});" ng-href="{{reportIssueLink}} " target="_blank " data-content="Click to get help" data-position="left center" data-variation="tiny inverted"><i class="help circle medium icon custom-help-button"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,155 @@
+<div ng-controller="mtfQuestionFormController" ng-init="init()">
+    <div class="ui grid mtfFullGrid">
+        <div class="one column row">
+            <div class="column innerScroll qs-scrollbar">
+                <div>
+                    <form name="mtfForm">
+                        <div class="one column row qHeader">
+                            <span>Enter the question</span>
+                        </div>
+                        <div class="outer-segment">
+                            <div class="ui segments inner-segment" ng-class="{cardBorder: $ctrl.focused, 'has-errorCard': submitted && mtfForm.question.$error.required}">
+                                <div class="ui segment">
+                                    <div class="ui grid">
+                                        <div class="twelve wide column">
+                                            <div class="form-group segment textBoxDiv questionTextBox">
+                                                <textarea class="form-control textboxQ" ng-class="{'has-success':mtfForm.question.$valid, 'has-error': submitted && mtfForm.question.$error.required}" placeholder="Enter the question" name="mtfQuestion" ng-model="mtfFormData.question.text" ng-init="$ctrl.focused = false" ng-focus="$ctrl.focused = true;" ng-blur="$ctrl.focused = false" ng-required="!(mtfFormData.question.text.length||mtfFormData.question.image.length||mtfFormData.question.audio.length)"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="twelve wide column">
+                                            <selected-media-container media-callbacks="callbacks" class="row" formdata="mtfFormData.question" media-type='q' media-index=''></selected-media-container>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui secondary right aligned segment custom-sec-segment" ng-if="mtfConfiguartion.questionConfig.isImage || mtfConfiguartion.questionConfig.isAudio">
+                                    <div class="ui grid">
+                                        <div class="one column row segment-column">
+                                            <div class="column right floated">
+                                                <span class="custom-bottom-label">Add: </span>
+
+                                                <span ng-click="addMedia('q','','image')" class="custom-bottom-segment ui icon" 
+                                                data-tooltip="{{!mtfFormData.question.image ? 'Add Image' : 'Edit Image' }}" data-inverted="">
+                                                     <i class="image large icon"></i>
+                                                 </span>
+                                                <span ng-click="addMedia('q','','audio')" class="custom-bottom-segment ui icon" 
+                                                data-tooltip="{{!mtfFormData.question.audio ? 'Add Audio' : 'Edit Audio' }}" data-inverted="">
+                                                     <i class="music large icon"></i>
+                                                 </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="one column row qHeader">
+                            <span>Set your answers</span>
+                            <br>
+                            <span class="instructions">Add question-answer pairs to your question. Answers will be shuffled automatically.</span>
+                        </div>
+                        <table class="ui celled table">
+                            <tbody>
+                                <tr ng-repeat="(key, value) in mtfFormData.option.optionsLHS">
+                                    <td class="mtf-pair-td">
+                                        <div class="ui segments inner-segment" ng-class="{cardBorder: focused, 'has-errorCard': submitted && mtfForm['option.optionsLHS_' + $index].$error.required}"
+                                            id="eachCard">
+                                            <div class="ui segment mtf-options">
+                                                <div class="ui grid">
+                                                    <div class="twelve wide column">
+                                                        <div class="form-group one column row">
+                                                            <div class="form-control contenteditable  mtfoption-text-ck mtfoption-text-ck-lhs qc-mtf-textbox" ng-class="{'has-success':mtfForm['option.optionsLHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsLHS_' + $index].$error.required,'qc-mtf-option-placeholder':mtfFormData.option.optionsLHS[$index].text.length==0}"
+                                                                placeholder="Enter answer" name="option.optionsLHS_{{$index}}"
+                                                                id="cke_mtfoptionsLHS_{{$index}}" ng-model="mtfFormData.option.optionsLHS[$index].text"  
+                                                                ng-required="!(mtfFormData.option.optionsLHS[$index].text.length||mtfFormData.option.optionsLHS[$index].image.length||mtfFormData.option.optionsLHS[$index].audio.length)" contenteditable="true">
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <selected-media-container media-callbacks="callbacks" formdata="mtfFormData.option.optionsLHS[$index]" media-type='LHS' media-index='{{$index}}'></selected-media-container>
+                                                    </div>
+                                                </div>
+                                                <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion.optionsConfig[0].isAudio">
+                                                    <div class="ui grid">
+                                                        <div class="row">
+                                                            <div class="column right aligned">
+                                                                <span class="custom-bottom-label">Add: </span>
+                                                                <span ng-click="addMedia('LHS', key, 'image')" class="custom-bottom-segment ui icon" 
+                                                                data-tooltip="{{!mtfFormData.option.optionsLHS[$index].image ? 'Add Image' : 'Edit Image' }}" data-inverted="">
+                                                                     <i class="image large icon"></i>
+                                                                 </span>
+                                                                <span ng-click="addMedia('LHS', key, 'audio')" class="custom-bottom-segment ui icon" 
+                                                                data-tooltip="{{!mtfFormData.option.optionsLHS[$index].audio ? 'Add Audio' : 'Edit Audio' }}" data-inverted="">
+                                                                    <i class="music large icon"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="delete-pair-row-LHS">
+                                            <span ng-click="deletePair($index);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-pair', ver: '', type: 'button'}})"
+                                                data-tooltip="Delete Pair" data-inverted="">
+                                                <i class="trash large icon delete-icon"></i>Delete Pair</span>
+                                        </div>
+                                    </td>
+                                    <td class="mtf-pair-td">
+                                        <div class="ui segments inner-segment" ng-class="{cardBorder: focused, 'has-errorCard': submitted && mtfForm['option.optionsRHS_' + $index].$error.required}"
+                                            id="eachCard">
+                                            <div class="ui segment mtf-options">
+                                                <div class="ui grid">
+                                                    <div class="twelve wide column">
+                                                        <div class="form-group one column row">
+                                                            <div  class="form-control contenteditable mtfoption-text-ck qc-mtf-textbox" ng-class="{'has-success':mtfForm['option.optionsRHS_' + $index].$valid, 'has-error': submitted && mtfForm['option.optionsRHS_' + $index].$error.required,'qc-mtf-option-placeholder':mtfFormData.option.optionsRHS[$index].text.length==0}"
+                                                                placeholder="Enter answer" name="option.optionsRHS_{{$index}}"
+                                                                ng-model="mtfFormData.option.optionsRHS[$index].text" id="cke_mtfoptionsRHS_{{$index}}" ng-required="!(mtfFormData.option.optionsRHS[$index].text.length||mtfFormData.option.optionsRHS[$index].image.length||mtfFormData.option.optionsRHS[$index].audio.length)" contenteditable="true">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="twelve wide column">
+                                                        <selected-media-container media-callbacks="callbacks" formdata="mtfFormData.option.optionsRHS[$index]" media-type='RHS' media-index='{{$index}}'></selected-media-container>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ui secondary segment custom-sec-segment" ng-if="mtfConfiguartion.optionsConfig[0].isImage || mtfConfiguartion[0].optionsConfig.isAudio">
+                                                <div class="ui grid">
+                                                    <div class="row">
+                                                        <div class="column right aligned">
+                                                            <span class="custom-bottom-label">Add: </span>
+
+                                                            <span ng-click="addMedia('RHS', key, 'image')" class="custom-bottom-segment ui icon" 
+                                                            data-tooltip="{{!mtfFormData.option.optionsRHS[$index].image ? 'Add Image' : 'Edit Image' }}" data-inverted="">
+                                                                 <i class="image large icon"></i>
+                                                             </span>
+                                                            <span ng-click="addMedia('RHS', key, 'audio')" class="custom-bottom-segment ui icon" 
+                                                                data-tooltip="{{!mtfFormData.option.optionsRHS[$index].audio ? 'Add Audio' : 'Edit Audio' }}" data-inverted="">
+                                                                <i class="music large icon"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div href="" ng-click="deletePair($index);generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-delete-pair', ver: '', type: 'button'}})"
+                                            class="delete-pair-row-RHS" data-tooltip="Delete Pair" data-inverted="">
+                                            <i class="trash large icon delete-icon"></i>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span class="has-success-text" ng-show="mtfFormData.option.optionsLHS.length<3">Minimum three pair will be required</span>
+                        </div>
+                    </form>
+                    <div class="one column row">
+                        <div class="column addAns">
+                            <button ng-hide="mtfFormData.option.optionsLHS.length==5" class="ui primary button large" id="mtf-add-pair-button"
+                                id="mtf-pair-btn" ng-click="addPair();generateTelemetry({type: 'TOUCH', id: 'button', target: {id: 'questionunit-mtf-add-pair', ver: '', type: 'button'}});">Add another question-answer pair</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

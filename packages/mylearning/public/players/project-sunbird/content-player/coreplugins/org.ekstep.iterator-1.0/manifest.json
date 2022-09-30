@@ -1,0 +1,20 @@
+{
+  "id": "org.ekstep.iterator",
+  "ver": "1.0",
+  "author": "Jagadish",
+  "type": "plugin",
+  "title": "Iterator",
+  "description": "It is a base plugin for all collection plugins which needs navigation control",
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [],
+    "menu": []
+  },
+  "renderer": {
+    "main": "renderer/plugin.js"
+  },
+  "icon": "assets/icon.png",
+  "languages": ["English"],
+  "categories": [""],
+  "keywords": [""]
+}

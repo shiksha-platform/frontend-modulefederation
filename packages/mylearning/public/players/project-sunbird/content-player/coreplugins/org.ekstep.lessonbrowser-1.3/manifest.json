@@ -1,0 +1,42 @@
+{
+    "id": "org.ekstep.lessonbrowser",
+    "ver": "1.3",
+    "shortId": "lessonbrowser",
+    "author": "Archana B",
+    "title": "Lesson Browser",
+    "description": "This plugin is used to browse through lessons.",
+    "publishedDate": "",
+    "editor":
+    {
+        "main": "editor/plugin.js",
+        "dependencies": [
+        {
+            "type": "js",
+            "src": "editor/content-provider-repo.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/libs/angular-inview.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/messages.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/jquery.flexslider-min.js"
+        },
+        {
+            "type": "js",
+            "src": "editor/scroll-glue.js"
+        },
+        {
+            "type": "css",
+            "src": "editor/flexslider.min.css"
+        },
+        {
+            "type": "css",
+            "src": "editor/lessonbrowser.css"
+        }]
+    }
+}

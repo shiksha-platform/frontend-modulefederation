@@ -1,0 +1,46 @@
+<script type="text/ng-template" id="partials_org.ekstep.download.html">
+<style>
+.dwContent .ngdialog-content{
+	background: transparent!important;
+}
+</style>
+	<div class="ui page {{isSending}} inverted dimmer popupZindex" >
+		<div class="content" ng-show="!isLoading && !isDownloading">
+		  <div class="center">
+			  <div class="ui icon header">
+					<span ng-show="status"><i class="ct_download_msg checkmark icon"></i></span>
+					<span ng-show="!status"><i class="ct_download_msg warning sign icon"></i></span>
+					{{getMessage}}
+			  </div>
+			  <div class="actions">
+				<div class="ui grid">
+					<div class="six wide right floated column">
+						<div class="ui green ok button"  ng-click="this.closeThisDialog()">
+						  <i class="checkmark icon"></i>
+						  Ok
+						</div>
+					</div>
+				</div>
+			  </div>
+		  </div>
+		</div>
+		<div class="content" ng-show="isLoading == true">
+			<div class="center">
+				<div class="ui big text loader">
+					<h2><i class="mail outline icon"></i>
+						Sending email, please wait....
+					</h2>
+				</div>
+			</div>
+		</div>
+		<div class="content" ng-show="isDownloading">
+			<div class="center">
+				<div class="ui indeterminate big text loader">
+					<h2><i class="download outline icon"></i>
+						Preparing Downloads...
+					</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>

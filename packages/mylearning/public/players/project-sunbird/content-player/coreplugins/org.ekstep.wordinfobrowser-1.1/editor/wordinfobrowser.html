@@ -1,0 +1,75 @@
+<script type="text/ng-template" ng-app="wordinfobrowserapp" ng-controller="wordinfobrowsercontroller as $ctrl" id="wordinfobrowser">
+<div class="ui modal large active wordinfo-modal">
+    <div class="header">
+        <div class="ui two column grid">
+            <div class="row">
+                <div class="column">
+                    <span><i class="icon-wordinfo icon"></i>Word Info Popup</span>
+                </div>
+                <div class="column wordinfo-modal-close">
+                    <i class="cursor-pointer close icon" ng-click="closeThisDialog()"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content wordinfo-content">
+        <div class="ui segment wordinfo-loading" ng-show="$ctrl.loading">
+            <div class="ui active inverted dimmer">
+                <div class="ui text loader">Just one second, We're fetching that content for you.</div>
+            </div>
+        </div>
+        <div ng-if="$ctrl.errorLoadingKeywords" class="ui negative message wordinfo-browser-content">
+            <div class="header">
+                We're sorry!
+            </div>
+            <p>There's an error while fetching keywords, <a href ng-click="$ctrl.getKeywords()">Click here</a> to try again.
+            </p>
+        </div>
+        <div class="ui grid container" ng-if="!$ctrl.loading && !$ctrl.errorLoadingKeywords">
+            <div class="two column row">
+                <div class="column wordinfo-leftContent">
+                    <div class="ui container" ng-show="!$ctrl.showTypeownText">
+                        <div class="ui container">
+                            <div class="helptext">Your Paragraph</div>
+                            <div class="column textHeight" ng-click="$ctrl.showTextbox()">
+                                {{$ctrl.selectedSentence}}
+                            </div>
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="ui container">
+                            <div class="helptext">We found the following words in Word Duniya</div>
+                            <div class="ui labels">
+                                <a class="ui large label" ng-class="$ctrl.slectedWords.indexOf(word) > -1 ? 'teal' : '' " ng-repeat="word in $ctrl.keywords track by $index" ng-click="$ctrl.selectWords($index, word, $event)" ng-show="$ctrl.keywords.length > 0 && !$ctrl.showTypeownText">{{word}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui form" ng-show="$ctrl.showTypeownText">
+                        <div class="field" id="editorDiv">
+                            <textarea ng-model="$ctrl.selectedSentence" rows="9" placeholder="Add text here"></textarea>
+                        </div>
+                        <button class="ui right floated primary button" ng-click="$ctrl.getKeywords()" ng-disabled="$ctrl.selectedSentence == ''">Get Words</button>
+                    </div>
+                    <div class="ui huge info message" ng-show="$ctrl.keywords.length == 0 && $ctrl.noKeywords">
+                        <p>No Keywords found.</p>
+                    </div>
+                </div>
+                <div class="column wordinfo-rightContent">
+                    Select words from the list to add their meaning as a popup. When the child will tap the word, it will show word information in a popup.<br/><br/>
+                    After selecting words, please check the preview to make sure information is available.<br/><br/>
+                    If there are any words that do not have information, it will show as blank. You can add this information in the Word Duniya.<br/><br/>
+                    Come back to this wizard any time to add / remove words or edit the sentence.
+                </div>
+            </div>
+            <!-- <div class="one column row">
+                Don't See the words in Word Duniya? Help us make it better &nbsp;&nbsp;<a ng-href="" target="_blank"> Click Here</a> 
+            </div>  -->
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui buttons" >
+            <button class="ui orange button" ng-click="closeThisDialog()" type="button">Cancel</button>
+            <div class="or"></div>
+            <button class="ui blue button" type="button" ng-click="$ctrl.addToLesson()" ng-disabled="$ctrl.slectedWords.length <= 0 || $ctrl.errorLoadingKeywords">Add To Lesson</button>
+        </div>
+    </div>
+</div>

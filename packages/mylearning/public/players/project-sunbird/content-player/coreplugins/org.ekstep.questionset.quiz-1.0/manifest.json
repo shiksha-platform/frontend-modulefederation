@@ -1,0 +1,14 @@
+{
+    "id": "org.ekstep.questionset.quiz",
+    "ver": "1.0",
+    "author": "Swati Singh",
+    "title": "Question Set Quiz Plugin",
+    "description": "Used to render V1 questions within Question Set plugin.",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js"
+    },
+    "renderer": {
+        "main": "renderer/plugin.js"
+    }
+}

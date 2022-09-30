@@ -1,0 +1,80 @@
+{
+    "id": "org.ekstep.readalongbrowser",
+    "ver": "1.0",
+    "shortId": "readalongbrowser",
+    "author": "Kartheek Palla",
+    "title": "Read-along Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "help": {
+            "src": "editor/help.md",
+            "dataType": "text"
+        },
+        "dependencies": [
+            { "type": "js", "src": "editor/libs/karaoke.js" },
+            { "type": "js", "src": "editor/libs/jquery.scrollTo.js" },
+            { "type": "js", "src": "editor/libs/jquery.jplayer.min.js" },
+            { "type": "css", "src": "editor/css/jquery-ui.css" }
+        ],
+        "views":[
+            {"template":"./readalongbrowser.html", "controller":"./readalongbrowserapp.js"}
+        ],
+        "configManifest": [{
+            "propertyName": "highlight",
+            "title": "Highlight Color",
+            "description": "Choose a color from the color picker to highlight the text",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "#FFFF00"
+        },{
+            "propertyName": "color",
+            "title": "Font color",
+            "description": "Choose a color from the color picker",
+            "dataType": "colorpicker",
+            "required": true,
+            "defaultValue": "rgb(255,0,0)"
+        },{
+            "propertyName": "font",
+            "dataType": "group",
+            "description": "Choose fontweight and fontstyle",
+            "config": [{
+                "propertyName": "fontweight",
+                "title": "Font Weight",
+                "toolTip": "Bold",
+                "description": "Select font size for the text",
+                "dataType": "icon",
+                "iconClass": "bold icon",
+                "required": true,
+                "defaultValue": false
+            }, {
+                "propertyName": "fontstyle",
+                "title": "Font Style",
+                "toolTip": "Italic",
+                "description": "Select font style for the text",
+                "dataType": "icon",
+                "iconClass": "italic icon",
+                "required": true,
+                "defaultValue": false
+            }]
+        }, {
+            "propertyName": "fontfamily",
+            "title": "Font Family",
+            "description": "Select font family for the text",
+            "dataType": "select",
+            "range": ["Arial", "Courier", "Georgia", "Helvetica", "Monospace", "Sans-serif", "Serif", "Tahoma", "Times", "Trebuchet MS", "Verdana", "NotoSansKannada", "NotoSansGujarati", "NotoSansBengali", "NotoSansGurmukhi", "NotoSansOriya", "NotoSansDevanagari", "NotoSansTamil", "NotoSansTelugu", "NotoNastaliqUrdu", "NotoSansMalayalam"],
+            "required": true,
+            "defaultValue": "Sans-serif"
+        }, {
+            "propertyName": "fontsize",
+            "title": "Font Size",
+            "description": "Select font size for the text",
+            "dataType": "select",
+            "range": [18, 20, 22, 24, 26, 28, 32, 36, 40, 44, 48, 54, 60, 66, 72, 80, 88, 96],
+            "required": true,
+            "defaultValue": 18
+        }],
+        "playable": true
+    }
+}

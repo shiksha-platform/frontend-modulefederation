@@ -1,0 +1,17 @@
+{
+    "id": "org.ekstep.whatsnew",
+    "ver": "1.0",
+    "displayName": "What's New",
+    "author": "Manoj Chandrashekar",
+    "title": "What's New Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",        
+        "dependencies": [
+            { "type": "js", "src": "editor/init.js" },
+            { "type": "js", "src": "editor/whatsnew.controller.js" },
+            { "type": "plugin", "plugin": "org.ekstep.help", "ver": "1.0" }
+        ]
+    }
+}

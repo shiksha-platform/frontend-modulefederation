@@ -1,0 +1,26 @@
+{
+    "id": "org.ekstep.metadata",
+    "ver": "1.1",
+    "author": "Kartheek Palla And Manjunath Davanam",
+    "title": "Metadata plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js",
+        "dependencies": [
+            { "plugin": "org.ekstep.conceptselector", "ver": "1.1", "type": "plugin" },
+            { "plugin": "org.ekstep.topicselector", "ver": "1.0", "type": "plugin" },
+            { "type": "js", "src": "editor/libs/ng-tags-input.js" },
+            { "type": "css", "src": "editor/libs/ng-tags-input.css" },
+            { "type": "js", "src": "editor/directives/keywords/keyword.js" },
+            { "type": "js", "src": "editor/directives/conceptselector/conceptselector.js" },
+            { "type": "js", "src": "editor/directives/topicselector/topicselector.js" },
+            { "type": "js", "src": "editor/directives/year/yearDirective.js" },
+            { "type": "js", "src": "editor/config.js" },
+            { "type": "js", "src": "editor/directives/appIcon/appIcon.js" },
+            { "type": "css", "src": "editor/css/contentmetaform.css" },
+            { "type": "js", "src": "editor/utils/index.js" },
+            { "type": "js", "src": "editor/directives/dialCode/dialCodeDirective.js" }
+        ]
+    }
+}

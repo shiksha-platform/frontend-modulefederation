@@ -1,0 +1,93 @@
+{
+  "id": "org.ekstep.questionunit.sequence",
+  "ver": "1.1",
+  "author": "Sivashanmugam Kannan (sivashanmugam.kannan@funtoot.com)",
+  "title": "sequence plugin With horizontal and vertical templates",
+  "description": "",
+  "publishedDate": "",
+  "icon": "assets/sequencial-preview.png",
+  "languages": [
+    "English"
+  ],
+  "categories": [],
+  "keywords": [
+    "sequencial plugin",
+    "reordering sentences"
+  ],
+  "targets": [
+    {
+      "id": "org.ekstep.questionset",
+      "ver": 1
+    }
+  ],
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "plugin",
+        "plugin": "org.ekstep.questionunit",
+        "ver": "1.1"
+      },
+      {
+        "type": "css",
+        "src": "editor/styles/style.css"
+      }
+    ],
+    "menu": [],
+    "init-data": {
+      "type": "rect",
+      "x": 10,
+      "y": 2,
+      "w": 80,
+      "h": 80,
+      "fill": "#DCDCDC"
+    },
+    "configManifest": [
+      {}
+    ],
+    "help": {
+      "src": "editor/help.md",
+      "dataType": "text"
+    }
+  },
+  "templates": [
+    {
+      "id": "sequencialQuestion",
+      "thumbnail": "editor/assets/sequencial-preview.png",
+      "title": "Arrange in Sequence",
+      "disc": "",
+      "category": "mcq",
+      "editor": {
+        "templateURL": "editor/templates/seq-template.html",
+        "controllerURL": "editor/controllers/seq-controller.js",
+        "template": "sequenceTemplate",
+        "controller": "QuestionFormController"
+      }
+    }
+  ],
+  "renderer": {
+    "main": "renderer/plugin.js",
+    "dependencies": [
+      {
+        "type": "css",
+        "src": "renderer/styles/style.css"
+      },
+      {
+        "type": "js",
+        "src": "renderer/js/jquery-ui-drag-and-drop.min.js"
+      },
+      {
+        "type": "js",
+        "src": "renderer/js/seq-template.js"
+      }
+    ]
+  },
+  "dependencies": [
+    {
+      "plugin": "org.ekstep.questionunit",
+      "ver": "1.1",
+      "type": "plugin",
+      "scope": "all"
+    }
+  ]
+}

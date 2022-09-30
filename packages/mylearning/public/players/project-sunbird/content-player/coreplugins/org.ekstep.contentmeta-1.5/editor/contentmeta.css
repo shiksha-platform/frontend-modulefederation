@@ -1,0 +1,33 @@
+.inline-block {
+    display: inline-block!important;
+}
+
+.metadata-fields-table tr td {
+    color: #4a4a4a;
+    text-transform: capitalize;
+}
+
+.metadata-fields-table tr>td:first-child {
+    color: grey;
+}
+
+.collection-preview-icon {
+    margin-left: 1vw;
+    visibility: hidden;
+}
+
+.collection-preview-icon:hover {
+    color: #2e9fd9;
+}
+
+#contents-data-form.ui.form .disabled.field, #contents-data-form.ui.form .disabled.fields .field, #contents-data-form.ui.form .field :disabled{
+    opacity:1 !important;
+}
+
+#contents-data-form.ui.form .field.disabled>label, #contents-data-form.ui.form .fields.disabled>label{
+    opacity:1 !important;
+}
+
+#contents-data-form .form-fields-except-image .field textarea:read-only {
+    opacity: 0.45;
+}

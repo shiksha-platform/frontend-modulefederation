@@ -1,0 +1,236 @@
+#keyboardDiv {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.ansField {
+  width: 75%;
+  margin-left: 12%;
+  text-align: center;
+  margin-top: 17%;
+  background: #ebebeb;
+}
+
+#keyboardInput {
+  background-color: #ebebeb;
+  height: 43px;
+  margin-top: 0;
+}
+
+.qBoxArea {
+  font-weight: bold;
+  background-color: white;
+  /* height: 40%; */
+  position: absolute;
+  z-index: 10;
+  text-align: center;
+  margin-left: 0%;
+  margin-top: 0;
+  width: 100%;
+}
+
+.textBoxArea {
+  position: absolute;
+  margin-top: 0%;
+  z-index: 20;
+  width: 80%;
+  margin-left: 10%;
+  background: white;
+}
+
+.question {
+  margin-top: 7%;
+  font-weight: bold;
+}
+
+
+.parentDivMainKeyboard,
+#parentDivNumericKeyboard {
+  width: 100%;
+  height: 100%;
+  top: 62%;
+  position: fixed;
+  left: 0%;
+  font-size: 2.5vw;
+  z-index: 10;
+  background-color: #ebebeb;
+}
+
+#parentDivNumericKeyboard {
+  display: none;
+}
+
+.key_barakhadi:active,
+.key_barakhadi_numeric:active {
+  background-color: rgb(215, 215, 215);
+  height: 70%;
+}
+
+.special_keys {
+  float: left;
+  margin: 2px;
+  vertical-align: middle;
+  text-align: center;
+  width: 5.5%;
+}
+
+.key_barakhadi,
+.key_barakhadi_numeric {
+  float: left;
+  vertical-align: middle;
+  text-align: center;
+  padding-top: 0.5%;
+}
+
+.key_barakhadi_last_key {
+  position: relative;
+  clear: left;
+  border: none;
+  margin: 2px;
+  padding-top: 1%;
+  text-align: center;
+  height: 38px;
+}
+
+.spaceBar {
+  float: left;
+  border: none;
+  margin: 2px;
+  width: 60%;
+  background: #D7D7D7;
+  border-radius: 3px;
+  height: 30px;
+  display: inline-block;
+}
+
+#firstRowAlpha {
+  width: 92%;
+  top: 6%;
+  left: 9%;
+  height: 11%;
+  position: relative;
+}
+
+#secondRowAlpha {
+  width: 92%;
+  top: 4%;
+  left: 7%;
+  height: 12%;
+  position: relative;
+}
+
+#thirdRowAlpha {
+  width: 85%;
+  top: 2%;
+  left: 6%;
+  height: 11%;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#firstRowNum {
+  width: 80%;
+  top: 6%;
+  left: 9%;
+  height: 11%;
+  position: relative;
+}
+
+#secondRowNum {
+  width: 88%;
+  top: 4%;
+  left: 7%;
+  height: 12%;
+  position: relative;
+}
+
+#parentDivEraser {
+  width: 80%;
+  height: 100%;
+  top: 55%;
+  position: absolute;
+  left: 10%;
+}
+
+.erasedDivParent,
+.hideKeyboard {
+  float: right;
+  margin-top: -4.3%;
+  position: relative;
+  margin-right: -2%;
+}
+
+.hideKeyboard {
+  margin-right: 4%;
+}
+
+#erasedDiv {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+#eraserImg {
+  width: 100%;
+  height: 100%;
+}
+
+#languageIconDiv {
+  float: left;
+  padding: 0.35em 0.1em 0.15em 0;
+  height: 75%;
+  width: 6%;
+}
+
+#languageIconImage {
+  width: 100%;
+  height: 100%;
+}
+
+.special_keys {
+  display: inline-block;
+}
+
+.special_keys>span {
+  vertical-align: middle;
+}
+
+img.qc-erase-icon {
+  width: 45%;
+}
+
+img.qc-language-icon {
+  width: 37%;
+  margin-top: 7%;
+}
+
+#firstRowNum .key_barakhadi_numeric {
+  width: 9%;
+}
+
+#secondRowNum .key_barakhadi_numeric {
+  width: 7.5%;
+}
+
+.third-row-numeric {
+  width: 80%;
+  top: 2%;
+  left: 10%;
+  height: 11%;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center
+}
+
+.qc-keyboard-bottom {
+  /* top: 60%; */
+}

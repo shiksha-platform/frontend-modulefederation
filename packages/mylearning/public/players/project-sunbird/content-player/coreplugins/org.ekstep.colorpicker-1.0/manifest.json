@@ -1,0 +1,18 @@
+{
+	"id": "org.ekstep.colorpicker",
+	"ver": "1.0",
+	"author": "Chetan Sachdev",
+	"title": "Colorpicker Plugin",
+	"description": "",
+	"publishedDate": "",
+	"editor": {
+		"main": "editor/plugin.js",
+		"dependencies": [
+		{ "type": "js", "src": "editor/libs/spectrum.js" },
+		{ "type": "css", "src": "editor/libs/spectrum.css" },
+		{ "type": "css", "src": "editor/colorpickerplugin.css" }
+		],
+		"menu": []
+	},
+	"renderer": {}
+}

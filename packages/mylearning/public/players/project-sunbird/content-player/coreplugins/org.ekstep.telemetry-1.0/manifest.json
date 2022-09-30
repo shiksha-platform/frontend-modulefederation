@@ -1,0 +1,11 @@
+{
+    "id": "org.ekstep.telemetry",
+    "ver": "1.0",
+    "author": "Sunil A S",
+    "title": "Telemetry Plugin",
+    "description": "",
+    "publishedDate": "",
+    "editor": {
+        "main": "editor/plugin.js"
+    }
+}

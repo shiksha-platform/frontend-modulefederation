@@ -1,0 +1,48 @@
+<div ng-app="lessonplanunitmetaApp" class="metacontent-wrapper" ng-controller="lessonplanunitmetaController">
+    <div class="ui segment header-segment" id="headerSegment">
+        <div class="ui breadcrumb">
+            <a class="section" ng-repeat="value in path" ng-click="setActiveNode(value.nodeId)">
+                {{value.title}} 
+                <div class="divider"> / </div>
+            </a>
+        </div>
+        <h3 class="header-bottom-segment inline-block">{{unit.name | limitTo:50 }}<span ng-if="unit.name.length > 100"> ...</span></h3>
+        <div class="header-buttons-container header-bottom-segment inline-block" ng-show="mode == 'Edit' && editable == true">
+            <div class="ui primary button right-float button-overrides" id="update-button" ng-click="updateNode(); generateTelemetry({type: 'click', subtype: 'update', target: 'updatemeta'})" ng-show="editMode">
+                Update
+            </div>
+        </div>
+    </div>
+    <form class="ui form segment" id="contents-data-form" novalidate ng-submit="updateNode()" ng-show="editMode" name="unitMetaForm">
+        <div class="fields">
+            <div class="field book-image-field">
+                <label for="bookImage">Add icon</label>
+                <div class="book-image-container popup-item" data-content="Add or change image" data-variation="tiny inverted" data-position="right center" ng-click="showAssestBrowser()">
+                    <i class="camera icon"></i>
+                    <img ng-if="showImageIcon" ng-src="{{unit.appIcon || defaultImage }}" ng-click="generateTelemetry({type: 'click', subtype: 'addicon', target: 'appIcon'})" />
+                </div>
+            </div>
+            <div class="field form-fields-except-image">
+                <div class="field required">
+                    <label>Unit Title</label>
+                    <div class="ui input">
+                        <input placeholder="Enter title for unit" ng-model="unit.name" ng-class=" {error: submitted && unitMetaForm.name.$error.required}" name="name" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'name'})" maxlength="100" required>
+                    </div>
+                </div>
+                <div class="field required">
+                    <label>Description</label>
+                    <div class="ui input">
+                        <textarea placeholder="brief description about the unit" ng-model="unit.description" ng-class=" {error: submitted && unitMetaForm.description.$error.required}" name="description" rows="2" ng-click="generateTelemetry({type: 'click', subtype: 'textarea', target: 'description'})" required></textarea>
+                    </div>
+                </div>                
+                <div class="field">
+                    <label>Notes to Teacher</label>
+                    <input placeholder="Add Notes" ng-model="unit.notes" name="notes" type="text" ng-click="generateTelemetry({type: 'click', subtype: 'input', target: 'notes'})">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+$(".ui.selection.dropdown").dropdown();
+</script>

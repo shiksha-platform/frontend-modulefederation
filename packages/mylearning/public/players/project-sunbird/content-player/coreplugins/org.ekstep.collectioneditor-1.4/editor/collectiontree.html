@@ -1,0 +1,128 @@
+<div ng-app="org.ekstep.collectioneditor" ng-controller="mainController" class="ui masthead vertical segment collection-masterhead" id="collectionMasterhead">
+    <div ng-repeat="header in headers" ng-include="header.templateURL"></div>
+    <div class="ui grid main-body" id="mainBody">
+        <div class="ui three wide column" id="table-of-contents">
+            <div class="ui segment content-editor-segment margin-bottom-none">
+                <div class="ui grid container">
+                    <div class="ten wide column">
+                        <p class="header-title">TABLE OF CONTENTS</p>
+                    </div>
+                    <div class="two wide column" id="treeAccessToolsSegment">
+                        <button ng-if="expandNodeFlag==false" ng-click="expandNode(); telemetry({ subtype: 'collapse', target: 'collapseNodeBtn'});" class="ui button popup-item" data-content="Collapse all" data-variation="tiny inverted" data-position="right center"><i class="angle double up icon"></i></button>
+                        <button ng-if="expandNodeFlag==true" ng-click="expandNode(); telemetry({ subtype: 'expand', target: 'expandNodeBtn'});" class="ui button popup-item" data-content="Expand all" data-variation="tiny inverted" data-position="right center"><i class="angle double down icon"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="ui attached segment" id="treeWrapper">
+                <div id="collection-tree" ng-class="collectionTreeHeight"></div>
+            </div>
+            <div class="table-of-contents-fixed-btns" ng-show="{{mode == 'Edit'}}">
+                <div class="padding-top-none"> 
+                    <div class="ui two buttons table-of-contents-btn">
+                        <button class="ui basic button text-transform-none" ng-click="addNodeType('sibling')" ng-disabled="isNewCollection"><a class="blueColor"><i class="plus icon"></i>New Sibling</button>
+                        <button class="ui basic button text-transform-none" ng-click="addNodeType('child')"><a class="blueColor"> <i class="level up icon clockwise rotated table-of-contents-child-icon "></i>New Child</a></button>  
+                    </div>
+                </div>    
+            </div>
+        </div>
+        <div class="nine wide column editor-body">
+            <div class="breadcrumbTemplate" ng-repeat="page in breadcrumb" data-attr="{{page.objectType[0]}}|{{page.identifier}}" ng-include="page.identifier || page.templateURL"></div>
+            <div class="ui grid no-margin" ng-show="!isNewCollection">
+                <div class="padded ui eight" ng-class="(showsuggestedContent && mode === 'Edit') ? 'wide column' : 'twelve wide column'" id="contents-pane">
+                    <div class="content-manifest">
+                        <div class="sixteen wide column metacontent-holder metadata-form-container" ng-repeat="page in metaPages" ng-show="getObjectType(page.objectType) === selectedObjectType" data-attr="{{page.objectType[0]}}" ng-include="page.identifier || page.templateURL"></div>
+                    </div>
+                    <div class="ui grid padded">
+                        <div class="row">
+                            <div class="twelve wide column list-container" ng-show="!isContent">
+                                <div class="list-header">
+                                    <div class="ui label list-leftheader">RESOURCES</div>
+                                    <button class="ui blueBackGround whiteColor button list-addResource" ng-click="addResource()" ng-show="!isCollection && mode === 'Edit'">ADD RESOURCE</button>
+                                </div>
+                                <div class="ui" id="content-list">
+                                    <div ng-if="!isContent && contentList.length<1" class="list-drag">
+                                        <div class="dropzone-text">
+                                        <!-- Drag and Drop Suggested Content here or <span class="blue-color">View Library</span> -->
+                                        <p ng-show="mode.toLowerCase() !== 'edit'">No Contents Available</p>
+                                        <p ng-show="mode.toLowerCase() === 'edit'">Add Resources here <span ng-show="showsuggestedContent">from Suggested Content or </span>by clicking on the 
+                                                Add Resource button</p><p ng-show="!isCollection && mode.toLowerCase() === 'edit'"><a class="blueColor">You can also Add a resource by Ctrl + Alt + A</a></p>
+                                        </div>        
+                                    </div>
+                                    <div ui-sortable="sortableOptions" ng-model="contentList">
+                                        <div class="ui raised segment padding-none" ng-repeat="child in contentList" ng-class="{'unsortable': isCollection}">
+                                            <div class="ui items list-row">
+                                                <div class="item custom-segment">
+                                                    <div class="ui image content-image">
+                                                        <span class="ui left label content-type" tabindex="0">{{child.data.metadata.contentType}}</span>
+                                                        <img ng-src="{{child.data.metadata.appIcon || defaultImage}}" class="ui fluid centered floated image">
+                                                    </div>
+                                                    <div class="content padding-15">
+                                                        <div class="meta margin-none ui">
+                                                            <p class="header elipses">{{child.data.metadata.name}}</p>
+                                                        </div>
+                                                        <div class="meta">
+                                                            <p class="content-desc fancytree-title popup-item" data-content="{{child.data.metadata.description}}" "data-variation": "wide" "data-position": "bottom left">{{child.data.metadata.description}}</p>
+                                                        </div>
+                                                        <div class="extra">
+                                                            <p class="elipses">
+                                                                <span ng-show="content.data.metadata.board">{{content.data.metadata.board}} &nbsp;</span>
+                                                                <span ng-repeat="grade in child.data.metadata.gradeLevel | limitTo: 2">{{grade}} &nbsp;</span>
+                                                                <span ng-repeat="domain in child.data.metadata.domain | limitTo: 2">{{domain}} &nbsp;</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="extra">
+                                                            <span ng-if="child.data.metadata.owner || child.data.metadata.creator">Created by {{child.data.metadata.owner || child.data.metadata.creator}}</span>
+                                                            <i class="long arrow right medium icon right floated blueColor popup-item" data-content="Preview" data-variation: "wide" data-position: "bottom left" ng-click="setActiveNode(child)"></i>
+                                                            <i ng-show="!isCollection && mode === 'Edit'" class="fa fa-trash right floated delete-node padding-right-20 popup-item" data-content="Delete" data-variation: "wide" data-position: "bottom left" aria-hidden="true" ng-click="deleteNode(child, $event);"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="twelve wide column list-container"  ng-show="isContent">
+                                <div class="content-width padding-top-10 centerAligned">
+                                    <div class="ui label list-leftheader">CONTENT PREVIEW</div>
+                                    <div class="ui label content-rightheader delete-node" ng-show="!isCollection" ng-if="mode === 'Edit'" ng-click="deleteNode(selectedContent, $event);"><i class="fa fa-trash right floated" aria-hidden="true"> </i><span>&nbsp;&nbsp;REMOVE</span></div>
+                                </div>
+                                <div class="content-width centerAligned">
+                                    <div class="content-details">
+                                        <div id="content-preview">
+                                            <div class="preview-image">
+                                                <img class="preview-play-image" ng-click="playContent(selectedContent);  telemetry({type: 'click', subtype: 'preview', target: 'preview'})" ng-src="{{playImage}}">
+                                            </div>
+                                            <iframe id="previewContentIframe" width=100% height=100%></iframe>
+                                        </div>
+                                        <p ng-show="selectedContent.data.metadata.owner" class="list-leftheader content-owner">OWNER</p>
+                                        <div class="footer">
+                                            <span ng-show="selectedContent.data.metadata.owner">{{selectedContent.data.metadata.owner}}</span>
+                                            <span class="content-grade">
+                                                <span ng-repeat="grade in selectedContent.data.metadata.gradeLevel | limitTo: 2">{{grade}} &nbsp;</span>
+                                                <span ng-repeat="genre in selectedContent.data.metadata.genre | limitTo: 2">{{genre}} &nbsp;</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="showsuggestedContent && mode === 'Edit'" class="ui four wide column padding-none suggest-content-pane">
+                    <div ng-repeat="page in sidebarPages" ng-include="page.templateURL"></div>
+                </div>
+            </div>
+            <div class="ui grid no-margin middle aligned list-container newCollection" ng-show="isNewCollection">
+                <div class="twelve wide column">
+                    <div class="ui" id="content-list">
+                        <div class="list-drag">
+                            <p>There is no unit created for this collection.</p>
+                            <p>Please click on new child to add a unit</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
