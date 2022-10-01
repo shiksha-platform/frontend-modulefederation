@@ -72,7 +72,6 @@ const TeacherListCard = ({ schoolId, visitedData }) => {
                         </VStack>
                       </HStack>
                     </Box>
-                    {console.log("VISITEDDATA", visitedData)}
                     {visitedData &&
                       visitedData?.find((data) => {
                         return (

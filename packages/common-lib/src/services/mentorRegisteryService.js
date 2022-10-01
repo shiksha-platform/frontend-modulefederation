@@ -29,11 +29,8 @@ export const getAllAllocatedSchools = async (
   header = {}
 ) => {
   let headers = {
-    ...header,
-    headers: {
-      ...header.header,
-      Authorization: 'Bearer ' + localStorage.getItem('token')
-    }
+    Authorization: 'Bearer ' + localStorage.getItem('token'),
+    ...header
   }
   const result = await post(
     process.env.REACT_APP_API_URL + apiRoutes.getAll,
