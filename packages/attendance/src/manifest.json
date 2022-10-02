@@ -94,7 +94,6 @@
     }
   ],
 
-
   "maxWidth": "1080",
   "weekDays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   "attendancePastDays": 90,
