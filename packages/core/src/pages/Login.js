@@ -12,7 +12,6 @@ import {
   Center,
 } from "native-base";
 import { useTranslation } from "react-i18next";
-import manifest from "../manifest";
 import {
   fetchToken,
   eventBus,
@@ -68,7 +67,7 @@ export default function Login({ swPath }) {
       const fcmToken = await getUserToken(swPath);
 
       const result = await fetchToken(
-        manifest.auth_url,
+        process.env.REACT_APP_AUTH_TOKEN_URL,
         credentials?.username,
         credentials?.password
       );
