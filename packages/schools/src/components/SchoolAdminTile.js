@@ -53,10 +53,10 @@ function SchoolAdminTile({ title, grades, genderCount, socialCategoryCount }) {
 
               {grades &&
                 grades?.length &&
-                chunks(grades)?.map((item) => (
-                  <HStack alignItems="center" space={10}>
-                    {item?.map((grade) => (
-                      <HStack alignItems="center">
+                chunks(grades)?.map((item, key) => (
+                  <HStack alignItems="center" space={10} key={key}>
+                    {item?.map((grade, index) => (
+                      <HStack alignItems="center" key={index}>
                         <H4>{grade} : </H4>
                         <BodyLarge>1</BodyLarge>
                       </HStack>
@@ -155,7 +155,7 @@ function SchoolAdminTile({ title, grades, genderCount, socialCategoryCount }) {
               <Box>
                 {socialCategoryCount &&
                   Object.entries(socialCategoryCount).map(([key, value]) => (
-                    <VStack space={4}>
+                    <VStack space={4} key={key}>
                       <HStack alignItems="center">
                         <H4>{key} : </H4>
                         <BodyLarge>{value?.length}</BodyLarge>

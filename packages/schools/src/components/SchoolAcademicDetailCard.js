@@ -20,12 +20,16 @@ export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
   const [classData, setClassData] = useState([]);
 
   React.useEffect(async () => {
-    const classResult = await classRegistryService.getAllData({
-      schoolId: { eq: schoolId },
-      type: { eq: "Parent class" },
-      coreData: "getStudents",
-    });
-    setClassData(() => classResult);
+    try {
+      const classResult = await classRegistryService.getAllData({
+        schoolId: { eq: schoolId },
+        parentId: { eq: "0" },
+        coreData: "getStudents",
+      });
+      setClassData(() => classResult);
+    } catch (e) {
+      console.log("erro", e.message);
+    }
   }, [schoolId]);
 
   return (
@@ -91,8 +95,8 @@ export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
         </Actionsheet.Content>
         <Box w="100%" p={4} justifyContent="center" bg={"schools.white"}>
           {configReport && configReport?.length > 0
-            ? configReport?.map((config) => (
-                <>
+            ? configReport?.map((config, index) => (
+                <Box key={index}>
                   {config === "attendance" && (
                     <Actionsheet.Item
                       onPress={() =>
@@ -111,7 +115,7 @@ export default function SchoolAcademicDetailCard({ schoolId, configReport }) {
                       {t("ASSESSMENT_REPORTS")}
                     </Actionsheet.Item>
                   )}
-                </>
+                </Box>
               ))
             : "No Reports found"}
         </Box>
