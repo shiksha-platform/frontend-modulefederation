@@ -8,7 +8,6 @@ import {
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { Text, VStack } from "native-base";
-import { QUMLBaseURL } from "assets/constants";
 
 export default function QumlTest({
   appName,
@@ -135,7 +134,11 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`${QUMLBaseURL}/?questions=${questionIds.join(",")}`}
+          src={`${
+            process.env.REACT_APP_QUMLBaseURL
+          }/?questions=${questionIds.join(",")}&parentUrl=${
+            process.env.REACT_APP_QUMLParentUrl
+          }`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
