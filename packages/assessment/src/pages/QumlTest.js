@@ -97,7 +97,7 @@ export default function QumlTest({
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== QUMLBaseURL) return;
+        if (event.origin !== process.env.REACT_APP_QUMLBaseURL) return;
         startAssessment(event.data);
       },
       false
