@@ -27,7 +27,7 @@ jobs:
       - name: Copy Package
         run: |
           sh ./scripts/pack-hp-build.sh
-          rsync shiksha-ui.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/samarth-spot-assessment/shiksha-ui.tar
+          rsync shiksha-hp-ui.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/samarth-spot-assessment/shiksha-hp-ui.tar
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -37,5 +37,5 @@ jobs:
           script: |
             cd /var/www/samarth-spot-assessment/public
             rm -rf *
-            cp ../shiksha-ui.tar ./
-            tar -xvf shiksha-ui.tar .
+            cp ../shiksha-hp-ui.tar ./
+            tar -xvf shiksha-hp-ui.tar .
