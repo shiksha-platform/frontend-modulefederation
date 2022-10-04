@@ -20,4 +20,4 @@ done
 # do not copy teachers app
 # cp -r  packages/teacher-app/build/* hp-build/
 find  hp-build -name  'modules.json' | xargs sed -i 's|http://localhost:[0-9]*||g'
-cd hi-build && tar -cf ../shiksha-hp-ui.tar . && cd ../
+cd hp-build && tar -cf ../shiksha-hp-ui.tar . && cd ../
