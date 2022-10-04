@@ -98,7 +98,7 @@ export default function QumlTest({
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== QUMLBaseURL) return;
+        if (event.origin !== process.env.REACT_APP_QUMLBaseURL) return;
         startAssessment(event.data);
       },
       false
@@ -135,7 +135,11 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`${QUMLBaseURL}/?questions=${questionIds.join(",")}`}
+          src={`${
+            process.env.REACT_APP_QUMLBaseURL
+          }/?questions=${questionIds.join(",")}&parentUrl=${
+            process.env.REACT_APP_QUMLParentUrl
+          }`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
