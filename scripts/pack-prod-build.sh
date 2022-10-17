@@ -13,7 +13,7 @@ done
 ' sh {} +
 cp -r  packages/teacher-app/build/* prod-build/
 find  prod-build -name  'modules.json' | xargs sed -i 's|http://localhost:[0-9]*||g'
-cd prod-build && tar -cf ../shiksha-ui.tar . && cd ../
+cd prod-build && tar -cf ../shiksha-hp-ui.tar . && cd ../
           
           
 
