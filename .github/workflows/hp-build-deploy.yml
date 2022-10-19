@@ -2,7 +2,7 @@ name: CICD_HP-Assessment
 on: 
   push: 
     branches:
-      - hp-assessment
+      - hp-assessment1
 jobs:
   build:
     name: build-deploy-to-hp
