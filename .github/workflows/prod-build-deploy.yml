@@ -2,11 +2,11 @@ name: CICD_PROD
 on: 
   push: 
     branches:
-      - prod
+      - hp-assessment
 jobs:
   build:
     name: build-deploy-to-prod
-    environment: prod
+    environment: hp-assessment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       - name: Copy Package
         run: |
           sh ./scripts/pack-prod-build.sh
-          rsync shiksha-ui.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/shiksha-prod/shiksha-ui.tar
+          rsync shiksha-ui.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/samarth-spot-assessment/shiksha-ui.tar
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/shiksha-prod/public
+            cd /var/www/samarth-spot-assessment/public
             rm -rf *
             cp ../shiksha-ui.tar ./
             tar -xvf shiksha-ui.tar .
