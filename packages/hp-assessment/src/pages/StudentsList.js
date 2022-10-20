@@ -30,7 +30,6 @@ import StudentListCard from "../components/StudentListCard";
 import colorTheme from "../colorTheme";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import manifest from "assessment/src/manifest.json";
 
 const colors = overrideColorTheme(colorTheme);
 
