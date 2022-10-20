@@ -2,7 +2,7 @@ name: CICD_PROD
 on: 
   push: 
     branches:
-      - hp-assessment
+      - temp-hp-assessment
 jobs:
   build:
     name: build-deploy-to-prod
