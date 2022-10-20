@@ -1,11 +1,11 @@
-name: CICD_PROD
+name: CICD_HP-Assessment
 on: 
   push: 
     branches:
-      - temp-hp-assessment
+      - hp-assessment1
 jobs:
   build:
-    name: build-deploy-to-prod
+    name: build-deploy-to-hp
     environment: hp-assessment
     runs-on: ubuntu-latest
     steps:
