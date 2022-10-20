@@ -20,7 +20,13 @@ import nipun_badge from "../stories/assets/nipun_badge.svg";
 import colorTheme from "../colorTheme";
 import ClassAssessmentResultCollapsibleCard from "../components/ClassAssessmentResultCollapsibleCard";
 import ClassParticipationCollapsibleCard from "../components/ClassParticipationCollapsibleCard";
-import {STATUS_NIPUN, STATUS_NIPUN_READY, STATUS_ABSENT, STATUS_COMPLETED, STATUS_NONE} from "../assets/constants";
+import {
+  STATUS_NIPUN,
+  STATUS_NIPUN_READY,
+  STATUS_ABSENT,
+  STATUS_COMPLETED,
+  STATUS_NONE,
+} from "../assets/constants";
 const colors = overrideColorTheme(colorTheme);
 
 export default function ClassDetails({ appName }) {

@@ -10,7 +10,8 @@ import {
   BodySmall,
   BodyMedium,
   hpAssessmentRegistryService,
-  assessmentRegistryService, studentRegistryService
+  assessmentRegistryService,
+  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
@@ -61,7 +62,6 @@ export default function SchoolAssessmentProgressBox() {
     } = await hpAssessmentRegistryService.getGroupDetailsById(id);
     calculateAssessmentResults(assessmentData, data, i);
   };
-
 
   // need to call this api with all three class ids
   /*const getStudentsList = async () => {

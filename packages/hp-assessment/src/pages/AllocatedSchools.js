@@ -109,8 +109,8 @@ export default function AllocatedSchools() {
           schoolId: "",
           status: [],
           groupIds: [],
-          scheduleVisitDate: '',
-          monitorId: ''
+          scheduleVisitDate: "",
+          monitorId: "",
         };
       }
       acc[key].schoolId = obj.schoolId;
