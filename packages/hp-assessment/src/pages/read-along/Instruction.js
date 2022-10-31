@@ -33,7 +33,7 @@ export default function ReadAlongInstruction() {
   const groupName = localStorage.getItem("hp-assessment-groupName") || "";
   const [width, height] = useWindowSize();
   const [loading, setLoading] = useState(false);
-  const [showModalTemplate, setShowModalTemplate] = useState(true);
+  const [showModalTemplate, setShowModalTemplate] = useState(false);
   const [ORFConfig, setORFConfig] = useState({});
   let count = 0;
 
@@ -184,10 +184,10 @@ export default function ReadAlongInstruction() {
             colorScheme="hpButton"
             py={3}
             _text={{ color: "hpAssessment.white" }}
-            // onPress={isReadAlongInstalled}
-            onPress={() => {
+            onPress={isReadAlongInstalled}
+            /*onPress={() => {
               navigate("/hpAssessment/oral-assessment-success");
-            }}
+            }}*/
           >
             आगे बढ़े
           </Button>

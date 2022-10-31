@@ -90,7 +90,7 @@ function App() {
     <AppShell
       basename={process.env.PUBLIC_URL}
       routes={routes}
-      AuthComponent={LoginComponent}
+      // AuthComponent={LoginComponent}
     />
   );
 }

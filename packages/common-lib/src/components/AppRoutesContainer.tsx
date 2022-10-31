@@ -16,7 +16,7 @@ const AppRoutesContainer = ({
   setAlert,
   ...otherProps
 }: any) => {
-  const user = useAuthFlow()
+  // const user = useAuthFlow()
   return (
     <NativeBaseProvider {...(Object.keys(theme).length ? { theme } : {})}>
       <PushNotification />
