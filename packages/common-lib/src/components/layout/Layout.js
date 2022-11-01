@@ -75,9 +75,9 @@ export default function Layout({
         {children}
         <Box minH={refFoot?.clientHeight ? refFoot?.clientHeight : 85}></Box>
       </HeightWidth>
-      <Box w={width} ref={(e) => serRefFoot(e)}>
+      {/*<Box w={width} ref={(e) => serRefFoot(e)}>
         <Footer {...(Layout?._footer ? Layout?._footer : {})} {..._footer} />
-      </Box>
+      </Box>*/}
     </Center>
   )
 }

@@ -50,7 +50,7 @@ function SchoolCard({ schoolId, groupIds, scheduleVisitDate, monitorId }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [schoolDetail, setSchoolDetail] = useState({});
-  const [schoolStatus, setSchoolStatus] = useState('');
+  const [schoolStatus, setSchoolStatus] = useState("");
 
   const getSchoolDetail = async (id) => {
     let list = [];
@@ -80,11 +80,14 @@ function SchoolCard({ schoolId, groupIds, scheduleVisitDate, monitorId }) {
   const getSchoolStatus = async () => {
     const reqData = {
       evaluation_date: scheduleVisitDate,
-      monitorId: monitorId
-    }
-    const data = await hpAssessmentRegistryService.getSchoolStatus(schoolId, reqData);
+      monitorId: monitorId,
+    };
+    const data = await hpAssessmentRegistryService.getSchoolStatus(
+      schoolId,
+      reqData
+    );
     setSchoolStatus(data.nipun_status);
-  }
+  };
 
   const _handleSchoolSelect = () => {
     localStorage.setItem("hp-assessment-school", JSON.stringify(schoolDetail));
