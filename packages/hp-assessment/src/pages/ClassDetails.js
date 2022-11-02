@@ -27,6 +27,7 @@ import {
   STATUS_COMPLETED,
   STATUS_NONE,
 } from "../assets/constants";
+const colors = overrideColorTheme(colorTheme);
 
 export default function ClassDetails({ appName }) {
   const navigate = useNavigate();
