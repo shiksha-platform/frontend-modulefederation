@@ -41,7 +41,7 @@ export default function ReadAlongInstruction() {
     androidInteract.checkForReadAlong();
   };
 
-  function onPackageChecked(packageName, isInstalled) {
+  const onPackageChecked = (packageName, isInstalled) => {
     if (isInstalled) {
       _handleReadAlongOpen();
     } else {
@@ -86,7 +86,7 @@ export default function ReadAlongInstruction() {
   };
 
   useEffect(() => {
-    window.addEventListener(
+    /*window.addEventListener(
       "onReadAlongResult",
       (event) => {
         onReadAlongResult(event?.correctWords, event?.timeTaken);
@@ -97,6 +97,7 @@ export default function ReadAlongInstruction() {
     window.addEventListener(
       "onPackageChecked",
       (event) => {
+        console.log('listenere called');
         onPackageChecked(event?.packageName, event?.isInstalled);
       },
       false
@@ -104,7 +105,10 @@ export default function ReadAlongInstruction() {
 
     return () => {
       window.removeEventListener("onReadAlongResult", (val) => {});
-    };
+    };*/
+
+    window.onPackageChecked = onPackageChecked;
+    window.onReadAlongResult = onReadAlongResult;
 
     getORFConfig();
   }, []);
