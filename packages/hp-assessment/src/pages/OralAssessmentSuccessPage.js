@@ -52,7 +52,7 @@ export default function OralAssessmentSuccessPage({
   };
 
   return (
-    <Layout isDisabledAppBar={true}>
+    <Layout isDisabledAppBar={false}>
       <Box
         p={4}
         h={height}

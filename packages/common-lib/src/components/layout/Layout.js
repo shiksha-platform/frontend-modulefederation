@@ -37,7 +37,7 @@ export default function Layout({
           {...(Layout?._layout ? Layout?._layout : {})}
           space={5}
         >
-          {!isDisabledAppBar ? (
+          {isDisabledAppBar ? (
             <AppBar
               color={imageUrl ? 'white' : ''}
               {...(Layout?._appBar ? Layout?._appBar : {})}

@@ -56,7 +56,7 @@ export default function FinalAssessmentSuccessPage({
   ]);
 
   return (
-    <Layout isDisabledAppBar={true}>
+    <Layout isDisabledAppBar={false}>
       <Loading
         width={width}
         height={height - 230}
