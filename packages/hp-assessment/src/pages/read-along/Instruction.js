@@ -47,14 +47,14 @@ export default function ReadAlongInstruction() {
     } else {
       navigate("/hpAssessment/read-along-not-installed");
     }
-  }
+  };
 
   const _handleReadAlongOpen = () => {
     // androidInteract.triggerReadAlong('g2h_s9_v1');
     if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
       androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
     } else {
-      console.error('No book Ids found');
+      console.error("No book Ids found");
     }
   };
 
@@ -79,7 +79,9 @@ export default function ReadAlongInstruction() {
   };
 
   const getORFConfig = async () => {
-    const {data: {data}} = await hpAssessmentRegistryService.getOrfAssessmentConfig({
+    const {
+      data: { data },
+    } = await hpAssessmentRegistryService.getOrfAssessmentConfig({
       group: groupName,
     });
 
@@ -112,10 +114,10 @@ export default function ReadAlongInstruction() {
     getORFConfig();
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     window.onPackageChecked = onPackageChecked;
     window.onReadAlongResult = onReadAlongResult;
-  }, [ORFConfig])
+  }, [ORFConfig]);
 
   if (loading) {
     return <Loading height={height - height / 2} />;

@@ -121,7 +121,10 @@ export default function QumlTest({
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data3));
 
     Promise.all(promiseArray).then((res) => {
-      getAssessmentData(res, res[2].data?.insert_trackassessment_one?.trackAssessmentId || "")
+      getAssessmentData(
+        res,
+        res[2].data?.insert_trackassessment_one?.trackAssessmentId || ""
+      );
       // setLoading(false);
     });
   };
@@ -158,7 +161,10 @@ export default function QumlTest({
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data2));
 
     Promise.all(promiseArray).then((res) => {
-      getAssessmentData(res, res[1].data?.insert_trackassessment_one?.trackAssessmentId || "")
+      getAssessmentData(
+        res,
+        res[1].data?.insert_trackassessment_one?.trackAssessmentId || ""
+      );
       // setLoading(false);
     });
   };
