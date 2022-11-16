@@ -50,12 +50,12 @@ export default function ReadAlongInstruction() {
   }
 
   const _handleReadAlongOpen = () => {
-    androidInteract.triggerReadAlong('g2h_s9_v1');
-    /*if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
+    // androidInteract.triggerReadAlong('g2h_s9_v1');
+    if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
       androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
     } else {
       console.error('No book Ids found');
-    }*/
+    }
   };
 
   const onReadAlongResult = (correctWords, timeTaken) => {
@@ -70,10 +70,10 @@ export default function ReadAlongInstruction() {
       `hp-assessment-oral-test-result-${count}`,
       JSON.stringify([{ children: [{ score: correctWords / timeTaken }] }])
     );
-    /*if (count < ORFConfig?.book_ids.length - 1) {
+    if (count < ORFConfig?.book_ids.length - 1) {
       _handleReadAlongOpen();
       count++;
-    }*/
+    }
 
     navigate("/hpAssessment/oral-assessment-success");
   };

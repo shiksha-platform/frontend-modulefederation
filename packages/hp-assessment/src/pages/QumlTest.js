@@ -276,7 +276,7 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=https://0142-183-82-155-224.in.ngrok.io`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds}`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
