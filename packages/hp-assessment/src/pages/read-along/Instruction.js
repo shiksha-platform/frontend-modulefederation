@@ -50,10 +50,12 @@ export default function ReadAlongInstruction() {
   }
 
   const _handleReadAlongOpen = () => {
-    if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
+    androidInteract.triggerReadAlong('g2h_s9_v1');
+    /*if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
       androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
     } else {
-    }
+      console.error('No book Ids found');
+    }*/
   };
 
   const onReadAlongResult = (correctWords, timeTaken) => {
@@ -68,16 +70,16 @@ export default function ReadAlongInstruction() {
       `hp-assessment-oral-test-result-${count}`,
       JSON.stringify([{ children: [{ score: correctWords / timeTaken }] }])
     );
-    if (count < ORFConfig?.book_ids.length - 1) {
+    /*if (count < ORFConfig?.book_ids.length - 1) {
       _handleReadAlongOpen();
       count++;
-    }
+    }*/
 
     navigate("/hpAssessment/oral-assessment-success");
   };
 
   const getORFConfig = async () => {
-    const data = await hpAssessmentRegistryService.getOrfAssessmentConfig({
+    const {data: {data}} = await hpAssessmentRegistryService.getOrfAssessmentConfig({
       group: groupName,
     });
 
@@ -107,11 +109,13 @@ export default function ReadAlongInstruction() {
       window.removeEventListener("onReadAlongResult", (val) => {});
     };*/
 
-    window.onPackageChecked = onPackageChecked;
-    window.onReadAlongResult = onReadAlongResult;
-
     getORFConfig();
   }, []);
+
+  useEffect(()=> {
+    window.onPackageChecked = onPackageChecked;
+    window.onReadAlongResult = onReadAlongResult;
+  }, [ORFConfig])
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -183,7 +187,6 @@ export default function ReadAlongInstruction() {
             स्टेप 3 व 4 हेतु विकल्प ऐप के पहले पेज पर बाईं ओर बटन दबाने पर
             मिलेंगे
           </BodyMedium>
-
           <Button
             colorScheme="hpButton"
             py={3}

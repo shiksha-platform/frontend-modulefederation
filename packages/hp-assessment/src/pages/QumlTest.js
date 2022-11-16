@@ -76,7 +76,7 @@ export default function QumlTest({
     const params = {};
     const data1 = {
       filter: JSON.stringify(params),
-      type: "Oral Assessment",
+      type: "ORF_LANGUAGE",
       questions: questionIds.split(","),
       source: "diksha",
       answersheet:
@@ -90,7 +90,7 @@ export default function QumlTest({
 
     const data2 = {
       filter: JSON.stringify(params),
-      type: "Oral Assessment",
+      type: "ORF_LANGUAGE",
       questions: questionIds.split(","),
       source: "diksha",
       answersheet:
@@ -104,7 +104,7 @@ export default function QumlTest({
 
     const data3 = {
       filter: JSON.stringify(params),
-      type: "Written Assessment",
+      type: "WRITTEN_LANGUAGE",
       questions: questionIds.split(","),
       source: "diksha",
       answersheet: JSON.stringify(qumlResult),
@@ -121,9 +121,8 @@ export default function QumlTest({
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data3));
 
     Promise.all(promiseArray).then((res) => {
-      // getAssessmentData(res, res[2].data?.insert_trackassessment_one?.trackAssessmentId || "")
-      console.log("response", res);
-      setLoading(false);
+      getAssessmentData(res, res[2].data?.insert_trackassessment_one?.trackAssessmentId || "")
+      // setLoading(false);
     });
   };
 
@@ -131,7 +130,7 @@ export default function QumlTest({
     const params = {};
     const data1 = {
       filter: JSON.stringify(params),
-      type: "Oral Assessment",
+      type: "ORF_LANGUAGE",
       questions: questionIds.split(","),
       source: "diksha",
       answersheet:
@@ -145,7 +144,7 @@ export default function QumlTest({
 
     const data2 = {
       filter: JSON.stringify(params),
-      type: "Written Assessment",
+      type: "WRITTEN_NUMERACY",
       questions: questionIds.split(","),
       source: "diksha",
       answersheet: JSON.stringify(qumlResult),
@@ -159,9 +158,8 @@ export default function QumlTest({
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data2));
 
     Promise.all(promiseArray).then((res) => {
-      // getAssessmentData(res, res[1].data?.insert_trackassessment_one?.trackAssessmentId || "")
-      console.log("response", res);
-      setLoading(false);
+      getAssessmentData(res, res[1].data?.insert_trackassessment_one?.trackAssessmentId || "")
+      // setLoading(false);
     });
   };
 
@@ -278,7 +276,7 @@ export default function QumlTest({
     >
       {questionIds && (
         <iframe
-          src={`${QUMLBaseURL()}/?questions=${questionIds}`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=https://0142-183-82-155-224.in.ngrok.io`}
           frameBorder="0"
           style={{ height: "calc(100vh - 315px)" }}
         />
