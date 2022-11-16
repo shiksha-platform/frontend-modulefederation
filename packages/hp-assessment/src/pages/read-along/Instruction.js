@@ -50,9 +50,11 @@ export default function ReadAlongInstruction() {
   }
 
   const _handleReadAlongOpen = () => {
+    // androidInteract.triggerReadAlong('g2h_s9_v1');
     if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
       androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
     } else {
+      console.error("No book Ids found");
     }
   };
 
@@ -77,7 +79,9 @@ export default function ReadAlongInstruction() {
   };
 
   const getORFConfig = async () => {
-    const data = await hpAssessmentRegistryService.getOrfAssessmentConfig({
+    const {
+      data: { data },
+    } = await hpAssessmentRegistryService.getOrfAssessmentConfig({
       group: groupName,
     });
 
@@ -86,7 +90,7 @@ export default function ReadAlongInstruction() {
   };
 
   useEffect(() => {
-    window.addEventListener(
+    /*window.addEventListener(
       "onReadAlongResult",
       (event) => {
         onReadAlongResult(event?.correctWords, event?.timeTaken);
@@ -97,6 +101,7 @@ export default function ReadAlongInstruction() {
     window.addEventListener(
       "onPackageChecked",
       (event) => {
+        console.log('listenere called');
         onPackageChecked(event?.packageName, event?.isInstalled);
       },
       false
@@ -104,10 +109,15 @@ export default function ReadAlongInstruction() {
 
     return () => {
       window.removeEventListener("onReadAlongResult", (val) => {});
-    };
+    };*/
 
     getORFConfig();
   }, []);
+
+  useEffect(() => {
+    window.onPackageChecked = onPackageChecked;
+    window.onReadAlongResult = onReadAlongResult;
+  }, [ORFConfig]);
 
   if (loading) {
     return <Loading height={height - height / 2} />;
@@ -179,7 +189,6 @@ export default function ReadAlongInstruction() {
             स्टेप 3 व 4 हेतु विकल्प ऐप के पहले पेज पर बाईं ओर बटन दबाने पर
             मिलेंगे
           </BodyMedium>
-
           <Button
             colorScheme="hpButton"
             py={3}
