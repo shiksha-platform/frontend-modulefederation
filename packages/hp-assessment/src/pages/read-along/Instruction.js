@@ -41,13 +41,13 @@ export default function ReadAlongInstruction() {
     androidInteract.checkForReadAlong();
   };
 
-  const onPackageChecked = (packageName, isInstalled) => {
+  function onPackageChecked(packageName, isInstalled) {
     if (isInstalled) {
       _handleReadAlongOpen();
     } else {
       navigate("/hpAssessment/read-along-not-installed");
     }
-  };
+  }
 
   const _handleReadAlongOpen = () => {
     // androidInteract.triggerReadAlong('g2h_s9_v1');
