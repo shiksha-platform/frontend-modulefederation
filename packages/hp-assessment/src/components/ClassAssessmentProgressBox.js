@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Box, HStack, VStack, Text, Divider, Button } from "native-base";
 import {
-  DEFAULT_THEME,
-  H2,
-  IconByName,
-  Collapsible,
   ProgressBar,
   overrideColorTheme,
-  BodySmall,
   BodyMedium,
   hpAssessmentRegistryService,
   assessmentRegistryService,
-  studentRegistryService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+import moment from "moment";
+
 export default function SchoolAssessmentProgressBox() {
   const { t } = useTranslation();
   let assessmentList = [];
   const grades = localStorage.getItem("hp-assessment-grades").split(",");
   const [assessmentData, setAssessmentData] = React.useState([]);
+  // const [maxStudent, setMaxStudent] = React.useState(20);
   let assessmentAPICount = 0;
 
-  const calculateAssessmentResults = (assessmentsData, gradeData, i) => {
+  const calculateAssessmentResults = (assessmentsData, gradeData, i, maxStudent = 20) => {
     const nipunStudent = Math.floor(
       assessmentsData.filter((item) => {
         return item.status === "nipun";
@@ -40,6 +37,7 @@ export default function SchoolAssessmentProgressBox() {
       nipunStudent,
       nipunReadyStudent,
       gradeName: gradeData?.name,
+      maxStudent: maxStudent > 20 ? 20 : maxStudent
     });
     ++assessmentAPICount;
     if (assessmentAPICount === grades.length) {
@@ -49,8 +47,8 @@ export default function SchoolAssessmentProgressBox() {
 
   const getAssessmentDetails = async (id, i) => {
     const params = {
-      fromDate: "01-01-2022",
-      toDate: "08-25-2022",
+      fromDate: moment().startOf('year').format('MM-DD-YYYY'),
+      toDate: moment().format('MM-DD-YYYY'),
       groupId: id,
       subject: "English",
       // groupId: localStorage.getItem("hp-assessment-groupId") || "300bd6a6-ee1f-424a-a763-9db8b08a19e9",
@@ -60,7 +58,14 @@ export default function SchoolAssessmentProgressBox() {
     const {
       data: { data },
     } = await hpAssessmentRegistryService.getGroupDetailsById(id);
-    calculateAssessmentResults(assessmentData, data, i);
+
+    const req = {
+      limit: 15,
+      page: 1,
+      filters: { school_id: JSON.parse(localStorage.getItem("hp-assessment-school")).schoolId, grade_number: data.gradeLevel },
+    };
+    const classData = await hpAssessmentRegistryService.studentSearch(req);
+    calculateAssessmentResults(assessmentData, data, i, classData.data.total);
   };
 
   // need to call this api with all three class ids
@@ -125,7 +130,7 @@ export default function SchoolAssessmentProgressBox() {
                           } pending`,
                           color: "hpAssessment.unmarked",
                           value:
-                            20 - (data?.nipunReadyStudent + data?.nipunStudent),
+                            data?.maxStudent - (data?.nipunReadyStudent + data?.nipunStudent),
                         },
                       ]}
                     />

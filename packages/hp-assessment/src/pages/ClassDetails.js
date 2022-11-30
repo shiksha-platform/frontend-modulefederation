@@ -132,7 +132,6 @@ export default function ClassDetails({ appName }) {
         setTotalStudentCount(list.length);
       }
     }
-    setLoading(false);
   };
 
   useEffect(() => {
