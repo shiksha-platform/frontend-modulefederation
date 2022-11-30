@@ -27,6 +27,7 @@ import {
   STATUS_COMPLETED,
   STATUS_NONE,
 } from "../assets/constants";
+import moment from "moment";
 const colors = overrideColorTheme(colorTheme);
 
 export default function ClassDetails({ appName }) {
@@ -44,6 +45,7 @@ export default function ClassDetails({ appName }) {
   const [unmarkedStudentCount, setUnmarkedStudentCount] = React.useState(0);
   const [nipunStudentCount, setNipunStudentCount] = React.useState(0);
   const [nipunReadyStudentCount, setNipunReadyStudentCount] = React.useState(0);
+  const currentDate = moment().format("YYYY-MM-DD");
 
   const _handleAssessmentStartEvent = () => {
     const telemetryData = telemetryFactory.start({
@@ -80,13 +82,13 @@ export default function ClassDetails({ appName }) {
   const calculateParticipantData = (membershipData) => {
     const unmarkedStudent = Math.floor(
       membershipData.filter((item) => {
-        return item.status === STATUS_NONE;
+        return item.status === STATUS_NONE || (item.status === STATUS_ABSENT && currentDate !== moment(item.updated_at).format("YYYY-MM-DD"));
       }).length
     );
 
     const absentStudent = Math.floor(
       membershipData.filter((item) => {
-        return item.status === STATUS_ABSENT;
+        return item.status === STATUS_ABSENT && currentDate === moment(item.updated_at).format("YYYY-MM-DD");
       }).length
     );
 

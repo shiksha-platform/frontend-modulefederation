@@ -16,6 +16,7 @@ const colors = overrideColorTheme(colorTheme);
 export default function SchoolAssessmentResultCollapsibleCard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const schoolStatus = localStorage.getItem('hp-assessment-school-status');
   return (
     <>
       <Collapsible
@@ -35,10 +36,10 @@ export default function SchoolAssessmentResultCollapsibleCard() {
                 <Button
                   colorScheme={"hpButton"}
                   _text={{ color: colors.white }}
-                  isDisabled={false}
-                  // onPress={()=> {navigate('/school-report')}}
+                  isDisabled={schoolStatus === "PENDING"}
+                  _disabled={{ cursor: "not-allowed" }}
                   onPress={() => {
-                    navigate("/hpAssessment/school-nipun-certificate");
+                    navigate("/hpAssessment/school-report");
                   }}
                 >
                   {t("View Results")}

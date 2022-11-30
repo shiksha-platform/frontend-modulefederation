@@ -40,7 +40,7 @@ export default function SchoolAssessmentProgressBox() {
       nipunStudent,
       nipunReadyStudent,
       gradeName: gradeData?.name,
-      maxStudent: maxStudent > 20 ? 20 : maxStudent
+      maxStudent: maxStudent
     });
     ++assessmentAPICount;
     if (assessmentAPICount === grades.length) {

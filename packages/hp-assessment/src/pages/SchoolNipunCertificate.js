@@ -81,7 +81,7 @@ export default function SchoolNipunCertificate({
               <Box textAlign="center">
                 <VStack space={4}>
                   <Box>
-                    <H4>{t("निआपका विद्यालय निपुण है")}</H4>
+                    <H4>{t("आपका विद्यालय निपुण है")}</H4>
                   </Box>
                 </VStack>
               </Box>

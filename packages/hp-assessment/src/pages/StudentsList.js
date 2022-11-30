@@ -236,7 +236,7 @@ export default function StudentsListPage({
           )}
         </VStack>
       </Box>
-      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
+      <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
         <VStack space={4}>
           {absentStudentPercent > absentPercentThreshold ? (
             <>
