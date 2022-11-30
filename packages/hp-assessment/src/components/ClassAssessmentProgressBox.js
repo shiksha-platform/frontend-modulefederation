@@ -16,6 +16,9 @@ export default function SchoolAssessmentProgressBox() {
   const { t } = useTranslation();
   let assessmentList = [];
   const grades = localStorage.getItem("hp-assessment-grades").split(",");
+  const classId =
+    localStorage.getItem("hp-assessment-groupId") ||
+    "2bd698db-49a4-4811-943d-9954f8c1f377";
   const [assessmentData, setAssessmentData] = React.useState([]);
   // const [maxStudent, setMaxStudent] = React.useState(20);
   let assessmentAPICount = 0;
@@ -59,13 +62,20 @@ export default function SchoolAssessmentProgressBox() {
       data: { data },
     } = await hpAssessmentRegistryService.getGroupDetailsById(id);
 
-    const req = {
+    /*const req = {
       limit: 15,
       page: 1,
       filters: { school_id: JSON.parse(localStorage.getItem("hp-assessment-school")).schoolId, grade_number: data.gradeLevel },
     };
-    const classData = await hpAssessmentRegistryService.studentSearch(req);
-    calculateAssessmentResults(assessmentData, data, i, classData.data.total);
+    const classData = await hpAssessmentRegistryService.studentSearch(req);*/
+
+    const req = {
+      limit: "20",
+      page: 1,
+      filters: { groupId: { _eq: classId } },
+    };
+    const classData = await hpAssessmentRegistryService.getGroupMembershipSearch(req);
+    calculateAssessmentResults(assessmentData, data, i, classData?.data?.data?.length);
   };
 
   // need to call this api with all three class ids
