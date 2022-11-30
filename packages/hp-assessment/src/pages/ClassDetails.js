@@ -116,7 +116,7 @@ export default function ClassDetails({ appName }) {
   const getStudentsList = async () => {
     let list = [];
     const param = {
-      limit: "20",
+      limit: "100",
       page: 1,
       filters: { groupId: { _eq: classId } },
     };
