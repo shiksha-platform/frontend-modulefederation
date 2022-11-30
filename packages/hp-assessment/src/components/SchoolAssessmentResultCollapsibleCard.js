@@ -16,7 +16,7 @@ const colors = overrideColorTheme(colorTheme);
 export default function SchoolAssessmentResultCollapsibleCard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const schoolStatus = localStorage.getItem('hp-assessment-school-status');
+  const schoolStatus = localStorage.getItem("hp-assessment-school-status");
   return (
     <>
       <Collapsible

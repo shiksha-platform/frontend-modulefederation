@@ -82,13 +82,20 @@ export default function ClassDetails({ appName }) {
   const calculateParticipantData = (membershipData) => {
     const unmarkedStudent = Math.floor(
       membershipData.filter((item) => {
-        return item.status === STATUS_NONE || (item.status === STATUS_ABSENT && currentDate !== moment(item.updated_at).format("YYYY-MM-DD"));
+        return (
+          item.status === STATUS_NONE ||
+          (item.status === STATUS_ABSENT &&
+            currentDate !== moment(item.updated_at).format("YYYY-MM-DD"))
+        );
       }).length
     );
 
     const absentStudent = Math.floor(
       membershipData.filter((item) => {
-        return item.status === STATUS_ABSENT && currentDate === moment(item.updated_at).format("YYYY-MM-DD");
+        return (
+          item.status === STATUS_ABSENT &&
+          currentDate === moment(item.updated_at).format("YYYY-MM-DD")
+        );
       }).length
     );
 

@@ -59,7 +59,11 @@ const TileBasedOnStatus = ({
     >
       <Box
         // bg="hpAssessment.white"
-        bg={student.membershipStatus === "ABSENT" ? "hpAssessment.lightGray2" : "hpAssessment.white"}
+        bg={
+          student.membershipStatus === "ABSENT"
+            ? "hpAssessment.lightGray2"
+            : "hpAssessment.white"
+        }
         p={4}
         borderColor="hpAssessment.pendingSeparator"
         borderWidth={1}

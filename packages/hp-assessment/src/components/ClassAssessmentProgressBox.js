@@ -23,7 +23,12 @@ export default function SchoolAssessmentProgressBox() {
   // const [maxStudent, setMaxStudent] = React.useState(20);
   let assessmentAPICount = 0;
 
-  const calculateAssessmentResults = (assessmentsData, gradeData, i, maxStudent = 20) => {
+  const calculateAssessmentResults = (
+    assessmentsData,
+    gradeData,
+    i,
+    maxStudent = 20
+  ) => {
     const nipunStudent = Math.floor(
       assessmentsData.filter((item) => {
         return item.status === "nipun";
@@ -40,7 +45,7 @@ export default function SchoolAssessmentProgressBox() {
       nipunStudent,
       nipunReadyStudent,
       gradeName: gradeData?.name,
-      maxStudent: maxStudent
+      maxStudent: maxStudent,
     });
     ++assessmentAPICount;
     if (assessmentAPICount === grades.length) {
@@ -50,8 +55,8 @@ export default function SchoolAssessmentProgressBox() {
 
   const getAssessmentDetails = async (id, i) => {
     const params = {
-      fromDate: moment().startOf('year').format('MM-DD-YYYY'),
-      toDate: moment().format('MM-DD-YYYY'),
+      fromDate: moment().startOf("year").format("MM-DD-YYYY"),
+      toDate: moment().format("MM-DD-YYYY"),
       groupId: id,
       subject: "English",
       // groupId: localStorage.getItem("hp-assessment-groupId") || "300bd6a6-ee1f-424a-a763-9db8b08a19e9",
@@ -74,8 +79,14 @@ export default function SchoolAssessmentProgressBox() {
       page: 1,
       filters: { groupId: { _eq: classId } },
     };
-    const classData = await hpAssessmentRegistryService.getGroupMembershipSearch(req);
-    calculateAssessmentResults(assessmentData, data, i, classData?.data?.data?.length);
+    const classData =
+      await hpAssessmentRegistryService.getGroupMembershipSearch(req);
+    calculateAssessmentResults(
+      assessmentData,
+      data,
+      i,
+      classData?.data?.data?.length
+    );
   };
 
   // need to call this api with all three class ids
@@ -140,7 +151,8 @@ export default function SchoolAssessmentProgressBox() {
                           } pending`,
                           color: "hpAssessment.unmarked",
                           value:
-                            data?.maxStudent - (data?.nipunReadyStudent + data?.nipunStudent),
+                            data?.maxStudent -
+                            (data?.nipunReadyStudent + data?.nipunStudent),
                         },
                       ]}
                     />
