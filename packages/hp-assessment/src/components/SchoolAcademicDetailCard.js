@@ -148,7 +148,7 @@ export default function SchoolAcademicDetailCard() {
       return { ...item, allStatus };
     });
 
-    setGradeDataWithStaus(resWithStatus);
+    setGradeDataWithStatus(resWithStatus);
     /*let list = [];
     const param = {
       limit: "20",
@@ -171,7 +171,7 @@ export default function SchoolAcademicDetailCard() {
     setLoading(false);*/
   };
 
-  const setGradeDataWithStaus = async (resWithStatus) => {
+  const setGradeDataWithStatus = async (resWithStatus) => {
     await Promise.all(resWithStatus).then((res) => {
       setGradeList(res);
       // getMembershipList(res);

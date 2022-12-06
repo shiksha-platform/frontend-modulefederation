@@ -110,8 +110,9 @@ export default function ReadAlongNotInstalledError() {
             py={3}
             _text={{ color: "hpAssessment.white" }}
             onPress={() => {
+              // "https://play.google.com/store/apps/details?id=com.google.android.apps.seekh";
               window.location.href =
-                "https://play.google.com/store/apps/details?id=com.google.android.apps.seekh";
+                "https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.google.android.apps.seekh";
             }}
           >
             ऐप इनस्टॉल करें

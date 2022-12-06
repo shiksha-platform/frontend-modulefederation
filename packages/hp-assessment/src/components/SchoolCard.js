@@ -92,6 +92,7 @@ function SchoolCard({ schoolId, groupIds, scheduleVisitDate, monitorId }) {
   const _handleSchoolSelect = () => {
     localStorage.setItem("hp-assessment-school", JSON.stringify(schoolDetail));
     localStorage.setItem("hp-assessment-grades", groupIds);
+    localStorage.setItem("hp-assessment-school-status", schoolStatus);
     navigate("/hpAssessment/school-profile");
   };
 

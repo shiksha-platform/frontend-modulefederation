@@ -58,7 +58,12 @@ const TileBasedOnStatus = ({
       _disabled={{ cursor: "not-allowed" }}
     >
       <Box
-        bg="hpAssessment.white"
+        // bg="hpAssessment.white"
+        bg={
+          student.membershipStatus === "ABSENT"
+            ? "hpAssessment.lightGray2"
+            : "hpAssessment.white"
+        }
         p={4}
         borderColor="hpAssessment.pendingSeparator"
         borderWidth={1}

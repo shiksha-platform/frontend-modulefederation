@@ -8,6 +8,8 @@ import {
   H3,
   ProgressBar,
   overrideColorTheme,
+  H4,
+  hpAssessmentRegistryService,
 } from "@shiksha/common-lib";
 import {
   Button,
@@ -18,7 +20,7 @@ import {
   Divider,
   Avatar,
 } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../manifest.json";
 import nipun_ready_badge from "../stories/assets/nipun_ready-badge.png";
@@ -30,23 +32,13 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import colorTheme from "../colorTheme";
 import SchoolAssessmentProgressBox from "../components/ClassAssessmentProgressBox";
+import nipun_badge from "../stories/assets/nipun_badge.svg";
 const colors = overrideColorTheme(colorTheme);
 
 export default function SchoolReport({ handleBackButton, formObject }) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
-  const [progressAssessment, setProgressAssessment] = React.useState([
-    {
-      name: "12 Assessed",
-      color: "#0D921B",
-      value: 12,
-    },
-    {
-      name: "6 pending",
-      color: "#DDDDDD",
-      value: 6,
-    },
-  ]);
+  const schoolStatus = localStorage.getItem("hp-assessment-school-status");
 
   return (
     <Layout isDisabledAppBar={false}>
@@ -55,28 +47,59 @@ export default function SchoolReport({ handleBackButton, formObject }) {
         height={height - 230}
         customComponent={
           <VStack space="0" flex="1" width={width}>
-            <VStack
-              bg="hpAssessment.scoreCardBg1"
-              pb="100px"
-              pt="32px"
-              alignItems="center"
-              space={8}
-            >
-              <img
-                src={nipun_ready_badge}
-                alt="nipun badge"
-                style={{ maxWidth: "300px", width: "70%" }}
-              />
-              <Box textAlign="center">
-                <VStack space={4}>
-                  <H1>{t("अभ्यास करते रहें")}</H1>
-                  <H3>
-                    {t("और फिर आप भी अगले निपुण इवैल्यूएशन में हो जाओगे")}
-                  </H3>
-                  <H2>{t("निपुण विद्यालय!")}</H2>
-                </VStack>
-              </Box>
-            </VStack>
+            {schoolStatus === "NIPUN" ? (
+              <VStack
+                bg="hpAssessment.successBackground"
+                pb="100px"
+                pt="32px"
+                alignItems="center"
+                space={8}
+                position={"relative"}
+              >
+                <IconByName
+                  name="DownloadLineIcon"
+                  position="absolute"
+                  top={0}
+                  right={0}
+                  _icon={{ size: 18 }}
+                />
+                <img
+                  src={nipun_badge}
+                  alt="nipun badge"
+                  style={{ maxWidth: "150px", width: "30%" }}
+                />
+                <Box textAlign="center">
+                  <VStack space={4}>
+                    <Box>
+                      <H4>{t("आपका विद्यालय निपुण है")}</H4>
+                    </Box>
+                  </VStack>
+                </Box>
+              </VStack>
+            ) : (
+              <VStack
+                bg="hpAssessment.scoreCardBg1"
+                pb="100px"
+                pt="32px"
+                alignItems="center"
+                space={8}
+              >
+                <img
+                  src={nipun_ready_badge}
+                  alt="nipun badge"
+                  style={{ maxWidth: "300px", width: "70%" }}
+                />
+                <Box textAlign="center">
+                  <VStack space={4}>
+                    <H1>{t("अभ्यास करते रहें")}</H1>
+                    <H3>
+                      {t("और फिर आप भी अगले निपुण इवैल्यूएशन में हो जाओगे")}
+                    </H3>
+                    <H2>{t("निपुण विद्यालय!")}</H2>
+                  </VStack>
+                </Box>
+              </VStack>
+            )}
 
             <Box p={4}>
               <VStack space={4}>
