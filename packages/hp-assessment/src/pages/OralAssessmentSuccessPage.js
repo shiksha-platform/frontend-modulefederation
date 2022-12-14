@@ -31,9 +31,9 @@ export default function OralAssessmentSuccessPage({
   const [title, setTitle] = useState();
   const [width, height] = useWindowSize();
   const [questionIds, setQuestionIds] = useState([]);
+  const limit = 4;
 
   const fetchQuestionsForWrittenAssessment = async () => {
-    const limit = 2;
     let data = {
       adapter: "diksha",
       limit,
@@ -50,6 +50,10 @@ export default function OralAssessmentSuccessPage({
     setQuestionIds(questionIds);
     localStorage.setItem("hp-assessment-written-questionIds", questionIds);
   };
+
+  useEffect(()=> {
+    fetchQuestionsForWrittenAssessment();
+  }, [])
 
   return (
     <Layout isDisabledAppBar={false}>
@@ -75,7 +79,6 @@ export default function OralAssessmentSuccessPage({
             colorScheme="hBbutton"
             variant="outline"
             onPress={() => {
-              fetchQuestionsForWrittenAssessment();
               navigate("/hpAssessment/quml-test");
               // navigate("/hpAssessment/final-assessment-success");
             }}
