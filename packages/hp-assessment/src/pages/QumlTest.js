@@ -285,7 +285,7 @@ export default function QumlTest({
           // src={`${QUMLBaseURL()}/?questions=${questionIds}`}
           src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=https://samarth-spot-assessment.samagra.io`}
           frameBorder="0"
-          style={{ height: "calc(100vh - 315px)" }}
+          style={{ height: "calc(100vh - 164px)" }}
         />
       )}
     </Layout>

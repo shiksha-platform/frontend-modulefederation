@@ -54,6 +54,7 @@ export default function FinalAssessmentSuccessPage({
       value: 6,
     },
   ]);
+  const selectedStudent = JSON.parse(localStorage.getItem('hp-assessment-selectedStudent') || "");
 
   return (
     <Layout isDisabledAppBar={false}>
@@ -96,8 +97,9 @@ export default function FinalAssessmentSuccessPage({
                     uri: "https://via.placeholder.com/50x50.png",
                   }}
                   mb={4}
+                  mx={"auto"}
                 />
-                <H2>Manoj</H2>
+                <H2>{selectedStudent.fullName}</H2>
               </VStack>
             </Box>
 

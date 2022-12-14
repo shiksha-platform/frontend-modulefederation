@@ -298,6 +298,10 @@ export default function StudentsListPage({
                     "hp-assessment-selectedStudentId",
                     selectedStudent.id
                   );
+                  localStorage.setItem(
+                    "hp-assessment-selectedStudent",
+                    JSON.stringify(selectedStudent)
+                  );
                   navigate("/hpAssessment/read-along-instruction");
                 }}
               >
