@@ -330,15 +330,14 @@ export const studentSearch = async (data = {}, header = {}) => {
   }
 }
 
-export const getOrfAssessmentConfig = async (data = {}, header = {}) => {
+export const getOrfAssessmentConfig = async (data = {}) => {
   const headers = {
-    ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await get(
     process.env.REACT_APP_API_URL + '/orfAssessmentConfig/',
     {
-      data,
+      params: data,
       headers: headers || {}
     }
   )
