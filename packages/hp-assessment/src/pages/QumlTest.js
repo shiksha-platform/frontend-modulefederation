@@ -125,6 +125,18 @@ export default function QumlTest({
         res,
         res[2].data?.insert_trackassessment_one?.trackAssessmentId || ""
       );
+      /*getAssessmentData(
+        res,
+        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
+        1,
+        1
+      );
+      getAssessmentData(
+        res,
+        res[2].data?.insert_trackassessment_one?.trackAssessmentId || "",
+        1,
+        2
+      );*/
       // setLoading(false);
     });
   };
@@ -163,8 +175,14 @@ export default function QumlTest({
     Promise.all(promiseArray).then((res) => {
       getAssessmentData(
         res,
-        res[1].data?.insert_trackassessment_one?.trackAssessmentId || ""
+        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
       );
+      /*getAssessmentData(
+        res,
+        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
+        3,
+        1
+      );*/
       // setLoading(false);
     });
   };
@@ -177,6 +195,57 @@ export default function QumlTest({
       "assessment-totalScore",
       assessmentDetails[0].totalScore
     );
+    /*if(grade === 3){
+      const assessmentDetails =
+        await assessmentRegistryService.getAssessmentDetails(id);
+      if(index === 0) {
+        localStorage.setItem("assessment-score-orf", assessmentDetails[0].score);
+        localStorage.setItem(
+          "assessment-totalScore-orf",
+          assessmentDetails[0].totalScore
+        );
+      }
+      if(index === 1) {
+        localStorage.setItem("assessment-score-written", assessmentDetails[0].score);
+        localStorage.setItem(
+          "assessment-totalScore-written",
+          assessmentDetails[0].totalScore
+        );
+      }
+    }
+    else if(grade === 1) {
+      const assessmentDetails =
+        await assessmentRegistryService.getAssessmentDetails(id);
+      if(index === 0) {
+        localStorage.setItem("assessment-score-orf", assessmentDetails[0].score);
+        localStorage.setItem(
+          "assessment-totalScore-orf",
+          assessmentDetails[0].totalScore
+        );
+      }
+      if(index === 1) {
+        let a = localStorage.getItem("assessment-score-orf");
+        let b = localStorage.getItem("assessment-totalScore-orf");
+        localStorage.setItem("assessment-score-orf", Number(a) + Number(assessmentDetails[0].score));
+        localStorage.setItem(
+          "assessment-totalScore-orf",
+          Number(b) + Number(assessmentDetails[0].totalScore)
+        );
+      }
+      if(index === 2) {
+        localStorage.setItem("assessment-score-written", assessmentDetails[0].score);
+        localStorage.setItem(
+          "assessment-totalScore-written",
+          assessmentDetails[0].totalScore
+        );
+      }
+
+      localStorage.setItem("assessment-score", assessmentDetails[0].score);
+      localStorage.setItem(
+        "assessment-totalScore",
+        assessmentDetails[0].totalScore
+      );
+    }*/
     setLoading(false);
     navigate("/hpAssessment/final-assessment-success");
     // setPageName("assessmentResult");
@@ -283,9 +352,9 @@ export default function QumlTest({
       {questionIds && (
         <iframe
           // src={`${QUMLBaseURL()}/?questions=${questionIds}`}
-          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=https://samarth-spot-assessment.samagra.io`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=http://localhost:4000/`}
           frameBorder="0"
-          style={{ height: "calc(100vh - 315px)" }}
+          style={{ height: "calc(100vh - 164px)" }}
         />
       )}
     </Layout>

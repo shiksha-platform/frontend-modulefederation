@@ -73,7 +73,7 @@ export default function Layout({
           <React.Fragment />
         )}
         {children}
-        <Box minH={refFoot?.clientHeight ? refFoot?.clientHeight : 85}></Box>
+        <Box minH={refFoot?.clientHeight ? refFoot?.clientHeight : 0}></Box>
       </HeightWidth>
       {/*<Box w={width} ref={(e) => serRefFoot(e)}>
         <Footer {...(Layout?._footer ? Layout?._footer : {})} {..._footer} />

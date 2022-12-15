@@ -84,7 +84,8 @@ export default function ReadAlongInstruction() {
     const {
       data: { data },
     } = await hpAssessmentRegistryService.getOrfAssessmentConfig({
-      group: groupName,
+      grade: groupName,
+      subject: 'Hindi'
     });
 
     setORFConfig(data);
