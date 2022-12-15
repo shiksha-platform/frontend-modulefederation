@@ -123,11 +123,9 @@ export default function QumlTest({
     Promise.all(promiseArray).then((res) => {
       getAssessmentData(
         res,
-        res[0].data?.insert_trackassessment_one?.trackAssessmentId || "",
-        1,
-        0
+        res[2].data?.insert_trackassessment_one?.trackAssessmentId || ""
       );
-      getAssessmentData(
+      /*getAssessmentData(
         res,
         res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
         1,
@@ -138,7 +136,7 @@ export default function QumlTest({
         res[2].data?.insert_trackassessment_one?.trackAssessmentId || "",
         1,
         2
-      );
+      );*/
       // setLoading(false);
     });
   };
@@ -177,22 +175,27 @@ export default function QumlTest({
     Promise.all(promiseArray).then((res) => {
       getAssessmentData(
         res,
-        res[0].data?.insert_trackassessment_one?.trackAssessmentId || "",
-        3,
-        0
+        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
       );
-      getAssessmentData(
+      /*getAssessmentData(
         res,
         res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
         3,
         1
-      );
+      );*/
       // setLoading(false);
     });
   };
 
-  const getAssessmentData = async (result, id, grade, index) => {
-    if(grade === 3){
+  const getAssessmentData = async (result, id) => {
+    const assessmentDetails =
+      await assessmentRegistryService.getAssessmentDetails(id);
+    localStorage.setItem("assessment-score", assessmentDetails[0].score);
+    localStorage.setItem(
+      "assessment-totalScore",
+      assessmentDetails[0].totalScore
+    );
+    /*if(grade === 3){
       const assessmentDetails =
         await assessmentRegistryService.getAssessmentDetails(id);
       if(index === 0) {
@@ -242,7 +245,7 @@ export default function QumlTest({
         "assessment-totalScore",
         assessmentDetails[0].totalScore
       );
-    }
+    }*/
     setLoading(false);
     navigate("/hpAssessment/final-assessment-success");
     // setPageName("assessmentResult");
@@ -349,7 +352,7 @@ export default function QumlTest({
       {questionIds && (
         <iframe
           // src={`${QUMLBaseURL()}/?questions=${questionIds}`}
-          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=https://samarth-spot-assessment.samagra.io`}
+          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=http://localhost:4000/`}
           frameBorder="0"
           style={{ height: "calc(100vh - 164px)" }}
         />
