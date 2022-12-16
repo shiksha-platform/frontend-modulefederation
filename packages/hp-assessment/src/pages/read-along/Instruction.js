@@ -71,8 +71,8 @@ export default function ReadAlongInstruction() {
       JSON.stringify([{ children: [{ score: correctWords / timeTaken }] }])
     );
     if (count < ORFConfig?.book_ids.length - 1) {
-      _handleReadAlongOpen();
       count++;
+      _handleReadAlongOpen();
     }
 
     navigate("/hpAssessment/oral-assessment-success");
