@@ -71,11 +71,10 @@ export default function ReadAlongInstruction() {
       `hp-assessment-oral-test-result-${count}`,
       JSON.stringify([{ children: [{ score: correctWords / timeTaken }] }])
     );
-    /*if (count < ORFConfig?.book_ids.length - 1) {
-      _handleReadAlongOpen();
+    if (count < ORFConfig?.book_ids.length - 1) {
       count++;
-    }*/
-    _handleReadAlongOpen();
+      _handleReadAlongOpen();
+    }
 
     navigate("/hpAssessment/oral-assessment-success");
   };
