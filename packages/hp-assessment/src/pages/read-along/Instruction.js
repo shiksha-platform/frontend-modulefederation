@@ -52,7 +52,8 @@ export default function ReadAlongInstruction() {
   const _handleReadAlongOpen = () => {
     // androidInteract.triggerReadAlong('g2h_s9_v1');
     if (ORFConfig && ORFConfig.book_ids && ORFConfig.book_ids.length) {
-      androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
+      // androidInteract.triggerReadAlong(ORFConfig?.book_ids[count]);
+      androidInteract.triggerReadAlong('hp_g1b_hinP1');
     } else {
       console.error("No book Ids found");
     }
