@@ -11,6 +11,7 @@ import {
   H4,
   hpAssessmentRegistryService,
 } from "@shiksha/common-lib";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Box,
@@ -38,6 +39,7 @@ const colors = overrideColorTheme(colorTheme);
 export default function SchoolReport({ handleBackButton, formObject }) {
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const schoolStatus = localStorage.getItem("hp-assessment-school-status");
 
   return (
@@ -108,9 +110,12 @@ export default function SchoolReport({ handleBackButton, formObject }) {
                 </Box>
                 <Box p="4">
                   <Button
-                    colorScheme="button"
+                    colorScheme={"hpButton"}
                     _text={{
                       color: colors.white,
+                    }}
+                    onPress={() => {
+                      navigate("/");
                     }}
                   >
                     {t("Home")}

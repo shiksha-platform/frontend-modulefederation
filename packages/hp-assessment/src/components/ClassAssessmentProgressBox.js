@@ -77,7 +77,7 @@ export default function SchoolAssessmentProgressBox() {
     const req = {
       limit: "20",
       page: 1,
-      filters: { groupId: { _eq: classId } },
+      filters: { groupId: { _eq: id } },
     };
     const classData =
       await hpAssessmentRegistryService.getGroupMembershipSearch(req);
