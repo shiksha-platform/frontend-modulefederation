@@ -77,7 +77,7 @@ export default function QumlTest({
     const data1 = {
       filter: JSON.stringify(params),
       type: "ORF_LANGUAGE",
-      questions: questionIds.split(","),
+      questions: [questionIds],
       source: "diksha",
       answersheet:
         localStorage.getItem("hp-assessment-oral-test-result-0") ||
@@ -91,7 +91,7 @@ export default function QumlTest({
     const data2 = {
       filter: JSON.stringify(params),
       type: "ORF_LANGUAGE",
-      questions: questionIds.split(","),
+      questions: [questionIds],
       source: "diksha",
       answersheet:
         localStorage.getItem("hp-assessment-oral-test-result-1") ||
@@ -105,7 +105,7 @@ export default function QumlTest({
     const data3 = {
       filter: JSON.stringify(params),
       type: "WRITTEN_LANGUAGE",
-      questions: questionIds.split(","),
+      questions: [questionIds],
       source: "diksha",
       answersheet: JSON.stringify(qumlResult),
       studentId: selectedStudentId,
@@ -146,11 +146,11 @@ export default function QumlTest({
     const data1 = {
       filter: JSON.stringify(params),
       type: "ORF_LANGUAGE",
-      questions: questionIds.split(","),
+      questions: [questionIds],
       source: "diksha",
       answersheet:
         localStorage.getItem("hp-assessment-oral-test-result-0") ||
-        JSON.stringify([{ correctWords: "24", timeTaken: "120" }]),
+        "",
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
@@ -160,9 +160,21 @@ export default function QumlTest({
     const data2 = {
       filter: JSON.stringify(params),
       type: "WRITTEN_NUMERACY",
-      questions: questionIds.split(","),
+      questions: [questionIds],
       source: "diksha",
-      answersheet: JSON.stringify(gradeThirdNumeracyResult),
+      answersheet: localStorage.getItem("hp-assessment-written-questionIds-answer"),
+      studentId: selectedStudentId,
+      teacherId: localStorage.getItem("id") || "",
+      groupId: localStorage.getItem("hp-assessment-groupId") || "",
+      status: STATUS_NIPUN,
+    };
+
+    const data3 = {
+      filter: JSON.stringify(params),
+      type: "WRITTEN_LANGUAGE",
+      questions: [rcId],
+      source: "diksha",
+      answersheet: JSON.stringify(qumlResult),
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
@@ -171,6 +183,7 @@ export default function QumlTest({
 
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data1));
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data2));
+    promiseArray.push(assessmentRegistryService.createUpdateAssessment(data3));
 
     Promise.all(promiseArray).then((res) => {
       getAssessmentData(
@@ -275,13 +288,15 @@ export default function QumlTest({
 
   React.useEffect(() => {
     // _handleWrittenSpotAssessmentStart();
+    console.log("MAI YAHN AA ARAA HA")
     window.addEventListener(
       "message",
       (event) => {
         if (event.origin !== QUMLBaseURL()) return;
         if (localPageName == "questionId" && localStorage.getItem('hp-assessment-groupName') == 3) {
-          setlocalPageName("readingComprehension");
-          setGradeThirdNumeracyResult(event.data);
+          localStorage.setItem('hp-assessment-written-questionIds-answer', JSON.stringify(event.data))
+          return setlocalPageName("readingComprehension");
+          // return setGradeThirdNumeracyResult(() => event.data);
         }
         else
           startAssessment(event.data);
@@ -315,13 +330,12 @@ export default function QumlTest({
       }
       _subHeader={{ bg: "hpAssessment.cardBg1" }}
     >
+      {console.log({ gradeThirdNumeracyResult })}
       {localPageName == "questionId" ? (
         <>
           {questionIds ? (
             <iframe
-              // src={`${QUMLBaseURL()}/?questions=${questionIds}`}
               src={`${QUMLBaseURL()}/?questionId=${questionIds}&parentUrl=https://samarth-spot-assessment.samagra.io`}
-              frameBorder="0"
               style={{ height: "calc(100vh - 164px)" }}
             />
           ) : (

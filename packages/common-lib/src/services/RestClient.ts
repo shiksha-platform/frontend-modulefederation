@@ -4,8 +4,7 @@ export async function get(url: string, headers: any = {}) {
   const a = {
     ...headers,
     headers: { ...headers?.headers, 'Access-Control-Allow-Origin': '*' }
-  }
-  console.log('a', a)
+  }  
   if (localStorage.getItem('token') != undefined) {
     headers = {
       ...headers,
