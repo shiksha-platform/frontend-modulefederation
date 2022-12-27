@@ -1,5 +1,5 @@
 export const QUMLBaseURL = () => {
-  return "http://quml-samarth-spot-assessment.samagra.io";
+  return "https://quml-samarth-spot-assessment.samagra.io";
 };
 
 export const STATUS_NIPUN = "NIPUN";

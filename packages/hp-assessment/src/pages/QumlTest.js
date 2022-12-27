@@ -287,14 +287,14 @@ export default function QumlTest({
   };*/
 
   React.useEffect(() => {
-    // _handleWrittenSpotAssessmentStart();
-    console.log("MAI YAHN AA ARAA HA")
     window.addEventListener(
       "message",
       (event) => {
         if (event.origin !== QUMLBaseURL()) return;
         if (localPageName == "questionId" && localStorage.getItem('hp-assessment-groupName') == 3) {
-          localStorage.setItem('hp-assessment-written-questionIds-answer', JSON.stringify(event.data))
+          if (localStorage.getItem('hp-assessment-third-grade-quml-page-name') === "questionId")
+            localStorage.setItem('hp-assessment-written-questionIds-answer', JSON.stringify(event.data))
+          localStorage.setItem("hp-assessment-third-grade-quml-page-name", "readingComprehension");
           return setlocalPageName("readingComprehension");
           // return setGradeThirdNumeracyResult(() => event.data);
         }

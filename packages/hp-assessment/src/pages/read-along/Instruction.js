@@ -69,7 +69,7 @@ export default function ReadAlongInstruction() {
 
     localStorage.setItem(
       `hp-assessment-oral-test-result-${count}`,
-      JSON.stringify([{ children: [{ score: correctWords / timeTaken }] }])
+      JSON.stringify([{ children: [{ correctWords, timeTaken: timeTaken / 60 }] }])
     );
     if (count < ORFConfig?.book_ids.length - 1) {
       count++;
@@ -196,9 +196,9 @@ export default function ReadAlongInstruction() {
             py={3}
             _text={{ color: "hpAssessment.white" }}
             onPress={isReadAlongInstalled}
-            /*onPress={() => {
-              navigate("/hpAssessment/oral-assessment-success");
-            }}*/
+          /*onPress={() => {
+            navigate("/hpAssessment/oral-assessment-success");
+          }}*/
           >
             आगे बढ़े
           </Button>

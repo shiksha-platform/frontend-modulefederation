@@ -53,6 +53,7 @@ export default function OralAssessmentSuccessPage({
 
     localStorage.setItem("hp-assessment-written-questionIds", questionSet);
     localStorage.setItem("hp-assessment-written-reading-comprehension", readingComprehensionSet);
+    localStorage.setItem("hp-assessment-third-grade-quml-page-name", "questionId");
   };
 
   useEffect(() => {
