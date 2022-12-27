@@ -1,19 +1,14 @@
 import {
-  Collapsible,
-  IconByName,
   Layout,
   assessmentRegistryService,
   overrideColorTheme,
   H2,
   Loading,
   useWindowSize,
-  telemetryFactory,
-  capture,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
+import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
 import { QUMLBaseURL } from "assets/constants";
 const colors = overrideColorTheme(colorTheme);
@@ -31,6 +26,11 @@ export default function QumlTest({
   selectedCompetencies,
   selectedSubject,
 }) {
+  const [localPageName, setlocalPageName] = useState("questionId");
+  const [gradeThirdNumeracyResult, setGradeThirdNumeracyResult] = useState([]);
+  const [rcId, setRcId] = useState(
+    localStorage.getItem("hp-assessment-written-reading-comprehension")
+  );
   const questionIds =
     localStorage.getItem("hp-assessment-written-questionIds") || "";
   const { t } = useTranslation();
@@ -162,7 +162,7 @@ export default function QumlTest({
       type: "WRITTEN_NUMERACY",
       questions: questionIds.split(","),
       source: "diksha",
-      answersheet: JSON.stringify(qumlResult),
+      answersheet: JSON.stringify(gradeThirdNumeracyResult),
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
@@ -175,7 +175,7 @@ export default function QumlTest({
     Promise.all(promiseArray).then((res) => {
       getAssessmentData(
         res,
-        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
+        res[1].data?.insert_trackassessment_one?.trackAssessmentId || ""
       );
       /*getAssessmentData(
         res,
@@ -278,17 +278,22 @@ export default function QumlTest({
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin !== "https://quml.shikshaplatform.io") return;
-        startAssessment(event.data);
+        if (event.origin !== QUMLBaseURL()) return;
+        if (localPageName == "questionId" && localStorage.getItem('hp-assessment-groupName') == 3) {
+          setlocalPageName("readingComprehension");
+          setGradeThirdNumeracyResult(event.data);
+        }
+        else
+          startAssessment(event.data);
       },
       false
     );
 
     return () => {
-      window.removeEventListener("message", (val) => {});
+      window.removeEventListener("message", (val) => { });
       // _handleWrittenSpotAssessmentEnd();
     };
-  }, []);
+  }, [localPageName]);
 
   if (loading) {
     return <Loading height={height} />;
@@ -309,53 +314,31 @@ export default function QumlTest({
         </H2>
       }
       _subHeader={{ bg: "hpAssessment.cardBg1" }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
     >
-      {questionIds && (
-        <iframe
-          // src={`${QUMLBaseURL()}/?questions=${questionIds}`}
-          src={`${QUMLBaseURL()}/?questions=${questionIds}&parentUrl=https://samarth-spot-assessment.samagra.io`}
-          frameBorder="0"
-          style={{ height: "calc(100vh - 164px)" }}
-        />
+      {localPageName == "questionId" ? (
+        <>
+          {questionIds ? (
+            <iframe
+              // src={`${QUMLBaseURL()}/?questions=${questionIds}`}
+              src={`${QUMLBaseURL()}/?questionId=${questionIds}&parentUrl=https://samarth-spot-assessment.samagra.io`}
+              frameBorder="0"
+              style={{ height: "calc(100vh - 164px)" }}
+            />
+          ) : (
+            <Loading height="calc(100vh - 164px)" />
+          )}
+        </>
+      ) : (
+        <>
+          {rcId ? (
+            <iframe
+              src={`${QUMLBaseURL()}/?questionId=${rcId}&parentUrl=https://samarth-spot-assessment.samagra.io`}
+              style={{ height: "calc(100vh - 164px)" }}
+            />
+          ) : (
+            <Loading height="calc(100vh - 164px)" />
+          )}{" "}
+        </>
       )}
     </Layout>
   );

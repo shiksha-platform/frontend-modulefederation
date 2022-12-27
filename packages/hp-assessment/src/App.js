@@ -1,5 +1,4 @@
-import React, { Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React from "react";
 
 import "./App.css";
 import { AppShell } from "@shiksha/common-lib";
@@ -90,7 +89,7 @@ function App() {
     <AppShell
       basename={process.env.PUBLIC_URL}
       routes={routes}
-      // AuthComponent={LoginComponent}
+    // AuthComponent={LoginComponent}
     />
   );
 }

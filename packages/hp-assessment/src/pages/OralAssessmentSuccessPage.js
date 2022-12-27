@@ -7,6 +7,7 @@ import {
   useWindowSize,
   BodyLarge,
   questionRegistryService,
+  questionIdService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
@@ -30,28 +31,31 @@ export default function OralAssessmentSuccessPage({
   const navigate = useNavigate();
   const [title, setTitle] = useState();
   const [width, height] = useWindowSize();
-  const [questionIds, setQuestionIds] = useState([]);
   const limit = 4;
 
   const fetchQuestionsForWrittenAssessment = async () => {
     let data = {
-      adapter: "diksha",
-      limit,
-      subject: "Mathematics",
-      // bloomsLevel: selectedCompetencies || "application",
-      className: `Class ${
-        localStorage.getItem("hp-assessment-groupName") || ""
-      }`,
+      type: "NA",
+      grade: localStorage.getItem("hp-assessment-groupName"),
     };
-    const questions = await questionRegistryService.getAllQuestions(data);
-    let questionIds = questions.map((question) => {
-      return question.questionId;
-    });
-    setQuestionIds(questionIds);
-    localStorage.setItem("hp-assessment-written-questionIds", questionIds);
+    // const result = await questionIdService.getQuestionIds(data);
+    // console.log({ result });
+    const questions = await questionIdService.getQuestionIds(data);
+    if (localStorage.getItem("hp-assessment-groupName") == 3) {
+      data = {
+        type: "RC",
+        grade: localStorage.getItem("hp-assessment-groupName"),
+      };
+    }
+    const readingComprehensionIds = await questionIdService.getQuestionIds(data);
+    let questionSet = questions[Math.floor((Math.random() * questions.length))];
+    let readingComprehensionSet = readingComprehensionIds[Math.floor((Math.random() * readingComprehensionIds.length))];
+
+    localStorage.setItem("hp-assessment-written-questionIds", questionSet);
+    localStorage.setItem("hp-assessment-written-reading-comprehension", readingComprehensionSet);
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchQuestionsForWrittenAssessment();
   }, [])
 

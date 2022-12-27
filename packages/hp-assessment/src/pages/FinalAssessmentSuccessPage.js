@@ -130,7 +130,7 @@ export default function FinalAssessmentSuccessPage({
                                 <BodyMedium>60</BodyMedium>
                               </H2>
                               <Caption>
-                                Correct <br />  Words/Minute
+                                Correct <br /> Words/Minute
                               </Caption>
                             </VStack>
                           </Box>

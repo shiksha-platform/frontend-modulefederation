@@ -41,10 +41,10 @@ export default function SchoolProfile() {
         subHeading: schoolDetail?.district,
         ...(schoolDetail &&
           schoolDetail.assessmentStatus === "nipun" && {
-            iconComponent: (
-              <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
-            ),
-          }),
+          iconComponent: (
+            <img src={nipun_badge} alt="nipun" style={{ maxWidth: "75px" }} />
+          ),
+        }),
         /*subHeading: (
           <VStack>
             <Text>
@@ -60,35 +60,6 @@ export default function SchoolProfile() {
       }}
       _appBar={{
         languages: ["en"],
-      }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            route: "/",
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            route: "/classes",
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            route: "/",
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            route: "/",
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            route: "/",
-          },
-        ],
       }}
     >
       <Box p={4}>

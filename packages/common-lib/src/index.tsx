@@ -33,6 +33,7 @@ import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
 import * as workHistoryRegistryService from './services/workHistoryRegistryService'
 import * as schoolRegistryService from './services/schoolRegistryService'
+import * as questionIdService from './services/questionIdService'
 import {
   getAllForUser,
   sendReadReceipt
@@ -80,6 +81,7 @@ export {
   schoolRegistryService,
   mentorRegisteryService,
   hpAssessmentRegistryService,
+  questionIdService,
   schoolRegisteryService,
   StarRating
 }
