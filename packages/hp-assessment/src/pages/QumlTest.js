@@ -154,7 +154,7 @@ export default function QumlTest({
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
-      status: STATUS_NIPUN,
+      status: STATUS_NIPUN
     };
 
     const data2 = {
@@ -166,7 +166,7 @@ export default function QumlTest({
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
-      status: STATUS_NIPUN,
+      status: STATUS_NIPUN
     };
 
     const data3 = {
@@ -178,7 +178,7 @@ export default function QumlTest({
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
-      status: STATUS_NIPUN,
+      status: STATUS_NIPUN
     };
 
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data1));
@@ -186,9 +186,10 @@ export default function QumlTest({
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data3));
 
     Promise.all(promiseArray).then((res) => {
+      console.log({ res });
       getAssessmentData(
         res,
-        res[1].data?.insert_trackassessment_one?.trackAssessmentId || ""
+        res[1]?.data?.insert_trackassessment_one?.trackAssessmentId || ""
       );
       /*getAssessmentData(
         res,
@@ -260,6 +261,8 @@ export default function QumlTest({
       );
     }*/
     setLoading(false);
+    localStorage.removeItem('hp-assessment-written-questionIds-answer');
+    localStorage.removeItem('hp-assessment-third-grade-quml-page-name');
     navigate("/hpAssessment/final-assessment-success");
     // setPageName("assessmentResult");
   };

@@ -67,10 +67,18 @@ export default function ReadAlongInstruction() {
       timeTaken +
       " seconds";*/
 
-    localStorage.setItem(
-      `hp-assessment-oral-test-result-${count}`,
-      JSON.stringify([{ children: [{ correctWords, timeTaken: timeTaken / 60 }] }])
-    );
+    if (timeTaken > 0) {
+      localStorage.setItem(
+        `hp-assessment-oral-test-result-${count}`,
+        JSON.stringify([{ children: [{ score: (correctWords * 60) / timeTaken }] }])
+      );
+    } else {
+      localStorage.setItem(
+        `hp-assessment-oral-test-result-${count}`,
+        JSON.stringify([{ children: [{ score: (correctWords * 60) / 1 }] }])
+      );
+    }
+
     if (count < ORFConfig?.book_ids.length - 1) {
       count++;
       _handleReadAlongOpen();
