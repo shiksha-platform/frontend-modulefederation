@@ -1,32 +1,16 @@
 import {
-  classRegistryService,
-  H3,
   IconByName,
   Layout,
-  overrideColorTheme,
   useWindowSize,
   BodyLarge,
-  questionRegistryService,
   questionIdService,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
-import { Avatar, VStack, Box, Button, HStack, Text } from "native-base";
-import StudentListCard from "../components/StudentListCard";
-import colorTheme from "../colorTheme";
+import { VStack, Box, Button } from "native-base";
 import { useNavigate } from "react-router-dom";
 
-const colors = overrideColorTheme(colorTheme);
-
-export default function OralAssessmentSuccessPage({
-  classId,
-  setPageName,
-  handleBackButton,
-  chooseAssessmentTypeModal,
-  handleSelectedStudent,
-  selectedStudent,
-  handleStudentPageNext,
-}) {
+export default function OralAssessmentSuccessPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [title, setTitle] = useState();
@@ -50,7 +34,6 @@ export default function OralAssessmentSuccessPage({
     const readingComprehensionIds = await questionIdService.getQuestionIds(data);
     let questionSet = questions[Math.floor((Math.random() * questions.length))];
     let readingComprehensionSet = readingComprehensionIds[Math.floor((Math.random() * readingComprehensionIds.length))];
-
     localStorage.setItem("hp-assessment-written-questionIds", questionSet);
     localStorage.setItem("hp-assessment-written-reading-comprehension", readingComprehensionSet);
     localStorage.setItem("hp-assessment-third-grade-quml-page-name", "questionId");
@@ -84,7 +67,7 @@ export default function OralAssessmentSuccessPage({
             colorScheme="hBbutton"
             variant="outline"
             onPress={() => {
-              navigate("/hpAssessment/quml-test");
+              window.location.href = "/hpAssessment/quml-test";
               // navigate("/hpAssessment/final-assessment-success");
             }}
           >

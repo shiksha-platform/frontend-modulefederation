@@ -15,22 +15,15 @@ export default function QumlTest({
   appName,
   classId,
   setPageName,
-  handleBackButton,
-  selectedStudent,
-  selectedAssessmentType,
-  selectedCompetencies,
-  selectedSubject,
+  handleBackButton
 }) {
   const [localPageName, setlocalPageName] = useState("questionId");
-  const [rcId, setRcId] = useState(
-    localStorage.getItem("hp-assessment-written-reading-comprehension")
-  );
+  const rcId = localStorage.getItem("hp-assessment-written-reading-comprehension") || "";
   const questionIds =
     localStorage.getItem("hp-assessment-written-questionIds") || "";
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
-  const [assessmentStartTime, setAssessmentStartTime] = React.useState();
   const [width, height] = useWindowSize();
   const selectedStudentId = localStorage.getItem(
     "hp-assessment-selectedStudentId"
@@ -98,9 +91,7 @@ export default function QumlTest({
   };
 
   const startGradeThreeAssessment = async (qumlResult) => {
-    const params = {};
     const data1 = {
-      filter: JSON.stringify(params),
       type: "ORF_LANGUAGE",
       questions: [questionIds],
       source: "diksha",
@@ -171,6 +162,7 @@ export default function QumlTest({
     setLoading(false);
     localStorage.removeItem('hp-assessment-written-questionIds-answer');
     localStorage.removeItem('hp-assessment-third-grade-quml-page-name');
+
     navigate("/hpAssessment/final-assessment-success");
   };
 

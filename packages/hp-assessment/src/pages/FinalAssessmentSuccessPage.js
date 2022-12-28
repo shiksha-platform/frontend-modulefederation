@@ -221,6 +221,8 @@ export default function FinalAssessmentSuccessPage({
                       localStorage.removeItem("hpAssessment-written-language-score");
                       localStorage.removeItem("hpAssessment-written-numeracy-score");
                       localStorage.removeItem("hpAssessment-orf-language-score");
+                      localStorage.removeItem("hp-assessment-written-questionIds");
+                      localStorage.removeItem("hp-assessment-written-reading-comprehension")
                       navigate("/hpAssessment/student-list");
                     }}
                   >
