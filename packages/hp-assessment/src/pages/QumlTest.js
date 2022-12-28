@@ -1,7 +1,6 @@
 import {
   Layout,
   assessmentRegistryService,
-  overrideColorTheme,
   H2,
   Loading,
   useWindowSize,
@@ -9,12 +8,8 @@ import {
 import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
 import { QUMLBaseURL } from "assets/constants";
-const colors = overrideColorTheme(colorTheme);
 const STATUS_NIPUN = "NIPUN";
-const STATUS_NIPUN_READY = "NIPUN_READY";
-const STATUS_ABSENT = "ABSENT";
 
 export default function QumlTest({
   appName,
@@ -51,56 +46,36 @@ export default function QumlTest({
     } else {
       startGradeThreeAssessment(qumlResult);
     }
-
-    /*const params = {
-      classId,
-    };
-    const data = {
-      filter: JSON.stringify(params),
-      type: "Written Assessment",
-      questions: questionIds.split(","),
-      source: "diksha",
-      answersheet: JSON.stringify(qumlResult[0]),
-      studentId: selectedStudentId,
-      teacherId:
-        localStorage.getItem("id") || "1bae8f4e-506b-40ca-aa18-07f7c0e64488",
-      groupId: localStorage.getItem('hp-assessment-groupId') || '',
-      status: STATUS_NIPUN
-    };
-    const result = await assessmentRegistryService.createUpdateAssessment(data);
-    getAssessmentData(result);*/
   };
 
   const startGradeOneAssessment = async (qumlResult) => {
     const params = {};
-    const data1 = {      
+    const data1 = {
       type: "ORF_LANGUAGE",
       questions: [questionIds],
       source: "diksha",
       answersheet:
-        localStorage.getItem("hp-assessment-oral-test-result-0") ||
-        JSON.stringify([{ children: [{ score: 5 }] }]),
+        localStorage.getItem("hp-assessment-oral-test-result-0") || "",
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
       status: STATUS_NIPUN,
     };
 
-    const data2 = {      
+    const data2 = {
       type: "ORF_LANGUAGE",
       questions: [questionIds],
       source: "diksha",
       answersheet:
-        localStorage.getItem("hp-assessment-oral-test-result-1") ||
-        JSON.stringify([{ children: [{ score: 5 }] }]),
+        localStorage.getItem("hp-assessment-oral-test-result-1") || "",
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
       status: STATUS_NIPUN,
     };
 
-    const data3 = {      
-      type: "WRITTEN_LANGUAGE",
+    const data3 = {
+      type: "WRITTEN_NUMERACY",
       questions: [questionIds],
       source: "diksha",
       answersheet: JSON.stringify(qumlResult),
@@ -110,8 +85,6 @@ export default function QumlTest({
       status: STATUS_NIPUN,
     };
 
-    // const result1 = await assessmentRegistryService.createUpdateAssessment(data1);
-    // const result2 = await assessmentRegistryService.createUpdateAssessment(data2);
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data1));
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data2));
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data3));
@@ -119,21 +92,8 @@ export default function QumlTest({
     Promise.all(promiseArray).then((res) => {
       getAssessmentData(
         res,
-        res[2].data?.insert_trackassessment_one?.trackAssessmentId || ""
+        res[2].data?.insert_trackassessment_one?.trackAssessmentId || "", "WRITTEN_NUMERACY"
       );
-      /*getAssessmentData(
-        res,
-        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
-        1,
-        1
-      );
-      getAssessmentData(
-        res,
-        res[2].data?.insert_trackassessment_one?.trackAssessmentId || "",
-        1,
-        2
-      );*/
-      // setLoading(false);
     });
   };
 
@@ -145,8 +105,7 @@ export default function QumlTest({
       questions: [questionIds],
       source: "diksha",
       answersheet:
-        localStorage.getItem("hp-assessment-oral-test-result-0") ||
-        JSON.stringify([{ children: [{ score: 10}] }]),
+        localStorage.getItem("hp-assessment-oral-test-result-0") || "",
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
@@ -180,108 +139,40 @@ export default function QumlTest({
     promiseArray.push(assessmentRegistryService.createUpdateAssessment(data3));
 
     Promise.all(promiseArray).then((res) => {
-      console.log({ res });
       getAssessmentData(
         res,
-        res[1]?.data?.insert_trackassessment_one?.trackAssessmentId || ""
+        res[0]?.data?.insert_trackassessment_one?.trackAssessmentId || "",
+        "ORF_LANGUAGE"
       );
-      /*getAssessmentData(
+      getAssessmentData(
         res,
-        res[1].data?.insert_trackassessment_one?.trackAssessmentId || "",
-        3,
-        1
-      );*/
-      // setLoading(false);
+        res[1]?.data?.insert_trackassessment_one?.trackAssessmentId || "",
+        "WRITTEN_NUMERACY"
+      );
+      getAssessmentData(
+        res,
+        res[2]?.data?.insert_trackassessment_one?.trackAssessmentId || "",
+        "WRITTEN_LANGUAGE"
+      );
     });
   };
 
-  const getAssessmentData = async (result, id) => {
+  const getAssessmentData = async (result, id, type) => {
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
-    localStorage.setItem("assessment-score", assessmentDetails[0].score);
-    localStorage.setItem(
-      "assessment-totalScore",
-      assessmentDetails[0].totalScore
-    );
-    /*if(grade === 3){
-      const assessmentDetails =
-        await assessmentRegistryService.getAssessmentDetails(id);
-      if(index === 0) {
-        localStorage.setItem("assessment-score-orf", assessmentDetails[0].score);
-        localStorage.setItem(
-          "assessment-totalScore-orf",
-          assessmentDetails[0].totalScore
-        );
-      }
-      if(index === 1) {
-        localStorage.setItem("assessment-score-written", assessmentDetails[0].score);
-        localStorage.setItem(
-          "assessment-totalScore-written",
-          assessmentDetails[0].totalScore
-        );
-      }
+    if (type == "WRITTEN_LANGUAGE") {
+      localStorage.setItem("hpAssessment-written-language-score", JSON.stringify({ obtained: assessmentDetails[0].score, totalScore: assessmentDetails[0].totalScore }));
+    } else if (type == "ORF_LANGUAGE") {
+      localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: assessmentDetails[0].score }));
+    } else if (type == "WRITTEN_NUMERACY") {
+      localStorage.setItem("hpAssessment-written-numeracy-score", JSON.stringify({ obtained: assessmentDetails[0].score, totalScore: assessmentDetails[0].totalScore }));
     }
-    else if(grade === 1) {
-      const assessmentDetails =
-        await assessmentRegistryService.getAssessmentDetails(id);
-      if(index === 0) {
-        localStorage.setItem("assessment-score-orf", assessmentDetails[0].score);
-        localStorage.setItem(
-          "assessment-totalScore-orf",
-          assessmentDetails[0].totalScore
-        );
-      }
-      if(index === 1) {
-        let a = localStorage.getItem("assessment-score-orf");
-        let b = localStorage.getItem("assessment-totalScore-orf");
-        localStorage.setItem("assessment-score-orf", Number(a) + Number(assessmentDetails[0].score));
-        localStorage.setItem(
-          "assessment-totalScore-orf",
-          Number(b) + Number(assessmentDetails[0].totalScore)
-        );
-      }
-      if(index === 2) {
-        localStorage.setItem("assessment-score-written", assessmentDetails[0].score);
-        localStorage.setItem(
-          "assessment-totalScore-written",
-          assessmentDetails[0].totalScore
-        );
-      }
 
-      localStorage.setItem("assessment-score", assessmentDetails[0].score);
-      localStorage.setItem(
-        "assessment-totalScore",
-        assessmentDetails[0].totalScore
-      );
-    }*/
     setLoading(false);
     localStorage.removeItem('hp-assessment-written-questionIds-answer');
     localStorage.removeItem('hp-assessment-third-grade-quml-page-name');
     navigate("/hpAssessment/final-assessment-success");
-    // setPageName("assessmentResult");
   };
-
-  /*const _handleWrittenSpotAssessmentStart = () => {
-    const telemetryData = telemetryFactory.start({
-      appName: appName,
-      type: "Spot-Assessment-Written-Start",
-      studentId: selectedStudent.id,
-    });
-    capture("START", telemetryData);
-    setAssessmentStartTime(+new Date());
-  };*/
-
-  /*const _handleWrittenSpotAssessmentEnd = () => {
-    const endTime = +new Date();
-    const diff = (endTime - assessmentStartTime) / 1000 || 0;
-    const telemetryData = telemetryFactory.end({
-      appName,
-      type: "Spot-Assessment-End",
-      studentId: selectedStudent.id,
-      duration: diff,
-    });
-    capture("END", telemetryData);
-  };*/
 
   React.useEffect(() => {
     window.addEventListener(
@@ -302,7 +193,6 @@ export default function QumlTest({
 
     return () => {
       window.removeEventListener("message", (val) => { });
-      // _handleWrittenSpotAssessmentEnd();
     };
   }, [localPageName]);
 
@@ -346,7 +236,7 @@ export default function QumlTest({
             />
           ) : (
             <Loading height="calc(100vh - 164px)" />
-          )}{" "}
+          )}
         </>
       )}
     </Layout>

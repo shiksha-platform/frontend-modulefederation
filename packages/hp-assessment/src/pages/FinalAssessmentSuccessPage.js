@@ -23,7 +23,6 @@ import {
 } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import manifest from "../manifest.json";
 import nipun_badge from "../stories/assets/nipun_badge.svg";
 import nipun_kids from "../stories/assets/nipun_kids.svg";
 import {
@@ -39,6 +38,21 @@ export default function FinalAssessmentSuccessPage({
   handleBackButton,
   formObject,
 }) {
+  let orfObtained, orfTotal, writtenNumeracyObtained, writtenNumeracyTotal, writtenLanguageObtained, writtenLanguageTotal;
+  orfObtained = JSON.parse(localStorage.getItem('hpAssessment-orf-language-score'))?.obtained;
+  let grade = localStorage.getItem('hp-assessment-groupName');
+  if (grade == 3) {
+    orfTotal = 60
+  } else if (grade == 2) {
+    orfTotal = 45
+  } else if (grade == 1) {
+    orfTotal = 10
+  }
+  writtenNumeracyObtained = JSON.parse(localStorage.getItem('hpAssessment-written-numeracy-score'))?.obtained;
+  console.log(writtenNumeracyObtained);
+  writtenNumeracyTotal = JSON.parse(localStorage.getItem('hpAssessment-written-numeracy-score'))?.totalScore;
+  writtenLanguageObtained = JSON.parse(localStorage.getItem('hpAssessment-written-language-score'))?.obtained;
+  writtenLanguageTotal = JSON.parse(localStorage.getItem('hpAssessment-written-language-score'))?.totalScore;
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -111,58 +125,55 @@ export default function FinalAssessmentSuccessPage({
                   </Box>
                   <Divider />
                   <Box p={4}>
-                    <HStack justifyContent="space-around">
+                    <HStack justifyContent={grade == 3 ? "space-around" : "center"}>
                       <Box w="125px" h="125px">
                         <CircularProgressbarWithChildren
-                          value={24}
-                          maxValue={60}
+                          value={orfObtained}
+                          maxValue={orfTotal}
                           styles={buildStyles({
-                            // pathColor: "#43B13A",
-                            pathColor: colors.success,
-                            textColor: colors.success,
+                            pathColor: orfObtained >= orfTotal ? colors.success : colors.danger,
+                            textColor: orfObtained >= orfTotal ? colors.success : colors.danger,
                             trailColor: colors.lightGray5,
                           })}
                         >
                           <Box textAlign="center">
                             <VStack>
-                              <H2 color={colors.success}>
-                                <H2 bold>24/</H2>
-                                <BodyMedium>60</BodyMedium>
+                              <H2 color={orfObtained >= orfTotal ? colors.success : colors.danger}>
+                                <H2 bold>{orfObtained}/</H2>
+                                <BodyMedium>{orfTotal}</BodyMedium>
                               </H2>
                               <Caption>
-                                Correct <br /> Words/Minute
+                                Correct <br />
+                                Words/Minute
                               </Caption>
                             </VStack>
                           </Box>
                         </CircularProgressbarWithChildren>
                       </Box>
+                      {grade == 3 && <Box w="125px" h="125px">
+                        <CircularProgressbarWithChildren
+                          value={writtenLanguageObtained}
+                          maxValue={writtenLanguageTotal}
+                          styles={buildStyles({
+                            pathColor: (writtenLanguageObtained * 100 / writtenLanguageTotal) >= 75 ? colors.success : colors.danger,
+                            textColor: (writtenLanguageObtained * 100 / writtenLanguageTotal) >= 75 ? colors.success : colors.danger,
+                            trailColor: colors.lightGray5,
+                          })}
+                        >
+                          <Box textAlign="center">
+                            <VStack>
+                              <H2 color={(writtenLanguageObtained * 100 / writtenLanguageTotal) >= 75 ? colors.success : colors.danger}>
+                                <H2 bold>{writtenLanguageObtained * 100 / writtenLanguageTotal}%</H2>
+                              </H2>
+                              <Caption>
+                                Correct <br />
+                                Comprehension
+                              </Caption>
+                            </VStack>
+                          </Box>
+                        </CircularProgressbarWithChildren>
+                      </Box>}
 
-                      <Box w="125px" h="125px">
-                        <CircularProgressbarWithChildren
-                          value={7}
-                          maxValue={14}
-                          styles={buildStyles({
-                            // pathColor: "#D12F2F",
-                            pathColor: colors.error,
-                            textColor: colors.error,
-                            trailColor: colors.lightGray5,
-                          })}
-                        >
-                          <Box textAlign="center">
-                            <VStack>
-                              <H2 color={colors.error}>
-                                <H2 bold>50%</H2>
-                                {/*<BodyMedium>14</BodyMedium>*/}
-                              </H2>
-                              <Caption>
-                                Correct
-                                <br />
-                                Answers
-                              </Caption>
-                            </VStack>
-                          </Box>
-                        </CircularProgressbarWithChildren>
-                      </Box>
                     </HStack>
                   </Box>
                 </Box>
@@ -175,50 +186,21 @@ export default function FinalAssessmentSuccessPage({
                     <HStack justifyContent="space-around" p={4}>
                       <Box w="125px" h="125px">
                         <CircularProgressbarWithChildren
-                          value={24}
-                          maxValue={60}
+                          value={writtenNumeracyObtained}
+                          maxValue={writtenNumeracyTotal}
                           styles={buildStyles({
-                            // pathColor: "#43B13A",
-                            pathColor: colors.success,
-                            textColor: colors.success,
+                            pathColor: writtenNumeracyObtained * 100 / writtenNumeracyTotal >= 75 ? colors.success : colors.danger,
+                            textColor: writtenNumeracyObtained * 100 / writtenNumeracyTotal >= 75 ? colors.success : colors.danger,
                             trailColor: colors.lightGray5,
                           })}
                         >
                           <Box textAlign="center">
                             <VStack>
-                              <H2 color={colors.success}>
-                                <H2 bold>24/</H2>
-                                <BodyMedium>60</BodyMedium>
+                              <H2 color={writtenNumeracyObtained * 100 / writtenNumeracyTotal >= 75 ? colors.success : colors.danger}>
+                                <H2 bold>{writtenNumeracyObtained * 100 / writtenNumeracyTotal}%</H2>
                               </H2>
                               <Caption>
-                                Correct <br />  Numbers Read
-                              </Caption>
-                            </VStack>
-                          </Box>
-                        </CircularProgressbarWithChildren>
-                      </Box>
-
-                      <Box w="125px" h="125px">
-                        <CircularProgressbarWithChildren
-                          value={7}
-                          maxValue={14}
-                          styles={buildStyles({
-                            // pathColor: "#D12F2F",
-                            pathColor: colors.error,
-                            textColor: colors.error,
-                            trailColor: colors.lightGray5,
-                          })}
-                        >
-                          <Box textAlign="center">
-                            <VStack>
-                              <H2 color={colors.error}>
-                                <H2 bold>50%</H2>
-                                {/*<BodyMedium>14</BodyMedium>*/}
-                              </H2>
-                              <Caption>
-                                Correct
-                                <br />
-                                Answers
+                                Correct <br /> Numeracy
                               </Caption>
                             </VStack>
                           </Box>
@@ -234,8 +216,11 @@ export default function FinalAssessmentSuccessPage({
                       color: colors.white,
                     }}
                     onPress={() => {
-                      localStorage.removeItem('hp-assessment-selectedStudent')
-                      localStorage.removeItem('hp-assessment-selectedStudentId')
+                      localStorage.removeItem("hp-assessment-selectedStudent");
+                      localStorage.removeItem("hp-assessment-selectedStudentId");
+                      localStorage.removeItem("hpAssessment-written-language-score");
+                      localStorage.removeItem("hpAssessment-written-numeracy-score");
+                      localStorage.removeItem("hpAssessment-orf-language-score");
                       navigate("/hpAssessment/student-list");
                     }}
                   >
