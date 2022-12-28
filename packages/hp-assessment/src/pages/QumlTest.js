@@ -27,7 +27,6 @@ export default function QumlTest({
   selectedSubject,
 }) {
   const [localPageName, setlocalPageName] = useState("questionId");
-  const [gradeThirdNumeracyResult, setGradeThirdNumeracyResult] = useState([]);
   const [rcId, setRcId] = useState(
     localStorage.getItem("hp-assessment-written-reading-comprehension")
   );
@@ -74,8 +73,7 @@ export default function QumlTest({
 
   const startGradeOneAssessment = async (qumlResult) => {
     const params = {};
-    const data1 = {
-      filter: JSON.stringify(params),
+    const data1 = {      
       type: "ORF_LANGUAGE",
       questions: [questionIds],
       source: "diksha",
@@ -88,8 +86,7 @@ export default function QumlTest({
       status: STATUS_NIPUN,
     };
 
-    const data2 = {
-      filter: JSON.stringify(params),
+    const data2 = {      
       type: "ORF_LANGUAGE",
       questions: [questionIds],
       source: "diksha",
@@ -102,8 +99,7 @@ export default function QumlTest({
       status: STATUS_NIPUN,
     };
 
-    const data3 = {
-      filter: JSON.stringify(params),
+    const data3 = {      
       type: "WRITTEN_LANGUAGE",
       questions: [questionIds],
       source: "diksha",
@@ -150,7 +146,7 @@ export default function QumlTest({
       source: "diksha",
       answersheet:
         localStorage.getItem("hp-assessment-oral-test-result-0") ||
-        "",
+        JSON.stringify([{ children: [{ score: 10}] }]),
       studentId: selectedStudentId,
       teacherId: localStorage.getItem("id") || "",
       groupId: localStorage.getItem("hp-assessment-groupId") || "",
@@ -158,7 +154,6 @@ export default function QumlTest({
     };
 
     const data2 = {
-      filter: JSON.stringify(params),
       type: "WRITTEN_NUMERACY",
       questions: [questionIds],
       source: "diksha",
@@ -170,7 +165,6 @@ export default function QumlTest({
     };
 
     const data3 = {
-      filter: JSON.stringify(params),
       type: "WRITTEN_LANGUAGE",
       questions: [rcId],
       source: "diksha",
@@ -298,8 +292,7 @@ export default function QumlTest({
           if (localStorage.getItem('hp-assessment-third-grade-quml-page-name') === "questionId")
             localStorage.setItem('hp-assessment-written-questionIds-answer', JSON.stringify(event.data))
           localStorage.setItem("hp-assessment-third-grade-quml-page-name", "readingComprehension");
-          return setlocalPageName("readingComprehension");
-          // return setGradeThirdNumeracyResult(() => event.data);
+          return setlocalPageName(() => "readingComprehension");
         }
         else
           startAssessment(event.data);
@@ -333,7 +326,6 @@ export default function QumlTest({
       }
       _subHeader={{ bg: "hpAssessment.cardBg1" }}
     >
-      {console.log({ gradeThirdNumeracyResult })}
       {localPageName == "questionId" ? (
         <>
           {questionIds ? (

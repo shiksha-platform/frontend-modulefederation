@@ -250,7 +250,7 @@ export default function StudentsListPage({
                 <Button
                   colorScheme="hpButton"
                   variant="outline"
-                  w="45%"
+                  w="40%"
                   mr="2"
                   isDisabled={true}
                   _disabled={{ cursor: "not-allowed" }}
@@ -259,8 +259,9 @@ export default function StudentsListPage({
                 </Button>
                 <Button
                   colorScheme="hpButton"
-                  w="50%"
+                  w="55%"
                   ml="2"
+                  px="2"
                   _text={{
                     color: colors.white,
                   }}
@@ -276,7 +277,7 @@ export default function StudentsListPage({
               <Button
                 colorScheme="hpButton"
                 variant="outline"
-                w="45%"
+                w="40%"
                 mr="2"
                 isDisabled={!(selectedStudent && selectedStudent.id)}
                 _disabled={{ cursor: "not-allowed" }}
@@ -286,8 +287,9 @@ export default function StudentsListPage({
               </Button>
               <Button
                 colorScheme="hpButton"
-                w="50%"
+                w="55%"
                 ml="2"
+                px="2"
                 _text={{
                   color: colors.white,
                 }}

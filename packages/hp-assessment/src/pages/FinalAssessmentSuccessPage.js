@@ -234,6 +234,8 @@ export default function FinalAssessmentSuccessPage({
                       color: colors.white,
                     }}
                     onPress={() => {
+                      localStorage.removeItem('hp-assessment-selectedStudent')
+                      localStorage.removeItem('hp-assessment-selectedStudentId')
                       navigate("/hpAssessment/student-list");
                     }}
                   >
