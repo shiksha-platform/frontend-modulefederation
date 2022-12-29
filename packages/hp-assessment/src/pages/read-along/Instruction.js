@@ -70,12 +70,12 @@ export default function ReadAlongInstruction() {
     if (timeTaken > 0) {
       localStorage.setItem(
         `hp-assessment-oral-test-result-${count}`,
-        JSON.stringify([{ children: [{ score: parseFloat((correctWords * 60) / timeTaken).toFixed(2) }] }])
+        JSON.stringify([{ children: [{ score: parseFloat((correctWords * 60) / timeTaken).toFixed() }] }])
       );
     } else {
       localStorage.setItem(
         `hp-assessment-oral-test-result-${count}`,
-        JSON.stringify([{ children: [{ score: parseFloat((correctWords * 60) / 1).toFixed(2) }] }])
+        JSON.stringify([{ children: [{ score: parseFloat((correctWords * 60) / 1).toFixed() }] }])
       );
     }
 
@@ -84,7 +84,7 @@ export default function ReadAlongInstruction() {
       _handleReadAlongOpen();
     }
 
-    navigate("/hpAssessment/oral-assessment-success");
+    window.location.href = "/hpAssessment/oral-assessment-success";
   };
 
   const getORFConfig = async () => {
