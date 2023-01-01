@@ -42,7 +42,6 @@ export default function QumlTest({
   };
 
   const startGradeOneAssessment = async (qumlResult) => {
-    const params = {};
     const data1 = {
       type: "ORF_LANGUAGE",
       questions: [questionIds],
@@ -86,6 +85,10 @@ export default function QumlTest({
       getAssessmentData(
         res,
         res[2].data?.insert_trackassessment_one?.trackAssessmentId || "", "WRITTEN_NUMERACY"
+      );
+      getAssessmentData(
+        res,
+        res[0].data?.insert_trackassessment_one?.trackAssessmentId || "", "ORF_LANGUAGE", res[1].data?.insert_trackassessment_one?.trackAssessmentId
       );
     });
   };
@@ -148,11 +151,16 @@ export default function QumlTest({
     });
   };
 
-  const getAssessmentData = async (result, id, type) => {
+  const getAssessmentData = async (result, id, type, id2) => {
     const assessmentDetails =
       await assessmentRegistryService.getAssessmentDetails(id);
     if (type == "WRITTEN_LANGUAGE") {
       localStorage.setItem("hpAssessment-written-language-score", JSON.stringify({ obtained: assessmentDetails[0].score, totalScore: assessmentDetails[0].totalScore }));
+    } else if (type == "ORF_LANGUAGE" && id2) {
+      const assessmentDetails2 = await assessmentRegistryService.getAssessmentDetails(id2);
+      if (assessmentDetails2) {
+        localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: (assessmentDetails[0].score + assessmentDetails2[0].score) / 2 }));
+      }
     } else if (type == "ORF_LANGUAGE") {
       localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: assessmentDetails[0].score }));
     } else if (type == "WRITTEN_NUMERACY") {
