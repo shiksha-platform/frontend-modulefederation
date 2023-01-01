@@ -159,7 +159,7 @@ export default function QumlTest({
     } else if (type == "ORF_LANGUAGE" && id2) {
       const assessmentDetails2 = await assessmentRegistryService.getAssessmentDetails(id2);
       if (assessmentDetails2) {
-        const ans = parseFloat((assessmentDetails[0].score + assessmentDetails2[0].score) / 2).toFixed();
+        const ans = parseInt(((assessmentDetails[0].score + assessmentDetails2[0].score) / 2).toFixed());
         localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: ans }));
       }
     } else if (type == "ORF_LANGUAGE") {
