@@ -159,11 +159,11 @@ export default function QumlTest({
     } else if (type == "ORF_LANGUAGE" && id2) {
       const assessmentDetails2 = await assessmentRegistryService.getAssessmentDetails(id2);
       if (assessmentDetails2) {
-        const ans = parseFloat((assessmentDetails[0].score + assessmentDetails2[0].score) / parseFloat(2)).toFixed();
+        const ans = parseFloat((assessmentDetails[0].score + assessmentDetails2[0].score) / 2).toFixed();
         localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: ans }));
       }
     } else if (type == "ORF_LANGUAGE") {
-      localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: assessmentDetails[0].score }));
+      localStorage.setItem("hpAssessment-orf-language-score", JSON.stringify({ obtained: assessmentDetails[0].score.toFixed() }));
     } else if (type == "WRITTEN_NUMERACY") {
       localStorage.setItem("hpAssessment-written-numeracy-score", JSON.stringify({ obtained: assessmentDetails[0].score, totalScore: assessmentDetails[0].totalScore }));
     }

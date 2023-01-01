@@ -70,12 +70,12 @@ export default function ReadAlongInstruction() {
     if (timeTaken > 0) {
       localStorage.setItem(
         `hp-assessment-oral-test-result-${count}`,
-        JSON.stringify([{ children: [{ score: parseFloat((correctWords * 60) / timeTaken).toFixed() }] }])
+        JSON.stringify([{ children: [{ score: (correctWords * 60) / timeTaken }] }])
       );
     } else {
       localStorage.setItem(
         `hp-assessment-oral-test-result-${count}`,
-        JSON.stringify([{ children: [{ score: parseFloat((correctWords * 60) / 1).toFixed() }] }])
+        JSON.stringify([{ children: [{ score: (correctWords * 60) / 1 }] }])
       );
     }
 
