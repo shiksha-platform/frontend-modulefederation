@@ -84,7 +84,7 @@ export default function ReadAlongInstruction() {
       _handleReadAlongOpen();
     }
 
-    window.location.href = "/hpAssessment/oral-assessment-success";
+    navigate("/hpAssessment/oral-assessment-success");
   };
 
   const getORFConfig = async () => {

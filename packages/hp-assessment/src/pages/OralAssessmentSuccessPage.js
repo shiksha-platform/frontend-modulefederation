@@ -67,7 +67,7 @@ export default function OralAssessmentSuccessPage() {
             colorScheme="hBbutton"
             variant="outline"
             onPress={() => {
-              navigate("/hpAssessment/quml-test");
+              window.location.href = "/hpAssessment/quml-test";
               // navigate("/hpAssessment/final-assessment-success");
             }}
           >

@@ -55,19 +55,7 @@ export default function FinalAssessmentSuccessPage({
   writtenLanguageTotal = JSON.parse(localStorage.getItem('hpAssessment-written-language-score'))?.totalScore;
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [progressAssessment, setProgressAssessment] = React.useState([
-    {
-      name: "12 Assessed",
-      color: "hpAssessment.success",
-      value: 12,
-    },
-    {
-      name: "6 pending",
-      color: "hpAssessment.unmarked",
-      value: 6,
-    },
-  ]);
+  const navigate = useNavigate();  
   const selectedStudent = JSON.parse(localStorage.getItem('hp-assessment-selectedStudent') || "");
 
   return (
