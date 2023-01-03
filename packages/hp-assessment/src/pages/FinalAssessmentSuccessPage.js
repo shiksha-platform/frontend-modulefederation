@@ -11,6 +11,7 @@ import {
   overrideColorTheme,
   Caption,
   BodyMedium,
+  hpAssessmentRegistryService
 } from "@shiksha/common-lib";
 import {
   Button,
@@ -21,7 +22,7 @@ import {
   Divider,
   Avatar,
 } from "native-base";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import nipun_badge from "../stories/assets/nipun_badge.svg";
 import nipun_kids from "../stories/assets/nipun_kids.svg";
@@ -55,8 +56,31 @@ export default function FinalAssessmentSuccessPage({
   writtenLanguageTotal = JSON.parse(localStorage.getItem('hpAssessment-written-language-score'))?.totalScore;
   const [width, height] = useWindowSize();
   const { t } = useTranslation();
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
   const selectedStudent = JSON.parse(localStorage.getItem('hp-assessment-selectedStudent') || "");
+
+  useEffect(async () => {    
+    const groupMembershipId = JSON.parse(localStorage.getItem("hp-assessment-selectedStudent")).groupMembershipId;    
+    let status = "NIPUN_READY";
+    if (grade == 3) {
+      if (orfObtained >= 60 && (writtenLanguageObtained * 100 / writtenLanguageTotal) >= 75 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
+        status = "NIPUN"
+      }
+    } else if (grade == 2) {
+      if (orfObtained >= 45 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
+        status = "NIPUN"
+      }
+    } else if (grade == 1) {
+      if (orfObtained >= 10 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
+        status = "NIPUN"
+      }
+    }
+    const data = {      
+      status
+    }
+    await hpAssessmentRegistryService.updateGroupMembersById(groupMembershipId, data);
+  }, [])
+
 
   return (
     <Layout isDisabledAppBar={false}>
