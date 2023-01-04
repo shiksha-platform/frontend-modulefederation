@@ -38,7 +38,7 @@ const colors = overrideColorTheme(colorTheme);
 export default function FinalAssessmentSuccessPage({
   handleBackButton,
   formObject,
-}) {  
+}) {
   let orfObtained, orfTotal, writtenNumeracyObtained, writtenNumeracyTotal, writtenLanguageObtained, writtenLanguageTotal;
   orfObtained = JSON.parse(localStorage.getItem('hpAssessment-orf-language-score'))?.obtained;
   let grade = localStorage.getItem('hp-assessment-groupName');
@@ -86,7 +86,7 @@ export default function FinalAssessmentSuccessPage({
       status
     }
     await hpAssessmentRegistryService.updateGroupMembersById(groupMembershipId, data);
-  }, [])
+  }, [orfObtained, writtenLanguageObtained, writtenNumeracyObtained])
 
 
   return (
