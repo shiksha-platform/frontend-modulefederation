@@ -22,10 +22,12 @@ import {
   Divider,
   Avatar,
 } from "native-base";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import nipun_badge from "../stories/assets/nipun_badge.svg";
 import nipun_kids from "../stories/assets/nipun_kids.svg";
+import nipun_ready from "../stories/assets/nipun_ready.png";
+import nipun_ready_kids from "../stories/assets/nipun_ready_kids.svg";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
@@ -39,6 +41,7 @@ export default function FinalAssessmentSuccessPage({
   handleBackButton,
   formObject,
 }) {
+  const [status, setStatus] = useState("");
   let orfObtained, orfTotal, writtenNumeracyObtained, writtenNumeracyTotal, writtenLanguageObtained, writtenLanguageTotal;
   orfObtained = JSON.parse(localStorage.getItem('hpAssessment-orf-language-score'))?.obtained;
   let grade = localStorage.getItem('hp-assessment-groupName');
@@ -61,54 +64,53 @@ export default function FinalAssessmentSuccessPage({
 
   useEffect(async () => {
     const groupMembershipId = JSON.parse(localStorage.getItem("hp-assessment-selectedStudent")).groupMembershipId;
-    let status;
     if (grade == 3) {
       if (orfObtained >= 60 && (writtenLanguageObtained * 100 / writtenLanguageTotal) >= 75 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
-        status = "NIPUN";
+        setStatus(() => "NIPUN");
       } else {
-        status = "NIPUN_READY";
+        setStatus(() => "NIPUN_READY");
       }
     } else if (grade == 2) {
       if (orfObtained >= 45 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
-        status = "NIPUN"
+        setStatus(() => "NIPUN");
       } else {
-        status = "NIPUN_READY";
+        setStatus(() => "NIPUN_READY");
       }
     } else if (grade == 1) {
       console.log({ orfObtained })
       if (orfObtained >= 10 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
-        status = "NIPUN"
+        setStatus(() => "NIPUN");
       } else {
-        status = "NIPUN_READY";
+        setStatus(() => "NIPUN_READY");
       }
     }
     const data = {
       status
     }
     await hpAssessmentRegistryService.updateGroupMembersById(groupMembershipId, data);
-  }, [orfObtained, writtenLanguageObtained, writtenNumeracyObtained])
+  }, [orfObtained, writtenLanguageObtained, writtenNumeracyObtained, status])
 
 
   return (
-    <Layout isDisabledAppBar={false}>
+    status && <Layout isDisabledAppBar={false}>
       <Loading
         width={width}
         height={height - 230}
         customComponent={
           <VStack space="0" flex="1" width={width}>
             <VStack
-              bg="hpAssessment.successBackground"
+              bg={status == "NIPUN" ? "hpAssessment.successBackground" : "hpAssessment.dangerAlert"}
               pb="100px"
               pt="32px"
               alignItems="center"
             >
               <img
-                src={nipun_badge}
+                src={status == "NIPUN" ? nipun_badge : nipun_ready}
                 alt="nipun badge"
                 style={{ maxWidth: "150px", width: "30%" }}
               />
               <img
-                src={nipun_kids}
+                src={status == "NIPUN" ? nipun_kids : nipun_ready_kids}
                 alt="nipun kids"
                 style={{ maxWidth: "170px", width: "35%" }}
               />
