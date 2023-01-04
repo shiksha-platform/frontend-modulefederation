@@ -10,7 +10,7 @@ const TileBasedOnStatus = ({
   children,
   setSelectedStudent,
   student,
-}) => {
+}) => {  
   if (student.status === "visited") {
     return (
       <Pressable
@@ -43,6 +43,54 @@ const TileBasedOnStatus = ({
           bg="hpAssessment.completed"
           p={4}
           borderColor="hpAssessment.completeSeparator"
+          borderWidth={1}
+          rounded={10}
+        >
+          {children}
+        </Box>
+      </Pressable>
+    );
+  }
+  if (status === "NIPUN_READY") {
+    return (
+      <Pressable
+        onPress={() => setSelectedStudent(student)}
+        isDisabled={student.membershipStatus === "NIPUN_READY"}
+        _disabled={{ cursor: "not-allowed" }}
+      >
+        <Box
+          // bg="hpAssessment.white"          
+          bg={
+            student.membershipStatus === "NIPUN_READY"
+              ? "hpAssessment.dangerAlert"
+              : "hpAssessment.white"
+          }
+          p={4}
+          borderColor="hpAssessment.pendingSeparator"
+          borderWidth={1}
+          rounded={10}
+        >
+          {children}
+        </Box>
+      </Pressable>
+    );
+  }
+  if (status === "NIPUN") {
+    return (
+      <Pressable
+        onPress={() => setSelectedStudent(student)}
+        isDisabled={student.membershipStatus === "NIPUN"}
+        _disabled={{ cursor: "not-allowed" }}
+      >
+        <Box
+          // bg="hpAssessment.white"          
+          bg={
+            student.membershipStatus === "NIPUN"
+              ? "hpAssessment.successAlert"
+              : "hpAssessment.white"
+          }
+          p={4}
+          borderColor="hpAssessment.pendingSeparator"
           borderWidth={1}
           rounded={10}
         >
