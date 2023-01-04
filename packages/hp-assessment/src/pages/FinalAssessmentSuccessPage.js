@@ -38,7 +38,7 @@ const colors = overrideColorTheme(colorTheme);
 export default function FinalAssessmentSuccessPage({
   handleBackButton,
   formObject,
-}) {
+}) {  
   let orfObtained, orfTotal, writtenNumeracyObtained, writtenNumeracyTotal, writtenLanguageObtained, writtenLanguageTotal;
   orfObtained = JSON.parse(localStorage.getItem('hpAssessment-orf-language-score'))?.obtained;
   let grade = localStorage.getItem('hp-assessment-groupName');
@@ -59,23 +59,30 @@ export default function FinalAssessmentSuccessPage({
   const navigate = useNavigate();
   const selectedStudent = JSON.parse(localStorage.getItem('hp-assessment-selectedStudent') || "");
 
-  useEffect(async () => {    
-    const groupMembershipId = JSON.parse(localStorage.getItem("hp-assessment-selectedStudent")).groupMembershipId;    
-    let status = "NIPUN_READY";
+  useEffect(async () => {
+    const groupMembershipId = JSON.parse(localStorage.getItem("hp-assessment-selectedStudent")).groupMembershipId;
+    let status;
     if (grade == 3) {
       if (orfObtained >= 60 && (writtenLanguageObtained * 100 / writtenLanguageTotal) >= 75 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
-        status = "NIPUN"
+        status = "NIPUN";
+      } else {
+        status = "NIPUN_READY";
       }
     } else if (grade == 2) {
       if (orfObtained >= 45 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
         status = "NIPUN"
+      } else {
+        status = "NIPUN_READY";
       }
     } else if (grade == 1) {
+      console.log({ orfObtained })
       if (orfObtained >= 10 && (writtenNumeracyObtained * 100 / writtenNumeracyTotal) >= 75) {
         status = "NIPUN"
+      } else {
+        status = "NIPUN_READY";
       }
     }
-    const data = {      
+    const data = {
       status
     }
     await hpAssessmentRegistryService.updateGroupMembersById(groupMembershipId, data);
