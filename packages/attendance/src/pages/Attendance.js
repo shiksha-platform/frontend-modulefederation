@@ -4,19 +4,20 @@ import {
   IconByName,
   Layout,
   calendar,
-  H1,
+  H2,
   classRegistryService,
   studentRegistryService,
   overrideColorTheme,
   BodySmall,
   getApiConfig,
+  Loading,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import manifest1 from "../manifest.json";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, FlatList, HStack, Stack, VStack, Button } from "native-base";
-import { WeekWiesBar } from "components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import AttendanceComponent, {
   GetAttendance,
   MultipalAttendance,
@@ -30,21 +31,19 @@ const colors = overrideColorTheme(colorTheme);
 const PRESENT = "Present";
 const ABSENT = "Absent";
 
-export default function Attendance({ footerLinks, appName }) {
+export default function Attendance({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
-  const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
   const [students, setStudents] = useState([]);
   const [searchStudents, setSearchStudents] = useState([]);
   const [classObject, setClassObject] = useState({});
   let { classId } = useParams();
   if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("true");
   const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState();
   const [isEditDisabled, setIsEditDisabled] = useState(true);
   const [sms, setSms] = useState([]);
-  const teacherId = localStorage.getItem("id");
   const [attendanceStartTime, setAttendanceStartTime] = useState();
   const [unmarkStudents, setUnmarkStudents] = useState([]);
   const navigate = useNavigate();
@@ -72,7 +71,7 @@ export default function Attendance({ footerLinks, appName }) {
     let date = moment.max(dates);
     setLastAttedance(dates.length ? moment(date).format("hh:mma") : "N/A");
   }, [attendance, students]);
-  console.log(lastAttedance);
+
   useEffect(() => {
     const filterStudent = students.filter((e) =>
       e?.fullName?.toLowerCase().match(search?.toLowerCase())
@@ -80,32 +79,23 @@ export default function Attendance({ footerLinks, appName }) {
     setSearchStudents(filterStudent);
   }, [search, students]);
 
-  useEffect(() => {
+  useEffect(async () => {
     let ignore = false;
     async function getData() {
       const newManifest = await getApiConfig();
       setManifest(newManifest);
-      const studentData = await studentRegistryService.getAll({ classId });
+      let sortBy = "admissionNo";
       if (
-        newManifest?.["attendance_card.order_of_attendance_card"] ===
+        newManifest?.["attendance.order_of_attendance_card"] ===
         '"Alphabetically"'
       ) {
-        setStudents(
-          studentData.sort(function (oldItem, newItem) {
-            return oldItem.firstName === newItem.firstName
-              ? 0
-              : oldItem.firstName < newItem.firstName
-              ? -1
-              : 1;
-          })
-        );
-      } else {
-        setStudents(
-          studentData.sort(function (a, b) {
-            return a.admissionNo - b.admissionNo;
-          })
-        );
+        sortBy = "firstName";
       }
+      const studentData = await studentRegistryService.getAll({
+        classId,
+        sortBy,
+      });
+      setStudents(studentData);
       setSearchStudents(studentData);
       if (!ignore)
         setClassObject(await classRegistryService.getOne({ id: classId }));
@@ -118,7 +108,8 @@ export default function Attendance({ footerLinks, appName }) {
         }))
       );
     }
-    getData();
+    await getData();
+    setLoading(false);
     return () => {
       ignore = true;
     };
@@ -175,19 +166,18 @@ export default function Attendance({ footerLinks, appName }) {
     return <FourOFour />;
   }
 
-  if (loading) {
-    return (
-      <Loader
-        success={allAttendanceStatus.success}
-        fail={allAttendanceStatus.fail}
-      />
-    );
+  if (loading === "true") {
+    return <Loading />;
+  } else if (loading) {
+    return <Loader />;
   }
 
   return (
     <Layout
       _header={{
-        title: classObject?.title ? classObject?.title : "",
+        title:
+          (classObject?.name ? classObject?.name : "") +
+          (classObject?.section ? " • Sec " + classObject?.section : ""),
         // isEnableSearchBtn: true,
         // setSearch: setSearch,
         subHeading: t("ATTENDANCE_REGISTER"),
@@ -215,7 +205,10 @@ export default function Attendance({ footerLinks, appName }) {
       subHeader={
         <HStack p={1} space="4" justifyContent="space-between">
           <VStack>
-            <H1>{classObject?.title ? classObject?.title : ""}</H1>
+            <H2>
+              {(classObject?.name ? classObject?.name : "") +
+                (classObject?.section ? " • Sec " + classObject?.section : "")}
+            </H2>
             <BodySmall>
               {t("TOTAL") + " " + students.length + " " + t("STUDENTS")}
             </BodySmall>
@@ -224,7 +217,7 @@ export default function Attendance({ footerLinks, appName }) {
             size="sm"
             mt="8px"
             name="ArrowRightSLineIcon"
-            onPress={(e) => navigate(`/students/class/${classId}`)}
+            onPress={(e) => navigate(`/classes/${classId}`)}
           />
         </HStack>
       }
@@ -234,7 +227,8 @@ export default function Attendance({ footerLinks, appName }) {
       <Stack space={1}>
         <Box bg={colors.white} px="4" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
-            <WeekWiesBar
+            <CalendarBar
+              view="week"
               setPage={setWeekPage}
               page={weekPage}
               previousDisabled={
@@ -304,6 +298,7 @@ export default function Attendance({ footerLinks, appName }) {
           data={searchStudents}
           renderItem={({ item, index }) => (
             <AttendanceComponent
+              setAlert={setAlert}
               setLastAttedance={setLastAttedance}
               manifest={manifest}
               hidePopUpButton={false}
@@ -328,8 +323,6 @@ export default function Attendance({ footerLinks, appName }) {
           attendance,
           getAttendance,
           setLoading,
-          setAllAttendanceStatus,
-          allAttendanceStatus,
           classId,
           classObject,
           isEditDisabled,

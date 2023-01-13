@@ -5,23 +5,11 @@ import {
   attendanceRegistryService,
   ProgressBar,
   getUniqAttendance,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
-import {
-  HStack,
-  Text,
-  VStack,
-  Stack,
-  Box,
-  Progress,
-  Button,
-} from "native-base";
+import { HStack, Text, VStack, Stack, Box, Button } from "native-base";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../../../colorTheme";
-
-const colors = overrideColorTheme(colorTheme);
 
 const PRESENT = "Present";
 const ABSENT = "Absent";
@@ -41,7 +29,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
       };
       let attendanceData = await attendanceRegistryService.getAll(params);
       let lengthAttendance = 0;
-      const data = [PRESENT, ABSENT, UNMARKED].map((item, index) => {
+      const data = [PRESENT, ABSENT, UNMARKED].map((item) => {
         const attendance = getUniqAttendance(attendanceData, item, students);
         let count = 0;
         lengthAttendance += attendance.length;
@@ -52,7 +40,7 @@ const ClassAttendanceCard = ({ classId, students }) => {
         }
         return {
           name: count + " " + item,
-          color: `attendance${item}.500`,
+          color: `attendance.${item.toLowerCase()}`,
           value: count,
         };
       });
@@ -69,11 +57,11 @@ const ClassAttendanceCard = ({ classId, students }) => {
       fontSize="2px"
     >
       <VStack p="2" space={4}>
-        <Box bg={colors.lightGrayBg} rounded={"md"} p="4">
+        <Box bg={"classes.lightGray4"} rounded={"md"} p="4">
           <VStack space={2}>
             <HStack justifyContent={"space-between"} alignItems="center">
               <Text bold>{t("STATUS")}</Text>
-              <IconByName name="More2LineIcon" />
+              {/* <IconByName name="More2LineIcon" /> */}
             </HStack>
             <ProgressBar
               isTextInBar
@@ -83,7 +71,6 @@ const ClassAttendanceCard = ({ classId, students }) => {
               data={progressAttendance}
             />
             <HStack justifyContent={"space-between"} alignItems="center">
-              {/* <Text>{t("GRADE") + ": " + t("GOOD")}</Text> */}
               <Text>
                 {t("TOTAL") + `: ${students?.length} ` + t("STUDENTS")}
               </Text>
@@ -108,16 +95,6 @@ const ClassAttendanceCard = ({ classId, students }) => {
             onPressFuction={(e) => navigate("/attendance/report")}
           />
         </Stack>
-
-        {/* <Box
-          bg="white"
-          borderBottomWidth="1"
-          borderBottomColor={"coolGray.200"}
-        >
-          <Stack space={2}>
-            <Collapsible header={t("SMS_REPORTS")} />
-          </Stack>
-        </Box> */}
       </VStack>
     </Collapsible>
   );

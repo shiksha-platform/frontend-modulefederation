@@ -4,15 +4,12 @@ import {
   Layout,
   Loading,
   useWindowSize,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import WorksheetBox from "components/WorksheetBox";
 import { Button, Box, VStack } from "native-base";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import manifest from "../../manifest.json";
-import colorTheme from "../../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function SuccessPage({
   handleBackButton,
@@ -30,8 +27,8 @@ export default function SuccessPage({
           ? handleBackButton
           : (e) => console.log(e),
         languages: manifest.languages,
-        color: colors.success,
-        _box: { bg: colors.alertBackground },
+        color: "worksheet.success",
+        _box: { bg: "worksheet.successAlert" },
       }}
     >
       <Loading
@@ -39,15 +36,15 @@ export default function SuccessPage({
         height={height - 230}
         customComponent={
           <VStack space="2" flex="1" width={width}>
-            <VStack bg={colors.alertBackground} pb="100px" pt="32px">
+            <VStack bg={"worksheet.successAlert"} pb="100px" pt="32px">
               <IconByName
                 alignSelf="center"
                 name="CheckboxCircleLineIcon"
-                color={colors.success}
+                color={"worksheet.success"}
                 _icon={{ size: 100 }}
               />
               <Box alignSelf="center">
-                <H1 color={colors.success}>Worksheet Published</H1>
+                <H1 color={"worksheet.success"}>Worksheet Published</H1>
               </Box>
             </VStack>
             <Box p="5">

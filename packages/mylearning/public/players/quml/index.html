@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QUML Player web component demo</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+      .player-grid {
+        width: 100%;
+        height: 100vh;
+        margin: 0 auto;
+        display: grid;
+        padding-top: 1rem;
+
+        @media screen and (max-width: 768px) {
+          grid-template-columns: 100%;
+          gap: 0px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="player-grid" id="my-player"></div>
+    <script type="text/javascript" src="sunbird-quml-player.js"></script>
+    <script type="text/javascript">
+      const playerConfig = {
+        context: {
+          threshold: 3,
+          mode: "play",
+          authToken: " ",
+          sid: "913b3c6c-2874-26dd-ed0c-c23ddc00b718",
+          did: "561c348e631fd225b46a5571cbd42ad1",
+          uid: "",
+          channel: "01268904781886259221",
+          pdata: {
+            id: "preprod.diksha.portal",
+            ver: "3.3.0",
+            pid: "sunbird-portal.contentplayer",
+          },
+          contextRollup: {
+            l1: "string",
+            l2: "string",
+            l3: "string",
+            l4: "string",
+          },
+          tags: [],
+          cdata: [
+            {
+              id: "c0c9384a82a75f219468d363e1891963",
+              type: "ContentSession",
+            },
+            {
+              id: "a12f45a1d7078901adb27b48be4b428d",
+              type: "PlaySession",
+            },
+          ],
+          timeDiff: 5,
+          objectRollup: {
+            l1: "string",
+            l2: "string",
+            l3: "string",
+            l4: "string",
+          },
+          host: "",
+          endpoint: "/data/v3/telemetry",
+          userData: {
+            firstName: "Diptesh",
+            lastName: "Mukherjee",
+          },
+        },
+        metadata: JSON.parse(window.name),
+        config: {
+          traceId: "1234",
+          sideMenu: {
+            showShare: true,
+            showDownload: true,
+            showReplay: true,
+            showExit: true,
+          },
+        },
+      };
+      // Need to pass the API URL to fetch the question set
+      window.questionListUrl =
+        "https://staging.sunbirded.org/api/question/v1/list";
+      const qumlPlayerElement = document.createElement("sunbird-quml-player");
+      qumlPlayerElement.setAttribute(
+        "player-config",
+        JSON.stringify(playerConfig)
+      );
+      const myPlayer = document.getElementById("my-player");
+      myPlayer.appendChild(qumlPlayerElement);
+    </script>
+  </body>
+</html>

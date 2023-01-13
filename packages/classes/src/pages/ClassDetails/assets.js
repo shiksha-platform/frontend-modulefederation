@@ -1,87 +1,77 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Collapsible,
   H2,
-  IconByName,
   classRegistryService,
-  overrideColorTheme,
   H1,
-  BodySmall,
+  assessmentRegistryService,
 } from "@shiksha/common-lib";
-import { Stack, Box, VStack, HStack, Menu, Pressable } from "native-base";
-import colorTheme from "../../colorTheme";
+import { Stack, Box, VStack, HStack } from "native-base";
 
-const colors = overrideColorTheme(colorTheme);
-
-export const routes = () => {
+export const routes = (classObject, students) => {
   const { t } = useTranslation();
-  return [
-    {
-      title: t("SCIENCE"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("MATHS"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("ENGLISH"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("HISTORY"),
-      component: <SubjectRoute />,
-    },
-    {
-      title: t("GEOGRAPHY"),
-      component: <SubjectRoute />,
-    },
-  ];
+  const [subjects, setSubjects] = React.useState([]);
+
+  React.useEffect(async () => {
+    const data = await assessmentRegistryService.getSubjectsList({
+      gradeLevel: classObject?.gradeLevel,
+    });
+
+    setSubjects(data);
+  }, [classObject]);
+
+  return subjects.map((item) => {
+    return {
+      title: item.name,
+      component: (
+        <SubjectRoute
+          subject={item.code}
+          classObject={classObject}
+          students={students}
+        />
+      ),
+    };
+  });
 };
 
-const SubjectRoute = () => {
+const SubjectRoute = ({ subject, classObject, students }) => {
   const { t } = useTranslation();
 
+  const Assessment = React.lazy(() => import("assessment/Assessment"));
   return (
     <Box>
       <Box
         borderBottomWidth="1"
         _dark={{
-          borderColor: colors.coolGraydark,
+          borderColor: "classes.darkGray3",
         }}
-        borderColor={colors.lightGrayBg}
+        borderColor={"classes.lightGray4"}
         pr="1"
       >
         <Stack space={2}>
           <Collapsible
             header={
               <HStack alignItems="center" space="2">
-                {t("ASSIGNMENTS")}
-                <Box
-                  rounded="full"
-                  borderWidth="1"
-                  borderColor={colors.primary}
-                  px="6px"
-                  _text={{
-                    color: colors.primary,
-                    fontSize: "10px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Coming Soon...
-                </Box>
+                {t("ASSESSMENT")}
               </HStack>
             }
-          />
+          >
+            <Suspense fallback="loading...">
+              <Assessment
+                isLayoutNotRequired={true}
+                {...{ classObject, subject, students }}
+              />
+            </Suspense>
+          </Collapsible>
         </Stack>
       </Box>
       <Box
         borderBottomWidth="1"
         _dark={{
-          borderColor: colors.coolGraydark,
+          borderColor: "classes.darkGray3",
         }}
-        borderColor={colors.lightGrayBg}
+        borderColor={"classes.lightGray4"}
         pr="1"
       >
         <Stack space={2}>
@@ -92,10 +82,10 @@ const SubjectRoute = () => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor={colors.primary}
+                  borderColor={"classes.primary"}
                   px="6px"
                   _text={{
-                    color: colors.primary,
+                    color: "classes.primary",
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -116,10 +106,10 @@ const SubjectRoute = () => {
                 <Box
                   rounded="full"
                   borderWidth="1"
-                  borderColor={colors.primary}
+                  borderColor={"classes.primary"}
                   px="6px"
                   _text={{
-                    color: colors.primary,
+                    color: "classes.primary",
                     fontSize: "10px",
                     fontWeight: "600",
                   }}
@@ -165,51 +155,9 @@ export const _header = (data) => {
         >
           <HStack alignItems="center" justifyContent="space-between">
             <VStack>
-              <H2 color={colors.white}>{data?.name}</H2>
-              <H1 color={colors.white}>{t("CLASS_DETAILS")}</H1>
+              <H2 color={"classes.white"}>{data?.name}</H2>
+              <H1 color={"classes.white"}>{t("CLASS_DETAILS")}</H1>
             </VStack>
-            {/* <HStack alignItems="center">
-              <Box px="3">
-                <Menu
-                  right="100%"
-                  width="150"
-                  trigger={(triggerProps) => {
-                    return (
-                      <Pressable {...triggerProps}>
-                        <IconByName
-                          isDisabled
-                          color={colors.white}
-                          name="CameraLineIcon"
-                        />
-                      </Pressable>
-                    );
-                  }}
-                >
-                  {/* <Menu.Item>
-                    <Pressable onPress={onFileUpload}>
-                      <BodySmall>{t("REMOVE_PHOTO")}</BodySmall>
-                    </Pressable>
-                  </Menu.Item> */}
-            {/* <Menu.Item>
-                    <BodySmall>{t("UPLOAD_PHPTP")}</BodySmall>
-                    <input
-                      type="file"
-                      style={{
-                        opacity: 0,
-                        width: "100%",
-                        position: "absolute",
-                        padding: "5px",
-                        zIndex: "10",
-                        top: "5px",
-                        left: "0",
-                      }}
-                      onChange={onFileUpload}
-                    />
-                  </Menu.Item> */}
-            {/* </Menu> */}
-            {/* </Box>
-              <IconByName color={colors.white} name="ShareLineIcon" />}
-            </HStack> } */}
           </HStack>
         </Box>
       </Box>

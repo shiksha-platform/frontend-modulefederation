@@ -1,0 +1,23 @@
+{
+  "id": "org.ekstep.libs.ckeditor",
+  "ver": "1.1",
+  "shortId": "org.ekstep.libs.ckeditor",
+  "displayName": "CKEditor Library Plugin",
+  "author": "Sivashanmugam Kannan",
+  "title": "CKEditor Library Plugin",
+  "description": "Add this plugin as dependency if CKEditor functionality is required by other plugins. Urdu Support Added through RTL plugin",
+  "publishedDate": "",
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "js",
+        "src": "editor/ckeditor/ckeditor.js"
+      },
+      {
+        "type": "css",
+        "src": "editor/css/custom_toolbar_style.css"
+      }
+    ]
+  }
+}

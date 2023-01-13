@@ -18,8 +18,8 @@ export default function Header({
   return !isDisabledHeader ? (
     !customeComponent ? (
       <Box {..._box} py={7} px={5}>
-        <HStack justifyContent='space-between' alignItems='center'>
-          <VStack>
+        <HStack justifyContent='space-between' alignItems='center' space='1'>
+          <VStack flex={1}>
             {subHeadingComponent ? (
               subHeadingComponent
             ) : (
@@ -38,10 +38,7 @@ export default function Header({
           {iconComponent ? (
             iconComponent
           ) : avatar ? (
-            <Avatar bg='amber.500' borderRadius='5px'>
-              {newAvatar?.toUpperCase().substr(0, 2)}
-              {/* <Avatar.Badge bg='green.500'  /> */}
-            </Avatar>
+            <Avatar>{newAvatar?.toUpperCase().substr(0, 2)}</Avatar>
           ) : (
             <React.Fragment />
           )}

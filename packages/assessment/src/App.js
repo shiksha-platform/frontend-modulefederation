@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import Assessment from "pages";
 import ExamScores from "./pages/ExamScores";
 import SuccessPublicationReport from "./components/SpotAssessment/successPublicationReport";
@@ -16,75 +15,122 @@ import QuestionList4 from "./components/ExamScores/QuestionLIst4";
 import QuestionList5 from "./components/ExamScores/QuestionLIst5";
 import QuestionList6 from "./components/ExamScores/QuestionLIst6";
 import QuestionList7 from "./components/ExamScores/QuestionLIst7";
+import PastAssessments from "./pages/PastAssessments";
+import PastExaminationsList from "./pages/PastExaminations";
+import AssessmentGiven from "pages/AssessmentGiven";
+import StudentReport from "pages/StudentReport";
 
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
-  /*initializeI18n(
+  initializeI18n(
     ["assessment"],
     `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
-  );*/
+  );
   const routes = [
     {
-      path: "/exam-list2",
+      moduleName: "assessment",
+      path: "/assessment/exam-list2",
       component: QuestionList2,
     },
     {
-      path: "/exam-list3",
+      moduleName: "assessment",
+      path: "/assessment/exam-list3",
       component: QuestionList3,
     },
     {
-      path: "/exam-list4",
+      moduleName: "assessment",
+      path: "/assessment/exam-list4",
       component: QuestionList4,
     },
     {
-      path: "/exam-list5",
+      moduleName: "assessment",
+      path: "/assessment/exam-list5",
       component: QuestionList5,
     },
     {
-      path: "/exam-list6",
+      moduleName: "assessment",
+      path: "/assessment/exam-list6",
       component: QuestionList6,
     },
     {
-      path: "/exam-list7",
+      moduleName: "assessment",
+      path: "/assessment/exam-list7",
       component: QuestionList7,
     },
     {
-      path: "/examscores",
+      moduleName: "assessment",
+      path: "/assessment/examscores",
       component: ExamScores,
     },
     {
-      path: "/assessment-result",
+      moduleName: "assessment",
+      path: "/assessment/assessment-result",
       component: SpotAssessmentResult,
     },
     {
-      path: "/assessment-result2",
+      moduleName: "assessment",
+      path: "/assessment/assessment-result2",
       component: SpotAssessmentResult2,
     },
     {
-      path: "/assessment-result3",
+      moduleName: "assessment",
+      path: "/assessment/assessment-result3",
       component: SpotAssessmentResult3,
     },
     {
-      path: "/assessment-success",
-      component: SuccessPublicationReport,
-    },
-    {
-      path: "/assessment-detailed-report",
+      moduleName: "assessment",
+      path: "/assessment/assessment-detailed-report/:classId/:subject",
       component: ReportDetails,
     },
     {
-      path: "/quml-test",
+      moduleName: "assessment",
+      path: "/assessment/assessment-detailed-report/:classId/:subject/:date",
+      component: ReportDetails,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/past-assessments/:classId/:subject",
+      component: PastAssessments,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/past-examinations",
+      component: PastExaminationsList,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/quml-test",
       component: QumlTest,
     },
     {
+      moduleName: "assessment",
+      path: "/assessment/given/:classId/:subject",
+      component: AssessmentGiven,
+    },
+    {
+      moduleName: "assessment",
+      path: "/assessment/student-report/:classId/:subject/:date",
+      component: StudentReport,
+    },
+    {
+      moduleName: "assessment",
       path: "/",
       component: Assessment,
     },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
 
   return (
-    <AppShell theme={theme} routes={routes} AuthComponent={LoginComponent} />
+    <AppShell
+      routes={routes}
+      AuthComponent={LoginComponent}
+      basename={process.env.PUBLIC_URL}
+      skipLogin={skipLogin}
+      _authComponent={{ swPath: "/modules/assessment" }}
+    />
   );
 }
 

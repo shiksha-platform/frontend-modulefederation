@@ -8,12 +8,17 @@ module.exports = {
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,
     attendance: `attendance@[window.appModules.attendance.url]/moduleEntry.js`,
+    assessment: `assessment@[window.appModules.assessment.url]/moduleEntry.js`,
     classes: `classes@[window.appModules.classes.url]/moduleEntry.js`,
     worksheet: `worksheet@[window.appModules.worksheet.url]/moduleEntry.js`,
     calendar: `calendar@[window.appModules.calendar.url]/moduleEntry.js`,
     students: `students@[window.appModules.students.url]/moduleEntry.js`,
     notification: `notification@[window.appModules.notification.url]/moduleEntry.js`,
     profile: `profile@[window.appModules.profile.url]/moduleEntry.js`,
+    mylearning: `mylearning@[window.appModules.mylearning.url]/moduleEntry.js`,
+    schools: `schools@[window.appModules.schools.url]/moduleEntry.js`,
+    visits: `visits@[window.appModules.visits.url]/moduleEntry.js`,
+    lessonplans: `lessonplans@[window.appModules.lessonplans.url]/moduleEntry.js`,
   },
   filename: "moduleEntry.js",
   shared: {

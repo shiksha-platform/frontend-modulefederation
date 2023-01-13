@@ -1,95 +1,179 @@
 import {
-  Collapsible,
   IconByName,
   Layout,
   ProgressBar,
   H2,
-  H3,
   telemetryFactory,
   capture,
   overrideColorTheme,
   BodyLarge,
   Caption,
   Subtitle,
+  assessmentRegistryService,
+  studentRegistryService,
+  classRegistryService,
+  getArray,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { Box, HStack, Text, VStack, Stack, Avatar, Button } from "native-base";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
 import colorTheme from "../../colorTheme";
-import RoundedProgressBar from "components/RoundedProgressBar";
+import moment from "moment";
+import report, { achiever } from "utils/report";
+import AssessmentAchieverCard from "./AssessmentAchieverCard";
+import StudentQuestionsReport from "./StudentQuestionsReport";
+import manifest from "../../manifest.json";
+
 const colors = overrideColorTheme(colorTheme);
 Chart.register(ArcElement, Tooltip, Legend);
 
-export default function ReportDetails({ appName }) {
-  const { t } = useTranslation();
-  const [weekPage, setWeekPage] = useState(0);
-  const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
-  const [students, setStudents] = useState([]);
-  const [searchStudents, setSearchStudents] = useState([]);
-  const [classObject, setClassObject] = useState({});
-  const { classId } = useParams();
-  const [loading, setLoading] = useState(false);
-  const teacherId = sessionStorage.getItem("id");
-  const [attendance, setAttendance] = useState([]);
-  const [search, setSearch] = useState();
-  const [pageName, setPageName] = useState();
-  const [headerDetails, setHeaderDetails] = useState();
-  const [questionList, setQuestionList] = useState([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ]);
+const ORAL_ASSESSMENT = "Oral Assessment";
+const WRITTEN_ASSESSMENT = "Written Assessment";
 
-  const [progressAssessment, setProgressAssessment] = React.useState([
-    {
-      name: "12 Assessed",
-      color: colors.successBarColor,
-      value: 12,
-    },
-    {
-      name: "6 pending",
-      color: colors.pendingBarColor,
-      value: 6,
-    },
-  ]);
-  const _handleSpotAssessmentFullReportStart = () => {
+export default function ReportDetails({
+  footerLinks,
+  appName,
+  setAlert,
+  config,
+}) {
+  const { t } = useTranslation();
+  let { classId, subject, date } = useParams();
+  classId = classId ? classId : "ce045222-52a8-4a0a-8266-9220f63baba7";
+  subject = subject ? subject : "english";
+  date =
+    date === "allDates"
+      ? date
+      : date
+      ? moment(date).format("YYYY-MM-DD")
+      : moment().format("YYYY-MM-DD");
+  const [classObject, setClassObject] = React.useState({});
+  const [reportStartTime, setReportStartTime] = React.useState();
+  const [students, setStudents] = React.useState([]);
+  const [assessmentStudents, setAssessmentStudents] = React.useState([]);
+  const [achieverStudents, setAchieverStudents] = React.useState([]);
+  const [track, setTrack] = React.useState([]);
+  const [progressAssessmentWritten, setProgressAssessmentWritten] =
+    React.useState([]);
+  const [progressAssessmentOral, setProgressAssessmentOral] = React.useState(
+    []
+  );
+
+  const [averageScoreWritten, setaverageScoreWritten] = React.useState();
+  const [averageScoreOral, setaverageScoreOral] = React.useState();
+  const [access, setAccess] = React.useState();
+
+  // const _handleSpotAssessmentFullReportShare = () => {
+  //   const telemetryData = telemetryFactory.interact({
+  //     appName,
+  //     type: "Spot-Assessment-Full-Report-Share",
+  //   });
+  //   capture("INTERACT", telemetryData);
+  // };
+
+  // const _handleSpotAssessmentFullReportDownload = () => {
+  //   const telemetryData = telemetryFactory.interact({
+  //     appName,
+  //     type: "Spot-Assessment-Full-Report-Download",
+  //   });
+  //   capture("INTERACT", telemetryData);
+  // };
+
+  const _handleFullReportStartEvent = () => {
     const telemetryData = telemetryFactory.start({
       appName,
-      type: "Spot-Assessment-End",
+      type: "Spot-Assessment-Full-Report-Start",
     });
     capture("START", telemetryData);
+    setReportStartTime(+new Date());
   };
 
-  const _handleSpotAssessmentFullReportEnd = () => {
+  const _handleFullReportEndEvent = () => {
+    const endTime = +new Date();
+    const diff = (endTime - reportStartTime) / 1000 || 0;
     const telemetryData = telemetryFactory.end({
       appName,
-      type: "Spot-Assessment-End",
+      type: "Spot-Assessment-Full-Report-End",
+      duration: diff,
     });
     capture("END", telemetryData);
   };
 
-  const _handleSpotAssessmentFullReportShare = () => {
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Spot-Assessment-Full-Report-Share",
-    });
-    capture("INTERACT", telemetryData);
-  };
+  const getAssessments = async () => {
+    setAccess(getArray(config["spot-assessment.dataPoints"]));
 
-  const _handleSpotAssessmentFullReportDownload = () => {
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Spot-Assessment-Full-Report-Download",
-    });
-    capture("INTERACT", telemetryData);
-  };
-  /*useEffect(() => {
-
-    return () => {
-      console.log('page leaved');
+    let classObj = await classRegistryService.getOne({ id: classId });
+    setClassObject(classObj);
+    let param = { groupId: classId, subject };
+    if (date !== "allDates") {
+      param = {
+        ...param,
+        fromDate: date,
+        toDate: date,
+      };
     }
-  }, []);*/
+
+    const data = await assessmentRegistryService
+      .getAllAssessment(param)
+      .catch((e) => setAlert(e.message));
+    setTrack(data);
+    const studentData = await studentRegistryService.getAll({
+      classId,
+    });
+    setStudents(studentData);
+    setAchieverStudents(achiever(studentData, data, 3));
+    const reportData = report(studentData, data, WRITTEN_ASSESSMENT, "data");
+    setAssessmentStudents(reportData?.presentStudents);
+    setProgressAssessmentWritten(reportData?.data);
+    setProgressAssessmentOral(report(studentData, data, ORAL_ASSESSMENT));
+
+    const averageOral = data.reduce(
+      (value, track) =>
+        track.type === ORAL_ASSESSMENT
+          ? parseInt(value) + parseInt(track.score)
+          : 0,
+      0
+    );
+
+    const averageWritten = data.reduce(
+      (value, track) =>
+        track.type === WRITTEN_ASSESSMENT
+          ? parseInt(value) + parseInt(track.score)
+          : 0,
+      0
+    );
+
+    const averageTotalOral = data.reduce(
+      (value, track) =>
+        track.type === ORAL_ASSESSMENT
+          ? parseInt(value) + parseInt(track.totalScore)
+          : 0,
+      0
+    );
+
+    const averageTotalWritten = data.reduce(
+      (value, track) =>
+        track.type === WRITTEN_ASSESSMENT
+          ? parseInt(value) + parseInt(track.totalScore)
+          : 0,
+      0
+    );
+    setaverageScoreWritten(
+      `Average Class Score is ${averageWritten} out of ${averageTotalWritten}`
+    );
+    setaverageScoreOral(
+      `Average Class Score is ${averageOral} out of ${averageTotalOral}`
+    );
+  };
+
+  React.useEffect(async () => {
+    await getAssessments();
+    _handleFullReportStartEvent();
+    return () => {
+      _handleFullReportEndEvent();
+    };
+  }, []);
 
   return (
     <Layout
@@ -97,317 +181,166 @@ export default function ReportDetails({ appName }) {
         title: "Report Details",
         isEnableSearchBtn: true,
         // setSearch: setSearch,
-        subHeading: <BodyLarge py="2">{t("Summative Assessment 1")}</BodyLarge>,
+        subHeading: <BodyLarge py="2">{t("Spot Assessment")}</BodyLarge>,
       }}
       _appBar={{
-        languages: ["en"],
-        rightIcon: (
-          <HStack>
-            <IconByName name="ShareLineIcon" />
-            <IconByName name="DownloadLineIcon" />
-          </HStack>
-        ),
+        languages: manifest.languages,
+        // rightIcon: (
+        //   <HStack>
+        //     <IconByName
+        //       name="ShareLineIcon"
+        //       onPress={_handleSpotAssessmentFullReportShare}
+        //     />
+        //     <IconByName
+        //       name="DownloadLineIcon"
+        //       onPress={_handleSpotAssessmentFullReportDownload}
+        //     />
+        //   </HStack>
+        // ),
       }}
       subHeader={
         <VStack>
-          <H2>Science</H2>
+          <H2>{subject}</H2>
           <HStack alignItems={"center"}>
-            <Caption>{t("Class VI")}</Caption>{" "}
-            <Caption color={colors.lightGray0}> ●</Caption>{" "}
-            <Caption> {t("Sec A")}</Caption>
+            <Caption>{classObject?.name}</Caption>
+            <Caption color={colors.lightGray0}> ●</Caption>
+            <Caption> {`Sec ${classObject?.section}`}</Caption>
           </HStack>
         </VStack>
       }
       _subHeader={{ bg: colors.reportDetailsSubheaderBg }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _footer={footerLinks}
     >
       <Stack space={1} mb="2" shadow={2}>
         <Box>
           <VStack space={2}>
-            <Box p={4} bg={colors.white}>
-              <HStack alignItems="center" justifyContent="space-between">
-                <H2>15, January 2022</H2>
-                <IconByName name="ListUnorderedIcon" pr="0" />
-              </HStack>
-            </Box>
-
-            <Box p={4} bg={colors.white}>
-              <VStack space={2}>
-                <H2>Class Participation</H2>
-                <Box borderRadius="md">
-                  <VStack>
-                    <Box
-                      px="4"
-                      py={2}
-                      bg={colors.scoreCardIcon2}
-                      roundedTop="6"
-                    >
-                      <HStack alignItems="center">
-                        <IconByName
-                          name="EmotionSadLineIcon"
-                          pr="0"
-                          color={colors.white}
-                        />
-                        <Subtitle color={colors.white}>
-                          {" "}
-                          Poor overall performance!
-                        </Subtitle>
-                      </HStack>
-                    </Box>
-                    <Box p="4" bg={colors.QuationsBoxContentBg}>
-                      <VStack flex="auto" alignContent={"center"}>
-                        <ProgressBar
-                          isTextShow
-                          legendType="separated"
-                          h="35px"
-                          _bar={{ rounded: "md", mb: "2" }}
-                          isLabelCountHide
-                          data={progressAssessment}
-                        />
-                      </VStack>
-                    </Box>
-                    <Box
-                      p="4"
-                      bg={colors.QuationsBoxBg}
-                      borderBottomRadius={6}
-                      textAlign="center"
-                    >
-                      <Subtitle>
-                        Average Class Score is <H2>18</H2> out of <H2>25</H2>
-                      </Subtitle>
-                    </Box>
-                  </VStack>
-                </Box>
-              </VStack>
-            </Box>
-
-            <Box p={4} bg={colors.white}>
-              <VStack space={4}>
-                <H2 mb={3}>100% Achievers</H2>
-                <Box p={4} bg={colors.achiverBoxBg} rounded="10">
-                  <HStack space={2} justifyContent="space-between">
-                    <Box textAlign={"center"}>
-                      <VStack space={1}>
-                        <Avatar
-                          size="48px"
-                          mx="auto"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <H3>Shivani Joshi</H3>
-                        <Subtitle color={colors.gray}>Roll No 11</Subtitle>
-                      </VStack>
-                    </Box>
-
-                    <Box textAlign={"center"}>
-                      <VStack space={1}>
-                        <Avatar
-                          size="48px"
-                          mx="auto"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <H3>Shivani Joshi</H3>
-                        <Subtitle color={colors.gray}>Roll No 11</Subtitle>
-                      </VStack>
-                    </Box>
-
-                    <Box textAlign={"center"}>
-                      <VStack space={1}>
-                        <Avatar
-                          size="48px"
-                          mx="auto"
-                          borderRadius="md"
-                          source={{
-                            uri: "https://via.placeholder.com/50x50.png",
-                          }}
-                        />
-                        <H3>Shivani Joshi</H3>
-                        <Subtitle color={colors.gray}>Roll No 11</Subtitle>
-                      </VStack>
-                    </Box>
-                  </HStack>
-                </Box>
-              </VStack>
-            </Box>
-            <Box p={4} px="0px" bg={colors.white}>
-              <Collapsible
-                defaultCollapse={true}
-                header={
-                  <VStack>
-                    <H2>{t("Student Wise Assessment")}</H2>
-                    <HStack alignItems={"center"}>
-                      <Caption color={colors.gray}>{t("3 Students")} </Caption>
-                      <Caption color={colors.lightGray0}> ● </Caption>
-                      <Caption color={colors.gray}>
-                        {" "}
-                        {t("Max Score : " + 25)}
-                      </Caption>
-                    </HStack>
-                  </VStack>
-                }
-                fontSize="2px"
-              >
-                <Box>
-                  <VStack pt={6} space={4}>
-                    <Box
-                      bg={colors.QuationsBoxContentBg}
-                      rounded="10px"
-                      px="4"
-                      py="2"
-                    >
-                      <VStack space={4}>
-                        <Box>
-                          <HStack
-                            alignItems="center"
-                            justifyContent="space-between"
+            {date !== "allDates" ? (
+              <Box p={4} bg={colors.white}>
+                <HStack alignItems="center" justifyContent="space-between">
+                  <H2>{moment(date).format("DD MMM Y")}</H2>
+                </HStack>
+              </Box>
+            ) : (
+              <React.Fragment />
+            )}
+            {access && access.includes("overall-class-participation") ? (
+              <Box p={4} bg={colors.white}>
+                <VStack space={6}>
+                  <Box>
+                    <VStack space={2}>
+                      <H2>{t("CLASS_PARTICIPATION_IN_ORAL_ASSESSMENTS")}</H2>
+                      <Box borderRadius="md">
+                        <VStack>
+                          <Box
+                            px="4"
+                            py={2}
+                            bg={colors.scoreCardIcon2}
+                            roundedTop="6"
                           >
-                            <Box>
-                              <HStack>
-                                <Avatar
-                                  size="48px"
-                                  borderRadius="md"
-                                  mr={4}
-                                  source={{
-                                    uri: "https://via.placeholder.com/50x50.png",
-                                  }}
-                                />
-                                <Box>
-                                  <VStack>
-                                    <H2>Shah Rukh Khan</H2>
-                                    <HStack alignItems={"center"}>
-                                      <Caption color={colors.lightGray0}>
-                                        {t("Roll No. 23")}{" "}
-                                      </Caption>
-                                      <Caption color={colors.lightGray0}>
-                                        {" "}
-                                        ●{" "}
-                                      </Caption>
-                                      <Caption color={colors.lightGray0}>
-                                        {" "}
-                                        {t("Mr. Father's Name")}
-                                      </Caption>
-                                    </HStack>
-                                  </VStack>
-                                </Box>
-                              </HStack>
-                            </Box>
-                            <Box>
-                              <VStack>
-                                <Box position="relative">
-                                  <RoundedProgressBar
-                                    values={[18, 6]}
-                                    colors={[
-                                      colors.successBarColor,
-                                      colors.circleProgressBarcolor,
-                                    ]}
-                                    // legend={{ text: "Total Score", fontSize: "14px" }}
-                                    cutout={"80%"}
-                                    size="45px"
-                                  />
-                                  <Text
-                                    position="absolute"
-                                    top="50%"
-                                    left="50%"
-                                    style={{
-                                      transform: "translate(-50%, -25%)",
-                                    }}
-                                  >
-                                    18
-                                  </Text>
-                                </Box>
-                                <Caption color={colors.lightGray0}>
-                                  Total Score
-                                </Caption>
-                              </VStack>
-                            </Box>
-                          </HStack>
-                        </Box>
-
-                        <Box borderColor="#EFEFEF" borderRadius={10} p={4}>
-                          <HStack
-                            justifyContent="space-between"
-                            flexWrap="wrap"
+                            <HStack alignItems="center">
+                              <IconByName
+                                name="EmotionSadLineIcon"
+                                pr="0"
+                                color={colors.white}
+                              />
+                              <Subtitle color={colors.white}>
+                                Poor overall performance!
+                              </Subtitle>
+                            </HStack>
+                          </Box>
+                          <Box p="4" bg={colors.QuationsBoxContentBg}>
+                            <VStack flex="auto" alignContent={"center"}>
+                              <ProgressBar
+                                isTextShow
+                                legendType="separated"
+                                h="35px"
+                                _bar={{ rounded: "md", mb: "2" }}
+                                isLabelCountHide
+                                data={progressAssessmentOral}
+                              />
+                            </VStack>
+                          </Box>
+                          <Box
+                            p="4"
+                            bg={colors.QuationsBoxBg}
+                            borderBottomRadius={6}
+                            textAlign="center"
                           >
-                            {questionList &&
-                              questionList.length &&
-                              questionList.map((question, index) => {
-                                return (
-                                  <Box
-                                    key={`q-${index}`}
-                                    minW="20%"
-                                    textAlign="center"
-                                    mb={8}
-                                  >
-                                    <VStack justifyContent="center" space={2}>
-                                      <Caption>Q-{question}</Caption>
-                                      {/*<IconByName name="CheckboxCircleLineIcon" color={"#0D921B"} p={0} _icon={{ size: 20 }} mx={"auto"} />*/}
-                                      <IconByName
-                                        name="CloseCircleLineIcon"
-                                        color={colors.scoreCardIcon2}
-                                        p={0}
-                                        _icon={{ size: 20 }}
-                                        mx={"auto"}
-                                      />
-                                    </VStack>
-                                  </Box>
-                                );
-                              })}
-                          </HStack>
-                        </Box>
-                      </VStack>
-                    </Box>
-                  </VStack>
-                  <Box py="2">
-                    <Button colorScheme="button" variant="outline" py={3}>
-                      {t("See all students")}
-                    </Button>
+                            <Subtitle>{averageScoreOral}</Subtitle>
+                          </Box>
+                        </VStack>
+                      </Box>
+                    </VStack>
                   </Box>
-                </Box>
-              </Collapsible>
-            </Box>
+
+                  <Box>
+                    <VStack space={2}>
+                      <H2>{t("CLASS_PARTICIPATION_IN_WRITTEN_ASSESSMENTS")}</H2>
+                      <Box borderRadius="md">
+                        <VStack>
+                          <Box
+                            px="4"
+                            py={2}
+                            bg={colors.scoreCardIcon2}
+                            roundedTop="6"
+                          >
+                            <HStack alignItems="center">
+                              <IconByName
+                                name="EmotionSadLineIcon"
+                                pr="0"
+                                color={colors.white}
+                              />
+                              <Subtitle color={colors.white}>
+                                Poor overall performance!
+                              </Subtitle>
+                            </HStack>
+                          </Box>
+                          <Box p="4" bg={colors.QuationsBoxContentBg}>
+                            <VStack flex="auto" alignContent={"center"}>
+                              <ProgressBar
+                                isTextShow
+                                legendType="separated"
+                                h="35px"
+                                _bar={{ rounded: "md", mb: "2" }}
+                                isLabelCountHide
+                                data={progressAssessmentWritten}
+                              />
+                            </VStack>
+                          </Box>
+                          <Box
+                            p="4"
+                            bg={colors.QuationsBoxBg}
+                            borderBottomRadius={6}
+                            textAlign="center"
+                          >
+                            <Subtitle>{averageScoreWritten}</Subtitle>
+                          </Box>
+                        </VStack>
+                      </Box>
+                    </VStack>
+                  </Box>
+                </VStack>
+              </Box>
+            ) : (
+              <React.Fragment />
+            )}
+
+            {access && access.includes("100%-achievers") ? (
+              <AssessmentAchieverCard students={achieverStudents} />
+            ) : (
+              <React.Fragment />
+            )}
+
+            {access && access.includes("student-wise-assesment") ? (
+              <StudentQuestionsReport
+                students={assessmentStudents}
+                track={track}
+                {...{ classId, subject, date }}
+                limit={2}
+              />
+            ) : (
+              <React.Fragment />
+            )}
           </VStack>
         </Box>
       </Stack>

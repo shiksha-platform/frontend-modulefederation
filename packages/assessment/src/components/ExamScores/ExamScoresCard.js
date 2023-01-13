@@ -6,14 +6,23 @@ import {
   BodyLarge,
   Subtitle,
   BodySmall,
+  H2,
 } from "@shiksha/common-lib";
-import { HStack, VStack, Box, Button, Divider } from "native-base";
+import {
+  HStack,
+  VStack,
+  Box,
+  Button,
+  Divider,
+  Actionsheet,
+  Stack,
+} from "native-base";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const ExamScoresCard = ({ setPageName }) => {
+const ExamScoresCard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [progressAssessment, setProgressAssessment] = React.useState([
@@ -29,34 +38,18 @@ const ExamScoresCard = ({ setPageName }) => {
     },
   ]);
 
-  /*React.useEffect(() => {
-    const getData = async () => {
-      let params = {
-        fromDate: moment().format("YYYY-MM-DD"),
-        toDate: moment().format("YYYY-MM-DD"),
-      };
-      let attendanceData = await attendanceRegistryService.getAll(params);
-      let lengthAttendance = 0;
-      const data = [PRESENT, ABSENT, UNMARKED].map((item, index) => {
-        const attendance = getUniqAttendance(attendanceData, item, students);
-        let count = 0;
-        lengthAttendance += attendance.length;
-        if (item === UNMARKED) {
-          count = attendance.length + (students.length - lengthAttendance);
-        } else {
-          count = attendance.length;
-        }
-        return {
-          name: count + " " + item,
-          color: `attendance${item}.500`,
-          value: count,
-        };
-      });
+  const [loadingExams, setLoadingExams] = useState(false);
+  const [chooseExamModal, setChooseExamModal] = useState(false);
+  const [exams, setExams] = useState([
+    "State Exam",
+    "Semester Exam",
+    "Summative Assessment 1",
+  ]);
+  const [selectedExam, setSelectedExam] = useState();
 
-      setProgressAttendance(data);
-    };
-    getData();
-  }, [students]);*/
+  const handleExamSelection = (exam) => {
+    setSelectedExam(exam);
+  };
 
   return (
     <>
@@ -72,7 +65,6 @@ const ExamScoresCard = ({ setPageName }) => {
               <HStack justifyContent={"center"} alignItems="center">
                 <IconByName name="TimeLineIcon" pr="0" color={colors.white} />
                 <Subtitle color={colors.white}>
-                  {" "}
                   4 Days left! Submit assessment scores now.
                 </Subtitle>
               </HStack>
@@ -88,6 +80,7 @@ const ExamScoresCard = ({ setPageName }) => {
                   legendType="separated"
                   h="35px"
                   _bar={{ rounded: "md", my: "3" }}
+                  _legendType={{ color: colors.gray }}
                   isLabelCountHide
                   data={progressAssessment}
                 />
@@ -99,7 +92,7 @@ const ExamScoresCard = ({ setPageName }) => {
                 py={3}
                 colorScheme="button"
                 _text={{ color: colors.white }}
-                onPress={() => navigate("/examscores")}
+                onPress={() => setChooseExamModal(true)}
               >
                 {t("continue")}
               </Button>
@@ -107,9 +100,75 @@ const ExamScoresCard = ({ setPageName }) => {
           </VStack>
         </Box>
       </VStack>
-      <Subtitle my={2} textAlign={"center"} color={colors.primary}>
-        {t("VIEW PAST ASSESSMENTS")}
+      <Subtitle
+        my={2}
+        textAlign={"center"}
+        color={colors.primary}
+        onPress={() => {
+          setPageName("pastExaminations");
+        }}
+      >
+        {t("VIEW PAST EXAMINATIONS")}
       </Subtitle>
+
+      {/*choose examination modal*/}
+      <Actionsheet
+        isOpen={chooseExamModal}
+        onClose={() => setChooseExamModal(false)}
+      >
+        <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
+          <HStack justifyContent={"space-between"}>
+            <Stack p={5} pt={2} pb="15px">
+              <H2 textTransform="none">{t("Choose the exam")}</H2>
+            </Stack>
+            <IconByName
+              name="CloseCircleLineIcon"
+              color={colors.cardCloseIcon}
+              onPress={() => setChooseExamModal(false)}
+            />
+          </HStack>
+        </Actionsheet.Content>
+        <Box w="100%" p={2} justifyContent="center" bg={colors.white}>
+          {loadingExams ? (
+            <>Loading Exams...</>
+          ) : exams?.length ? (
+            exams?.map((exam) => {
+              return (
+                <Actionsheet.Item
+                  key={exam}
+                  onPress={() => {
+                    handleExamSelection(exam);
+                  }}
+                >
+                  <BodyLarge
+                    color={selectedExam === exam ? "black" : colors.gray}
+                    textTransform="none"
+                  >
+                    {t(exam)}
+                  </BodyLarge>
+                </Actionsheet.Item>
+              );
+            })
+          ) : (
+            <>No Exams</>
+          )}
+          <Box p="4">
+            <Button
+              colorScheme="button"
+              _text={{
+                color: colors.white,
+              }}
+              onPress={() => {
+                setChooseExamModal(false);
+                navigate("/assessment/examscores");
+              }}
+              isDisabled={!selectedExam}
+            >
+              {t("Next")}
+            </Button>
+          </Box>
+        </Box>
+      </Actionsheet>
     </>
   );
 };

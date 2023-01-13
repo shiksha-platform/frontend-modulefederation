@@ -13,10 +13,10 @@ export default function interfaceData(
         }
       } else if (key1 === 'mergeParameterWithValue') {
         for (var [mvKey1, mvValue1] of Object.entries(value1)) {
-          data[mvKey1] = element[mvValue1]
+          data[mvKey1] = element?.[value1] ? element[value1] : ''
         }
       } else {
-        data[key1] = element[value1]
+        data[key1] = element?.[value1] ? element[value1] : ''
       }
     } else {
       if (only) {
@@ -37,7 +37,7 @@ export default function interfaceData(
             data[value1] = element[key1]
           }
         } else if (element[key1]) data[value1] = element[key1]
-      } else data[value1] = element[key1]
+      } else data[value1] = element[key1] ? element[key1] : ''
     }
   }
   return data

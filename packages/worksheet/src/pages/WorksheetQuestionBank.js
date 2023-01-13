@@ -23,6 +23,7 @@ import WorksheetActionsheet from "components/Actionsheet/WorksheetActionsheet";
 import moment from "moment";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
+const DRAFT = "Draft";
 
 export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -42,9 +43,10 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
   const [worksheetStartTime, setWorksheetStartTime] = useState();
   const [questionConfig, setQuestionConfig] = React.useState([]);
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
+  const [showButtonArray, setShowButtonArray] = React.useState([]);
 
   React.useEffect(async () => {
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     setQuestionConfig(
       Array.isArray(newManifest?.["question-bank.questionMetadata"])
         ? newManifest?.["question-bank.questionMetadata"]
@@ -59,6 +61,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         ? JSON.parse(newManifest?.["worksheet.worksheetMetadata"])
         : []
     );
+    let buttons = [];
+    if (newManifest["worksheet.allow-download-worksheet"] === "true") {
+      buttons = [...buttons, "Download"];
+    }
+    if (newManifest["worksheet.allow-sharing-worksheet"] === "true") {
+      buttons = [...buttons, "Share"];
+    }
+    if (worksheet.state === DRAFT) {
+      setShowButtonArray(["Like"]);
+    } else {
+      setShowButtonArray([...buttons, "Like"]);
+    }
     const worksheetData = await worksheetRegistryService.getOne({ id });
     const questionIds =
       worksheetData && Array.isArray(worksheetData.questions)
@@ -108,9 +122,21 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         context: "Worksheet",
         type: "like",
       };
-      const { osid } = await likeRegistryService.create(newData);
+      const osid = await likeRegistryService.create(newData);
       setLike({ ...newData, id: osid });
     }
+  };
+  const handleShare = () => {
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Worksheet-Share",
+      worksheetId: worksheet?.id,
+      subject: worksheet?.subject,
+      grade: worksheet?.grade,
+      topic: worksheet?.topic,
+    });
+    capture("INTERACT", telemetryData);
+    navigate(`/worksheet/${worksheet.id}/share`);
   };
 
   React.useEffect(() => {
@@ -167,22 +193,34 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
           </HStack>
         ),
       }}
-      bg={colors.white}
+      bg={"worksheet.white"}
       _appBar={{
         onPressBackButton: handleBackButton,
         languages: manifestLocal.languages,
         rightIcon: state ? (
           <HStack>
-            <IconByName
-              name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
-              color={like.id ? colors.primary : colors.black}
-              onPress={handleLike}
-            />
-            <IconByName name="ShareLineIcon" />
-            <IconByName
-              onPress={(e) => navigate("/worksheet/template")}
-              name="DownloadLineIcon"
-            />
+            {!showButtonArray || showButtonArray.includes("Like") ? (
+              <IconByName
+                name={like.id ? "Heart3FillIcon" : "Heart3LineIcon"}
+                color={like.id ? "worksheet.primary" : worksheet.black}
+                onPress={handleLike}
+              />
+            ) : (
+              <React.Fragment />
+            )}
+            {!showButtonArray || showButtonArray.includes("Share") ? (
+              <IconByName name="ShareLineIcon" onPress={handleShare} />
+            ) : (
+              <React.Fragment />
+            )}
+            {!showButtonArray || showButtonArray.includes("Download") ? (
+              <IconByName
+                onPress={(e) => navigate("/worksheet/template/" + id)}
+                name="DownloadLineIcon"
+              />
+            ) : (
+              <React.Fragment />
+            )}
           </HStack>
         ) : (
           <React.Fragment />
@@ -190,7 +228,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
       }}
       _footer={footerLinks}
     >
-      <Box bg={colors.white} p="5">
+      <Box bg={"worksheet.white"} p="5">
         <VStack space="5">
           {questions && questions.length > 0 ? (
             questions.map((question, index) => (
@@ -203,7 +241,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color={colors.primary}
+                      color={"worksheet.primary"}
                       onPress={(e) => setQuestionObject(question)}
                     />
                   </HStack>
@@ -216,7 +254,7 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
               my="5"
               alignItems={"center"}
               rounded="lg"
-              bg={colors.viewNotificationDark}
+              bg={"worksheet.secondary"}
             >
               Question Not Found
             </Box>
@@ -224,12 +262,18 @@ export default function WorksheetQuestionBank({ footerLinks, appName }) {
         </VStack>
       </Box>
       {!state ? (
-        <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          position="sticky"
+          bottom="84"
+          shadow={2}
+        >
           <Button.Group>
             <Button
               flex="1"
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="5"
               onPress={(e) => console.log(e)}
             >

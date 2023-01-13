@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
-import { extendTheme } from "native-base";
-import { DEFAULT_THEME, AppShell, initializeI18n } from "@shiksha/common-lib";
+import { AppShell, initializeI18n } from "@shiksha/common-lib";
 import ClassDetails from "./pages/ClassDetails";
 import MyClassRoute from "pages/MyClassRoute";
 import { navigationRoutes } from "services/routes";
@@ -11,26 +10,31 @@ initializeI18n(
   `${process.env.PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
 );
 function App() {
-  const theme = extendTheme(DEFAULT_THEME);
-
   const routes = [
     {
+      moduleName: "classes",
       path: navigationRoutes.myClasses,
       component: ClassDetails,
     },
     {
+      moduleName: "classes",
       path: navigationRoutes.fourOfour,
       component: MyClassRoute,
     },
   ];
   const LoginComponent = React.lazy(() => import("core/Login"));
+  const skipLogin = !(
+    process.env.REACT_APP_OAUTH_PROXY_ENABLED == undefined ||
+    JSON.parse(process.env.REACT_APP_OAUTH_PROXY_ENABLED) == false
+  );
 
   return (
     <AppShell
-      theme={theme}
       basename={process.env.PUBLIC_URL}
       routes={routes}
       AuthComponent={LoginComponent}
+      skipLogin={skipLogin}
+      _authComponent={{ swPath: "/modules/classes" }}
     />
   );
 }

@@ -1,0 +1,16 @@
+{
+  "name": "ecmlbuilder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-debug": "browserify index.js -d --s E2EConverter > dist/E2EConverter.js"
+  },
+  "author": "Chetan Sachdev <cksachdev@gmail.com> (http://chetansachdev.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "lodash": "~>4.17.5",
+    "xmlbuilder": "8.2.2"
+  }
+}

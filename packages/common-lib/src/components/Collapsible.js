@@ -1,12 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import {
-  PresenceTransition,
-  HStack,
-  Text,
-  Box,
-  Pressable,
-  Stack
-} from 'native-base'
+import React, { useState } from 'react'
+import { PresenceTransition, HStack, Text, Box, Pressable } from 'native-base'
 import IconByName from './IconByName'
 
 const Collapsible = ({
@@ -18,11 +11,17 @@ const Collapsible = ({
   isDisableCollapse,
   collapsButton,
   _icon,
-  _header
+  _header,
+  _box
 }) => {
   const [isOpen, setIsOpen] = useState(defaultCollapse)
+
+  React.useEffect(() => {
+    setIsOpen(defaultCollapse)
+  }, [defaultCollapse, !defaultCollapse])
+
   return (
-    <Box bg='white' p={4}>
+    <Box bg='white' p={4} {..._box}>
       <Pressable
         onPress={() => {
           if (!isDisableCollapse) setIsOpen(!isOpen)
@@ -71,4 +70,4 @@ const Collapsible = ({
     </Box>
   )
 }
-export default Collapsible
+export default React.memo(Collapsible)

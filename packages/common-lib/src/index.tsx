@@ -1,14 +1,3 @@
-import * as React from 'react'
-import styles from './styles.module.css'
-
-interface Props {
-  text: string
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
-
 import AppBar from './components/layout/AppBar'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
@@ -18,14 +7,14 @@ import IconByName from './components/IconByName'
 import Widget from './components/Widget'
 import Collapsible from './components/Collapsible'
 import Menu, { SubMenu } from './components/Menu'
-import DEFAULT_THEME from './components/theme'
 import initializeI18n from './services/i18n'
 import AppShell from './components/AppShell'
 import ProgressBar from './components/ProgressBar'
 import Tab from './components/Tab'
 import Loading from './components/Loading'
 import FilterButton from './components/FilterButton'
-import * as teacherRegistryService from './services/teacherRegistryService'
+import SchoolCard from './components/SchoolCard'
+import * as userRegistryService from './services/userRegistryService'
 import * as classRegistryService from './services/classRegistryService'
 import * as attendanceRegistryService from './services/attendanceRegistryService'
 import * as studentRegistryService from './services/studentRegistryService'
@@ -34,8 +23,26 @@ import * as questionRegistryService from './services/questionRegistryService'
 import * as likeRegistryService from './services/likeRegistryService'
 import * as commentRegistryService from './services/commentRegistryService'
 import * as assessmentRegistryService from './services/assessmentRegistryService'
+import * as lessonPlansRegistryService from './services/lessonPlansRegistryService'
+import * as templateRegistryService from './services/templateRegistryService'
+import * as notificationRegistryService from './services/notificationRegistryService'
+import * as roleRegistryService from './services/roleRegistryService'
+import * as courseRegistryService from './services/courseRegistryService'
+import * as coursetrackingRegistryService from './services/coursetrackingRegistryService'
+import * as filterDataRegistryService from './services/filterDataRegistryService'
+import * as mentorRegisteryService from './services/mentorRegisteryService'
+import * as schoolRegisteryService from './services/schoolRegisteryService'
 import { getApiConfig } from './services/configApiRegistryService'
-
+import * as workHistoryRegistryService from './services/workHistoryRegistryService'
+import * as schoolRegistryService from './services/schoolRegistryService'
+import {
+  getAllForUser,
+  sendReadReceipt
+} from './services/firebaseHistoryRegistryService'
+import AppRoutesContainer from './components/AppRoutesContainer'
+import { useAuthFlow } from './hooks/useAuthFlow'
+import StarRating from './components/StarRating'
+import InfiniteScroll from './components/InfiniteScroll'
 export {
   AppBar,
   Header,
@@ -48,13 +55,14 @@ export {
   Collapsible,
   Menu,
   SubMenu,
-  DEFAULT_THEME,
   initializeI18n,
   AppShell,
+  AppRoutesContainer,
   ProgressBar,
   Tab,
   Loading,
-  teacherRegistryService,
+  SchoolCard,
+  userRegistryService,
   classRegistryService,
   attendanceRegistryService,
   studentRegistryService,
@@ -63,7 +71,23 @@ export {
   likeRegistryService,
   commentRegistryService,
   assessmentRegistryService,
-  getApiConfig
+  getApiConfig,
+  getAllForUser,
+  sendReadReceipt,
+  lessonPlansRegistryService,
+  templateRegistryService,
+  notificationRegistryService,
+  roleRegistryService,
+  courseRegistryService,
+  coursetrackingRegistryService,
+  filterDataRegistryService,
+  useAuthFlow,
+  workHistoryRegistryService,
+  schoolRegistryService,
+  mentorRegisteryService,
+  schoolRegisteryService,
+  StarRating,
+  InfiniteScroll
 }
 
 export * from './services/Auth'
@@ -73,3 +97,4 @@ export * from './components/helper'
 export * from './services/Telemetry'
 export * from './components/calender'
 export * from './components/layout/HeaderTags/index'
+export * from './components/firebase/firebase'

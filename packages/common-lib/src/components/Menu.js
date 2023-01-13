@@ -5,6 +5,7 @@ import { generatePath } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import IconByName from './IconByName'
+import { BodyLarge } from './layout/HeaderTags'
 
 const PressableNew = ({ item, children, routeDynamics, ...prop }) => {
   return item?.route ? (
@@ -62,7 +63,7 @@ export default function Menu({
                 item={item}
                 bg='button.500'
                 rounded={'md'}
-                p='2'
+                p='1'
                 minW={item?.boxMinW ? item?.boxMinW : '104px'}
               >
                 <VStack
@@ -153,22 +154,17 @@ export const SubMenu = ({
             alignItems='center'
           >
             {item.leftText ? (
-              <Text color='gray.700' fontWeight='500'>
-                {item.leftText}
-              </Text>
+              <BodyLarge>{item.leftText}</BodyLarge>
             ) : item.icon ? (
               <IconByName name={item.icon} p='0' {..._icon} />
             ) : (
               <React.Fragment />
             )}
-            <Text color='gray.700' fontWeight='500'>
-              {t(item.title)}
-            </Text>
+            <BodyLarge>{t(item.title)}</BodyLarge>
           </HStack>
           <IconByName
             name={item.rightIcon ? item.rightIcon : 'ArrowRightSLineIcon'}
             p='0'
-            color='gray.900'
             {..._icon}
           />
         </HStack>

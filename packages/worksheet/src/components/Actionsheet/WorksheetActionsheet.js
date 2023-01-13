@@ -50,7 +50,7 @@ export default function Worksheet({
           <H2>{worksheet?.name ? worksheet?.name : ""}</H2>
         </Stack>
         <IconByName
-          color={colors.lightGray2}
+          color={"worksheet.lightGray2"}
           position="absolute"
           top="10px"
           right="10px"
@@ -58,10 +58,10 @@ export default function Worksheet({
           onPress={(e) => setShowModuleWorksheet(false)}
         />
       </Actionsheet.Content>
-      <Box bg={colors.white} width={"100%"} p="5">
+      <Box bg={"worksheet.white"} width={"100%"} p="5">
         <VStack space="4">
           <BodyMedium
-            color={colors.messageInfo}
+            color={"worksheet.messageInfo"}
             textTransform="inherit"
             textAlign="center"
           >
@@ -79,7 +79,7 @@ export default function Worksheet({
               <HStack alignItems="center">
                 <IconByName
                   name="Heart3FillIcon"
-                  color={colors.eventError}
+                  color={"worksheet.error"}
                   _icon={{ size: 12 }}
                   isDisabled
                 />
@@ -119,7 +119,7 @@ export default function Worksheet({
                       TE
                     </Avatar>
                   </Avatar.Group>
-                  <Subtitle color={colors.primary}>
+                  <Subtitle color={"worksheet.primary"}>
                     {commentCount} {t("COMMENTS")}
                   </Subtitle>
                 </HStack>
@@ -161,10 +161,10 @@ const AttributeComponent = ({ data, object }) => {
                 isDisabled
                 name={item.icon}
                 _icon={{ size: 14 }}
-                color={colors.worksheetBoxText}
+                color={"worksheet.darkGray4"}
                 p="0"
               />
-              <BodyMedium color={colors.worksheetBoxText}>
+              <BodyMedium color={"worksheet.darkGray4"}>
                 {t(item?.label) +
                   " : " +
                   (object?.[item.attribute]

@@ -1,5 +1,4 @@
 import { get, post } from './RestClient'
-import manifest from '../manifest.json'
 import mapInterfaceData from './mapInterfaceData'
 const defaultAdapter = 'diksha'
 
@@ -18,6 +17,36 @@ const interfaceData = {
     icon: 'calendar',
     route: '/classes/:id'
   }
+}
+
+const studentInterfaceData = {
+  id: 'studentId',
+  fullName: 'firstName',
+  firstName: 'firstName',
+  fathersName: 'fatherFirstName',
+  phoneNumber: 'studentPhoneNumber',
+  lastName: 'lastName',
+  aadhaar: 'aadhaar',
+  classId: 'classId',
+  schoolId: 'schoolId',
+  refId: 'studentRefId',
+  birthDate: 'birthDate',
+  bloodGroup: 'bloodGroup',
+  bpl: 'bpl',
+  height: 'height',
+  weight: 'weight',
+  homeless: 'homeless',
+  iscwsn: 'iscwsn',
+  migrant: 'migrant',
+  religion: 'religion',
+  singleGirl: 'singleGirl',
+  socialCategory: 'socialCategory',
+  admissionNo: 'refId1',
+  currentClassID: 'classId',
+  email: 'studentEmail',
+  address: 'address',
+  gender: 'gender',
+  attendance: 'attendance'
 }
 
 export const getAllQuestions = async (filter, request) => {
@@ -83,11 +112,8 @@ export const getSubjectsList = async (params = {}, header = {}) => {
   }
   const adapter = params.adapter ? params.adapter : defaultAdapter
   const result = await get(
-    `${manifest.api_url}/question/${adapter}/subjectlist`,
-    params,
-    {
-      headers
-    }
+    `${process.env.REACT_APP_API_URL}/question/${adapter}/subjectlist`,
+    { params, headers }
   )
 
   if (result.data && result.data.data) {
@@ -104,7 +130,7 @@ export const getCompetenciesList = async (params = {}, header = {}) => {
   }
   const adapter = params.adapter ? params.adapter : defaultAdapter
   const result = await get(
-    `${manifest.api_url}/question/${adapter}/competencieslist`,
+    `${process.env.REACT_APP_API_URL}/question/${adapter}/competencieslist`,
     {
       params,
       headers
@@ -123,9 +149,13 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await post(`${manifest.api_url}/trackassessment`, params, {
-    headers
-  })
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/trackassessment`,
+    params,
+    {
+      headers
+    }
+  )
 
   if (result.data && result.data.data) {
     return result.data.data
@@ -134,14 +164,36 @@ export const createUpdateAssessment = async (params = {}, header = {}) => {
   }
 }
 
-export const getAssessmentDetails = async (params = {}, header = {}) => {
+export const getAssessmentDetails = async (id, params = {}, header = {}) => {
   const headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/trackassessment/${params}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/trackassessment/${id}`,
+    {
+      params,
+      headers
+    }
+  )
+
+  if (result.data && result.data.data) {
+    return result.data.data
+  } else {
+    return {}
+  }
+}
+
+export const getAllAssessment = async (params = {}, header = {}) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/trackassessment/search`,
+    params,
+    { params, headers }
+  )
 
   if (result.data && result.data.data) {
     return result.data.data
@@ -159,8 +211,9 @@ export const getAttendanceDetailsByClass = async (
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(
-    `${manifest.api_url}/attendance/${groupId}/studentdetails`,
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/attendance/${groupId}/studentdetails`,
+    {},
     {
       params,
       headers
@@ -168,7 +221,10 @@ export const getAttendanceDetailsByClass = async (
   )
 
   if (result.data && result.data.data) {
-    return result.data.data.sort()
+    const data = result.data.data.map((e) =>
+      mapInterfaceData(e, studentInterfaceData)
+    )
+    return _.sortBy(data, 'firstName')
   } else {
     return []
   }

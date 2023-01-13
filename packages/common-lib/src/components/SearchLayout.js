@@ -3,10 +3,12 @@ import { Box, Center, HStack, Stack, Input } from 'native-base'
 import { useWindowSize } from './helper'
 import IconByName from './IconByName'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export default function SearchLayout({
   filters,
   minStringLenght,
+  searchPlaceholder,
   notFoundMessage,
   imageUrl,
   children,
@@ -14,6 +16,7 @@ export default function SearchLayout({
   setSearch,
   onCloseSearch
 }) {
+  const { t } = useTranslation()
   const [width, Height] = useWindowSize()
   const [refSearchBar, setRefSearchBar] = React.useState({})
   const navigate = useNavigate()
@@ -50,22 +53,23 @@ export default function SearchLayout({
             <Input
               flex='1'
               variant='unstyled'
-              InputRightElement={
-                <React.Fragment>
-                  <IconByName
-                    _icon={{ size: '23' }}
-                    color='coolGray.500'
-                    w='1/8'
-                    name='MicLineIcon'
-                    pl='0'
-                    onPress={(e) => console.log('not found mic fuction')}
-                  />
-                </React.Fragment>
-              }
-              placeholder={`Type ${
-                minStringLenght ? 'min ' + minStringLenght : ''
-              } to search `}
+              bg='gray.100'
+              // InputRightElement={
+              //   <React.Fragment>
+              //     <IconByName
+              //       _icon={{ size: '23' }}
+              //       color='coolGray.500'
+              //       w='1/8'
+              //       name='MicLineIcon'
+              //       pl='0'
+              //       onPress={(e) => console.log('not found mic fuction')}
+              //     />
+              //   </React.Fragment>
+              // }
               onChange={(e) => setSearch(e.target.value)}
+              placeholder={
+                searchPlaceholder ? searchPlaceholder : t(`ENTER_TITLE_HINT`)
+              }
             />
           </HStack>
         </Stack>

@@ -6,6 +6,7 @@ import {
   classRegistryService,
   studentRegistryService,
   overrideColorTheme,
+  getApiConfig,
 } from "@shiksha/common-lib";
 import { Stack } from "native-base";
 import { useTranslation } from "react-i18next";
@@ -30,7 +31,19 @@ const ClassDetails = ({ footerLinks }) => {
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
-      setStudents(await studentRegistryService.getAll({ classId }));
+      const newManifest = await getApiConfig();
+      let sortBy = "admissionNo";
+      if (
+        newManifest?.["attendance.order_of_attendance_card"] ===
+        '"Alphabetically"'
+      ) {
+        sortBy = "firstName";
+      }
+      const studentData = await studentRegistryService.getAll({
+        classId,
+        sortBy,
+      });
+      setStudents(studentData);
       await getClass();
       setLoading(false);
     };
@@ -51,13 +64,19 @@ const ClassDetails = ({ footerLinks }) => {
       imageUrl={
         !loading
           ? classObject.image && classObject.image !== ""
-            ? `${manifest.api_url}/files/${encodeURIComponent(
+            ? `${process.env.REACT_APP_API_URL}/files/${encodeURIComponent(
                 classObject.image
               )}`
             : `${window.location.origin}/class.png`
           : ""
       }
-      _header={_header({ name: classObject.name, classId, getClass })}
+      _header={_header({
+        name: `${classObject?.name} ${
+          classObject?.section ? "• Sec " + classObject?.section : ""
+        }`,
+        classId,
+        getClass,
+      })}
       _appBar={{ languages: manifest.languages }}
       subHeader={
         <Menu
@@ -78,7 +97,7 @@ const ClassDetails = ({ footerLinks }) => {
       }
       _subHeader={{
         bottom: "15px",
-        bg: colors.cardBg,
+        bg: "classes.cardBg",
       }}
       _footer={footerLinks}
     >
@@ -91,7 +110,7 @@ const ClassDetails = ({ footerLinks }) => {
           classObject={classObject}
           students={students}
         ></ClassStudentsPanel>
-        <ClassSubjectsPanel />
+        <ClassSubjectsPanel classObject={classObject} students={students} />
         <ClassDetailsPanel students={students} />
       </Stack>
     </Layout>

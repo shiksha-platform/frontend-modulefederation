@@ -1,0 +1,19 @@
+{
+  "id": "org.ekstep.libs.ckeditor",
+  "ver": "1.0",
+  "shortId": "org.ekstep.libs.ckeditor",
+  "displayName": "CKEditor Library Plugin",
+  "author": "Manoj Chandrashekar",
+  "title": "CKEditor Library Plugin",
+  "description": "Add this plugin as dependency if CKEditor functionality is required by other plugins.",
+  "publishedDate": "",
+  "editor": {
+    "main": "editor/plugin.js",
+    "dependencies": [
+      {
+        "type": "js",
+        "src": "editor/ckeditor/ckeditor.js"
+      }
+    ]
+  }
+}

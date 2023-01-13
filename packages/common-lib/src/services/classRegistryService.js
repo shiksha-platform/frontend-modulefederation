@@ -1,7 +1,7 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
-import { sortArray } from '../components/helper'
+import * as questionRegistryService from './questionRegistryService'
+import * as studentRegistryService from './studentRegistryService'
 
 const interfaceData = {
   id: 'groupId',
@@ -11,6 +11,7 @@ const interfaceData = {
   section: 'section',
   status: 'status',
   image: 'image',
+  gradeLevel: 'gradeLevel',
   mergeParameterWithValue: {
     title: 'name'
   },
@@ -26,13 +27,16 @@ export const getAll = async (params = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await get(
-    `${manifest.api_url}/group/participant/${params.teacherId}?role=Teacher`,
+    `${process.env.REACT_APP_API_URL}/group/participant/${params.teacherId}?role=Teacher`,
     {
       ...params,
       headers
     }
   )
   if (result.data) {
+    if (params.coreData === 'getCoreData') {
+      return result.data.data
+    }
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return data.sort(function (a, b) {
       return a.name - b.name
@@ -57,7 +61,7 @@ export const update = async (data = {}, header = {}) => {
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
   const result = await coreUpdate(
-    manifest.api_url + '/group/' + data.id,
+    process.env.REACT_APP_API_URL + '/group/' + data.id,
     newData,
     {
       headers: headers ? headers : {}
@@ -76,7 +80,7 @@ export const updateImage = async (data = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await coreUpdate(
-    manifest.api_url + '/group/' + data.id,
+    process.env.REACT_APP_API_URL + '/group/' + data.id,
     data,
     {
       headers: headers ? headers : {}
@@ -89,16 +93,29 @@ export const updateImage = async (data = {}, header = {}) => {
   }
 }
 
-export const getAllData = async (params = {}, header = {}) => {
+export const getAllData = async (
+  { coreData, studentResponseType, ...filters } = {},
+  header = {}
+) => {
   let headers = {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await post(`${manifest.api_url}/group/search`, params, {
-    headers
-  })
+  const result = await post(
+    `${process.env.REACT_APP_API_URL}/group/search`,
+    { filters },
+    {
+      headers
+    }
+  )
 
   if (result.data) {
+    if (coreData === 'getCoreData') {
+      return result.data.data
+    }
+    if (coreData === 'getStudents') {
+      return await getStudents(result.data.data, studentResponseType)
+    }
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
   } else {
@@ -111,12 +128,88 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/group/${filters.id}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/group/${filters.id}`,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData)
   } else {
     return {}
   }
+}
+
+export const getChild = async ({ groupId, ...params } = {}, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/group/${groupId}/child`,
+    { params, headers }
+  )
+  if (result.data) {
+    return result.data.data
+  } else {
+    return {}
+  }
+}
+
+export const getGradeSubjects = async (
+  { teacherId, ...params } = {},
+  header = {}
+) => {
+  const groupData = await getAll({ teacherId, coreData: 'getCoreData' })
+  let data = await Promise.all(
+    groupData.map(async (item) => await getDataWithSubjectOne(item))
+  )
+  return data.reduce((newData, old) => [...newData, ...old])
+}
+
+export const getGradeSubjectsQuery = async (params = {}, header = {}) => {
+  const groupData = await getAllData({ ...params, coreData: 'getCoreData' })
+  let data = await Promise.all(
+    groupData.map(async (item) => await getDataWithSubjectOne(item))
+  )
+  return data.reduce((newData, old) => [...newData, ...old])
+}
+
+const getDataWithSubjectOne = async (object) => {
+  let subjectData = []
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.gradeLevel) {
+    subjectData = await questionRegistryService.getSubjectsList({
+      gradeLevel: item.gradeLevel,
+      adapter: 'diksha'
+    })
+  }
+  return subjectData.map((e) => {
+    return { ...item, subjectName: e?.code }
+  })
+}
+
+export const getStudents = async (data, type = '') => {
+  return await Promise.all(
+    data.map(async (item) => await getStudent(item, type))
+  )
+}
+
+const getStudent = async (object, type = '') => {
+  let studentData = []
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.id) {
+    if (type === 'core') {
+      studentData = await studentRegistryService.getAll({
+        classId: item.id
+      })
+    } else {
+      studentData = await getChild({
+        groupId: item.id,
+        role: 'Student'
+      })
+    }
+  }
+  return { ...item, studentData }
 }

@@ -19,7 +19,6 @@ import { Box, Button, HStack, Stack, Text, VStack } from "native-base";
 import { useNavigate, useParams } from "react-router-dom";
 import manifestLocal from "../manifest.json";
 import WorksheetBox from "components/WorksheetBox";
-import { teachingMaterial } from "./../config/teachingMaterial";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
@@ -37,32 +36,33 @@ export default function TeachingDetail({ footerLinks, appName }) {
   const [loading, setLoading] = React.useState(true);
   const [showButtonArray, setShowButtonArray] = React.useState(["Like"]);
   const [worksheetConfig, setWorksheetConfig] = React.useState([]);
-  const { classId } = useParams();
-
-  const getClass = async () => {
-    const data = teachingMaterial.find((e) => e.id === classId);
-    if (data) {
-      setClassObject(data ? data : {});
-    } else {
-      let classObj = await classRegistryService.getOne({ id: classId });
-      setClassObject(classObj);
-    }
-  };
+  const { classId, subject } = useParams();
 
   React.useEffect(async () => {
-    getClass();
+    let classObj = await classRegistryService.getOne({ id: classId });
+    setClassObject(classObj);
+    let filter =
+      classId && subject
+        ? {
+            grade: { eq: classObj?.gradeLevel },
+            subject: { eq: subject },
+          }
+        : {};
     const data = await worksheetRegistryService.getAll({
       limit: 2,
+      ...filter,
       state: { eq: "Publish" },
     });
     setWorksheets(data);
     const draftsData = await worksheetRegistryService.getAll({
       limit: 2,
+      ...filter,
       state: { eq: "Draft" },
     });
     setWorksheetDrafts(draftsData);
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     let buttons = [];
+
     if (newManifest["worksheet.allow-download-worksheet"] === "true") {
       buttons = [...buttons, "Download"];
     }
@@ -105,13 +105,13 @@ export default function TeachingDetail({ footerLinks, appName }) {
           classObject?.subjectName ? classObject?.subjectName : ""
         }`}</H2>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "worksheet.cardBg" }}
       _footer={footerLinks}
     >
       <VStack>
         {message ? (
           <HStack
-            bg={colors.viewNotificationDark}
+            bg={"worksheet.primaryLight"}
             p="5"
             justifyContent="space-between"
           >
@@ -122,14 +122,20 @@ export default function TeachingDetail({ footerLinks, appName }) {
             <IconByName
               p="0"
               name="CloseCircleLineIcon"
-              color={colors.worksheetCloseIcon}
+              color={"worksheet.cardCloseIcon"}
               onPress={(e) => setMessage(false)}
             />
           </HStack>
         ) : (
           ""
         )}
-        <Box bg={colors.white} p="5" mb="4" roundedBottom={"xl"} shadow={2}>
+        <Box
+          bg={"worksheet.white"}
+          p="5"
+          mb="4"
+          roundedBottom={"xl"}
+          shadow={2}
+        >
           <Tab
             routes={[
               {
@@ -171,9 +177,15 @@ export default function TeachingDetail({ footerLinks, appName }) {
           />
         </Box>
       </VStack>
-      <Box bg={colors.white} p="5" position="sticky" bottom="85" shadow={2}>
+      <Box
+        bg={"worksheet.white"}
+        p="5"
+        position="sticky"
+        bottom="85"
+        shadow={2}
+      >
         <Button
-          _text={{ color: colors.white }}
+          _text={{ color: "worksheet.white" }}
           p="3"
           onPress={(e) => navigate("/worksheet/create")}
         >
@@ -202,7 +214,7 @@ const Worksheets = ({
         {leftTitle ? <H2>{leftTitle}</H2> : ""}
         {rightTitle ? (
           <Button variant="ghost" onPress={(e) => navigate("/worksheet/list")}>
-            <BodyLarge color={colors.primary}>{rightTitle}</BodyLarge>
+            <BodyLarge color={"worksheet.primary"}>{rightTitle}</BodyLarge>
           </Button>
         ) : (
           ""
@@ -243,7 +255,7 @@ const Worksheets = ({
           my="5"
           alignItems={"center"}
           rounded="lg"
-          bg={colors.viewNotificationDark}
+          bg={"worksheet.secondary"}
         >
           {t("WORKSHEET_NOT_FOUND")}
         </Box>

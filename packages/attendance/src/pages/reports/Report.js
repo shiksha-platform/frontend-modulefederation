@@ -1,7 +1,7 @@
-import { Box, Menu, Button, Text, VStack } from "native-base";
+import { Box, Menu, Button, Text, VStack, Center } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import CalendarBar from "../../components/CalendarBar";
+import CalendarBar from "../../components/CalendarBar/CalendarBar";
 import {
   IconByName,
   Layout,
@@ -16,6 +16,8 @@ import {
   Caption,
   Subtitle,
   getApiConfig,
+  getArray,
+  Loading,
 } from "@shiksha/common-lib";
 import { GetAttendance } from "../../components/AttendanceComponent";
 import ReportSummary from "../../components/ReportSummary";
@@ -25,28 +27,45 @@ import colorTheme from "../../colorTheme";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function Report({ footerLinks }) {
+export default function Report({ footerLinks, config }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
-  const [calsses, setClasses] = useState([]);
+  const [classes, setClasses] = useState([]);
   const teacherId = localStorage.getItem("id");
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
-  const [calendarView, setCalendarView] = useState("days");
+  const [calendarView, setCalendarView] = React.useState();
   const [makeDefaultCollapse, setMakeDefaultCollapse] = useState(false);
-  const [manifest, setManifest] = React.useState();
   const titleName = t("ATTENDANCE_REPORTS");
-  const reportTypes = Array.isArray(manifest?.["Attendance.report_types"])
-    ? manifest?.["Attendance.report_types"]
-    : manifest?.["Attendance.report_types"]
-    ? JSON.parse(manifest?.["Attendance.report_types"])
-    : [];
+  const [reportTypes, setReportTypes] = React.useState();
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(async () => {
+    let ignore = false;
+    if (!ignore) {
+      if (classes[0]?.id) getAttendance(classes[0].id);
+      setMakeDefaultCollapse(makeDefaultCollapse);
+    }
+    return () => {
+      ignore = true;
+    };
+  }, [page, calendarView, classes]);
 
   useEffect(() => {
     let ignore = false;
 
     const getData = async () => {
+      const arr = getArray(config?.["Attendance.report_types"]);
+      setReportTypes(arr);
+      if (arr.includes("daily-report")) {
+        setCalendarView("days");
+      } else if (arr.includes("weekly-report")) {
+        setCalendarView("week");
+      } else if (arr.includes("monthly-report")) {
+        setCalendarView("monthInDays");
+      }
+
       let responceClass = await classRegistryService.getAll({
         teacherId: teacherId,
         type: "class",
@@ -58,23 +77,11 @@ export default function Report({ footerLinks }) {
       }
     };
     getData();
+    setLoading(false);
     return () => {
       ignore = true;
     };
   }, [teacherId]);
-
-  useEffect(async () => {
-    let ignore = false;
-    if (!ignore) {
-      if (calsses[0]?.id) getAttendance(calsses[0].id);
-      setMakeDefaultCollapse(makeDefaultCollapse);
-      const newManifest = await getApiConfig();
-      setManifest(newManifest);
-    }
-    return () => {
-      ignore = true;
-    };
-  }, [page, calendarView]);
 
   useEffect(() => {
     capture("PAGE");
@@ -91,6 +98,20 @@ export default function Report({ footerLinks }) {
     const studentData = await studentRegistryService.getAll({ classId });
     setStudents({ ...students, [classId]: studentData });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!calendarView) {
+    return (
+      <Center>
+        <Center bg="attendace.cardBg" height={window.innerHeight}>
+          <H1 textTransform="inherit">{t("REPORT_CONFIG_TYPE_NOT_FOUND")}</H1>
+        </Center>
+      </Center>
+    );
+  }
 
   return (
     <Layout
@@ -177,7 +198,7 @@ export default function Report({ footerLinks }) {
       _footer={footerLinks}
     >
       <Box bg={colors.white} mb="4" roundedBottom={"xl"} shadow={2}>
-        {calsses.map((item, index) => (
+        {classes.map((item, index) => (
           <Box
             key={index}
             borderBottomWidth={1}
@@ -188,10 +209,10 @@ export default function Report({ footerLinks }) {
               onPressFuction={(e) => getAttendance(item.id)}
               header={
                 <VStack>
-                  <H2>{item.name}</H2>
-                  <Caption>
-                    {index % 2 === 0 ? t("MORNING") : t("MID_DAY_MEAL")}
-                  </Caption>
+                  <H2>
+                    {(item?.name ? item?.name : "") +
+                      (item?.section ? " • Sec " + item?.section : "")}
+                  </H2>
                 </VStack>
               }
             >
@@ -206,8 +227,13 @@ export default function Report({ footerLinks }) {
                       : [],
                   }}
                 />
-                <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                  <Text bold color={colors.darkGray}>
+                <Subtitle
+                  py="5"
+                  px="10px"
+                  color={colors.grayInLight}
+                  textTransform="inherit"
+                >
+                  <Text bold color={colors.darkGray} textTransform="inherit">
                     {t("NOTES")}
                     {": "}
                   </Text>

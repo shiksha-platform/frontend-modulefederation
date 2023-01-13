@@ -1,31 +1,46 @@
 import { get, post } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
+const defaultAdapter = 'diksha'
 
 const interfaceData = {
   questionId: 'questionId',
   body: 'body',
   question: 'body',
+  answer: 'answer',
   options: 'options',
+  class: 'class',
+  compatibilityLevel: 'compatibilityLevel',
+  language: 'language',
+  learningOutcome: 'learningOutcome',
+  maxScore: 'maxScore',
+  subject: 'subject',
+  topic: 'topic',
   type: 'type'
 }
 
-export const getAllQuestions = async (params = {}, header = {}) => {
+export const getAllQuestions = async (
+  { adapter, ...params } = {},
+  header = {}
+) => {
   let headers = {
     Authorization: 'Bearer ' + localStorage.getItem('token'),
     ContentType: 'application/json',
     Accept: 'application/json',
     ...header
   }
-  const result = await get(
-    `${manifest.api_url}/question/${params?.adapter}/search?server=dev`,
-    {
-      params: params,
-      headers
+  try {
+    const result = await get(
+      `${process.env.REACT_APP_API_URL}/question/${adapter}/search?server=dev`,
+      {
+        params: params,
+        headers
+      }
+    )
+    if (result?.data?.data && result.data.data.length) {
+      return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     }
-  )
-  if (result?.data?.data && result.data.data.length) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+  } catch (e) {
+    console.error(e)
   }
   return []
 }
@@ -80,6 +95,46 @@ const readQuestion = async (questionId) => {
       qType,
       questionId: identifier
     }
+  } else {
+    return []
+  }
+}
+
+export const getSubjectsList = async (
+  { adapter, ...params } = {},
+  header = {}
+) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  let adapterData = adapter ? adapter : defaultAdapter
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/question/${adapterData}/subjectlist`,
+    { params, headers }
+  )
+  if (result.data && result.data.data) {
+    return result.data.data.sort()
+  } else {
+    return []
+  }
+}
+
+export const getTopicsList = async (
+  { adapter, ...params } = {},
+  header = {}
+) => {
+  const headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  let adapterData = adapter ? adapter : defaultAdapter
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/question/${adapterData}/topicslist`,
+    { params, headers }
+  )
+  if (result.data && result.data.data) {
+    return result.data.data.sort()
   } else {
     return []
   }

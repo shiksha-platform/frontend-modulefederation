@@ -4,18 +4,16 @@ import {
   capture,
   telemetryFactory,
   BodyLarge,
-  BodyMedium,
   Caption,
   overrideColorTheme,
   Subtitle,
+  H3,
 } from "@shiksha/common-lib";
 import QuestionBox from "components/QuestionBox";
 import {
   HStack,
   Stack,
   Button,
-  Text,
-  Actionsheet,
   Box,
   Pressable,
   VStack,
@@ -53,6 +51,7 @@ export default function ListOfQuestions({
   setPageName,
   formObject,
   setFormObject,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const [selectData, setSelectData] = React.useState([]);
@@ -175,14 +174,14 @@ export default function ListOfQuestions({
     <Stack>
       <AlertValidationModal {...{ alertMessage, setAlertMessage }} />
       {isSuccess === "message" ? (
-        <Box bg={colors.alertBackground} p="5">
+        <Box bg={"worksheet.successAlert"} p="5">
           <HStack justifyContent="space-between">
-            <BodyLarge color={colors.green}>
+            <BodyLarge color={"worksheet.green"}>
               ({selectData.length}) New Questions Added
             </BodyLarge>
             <IconByName
               name="CloseCircleLineIcon"
-              color={colors.green}
+              color={"worksheet.green"}
               p="0"
               onPress={(e) => setIsSuccess("filterData")}
             />
@@ -194,30 +193,31 @@ export default function ListOfQuestions({
       {!isSuccess ? (
         <Box>
           <FilterButton
+            setAlert={setAlert}
             getObject={handleFilter}
             object={formObject}
-            _actionSheet={{ bg: colors.worksheetCardBg }}
+            _actionSheet={{ bg: "worksheet.cardBg" }}
             _box={{ pt: 5, px: 5 }}
             _button={{ bg: "button.50", px: "15px", py: "2" }}
             _filterButton={{
               rightIcon: "",
-              bg: colors.white,
+              bg: "worksheet.white",
             }}
             resetButtonText={t("COLLAPSE")}
             filters={filters}
           />
-          <Box bg={colors.white} px="5">
+          <Box bg={"worksheet.white"} px="5">
             <ScrollView horizontal={true}>
               {selectData.map((item, index) => (
                 <Box key={index}>
                   <Box
-                    bg={colors.viewNotificationDark}
+                    bg={"worksheet.secondary"}
                     w="192px"
                     h="87px"
                     m="2"
                     p="3"
                     borderWidth="1"
-                    borderColor={colors.viewNotificationNormal}
+                    borderColor={"worksheet.primary"}
                     rounded="lg"
                     overflow="hidden"
                   >
@@ -238,7 +238,7 @@ export default function ListOfQuestions({
                     top="0"
                     right="0"
                     p="0"
-                    color={colors.primary}
+                    color={"worksheet.primary"}
                     _icon={{ size: 24 }}
                     onPress={(e) => handelUnSelectQuestion(item)}
                   />
@@ -252,14 +252,14 @@ export default function ListOfQuestions({
           flex="1"
           variant="ghost"
           leftIcon={<IconByName name="AddFillIcon" isDisabled />}
-          bg={colors.white}
+          bg={"worksheet.white"}
           onPress={handelAddQuestionButton}
         >
           {t("Add more questions")}
         </Button>
       )}
 
-      <Box bg={colors.white} p="5">
+      <Box bg={"worksheet.white"} p="5">
         <VStack space="5">
           {showQuestions.map((item, index) => {
             const isExist = selectData.filter(
@@ -276,13 +276,15 @@ export default function ListOfQuestions({
                     <IconByName
                       name="InformationFillIcon"
                       p="1"
-                      color={colors.primary}
+                      color={"worksheet.primary"}
                       onPress={(e) => setQuestionObject(item)}
                     />
                     {!isSuccess ? (
                       <IconByName
                         p="1"
-                        color={isExist ? colors.primary : colors.lightGray2}
+                        color={
+                          isExist ? "worksheet.primary" : "worksheet.lightGray2"
+                        }
                         name={
                           isExist ? "CheckboxLineIcon" : "CheckboxBlankLineIcon"
                         }
@@ -298,7 +300,13 @@ export default function ListOfQuestions({
           })}
         </VStack>
       </Box>
-      <Box bg={colors.white} p="5" position="sticky" bottom="84" shadow={2}>
+      <Box
+        bg={"worksheet.white"}
+        p="5"
+        position="sticky"
+        bottom="84"
+        shadow={2}
+      >
         {!isSuccess ? (
           <>
             <Caption py="4" pb="1">
@@ -311,7 +319,11 @@ export default function ListOfQuestions({
                 <HStack alignItems="center" space="1" pt="1" py="4">
                   <IconByName
                     isDisabled
-                    color={isAnswerFilter ? colors.primary : colors.lightGray2}
+                    color={
+                      isAnswerFilter
+                        ? "worksheet.primary"
+                        : "worksheet.lightGray2"
+                    }
                     name={
                       isAnswerFilter
                         ? "CheckboxLineIcon"
@@ -336,7 +348,7 @@ export default function ListOfQuestions({
               </Button>
               <Button
                 colorScheme="button"
-                _text={{ color: colors.white }}
+                _text={{ color: "worksheet.white" }}
                 px="5"
                 flex="1"
                 onPress={handleAddToWorksheet}
@@ -358,7 +370,7 @@ export default function ListOfQuestions({
             </Button>
             <Button
               colorScheme="button"
-              _text={{ color: colors.white }}
+              _text={{ color: "worksheet.white" }}
               px="5"
               flex="1"
               onPress={handelPublish}

@@ -5,7 +5,6 @@ import {
   Layout,
   H2,
   questionRegistryService,
-  overrideColorTheme,
   getApiConfig,
 } from "@shiksha/common-lib";
 import React from "react";
@@ -14,12 +13,9 @@ import manifestLocal from "../manifest.json";
 import SuccessPage from "../components/CreateWorksheet/SuccessPage";
 import FormPage from "../components/CreateWorksheet/Form";
 import AddDescriptionPage from "../components/CreateWorksheet/AddDescriptionPage";
-import WorksheetTemplate from "../components/CreateWorksheet/WorksheetTemplate";
 import ListOfQuestions from "../components/CreateWorksheet/ListOfQuestions";
 import { defaultInputs, autoGenerateInputs } from "../config/worksheetConfig";
 import { useNavigate } from "react-router-dom";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
 
 export default function CreateWorksheet({ footerLinks, appName }) {
   const { t } = useTranslation();
@@ -50,7 +46,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
     });
     capture("INTERACT", telemetryData);
 
-    const newManifest = await getApiConfig({ modules: { eq: "Worksheet" } });
+    const newManifest = await getApiConfig(["worksheet"]);
     setWorksheetConfig(
       Array.isArray(newManifest?.["worksheet.worksheetMetadata"])
         ? newManifest?.["worksheet.worksheetMetadata"]
@@ -62,7 +58,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
   }, []);
 
   React.useEffect(async () => {
-    if (pageName === "ListOfQuestions" || pageName === "WorksheetTemplate") {
+    if (pageName === "ListOfQuestions" || pageName === "AddDescriptionPage") {
       setLoading(true);
       const newAttribute = [...defaultInputs, ...autoGenerateInputs];
       const attribute = newAttribute.map((e) =>
@@ -76,7 +72,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       } else if (!limit?.limit && createType === "auto") {
         setAlertMessage(t("PLEASE_SELECT_LIMIT"));
         setPageName();
-      } else {
+      } else if (pageName !== "AddDescriptionPage") {
         let data = {
           adapter: formObject.source,
           limit: 10,
@@ -89,17 +85,16 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         );
         setQuestions(newQuestions);
         if (newQuestions.length <= 0) {
-          setAlertMessage(
-            <H2 textTransform="none">{t("QUESTION_NOT_FOUND")}</H2>
-          );
+          setAlertMessage(t("QUESTION_NOT_FOUND"));
           setPageName();
+          setFormObject({});
         } else {
           setAlertMessage();
         }
       }
       setLoading(false);
     }
-  }, [formObject, ["ListOfQuestions", "WorksheetTemplate"].includes(pageName)]);
+  }, [formObject, ["ListOfQuestions"].includes(pageName)]);
 
   if (loading) {
     return <Loading />;
@@ -113,24 +108,18 @@ export default function CreateWorksheet({ footerLinks, appName }) {
       setLimit({});
       setCreateType("create");
     } else if (pageName === "AddDescriptionPage") {
-      setPageName("filterData");
+      if (createType === "auto") {
+        setPageName("");
+      } else {
+        setPageName("filterData");
+      }
     } else if (pageName === "filterData") {
       setPageName("ListOfQuestions");
-    } else if (["ListOfQuestions", "WorksheetTemplate"].includes(pageName)) {
+    } else if (["ListOfQuestions"].includes(pageName)) {
       setPageName("");
     } else {
       navigate(-1);
     }
-  };
-
-  const handleWorksheetTemplateOnPress = () => {
-    setFormObject({ ...formObject, state: "Publish" });
-    setPageName("AddDescriptionPage");
-    const telemetryData = telemetryFactory.interact({
-      appName,
-      type: "Worksheet-Template-Choose",
-    });
-    capture("INTERACT", telemetryData);
   };
 
   if (pageName === "success") {
@@ -173,7 +162,7 @@ export default function CreateWorksheet({ footerLinks, appName }) {
         </H2>
       }
       _subHeader={{
-        bg: colors.cardBg,
+        bg: "worksheet.cardBg",
       }}
       _footer={footerLinks}
     >
@@ -190,15 +179,10 @@ export default function CreateWorksheet({ footerLinks, appName }) {
             setFormObject,
           }}
         />
-      ) : pageName === "WorksheetTemplate" && !alertMessage ? (
-        questions.length > 0 ? (
-          <WorksheetTemplate onPress={handleWorksheetTemplateOnPress} />
-        ) : (
-          ""
-        )
       ) : pageName === "AddDescriptionPage" && !alertMessage ? (
         <AddDescriptionPage
           {...{
+            manifest,
             appName,
             worksheetStartTime,
             createType,

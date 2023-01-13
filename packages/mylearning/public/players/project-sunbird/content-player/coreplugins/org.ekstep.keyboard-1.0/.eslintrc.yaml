@@ -1,0 +1,5 @@
+extends: "ekstep-content-plugin"
+rules:
+  indent: ["error", 2, { "SwitchCase": 1 }]
+parserOptions:
+  ecmaVersion: 6

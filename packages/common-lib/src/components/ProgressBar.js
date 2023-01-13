@@ -12,6 +12,7 @@ export default function ProgressBar({
   _labelCount,
   _textInBar,
   legendType,
+  _legendType,
   ...props
 }) {
   let total = data.reduce((a, b) => a + b['value'], 0)
@@ -20,34 +21,35 @@ export default function ProgressBar({
     data &&
     !isLabelCountHide &&
     data.length &&
-    data.map(function (item, i) {
-      if (item.value > 0) {
-        return (
-          <Box
-            float='left'
-            textAlign='center'
-            color={item.color}
-            w={(item.value / total) * 100 + '%'}
-            key={i}
-            _text={{
-              color: 'white',
-              bg: item.color,
-              w: 'fit-content',
-              px: '1',
-              py: '2px',
-              mb: '1',
-              rounded: 'sm',
-              fontSize: 10,
-              fontWeight: 600
-            }}
-            {..._labelCount}
-          >
-            {item.value.toString().padStart(2, '0') + (sufix ? sufix : '')}
-          </Box>
-        )
-      }
-      return undefined
-    })
+    data
+      .map(function (item, i) {
+        if (item.value > 0) {
+          return (
+            <Box
+              float='left'
+              textAlign='center'
+              color={item.color}
+              w={(item.value / total) * 100 + '%'}
+              key={i}
+              _text={{
+                color: 'white',
+                bg: item.color,
+                w: 'fit-content',
+                px: '1',
+                py: '2px',
+                mb: '1',
+                rounded: 'sm',
+                fontSize: 10,
+                fontWeight: 600
+              }}
+              {..._labelCount}
+            >
+              {item.value.toString().padStart(2, '0') + (sufix ? sufix : '')}
+            </Box>
+          )
+        }
+      })
+      .filter((e) => e)
 
   let bars =
     data &&
@@ -70,10 +72,10 @@ export default function ProgressBar({
                   {..._textInBar}
                   {...(item?._textInBar ? item?._textInBar : {})}
                 >
-                  {item.name}
+                  {item?.name}
                 </Text>
               ) : (
-                ''
+                <React.Fragment />
               )}
             </Box>
           </Tooltip>
@@ -90,9 +92,14 @@ export default function ProgressBar({
       data.map(function (item, i) {
         if (item.value > 0) {
           return (
-            <Text key={i} color={item.color}>
+            <Text
+              key={i}
+              color={item.color}
+              {..._legendType}
+              {...(item?._legendType ? item?._legendType : {})}
+            >
               {!legendType && <Text fontSize='25px'>●</Text>}
-              <Text>{item.name}</Text>
+              <Text>{item?.name}</Text>
             </Text>
           )
         }
@@ -100,7 +107,7 @@ export default function ProgressBar({
       })
   }
 
-  const getLegendPattern = () => {
+  const GetLegendPattern = () => {
     if (legendType === 'separated') {
       return (
         <HStack
@@ -108,7 +115,7 @@ export default function ProgressBar({
           space={1}
           justifyContent='space-between'
         >
-          {legends === '' ? '' : legends}
+          {!legends || legends === '' ? <React.Fragment /> : legends}
         </HStack>
       )
     }
@@ -119,13 +126,13 @@ export default function ProgressBar({
           space={1}
           justifyContent='space-between'
         >
-          {legends === '' ? '' : legends}
+          {!legends || legends === '' ? <React.Fragment /> : legends}
         </HStack>
       )
     }
     return (
       <HStack alignSelf='center' space={1} justifyContent='center'>
-        {legends === '' ? '' : legends}
+        {!legends || legends === '' ? <React.Fragment /> : legends}
       </HStack>
     )
   }
@@ -133,15 +140,15 @@ export default function ProgressBar({
   return (
     <Stack {...props}>
       <VStack>
-        {!isLabelCountHide ? (
-          <HStack>{values === '' ? '' : values}</HStack>
+        {!isLabelCountHide && values ? (
+          <HStack>{values}</HStack>
         ) : (
-          ''
+          <React.Fragment />
         )}
         <HStack overflow='hidden' rounded='xl' {..._bar}>
-          {bars === '' ? '' : bars}
+          {!bars || bars === '' ? <Text>Progress Data Empty</Text> : bars}
         </HStack>
-        {!isTextInBar && isTextShow ? getLegendPattern() : ''}
+        {!isTextInBar && isTextShow ? <GetLegendPattern /> : <React.Fragment />}
       </VStack>
     </Stack>
   )

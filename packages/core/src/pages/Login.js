@@ -17,10 +17,12 @@ import {
   fetchToken,
   eventBus,
   useWindowSize,
-  teacherRegistryService,
+  userRegistryService,
   BodyMedium,
   Heading,
   Subtitle,
+  getUserToken,
+  overrideColorTheme,
 } from "@shiksha/common-lib";
 
 const styles = {
@@ -30,7 +32,9 @@ const styles = {
   },
 };
 
-export default function Login() {
+const colors = overrideColorTheme();
+
+export default function Login({ swPath }) {
   const [credentials, setCredentials] = useState();
   const [errors, setErrors] = React.useState({});
   const { t } = useTranslation();
@@ -61,44 +65,58 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (validate()) {
+      const fcmToken = await getUserToken(swPath);
+
       const result = await fetchToken(
         manifest.auth_url,
         credentials?.username,
         credentials?.password
       );
-      /* const result = {
-          data:{
-            "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGRC0yV2pkaVJfQjV3OVZVc1Nsdjh6b21vMmN1ejlHalVSd1hUQzBDU3NZIn0.eyJleHAiOjE2NDYxNjUxMzMsImlhdCI6MTY0NjEyOTEzMywianRpIjoiNGExODhkMjQtODMyNS00M2NkLWE1ODgtMzNlZjA4ZTc4NzU2IiwiaXNzIjoiaHR0cHM6Ly9kZXYtc2hpa3NoYS51bml0ZWZyYW1ld29yay5pby9hdXRoL3JlYWxtcy9zdW5iaXJkLXJjIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjViMzRiMGE4LTUyMDktNDFiNi04ZWNhLTMzOWU3YzIwOTkzYSIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlZ2lzdHJ5LWZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjM0ZmE4OTJiLWI4MTMtNDg2Ni1hMmNkLTUzZDBlOTgwNjRlMyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiYXR0ZW5kYW5jZS1tYW5hZ2VtZW50Iiwib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXN1bmJpcmQtcmMiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYXNod2luMkBnbWFpbC5jb20iLCJlbWFpbCI6ImFzaHdpbjJAZ21haWwuY29tIn0.S-YAVlsaiGQ8g8uVVTRdn9gTpA3xL5qh94DSfppuv28qLqCRbw7fmAJtBqK-TGO42vZwZWelOT49LN6znkEncTcvvcMe4iWSm1dU0cOqwn0piQt7lrMQ2RLPYGThPJK98ixHgcieODibWoWLK8tyeb6LJqfyw0gS0UCzxMJQn0R5ABFjRO7tThjBeuNZmP7b03WZIEi7aGQmB3XB9i6Ge9AaQHIUNbz9pCjqdkm0CjNG6qS3pgfX2dKHG1Y2T55ziSHWi5LySFzagAkRvveeh-4tghpxwPHvAXtepGSsOQWkEG8xnZCIyingjOt0snqDt0p1bF4thnTblIaq1LRGaQ"
-          }
-        }
-        */ if (result?.data) {
+      if (result?.data) {
         let token = result.data.access_token;
-        const resultTeacher = await teacherRegistryService.getOne(
-          {},
-          { Authorization: "Bearer " + token }
-        );
+        localStorage.setItem("token", token);
 
-        if (resultTeacher) {
-          let id = resultTeacher.id.replace("1-", "");
-          localStorage.setItem("id", id);
-          localStorage.setItem(
-            "fullName",
-            resultTeacher.fullName
-              ? resultTeacher.fullName
-              : `${resultTeacher.firstName} ${resultTeacher.lastName}`
-          );
-          localStorage.setItem("firstName", resultTeacher.firstName);
-          localStorage.setItem("lastName", resultTeacher.lastName);
-          localStorage.setItem("schoolId", resultTeacher.schoolId);
-          //window.location.reload();
-
-          localStorage.setItem("token", token);
+        const resultTeacher = await userRegistryService.getOne();
+        if (resultTeacher?.id) {
+          try {
+            let { id } = resultTeacher;
+            localStorage.setItem("id", id);
+            const updateTokenTeacher = await userRegistryService.update({
+              id,
+              fcmToken,
+            });
+            localStorage.setItem(
+              "fullName",
+              resultTeacher.fullName
+                ? resultTeacher.fullName
+                : `${resultTeacher.firstName} ${resultTeacher.lastName}`
+            );
+            localStorage.setItem("firstName", resultTeacher.firstName);
+            localStorage.setItem("lastName", resultTeacher.lastName);
+            localStorage.setItem("schoolId", resultTeacher.schoolId);
+            localStorage.setItem("phoneNumber", resultTeacher.phoneNumber);
+          } catch (e) {
+            localStorage.removeItem("token");
+            console.log({ e });
+          }
+          try {
+            const fcmToken = await getUserToken(swPath);
+            let id = localStorage.getItem("id");
+            await userRegistryService.update({ id, fcmToken });
+            localStorage.setItem("fcmToken", fcmToken);
+          } catch (e) {
+            localStorage.setItem("fcmToken", "");
+            console.log({ e });
+          }
           eventBus.publish("AUTH", {
             eventType: "LOGIN_SUCCESS",
             data: {
               token: token,
             },
           });
+        } else {
+          localStorage.removeItem("token");
+          setErrors({ alert: t("PLEASE_ENTER_VALID_CREDENTIALS") });
         }
       } else {
         localStorage.removeItem("token");
@@ -111,7 +129,7 @@ export default function Login() {
     <Box style={styles.box}>
       <Center
         _text={{
-          color: "white",
+          color: colors?.white,
           fontWeight: "bold",
         }}
         height={Height}
@@ -135,11 +153,11 @@ export default function Login() {
                     >
                       <HStack space={2} flexShrink={1}>
                         <Alert.Icon mt="1" />
-                        <Subtitle color="coolGray.800">{errors.alert}</Subtitle>
+                        <Subtitle color={colors?.gray}>{errors.alert}</Subtitle>
                       </HStack>
                       <IconButton
                         variant="unstyled"
-                        icon={<CloseIcon size="3" color="coolGray.600" />}
+                        icon={<CloseIcon size="3" color={colors?.gray} />}
                         onPress={(e) => setErrors({})}
                       />
                     </HStack>
@@ -174,7 +192,7 @@ export default function Login() {
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: "error.500",
+                        color: colors?.error,
                         fontWeight: 500,
                       }}
                     >
@@ -209,7 +227,7 @@ export default function Login() {
                     <FormControl.ErrorMessage
                       _text={{
                         fontSize: "xs",
-                        color: "error.500",
+                        color: colors?.error,
                         fontWeight: 500,
                       }}
                     >
@@ -222,19 +240,21 @@ export default function Login() {
                 <Button
                   colorScheme="button"
                   p="3"
-                  _text={{ color: "white" }}
+                  _text={{ color: colors?.white }}
                   onPress={handleLogin}
                 >
                   {t("SUBMIT")}
                 </Button>
-                <BodyMedium color="button.500" textAlign="center">
+                <BodyMedium color={colors?.primary} textAlign="center">
                   {t("FORGOT_PASSWORD")}
                 </BodyMedium>
                 <HStack alignItems="center" space="2">
                   <BodyMedium textTransform="inherit">
                     {t("DONT_HAVE_AN_ACCOUNT")}
                   </BodyMedium>
-                  <BodyMedium color="button.500">{t("SIGN_UP")}</BodyMedium>
+                  <BodyMedium color={colors?.primary}>
+                    {t("SIGN_UP")}
+                  </BodyMedium>
                 </HStack>
               </VStack>
             </VStack>

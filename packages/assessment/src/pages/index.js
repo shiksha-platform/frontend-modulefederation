@@ -1,178 +1,192 @@
 import {
+  assessmentRegistryService,
   BodyLarge,
-  BodyMedium,
   Collapsible,
-  H3,
+  H2,
   IconByName,
   Layout,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
 import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Box, HStack, Text, VStack, Stack, Avatar } from "native-base";
-import SpotAssessmentCard from "../components/SpotAssessment/SpotAssessmentCard";
-import StudentListCard from "../components/SpotAssessment/StudentList";
-import ExamScoresCard from "../components/ExamScores/ExamScoresCard";
-import colorTheme from "../colorTheme";
-const colors = overrideColorTheme(colorTheme);
+import { useParams } from "react-router-dom";
+import {
+  Box,
+  HStack,
+  Stack,
+  Actionsheet,
+  Button,
+  Pressable,
+  VStack,
+} from "native-base";
+import { useNavigate } from "react-router-dom";
+import SpotAssessmentCard from "components/SpotAssessment/SpotAssessmentCard";
+import ExamScoresCard from "components/ExamScores/ExamScoresCard";
+import manifest from "../manifest.json";
 
-export default function Assessment() {
+const ChooseActionsheet = ({
+  chooseSubjectModal,
+  setChooseSubjectModal,
+  classId,
+}) => {
   const { t } = useTranslation();
-  let { classId } = useParams();
-  // if (!classId) classId = "9eae88b7-1f2d-4561-a64f-871cf7a6b3f2";
-  if (!classId) classId = "9ccc0210-65c5-4af6-ac73-a12304f538c6";
-  const [weekPage, setWeekPage] = useState(0);
-  const [allAttendanceStatus, setAllAttendanceStatus] = useState({});
-  const [students, setStudents] = useState([]);
-  const [searchStudents, setSearchStudents] = useState([]);
-  const [classObject, setClassObject] = useState({});
-  // const { classId } = useParams();
-  const [loading, setLoading] = useState(false);
-  const teacherId = sessionStorage.getItem("id");
-  const [attendance, setAttendance] = useState([]);
-  const [search, setSearch] = useState();
-  const [pageName, setPageName] = useState();
+  const navigate = useNavigate();
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = React.useState([]);
 
   useEffect(() => {
-    localStorage.setItem("assessment-class", classId);
+    getSubjectsList();
+    localStorage.removeItem("assessment-score");
+    localStorage.removeItem("assessment-totalScore");
   }, []);
 
-  if (pageName === "assessmentStudentList") {
-    return (
-      <Layout
-        _header={{
-          title: "Class VI A",
-          isEnableSearchBtn: true,
-          // setSearch: setSearch,
-          subHeading: t("Class Details"),
-          iconComponent: (
-            <Avatar
-              size="48px"
-              borderRadius="md"
-              source={{
-                uri: "https://via.placeholder.com/50x50.png",
-              }}
-            />
-          ),
-        }}
-        _appBar={{ languages: ["en"] }}
-        subHeader={<H3 textTransform="none">{t("Choose a Student")}</H3>}
-        _subHeader={{ bg: colors.cardBg, py: "6" }}
-        _footer={{
-          menues: [
-            {
-              title: "HOME",
-              icon: "Home4LineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "CLASSES",
-              icon: "TeamLineIcon",
-              module: "Registry",
-              route: "/classes",
-              routeparameters: {},
-            },
-            {
-              title: "SCHOOL",
-              icon: "GovernmentLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "MATERIALS",
-              icon: "BookOpenLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-            {
-              title: "CAREER",
-              icon: "UserLineIcon",
-              module: "Registry",
-              route: "/",
-              routeparameters: {},
-            },
-          ],
-        }}
-      >
-        <Stack space={1} mb="2" shadow={2}>
-          <StudentListCard classId={classId} />
-        </Stack>
-      </Layout>
-    );
-  }
+  // homepage methods
+  const getSubjectsList = async () => {
+    const res = await assessmentRegistryService.getSubjectsList({
+      gradeLevel: "class1",
+    });
+    setSubjects(res);
+  };
 
+  const handleSubjectSelection = (subject) => {
+    setSelectedSubject(subject?.code);
+  };
+
+  const handleNext = () => {
+    navigate(`/assessment/given/${classId}/${selectedSubject}`);
+  };
+
+  return (
+    <Actionsheet
+      isOpen={chooseSubjectModal}
+      onClose={() => setChooseSubjectModal(false)}
+    >
+      <Actionsheet.Content alignItems={"left"} bg={"assessment.cardBg"}>
+        <HStack justifyContent={"space-between"}>
+          <Stack p={5} pt={2} pb="15px">
+            <H2 textTransform="none">{t("Choose the subject")}</H2>
+          </Stack>
+          <IconByName
+            name="CloseCircleLineIcon"
+            color={"assessment.cardCloseIcon"}
+            onPress={() => setChooseSubjectModal(false)}
+          />
+        </HStack>
+      </Actionsheet.Content>
+      <Box w="100%" justifyContent="center" bg={"assessment.white"}>
+        {subjects && subjects.length ? (
+          subjects.map((subject) => {
+            return (
+              <Pressable
+                key={subject?.code}
+                p="3"
+                bg={
+                  selectedSubject === subject.code
+                    ? "assessment.lightGray2"
+                    : "white"
+                }
+                onPress={() => {
+                  handleSubjectSelection(subject);
+                }}
+              >
+                <BodyLarge color={"black"} textTransform="none">
+                  {t(subject.name)}
+                </BodyLarge>
+              </Pressable>
+            );
+          })
+        ) : (
+          <>No Subjects</>
+        )}
+        <Box p="4">
+          <Button
+            colorScheme="button"
+            _text={{
+              color: "assessment.white",
+            }}
+            onPress={handleNext}
+            isDisabled={!selectedSubject}
+          >
+            {t("Next")}
+          </Button>
+        </Box>
+      </Box>
+    </Actionsheet>
+  );
+};
+
+export default function Assessment({ footerLinks, ...props }) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  let { classId } = useParams();
+  const [chooseSubjectModal, setChooseSubjectModal] = useState(false);
+
+  classId = classId
+    ? classId
+    : props?.classObject?.id
+    ? props?.classObject?.id
+    : "ce045222-52a8-4a0a-8266-9220f63baba7";
+  let subject = props?.subject ? props.subject : "English";
+
+  const _handleSpotAssessmentStart = () => {
+    if (!props?.subject) {
+      setChooseSubjectModal(true);
+    } else {
+      navigate(`/assessment/given/${classId}/${subject}`);
+    }
+  };
+
+  const Children = () => (
+    <Stack space={1} mb="2">
+      <VStack py="4" space={4}>
+        <SpotAssessmentCard
+          {...props}
+          classId={classId}
+          _viewPastAssessment={{
+            onPress: () => {
+              navigate(`/assessment/past-assessments/${classId}/${subject}`);
+            },
+          }}
+          _handleSpotAssessmentStart={_handleSpotAssessmentStart}
+        />
+        <ExamScoresCard />
+      </VStack>
+      {!props?.subject ? (
+        <ChooseActionsheet
+          {...{ chooseSubjectModal, setChooseSubjectModal, classId }}
+        />
+      ) : (
+        <React.Fragment />
+      )}
+    </Stack>
+  );
+
+  if (props?.isLayoutNotRequired) {
+    return <Children />;
+  }
   return (
     <Layout
       _header={{
         title: "Spot Assessment",
         isEnableSearchBtn: true,
-        // setSearch: setSearch,
-        // subHeading: t("Spot Assessment")
       }}
-      _appBar={{ languages: ["en"] }}
+      _appBar={{ languages: manifest.languages }}
       subHeader={
         <HStack space="4" justifyContent="space-between">
           <VStack>
-            <Text fontSize={"lg"}>{"Assessment"}</Text>
+            <H2>{"Assessment"}</H2>
           </VStack>
-          <IconByName size="sm" name="ArrowRightSLineIcon" />
+          <IconByName size="sm" name="ArrowRightSLineIcon" isDisabled />
         </HStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
-      _footer={{
-        menues: [
-          {
-            title: "HOME",
-            icon: "Home4LineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CLASSES",
-            icon: "TeamLineIcon",
-            module: "Registry",
-            route: "/classes",
-            routeparameters: {},
-          },
-          {
-            title: "SCHOOL",
-            icon: "GovernmentLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "MATERIALS",
-            icon: "BookOpenLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-          {
-            title: "CAREER",
-            icon: "UserLineIcon",
-            module: "Registry",
-            route: "/",
-            routeparameters: {},
-          },
-        ],
-      }}
+      _subHeader={{ bg: "assessment.cardBg" }}
+      _footer={footerLinks}
     >
       <Stack space={1} mb="2" shadow={2}>
         <Collapsible
           defaultCollapse={true}
           header={<BodyLarge>{t("Assessment")}</BodyLarge>}
         >
-          <VStack py="4" space={4}>
-            <SpotAssessmentCard setPageName={setPageName} />
-            <ExamScoresCard setPageName={setPageName} />
-          </VStack>
+          <Children />
         </Collapsible>
       </Stack>
     </Layout>

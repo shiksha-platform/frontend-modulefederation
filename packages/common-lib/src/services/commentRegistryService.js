@@ -1,7 +1,6 @@
 import { get, post, update as updateRequest } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
-import * as teacherRegistryService from './teacherRegistryService'
+import * as userRegistryService from './userRegistryService'
 
 const interfaceData = {
   id: 'commentId',
@@ -11,14 +10,15 @@ const interfaceData = {
   comment: 'comment',
   parentId: 'parentId',
   status: 'status',
-  privacy: 'privacy'
+  privacy: 'privacy',
+  createdAt: 'createdAt'
 }
 
 let commentEntityAttributes = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   const result = await post(
-    manifest.api_url + '/comment/search',
+    process.env.REACT_APP_API_URL + '/comment/search',
     { filters: params, limit: limit },
     {
       headers: {
@@ -47,15 +47,18 @@ export const create = async (
     onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/comment', newData, {
-    headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token'),
-      ...headers
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/comment',
+    newData,
+    {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
+        ...headers
+      }
     }
-  })
+  )
   if (result.data) {
-    let { Comment } = result.data?.data?.result
-    return Comment
+    return result.data?.data?.commentId
   } else {
     return false
   }
@@ -78,7 +81,7 @@ export const update = async (
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/comment/' + data.id,
+    process.env.REACT_APP_API_URL + '/comment/' + data.id,
     newData,
     {
       headers: header
@@ -89,4 +92,19 @@ export const update = async (
   } else {
     return {}
   }
+}
+
+const getDataWithRelational = async (data) => {
+  return await Promise.all(
+    data.map(async (item) => await getDataWithRelationalOne(item))
+  )
+}
+
+const getDataWithRelationalOne = async (object) => {
+  let userData = {}
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.userId) {
+    userData = await userRegistryService.getOne({ id: item.userId })
+  }
+  return { ...item, userData }
 }

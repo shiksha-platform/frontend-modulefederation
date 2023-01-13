@@ -1,5 +1,4 @@
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
 import { get, post, update as coreUpdate } from './RestClient'
 import * as likeRegistryService from './likeRegistryService'
 import * as commentRegistryService from './commentRegistryService'
@@ -12,6 +11,7 @@ const interfaceData = {
   grade: 'grade',
   level: 'level',
   topic: 'topic',
+  source: 'source',
   instructions: 'instructions',
   feedback: 'feedback',
   hints: 'hints',
@@ -41,7 +41,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   }
   const result = await post(
-    manifest.api_url + '/worksheet/search',
+    process.env.REACT_APP_API_URL + '/worksheet/search',
     { filters: params, limit: limit },
     {
       headers: headers?.headers ? headers?.headers : {}
@@ -61,14 +61,14 @@ export const getOne = async (filters = {}, header = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   try {
-    const result = await get(manifest.api_url + '/worksheet/' + filters.id, {
-      headers
-    })
+    const result = await get(
+      process.env.REACT_APP_API_URL + '/worksheet/' + filters.id,
+      {
+        headers
+      }
+    )
     if (result?.data?.data) {
       let mapResult = mapInterfaceData(result.data.data, interfaceData)
-      mapResult.id = mapResult.id?.startsWith('1-')
-        ? mapResult.id?.replace('1-', '')
-        : mapResult.id
       return mapResult
     } else {
       return {}
@@ -93,12 +93,15 @@ export const create = async (data, header = {}) => {
     onlyParameter: headers?.onlyParameter ? headers?.onlyParameter : only
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/worksheet', newData, {
-    headers: headers?.headers ? headers?.headers : {}
-  })
+  const result = await post(
+    process.env.REACT_APP_API_URL + '/worksheet',
+    newData,
+    {
+      headers: headers?.headers ? headers?.headers : {}
+    }
+  )
   if (result.data) {
-    let { Worksheet } = result.data?.data?.result
-    return Worksheet
+    return result.data?.data?.worksheetId
   } else {
     return false
   }
@@ -114,7 +117,7 @@ export const update = async (data = {}, headers = {}) => {
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await coreUpdate(
-    manifest.api_url + '/worksheet/' + data.id,
+    process.env.REACT_APP_API_URL + '/worksheet/' + data.id,
     newData,
     {
       headers: headers?.headers ? headers?.headers : {}
@@ -123,6 +126,48 @@ export const update = async (data = {}, headers = {}) => {
   if (result.data) {
     return result
   } else {
+    return {}
+  }
+}
+
+export const share = async ({ ...params }, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  try {
+    const result = await post(
+      `${process.env.REACT_APP_API_URL}/worksheet/share`,
+      null,
+      { headers, params: params }
+    )
+    if (result?.data?.data) {
+      return result?.data?.data
+    } else {
+      return {}
+    }
+  } catch {
+    return {}
+  }
+}
+
+export const downloadWorksheet = async ({ id, ...params }, header = {}) => {
+  let headers = {
+    ...header,
+    Authorization: 'Bearer ' + localStorage.getItem('token')
+  }
+  try {
+    const result = await post(
+      `${process.env.REACT_APP_API_URL}/worksheet/${id}/pdf`,
+      null,
+      { headers, params: params }
+    )
+    if (result?.data?.data) {
+      return result?.data?.data
+    } else {
+      return {}
+    }
+  } catch {
     return {}
   }
 }

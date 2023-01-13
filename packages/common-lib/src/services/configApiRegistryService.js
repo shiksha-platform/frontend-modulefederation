@@ -1,7 +1,5 @@
 import { get, post, update as coreUpdate } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
-import { sortArray } from '../components/helper'
 
 const interfaceData = {
   id: 'configId',
@@ -17,7 +15,11 @@ export const getApiConfig = async (modules = []) => {
   const arr = await getAll()
   let object = {}
   arr.forEach((e) => {
-    object = { ...object, [e.key]: e.value }
+    if (modules.length === 0) {
+      object = { ...object, [e.key]: e.value }
+    } else if (modules.length > 0 && modules.includes(e.module)) {
+      object = { ...object, [e.key]: e.value }
+    }
   })
   return object
 }
@@ -27,10 +29,13 @@ export const getAll = async (params = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/config/{module}/all`, {
-    ...params,
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/config/{module}/all`,
+    {
+      ...params,
+      headers
+    }
+  )
   if (result.data) {
     const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
     return _.sortBy(data, 'name')
@@ -44,9 +49,12 @@ export const getOne = async (filters = {}, header = {}) => {
     ...header,
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
-  const result = await get(`${manifest.api_url}/config/${filters.id}`, {
-    headers
-  })
+  const result = await get(
+    `${process.env.REACT_APP_API_URL}/config/${filters.id}`,
+    {
+      headers
+    }
+  )
   if (result.data) {
     return mapInterfaceData(result.data.data, interfaceData)
   } else {

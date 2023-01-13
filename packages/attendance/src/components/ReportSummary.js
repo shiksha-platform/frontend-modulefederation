@@ -95,6 +95,7 @@ export default function Report({
           if (percentage && percentage >= 100) {
             setDesign({
               bg: colors.success,
+              textTransform: "inherit",
               iconName: "EmotionHappyLineIcon",
               titleHeading:
                 t("YOU_HAVE_BEEN_PRESENT_ALL_DAYS_THIS") + " " + calendarView,
@@ -108,6 +109,7 @@ export default function Report({
           } else {
             setDesign({
               bg: colors.danger,
+              textTransform: "inherit",
               iconName: "EmotionSadLineIcon",
               titleHeading:
                 t("ABSENT_TODAY_POOR_THAN_LAST") + " " + calendarView,
@@ -273,7 +275,7 @@ export default function Report({
           footer
         ) : (
           <HStack justifyContent={"space-between"}>
-            <Text>{t("ATTENDANCE_TAKEN_BY")}</Text>
+            <Text textTransform="none">{t("ATTENDANCE_TAKEN_BY")}</Text>
             <Text>{fullName ? fullName : ""}</Text>
           </HStack>
         )}

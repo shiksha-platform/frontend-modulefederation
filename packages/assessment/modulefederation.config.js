@@ -1,12 +1,31 @@
-// import AssessmentComponent from "./src/components/AssessmentComponent";
-
 const { dependencies } = require("./package.json");
 
 module.exports = {
   name: "assessment",
   exposes: {
     "./App": "./src/App",
-    // "./AssessmentComponent": "./src/components/AssessmentComponent",
+    "./Assessment": "./src/pages",
+    "./AssessmentGiven": "./src/pages/AssessmentGiven",
+    "./StudentReport": "./src/pages/StudentReport",
+    "./ExamScores": "./src/pages/ExamScores",
+    "./PastAssessments": "./src/pages/PastAssessments",
+    "./ReportCard": "./src/components/ReportCard",
+    "./SuccessPublicationReport":
+      "./src/components/SpotAssessment/successPublicationReport",
+    "./ReportDetails": "./src/components/SpotAssessment/ReportDetails",
+    "./SpotAssessmentResult":
+      "./src/components/SpotAssessment/SpotAssessmentResult",
+    "./SpotAssessmentResult2":
+      "./src/components/SpotAssessment/SpotAssessmentResult2",
+    "./SpotAssessmentResult3":
+      "./src/components/SpotAssessment/SpotAssessmentResult3",
+    "./QumlTest": "./src/pages/QumlTest",
+    "./QuestionList2": "./src/components/ExamScores/QuestionLIst2",
+    "./QuestionList3": "./src/components/ExamScores/QuestionLIst3",
+    "./QuestionList4": "./src/components/ExamScores/QuestionLIst4",
+    "./QuestionList5": "./src/components/ExamScores/QuestionLIst5",
+    "./QuestionList6": "./src/components/ExamScores/QuestionLIst6",
+    "./QuestionList7": "./src/components/ExamScores/QuestionLIst7",
   },
   remotes: {
     core: `core@[window.appModules.core.url]/moduleEntry.js`,

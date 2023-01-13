@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   Box,
@@ -10,67 +11,124 @@ import {
   Stack,
   Actionsheet,
   Link,
-  ScrollView,
 } from "native-base";
 import { useTranslation } from "react-i18next";
+import jwt_decode from "jwt-decode";
 import {
   BodyLarge,
   BodyMedium,
   BodySmall,
   capture,
-  H1,
   H2,
   IconByName,
   Layout,
   Subtitle,
   overrideColorTheme,
+  getApiConfig,
+  FilterButton,
+  telemetryFactory,
+  getAllForUser,
+  sendReadReceipt,
 } from "@shiksha/common-lib";
 import moment from "moment";
 import manifest from "../manifest.json";
 import colorTheme from "../colorTheme";
 const colors = overrideColorTheme(colorTheme);
 
-const notificationData = [
-  {
-    name: "Absent Today",
-    text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mmA"),
-    type: "Attendance",
-  },
-  {
-    name: "Absent Today",
-    text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mmA"),
-    type: "Attendance",
-  },
-  {
-    name: "Absent Today",
-    text: "Worksheets help the kids in exploring multiple concepts They develop fine motor skills, logical thinking",
-    dateTime: moment().add("2", "minute").format("hh:mmA"),
-    type: "Attendance",
-  },
-];
-
-const filters = [
-  { name: "Module", data: ["Lesson Plans", "Attendance", "Timtable"] },
-  { name: "Recipient", data: [] },
-  { name: "Class", data: [] },
-];
-
 const Notification = ({ footerLinks, appName }) => {
   const { t } = useTranslation();
-  const [page, setPage] = React.useState(0);
-  const [showModal, setShowModal] = React.useState(false);
-  const [showModalMore, setShowModalMore] = React.useState(false);
-  const [filterData, setFilterData] = React.useState(false);
-  const [filtered, setFiltered] = React.useState(false);
-  const [notification, setNotification] = React.useState({});
-  const [groupValue, setGroupValue] = React.useState([]);
-  const [showModalInbox, setShowModalInbox] = React.useState(false);
+  const [page, setPage] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [showModalMore, setShowModalMore] = useState(false);
+  const [filterData, setFilterData] = useState(false);
+  const [notification, setNotification] = useState({});
+  const [groupValue, setGroupValue] = useState([]);
+  const [showModalInbox, setShowModalInbox] = useState(false);
+  const [notificationInfo, setNotificationInfo] = useState([]);
+  const [date, setDate] = useState({});
+  const [filterObject, setFilterObject] = useState({});
+  const [showMore, setShowMore] = useState(false);
+  const [validUsers, setValidUsers] = useState("");
+  const { realm_access } = jwt_decode(localStorage.getItem("token"));
   const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
-  console.log(colors);
-  React.useEffect(() => {
+
+  const getDateFromCalendar = () => {
+    setDate(moment().add(page, "days"));
+  };
+
+  const handleTelemetry = (notification) => {
+    setShowModal(true);
+    setNotification(notification);
+    setNotificationInfo(
+      notificationInfo.map((item) => {
+        if (item.id === notification.id) {
+          return { ...item, messageState: "READ" };
+        } else {
+          return item;
+        }
+      })
+    );
+
+    const telemetryData = telemetryFactory.interact({
+      appName,
+      type: "Notification-Intaract",
+      notificationLogId: notification.id,
+      module: notification.module,
+    });
+    capture("INTERACT", telemetryData);
+  };
+
+  const getConfigData = async () => {
+    const Response = await getApiConfig();
+    //setConfigData(Response);
+    const ValidUsersResp = Array.isArray(
+      Response["attendance.allowed_role_to_send_attendance_notification"]
+    )
+      ? Response["attendance.allowed_role_to_send_attendance_notification"]
+      : JSON.parse(
+          Response["attendance.allowed_role_to_send_attendance_notification"]
+        );
+    setValidUsers(ValidUsersResp);
+  };
+
+  const GetAllNotifications = async () => {
+    const resp1 = await getAllForUser({
+      userId: localStorage.getItem("phoneNumber"),
+      provider: "firebase",
+      // startDate: moment("2021-01-01").format("DD-MM-YYYY"),
+      // endDate: moment(date).format("DD-MM-YYYY"),
+    });
+    setNotificationInfo(resp1);
+  };
+
+  useEffect(() => {
+    getDateFromCalendar();
+  }, [page]);
+
+  //CURRENTLY THERE ARE NO FILTERS SUPPORTED BY HISTORY API
+  // const getFilterDetails = () => {
+  //   let latestDate = moment(date).format("YYYY-MM-DD");
+  //   let newFilterObject = {};
+  //   const filterObject1 = {
+  //     ...filterObject, osCreatedAt: latestDate
+  //   }
+  //   const keyarr = Object.keys(filterObject1);
+  //   keyarr.forEach((item) => {
+  //     newFilterObject = {
+  //       ...newFilterObject,
+  //       [item]: { ["eq"]: filterObject1[item] },
+  //     };
+  //   });
+  //   return newFilterObject;
+  // }
+
+  useEffect(() => {
     capture("PAGE");
+    GetAllNotifications();
+  }, [filterObject, date]);
+
+  useEffect(() => {
+    getConfigData();
   }, []);
 
   return (
@@ -82,12 +140,11 @@ const Notification = ({ footerLinks, appName }) => {
         iconComponent: (
           <Button
             rounded="full"
-            colorScheme="button"
             variant="outline"
             bg={colors.notificationbtnBg}
             px="5"
             py="4px"
-            _text={{ textTransform: "capitalize", fontSize: "14px" }}
+            _text={{ textTransform: "capitalize" }}
             rightIcon={<IconByName name="ArrowDownSLineIcon" isDisabled />}
             onPress={(e) => setShowModalInbox(true)}
           >
@@ -111,131 +168,68 @@ const Notification = ({ footerLinks, appName }) => {
       <Stack space={1} mb="2">
         <VStack space="1">
           <Box bg="white" p="5">
-            <HStack justifyContent="space-between" alignItems="center">
-              <CalendarBar {...{ page, setPage }} />
-              <Checkbox
-                colorScheme="button"
-                borderColor={colors.primary}
-                borderRadius="0"
-                _text={{ color: colors.primary, fontSize: "14px" }}
-              >
-                {t("MARK_ALL_READ")}
-              </Checkbox>
-            </HStack>
-          </Box>
-          <Box bg={colors.white} p="5" roundedBottom={"xl"}>
-            <HStack justifyContent="end" alignItems="center" pb="5">
-              {!filtered ? (
-                <Button
-                  rounded="full"
-                  colorScheme="button"
-                  variant="outline"
-                  px="5"
-                  _text={{ textTransform: "capitalize" }}
-                  onPress={(e) => setFiltered(true)}
-                >
-                  {t("FILTER")}
-                </Button>
-              ) : (
-                <ScrollView horizontal={true} display={"hidden"}>
-                  <HStack justifyContent="end" alignItems="center" py="4">
-                    {filters.map((value, index) => {
-                      const isSelect = groupValue.filter((e) =>
-                        value?.data.includes(e)
-                      ).length;
-                      return (
-                        <Button
-                          key={index}
-                          mr="1"
-                          rounded="full"
-                          bg={colors.scrollViewbtnBg}
-                          colorScheme="button"
-                          {...(isSelect < 1 ? { variant: "outline" } : {})}
-                          px="5"
-                          rightIcon={
-                            <IconByName
-                              color={
-                                isSelect < 1 ? colors.primary : colors.white
-                              }
-                              name="ArrowDownSLineIcon"
-                              isDisabled
-                            />
-                          }
-                          onPress={(e) => {
-                            if (value?.data && value?.data.length > 0) {
-                              setFilterData(value?.data);
-                            }
-                          }}
-                        >
-                          <Text
-                            color={isSelect > 0 ? colors.white : colors.primary}
-                          >
-                            {value.name}{" "}
-                            {groupValue.filter((e) => value?.data.includes(e))
-                              .length > 0 && groupValue[0]
-                              ? groupValue[0]
-                              : ""}
-                          </Text>
-                        </Button>
-                      );
-                    })}
-                    <Button
-                      mr="1"
-                      rounded="full"
-                      colorScheme="button"
-                      variant="outline"
-                      bg={colors.scrollViewbtnBg}
-                      px="5"
-                      _text={{
-                        textTransform: "capitelize",
-                        fontWeight: "400",
-                        fontSize: "14px",
-                      }}
-                      rightIcon={
-                        <IconByName
-                          color={colors.primary}
-                          name="ArrowDownSLineIcon"
-                          isDisabled
-                        />
-                      }
-                      onPress={(e) => setFiltered(false)}
-                    >
-                      {t("RESET_FILTER")}
-                    </Button>
-                  </HStack>
-                </ScrollView>
-              )}
-            </HStack>
-            <NotificationBox
-              data={notificationData}
-              onPressMore={(e) => setShowModalMore(true)}
-              onPress={(notification) => {
-                setShowModal(true);
-                setNotification(notification);
-              }}
+            <FilterButton
+              getObject={setFilterObject}
+              _actionSheet={{ bg: "notification.cardBg" }}
+              isResettableFilter={true}
+              filters={[
+                {
+                  name: "Module",
+                  attributeName: "module",
+                  type: "string",
+                  data: ["lessonPlans", "attendance", "worksheet"],
+                },
+              ]}
             />
           </Box>
-        </VStack>
-        <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
-          <Link href={"/notification/create"}>
-            <Button
-              colorScheme="button"
-              _text={{ color: "white" }}
-              px="5"
-              flex="1"
+
+          <Box bg="white" p="5" roundedBottom={"xl"}>
+            <NotificationBox
+              data={notificationInfo}
+              showMore={showMore}
+              setShowMore={setShowModal}
+              onPressMore={(e) => setShowModalMore(true)}
+              onPress={(notification) => {
+                handleTelemetry(notification);
+              }}
+            />
+            <Pressable
+              alignItems="center"
+              onPress={() =>
+                showMore ? setShowMore(false) : setShowMore(true)
+              }
             >
-              {t("CREATE_NEW")}
-            </Button>
-          </Link>
-        </Box>
+              <Text color="notification.primary">
+                {showMore ? t("SHOW_LESS") : t("SHOW_MORE")}
+              </Text>
+            </Pressable>
+          </Box>
+        </VStack>
+        {validUsers.includes(realm_access?.roles[1].toLowerCase()) && (
+          <Box bg={colors.white} p="5" position="sticky" bottom="0" shadow={2}>
+            <Link href={"/notification/create"}>
+              <Button
+                colorScheme="button"
+                _text={{ color: "white" }}
+                px="5"
+                flex="1"
+              >
+                {t("CREATE_NEW")}
+              </Button>
+            </Link>
+          </Box>
+        )}
         <Actionsheet
           isOpen={showModalMore}
-          onClose={() => setShowModalMore(false)}
+          onClose={() => {
+            setShowModalMore(false);
+            setNotification({});
+          }}
         >
           <Actionsheet.Content alignItems={"left"} bg={colors.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
-                <H2 fontWeight="500">{t("NOTIFCATION_ACTION")}</H2>
+                <H2 fontWeight="500">{t("NOTIFICATION_ACTION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -244,11 +238,11 @@ const Notification = ({ footerLinks, appName }) => {
               />
             </HStack>
           </Actionsheet.Content>
-          <Box bg={colors.white} width={"100%"} _text={{}}>
-            <BodyLarge p="5" color={colors.coolGraylight}>
+          <Box bg={"notification.white"} width={"100%"} _text={{}}>
+            <BodyLarge p="5" color={"notification.darkGray2"}>
               {t("MARK_AS_READ")}
             </BodyLarge>
-            <BodyLarge p="5" color={colors.coolGraylight}>
+            <BodyLarge p="5" color={"notification.darkGray2"}>
               {t("DELETE_MESSAGES")}
             </BodyLarge>
             <Box p="5">
@@ -300,7 +294,7 @@ const Notification = ({ footerLinks, appName }) => {
           <Actionsheet.Content alignItems={"left"} bg={colors?.cardBg}>
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={1} pb="15px">
-                <H2>{t("VIEW_NOTIFCATION")}</H2>
+                <H2>{t("VIEW_NOTIFICATION")}</H2>
               </Stack>
               <IconByName
                 name="CloseCircleLineIcon"
@@ -330,7 +324,9 @@ const Notification = ({ footerLinks, appName }) => {
             <VStack p="5" space={6}>
               <BodyLarge>{t("NOTICE")}</BodyLarge>
               <BodyMedium textTransform={"inherit"}>
-                {notification?.text}
+                {notification?.payload?.text
+                  ? notification?.payload?.text
+                  : "Dummy text"}
               </BodyMedium>
             </VStack>
             <Box bg={colors.white} p="5" bottom="0" shadow="2">
@@ -364,7 +360,7 @@ const Notification = ({ footerLinks, appName }) => {
                 borderColor={colors.primary}
                 borderRadius="0"
               >
-                {t("Select All")}
+                {t("SELECT_ALL")}
               </Checkbox>
             </Box>
             {filterData &&
@@ -398,48 +394,49 @@ const Notification = ({ footerLinks, appName }) => {
   );
 };
 
-const NotificationBox = ({ data, onPressMore, onPress }) => {
+const NotificationBox = ({ data, onPress, showMore }) => {
   const line2style = {
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   };
-  return data.map((value, index) => {
+
+  const readReceipt = async (id) => {
+    const resp1 = await sendReadReceipt({
+      eventType: "READ",
+      externalId: id,
+      destAdd: localStorage.getItem("phoneNumber"),
+      fcmDestAdd: localStorage.getItem("fcmToken"),
+    });
+  };
+
+  const numberOfItems = showMore ? data.length : 2;
+  return data.slice(0, numberOfItems).map((value, index) => {
     return (
       <Box
         key={index}
-        borderWidth="1"
-        borderColor={colors.primary}
+        borderWidth={value.messageState === "SENT" ? "2" : "1"}
+        borderColor={
+          value.messageState === "SENT" ? colors.primary : colors.lightGray
+        }
         my="2"
         p="5"
         rounded="10"
       >
-        <Pressable onPress={(e) => onPress(value)}>
-          <VStack space="2">
-            <HStack
-              space="2"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <HStack space="2" alignItems="center">
-                <IconByName
-                  _icon={{ size: "16" }}
-                  name="UserLineIcon"
-                  isDisabled
-                />
-                <H2>{value.name}</H2>
-                <H1 color={colors.primary}>•</H1>
-              </HStack>
-              <IconByName
-                _icon={{ size: "18" }}
-                p="0"
-                name="More2LineIcon"
-                onPress={(e) => {
-                  onPressMore();
-                }}
-              />
-            </HStack>
-            <Subtitle {...line2style}>{value.text}</Subtitle>
+        <Pressable
+          onPress={(e) => {
+            onPress(value);
+            if (value.messageState === "SENT") {
+              readReceipt(value.messageId);
+            }
+          }}
+        >
+          <VStack space="3">
+            {value.messageState === "READ" ? (
+              <BodySmall {...line2style}>{value?.payload?.text}</BodySmall>
+            ) : (
+              <Subtitle {...line2style}>{value?.payload?.text}</Subtitle>
+            )}
             <HStack justifyContent="space-between" alignItems="center">
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -447,7 +444,11 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
                   name="SurveyLineIcon"
                   isDisabled
                 />
-                <BodySmall>{value.type}</BodySmall>
+                {value.messageState === "READ" ? (
+                  <BodySmall>Attendance</BodySmall>
+                ) : (
+                  <Subtitle {...line2style}>Attendance</Subtitle>
+                )}
               </HStack>
               <HStack space="2" alignItems="center">
                 <IconByName
@@ -455,7 +456,21 @@ const NotificationBox = ({ data, onPressMore, onPress }) => {
                   name="TimeLineIcon"
                   isDisabled
                 />
-                <BodySmall>{value.dateTime}</BodySmall>
+                {value.messageState === "READ" ? (
+                  <BodySmall>
+                    {moment
+                      .utc(value.sentTimestamp)
+                      .local()
+                      .format("DD MMM Y LT")}
+                  </BodySmall>
+                ) : (
+                  <Subtitle>
+                    {moment
+                      .utc(value.sentTimestamp)
+                      .local()
+                      .format("DD MMM Y LT")}
+                  </Subtitle>
+                )}
               </HStack>
             </HStack>
           </VStack>

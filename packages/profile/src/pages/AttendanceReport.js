@@ -1,5 +1,13 @@
 import moment from "moment";
-import { Actionsheet, Box, Button, HStack, Text, VStack } from "native-base";
+import {
+  Actionsheet,
+  Box,
+  Button,
+  HStack,
+  Menu,
+  Text,
+  VStack,
+} from "native-base";
 import React, { useState, useEffect, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { TouchableHighlight } from "react-native-web";
@@ -9,20 +17,21 @@ import {
   Layout,
   telemetryFactory,
   ProgressBar,
-  calendar,
-  teacherRegistryService,
-  attendanceRegistryService,
+  userRegistryService,
   overrideColorTheme,
   H2,
   BodyLarge,
   Subtitle,
   BodySmall,
+  H4,
+  getArray,
 } from "@shiksha/common-lib";
 import { useNavigate } from "react-router-dom";
 import colorTheme from "../colorTheme";
+import { report } from "utils/report";
 const colors = overrideColorTheme(colorTheme);
 
-export default function AttendanceReport({ footerLinks, appName }) {
+export default function AttendanceReport({ footerLinks, appName, config }) {
   const { t } = useTranslation();
   const [weekPage, setWeekPage] = useState(0);
   const [teacherObject, setTeacherObject] = useState({});
@@ -31,6 +40,10 @@ export default function AttendanceReport({ footerLinks, appName }) {
   const [attendance, setAttendance] = useState([]);
   const [attendanceObject, setAttendanceObject] = useState({});
   const [weekDays, setWeekDays] = useState([]);
+  const [reportTypes, setReportTypes] = React.useState([]);
+  const [calendarView, setCalendarView] = React.useState();
+  const [reportData, setReportData] = React.useState([]);
+
   const CalendarBar = React.lazy(() => import("attendance/CalendarBar"));
   const navigate = useNavigate();
 
@@ -38,37 +51,40 @@ export default function AttendanceReport({ footerLinks, appName }) {
     let ignore = false;
     const getData = async () => {
       if (!ignore) {
-        setWeekDays(calendar(weekPage, "month"));
+        const { reportAttendace, weekData } = await report(
+          weekPage,
+          calendarView
+        );
+        setWeekDays(weekData);
+        setAttendance(reportAttendace[0] ? reportAttendace[0]?.data : []);
+        setReportData(reportAttendace);
       }
     };
     getData();
-  }, [weekPage]);
+  }, [weekPage, calendarView]);
 
   useEffect(() => {
     let ignore = false;
     const getData = async () => {
       if (!ignore) {
-        const resultTeacher = await teacherRegistryService.getOne(
+        const arr = getArray(config?.["report_types"]);
+        setReportTypes(arr);
+        if (arr.includes("dailyReport")) {
+          setCalendarView("days");
+        } else if (arr.includes("weeklyReport")) {
+          setCalendarView("weeks");
+        } else if (arr.includes("monthlyReport")) {
+          setCalendarView("month");
+        }
+        const resultTeacher = await userRegistryService.getOne(
           { id: teacherId },
           { Authorization: "Bearer " + token }
         );
         setTeacherObject(resultTeacher);
-        let thisMonthParams = {
-          fromDate: moment()
-            .add(-2, "months")
-            .startOf("month")
-            .format("YYYY-MM-DD"),
-          toDate: moment().format("YYYY-MM-DD"),
-          userId: localStorage.getItem("id"),
-        };
-        const thisMonthAttendance = await attendanceRegistryService.getAll(
-          thisMonthParams
-        );
-        setAttendance(thisMonthAttendance);
       }
     };
     getData();
-  }, [weekPage, teacherId, token]);
+  }, [teacherId, token]);
 
   const handleBackButton = () => {
     const telemetryData = telemetryFactory.end({
@@ -85,14 +101,79 @@ export default function AttendanceReport({ footerLinks, appName }) {
     <Layout
       _header={{
         title: t("ATTENDANCE_REPORTS"),
-        subHeading: t("MY_PROFILE"),
+        subHeading: <H4>{t("MY_PROFILE")}</H4>,
+        textTransform: "capitalize",
+        iconComponent:
+          reportTypes?.length > 0 ? (
+            <Menu
+              w="120"
+              placement="bottom right"
+              trigger={(triggerProps) => {
+                return (
+                  <Button
+                    {...triggerProps}
+                    rounded="20"
+                    px={5}
+                    py="7px"
+                    _text={{
+                      color: colors.white,
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "500",
+                      textTransform: "capitalize",
+                    }}
+                    rightIcon={
+                      <IconByName
+                        color={colors.white}
+                        name="ArrowDownSLineIcon"
+                        isDisabled
+                        p="0"
+                      />
+                    }
+                  >
+                    {calendarView === "month"
+                      ? t("MONTH_VIEW")
+                      : calendarView === "weeks"
+                      ? t("WEEK_VIEW")
+                      : t("TODAY_VIEW")}
+                  </Button>
+                );
+              }}
+            >
+              {reportTypes.includes("dailyReport") ? (
+                <Menu.Item onPress={(item) => setCalendarView("days")}>
+                  {t("TODAY_VIEW")}
+                </Menu.Item>
+              ) : (
+                <React.Fragment />
+              )}
+
+              {reportTypes.includes("weeklyReport") ? (
+                <Menu.Item onPress={(item) => setCalendarView("weeks")}>
+                  {t("WEEK_VIEW")}
+                </Menu.Item>
+              ) : (
+                <React.Fragment />
+              )}
+
+              {reportTypes.includes("monthlyReport") ? (
+                <Menu.Item onPress={(item) => setCalendarView("month")}>
+                  {t("MONTH_VIEW")}
+                </Menu.Item>
+              ) : (
+                <React.Fragment />
+              )}
+            </Menu>
+          ) : (
+            <React.Fragment />
+          ),
       }}
       subHeader={
         <HStack space="4" justifyContent="space-between" alignItems="center">
           <Suspense fallback="loading">
             <CalendarBar
-              view="monthInDays"
-              activeColor="gray.900"
+              view={calendarView}
+              activeColor="profile.darkGray0"
               setPage={setWeekPage}
               page={weekPage}
               _box={{ p: 2, bg: "transparent" }}
@@ -100,42 +181,43 @@ export default function AttendanceReport({ footerLinks, appName }) {
           </Suspense>
         </HStack>
       }
-      _subHeader={{ bg: colors.cardBg }}
+      _subHeader={{ bg: "profile.cardBg" }}
       _appBar={{ onPressBackButton: handleBackButton }}
       _footer={footerLinks}
     >
       <VStack space="1">
-        <Box bg={colors.white} p="5" py="30">
+        <Box bg={"profile.white"} p="5" py="30">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <H2>{t("MY_ATTENDANCE")}</H2>
           </HStack>
         </Box>
-        <Box bg={colors.white}>
+        <Box bg={"profile.white"}>
           <VStack py="5">
             <CalendarComponent
+              page={weekPage}
+              type={calendarView}
               monthDays={weekDays}
-              item={teacherObject}
               attendance={attendance}
               setAttendanceObject={setAttendanceObject}
             />
           </VStack>
           <Actionsheet
             isOpen={attendanceObject?.attendance}
-            _backdrop={{ opacity: "0.9", bg: colors.gray }}
+            _backdrop={{ opacity: "0.9", bg: "profile.gray" }}
           >
             <Actionsheet.Content
               p="0"
               alignItems={"left"}
-              bg={colors.white}
+              bg={"profile.white"}
             ></Actionsheet.Content>
-            <Box bg="white" w="100%" p="5">
+            <Box bg="profile.white" w="100%" p="5">
               <VStack space="5" textAlign="center">
-                <Subtitle color={colors.gray}>
+                <Subtitle color={"profile.gray"}>
                   {t("ATTENDANCE_DETAILS")}
                 </Subtitle>
                 <H2>{attendanceObject?.type}</H2>
-                <BodyLarge color={colors.gray}>
-                  {attendanceObject.mess2age}
+                <BodyLarge color={"profile.gray"}>
+                  {attendanceObject?.mess2age}
                 </BodyLarge>
                 <Button
                   variant="outline"
@@ -148,54 +230,47 @@ export default function AttendanceReport({ footerLinks, appName }) {
             </Box>
           </Actionsheet>
         </Box>
-        <VStack space={5} bg={colors.white} p="5">
+        <VStack space={5} bg={"profile.white"} p="5">
           <HStack space="4" justifyContent="space-between" alignItems="center">
             <Box py="15px">
-              <H2 textTransform="none">{t("MY_MONTHLY_ATTENDANCE")}</H2>
+              <H2 textTransform="none">
+                {t(
+                  calendarView === "days"
+                    ? "MY_MONTHLY_ATTENDANCE_DAY"
+                    : calendarView === "weeks"
+                    ? "MY_MONTHLY_ATTENDANCE_WEEK"
+                    : "MY_MONTHLY_ATTENDANCE"
+                )}
+              </H2>
             </Box>
           </HStack>
-          <Box bg={colors.reportBoxBg} rounded="10px">
+          <Box bg={"profile.reportBoxBg"} rounded="10px">
             <VStack p="5" space={3}>
               <VStack space={"30px"}>
-                {[
-                  moment(),
-                  moment().add(-1, "months"),
-                  moment().add(-2, "months"),
-                ].map((month, index) => (
-                  <HStack key={index} alignItems={"center"} space={3}>
-                    <VStack alignItems={"center"}>
-                      <BodySmall>{month.format("Y MMM")}</BodySmall>
-                    </VStack>
-                    <VStack flex="auto" alignContent={"center"}>
-                      <ProgressBar
-                        data={[
-                          "Present",
-                          "Absent",
-                          "SpecialDuty",
-                          "Unmarked",
-                        ].map((status) => {
-                          return {
-                            name: month.format("Y MMM"),
-                            color:
-                              status === "Present"
-                                ? colors.attendancePresent
-                                : status === "Absent"
-                                ? colors.attendanceAbsent
-                                : status === "Unmarked"
-                                ? colors.attendanceUnmarked
-                                : "special_duty.500",
-                            value: attendance.filter(
-                              (e) =>
-                                e.attendance === status &&
-                                moment(e.date).format("Y MMM") ===
-                                  month.format("Y MMM")
-                            ).length,
-                          };
-                        })}
-                      />
-                    </VStack>
-                  </HStack>
-                ))}
+                {reportData.map((item, index) => {
+                  let data = [
+                    "Present",
+                    "Absent",
+                    "SpecialDuty",
+                    "Unmarked",
+                  ].map((status) => {
+                    return {
+                      color: `profile.${status?.toLowerCase()}`,
+                      value: item?.data?.filter((e) => e.attendance === status)
+                        .length,
+                    };
+                  });
+                  return (
+                    <HStack key={index} alignItems={"center"} space={3}>
+                      <VStack alignItems={"center"}>
+                        <BodySmall>{item?.name}</BodySmall>
+                      </VStack>
+                      <VStack flex="auto" alignContent={"center"}>
+                        <ProgressBar data={data} />
+                      </VStack>
+                    </HStack>
+                  );
+                })}
               </VStack>
             </VStack>
           </Box>
@@ -212,8 +287,7 @@ const CalendarComponent = ({
   attendance,
   setAttendanceObject,
   type,
-  item,
-  loding,
+  page,
   _weekBox,
 }) => {
   return monthDays.map((week, index) => (
@@ -224,63 +298,74 @@ const CalendarComponent = ({
       borderBottomWidth={
         monthDays.length > 1 && monthDays.length - 1 !== index ? "1" : "0"
       }
-      borderBottomColor={"coolGray.300"}
+      borderBottomColor={"profile.lightGray2"}
       p={"2"}
       {...(_weekBox?.[index] ? _weekBox[index] : {})}
     >
       {week.map((day, subIndex) => {
         let isToday = moment().format("Y-MM-DD") === day.format("Y-MM-DD");
         let dateValue = day.format("Y-MM-DD");
-        let smsItem = attendance
+        let attendanceItem = attendance
           .slice()
           .reverse()
           .find((e) => e.date === dateValue);
 
-        let smsIconProp = !isIconSizeSmall
+        let attendanceIconProp = !isIconSizeSmall
           ? {
               _box: { py: 2, minW: "46px", alignItems: "center" },
               status: "CheckboxBlankCircleLineIcon",
             }
           : {};
-        if (smsItem?.attendance && smsItem?.attendance === "Present") {
-          smsIconProp = {
-            ...smsIconProp,
-            status: smsItem?.attendance,
-            type: smsItem?.attendance,
-          };
-        } else if (smsItem?.attendance && smsItem?.attendance === "Absent") {
-          smsIconProp = {
-            ...smsIconProp,
-            status: smsItem?.attendance,
-            type: smsItem?.attendance,
+        if (
+          attendanceItem?.attendance &&
+          attendanceItem?.attendance === "Present"
+        ) {
+          attendanceIconProp = {
+            ...attendanceIconProp,
+            status: attendanceItem?.attendance,
+            type: attendanceItem?.attendance,
           };
         } else if (
-          smsItem?.attendance &&
-          smsItem?.attendance === "SpecialDuty"
+          attendanceItem?.attendance &&
+          attendanceItem?.attendance === "Absent"
         ) {
-          smsIconProp = {
-            ...smsIconProp,
-            status: smsItem?.attendance,
-            type: smsItem?.attendance,
+          attendanceIconProp = {
+            ...attendanceIconProp,
+            status: attendanceItem?.attendance,
+            type: attendanceItem?.attendance,
+          };
+        } else if (
+          attendanceItem?.attendance &&
+          attendanceItem?.attendance === "SpecialDuty"
+        ) {
+          attendanceIconProp = {
+            ...attendanceIconProp,
+            status: attendanceItem?.attendance,
+            type: attendanceItem?.attendance,
           };
         } else if (day.day() === 0) {
-          smsIconProp = { ...smsIconProp, status: "Holiday" };
+          attendanceIconProp = { ...attendanceIconProp, status: "Holiday" };
         } else if (isToday) {
-          smsIconProp = { ...smsIconProp, status: "Today" };
+          attendanceIconProp = { ...attendanceIconProp, status: "Today" };
         } else if (moment().diff(day, "days") > 0) {
-          smsIconProp = { ...smsIconProp, status: "Unmarked" };
+          attendanceIconProp = { ...attendanceIconProp, status: "Unmarked" };
         }
 
         return (
           <VStack
             key={subIndex}
             alignItems="center"
+            borderWidth={isToday ? "1" : ""}
+            borderColor={isToday ? "profile.lightGray2" : ""}
+            rounded="lg"
             opacity={
               type && type !== "month" && day.day() !== 0
                 ? 1
                 : day.day() === 0
                 ? 0.3
-                : day.format("M") !== moment().format("M")
+                : typeof page !== "undefined" &&
+                  type === "month" &&
+                  day.format("M") !== moment().add(page, "month").format("M")
                 ? 0.3
                 : 1
             }
@@ -293,13 +378,13 @@ const CalendarComponent = ({
               {!isIconSizeSmall ? (
                 <VStack alignItems={"center"}>
                   {index === 0 ? (
-                    <Text pb="1" color={colors.dateLight}>
+                    <Text pb="1" color={"profile.lightGray0"}>
                       {day.format("ddd")}
                     </Text>
                   ) : (
                     ""
                   )}
-                  <Text color={colors.date}>{day.format("DD")}</Text>
+                  <Text color={"profile.bodyText"}>{day.format("DD")}</Text>
                 </VStack>
               ) : (
                 <HStack alignItems={"center"} space={1}>
@@ -309,23 +394,10 @@ const CalendarComponent = ({
               )}
             </Text>
             <TouchableHighlight
-              onPress={(e) => setAttendanceObject(smsItem)}
-              // onLongPress={(e) => {
-              //   console.log({ e });
-              // }}
+              onPress={(e) => setAttendanceObject(attendanceItem)}
             >
               <Box alignItems="center">
-                {loding && loding[dateValue + item.id] ? (
-                  <GetIcon
-                    {...smsIconProp}
-                    status="Loader4LineIcon"
-                    color={colors.primary}
-                    isDisabled
-                    _icon={{ _fontawesome: { spin: true } }}
-                  />
-                ) : (
-                  <GetIcon {...smsIconProp} />
-                )}
+                <GetIcon {...attendanceIconProp} />
               </Box>
             </TouchableHighlight>
           </VStack>
@@ -341,49 +413,49 @@ export const GetIcon = ({ status, _box, color, _icon }) => {
   switch (status) {
     case "Present":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancePresent}>
+        <Box {..._box} color={color ? color : "profile.present"}>
           <IconByName name="CheckboxCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Absent":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceAbsent}>
+        <Box {..._box} color={color ? color : "profile.absent"}>
           <IconByName name="CloseCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "SpecialDuty":
       icon = (
-        <Box {..._box} color={color ? color : colors.specialDuty}>
+        <Box {..._box} color={color ? color : "profile.specialDuty"}>
           <IconByName name="AwardLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Holiday":
       icon = (
-        <Box {..._box} color={color ? color : colors.holiDay}>
+        <Box {..._box} color={color ? color : "profile.holiDay"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Unmarked":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "profile.unmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     case "Today":
       icon = (
-        <Box {..._box} color={color ? color : colors.attendanceUnmarked}>
+        <Box {..._box} color={color ? color : "profile.unmarked"}>
           <IconByName name="CheckboxBlankCircleLineIcon" {...iconProps} />
         </Box>
       );
       break;
     default:
       icon = (
-        <Box {..._box} color={color ? color : colors.attendancedefault}>
+        <Box {..._box} color={color ? color : "profile.defaultMark"}>
           <IconByName name={status} {...iconProps} />
         </Box>
       );

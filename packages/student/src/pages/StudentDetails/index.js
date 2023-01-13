@@ -1,28 +1,21 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Text, Stack, Box, HStack, Button } from "native-base";
+import { Stack, Box, Button } from "native-base";
 import { useTranslation } from "react-i18next";
 import {
-  IconByName,
   Layout,
   Collapsible,
   capture,
-  telemetryFactory,
-  H3,
   studentRegistryService,
   attendanceRegistryService,
   classRegistryService,
-  overrideColorTheme,
 } from "@shiksha/common-lib";
-import colorTheme from "../../colorTheme";
 
-const colors = overrideColorTheme(colorTheme);
 import { useNavigate, useParams } from "react-router-dom";
 import StudentEdit from "../../components/students/StudentEdit";
 import Card from "../../components/students/Card";
 import manifest from "../../manifest.json";
 import InfoSection from "./Molecules/InfoSection";
 import Section from "./Molecules/Section";
-import ButtonWrapper from "atoms/ButtonWrapper";
 
 const AttendanceComponent = React.lazy(() =>
   import("attendance/AttendanceComponent")
@@ -87,14 +80,14 @@ export default function StudentDetails({ footerLinks, appName }) {
             bold: false,
             fontWeight: "400",
             fontSize: "12px",
-            color: colors.studentNametext,
+            color: "student.lightGray2",
           }}
           type="card"
           item={studentObject}
           hidePopUpButton={true}
         />
       }
-      _subHeader={{ bg: colors.studentBg }}
+      _subHeader={{ bg: "student.successAlert" }}
       _appBar={{ languages: manifest.languages }}
       _footer={footerLinks}
     >
@@ -113,7 +106,7 @@ export default function StudentDetails({ footerLinks, appName }) {
               },
             ]}
           />
-          <Box bg={colors.white} py="5">
+          <Box bg={"student.white"} py="5">
             <Collapsible
               defaultCollapse
               isDisableCollapse
@@ -163,7 +156,7 @@ export default function StudentDetails({ footerLinks, appName }) {
           </Box>
         </Section>
 
-        <Section
+        {/* <Section
           title={t("LEARNING")}
           button={
             <ButtonWrapper
@@ -180,15 +173,24 @@ export default function StudentDetails({ footerLinks, appName }) {
           }
         >
           {[
-            { title: t("RESULTS"), value: "Best in class" },
-            { title: t("COMPETENCY"), value: "Creative" },
-            { title: t("AWARDS"), value: "No awards yet" },
+            {
+              title: t("RESULTS"),
+              value: "Best in class",
+            },
+            {
+              title: t("COMPETENCY"),
+              value: "Creative",
+            },
+            {
+              title: t("AWARDS"),
+              value: "No awards yet",
+            },
           ].map((item, index) => (
             <Box
               key={index}
               p="5"
               borderBottomWidth="1"
-              borderColor={colors.coolGraylight}
+              borderColor={"student.lightGray3"}
             >
               <Collapsible defaultCollapse header={item.title}>
                 <Box pt="18px">
@@ -222,7 +224,7 @@ export default function StudentDetails({ footerLinks, appName }) {
               </Box>
             </Collapsible>
           </Box>
-        </Section>
+        </Section> */}
       </Stack>
     </Layout>
   );

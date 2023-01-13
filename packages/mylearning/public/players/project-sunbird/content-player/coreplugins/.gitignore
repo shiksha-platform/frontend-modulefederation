@@ -1,0 +1,8 @@
+/coverage
+/docs
+/bower_components
+/node_modules
+/coverage
+/docs
+*.orig
+

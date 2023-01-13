@@ -122,6 +122,7 @@ export const MultipalAttendance = ({
   const [startTime, setStartTime] = useState();
   const holidays = [];
   const fullName = localStorage.getItem("fullName");
+  const buttonRef = React.useRef(null);
   useEffect(() => {
     if (showModal) setStartTime(moment());
   }, [showModal]);
@@ -295,12 +296,15 @@ export const MultipalAttendance = ({
                       {t("ATTENDANCE_SUMMARY_REPORT")}
                     </H2>
                     <BodySmall color={colors.white}>
-                      {classObject?.title ?? ""}
+                      {(classObject?.name ? classObject?.name : "") +
+                        (classObject?.section
+                          ? " • Sec " + classObject?.section
+                          : "")}
                     </BodySmall>
                   </Stack>
                   <IconByName
                     name="CloseCircleLineIcon"
-                    onPress={(e) => setShowModal(false)}
+                    onPress={(e) => modalClose(false)}
                     color={colors.white}
                   />
                 </HStack>
@@ -316,7 +320,7 @@ export const MultipalAttendance = ({
                       }}
                       isDisabled
                     />
-                    <H1 color={colors.successAlertText}>
+                    <H1 color={colors.successAlertText} textTransform="inherit">
                       {t("ATTENDANCE_SUBMITTED")}
                     </H1>
                   </VStack>
@@ -327,7 +331,9 @@ export const MultipalAttendance = ({
                     alignItems="center"
                     pb={5}
                   >
-                    <H2>{t("ATTENDANCE_SUMMARY")}</H2>
+                    <H2 textTransform="capitalize">
+                      {t("ATTENDANCE_SUMMARY")}
+                    </H2>
                     <BodyLarge>{moment().format("DD MMM, Y")}</BodyLarge>
                   </HStack>
                   <ReportSummary
@@ -340,7 +346,9 @@ export const MultipalAttendance = ({
                       ],
                       footer: (
                         <HStack justifyContent={"space-between"}>
-                          <Subtitle>{t("ATTENDANCE_TAKEN_BY")}</Subtitle>
+                          <Subtitle textTransform="none">
+                            {t("ATTENDANCE_TAKEN_BY")}
+                          </Subtitle>
                           <Subtitle color={colors.successAlertText}>
                             {fullName ? fullName : ""}
                             {" at "}
@@ -353,15 +361,17 @@ export const MultipalAttendance = ({
                 </Box>
                 <Box bg={colors.white} p="5" textAlign={"center"}>
                   <VStack space={2}>
-                    <BodyLarge>
+                    <BodyLarge textTransform="inherit">
                       {t("VIEW_SEND_ATTENDANCE_RELATED_MESSAGES_TO_STUDENTS")}
                     </BodyLarge>
                     {/* <Caption>{t("STUDENTS_ABSENT")}</Caption> */}
 
                     <Button.Group>
                       <Button
+                        ref={buttonRef}
                         variant="outline"
                         flex="1"
+                        textTransform="capitalize"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,
@@ -376,11 +386,16 @@ export const MultipalAttendance = ({
                           );
                         }}
                       >
-                        {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
+                        <BodyLarge
+                          maxW={buttonRef?.current?.clientWidth - 16}
+                          color={"profile.primary"}
+                        >
+                          {t("VIEW_MESSAGES_BEING_SENT_BY_ADMIN")}
+                        </BodyLarge>
                       </Button>
                       <Button
-                        _text={{ color: colors.white }}
                         flex="1"
+                        textTransform="capitalize"
                         onPress={(e) => {
                           const telemetryData = telemetryFactory.interact({
                             appName,
@@ -402,7 +417,7 @@ export const MultipalAttendance = ({
                         justifyContent={"space-between"}
                         alignItems="center"
                       >
-                        <Text bold>
+                        <Text bold textTransform="capitalize">
                           100% {t("ATTENDANCE") + " " + t("THIS_WEEK")}
                         </Text>
                         <IconByName name="More2LineIcon" isDisabled />
@@ -430,7 +445,7 @@ export const MultipalAttendance = ({
                         )}
                       </HStack>
                       {presentStudents?.length <= 0 ? (
-                        <Caption>
+                        <Caption textTransform="inherit">
                           {t("NO_STUDENT_HAS_ACHIEVED_ATTENDANCE_THIS_WEEK")}
                         </Caption>
                       ) : (
@@ -448,7 +463,7 @@ export const MultipalAttendance = ({
                 </Box>
                 <Box p="2" py="5" bg={colors.white}>
                   <VStack space={"15px"} alignItems={"center"}>
-                    <Caption textAlign={"center"}>
+                    <Caption textAlign={"center"} textTransform="inherit">
                       {t("ATTENDANCE_WILL_AUTOMATICALLY_SUBMIT")}
                     </Caption>
                     <Button.Group width="100%">
@@ -503,6 +518,7 @@ export default function AttendanceComponent({
   appName,
   manifest,
   setLastAttedance,
+  setAlert,
 }) {
   const { t } = useTranslation();
   const teacherId = localStorage.getItem("id");
@@ -555,6 +571,7 @@ export default function AttendanceComponent({
     setLoading({
       [dataObject.date + dataObject.id]: true,
     });
+
     if (moment().format("HH:MM") <= manifest?.["class_attendance.submit_by"]) {
       if (dataObject.attendanceId) {
         attendanceRegistryService
@@ -583,7 +600,10 @@ export default function AttendanceComponent({
             setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
-          });
+          })
+          .catch((e) =>
+            setAlert ? setAlert(e.message) : console.log(e.message)
+          );
       } else {
         attendanceRegistryService
           .create({
@@ -596,11 +616,17 @@ export default function AttendanceComponent({
             teacherId: teacherId,
           })
           .then((e) => {
-            setAttendance([...attendance, dataObject]);
+            setAttendance([
+              ...attendance,
+              { ...dataObject, id: e, attendanceId: e },
+            ]);
             setLastAttedance(moment().format("hh:mma"));
             setLoading({});
             setShowModal(false);
-          });
+          })
+          .catch((e) =>
+            setAlert ? setAlert(e.message) : console.log(e.message)
+          );
       }
     } else {
       setLoading({});
@@ -733,7 +759,11 @@ export default function AttendanceComponent({
                 Message Sent to Parent
               </Subtitle>
               <Subtitle color={colors.messageAlert}>Absent alert</Subtitle>
-              <BodyMedium color={colors.messageInfo} textAlign="center">
+              <BodyMedium
+                color={colors.messageInfo}
+                textAlign="center"
+                textTransform="capitalize"
+              >
                 Hello Mr. B.K. Chaudhary, this is to inform you that your ward
                 Sheetal is absent in school on Wednesday, 12th of January 2022.
               </BodyMedium>

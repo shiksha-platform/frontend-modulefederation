@@ -33,7 +33,7 @@ import {
 import AttendanceComponent, {
   GetAttendance,
 } from "../../components/AttendanceComponent";
-import CalendarBar from "components/CalendarBar";
+import CalendarBar from "components/CalendarBar/CalendarBar";
 import ReportSummary from "../../components/ReportSummary";
 import manifest from "../../manifest.json";
 import colorTheme from "../../colorTheme";
@@ -41,7 +41,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const colors = overrideColorTheme(colorTheme);
 
-export default function ClassReportDetail({ footerLinks, appName }) {
+export default function ClassReportDetail({ footerLinks, appName, setAlert }) {
   const { t } = useTranslation();
   const [page, setPage] = useState(0);
   const { classId } = useParams();
@@ -221,8 +221,13 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                       calendarView: compare,
                     }}
                   />
-                  <Subtitle py="5" px="10px" color={colors.grayInLight}>
-                    <Text bold color={colors.darkGray}>
+                  <Subtitle
+                    py="5"
+                    px="10px"
+                    color={colors.grayInLight}
+                    textTransform="inherit"
+                  >
+                    <Text bold color={colors.darkGray} textTransform="inherit">
                       {t("NOTES")}
                       {": "}
                     </Text>
@@ -322,7 +327,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                 header={
                   <>
                     <VStack>
-                      <Text bold fontSize={"md"}>
+                      <Text bold fontSize={"md"} textTransform="inherit">
                         {t("ABSENT_CONSECUTIVE_3_DAYS")}
                       </Text>
                       <Text fontSize={"xs"}>
@@ -419,7 +424,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                 header={
                   <>
                     <VStack>
-                      <Text bold fontSize={"md"}>
+                      <Text bold fontSize={"md"} textTransform="inherit">
                         {t("STUDENT_WISE_ATTENDANCE")}
                       </Text>
                       <Text fontSize={"xs"}>
@@ -433,6 +438,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
                   data={students}
                   renderItem={({ item, index }) => (
                     <AttendanceComponent
+                      setAlert={setAlert}
                       isEditDisabled
                       type={compare === "monthInDays" ? "month" : "weeks"}
                       _weekBox={[{}, { bg: colors.weekCardCompareBg }]}
@@ -462,7 +468,7 @@ export default function ClassReportDetail({ footerLinks, appName }) {
           >
             <HStack justifyContent={"space-between"}>
               <Stack p={5} pt={2} pb="25px">
-                <H2 color={colors.black}>
+                <H2 color={colors.black} textTransform="inherit">
                   {t("SELECT_CLASS_MARK_ATTENDANCE")}
                 </H2>
               </Stack>

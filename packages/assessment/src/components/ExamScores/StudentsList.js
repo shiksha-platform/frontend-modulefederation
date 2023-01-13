@@ -368,7 +368,7 @@ const StudentsList = ({ setHeaderDetails }) => {
                                     title={{ text: "79", fontSize: "12px" }}
                                     // legend={{ text: "Total Score", fontSize: "14px" }}
                                     cutout={"79%"}
-                                    size="45px"
+                                    size="35px"
                                   />
                                 </Box>
                               </HStack>
@@ -399,7 +399,7 @@ const StudentsList = ({ setHeaderDetails }) => {
               colorScheme="button"
               py={3}
               _text={{ color: colors.white }}
-              onPress={() => navigate("/examscores")}
+              onPress={() => navigate("/assessment/examscores")}
             >
               {t("Save")}
             </Button>

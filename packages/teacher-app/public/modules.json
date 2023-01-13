@@ -25,5 +25,17 @@
   },
   "assessment": {
     "url": "http://localhost:3009/modules/assessment"
+  },
+  "mylearning": {
+    "url": "http://localhost:3010/modules/mylearning"
+  },
+  "lessonplans": {
+    "url": "http://localhost:3016/modules/lessonplans"
+  },
+  "visits": {
+    "url": "http://localhost:3011/modules/visits"
+  },
+  "schools": {
+    "url": "http://localhost:3012/modules/schools"
   }
 }

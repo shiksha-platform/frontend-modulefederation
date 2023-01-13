@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunbird PDF player</title>
+    <style>
+      .player-grid {
+        height: 90vh;
+        width: 90%;
+        margin: 0 auto;
+        display: grid;
+        gap: 1.5rem;
+        padding-top: 4rem;
+
+        @media screen and (max-width: 768px) {
+          grid-template-columns: 100%;
+          gap: 0px;
+        }
+      }
+    </style>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="player-grid" id="my-player"></div>
+    <script type="text/javascript" src="sunbird-pdf-player.js"></script>
+    <script type="text/javascript">
+      const playerConfig = {
+        context: {
+          mode: "play",
+          authToken: "",
+          sid: "7283cf2e-d215-9944-b0c5-269489c6fa56",
+          did: "3c0a3724311fe944dec5df559cc4e006",
+          uid: "anonymous",
+          channel: "505c7c48ac6dc1edc9b08f21db5a571d",
+          pdata: {
+            id: "prod.diksha.portal",
+            ver: "3.2.12",
+            pid: "sunbird-portal.contentplayer",
+          },
+          contextRollup: { l1: "505c7c48ac6dc1edc9b08f21db5a571d" },
+          tags: [""],
+          cdata: [],
+          timeDiff: 0,
+          objectRollup: {},
+          host: "",
+          endpoint: "",
+          userData: {
+            firstName: "Vivek",
+            lastName: "Kasture",
+          },
+        },
+        config: {
+          traceId: "afhjgh",
+          sideMenu: {
+            showShare: true,
+            showDownload: true,
+            showReplay: true,
+            showExit: true,
+          },
+        },
+        metadata: JSON.parse(window.name),
+        data: {},
+      };
+      const pdfElement = document.createElement("sunbird-pdf-player");
+      pdfElement.setAttribute("player-config", JSON.stringify(playerConfig));
+      const myPlayer = document.getElementById("my-player");
+      myPlayer.appendChild(pdfElement);
+    </script>
+  </body>
+</html>

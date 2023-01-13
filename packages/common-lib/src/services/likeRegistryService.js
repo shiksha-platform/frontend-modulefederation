@@ -5,7 +5,7 @@ import {
   distory as distoryRequest
 } from './RestClient'
 import mapInterfaceData from './mapInterfaceData'
-import manifest from '../manifest.json'
+import * as userRegistryService from './userRegistryService'
 
 const interfaceData = {
   id: 'likeId',
@@ -19,7 +19,7 @@ let commentEntityAttributes = Object.keys(interfaceData)
 
 export const getAll = async ({ limit, ...params } = {}, header = {}) => {
   const result = await post(
-    manifest.api_url + '/like/search',
+    process.env.REACT_APP_API_URL + '/like/search',
     { filters: params, limit: limit },
     {
       headers: {
@@ -29,7 +29,7 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    return result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+    return await getDataWithRelational(result.data.data)
   } else {
     return []
   }
@@ -50,12 +50,11 @@ export const create = async (
     onlyParameter: onlyParameter ? onlyParameter : commentEntityAttributes
   }
   let newData = mapInterfaceData(data, newInterfaceData, true)
-  const result = await post(manifest.api_url + '/like', newData, {
+  const result = await post(process.env.REACT_APP_API_URL + '/like', newData, {
     headers: header
   })
   if (result.data) {
-    let { Like } = result.data?.data?.result
-    return Like
+    return result.data?.data?.likeId
   } else {
     return false
   }
@@ -78,7 +77,7 @@ export const update = async (
   let newData = mapInterfaceData(data, newInterfaceData, true)
 
   const result = await updateRequest(
-    manifest.api_url + '/like/' + data.id,
+    process.env.REACT_APP_API_URL + '/like/' + data.id,
     newData,
     {
       headers: header
@@ -97,7 +96,7 @@ export const distory = async (data = {}, headers = {}) => {
     Authorization: 'Bearer ' + localStorage.getItem('token')
   }
   const result = await distoryRequest(
-    manifest.api_url + '/like/' + data.id,
+    process.env.REACT_APP_API_URL + '/like/' + data.id,
     data,
     {
       headers: header
@@ -108,4 +107,19 @@ export const distory = async (data = {}, headers = {}) => {
   } else {
     return {}
   }
+}
+
+const getDataWithRelational = async (data) => {
+  return await Promise.all(
+    data.map(async (item) => await getDataWithRelationalOne(item))
+  )
+}
+
+const getDataWithRelationalOne = async (object) => {
+  let userData = {}
+  const item = mapInterfaceData(object, interfaceData)
+  if (item.userId) {
+    userData = await userRegistryService.getOne({ id: item.userId })
+  }
+  return { ...item, userData }
 }

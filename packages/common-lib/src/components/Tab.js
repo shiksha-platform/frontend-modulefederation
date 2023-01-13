@@ -1,19 +1,19 @@
 import React from 'react'
-import { Text, Box, Pressable, VStack } from 'native-base'
+import { Text, Box, Pressable, VStack, HStack } from 'native-base'
 import { Animated } from 'react-native-web'
 
 const styles = {
   shadow: { style: { boxShadow: 'inset 0px -1px 0px #dfdfe8' }, px: '3' }
 }
 
-export default function Tab({ routes, _box }) {
+export default function Tab({ routes, _box, _item }) {
   const [index, setIndex] = React.useState(0)
   return (
     <VStack>
-      <Box flexDirection='row' {..._box}>
+      <HStack {..._box}>
         {routes.map((route, i) => {
           return (
-            <Pressable key={i} flex={1} onPress={() => setIndex(i)}>
+            <Pressable key={i} flex={1} onPress={() => setIndex(i)} {..._item}>
               <Box alignItems='center' p='3' cursor='pointer'>
                 <Animated.Text>
                   <Text
@@ -38,7 +38,7 @@ export default function Tab({ routes, _box }) {
             </Pressable>
           )
         })}
-      </Box>
+      </HStack>
       {routes[index]?.component}
     </VStack>
   )
