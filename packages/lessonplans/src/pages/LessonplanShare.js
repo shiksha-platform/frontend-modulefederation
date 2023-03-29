@@ -218,7 +218,7 @@ export default function LessonplanShare({ footerLinks, appName }) {
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <WhatsappShareButton
-                url={`https://sandbox.shikshaplatform.io/modules/worksheet/worksheet/${lessonplanId}/view`}
+                url={`https://sandbox.shiksha.samagra.io/modules/worksheet/worksheet/${lessonplanId}/view`}
                 title="Lessonplan"
                 separator=":: "
               >
@@ -232,7 +232,7 @@ export default function LessonplanShare({ footerLinks, appName }) {
           <Box shadow="2" p="5">
             <Pressable onPress={(e) => setShowSuccessModal(true)}>
               <LinkedinShareButton
-                url={`https://sandbox.shikshaplatform.io/modules/worksheet/worksheet/${lessonplanId}/view`}
+                url={`https://sandbox.shiksha.samagra.io/modules/worksheet/worksheet/${lessonplanId}/view`}
               >
                 <HStack space="5">
                   <LinkedinIcon size={15} round />
