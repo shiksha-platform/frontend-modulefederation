@@ -1,4 +1,4 @@
-# APP_DOMAIN_NAME = proxy-sandbox.shikshaplatform.io
+APP_DOMAIN_NAME = proxy-sandbox.shiksha.samagra.io
 # replace ${APP_DOMAIN_NAME} with application domain name
 
 server{
