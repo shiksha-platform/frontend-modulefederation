@@ -94,7 +94,7 @@
     }
   ],
 
-  "auth_url": "https://shiksha-prod.shikshaplatform.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
+  "auth_url": "https://sandbox.shiksha.samagra.io/auth/realms/sunbird-rc/protocol/openid-connect/token",
   "maxWidth": "1080",
   "weekDays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   "attendancePastDays": 90,
