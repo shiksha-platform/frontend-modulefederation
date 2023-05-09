@@ -1,0 +1,12 @@
+extends: "eslint:recommended"
+parserOptions:
+  ecmaVersion: 5
+rules:
+  no-undef: 0
+  no-console: 0
+  valid-jsdoc:
+    - 2
+    - requireReturn: false
+  no-trailing-spaces: 2
+env:
+  browser: true

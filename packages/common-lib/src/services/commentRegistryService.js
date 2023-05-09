@@ -28,7 +28,9 @@ export const getAll = async ({ limit, ...params } = {}, header = {}) => {
     }
   )
   if (result.data.data) {
-    return await getDataWithRelational(result.data.data)
+    const data = result.data.data.map((e) => mapInterfaceData(e, interfaceData))
+
+    return data
   } else {
     return []
   }

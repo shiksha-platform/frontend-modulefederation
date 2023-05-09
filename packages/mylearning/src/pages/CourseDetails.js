@@ -11,8 +11,9 @@ import {
   Loading,
   useWindowSize,
   H3,
+  courseRegistryService,
 } from "@shiksha/common-lib";
-import { Box, HStack, Pressable, VStack } from "native-base";
+import { Avatar, Box, HStack, Pressable, VStack } from "native-base";
 import manifestLocal from "../manifest.json";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -62,8 +63,22 @@ export default function CourseDetails({ footerLinks, appName }) {
       .catch((e) => console.log(e.message));
     setLike(data[0] ? data[0] : null);
     const localPlayerContent = localStorage.getItem("playerContent");
-    if (localPlayerContent) {
-      setPlayerContent(JSON.parse(localPlayerContent));
+    let localData = JSON.parse(localPlayerContent);
+    if (localData) {
+      if (
+        [
+          "application/vnd.ekstep.ecml-archive",
+          "application/vnd.ekstep.html-archive",
+        ].includes(localData?.mimeType)
+      ) {
+        let resultData = await courseRegistryService.getContent({
+          id: localData?.identifier,
+          adapter: result?.source,
+        });
+        setPlayerContent(resultData);
+      } else {
+        setPlayerContent(localData);
+      }
     }
     setLoading(false);
   }, []);
@@ -77,7 +92,7 @@ export default function CourseDetails({ footerLinks, appName }) {
       <Loading
         _center={{ alignItems: "center", width: "100%" }}
         customComponent={
-          <VStack {...{ width }}>
+          <VStack {...{ width, height }}>
             <IconByName
               name="CloseCircleLineIcon"
               onPress={() => {
@@ -198,8 +213,24 @@ export default function CourseDetails({ footerLinks, appName }) {
                       rounded={"lg"}
                       shadow={4}
                     >
-                      <HStack justifyContent={"space-between"}>
-                        <H2>{subItem?.name}</H2>
+                      <HStack
+                        justifyContent={"space-between"}
+                        alignItems="center"
+                      >
+                        <HStack space={4} alignItems="center">
+                          {subItem?.posterImage ? (
+                            <Avatar
+                              source={{ uri: subItem?.posterImage }}
+                              bg="transparent"
+                              style={{ borderRadius: 0 }}
+                              p="1"
+                              shadow={4}
+                            />
+                          ) : (
+                            <React.Fragment />
+                          )}
+                          <H2>{subItem?.name}</H2>
+                        </HStack>
                         <H3>
                           {subItem?.mimeType === "application/pdf"
                             ? "PDF"
@@ -210,6 +241,11 @@ export default function CourseDetails({ footerLinks, appName }) {
                                 "application/vnd.sunbird.questionset",
                               ].includes(subItem?.mimeType)
                             ? "QUML"
+                            : [
+                                "application/vnd.ekstep.ecml-archive",
+                                "application/vnd.ekstep.html-archive",
+                              ].includes(subItem?.mimeType)
+                            ? "Content"
                             : ""}
                         </H3>
                       </HStack>
